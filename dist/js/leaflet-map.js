@@ -189,10 +189,8 @@ var LeafIcon = L.Icon.extend({
     }
 });
 
-var iconA = new LeafIcon({iconUrl: 'dist/img/marker-icon-1.png'}),
-    iconB = new LeafIcon({iconUrl: 'dist/img/marker-icon-2.png'}),
-    iconC = new LeafIcon({iconUrl: 'dist/img/marker-icon-3.png'});
+var icon = new LeafIcon({iconUrl: 'dist/img/marker-icon-1.png'});
 
-L.marker([-6.2841796,106.833289], {icon: iconA}).addTo(mymap); //Bekasi
-L.marker([-6.2640495,107.083529], {icon: iconB}).addTo(mymap); //Karawang
-L.marker([-6.4945321,107.4543786], {icon: iconC}).addTo(mymap); //Subang*/
+L.marker([-6.2841796,106.833289], {icon: icon}).addTo(mymap); //Bekasi
+L.marker([-6.2640495,107.083529], {icon: icon}).addTo(mymap); //Karawang
+L.marker([-6.4945321,107.4543786], {icon: icon}).addTo(mymap); //Subang
