@@ -178,7 +178,6 @@ var panelLayers = new L.Control.PanelLayers(baseLayers, overLayers);
 mymap.addControl(panelLayers);
 
 //icon map
-/*
 var LeafIcon = L.Icon.extend({
     options: {
         iconSize:     [20, 30],
@@ -194,3 +193,12 @@ var icon = new LeafIcon({iconUrl: 'dist/img/marker-icon-1.png'});
 L.marker([-6.2841796,106.833289], {icon: icon}).addTo(mymap); //Bekasi
 L.marker([-6.2640495,107.083529], {icon: icon}).addTo(mymap); //Karawang
 L.marker([-6.4945321,107.4543786], {icon: icon}).addTo(mymap); //Subang
+L.marker([-6.451024,107.9145671], {icon: icon}).addTo(mymap); //Indramayu
+L.marker([-6.7605414,108.3014452], {icon: icon}).addTo(mymap); //Cirebon
+L.marker([-6.7427761,108.5190193], {icon: icon}).addTo(mymap); //Kota Cirebon
+L.marker([-7.6400957,108.4166047], {icon: icon}).addTo(mymap); //Pangandaran
+L.marker([-7.3598063,108.1627121], {icon: icon}).addTo(mymap); //Tasikmalaya
+L.marker([-7.3425596,107.4979527], {icon: icon}).addTo(mymap); //Garut
+L.marker([-7.0516816,106.5699387], {icon: icon}).addTo(mymap); //Cianjur
+L.marker([-7.0750637,106.4375612], {icon: icon}).addTo(mymap); //Sukabumi
+L.marker([-6.9356245,106.8807472], {icon: icon}).addTo(mymap); //Kota Sukabumi
