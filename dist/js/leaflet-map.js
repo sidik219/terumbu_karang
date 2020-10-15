@@ -190,6 +190,7 @@ var LeafIcon = L.Icon.extend({
 
 var icon = new LeafIcon({iconUrl: 'dist/img/marker-icon-1.png'});
 
+//titik koordinat untuk wilayah di jabar
 L.marker([-6.2841796,106.833289], {icon: icon}).addTo(mymap); //Bekasi
 L.marker([-6.2640495,107.083529], {icon: icon}).addTo(mymap); //Karawang
 L.marker([-6.4945321,107.4543786], {icon: icon}).addTo(mymap); //Subang
@@ -202,3 +203,5 @@ L.marker([-7.3425596,107.4979527], {icon: icon}).addTo(mymap); //Garut
 L.marker([-7.0516816,106.5699387], {icon: icon}).addTo(mymap); //Cianjur
 L.marker([-7.0750637,106.4375612], {icon: icon}).addTo(mymap); //Sukabumi
 L.marker([-6.9356245,106.8807472], {icon: icon}).addTo(mymap); //Kota Sukabumi
+
+//clustering map
