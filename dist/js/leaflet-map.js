@@ -189,21 +189,19 @@ var panelLayers = new L.Control.PanelLayers(baseLayers, overLayers);
 mymap.addControl(panelLayers);
 
 //icon map
+/*
 var LeafIcon = L.Icon.extend({
     options: {
         iconSize:     [20, 30],
-        shadowSize:   [50, 64],
-        iconAnchor:   [22, 94],
-        shadowAnchor: [4, 62],
-        popupAnchor:  [-3, -76]
     }
 });
 
-var icon = new LeafIcon({iconUrl: 'dist/img/marker-icon-1.png'});
+var icon = new LeafIcon({iconUrl: 'dist/img/marker-icon-1.png'});*/
 
 //titik koordinat kabupaten untuk wilayah di jabar
 var addressPoints = [
     //Latlong Wilayah
+    /*
     [-6.2841796,106.833289], //Bekasi
     [-6.2640495,107.083529], //Karawang
     [-6.4945321,107.4543786], //Subang
@@ -216,10 +214,10 @@ var addressPoints = [
     [-7.0516816,106.5699387], //Cianjur
     [-7.0750637,106.4375612], //Sukabumi
     [-6.9356245,106.8807472], //Kota Sukabumi
+    */
     //Latlong Lokasi Pantai
-    [-6.1815766,107.5597572], //Pantai Tengkolak Karawang
-    [-6.1825258,107.5484921], //Pantai Pasir Putih Karawang
-    //Latlong Titik TK
+    [-6.1815819,107.5597572], //Pantai Tengkolak Karawang
+    //Latlong Titik Terumbu Karang
     [-6.178155,107.5640759],
     [-6.178134,107.564295],
     [-6.178347,107.564445],
@@ -237,20 +235,11 @@ var groupMarkers = L.markerClusterGroup({
 for (var i = 0; i < addressPoints.length; i++) {
     var a = addressPoints[i];
     //var title = a[2];
-    var marker = L.marker(new L.LatLng(a[0], a[1]), /*{ title: title }*/);
+    var marker = L.marker(new L.LatLng(a[0], a[1]),/*{ title: title }*/);
     //marker.bindPopup(title);
     groupMarkers.addLayer(marker);
 }
 mymap.addLayer(groupMarkers);
-
-
-
-
-
-
-
-
-
 
 /*
 L.marker([-6.2841796,106.833289], {icon: icon}).addTo(mymap); //Bekasi
