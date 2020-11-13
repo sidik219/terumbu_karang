@@ -208,7 +208,7 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
             WHERE id_wilayah = :id_wilayah';
             
             $stmt = $pdo->prepare($sql);
-            $stmt->execute(['id_wilayah' => $_GET['id_wilayah']]);
+            $stmt->execute(['id_wilayah' => $_POST['id_wilayah']]);
             header('Location: kelola_wilayah.php?status=deletesuccess');       
     }
 
@@ -225,6 +225,7 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
         else{
         if (isset($_POST['submit'])) {
             $nama_lokasi        = $_POST['tbnama_lokasi'];
+            $luas_lokasi        = $_POST['tbluas_lokasi'];
             $id_wilayah        = $_POST['listwilayah'];
             $deskripsi_lokasi     = $_POST['txtdeskripsi_lokasi'];
             $randomstring = substr(md5(rand()), 0, 7);
@@ -243,11 +244,11 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
             //---image upload end   
 
             $sqllokasi = "INSERT INTO t_lokasi
-                            (id_wilayah, nama_lokasi, deskripsi_lokasi, foto_lokasi)
-                            VALUES (:id_wilayah, :nama_lokasi, :deskripsi_lokasi, :foto_lokasi)";
+                            (id_wilayah, nama_lokasi, deskripsi_lokasi, foto_lokasi, luas_lokasi)
+                            VALUES (:id_wilayah, :nama_lokasi, :deskripsi_lokasi, :foto_lokasi, :luas_lokasi)";
 
             $stmt = $pdo->prepare($sqllokasi);
-            $stmt->execute(['id_wilayah' => $id_wilayah, 'nama_lokasi' => $nama_lokasi, 'deskripsi_lokasi' => $deskripsi_lokasi, 'foto_lokasi' => $foto_lokasi]);
+            $stmt->execute(['id_wilayah' => $id_wilayah, 'nama_lokasi' => $nama_lokasi, 'deskripsi_lokasi' => $deskripsi_lokasi, 'foto_lokasi' => $foto_lokasi, 'luas_lokasi' => $luas_lokasi]);
 
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
@@ -271,6 +272,7 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
         if (isset($_POST['submit'])) {
             if ($_POST['submit'] == 'Simpan') {
                 $id_lokasi          = $_POST['id_lokasi'];
+                $luas_lokasi        = $_POST['tbluas_lokasi'];
                 $id_wilayah        = $_POST['listwilayah'];
                 $nama_lokasi          = $_POST['tbnama_lokasi'];
                 $deskripsi_lokasi     = $_POST['txtdeskripsi_lokasi'];
@@ -291,11 +293,11 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
                 //---image upload end
 
                 $sqleditlokasi = "UPDATE t_lokasi
-                            SET id_wilayah= :id_wilayah, nama_lokasi = :nama_lokasi, deskripsi_lokasi = :deskripsi_lokasi, foto_lokasi = :foto_lokasi
+                            SET id_wilayah= :id_wilayah, nama_lokasi = :nama_lokasi, deskripsi_lokasi = :deskripsi_lokasi, foto_lokasi = :foto_lokasi, luas_lokasi = :luas_lokasi
                             WHERE id_lokasi = :id_lokasi";
 
                 $stmt = $pdo->prepare($sqleditlokasi);
-                $stmt->execute(['nama_lokasi' => $nama_lokasi, 'deskripsi_lokasi' => $deskripsi_lokasi, 'foto_lokasi' => $foto_lokasi, 'id_lokasi' => $id_lokasi, 'id_wilayah' => $id_wilayah]);
+                $stmt->execute(['nama_lokasi' => $nama_lokasi, 'deskripsi_lokasi' => $deskripsi_lokasi, 'foto_lokasi' => $foto_lokasi, 'id_lokasi' => $id_lokasi, 'id_wilayah' => $id_wilayah, 'luas_lokasi' => $luas_lokasi]);
 
                 $affectedrows = $stmt->rowCount();
                 if ($affectedrows == '0') {
@@ -310,25 +312,88 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
             WHERE id_lokasi = :id_lokasi';
             
             $stmt = $pdo->prepare($sql);
-            $stmt->execute(['id_lokasi' => $_GET['id_lokasi']]);
+            $stmt->execute(['id_lokasi' => $_POST['id_lokasi']]);
             header('Location: kelola_wilayah.php?status=deletesuccess');  
     }
 
     
     function addTitik(){
-        
+        $isAdmin = $_SESSION['level_user'] == 2;
+
+        if (!$isLoggedIn) {
+            header('Location: login.php');
+        }
+        else if (!$isAdmin) {
+            header('Location: dashboard.php');
+        }
+        else{
+        if (isset($_POST['submit'])) {
+            $id_lokasi        = $_POST['listlokasi'];
+            $id_wilayah        = $_POST['listwilayah'];
+            $luas_titik        = $_POST['tbluas_titik']; 
+            $longitude        = $_POST['tblongitude'];
+            $latitude        = $_POST['tblatitude'];           
+
+            $sqltitik = "INSERT INTO t_titik
+                            (id_wilayah, id_lokasi, luas_titik, longitude, latitude)
+                            VALUES (:id_wilayah, :id_lokasi, :luas_titik, :longitude, :latitude)";
+
+            $stmt = $pdo->prepare($sqltitik);
+            $stmt->execute(['id_wilayah' => $id_wilayah, 'id_lokasi' => $id_lokasi, 'luas_titik' => $luas_titik, 'longitude' => $longitude, 'latitude' => $latitude]);
+
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+            //echo "HAHAHAAHA INSERT FAILED !";
+            } else {
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                header("Location: kelola_titik.php?status=addsuccess");
+            }
+        } 
     }
 
     function viewTitik(){
-        
+        $sqlviewtitik = 'SELECT * FROM t_titik
+                        ORDER BY nama_titik';
+        $stmt = $pdo->prepare($sqlviewtitik);
+        $stmt->execute();
+        $row = $stmt->fetchAll();
     }
 
     function editTitik(){
-        
+        if (isset($_POST['submit'])) {
+            if ($_POST['submit'] == 'Simpan') {
+                $id_titik        = $_POST['id_titik'];
+                $id_lokasi       = $_POST['listlokasi'];
+                $id_wilayah      = $_POST['listwilayah'];
+                $luas_titik      = $_POST['tbluas_titik']; 
+                $longitude       = $_POST['tblongitude'];
+                $latitude        = $_POST['tblatitude']; 
+
+                $sqledittitik = "UPDATE t_titik
+                            SET id_wilayah= :id_wilayah, id_lokasi = :id_lokasi, luas_titik = :luas_titik, 
+                            longitude = :longitude, latitude = :latitude
+                            WHERE id_titik = :id_titik";
+
+                $stmt = $pdo->prepare($sqledittitik);
+                $stmt->execute(['id_wilayah' => $id_wilayah, 'id_lokasi' => $id_lokasi, 
+                                'luas_titik' => $luas_titik, 'longitude' => $longitude, 'latitude' => $latitude, 
+                                'id_titik' => $id_titik]);
+
+                $affectedrows = $stmt->rowCount();
+                if ($affectedrows == '0') {
+                //echo "Update sukses";
+                } else {
+                header("Location: edit_titik.php?id_titik=$id_titik&status=updatesuccess");
+                }
     }
 
     function deleteTitik(){
-        
+        $sql = 'DELETE FROM t_titik
+            WHERE id_titik = :id_titik';
+            
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_titik' => $_POST['id_titik']]);
+            header('Location: kelola_titik.php?status=deletesuccess');
     }
     
     function addBatch(){
