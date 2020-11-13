@@ -536,53 +536,97 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
         }
         else{
         if (isset($_POST['submit'])) {
-            $nama_jenis        = $_POST['tbnama_jenis']; 
-            $deskripsi_jenis        = $_POST['tbdeskripsi_jenis'];
+            $id_jenis        = $_POST['listid_jenis'];
+            $nama_terumbu_karang        = $_POST['tbnama_terumbu_karang']; 
+            $deskripsi_terumbu_karang        = $_POST['tbdeskripsi_terumbu_karang'];
             $randomstring = substr(md5(rand()), 0, 7);
             
             //Image upload
             if (isset($_FILES['image_uploads'])) {
-            $target_dir  = "images/foto_jenis/";
-            $foto_jenis = $target_dir .'FJ_'.$randomstring. '.jpg';
-            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_jenis);
+            $target_dir  = "images/foto_terumbu_karang/";
+            $foto_terumbu_karang = $target_dir .'FTK_'.$randomstring. '.jpg';
+            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_terumbu_karang);
             }
             else if($_FILES["file"]["error"] == 4) {
-                $foto_jenis = "images/fjdefault.png";
+                $foto_terumbu_karang = "images/ftdefault.png";
             }
             //---image upload end   
 
-            $sqljenis = "INSERT INTO t_jenis
-                            (nama_jenis, deskripsi_jenis, foto_jenis)
-                            VALUES (:nama_jenis, :deskripsi_jenis, :foto_jenis)";
+            $sqlterumbu_karang = "INSERT INTO t_terumbu_karang
+                            (id_jenis, nama_terumbu_karang, deskripsi_terumbu_karang, foto_terumbu_karang)
+                            VALUES (:id_jenis, :nama_terumbu_karang, :deskripsi_terumbu_karang, :foto_terumbu_karang)";
 
-            $stmt = $pdo->prepare($sqljenis);
-            $stmt->execute(['nama_jenis' => $nama_jenis, 'deskripsi_jenis' => $deskripsi_jenis, 'foto_jenis' => $foto_jenis]);
+            $stmt = $pdo->prepare($sqlterumbu_karang);
+            $stmt->execute(['id_jenis' => $id_jenis,'nama_terumbu_karang' => $nama_terumbu_karang, 
+            'deskripsi_terumbu_karang' => $deskripsi_terumbu_karang, 'foto_terumbu_karang' => $foto_terumbu_karang]);
 
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
             //echo "HAHAHAAHA INSERT FAILED !";
             } else {
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: kelola_jenis.php?status=addsuccess");
+                header("Location: kelola_terumbu_karang.php?status=addsuccess");
                 }
             }
         }
     }
 
     function viewTerumbu(){
-        $sqlviewjenis = 'SELECT * FROM t_jenis
-                        ORDER BY nama_jenis';
-        $stmt = $pdo->prepare($sqlviewjenis);
+        $sqlviewterumbu_karang = 'SELECT * FROM t_terumbu_karang
+                        ORDER BY nama_terumbu_karang';
+        $stmt = $pdo->prepare($sqlviewterumbu_karang);
         $stmt->execute();
         $row = $stmt->fetchAll();
     }
 
     function editTerumbu(){
-        
+        if (isset($_POST['submit'])) {
+            if ($_POST['submit'] == 'Simpan') {
+                $id_terumbu_karang        = $_POST['id_terumbu_karang'];
+                $id_jenis        = $_POST['listid_jenis'];
+                $nama_terumbu_karang        = $_POST['tbnama_terumbu_karang']; 
+                $deskripsi_terumbu_karang        = $_POST['tbdeskripsi_terumbu_karang'];
+                $randomstring = substr(md5(rand()), 0, 7);
+                
+                //Image upload
+                if (isset($_FILES['image_uploads'])) {
+                $target_dir  = "images/foto_terumbu_karang/";
+                $foto_terumbu_karang = $target_dir .'FTK_'.$randomstring. '.jpg';
+                move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_terumbu_karang);
+                }
+                else if($_FILES["file"]["error"] == 4) {
+                    $foto_terumbu_karang = "images/ftdefault.png";
+                }
+                //---image upload end  
+
+                $sqleditterumbu_karang = "UPDATE t_terumbu_karang
+                            SET id_jenis = :id_jenis, nama_terumbu_karang = :nama_terumbu_karang, 
+                            deskripsi_terumbu_karang = :deskripsi_terumbu_karang, 
+                            foto_terumbu_karang = :foto_terumbu_karang
+                            WHERE id_terumbu_karang = :id_terumbu_karang";
+
+                $stmt = $pdo->prepare($sqleditterumbu_karang);
+                $stmt->execute(['id_jenis' => $id_jenis,'nama_terumbu_karang' => $nama_terumbu_karang, 
+                'deskripsi_terumbu_karang' => $deskripsi_terumbu_karang, 
+                                'foto_terumbu_karang' => $foto_terumbu_karang, 'id_terumbu_karang' => $id_terumbu_karang]);
+
+                $affectedrows = $stmt->rowCount();
+                if ($affectedrows == '0') {
+                //echo "Update sukses";
+                } else {
+                header("Location: edit_terumbu_karang.php?id_terumbu_karang=$id_terumbu_karang&status=updatesuccess");
+                }
+            }       
+        }
     }
     
     function deleteTerumbu(){
-        
+        $sql = 'DELETE FROM t_terumbu_karang
+            WHERE id_terumbu_karang = :id_terumbu_karang';
+            
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_terumbu_karang' => $_POST['id_terumbu_karang']]);
+            header('Location: kelola_terumbu_karang.php?status=deletesuccess');
     }
     function addPerizinan(){
         
