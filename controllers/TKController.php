@@ -203,36 +203,115 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
                 }
     }
 
-    function deleteWilayah(){
-        $action = $_GET['action'];
-
-        if(empty($action)){
-            header('Location: kelola_wilayah.php');
-        }
-        else{
+    function deleteWilayah(){        
             $sql = 'DELETE FROM t_wilayah
             WHERE id_wilayah = :id_wilayah';
             
             $stmt = $pdo->prepare($sql);
             $stmt->execute(['id_wilayah' => $_GET['id_wilayah']]);
-            header('Location: kelola_wilayah.php?status=deletesuccess');
-        }
+            header('Location: kelola_wilayah.php?status=deletesuccess');       
     }
 
+
     function addLokasi(){
-        
+        $isAdmin = $_SESSION['level_user'] == 2;
+
+        if (!$isLoggedIn) {
+            header('Location: login.php');
+        }
+        else if (!$isAdmin) {
+            header('Location: dashboard.php');
+        }
+        else{
+        if (isset($_POST['submit'])) {
+            $nama_lokasi        = $_POST['tbnama_lokasi'];
+            $id_wilayah        = $_POST['listwilayah'];
+            $deskripsi_lokasi     = $_POST['txtdeskripsi_lokasi'];
+            $randomstring = substr(md5(rand()), 0, 7);
+
+            //Image upload
+            if (isset($_FILES['image_uploads'])) {
+            //Image upload
+            $target_dir  = "images/foto_lokasi/";
+            $foto_lokasih = $target_dir .'LOK_'.$randomstring. '.jpg';
+            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_lokasi);  
+
+            }
+            else if($_FILES["file"]["error"] == 4) {
+                $foto_lokasi = "images/fldefault.png";
+            }
+            //---image upload end   
+
+            $sqllokasi = "INSERT INTO t_lokasi
+                            (id_wilayah, nama_lokasi, deskripsi_lokasi, foto_lokasi)
+                            VALUES (:id_wilayah, :nama_lokasi, :deskripsi_lokasi, :foto_lokasi)";
+
+            $stmt = $pdo->prepare($sqllokasi);
+            $stmt->execute(['id_wilayah' => $id_wilayah, 'nama_lokasi' => $nama_lokasi, 'deskripsi_lokasi' => $deskripsi_lokasi, 'foto_lokasi' => $foto_lokasi]);
+
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+            //echo "HAHAHAAHA INSERT FAILED !";
+            } else {
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                header("Location: kelola_lokasi.php?status=addsuccess");
+            }
+        } 
     }
 
     function viewLokasi(){
-        
+        $sqlviewlokasi = 'SELECT * FROM t_lokasi
+                        ORDER BY nama_lokasi';
+        $stmt = $pdo->prepare($sqlviewlokasi);
+        $stmt->execute();
+        $row = $stmt->fetchAll();
     }
 
     function editLokasi(){
-        
+        if (isset($_POST['submit'])) {
+            if ($_POST['submit'] == 'Simpan') {
+                $id_lokasi          = $_POST['id_lokasi'];
+                $id_wilayah        = $_POST['listwilayah'];
+                $nama_lokasi          = $_POST['tbnama_lokasi'];
+                $deskripsi_lokasi     = $_POST['txtdeskripsi_lokasi'];
+                $randomstring = substr(md5(rand()), 0, 7);
+
+                //Image upload
+                if (isset($_FILES['image_uploads'])) {
+                //Image upload
+                $target_dir  = "images/foto_lokasi/";
+                $foto_lokasi = $target_dir .'LOK_'.$randomstring. '.jpg';
+                move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_lokasi);  
+
+                }
+                else if($_FILES["file"]["error"] == 4) {
+                    $foto_lokasi = "images/fldefault.png";
+                }
+
+                //---image upload end
+
+                $sqleditlokasi = "UPDATE t_lokasi
+                            SET id_wilayah= :id_wilayah, nama_lokasi = :nama_lokasi, deskripsi_lokasi = :deskripsi_lokasi, foto_lokasi = :foto_lokasi
+                            WHERE id_lokasi = :id_lokasi";
+
+                $stmt = $pdo->prepare($sqleditlokasi);
+                $stmt->execute(['nama_lokasi' => $nama_lokasi, 'deskripsi_lokasi' => $deskripsi_lokasi, 'foto_lokasi' => $foto_lokasi, 'id_lokasi' => $id_lokasi, 'id_wilayah' => $id_wilayah]);
+
+                $affectedrows = $stmt->rowCount();
+                if ($affectedrows == '0') {
+                //echo "Update sukses";
+                } else {
+                header("Location: edit_lokasi.php?id_lokasi=$id_lokasi&status=updatesuccess");
+                }
     }
 
     function deleteLokasi(){
-        
+        $sql = 'DELETE FROM t_lokasi
+            WHERE id_lokasi = :id_lokasi';
+            
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_lokasi' => $_GET['id_lokasi']]);
+            header('Location: kelola_wilayah.php?status=deletesuccess');  
     }
 
     
