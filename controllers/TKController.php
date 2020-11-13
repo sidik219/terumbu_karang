@@ -232,9 +232,8 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
 
             //Image upload
             if (isset($_FILES['image_uploads'])) {
-            //Image upload
             $target_dir  = "images/foto_lokasi/";
-            $foto_lokasih = $target_dir .'LOK_'.$randomstring. '.jpg';
+            $foto_lokasi = $target_dir .'LOK_'.$randomstring. '.jpg';
             move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_lokasi);  
 
             }
@@ -414,19 +413,99 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
 
     
     function addJenis(){
-        
+        $isAdmin = $_SESSION['level_user'] == 2;
+
+        if (!$isLoggedIn) {
+            header('Location: login.php');
+        }
+        else if (!$isAdmin) {
+            header('Location: dashboard.php');
+        }
+        else{
+        if (isset($_POST['submit'])) {
+            $nama_jenis        = $_POST['tbnama_jenis']; 
+            $deskripsi_jenis        = $_POST['tbdeskripsi_jenis'];
+            $randomstring = substr(md5(rand()), 0, 7);
+            
+            //Image upload
+            if (isset($_FILES['image_uploads'])) {
+            $target_dir  = "images/foto_jenis/";
+            $foto_jenis = $target_dir .'FJ_'.$randomstring. '.jpg';
+            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_jenis);
+            }
+            else if($_FILES["file"]["error"] == 4) {
+                $foto_jenis = "images/fjdefault.png";
+            }
+            //---image upload end   
+
+            $sqljenis = "INSERT INTO t_jenis
+                            (nama_jenis, deskripsi_jenis, foto_jenis)
+                            VALUES (:nama_jenis, :deskripsi_jenis, :foto_jenis)";
+
+            $stmt = $pdo->prepare($sqljenis);
+            $stmt->execute(['nama_jenis' => $nama_jenis, 'deskripsi_jenis' => $deskripsi_jenis, 'foto_jenis' => $foto_jenis]);
+
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+            //echo "HAHAHAAHA INSERT FAILED !";
+            } else {
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                header("Location: kelola_jenis.php?status=addsuccess");
+            }
+        } 
     }
 
     function viewJenis(){
-        
+        $sqlviewjenis = 'SELECT * FROM t_jenis
+                        ORDER BY nama_jenis';
+        $stmt = $pdo->prepare($sqlviewjenis);
+        $stmt->execute();
+        $row = $stmt->fetchAll();
     }
 
     function editJenis(){
-        
+        if (isset($_POST['submit'])) {
+            if ($_POST['submit'] == 'Simpan') {
+                $id_jenis        = $_POST['id_jenis'];
+                $nama_jenis        = $_POST['tbnama_jenis']; 
+                $deskripsi_jenis        = $_POST['tbdeskripsi_jenis'];
+                $randomstring = substr(md5(rand()), 0, 7);
+                
+                //Image upload
+                if (isset($_FILES['image_uploads'])) {
+                $target_dir  = "images/foto_jenis/";
+                $foto_jenis = $target_dir .'FJ_'.$randomstring. '.jpg';
+                move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_jenis);
+                }
+                else if($_FILES["file"]["error"] == 4) {
+                    $foto_jenis = "images/fjdefault.png";
+                }
+                //---image upload end  
+
+                $sqleditjenis = "UPDATE t_jenis
+                            SET nama_jenis = :nama_jenis, deskripsi_jenis = :deskripsi_jenis, 
+                            foto_jenis = :foto_jenis
+                            WHERE id_jenis = :id_jenis";
+
+                $stmt = $pdo->prepare($sqleditjenis);
+                $stmt->execute(['nama_jenis' => $nama_jenis, 'deskripsi_jenis' => $deskripsi_jenis, 
+                                'foto_jenis' => $foto_jenis, 'id_jenis' => $id_jenis]);
+
+                $affectedrows = $stmt->rowCount();
+                if ($affectedrows == '0') {
+                //echo "Update sukses";
+                } else {
+                header("Location: edit_jenis.php?id_jenis=$id_jenis&status=updatesuccess");
+                }
     }
 
     function deleteJenis(){
-        
+        $sql = 'DELETE FROM t_jenis
+            WHERE id_jenis = :id_jenis';
+            
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_jenis' => $_POST['id_jenis']]);
+            header('Location: kelola_jenis.php?status=deletesuccess');
     }
     
     function addTerumbu(){
