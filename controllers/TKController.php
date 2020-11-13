@@ -5,7 +5,7 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
 
     function registrasi(){
                 if ($isLoggedIn) {
-            header("Location: home.php");
+            header("Location: dashboard.php");
             } 
             else {
                 if (isset($_POST['submit'])) {
@@ -62,7 +62,40 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
     }
 
     function login(){
-        
+        if ($isLoggedIn) {
+            header("Location: dashboard.php");
+            } else {
+            $msg = '';
+            if (isset($_GET['status'])) {
+                if ($_GET['status'] == 'regsuccess') {
+                $msg = "<div class='alert alert-success' role='alert'>
+                        <strong>Registrasi berhasil.</strong> Silahkan Log in.
+                        </div>";
+                }
+            }
+
+            if (isset($_POST['submit'])) {
+            $username = $_POST['tbusername'];
+            $pwd      = $_POST['tbpassword'];
+
+            $sql  = 'SELECT username, passwordd, id_user, level_user FROM t_user WHERE username = :username';
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['username' => $username]);
+            $row = $stmt->fetch();
+
+            if (!empty($row)) { // checks if the user actually exists(true/false returned)
+            if (password_verify($pwd, $row->pwd)) {
+                $_SESSION['id_user']        = $row->id_user;
+                $_SESSION['level_user']     = $row->level_user;
+
+                header('Location: dashboard.php');
+
+                // password_verify success!
+            } else {
+                $msg = "<div class='alert alert-warning' role='alert'>
+                    <strong>Username atau Password salah.</strong>
+                    </div>";
+            }
     }
 
     function viewMap(){
