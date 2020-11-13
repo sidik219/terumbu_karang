@@ -1,3 +1,4 @@
+<script>
 //Fungsi variabel mymap, untuk view keseluaran map di jabar
 //var mymap = L.map('mapid').setView([-6.8474505,108.1206506], 8);
 
@@ -124,62 +125,50 @@ var baseLayers = [
 var overLayers = [
     {
         name: "Bekasi",
-        icon: iconByName('bar'),
-        layer: new L.GeoJSON.AJAX(["dist/js/geojson/wilayah-bekasi.geojson"],{onEachFeature:popUp,style: bekasi,pointToLayer: featureToMarker}).addTo(mymap)
+        layer: new L.GeoJSON.AJAX(["../../dist/js/geojson/wilayah-bekasi.geojson"],{onEachFeature:popUp,style: bekasi,pointToLayer: featureToMarker}).addTo(mymap)
     },
     {
         name: "Karawang",
-        icon: iconByName('drinking_water'),
-        layer: new L.GeoJSON.AJAX(["dist/js/geojson/wilayah-karawang.geojson"],{onEachFeature:popUp,style: karawang,pointToLayer: featureToMarker}).addTo(mymap)
+        layer: new L.GeoJSON.AJAX(["../../dist/js/geojson/wilayah-karawang.geojson"],{onEachFeature:popUp,style: karawang,pointToLayer: featureToMarker}).addTo(mymap)
     },
     {
         name: "Subang",
-        icon: iconByName('fuel'),
-        layer: new L.GeoJSON.AJAX(["dist/js/geojson/wilayah-subang.geojson"],{onEachFeature:popUp,style: subang,pointToLayer: featureToMarker}).addTo(mymap)
+        layer: new L.GeoJSON.AJAX(["../../dist/js/geojson/wilayah-subang.geojson"],{onEachFeature:popUp,style: subang,pointToLayer: featureToMarker}).addTo(mymap)
     },
     {
         name: "Indramayu",
-        icon: iconByName('parking'),
-        layer: new L.GeoJSON.AJAX(["dist/js/geojson/wilayah-indramayu.geojson"],{onEachFeature:popUp,style: indramayu,pointToLayer: featureToMarker}).addTo(mymap)
+        layer: new L.GeoJSON.AJAX(["../../dist/js/geojson/wilayah-indramayu.geojson"],{onEachFeature:popUp,style: indramayu,pointToLayer: featureToMarker}).addTo(mymap)
     },
     {
         name: "Cirebon",
-        icon: iconByName('parking'),
-        layer: new L.GeoJSON.AJAX(["dist/js/geojson/wilayah-cirebon.geojson"],{onEachFeature:popUp,style: cirebon,pointToLayer: featureToMarker}).addTo(mymap)
+        layer: new L.GeoJSON.AJAX(["../../dist/js/geojson/wilayah-cirebon.geojson"],{onEachFeature:popUp,style: cirebon,pointToLayer: featureToMarker}).addTo(mymap)
     },
     {
         name: "Kota Cirebon",
-        icon: iconByName('parking'),
-        layer: new L.GeoJSON.AJAX(["dist/js/geojson/wilayah-kota-cirebon.geojson"],{onEachFeature:popUp,style: kota_cirebon,pointToLayer: featureToMarker}).addTo(mymap)
+        layer: new L.GeoJSON.AJAX(["../../dist/js/geojson/wilayah-kota-cirebon.geojson"],{onEachFeature:popUp,style: kota_cirebon,pointToLayer: featureToMarker}).addTo(mymap)
     },
     {
         name: "Pangandaran",
-        icon: iconByName('parking'),
-        layer: new L.GeoJSON.AJAX(["dist/js/geojson/wilayah-pangandaran.geojson"],{onEachFeature:popUp,style: pangandaran,pointToLayer: featureToMarker}).addTo(mymap)
+        layer: new L.GeoJSON.AJAX(["../../dist/js/geojson/wilayah-pangandaran.geojson"],{onEachFeature:popUp,style: pangandaran,pointToLayer: featureToMarker}).addTo(mymap)
     },
     {
         name: "Tasikmalaya",
-        icon: iconByName('parking'),
-        layer: new L.GeoJSON.AJAX(["dist/js/geojson/wilayah-tasikmalaya.geojson"],{onEachFeature:popUp,style: tasikmalaya,pointToLayer: featureToMarker}).addTo(mymap)
+        layer: new L.GeoJSON.AJAX(["../../dist/js/geojson/wilayah-tasikmalaya.geojson"],{onEachFeature:popUp,style: tasikmalaya,pointToLayer: featureToMarker}).addTo(mymap)
     },
     {
         name: "Garut",
-        icon: iconByName('parking'),
-        layer: new L.GeoJSON.AJAX(["dist/js/geojson/wilayah-garut.geojson"],{onEachFeature:popUp,style: garut,pointToLayer: featureToMarker}).addTo(mymap)
+        layer: new L.GeoJSON.AJAX(["../../dist/js/geojson/wilayah-garut.geojson"],{onEachFeature:popUp,style: garut,pointToLayer: featureToMarker}).addTo(mymap)
     },
     {
         name: "Cianjur",
-        icon: iconByName('parking'),
-        layer: new L.GeoJSON.AJAX(["dist/js/geojson/wilayah-cianjur.geojson"],{onEachFeature:popUp,style: cianjur,pointToLayer: featureToMarker}).addTo(mymap)
+        layer: new L.GeoJSON.AJAX(["../../dist/js/geojson/wilayah-cianjur.geojson"],{onEachFeature:popUp,style: cianjur,pointToLayer: featureToMarker}).addTo(mymap)
     },
     {
         name: "Sukabumi",
-        icon: iconByName('parking'),
-        layer: new L.GeoJSON.AJAX(["dist/js/geojson/wilayah-sukabumi.geojson"],{onEachFeature:popUp,style: sukabumi,pointToLayer: featureToMarker}).addTo(mymap)
+        layer: new L.GeoJSON.AJAX(["../../dist/js/geojson/wilayah-sukabumi.geojson"],{onEachFeature:popUp,style: sukabumi,pointToLayer: featureToMarker}).addTo(mymap)
     },
     {
         name: "Kota Sukabumi",
-        icon: iconByName('parking'),
         layer: new L.GeoJSON.AJAX(["dist/js/geojson/wilayah-kota-sukabumi.geojson"],{onEachFeature:popUp,style: kota_sukabumi,pointToLayer: featureToMarker}).addTo(mymap)
     }
 ];
@@ -254,3 +243,4 @@ L.marker([-7.3425596,107.4979527], {icon: icon}).addTo(mymap); //Garut
 L.marker([-7.0516816,106.5699387], {icon: icon}).addTo(mymap); //Cianjur
 L.marker([-7.0750637,106.4375612], {icon: icon}).addTo(mymap); //Sukabumi
 L.marker([-6.9356245,106.8807472], {icon: icon}).addTo(mymap); //Kota Sukabumi */
+</script>
