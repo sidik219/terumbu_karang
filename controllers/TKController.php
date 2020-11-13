@@ -93,8 +93,11 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
                     $msg = "<div class='alert alert-warning' role='alert'>
                         <strong>Username atau Password salah.</strong>
                         </div>";
+                    }
                 }
             }
+        }
+    }
 
     function viewMap(){
         
@@ -153,8 +156,9 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
             } else {
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
                 header("Location: kelola_wilayah.php?status=addsuccess");
-            }
-        }        
+                }
+            }        
+        }
     }
 
     function viewWilayah(){
@@ -201,6 +205,8 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
                 } else {
                 header("Location: edit_wilayah.php?id_wilayah=$id_wilayah&status=updatesuccess");
                 }
+            }
+        }
     }
 
     function deleteWilayah(){        
@@ -255,8 +261,9 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
             } else {
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
                 header("Location: kelola_lokasi.php?status=addsuccess");
-            }
-        } 
+                }
+            } 
+        }
     }
 
     function viewLokasi(){
@@ -304,6 +311,8 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
                 } else {
                 header("Location: edit_lokasi.php?id_lokasi=$id_lokasi&status=updatesuccess");
                 }
+            }
+        }        
     }
 
     function deleteLokasi(){
@@ -346,8 +355,9 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
             } else {
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
                 header("Location: kelola_titik.php?status=addsuccess");
-            }
-        } 
+                }
+            } 
+        }
     }
 
     function viewTitik(){
@@ -384,6 +394,8 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
                 } else {
                 header("Location: edit_titik.php?id_titik=$id_titik&status=updatesuccess");
                 }
+            }
+        }
     }
 
     function deleteTitik(){
@@ -451,8 +463,9 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
             } else {
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
                 header("Location: kelola_jenis.php?status=addsuccess");
-            }
-        } 
+                }
+            } 
+        }
     }
 
     function viewJenis(){
@@ -497,7 +510,9 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
                 } else {
                 header("Location: edit_jenis.php?id_jenis=$id_jenis&status=updatesuccess");
                 }
-    }
+            }       
+        }
+    }        
 
     function deleteJenis(){
         $sql = 'DELETE FROM t_jenis
@@ -507,13 +522,59 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
             $stmt->execute(['id_jenis' => $_POST['id_jenis']]);
             header('Location: kelola_jenis.php?status=deletesuccess');
     }
+
+
     
     function addTerumbu(){
-        
+        $isAdmin = $_SESSION['level_user'] == 2;
+
+        if (!$isLoggedIn) {
+            header('Location: login.php');
+        }
+        else if (!$isAdmin) {
+            header('Location: dashboard.php');
+        }
+        else{
+        if (isset($_POST['submit'])) {
+            $nama_jenis        = $_POST['tbnama_jenis']; 
+            $deskripsi_jenis        = $_POST['tbdeskripsi_jenis'];
+            $randomstring = substr(md5(rand()), 0, 7);
+            
+            //Image upload
+            if (isset($_FILES['image_uploads'])) {
+            $target_dir  = "images/foto_jenis/";
+            $foto_jenis = $target_dir .'FJ_'.$randomstring. '.jpg';
+            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_jenis);
+            }
+            else if($_FILES["file"]["error"] == 4) {
+                $foto_jenis = "images/fjdefault.png";
+            }
+            //---image upload end   
+
+            $sqljenis = "INSERT INTO t_jenis
+                            (nama_jenis, deskripsi_jenis, foto_jenis)
+                            VALUES (:nama_jenis, :deskripsi_jenis, :foto_jenis)";
+
+            $stmt = $pdo->prepare($sqljenis);
+            $stmt->execute(['nama_jenis' => $nama_jenis, 'deskripsi_jenis' => $deskripsi_jenis, 'foto_jenis' => $foto_jenis]);
+
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+            //echo "HAHAHAAHA INSERT FAILED !";
+            } else {
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                header("Location: kelola_jenis.php?status=addsuccess");
+                }
+            }
+        }
     }
 
     function viewTerumbu(){
-        
+        $sqlviewjenis = 'SELECT * FROM t_jenis
+                        ORDER BY nama_jenis';
+        $stmt = $pdo->prepare($sqlviewjenis);
+        $stmt->execute();
+        $row = $stmt->fetchAll();
     }
 
     function editTerumbu(){
