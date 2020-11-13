@@ -84,7 +84,7 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
             $row = $stmt->fetch();
 
             if (!empty($row)) {
-                if (password_verify($pwd, $row->pwd)) {
+                if (password_verify($password, $row->password)) {
                     $_SESSION['id_user']        = $row->id_user;
                     $_SESSION['level_user']     = $row->level_user;
 
@@ -113,7 +113,6 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
     }
 
     function addWilayah(){
-
         $isAdmin = $_SESSION['level_user'] == 2;
 
         if (!$isLoggedIn) {
@@ -124,50 +123,100 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
         }
         else{
         if (isset($_POST['submit'])) {
-        $nama_wilayah        = $_POST['tbnama_wilayah'];
-        $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
-        $randomstring = substr(md5(rand()), 0, 7);
+            $nama_wilayah        = $_POST['tbnama_wilayah'];
+            $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
+            $randomstring = substr(md5(rand()), 0, 7);
 
-        //Image upload
-        $target_dir  = "images/foto_wilayah/";
-        $foto_wilayah = $target_dir .'WIL_'.$randomstring. '.jpg';
-        move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wilayah);    
+            //Image upload
+            if (isset($_FILES['image_uploads'])) {
+            //Image upload
+            $target_dir  = "images/foto_wilayah/";
+            $foto_wilayah = $target_dir .'WIL_'.$randomstring. '.jpg';
+            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wilayah);  
 
-        $sqlwilayah = "INSERT INTO t_wilayah
-                        (nama_wilayah, deskripsi_wilayah, foto_wilayah)
-                        VALUES (:nama_wilayah, :deskripsi_wilayah, :foto_wilayah)";
+            }
+            else if($_FILES["file"]["error"] == 4) {
+                $foto_wilayah = "images/fwdefault.png";
+            }
+            //---image upload end   
 
-        $stmt = $pdo->prepare($sqlwilayah);
-        $stmt->execute(['nama_wilayah' => $nama_wilayah, 'deskripsi_wilayah' => $deskripsi_wilayah, 'foto_wilayah' => $foto_wilayah]);
+            $sqlwilayah = "INSERT INTO t_wilayah
+                            (nama_wilayah, deskripsi_wilayah, foto_wilayah)
+                            VALUES (:nama_wilayah, :deskripsi_wilayah, :foto_wilayah)";
 
-        $affectedrows = $stmt->rowCount();
-        if ($affectedrows == '0') {
-        //echo "HAHAHAAHA INSERT FAILED !";
-        } else {
-            //echo "HAHAHAAHA GREAT SUCCESSS !";
-            header("Location: kelola_wilayah.php?status=addsuccess");
-        }
-        }
+            $stmt = $pdo->prepare($sqlwilayah);
+            $stmt->execute(['nama_wilayah' => $nama_wilayah, 'deskripsi_wilayah' => $deskripsi_wilayah, 'foto_wilayah' => $foto_wilayah]);
 
-
-
-
-        //---image upload end
-
-        
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+            //echo "HAHAHAAHA INSERT FAILED !";
+            } else {
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                header("Location: kelola_wilayah.php?status=addsuccess");
+            }
+        }        
     }
 
     function viewWilayah(){
-        
+        $sqlviewwilayah = 'SELECT * FROM t_wilayah
+                        ORDER BY nama_wilayah';
+        $stmt = $pdo->prepare($sqlviewwilayah);
+        $stmt->execute();
+        $row = $stmt->fetchAll();
     }
     
 
     function editWilayah(){
-        
+        if (isset($_POST['submit'])) {
+            if ($_POST['submit'] == 'Simpan') {
+                $id_wilayah          = $_POST['id_wilayah'];
+                $nama_wilayah          = $_POST['tbnama_wilayah'];
+                $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
+                $randomstring = substr(md5(rand()), 0, 7);
+
+                //Image upload
+                if (isset($_FILES['image_uploads'])) {
+                //Image upload
+                $target_dir  = "images/foto_wilayah/";
+                $foto_wilayah = $target_dir .'WIL_'.$randomstring. '.jpg';
+                move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wilayah);  
+
+                }
+                else if($_FILES["file"]["error"] == 4) {
+                    $foto_wilayah = "images/fwdefault.png";
+                }
+
+                //---image upload end
+
+                $sqleditwilayah = "UPDATE t_wilayah
+                            SET nama_wilayah = :nama_wilayah, deskripsi_wilayah = :deskripsi_wilayah, foto_wilayah = :foto_wilayah
+                            WHERE id_wilayah = :id_wilayah";
+
+                $stmt = $pdo->prepare($sqleditwilayah);
+                $stmt->execute(['nama_wilayah' => $nama_wilayah, 'deskripsi_wilayah' => $deskripsi_wilayah, 'foto_wilayah' => $foto_wilayah, 'id_wilayah' => $id_wilayah]);
+
+                $affectedrows = $stmt->rowCount();
+                if ($affectedrows == '0') {
+                //echo "Update sukses";
+                } else {
+                header("Location: edit_wilayah.php?id_wilayah=$id_wilayah&status=updatesuccess");
+                }
     }
 
     function deleteWilayah(){
-        
+        $action = $_GET['action'];
+
+        if(empty($action)){
+            header('Location: kelola_wilayah.php');
+        }
+        else{
+            $sql = 'DELETE FROM t_wilayah
+            WHERE id_wilayah = :id_wilayah';
+            
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_wilayah' => $_GET['id_wilayah']]);
+            header('Location: kelola_wilayah.php?status=deletesuccess');
+        }
     }
 
     function addLokasi(){
