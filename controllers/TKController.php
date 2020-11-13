@@ -76,27 +76,25 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
 
             if (isset($_POST['submit'])) {
             $username = $_POST['tbusername'];
-            $pwd      = $_POST['tbpassword'];
+            $password      = $_POST['tbpassword'];
 
             $sql  = 'SELECT username, passwordd, id_user, level_user FROM t_user WHERE username = :username';
             $stmt = $pdo->prepare($sql);
             $stmt->execute(['username' => $username]);
             $row = $stmt->fetch();
 
-            if (!empty($row)) { // checks if the user actually exists(true/false returned)
-            if (password_verify($pwd, $row->pwd)) {
-                $_SESSION['id_user']        = $row->id_user;
-                $_SESSION['level_user']     = $row->level_user;
+            if (!empty($row)) {
+                if (password_verify($pwd, $row->pwd)) {
+                    $_SESSION['id_user']        = $row->id_user;
+                    $_SESSION['level_user']     = $row->level_user;
 
-                header('Location: dashboard.php');
-
-                // password_verify success!
-            } else {
-                $msg = "<div class='alert alert-warning' role='alert'>
-                    <strong>Username atau Password salah.</strong>
-                    </div>";
+                    header('Location: dashboard.php');                   
+                } else {
+                    $msg = "<div class='alert alert-warning' role='alert'>
+                        <strong>Username atau Password salah.</strong>
+                        </div>";
+                }
             }
-    }
 
     function viewMap(){
         
@@ -115,14 +113,60 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
     }
 
     function addWilayah(){
+
+        $isAdmin = $_SESSION['level_user'] == 2;
+
+        if (!$isLoggedIn) {
+            header('Location: login.php');
+        }
+        else if (!$isAdmin) {
+            header('Location: dashboard.php');
+        }
+        else{
+        if (isset($_POST['submit'])) {
+        $nama_wilayah        = $_POST['tbnama_wilayah'];
+        $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
+        $randomstring = substr(md5(rand()), 0, 7);
+
+        //Image upload
+        $target_dir  = "images/foto_wilayah/";
+        $foto_wilayah = $target_dir .'WIL_'.$randomstring. '.jpg';
+        move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wilayah);    
+
+        $sqlwilayah = "INSERT INTO t_wilayah
+                        (nama_wilayah, deskripsi_wilayah, foto_wilayah)
+                        VALUES (:nama_wilayah, :deskripsi_wilayah, :foto_wilayah)";
+
+        $stmt = $pdo->prepare($sqlwilayah);
+        $stmt->execute(['nama_wilayah' => $nama_wilayah, 'deskripsi_wilayah' => $deskripsi_wilayah, 'foto_wilayah' => $foto_wilayah]);
+
+        $affectedrows = $stmt->rowCount();
+        if ($affectedrows == '0') {
+        //echo "HAHAHAAHA INSERT FAILED !";
+        } else {
+            //echo "HAHAHAAHA GREAT SUCCESSS !";
+            header("Location: kelola_wilayah.php?status=addsuccess");
+        }
+        }
+
+
+
+
+        //---image upload end
+
         
     }
 
     function viewWilayah(){
         
     }
+    
 
     function editWilayah(){
+        
+    }
+
+    function deleteWilayah(){
         
     }
 
@@ -135,6 +179,10 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
     }
 
     function editLokasi(){
+        
+    }
+
+    function deleteLokasi(){
         
     }
 
@@ -151,6 +199,9 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
         
     }
 
+    function deleteTitik(){
+        
+    }
     
     function addBatch(){
         
@@ -161,6 +212,10 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
     }
 
     function editBatch(){
+        
+    }
+
+    function deleteBatch(){
         
     }
 
@@ -177,6 +232,9 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
         
     }
 
+    function deleteJenis(){
+        
+    }
     
     function addTerumbu(){
         
@@ -189,7 +247,10 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
     function editTerumbu(){
         
     }
-
+    
+    function deleteTerumbu(){
+        
+    }
     function addPerizinan(){
         
     }
@@ -202,6 +263,10 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
         
     }
 
+    function deletePerizinan(){
+        
+    }
+
     function addInformasi(){
         
     }
@@ -211,6 +276,10 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
     }
 
     function editInformasi(){
+        
+    }
+
+    function deleteInformasi(){
         
     }
 
@@ -227,6 +296,10 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
     }
 
     function editUser(){
+        
+    }
+
+    function deleteUser(){
         
     }
 
