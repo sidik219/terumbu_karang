@@ -483,6 +483,7 @@
                 <h3 class="card-title">Form Detail Donasi</h3>
               </div>
               <!-- /.card-header -->
+
               <!-- form start -->
               <form action="#" method="POST">
                 <div class="card-body">
@@ -511,14 +512,13 @@
                       <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Pesan">
                   </div>
                 </div>
-                <!-- /.card-body -->
-
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Kirim</button>
-                  <button type="reset" class="btn btn-success"><a href="../../index.php" style="color:white;">Kembali</a></button>
+                  <button type="submit" name="submit" class="btn btn-primary">Kirim</button>
+                  <button class="btn btn-success"><a href="../../index.php" style="color:white;">Kembali</a></button>
                 </div>
               </form>
             </div>
+
             <!-- /.card -->
           </div>
           <!--/.col (left) -->

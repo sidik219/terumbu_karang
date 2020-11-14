@@ -544,6 +544,7 @@
                 <h3 class="card-title">Form Donasi</h3>
               </div>
               <!-- /.card-header -->
+
               <!-- form start -->
               <form action="#" method="POST">
                 <div class="card-body">
@@ -579,10 +580,11 @@
                 </div>
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Kirim</button>
+                  <button type="submit" name="submit" class="btn btn-primary">Kirim</button>
                 </div>
               </form>
             </div>
+            
             <!-- /.card -->
           </div>
         </div>

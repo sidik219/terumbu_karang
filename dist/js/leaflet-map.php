@@ -19,7 +19,7 @@ var tiles = L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 });
 
 var mymap = L.map('mapid', {
-    center: L.latLng(-6.8474505,108.1206506),
+    center: L.latLng(-6.9034443,107.5731165),
     zoom: 8,
     layers: [tiles]
 });
@@ -173,9 +173,8 @@ var overLayers = [
     }
 ];
 
-var panelLayers = new L.Control.PanelLayers(baseLayers, overLayers);
-
-mymap.addControl(panelLayers);
+//var panelLayers = new L.Control.PanelLayers(baseLayers, overLayers);
+//mymap.addControl(panelLayers);
 
 //icon map
 /*
@@ -184,7 +183,6 @@ var LeafIcon = L.Icon.extend({
         iconSize:     [20, 30],
     }
 });
-
 var icon = new LeafIcon({iconUrl: 'dist/img/marker-icon-1.png'});*/
 
 //titik koordinat kabupaten untuk wilayah di jabar
@@ -242,5 +240,6 @@ L.marker([-7.3598063,108.1627121], {icon: icon}).addTo(mymap); //Tasikmalaya
 L.marker([-7.3425596,107.4979527], {icon: icon}).addTo(mymap); //Garut
 L.marker([-7.0516816,106.5699387], {icon: icon}).addTo(mymap); //Cianjur
 L.marker([-7.0750637,106.4375612], {icon: icon}).addTo(mymap); //Sukabumi
-L.marker([-6.9356245,106.8807472], {icon: icon}).addTo(mymap); //Kota Sukabumi */
+L.marker([-6.9356245,106.8807472], {icon: icon}).addTo(mymap); //Kota Sukabumi
+*/
 </script>
