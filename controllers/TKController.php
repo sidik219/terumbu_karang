@@ -628,20 +628,120 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
             $stmt->execute(['id_terumbu_karang' => $_POST['id_terumbu_karang']]);
             header('Location: kelola_terumbu_karang.php?status=deletesuccess');
     }
+
+
+
+
+
+
     function addPerizinan(){
-        
+        $isAdmin = $_SESSION['level_user'] == 2;
+
+        if (!$isLoggedIn) {
+            header('Location: login.php');
+        }
+        else if (!$isAdmin) {
+            header('Location: dashboard.php');
+        }
+        else{
+        if (isset($_POST['submit'])) {
+            $judul_perizinan        = $_POST['tbnjudul_perizinan']; 
+            $id_user        = $_POST['id_user'];
+            $id_lokasi        = $_POST['id_lokasi'];
+            $biaya_pergantian        = $_POST['tbbiaya_pergantian'];
+            $status_perizinan        = 1;
+            $deskripsi_perizinan        = $_POST['tbdeskripsi_perizinan'];
+            $randomstring = substr(md5(rand()), 0, 7);
+            
+            //Image upload
+            if (isset($_FILES['image_uploads'])) {
+            $target_dir  = "images/foto_perizinan/";
+            $file_proposal = $target_dir .'FIZIN_'.$randomstring. '.jpg';
+            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $file_proposal);
+            }
+            else if($_FILES["file"]["error"] == 4) {
+                $file_proposal = "images/fizdefault.png";
+            }
+            //---image upload end   
+
+            $sqlperizinan = "INSERT INTO t_perizinan
+                            (judul_perizinan, id_user, id_lokasi, deskripsi_perizinan, file_proposal, biaya_pergantian, status_perizinan)
+                            VALUES (:judul_perizinan, :id_user, :id_lokasi, :deskripsi_perizinan, :file_proposal, :biaya_pergantian, :status_perizinan)";
+
+            $stmt = $pdo->prepare($sqlperizinan);
+            $stmt->execute(['judul_perizinan' => $judul_perizinan,'id_user' => $id_user, ,'id_lokasi' => $id_lokasi,
+            'deskripsi_perizinan' => $deskripsi_perizinan, 'file_proposal' => $file_proposal
+            , 'biaya_pergantian' => $biaya_pergantian, 'status_perizinan' => $status_perizinan]);
+
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+            //echo "HAHAHAAHA INSERT FAILED !";
+            } else {
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                header("Location: kelola_perizinan.php?status=addsuccess");
+                }
+            }
+        }
     }
 
     function viewPerizinan(){
-        
+        $sqlviewperizinan = 'SELECT * FROM t_perizinan
+                        ORDER BY id_perizinan';
+        $stmt = $pdo->prepare($sqlviewperizinan);
+        $stmt->execute();
+        $row = $stmt->fetchAll();
     }
 
     function editPerizinan(){
-        
+        if (isset($_POST['submit'])) {
+            if ($_POST['submit'] == 'Simpan') {
+                $judul_perizinan        = $_POST['tbnjudul_perizinan']; 
+                $id_user        = $_POST['id_user'];
+                $id_lokasi        = $_POST['id_lokasi'];
+                $biaya_pergantian        = $_POST['tbbiaya_pergantian'];
+                $status_perizinan        = $_POST['optstatus_perizinan'];;
+                $deskripsi_perizinan        = $_POST['tbdeskripsi_perizinan'];
+                $randomstring = substr(md5(rand()), 0, 7);
+                
+                //Image upload
+                if (isset($_FILES['image_uploads'])) {
+                $target_dir  = "images/foto_perizinan/";
+                $file_proposal = $target_dir .'FIZIN_'.$randomstring. '.jpg';
+                move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $file_proposal);
+                }
+                else if($_FILES["file"]["error"] == 4) {
+                    $file_proposal = "images/fizdefault.png";
+                }
+                //---image upload end  
+
+                $sqleditperizinan = "UPDATE t_perizinan
+                            SET judul_perizinan = :judul_perizinan, id_user = :id_user, 
+                            deskripsi_perizinan = :deskripsi_perizinan, 
+                            file_proposal = :file_proposal, biaya_pergantian = :biaya_pergantian, status_perizinan = :status_perizinan
+                            WHERE id_perizinan = :id_perizinan";
+
+                $stmt = $pdo->prepare($sqleditperizinan);
+                $stmt->execute(['judul_perizinan' => $judul_perizinan,'id_user' => $id_user, 'id_lokasi' => $id_lokasi,
+                    'deskripsi_perizinan' => $deskripsi_perizinan, 'file_proposal' => $file_proposal,
+                    'biaya_pergantian' => $biaya_pergantian, 'status_perizinan' => $status_perizinan, 'id_perizinan' => $id_perizinan]);
+
+                $affectedrows = $stmt->rowCount();
+                if ($affectedrows == '0') {
+                //echo "Update sukses";
+                } else {
+                header("Location: edit_perizinan.php?id_perizinan=$id_perizinan&status=updatesuccess");
+                }
+            }       
+        }
     }
 
     function deletePerizinan(){
-        
+        $sql = 'DELETE FROM t_perizinan
+            WHERE id_perizinan = :id_perizinan';
+            
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_perizinan' => $_POST['id_perizinan']]);
+            header('Location: kelola_perizinan.php?status=deletesuccess');
     }
 
     function addInformasi(){
