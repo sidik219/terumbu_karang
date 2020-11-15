@@ -645,7 +645,7 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
         }
         else{
         if (isset($_POST['submit'])) {
-            $judul_perizinan        = $_POST['tbnjudul_perizinan']; 
+            $judul_perizinan        = $_POST['tbjudul_perizinan']; 
             $id_user        = $_POST['id_user'];
             $id_lokasi        = $_POST['id_lokasi'];
             $biaya_pergantian        = $_POST['tbbiaya_pergantian'];
