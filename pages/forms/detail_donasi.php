@@ -1,3 +1,4 @@
+<?php include '../../build/config/connection.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -459,12 +460,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Detail Donasi</h1>
+            <h1></h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Detail Donasi</li>
+              <li class="breadcrumb-item active"></li>
             </ol>
           </div>
         </div>
@@ -475,103 +476,73 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <!-- left column -->
           <div class="col-md-4">
-            <!-- general form elements -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Form Detail Donasi</h3>
-              </div>
-              <!-- /.card-header -->
-
-              <!-- form start -->
-              <form action="#" method="POST">
-                <div class="card-body">
-                  <div class="form-group">
-                      <label for="exampleInputEmail1">Status Donasi</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Pendding" readonly>
-                  </div>
-
-                  <div class="form-group">
-                      <label for="exampleInputEmail1">Nama Terumbu Karang</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Nama Terumbu Karang">
-                  </div>
-
-                  <div class="form-group">
-                      <label for="exampleInputEmail1">Luas Titik</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Luas Titik">
-                  </div>
-
-                  <div class="form-group">
-                      <label for="exampleInputEmail1">Status Batch</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Pendding" readonly>
-                  </div>
-
-                  <div class="form-group">
-                      <label for="exampleInputEmail1">Pesan</label>
-                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Pesan">
-                  </div>
-                </div>
-                <div class="card-footer">
-                  <button type="submit" name="submit" class="btn btn-primary">Kirim</button>
-                  <button class="btn btn-success"><a href="../../index.php" style="color:white;">Kembali</a></button>
-                </div>
-              </form>
-            </div>
-
-            <!-- /.card -->
-          </div>
-          <!--/.col (left) -->
-          <!-- Left col -->
-          <section class="col-lg-8 connectedSortable">
-            <!-- Map card -->
-            <div class="card bg-gradient-primary">
-              <div class="card-header border-0">
-                <h3 class="card-title">
-                  <i class="fas fa-map-marker-alt mr-1"></i>
-                  Map
-                </h3>
-                <!-- card tools -->
-                <div class="card-tools">
-                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                </div>
-                <!-- /.card-tools -->
+                <h3 class="card-title" style="font-weight:bold;">Detail Donasi</h3>
               </div>
               <div class="card-body">
-                <div id="mapid" style="height: 560px; width: 100%;">
+                <table align="center">
+                    <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th colspan="2">Nominal</th>
+                          <th>Tanggal</th>
+                        </tr>
+                    </thead>
+                    <?php
+                    $edit = $_GET['edit'];
+                    $sql_view = mysqli_query($koneksi, "SELECT 
+                      t_detail_donasi.id_detail_donasi,
+                      t_donasi.id_donasi,
+                      t_donasi.nominal,
+                      t_donasi.tgl_donasi,
+                      t_donasi.status_donasi,
+                      t_lokasi.nama_lokasi,
+                      t_terumbu_karang.nama_terumbu.karang,
+                      t_detail_donasi.pesan
+
+                      FROM t_detail.donasi
+                      JOIN t_donasi ON t_donasi.id_donasi=t_user.id_donasi
+                      JOIN t_lokasi ON t_lokasi.id_lokasi=t_lokasi.id_lokasi
+                      JOIN t_terumbu_karang ON t_terumbu_karang=t_terumbu_karang.id_terumbu_karang
+                      WHERE id_detail_donasi='$edit'");
+                    while ($result = mysqli_fetch_row($sql_view)){
+                    ?>
+                    <tbody>
+                      <tr>
+                        <td style="display:none;"><?php echo $result['id_detail_donasi']; ?></td>
+                        <td><?php echo $result['id_donasi']; ?></td>
+                        <td><?php echo $result['nominal']; ?></td>
+                        <td><?php echo $result['tgl-donasi']; ?></td>
+                      </tr>
+                      <tr>
+                        <td style="font-weight:bold;">Status:</td>
+                        <td colspan="2"><?php echo $result['status_donasi']; ?></td>
+                      </tr>
+                      <tr>
+                        <td style="font-weight:bold;">Lokasi:</td> 
+                        <td colspan="2"><?php echo $result['nama_lokasi']; ?></td>
+                      </tr>
+                      <tr>
+                        <td style="font-weight:bold;">Terumbu Karang:</td>
+                        <td colspan="2"><?php echo $result['nama_terumbu_karang']; ?></td>
+                      </tr>
+                      <tr>
+                        <td style="font-weight:bold;">Pesan / Ekspresi</td>
+                        <td colspan="2"><?php echo $result['pesan']; ?></td>
+                      </tr>
+                    </tbody>
+                    <?php } ?>
+                  </table>
                 </div>
-              </div>
-              <!-- /.card-body-->
-              <div class="card-footer bg-transparent">
-                <div class="row">
-                  <div class="col-3 text-center">
-                    <div>0% - 24%</div>
-                    <div class="text-white">Kurang</div>
-                  </div>
-                  <!-- ./col -->
-                  <div class="col-3 text-center">
-                    <div>25% - 49%</div>
-                    <div class="text-white">Cukup</div>
-                  </div>
-                  <!-- ./col -->
-                  <div class="col-3 text-center">
-                    <div>50% - 74%</div>
-                    <div class="text-white">Baik</div>
-                  </div>
-                  <!-- ./col -->
-                  <div class="col-3 text-center">
-                    <div>75% - 100%</div>
-                    <div class="text-white">Sangat Baik</div>
-                  </div>
+                <div class="card-footer">
+                  <button type="file" name="submit" class="btn btn-warning">Upload Bukti Pembayaran</button><br>
+                  <h6>Format: foto/pdf</h6>
                 </div>
-                <!-- /.row -->
               </div>
             </div>
-            <!-- /.card -->
-          </section>
-          <!-- /.Left col -->
+          </div>
         </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -619,6 +590,6 @@ $(function () {
 <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
 <script src="../../dist/js/leaflet.ajax.js"></script>
 <!-- Leaflet Map -->
-<?php include '../../dist/js/leaflet-map.php'; ?>
+<?php include '../../dist/js/leaflet_map.php'; ?>
 </body>
 </html>
