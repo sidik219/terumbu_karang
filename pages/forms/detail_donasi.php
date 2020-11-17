@@ -192,6 +192,14 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="../forms/jenis_tk.php" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                Jenis Terumbu Karang
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="../tables/data.html" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
               <p>

@@ -206,6 +206,14 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="pages/forms/jenis_tk.php" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                Jenis Terumbu Karang
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="pages/tables/data.html" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
               <p>
@@ -493,7 +501,7 @@
           FROM t_donasi 
           JOIN t_user ON t_user.id_user=t_user.id_user
           JOIN t_lokasi ON t_lokasi.id_lokasi=t_lokasi.id_lokasi");
-        while ($result = mysqli_fetch_row($sql_view)){
+        while ($result = mysqli_fetch_row($sql_view)) {
         ?>
           <div class="row">
             <div class="col-lg-3 col-6">

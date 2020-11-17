@@ -1,4 +1,5 @@
 <?php include '../../build/config/connection.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,13 +13,6 @@
   <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="crossorigin=""/>
-  <!--Leaflet panel layer CSS-->
-  <link rel="stylesheet" href="../../dist/css/leaflet-panel-layers.css"/>
-  <!-- Leaflet Marker Cluster CSS -->
-  <link rel="stylesheet" href="../../dist/css/MarkerCluster.css" />
-  <link rel="stylesheet" href="../../dist/css/MarkerCluster.Default.css" />
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -183,11 +177,19 @@
               </p>
             </a>
           </li>
-          <li class="nav-item menu-open">
-            <a href="../forms/detail_donasi.php" class="nav-link active">
+          <li class="nav-item">
+            <a href="../forms/detail_donasi.php" class="nav-link">
               <i class="nav-icon fas fa-edit"></i>
               <p>
                 Detail Donasi
+              </p>
+            </a>
+          </li>
+          <li class="nav-item menu-open">
+            <a href="../forms/jenis_tk.php" class="nav-link active">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                Jenis Terumbu Karang
               </p>
             </a>
           </li>
@@ -477,11 +479,11 @@
       <div class="container-fluid">
         <div class="row">
           <!-- left column -->
-          <div class="col-md-4">
+          <div class="col-md-12">
             <!-- general form elements -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title" style="font-weight:bold;">Detail Donasi</h3>
+                <h3 class="card-title" style="font-weight:bold;">Pilih Jenis Terumbu</h3>
               </div>
               <!-- /.card-header -->
 
@@ -491,44 +493,56 @@
                 <table align="center">
                     <thead>
                       <tr>
-                        <th>ID</th>
-                        <th>Tanggal</th>
-                        <th>Nominal</th>
+                      <?php
+                        $sql_view = mysqli_query($koneksi, "SELECT
+                          t_lokasi.id_lokasi,
+                          t_lokasi.nama_lokasi
+                          FROM t_lokasi");
+
+                        while ($result = mysqli_fetch_row($sql_view)) {
+                        ?>
+                        <i style="display:none;"><?php echo $result[0]; ?></i>
+                        <h5 align="center">Lokasi penanaman dipilih:</h5>
+                        <h6 align="center"><b><?php echo $result[1]; ?></b></h6>
+                        <?php } ?>
+                        <p>
+                        <th>
+                          <h5 style="font-weight:bold; text-align: center;">Jenis terumbu karang:</h5>
+                        </th>
                       </tr>
                     </thead>
 
-                    <tbody>
-                      <tr>
-                        <td>2</td>
-                        <td>22-2020-10</td>
-                        <td>Rp.100000-,</td>
-                      </tr>
-                      <tr>
-                        <td style="font-weight:bold;">Status:</td>
-                        <td colspan="2">Menunggu Pembayaran</td>
-                      </tr>
-                      <tr>
-                        <td style="font-weight:bold;">Lokasi:</td> 
-                        <td colspan="2">Pantai Tangkolak</td>
-                      </tr>
-                      <tr>
-                        <td style="font-weight:bold;">Terumbu Karang:</td>
-                        <td colspan="2">Acropora Cervicumis</td>
-                      </tr>
-                      <tr>
-                        <td></td>
-                        <td colspan="2">Acropora Hyacinthus</td>
-                      </tr>
-                      <tr>
-                        <td style="font-weight:bold;">Pesan / Ekspresi</td>
-                        <td colspan="2">aaaaaaa</td>
-                      </tr>
-                    </tbody>
+                    <?php
+                    $sql_view = mysqli_query($koneksi, "SELECT
+                      id_jenis,
+                      foto_jenis,
+                      deskripsi_jenis,
+                      nama_jenis,
+                      tipe_gambar
+                      FROM t_jenis_terumbu_karang");
+
+                    while ($result = mysqli_fetch_array($sql_view)) {
+                    ?>
+                      <tbody>
+                        <tr>
+                          <td style="display:none;"><?php echo $result['id_jenis']; ?></td>
+                          <td>
+                            <img src="image_view.php?id_jenis=<?php echo $result['id_jenis']; ?>"width="300" height="200"/>
+                          </td>
+                          <td style="display:none;"><?php echo $result['deskripsi_jenis']; ?></td>
+                        </tr>
+                        <tr>
+                          <td align="center">
+                            <p>
+                            <button type="button" class="btn btn-warning" style="width: 300px;">
+                              <a href="pages/forms/jenis.php?edit=<?php echo $result['id_jenis'];?>" class="small-box-footer"><?php echo $result['nama_jenis']; ?></a>
+                            </button>
+                          </td>
+                          <td style="display:none;"><?php echo $result['tipe_gambar']; ?></td>
+                        </tr>
+                      </tbody>
+                    <?php } ?>
                   </table>
-                </div>
-                <div class="card-footer">
-                  <button type="file" name="submit" class="btn btn-warning">Upload Bukti Pembayaran</button><br>
-                  <h6>Format: foto/pdf</h6>
                 </div>
               </form>
             </div>
@@ -573,13 +587,5 @@ $(function () {
 </script>
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="crossorigin=""></script>
-<!-- Leaflet Marker Cluster -->
-<script src="../../dist/js/leaflet.markercluster-src.js"></script>
-<!-- Leaflet panel layer JS-->
-<script src="../../dist/js/leaflet-panel-layers.js"></script>
-<!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-<script src="../../dist/js/leaflet.ajax.js"></script>
-<!-- Leaflet Map -->
-<?php include '../../dist/js/leaflet_map.php'; ?>
 </body>
 </html>
