@@ -194,10 +194,18 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="../tables/data.html" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
+            <a href="../forms/jenis_tk.php" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
               <p>
-                Tables
+                Terumbu Karang
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="../forms/review_donasi.php" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                Review Donasi
               </p>
             </a>
           </li>
@@ -466,8 +474,8 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active"></li>
+              <li class="breadcrumb-item"><a href="../../index.php">Home</a></li>
+              <li class="breadcrumb-item active">Jenis Terumbu Karang</li>
             </ol>
           </div>
         </div>
@@ -483,7 +491,7 @@
             <!-- general form elements -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title" style="font-weight:bold;">Pilih Jenis Terumbu</h3>
+                <h3 class="card-title" style="font-weight:bold; text-align: center;">Pilih Jenis Terumbu</h3>
               </div>
               <!-- /.card-header -->
 
@@ -495,19 +503,21 @@
                       <tr>
                       <?php
                         $sql_view = mysqli_query($koneksi, "SELECT
-                          t_lokasi.id_lokasi,
-                          t_lokasi.nama_lokasi
+                          id_lokasi,
+                          nama_lokasi
                           FROM t_lokasi");
 
                         while ($result = mysqli_fetch_row($sql_view)) {
                         ?>
                         <i style="display:none;"><?php echo $result[0]; ?></i>
-                        <h5 align="center">Lokasi penanaman dipilih:</h5>
-                        <h6 align="center"><b><?php echo $result[1]; ?></b></h6>
+                        <h5 align="center" style="color: #30A0E0;">Lokasi penanaman dipilih:</h5>
+                        <h6 align="center" style="color: #30A0E0;">
+                          <b><?php echo $result[1]; ?></b>
+                        </h6>
                         <?php } ?>
                         <p>
                         <th>
-                          <h5 style="font-weight:bold; text-align: center;">Jenis terumbu karang:</h5>
+                          <h5 style="font-weight:bold; text-align: center; color: #30A0E0;">Jenis terumbu karang:</h5>
                         </th>
                       </tr>
                     </thead>
@@ -527,7 +537,7 @@
                         <tr>
                           <td style="display:none;"><?php echo $result['id_jenis']; ?></td>
                           <td>
-                            <img src="image_view.php?id_jenis=<?php echo $result['id_jenis']; ?>"width="300" height="200"/>
+                            <img src="view_jenis_tk.php?id_jenis=<?php echo $result['id_jenis'];?>" width="300" height="200"/>
                           </td>
                           <td style="display:none;"><?php echo $result['deskripsi_jenis']; ?></td>
                         </tr>
@@ -535,7 +545,7 @@
                           <td align="center">
                             <p>
                             <button type="button" class="btn btn-warning" style="width: 300px;">
-                              <a href="pages/forms/jenis.php?edit=<?php echo $result['id_jenis'];?>" class="small-box-footer"><?php echo $result['nama_jenis']; ?></a>
+                              <a href="terumbu_karang.php?id_jenis=<?php echo $result['id_jenis'];?>" style="color: white;"><?php echo $result['nama_jenis']; ?></a>
                             </button>
                           </td>
                           <td style="display:none;"><?php echo $result['tipe_gambar']; ?></td>

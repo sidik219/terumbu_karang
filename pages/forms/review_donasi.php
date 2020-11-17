@@ -1,4 +1,5 @@
 <?php include '../../build/config/connection.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,13 +13,6 @@
   <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="crossorigin=""/>
-  <!--Leaflet panel layer CSS-->
-  <link rel="stylesheet" href="../../dist/css/leaflet-panel-layers.css"/>
-  <!-- Leaflet Marker Cluster CSS -->
-  <link rel="stylesheet" href="../../dist/css/MarkerCluster.css" />
-  <link rel="stylesheet" href="../../dist/css/MarkerCluster.Default.css" />
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -183,8 +177,8 @@
               </p>
             </a>
           </li>
-          <li class="nav-item menu-open">
-            <a href="../forms/detail_donasi.php" class="nav-link active">
+          <li class="nav-item">
+            <a href="../forms/detail_donasi.php" class="nav-link">
               <i class="nav-icon fas fa-edit"></i>
               <p>
                 Detail Donasi
@@ -200,15 +194,15 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="../forms/jenis_tk.php" class="nav-link">
+            <a href="../forms/terumbu_karang.php" class="nav-link">
               <i class="nav-icon fas fa-edit"></i>
               <p>
                 Terumbu Karang
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="../forms/review_donasi.php" class="nav-link">
+          <li class="nav-item menu-open">
+            <a href="../forms/review_donasi.php" class="nav-link active">
               <i class="nav-icon fas fa-edit"></i>
               <p>
                 Review Donasi
@@ -481,7 +475,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="../../index.php">Home</a></li>
-              <li class="breadcrumb-item active">Detail Donasi</li>
+              <li class="breadcrumb-item active">Review Donasi</li>
             </ol>
           </div>
         </div>
@@ -492,70 +486,93 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-4">
+          <!-- left column -->
+          <div class="col-md-12">
+            <!-- general form elements -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title" style="font-weight:bold;">Detail Donasi</h3>
+                <h3 class="card-title" style="font-weight:bold; text-align: center;">Review Donasi</h3>
               </div>
-              <div class="card-body">
-                <table align="center">
-                    <thead>
-                        <tr>
-                          <th>ID</th>
-                          <th colspan="2">Nominal</th>
-                          <th>Tanggal</th>
-                        </tr>
-                    </thead>
-                    <?php
-                    $edit = $_GET['edit'];
-                    $sql_view = mysqli_query($koneksi, "SELECT 
-                      t_detail_donasi.id_detail_donasi,
-                      t_donasi.id_donasi,
-                      t_donasi.nominal,
-                      t_donasi.tgl_donasi,
-                      t_donasi.status_donasi,
-                      t_lokasi.nama_lokasi,
-                      t_terumbu_karang.nama_terumbu.karang,
-                      t_detail_donasi.pesan
+              <!-- /.card-header -->
 
-                      FROM t_detail.donasi
-                      JOIN t_donasi ON t_donasi.id_donasi=t_user.id_donasi
-                      JOIN t_lokasi ON t_lokasi.id_lokasi=t_lokasi.id_lokasi
-                      JOIN t_terumbu_karang ON t_terumbu_karang=t_terumbu_karang.id_terumbu_karang
-                      WHERE id_detail_donasi='$edit'");
-                    while ($result = mysqli_fetch_row($sql_view)){
-                    ?>
-                    <tbody>
-                      <tr>
-                        <td style="display:none;"><?php echo $result['id_detail_donasi']; ?></td>
-                        <td><?php echo $result['id_donasi']; ?></td>
-                        <td><?php echo $result['nominal']; ?></td>
-                        <td><?php echo $result['tgl-donasi']; ?></td>
-                      </tr>
-                      <tr>
-                        <td style="font-weight:bold;">Status:</td>
-                        <td colspan="2"><?php echo $result['status_donasi']; ?></td>
-                      </tr>
-                      <tr>
-                        <td style="font-weight:bold;">Lokasi:</td> 
-                        <td colspan="2"><?php echo $result['nama_lokasi']; ?></td>
-                      </tr>
-                      <tr>
-                        <td style="font-weight:bold;">Terumbu Karang:</td>
-                        <td colspan="2"><?php echo $result['nama_terumbu_karang']; ?></td>
-                      </tr>
-                      <tr>
-                        <td style="font-weight:bold;">Pesan / Ekspresi</td>
-                        <td colspan="2"><?php echo $result['pesan']; ?></td>
-                      </tr>
-                    </tbody>
+              <!-- form start -->
+              <div class="card-body">
+                <form action="#" method="POST">
+                  <table align="center">
+                      <thead>
+                        <tr>
+                          <?php
+                          $sql_view = mysqli_query($koneksi, "SELECT
+                            id_lokasi,
+                            nama_lokasi
+                            FROM t_lokasi");
+
+                          while ($result = mysqli_fetch_row($sql_view)) {?>
+
+                          <i style="display:none;"><?php echo $result[0]; ?></i>
+                          <h5 align="center" style="color: #30A0E0;">Lokasi penanaman dipilih:</h5>
+                          <h6 align="center" style="color: #30A0E0;">
+                            <b><?php echo $result[1]; ?></b>
+                          </h6>
+                          <?php } ?>
+                          <p>
+                          <th style="color: #30A0E0;">
+                            Pilihan Terumbu Karang
+                          </th>
+                          <?php
+                          $sql_view = mysqli_query($koneksi, "SELECT * FROM t_terumbu_karang
+                            WHERE nama_terumbu_karang LIKE '%Acropora%' OR 
+                            nama_terumbu_karang LIKE '%Goniopora%'");
+
+                          $subtotal = 0;
+
+                          while ($result = mysqli_fetch_array($sql_view)) {
+                          ?>
+                        </tr>
+                      </thead>
+
+                      <?php $subtotal = $result['harga_tk'] * $result['qty']; ?>
+
+                      <tbody>
+                        <tr>
+                          <td style="display:none;"><?php echo $result['id_terumbu_karang']; ?></td>
+                          <td>
+                            <img src="view_tk.php?id_tk=<?php echo $result['id_terumbu_karang'];?>" width="200" height="110"/>
+                          </td>
+                          <td>
+                            <span style="color: #30A0E0; margin-left: 50px;">
+                              <b><?php echo $result['qty']; ?></b> x <?php echo $result['harga_tk']; ?> 
+                            </span> 
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="color: #30A0E0;"><?php echo $result['nama_terumbu_karang']; ?></td>
+                          <td style="display:none;"><?php echo $result['tipe_gambar']; ?></td>
+                          <td style="display:none;"><?php echo $result['deskripsi_terumbu_karang']; ?></td>
+                        </tr>
+                      </tbody>
                     <?php } ?>
                   </table>
-                </div>
-                <div class="card-footer">
-                  <button type="file" name="submit" class="btn btn-warning">Upload Bukti Pembayaran</button><br>
-                  <h6>Format: foto/pdf</h6>
-                </div>
+                
+                  <table align="center">
+                    <tr>
+                      <td colspan="2">
+                        <label style="color: #30A0E0;">Pesan / Ekspresi:</label><br>
+                        <input type="text" name="pesan" size="35" style=" color: #30A0E0; border: none; border: solid 1px; border-radius: 5px;">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="color: #30A0E0; padding-left: 20px;">Subtotal:<br>
+                        <i style="font-weight:bold; font-size: 19px;">Rp. <?php echo"$subtotal"; ?></i>
+                      </td>
+                      <td>
+                        <button type="button" name="submit" class="btn btn-warning" style="color: white; margin-left: 100px;">
+                          Bayar Donasi
+                        </button>
+                      </td>
+                    </tr>
+                  </table>
+                </form>
               </div>
             </div>
           </div>
@@ -599,13 +616,6 @@ $(function () {
 </script>
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="crossorigin=""></script>
-<!-- Leaflet Marker Cluster -->
-<script src="../../dist/js/leaflet.markercluster-src.js"></script>
-<!-- Leaflet panel layer JS-->
-<script src="../../dist/js/leaflet-panel-layers.js"></script>
-<!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-<script src="../../dist/js/leaflet.ajax.js"></script>
-<!-- Leaflet Map -->
-<?php include '../../dist/js/leaflet_map.php'; ?>
 </body>
 </html>
+

@@ -214,10 +214,10 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/tables/data.html" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
+            <a href="pages/forms/review_donasi.php" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
               <p>
-                Tables
+                Review Donasi
               </p>
             </a>
           </li>
