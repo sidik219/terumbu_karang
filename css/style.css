@@ -1,0 +1,52 @@
+body
+{
+	background-color: #F5F7FA;
+}
+
+table { 
+    table-layout:fixed;
+    overflow: hidden;
+}
+
+
+.os-content{
+	background-color: #212121;
+}
+
+.brand-link{
+	background-color: white;
+}
+
+.brand-text{
+	color: #0E447E;
+	font-size: 25px;
+}
+
+.fa-bars
+{
+	color: #0E447E;
+}
+
+.new-entry{
+	background-color: #F5F7FA;
+	height: 40px;
+	margin-top: 40px;
+}
+
+a.btn.btn-primary
+{
+	border-radius: 10px;
+	width: auto;
+	background-color: #E24901;
+	border: none;
+	padding: 6px 12px;
+}
+
+.file-form{
+	background-color: white; 
+	border: 1px solid #CED4DA; 
+	border-radius: 4px
+}
+
+
+
