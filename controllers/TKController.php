@@ -779,6 +779,10 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
         
     }
 
+    function hello(){
+        echo "Function works, praise KEK";
+    }
+
 
 
 

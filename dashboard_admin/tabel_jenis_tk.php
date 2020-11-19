@@ -1,3 +1,6 @@
+<?
+include TKController.php;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -152,7 +155,7 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                  
+                  <? hello(); ?>
                    <h3>Kelola Jenis Terumbu Karang</h3>
                 </div>
                 <!-- /.container-fluid -->

@@ -11,14 +11,25 @@
         layers: [tiles]
     });
 
-    <?php 
-      $sql_view = mysqli_query($koneksi, "SELECT * FROM t_titik");
-      foreach ($sql_view as $value) { ?>
-          L.marker([<?=$value->latitude?>,<?=$value->longitude?>]).addTo(mymap)
+
+     <?php 
+              $sql_map = "SELECT * FROM t_titik";
+              $stmt = $pdo->prepare($sql_map);
+              $stmt->execute();
+              $sql_view = $stmt->fetchAll();
+              foreach ($sql_view as $value) { ?>
+
+              var id_titik = <?=$value->id_titik?>;
+
+                L.marker([<?=$value->longitude?>,<?=$value->latitude?>]).addTo(mymap)
           .bindPopup("<b>Latitude: <?=$value->latitude?></b><br/>"+
-          "<b>Longtitude: <?=$value->longitude?></b><br/>"+
-          "<b>Luas Titik: <?=$value->luas_titik?></b><br/>");
-    <?php } ?>
+          "<b>Longitude: <?=$value->longitude?></b><br/>"+
+          "<b>Luas Titik: <?=$value->luas_titik?> m2</b><br/>"+
+          "<a href='donasi.php?id_titik=<?=$value->id_titik?>' class='btn btn-primary'>Pilih Lokasi</a>");
+
+             <?php
+              }
+            ?>
 
 </script>
 
