@@ -388,7 +388,7 @@
 <script src="dist/js/leaflet.ajax.js"></script>
 <!-- Leaflet Map -->
 <?php 
-  include "dist/js/leaflet_map.php";
+include 'dist/js/leaflet_map.php'; 
 ?>
 </body>
 </html>
