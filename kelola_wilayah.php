@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Lokasi - Terumbu Karang</title>
+    <title>Kelola Wilayah - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-        <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
         <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" href="../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
     <!-- iCheck -->
-        <link rel="stylesheet" href="../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- JQVMap -->
-        <link rel="stylesheet" href="../plugins/jqvmap/jqvmap.min.css">
+        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
-        <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+        <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
-        <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+        <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Daterange picker -->
-        <link rel="stylesheet" href="../plugins/daterangepicker/daterangepicker.css">
+        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
-        <link rel="stylesheet" href="../plugins/summernote/summernote-bs4.min.css">
+        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
     <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/../dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
     <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="../dist/css/leaflet-panel-layers.css" />
+        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
     <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="../dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="../dist/css/MarkerCluster.Default.css" />
+        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
+        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -62,8 +62,8 @@
         <!-- TOP SIDEBAR -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
-            <a href="index.php" class="brand-link">
-                <img src="../dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
+            <a href="index_admin.php" class="brand-link">
+                <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
                 <!-- BRAND TEXT (TOP) -->
                 <span class="brand-text font-weight-bold">TKJB</span>
             </a>
@@ -75,67 +75,86 @@
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item ">
-                           <a href="index.php" class="nav-link ">
+                           <a href="index_admin.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p> Home </p>
                            </a>
                         </li>
                         <li class="nav-item ">
-                            <a href="tabel_donasi.php" class="nav-link ">
+                            <a href="kelola_donasi.php" class="nav-link ">
                                 <i class="nav-icon fas fa-hand-holding-usd"></i>
                                 <p> Kelola Donasi </p>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a href="tabel_wilayah.php" class="nav-link ">
+                        <li class="nav-item">
+                            <a href="kelola_wisata.php" class="nav-link">
+                                <i class="nav-icon fas fa-suitcase"></i>
+                                <p> Kelola Wisata </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="kelola_reservasi_wisata.php" class="nav-link">
+                                <i class="nav-icon fas fa-th-list"></i>
+                                <p> Kelola Reservasi </p>
+                            </a>
+                        </li>
+                        <li class="nav-item menu-open">
+                            <a href="kelola_wilayah.php" class="nav-link active">
                                 <i class="nav-icon fas fa-globe-asia"></i>
                                 <p> Kelola Wilayah </p>
                             </a>
                         </li>
-                        <li class="nav-item menu-open">
-                            <a href="tabel_lokasi.php" class="nav-link active">
+                        <li class="nav-item">
+                            <a href="kelola_lokasi.php" class="nav-link">
                                 <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
                                 <p> Kelola Lokasi </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="tabel_titik.php" class="nav-link">
+                            <a href="kelola_titik.php" class="nav-link">
                                  <i class="nav-icon fas fa-crosshairs"></i>
                                  <p> Kelola Titik </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="tabel_batch.php" class="nav-link">
+                            <a href="kelola_detail_titik.php" class="nav-link">
+                                 <i class="nav-icon fas fa-podcast"></i>
+                                 <p> Kelola Detail Titik </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="kelola_batch.php" class="nav-link">
                                   <i class="nav-icon fas fa-boxes"></i>
                                   <p> Kelola Batch </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="tabel_tk.php" class="nav-link">
-                                  <i class="nav-icon fas fa-disease"></i>
-                                  <p> Kelola Terumbu Karang </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                             <a href="tabel_jenis_tk.php" class="nav-link">
+                             <a href="kelola_jenis_tk.php" class="nav-link">
                                    <i class="nav-icon fas fa-certificate"></i>
                                    <p> Kelola Jenis Terumbu </p>
                              </a>
                         </li>
                         <li class="nav-item">
-                             <a href="tabel_perizinan.php" class="nav-link">
+                            <a href="kelola_tk.php" class="nav-link">
+                                  <i class="nav-icon fas fa-disease"></i>
+                                  <p> Kelola Terumbu Karang </p>
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                             <a href="kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
                                     <p> Kelola Perizinan </p>
                              </a>
                         </li>
                         <li class="nav-item">
-                            <a href="tabel_laporan.php" class="nav-link">
+                            <a href="kelola_laporan.php" class="nav-link">
                                     <i class="nav-icon fas fa-book"></i>
                                     <p> Kelola Laporan </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="tabel_user.php" class="nav-link">
+                            <a href="kelola_user.php" class="nav-link">
                                     <i class="nav-icon fas fa-user"></i>
                                     <p> Kelola User </p>
                             </a>
@@ -151,10 +170,9 @@
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <div class="content-header">
-                    <div class="container-fluid">
-                        <a href="tabel_lokasi.php">< Kembali</a><br><br>
-                         <h3>Input Data Lokasi</h3>
-                    </div>
+                <div class="container-fluid">
+                   <h3>Kelola Wilayah</h3>
+                </div>
                 <!-- /.container-fluid -->
             </div>
             <!-- /.content-header -->
@@ -162,38 +180,39 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <form>
-                          <div class="form-group">
-                                <label for="exampleInputEmail1">ID Lokasi</label>
-                                <input type="#" class="form-control" id="#">
-                          </div>
-                          <div class="form-group">
-                          <label for="exampleInputEmail1">ID Wilayah</label>
-                          <select class="form-control">
-                                <option>41051 - Karawang</option>
-                                <option>45211 - Indramayu</option>
-                                <option>46396 - Pangandaran</option>
-                          </select>
-                        </div>
-                          <div class="form-group">
-                                <label for="exampleInputPassword1">Nama Lokasi</label>
-                                <input type="#" class="form-control" id="#" placeholder="Nama Daerah/Pantai">
-                          </div>
-                          <div class="form-group">
-                                <label for="exampleInputPassword1">Deskripsi</label>
-                                <input type="#" class="form-control" id="#" placeholder="?">
-                          </div>
-                          <div class="form-group">
-                                <label for="exampleFormControlFile1">Foto</label>
-                                <div class="file-form">
-                                <input type="file" class="form-control-file" id="exampleFormControlFile1">
-                                </div>
-                          </div>
-                        <br>
-                          <button type="submit" class="btn btn-primary">Kirim</button>
-                    </form>
-            <br><br>
-                    <a href="input_titik.php">Lanjut isi data titik</a>
+                     <table class="table table-striped">
+                     <thead>
+                            <tr>
+                            <th scope="col">ID Wilayah</th>
+                            <th scope="col">Nama Wilayah</th>
+                            <th scope="col">Deskripsi Wilayah</th>
+                            <th scope="col">Foto Wilayah</th>
+                            <th scope="col">ID Pengelola</th>
+                            <th scope="col">Aksi</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th scope="row">41051</th>
+                              <td>Karawang</td>
+                              <td>Jos</td>
+                              <td>-</td>
+                              <td>1ny0</td>
+                              <td>
+                              <button type="button" class="btn btn-act"><i class="fas fa-edit"></i></button>
+                              <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
+                                </td>
+                          </tr>
+                          </tbody>
+                  </table>
+
+            <!-- BUTTON SUBMIT -->
+            <div class="new-entry">
+                <p align="center">
+                <a class="btn btn-primary" href="input_wilayah.php" role="button">Input Data Baru (+)</a>
+                </p>
+            </div>
+            
             </section>
             <!-- /.Left col -->
             </div>
@@ -204,7 +223,7 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    <br><br>
+
     <footer class="main-footer">
         <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
     </footer>
@@ -216,51 +235,52 @@
     <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
-
+<div>
     <!-- jQuery -->
-    <script src="../plugins/jquery/jquery.min.js"></script>
+    <script src="plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
-    <script src="../plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
         $.widget.bridge('uibutton', $.ui.button)
     </script>
     <!-- Bootstrap 4 -->
-    <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- ChartJS -->
-    <script src="../plugins/chart.js/Chart.min.js"></script>
+    <script src="plugins/chart.js/Chart.min.js"></script>
     <!-- Sparkline -->
-    <script src="../plugins/sparklines/sparkline.js"></script>
+    <script src="plugins/sparklines/sparkline.js"></script>
     <!-- JQVMap -->
-    <script src="../plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="../plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
     <!-- jQuery Knob Chart -->
-    <script src="../plugins/jquery-knob/jquery.knob.min.js"></script>
+    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
     <!-- daterangepicker -->
-    <script src="../plugins/moment/moment.min.js"></script>
-    <script src="../plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="plugins/moment/moment.min.js"></script>
+    <script src="plugins/daterangepicker/daterangepicker.js"></script>
     <!-- Tempusdominus Bootstrap 4 -->
-    <script src="../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
     <!-- Summernote -->
-    <script src="../plugins/summernote/summernote-bs4.min.js"></script>
+    <script src="plugins/summernote/summernote-bs4.min.js"></script>
     <!-- overlayScrollbars -->
-    <script src="../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="../dist/js/adminlte.js"></script>
+    <script src="dist/js/adminlte.js"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="../dist/js/demo.js"></script>
+    <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="../dist/js/pages/dashboard.js"></script>
+    <script src="dist/js/pages/dashboard.js"></script>
     <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/../dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <!-- Leaflet Marker Cluster -->
-    <script src="../dist/js/leaflet.markercluster-src.js"></script>
+    <script src="dist/js/leaflet.markercluster-src.js"></script>
     <!-- Leaflet panel layer JS-->
-    <script src="../dist/js/leaflet-panel-layers.js"></script>
+    <script src="dist/js/leaflet-panel-layers.js"></script>
     <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-    <script src="../dist/js/leaflet.ajax.js"></script>
+    <script src="dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
-    <script src="../dist/js/leaflet-map.js"></script>
+    <script src="dist/js/leaflet-map.js"></script>
+</div>
 
 </body>
 </html>
