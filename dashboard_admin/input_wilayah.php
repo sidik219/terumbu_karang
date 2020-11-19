@@ -1,3 +1,41 @@
+<?php
+    include '..\build\config\connection.php';
+    
+    if (isset($_POST['submit'])) {
+            $nama_wilayah        = $_POST['tbnama_wilayah'];
+            $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
+            $id_user_pengelola     = $_POST['tb_id_user_pengelola'];
+            $randomstring = substr(md5(rand()), 0, 7);
+
+            //Image upload
+            if (isset($_FILES['image_uploads'])) {
+            //Image upload
+            $target_dir  = "images/foto_wilayah/";
+            $foto_wilayah = $target_dir .'WIL_'.$randomstring. '.jpg';
+            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wilayah);  
+
+            }
+            else if($_FILES["file"]["error"] == NULL) {
+                $foto_wilayah = "images/fwdefault.png";
+            }
+            //---image upload end   
+
+            $sqlwilayah = "INSERT INTO t_wilayah
+                            (nama_wilayah, deskripsi_wilayah, foto_wilayah, id_user_pengelola)
+                            VALUES (:nama_wilayah, :deskripsi_wilayah, :foto_wilayah, :id_user_pengelola)";
+
+            $stmt = $pdo->prepare($sqlwilayah);
+            $stmt->execute(['nama_wilayah' => $nama_wilayah, 'deskripsi_wilayah' => $deskripsi_wilayah, 'foto_wilayah' => $foto_wilayah, 'id_user_pengelola' => $id_user_pengelola]);
+
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+            //echo "HAHAHAAHA INSERT FAILED !";
+            } else {
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                header("Location: kelola_wilayah.php?status=addsuccess");
+                }
+            }        
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,17 +58,7 @@
         <link rel="stylesheet" href="../dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-        <link rel="stylesheet" href="../plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-        <link rel="stylesheet" href="../plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/../dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="../dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="../dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="../dist/css/MarkerCluster.Default.css" />
+    
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
@@ -162,16 +190,29 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <form>
-                          <div class="form-group">
-                                <label for="id_wilayah">ID Wilayah</label>
-                                <input type="#" class="form-control" id="#">
-                          </div>
+                    <form action="" method="POST" name="addWilayah">
+                
                           <div class="form-group">
                                 <label for="nama_wilayah">Nama Wilayah</label>
-                                <input type="#" class="form-control" id="#" placeholder="Nama Kota/Kabupaten">
+                                <input type="text" class="form-control" name="tbnama_wilayah" id="#" placeholder="Nama Kota/Kabupaten">
                           </div>
-                          <button type="submit" class="btn btn-primary">Kirim</button>
+                          <div class="form-group">
+                                <label for="nama_wilayah">Deskripsi Wilayah</label>
+                                <input type="#" class="form-control" name="txtdeskripsi_wilayah" id="#" placeholder="Nama Kota/Kabupaten">
+                          </div>
+
+                                        <div class='form-group' id='fotowilayah'>
+                                            <div>
+                                                <label for='image_uploads'>Upload Foto Wilayah</label>
+                                                <input type='file'  class='form-control' id='image_uploads'
+                                                    name='image_uploads' accept='.jpg, .jpeg, .png'>
+                                            </div>
+                                        </div>
+                          <div class="form-group">
+                                <label for="nama_wilayah">ID User Pengelola</label>
+                                <input type="#" class="form-control" name="tb_id_user_pengelola" id="#" placeholder="Nama Kota/Kabupaten">
+                          </div>
+                          <button type="submit" name="submit" value="Daftar" class="btn btn-primary">Kirim</button>
                     </form>
             <br><br><a href="input_lokasi.php">Lanjut isi data lokasi</a>
             </section>
