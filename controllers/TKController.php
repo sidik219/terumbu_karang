@@ -669,8 +669,7 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
                             VALUES (:judul_perizinan, :id_user, :id_lokasi, :deskripsi_perizinan, :file_proposal, :biaya_pergantian, :status_perizinan)";
 
             $stmt = $pdo->prepare($sqlperizinan);
-            $stmt->execute(['judul_perizinan' => $judul_perizinan,'id_user' => $id_user, ,'id_lokasi' => $id_lokasi,
-            'deskripsi_perizinan' => $deskripsi_perizinan, 'file_proposal' => $file_proposal
+            $stmt->execute(['judul_perizinan' => $judul_perizinan,'id_user' => $id_user, 'id_lokasi' => $id_lokasi, 'deskripsi_perizinan' => $deskripsi_perizinan, 'file_proposal' => $file_proposal
             , 'biaya_pergantian' => $biaya_pergantian, 'status_perizinan' => $status_perizinan]);
 
             $affectedrows = $stmt->rowCount();
