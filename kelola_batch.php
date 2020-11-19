@@ -198,7 +198,9 @@
                               <td>mm/dd/yyyy</td>
                               <td>Penyemaian</td>
                               <td>
-                                <button type="button" class="btn btn-act"><i class="fas fa-edit"></i></button>
+                                <button type="button" class="btn btn-act">
+                                <a href="edit/edit_batch.php" class="fas fa-edit"></a>
+                                </button>
                                 <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
                               </td>
                           </tr>

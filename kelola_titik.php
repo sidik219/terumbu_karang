@@ -204,7 +204,9 @@
                               <td>-</td>
                               <td>-</td>
                               <td>
-                                <button type="button" class="btn btn-act"><i class="fas fa-edit"></i></button>
+                                <button type="button" class="btn btn-act">
+                                <a href="edit/edit_titik.php" class="fas fa-edit"></a>
+                                </button>
                                 <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
                               </td>
                           </tr>
