@@ -11,6 +11,6 @@ if(isset($_GET['id_tk']))
 }
 else
 {
-    header('location:terumbu_karang.php');
+    header('location:h_terumbu_karang.php');
 }
 ?>

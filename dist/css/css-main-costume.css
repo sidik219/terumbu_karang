@@ -1,0 +1,54 @@
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.ukuran-table{
+	color: #30A0E0;
+	font-size: 18px; 
+	padding-right: 116px;
+}
+
+/*CSS Ukuran*/
+.ukuran-metode-pembayaran{
+	color: #30A0E0; 
+	text-align: justify;
+}
+
+.posisi-text{
+	margin-left: 360px;
+}
+
+/*CSS Label Input*/
+.css-metode-pembayaran{
+	font-size: 15px; 
+	margin-right: 100px;
+	position: static;
+}
+
+.css-metode-pembayaran-1{
+	font-size: 15px;
+	margin-right: 160px;
+}
+
+/*CSS Input*/
+.css-input-metode-pembayaran{
+	color: #30A0E0;
+	border: none;
+	border: solid 1px;
+	border-radius: 5px;
+	width: 250px;
+	height: 40px;	
+}
+
+/*CSS Input*/
+.css-button-metode-pembayaran{
+	color: white;
+	background-color: #FF5733;
+	border: none;
+	border: solid 1px;
+	border-radius: 20px;
+	width: 250px;
+	height: 40px; 
+}
+</style>

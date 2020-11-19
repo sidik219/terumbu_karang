@@ -10,6 +10,6 @@ if(isset($_GET['id_jenis']))
 }
 else
 {
-    header('location:jenis_tk.php');
+    header('location:h_jenis_tk.php');
 }
 ?>
