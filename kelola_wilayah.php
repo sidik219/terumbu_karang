@@ -207,16 +207,14 @@
                               <th scope="row"><?=$rowitem->id_wilayah?></th>
                               <td><?=$rowitem->nama_wilayah?></td>
                               <td>
-                              <button type="button" class="btn btn-act">
-                                <a href="edit/edit_wilayah.php" class="fas fa-edit"></a>
-                                </button>
-                              <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
+                                <a href="edit/edit_wilayah.php?id_wilayah=<?=$rowitem->id_wilayah?>" class="fas fa-edit mr-3"></a>
+                                <a href="hapus.php?type=wilayah&id_wilayah=<?=$rowitem->id_wilayah?>" class="far fa-trash-alt"></a>
                                 </td>                                
-                          </tr>
+                            </tr>
                             <tr>
                                 <td colspan="3">
                                     <!--collapse start -->
-                          <div class="row  m-0">
+                            <div class="row  m-0">
                             <div class="col-12 keadaan detailcollapser<?=$rowitem->id_wilayah?>"
                                 data-toggle="collapse"
                                 data-target=".contentkeadaan<?=$rowitem->id_wilayah?>, .contentall<?=$rowitem->id_wilayah?>">

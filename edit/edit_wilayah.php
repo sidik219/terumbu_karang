@@ -1,3 +1,49 @@
+<?php
+    include '..\build\config\connection.php';
+    
+    $id_wilayah = $_GET['id_wilayah'];
+    $sql = 'SELECT * FROM t_wilayah WHERE id_wilayah = :id_wilayah';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_wilayah' => $id_wilayah]);
+    $rowitem = $stmt->fetch();
+
+    if (isset($_POST['submit'])) {
+            if ($_POST['submit'] == 'Simpan') {
+                $nama_wilayah        = $_POST['tbnama_wilayah'];
+                $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
+                $id_user_pengelola     = $_POST['tb_id_user_pengelola'];
+                $randomstring = substr(md5(rand()), 0, 7);
+
+                //Image upload
+                if (isset($_FILES['image_uploads'])) {
+                    $target_dir  = "images/foto_wilayah/";
+                    $foto_wilayah = $target_dir .'WIL_'.$randomstring. '.jpg';
+                    move_uploaded_file($_FILES["image_uploads"]["tmp_name"], '../'.$foto_wilayah);
+                }                
+                //---image upload end 
+
+                $sqleditwilayah = "UPDATE t_wilayah
+                            SET nama_wilayah = :nama_wilayah, 
+                            deskripsi_wilayah = :deskripsi_wilayah, foto_wilayah = :foto_wilayah, 
+                            id_user_pengelola = :id_user_pengelola
+                            WHERE id_wilayah = :id_wilayah";
+
+                $stmt = $pdo->prepare($sqleditwilayah);
+                $stmt->execute(['nama_wilayah' => $nama_wilayah, 
+                'deskripsi_wilayah' => $deskripsi_wilayah, 
+                'foto_wilayah' => $foto_wilayah, 'id_wilayah' => $id_wilayah, 'id_user_pengelola' => $id_user_pengelola]);
+
+                $affectedrows = $stmt->rowCount();
+                if ($affectedrows == '0') {
+                //echo "Update sukses";
+                } else {
+                header("Location: ../kelola_wilayah.php?status=updatesuccess");
+                }
+            }
+        }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -181,26 +227,53 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <form action="" enctype="multipart/form-data" method="POST">
-                    <div class="form-group">
-                        <label for="nama_wilayah">Nama Wilayah</label>
-                        <input type="text" id="tb_nama_wilayah" name="tb_nama_wilayah" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="tb_deskripsi_wilayah">Deskripsi Wilayah</label>
-                        <input type="text" id="tb_deskripsi_wilayah" name="tb_deskripsi_wilayah" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="file_foto_wilayah">Foto Wilayah</label>
-                        <div class="file-form">
-                        <input type="file" id="file_foto_wilayah" name="file_foto_wilayah" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="tb_id_pengelola">ID User Pengelola</label>
-                        <input type="text" id="tb_id_pengelola" name="tb_id_pengelola" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Kirim</button>
+                    <form action="" enctype="multipart/form-data" method="POST" name="updateWilayah">
+                
+                          <div class="form-group">
+                                <label for="nama_wilayah">Nama Wilayah</label>
+                                <input type="text" value="<?=$rowitem->nama_wilayah?>" class="form-control" name="tbnama_wilayah" id="#" placeholder="Nama Kota/Kabupaten">
+                          </div>
+                          <div class="form-group">
+                                <label for="nama_wilayah">Deskripsi Wilayah</label>
+                                <input type="#" value="<?=$rowitem->deskripsi_wilayah?>" class="form-control" name="txtdeskripsi_wilayah" id="#" placeholder="Deskripsi singkat">
+                          </div>
+
+                                        <div class='form-group' id='fotowilayah'>
+                                            <div>
+                                                <label for='image_uploads'>Upload Foto Wilayah</label>
+                                                <input type='file'  class='form-control' id='image_uploads'
+                                                    name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
+                                            </div>                                            
+                                        </div>
+
+                                        <div class="form-group">
+                                            <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
+                                            <img id="oldpic" src="../<?=$rowitem->foto_wilayah?>" width="50px">
+                                            <script>
+                                                window.onload = function() {
+                                                document.getElementById('preview').style.display = 'none';
+                                                };
+                                                function readURL(input) {
+                                                    if (input.files && input.files[0]) {
+                                                        var reader = new FileReader();
+                                                        document.getElementById('oldpic').style.display = 'none';
+                                                        reader.onload = function (e) {
+                                                            $('#preview')
+                                                                .attr('src', e.target.result)
+                                                                .width(200);
+                                                                document.getElementById('preview').style.display = 'block';
+                                                        };
+
+                                                        reader.readAsDataURL(input.files[0]);
+                                                    }
+                                                }
+                                            </script>
+                                        </div>
+                          <div class="form-group">
+                                <label for="nama_wilayah">ID User Pengelola</label>
+                                <input type="#" value="<?=$rowitem->id_user_pengelola?>" class="form-control" name="tb_id_user_pengelola" id="#" placeholder="Nomor ID User">
+                          </div>
+                          <button type="submit" name="submit" value="Simpan" class="btn btn-primary">Simpan</button>
                     </form>
             <br><br>
                     

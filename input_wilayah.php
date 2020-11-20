@@ -238,7 +238,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <img id="preview" src="#" alt="Preview Gambar"/>
+                                            <img id="preview"  width="100px" src="#" alt="Preview Gambar"/>
 
                                             <script>
                                                 window.onload = function() {
