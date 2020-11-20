@@ -46,7 +46,6 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <b>Dashboard Admin - TKJB</b>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">  
                 <li class="nav-item dropdown">
@@ -172,7 +171,7 @@
             <div class="content-header">
                     <div class="container-fluid">
                         <a href="kelola_donasi.php">< Kembali</a><br><br>
-                         <h3>Edit Data Donasi</h3>
+                         <h3>Edit Data Detail Titik</h3>
                     </div>
                 <!-- /.container-fluid -->
             </div>
@@ -181,27 +180,19 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <form action="" enctype="multipart/form-data" method="POST">
-                    <div class="form-group">
-                        <label for="tb_id_user">ID User</label>
-                        <input type="text" id="tb_id_user" name="tb_id_user" class="form-control">
-                    </div>
+                <div class="form-group">
+                        <label for="dd_id_titik">ID Titik</label>
+                        <select id="dd_id_titik" name="dd_id_titik" class="form-control">
+                            <option value="">-</option>
+                            <option value="">-</option>
+                            <option value="">-</option>
+                        </select>
+                </div>
                     <div class="form-group">
                         <label for="tb_nominal_donasi">Nominal</label>
                         <input type="number" id="tb_nominal_donasi" name="tb_nominal_donasi" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label for="file_bukti_donasi">Bukti Donasi</label>
-                        <div class="file-form">
-                        <input type="file" id="file_bukti_donasi" name="file_bukti_donasi" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                         <label for="date_donasi">Tanggal Donasi</label>
-                         <div class="file-form">
-                         <input type="date" id="date_donasi" name="date_donasi" class="form-control" >
-                         </div>
-                     </div>
+
                     <br>
                     <button type="submit" class="btn btn-primary">Kirim</button>
                     </form>

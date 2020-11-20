@@ -47,7 +47,6 @@
                 </li>
             </ul>
 
-            <b>Kelola Batch</b>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">  
                 <li class="nav-item dropdown">
