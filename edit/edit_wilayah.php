@@ -181,7 +181,7 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <form>
+                    <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
                         <label for="nama_wilayah">Nama Wilayah</label>
                         <input type="text" id="tb_nama_wilayah" name="tb_nama_wilayah" class="form-control">
