@@ -227,24 +227,24 @@
                                     Rinician Wilayah</p>
                             </div>
                             <div class="col-12 contentkeadaan<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?>">                               
-                                <div class="row mb-1">
-                                    <div class="col kolom font-weight-bold">
+                                <div class="row mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
                                         Deskripsi Wilayah 
                                     </div>
                                     <div class="col isi">
                                         <?=$rowitem->deskripsi_wilayah?>
                                     </div>
                                 </div>
-                                <div class="row  mb-1">
-                                    <div class="col kolom font-weight-bold">
+                                <div class="row  mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
                                         Foto Wilayah 
                                     </div>
                                     <div class="col isi">
                                         <img src="<?=$rowitem->foto_wilayah?>" width="50px">
                                     </div>
                                 </div>
-                                <div class="row mb-1">
-                                    <div class="col kolom font-weight-bold">
+                                <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
                                         ID Pengelola
                                     </div>
                                     <div class="col isi">
