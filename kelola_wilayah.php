@@ -1,3 +1,13 @@
+<?php
+    include 'build\config\connection.php';
+    
+    $sqlviewwilayah = 'SELECT * FROM t_wilayah
+                        ORDER BY nama_wilayah';
+        $stmt = $pdo->prepare($sqlviewwilayah);
+        $stmt->execute();
+        $row = $stmt->fetchAll();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -192,12 +202,16 @@
                             </tr>
                           </thead>
                           <tbody>
+                          <?php
+
+                          foreach ($row as $rowitem) {                            
+                          ?>
                             <tr>
-                              <th scope="row">41051</th>
-                              <td>Karawang</td>
-                              <td>Jos</td>
-                              <td>-</td>
-                              <td>1ny0</td>
+                              <th scope="row"><?=$rowitem->id_wilayah?></th>
+                              <td><?=$rowitem->nama_wilayah?></td>
+                              <td><?=$rowitem->deskripsi_wilayah?></td>
+                              <td><img src="<?=$rowitem->foto_wilayah?>" width="50px"></td>
+                              <td><?=$rowitem->id_user_pengelola?></td>
                               <td>
                               <button type="button" class="btn btn-act">
                                 <a href="edit/edit_wilayah.php" class="fas fa-edit"></a>
@@ -205,6 +219,8 @@
                               <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
                                 </td>
                           </tr>
+
+                          <?php } ?>
                           </tbody>
                   </table>
 

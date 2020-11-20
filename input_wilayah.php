@@ -9,10 +9,10 @@
 
             //Image upload
             if($_FILES["image_uploads"]["size"] == 0) {
-                $foto_wilayah = "/images/image_default.jpg";
+                $foto_wilayah = "images/image_default.jpg";
             }
             else if (isset($_FILES['image_uploads'])) {
-                $target_dir  = "/images/foto_wilayah/";
+                $target_dir  = "images/foto_wilayah/";
                 $foto_wilayah = $target_dir .'WIL_'.$randomstring. '.jpg';
                 move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wilayah);
             }

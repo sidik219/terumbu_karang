@@ -129,11 +129,7 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
     }
 
     function viewWilayah(){
-        $sqlviewwilayah = 'SELECT * FROM t_wilayah
-                        ORDER BY nama_wilayah';
-        $stmt = $pdo->prepare($sqlviewwilayah);
-        $stmt->execute();
-        $row = $stmt->fetchAll();
+        
     }
     
 
