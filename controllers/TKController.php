@@ -134,99 +134,16 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
     
 
     function editWilayah(){
-        if (isset($_POST['submit'])) {
-            if ($_POST['submit'] == 'Simpan') {
-                $id_wilayah          = $_POST['id_wilayah'];
-                $nama_wilayah          = $_POST['tbnama_wilayah'];
-                $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
-                $randomstring = substr(md5(rand()), 0, 7);
-
-                //Image upload
-                if (isset($_FILES['image_uploads'])) {
-                //Image upload
-                $target_dir  = "images/foto_wilayah/";
-                $foto_wilayah = $target_dir .'WIL_'.$randomstring. '.jpg';
-                move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wilayah);  
-
-                }
-                else if($_FILES["file"]["error"] == 4) {
-                    $foto_wilayah = "images/fwdefault.png";
-                }
-
-                //---image upload end
-
-                $sqleditwilayah = "UPDATE t_wilayah
-                            SET nama_wilayah = :nama_wilayah, deskripsi_wilayah = :deskripsi_wilayah, foto_wilayah = :foto_wilayah
-                            WHERE id_wilayah = :id_wilayah";
-
-                $stmt = $pdo->prepare($sqleditwilayah);
-                $stmt->execute(['nama_wilayah' => $nama_wilayah, 'deskripsi_wilayah' => $deskripsi_wilayah, 'foto_wilayah' => $foto_wilayah, 'id_wilayah' => $id_wilayah]);
-
-                $affectedrows = $stmt->rowCount();
-                if ($affectedrows == '0') {
-                //echo "Update sukses";
-                } else {
-                header("Location: edit_wilayah.php?id_wilayah=$id_wilayah&status=updatesuccess");
-                }
-            }
-        }
+        
     }
 
     function deleteWilayah(){        
-            $sql = 'DELETE FROM t_wilayah
-            WHERE id_wilayah = :id_wilayah';
-            
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute(['id_wilayah' => $_POST['id_wilayah']]);
-            header('Location: kelola_wilayah.php?status=deletesuccess');       
+                
     }
 
 
     function addLokasi(){
-        $isAdmin = $_SESSION['level_user'] == 2;
-
-        if (!$isLoggedIn) {
-            header('Location: login.php');
-        }
-        else if (!$isAdmin) {
-            header('Location: dashboard.php');
-        }
-        else{
-        if (isset($_POST['submit'])) {
-            $nama_lokasi        = $_POST['tbnama_lokasi'];
-            $luas_lokasi        = $_POST['tbluas_lokasi'];
-            $id_wilayah        = $_POST['listwilayah'];
-            $deskripsi_lokasi     = $_POST['txtdeskripsi_lokasi'];
-            $randomstring = substr(md5(rand()), 0, 7);
-
-            //Image upload
-            if (isset($_FILES['image_uploads'])) {
-            $target_dir  = "images/foto_lokasi/";
-            $foto_lokasi = $target_dir .'LOK_'.$randomstring. '.jpg';
-            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_lokasi);  
-
-            }
-            else if($_FILES["file"]["error"] == 4) {
-                $foto_lokasi = "images/fldefault.png";
-            }
-            //---image upload end   
-
-            $sqllokasi = "INSERT INTO t_lokasi
-                            (id_wilayah, nama_lokasi, deskripsi_lokasi, foto_lokasi, luas_lokasi)
-                            VALUES (:id_wilayah, :nama_lokasi, :deskripsi_lokasi, :foto_lokasi, :luas_lokasi)";
-
-            $stmt = $pdo->prepare($sqllokasi);
-            $stmt->execute(['id_wilayah' => $id_wilayah, 'nama_lokasi' => $nama_lokasi, 'deskripsi_lokasi' => $deskripsi_lokasi, 'foto_lokasi' => $foto_lokasi, 'luas_lokasi' => $luas_lokasi]);
-
-            $affectedrows = $stmt->rowCount();
-            if ($affectedrows == '0') {
-            //echo "HAHAHAAHA INSERT FAILED !";
-            } else {
-                //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: kelola_lokasi.php?status=addsuccess");
-                }
-            } 
-        }
+ 
     }
 
     function viewLokasi(){

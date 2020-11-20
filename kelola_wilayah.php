@@ -265,7 +265,7 @@
 
                         <!--collapse end -->
                                 </td>
-                            <tr>
+                            </tr>
 
                           <?php } ?>
                           </tbody>

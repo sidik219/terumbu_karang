@@ -1,3 +1,60 @@
+<?php
+    include 'build\config\connection.php';
+
+    $sqlviewwilayah = 'SELECT * FROM t_wilayah
+                        ORDER BY nama_wilayah';
+        $stmt = $pdo->prepare($sqlviewwilayah);
+        $stmt->execute();
+        $row = $stmt->fetchAll();
+    
+    if (isset($_POST['submit'])) {
+        if($_POST['submit'] == 'Simpan'){
+            $id_wilayah = $_POST['dd_id_wilayah'];
+            $nama_lokasi        = $_POST['tb_nama_lokasi'];
+            $luas_lokasi        = $_POST['num_luas_lokasi'];
+            $deskripsi_lokasi     = $_POST['tb_deskripsi_lokasi'];
+            $id_user_pengelola     = $_POST['tb_id_pengelola'];
+            $kontak_lokasi     = $_POST['num_kontak_lokasi'];
+            $nama_bank     = $_POST['tb_nama_bank'];
+            $nama_rekening     = $_POST['tb_nama_rekening'];
+            $nomor_rekening     = $_POST['num_nomor_rekening'];
+            $randomstring = substr(md5(rand()), 0, 7);
+
+            //Image upload
+            if($_FILES["image_uploads"]["size"] == 0) {
+                $foto_lokasi = "images/image_default.jpg";
+            }
+            else if (isset($_FILES['image_uploads'])) {
+                $target_dir  = "images/foto_lokasi/";
+                $foto_lokasi = $target_dir .'WIL_'.$randomstring. '.jpg';
+                move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_lokasi);
+            }
+            
+            //---image upload end   
+
+            $sqllokasi = "INSERT INTO t_lokasi
+                            (id_wilayah, nama_lokasi, deskripsi_lokasi, foto_lokasi, luas_lokasi, id_user_pengelola,
+                            kontak_lokasi, nama_bank, nama_rekening, nomor_rekening)
+                            VALUES (:id_wilayah, :nama_lokasi, :deskripsi_lokasi, :foto_lokasi, :luas_lokasi,
+                            :id_user_pengelola, :kontak_lokasi, :nama_bank, :nama_rekening, :nomor_rekening)";
+
+            $stmt = $pdo->prepare($sqllokasi);
+            $stmt->execute(['id_wilayah' => $id_wilayah, 'nama_lokasi' => $nama_lokasi, 
+            'deskripsi_lokasi' => $deskripsi_lokasi, 'foto_lokasi' => $foto_lokasi, 
+            'luas_lokasi' => $luas_lokasi, 'id_user_pengelola' => $id_user_pengelola,
+            'kontak_lokasi' => $kontak_lokasi,'nama_bank' => $nama_bank,
+            'nama_rekening' => $nama_rekening,'nomor_rekening' => $nomor_rekening]);
+
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+            //echo "HAHAHAAHA INSERT FAILED !";
+            } else {
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                header("Location: kelola_lokasi.php?status=addsuccess");
+                }
+            }
+        }        
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,13 +81,6 @@
         <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
         <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -184,9 +234,11 @@
                     <div class="form-group">
                         <label for="dd_id_wilayah">ID Wilayah</label>
                         <select id="dd_id_wilayah" name="dd_id_wilayah" class="form-control">
-                            <option value="">41051 - Karawang</option>
-                            <option value="">45211 - Indramayu</option>
-                            <option value="">46396 - Pangandaran</option>
+                            <?php foreach ($row as $rowitem) {                            
+                            ?>
+                            <option value="<?=$rowitem->id_wilayah?>">ID <?=$rowitem->id_wilayah?> - <?=$rowitem->nama_wilayah?></option>
+
+                            <?php } ?>
                         </select>
                     </div>
                     <div class="form-group">
@@ -197,11 +249,35 @@
                         <label for="num_luas_lokasi">Luas Lokasi (m2)</label>
                         <input type="number" id="num_luas_lokasi" name="num_luas_lokasi" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label for="file_foto_lokasi">Foto</label>
-                        <div class="file-form">
-                        <input type="file" id="file_foto_lokasi" name="file_foto_lokasi" class="form-control">
+                    <div class='form-group' id='fotowilayah'>
+                        <div>
+                            <label for='image_uploads'>Upload Foto Lokasi</label>
+                            <input type='file'  class='form-control' id='image_uploads'
+                                name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <img id="preview"  width="100px" src="#" alt="Preview Gambar"/>
+
+                        <script>
+                            window.onload = function() {
+                            document.getElementById('preview').style.display = 'none';
+                            };
+                            function readURL(input) {
+                                if (input.files && input.files[0]) {
+                                    var reader = new FileReader();
+
+                                    reader.onload = function (e) {
+                                        $('#preview')
+                                            .attr('src', e.target.result)
+                                            .width(200);
+                                            document.getElementById('preview').style.display = 'block';
+                                    };
+
+                                    reader.readAsDataURL(input.files[0]);
+                                }
+                            }
+                        </script>
                     </div>
                     <div class="form-group">
                         <label for="tb_deskripsi_lokasi">Deskripsi</label>
@@ -229,7 +305,7 @@
                     </div>
                     <br>
                     <p align="center">
-                    <button type="submit" class="btn btn-submit">Kirim</button></p>
+                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
             <br><br>
                     <a href="input_titik.php">Lanjut isi data titik ></a>
