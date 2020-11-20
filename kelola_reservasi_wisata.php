@@ -46,7 +46,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <b>Dashboard Admin - TKJB</b>
+            <b>Kelola Reservasi</b>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">  
                 <li class="nav-item dropdown">
@@ -172,7 +172,9 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                   <h3>Kelola Reservasi Wisata</h3>
+                 <p align="right">
+                        <a class="btn btn-primary" href="input_reservasi_wisata.php" role="button">Input Data Baru (+)</a>
+                    </p>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -217,9 +219,7 @@
 
             <!-- BUTTON SUBMIT -->
             <div class="new-entry">
-                <p align="center">
-                <a class="btn btn-primary" href="input_reservasi_wisata.php" role="button">Input Data Baru (+)</a>
-                </p>
+               
             </div>
             
             </section>

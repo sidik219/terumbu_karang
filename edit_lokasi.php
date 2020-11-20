@@ -46,7 +46,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <b>Dashboard Admin - TKJB</b>
+            <b>Kelola Lokasi</b>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">  
                 <li class="nav-item dropdown">
@@ -229,7 +229,8 @@
                         <input type="number" id="num_nomor_rekening" name="num_nomor_rekening" class="form-control">
                     </div>
                     <br>
-                    <button type="submit" class="btn btn-primary">Kirim</button>
+                    <p align="center">
+                    <button type="submit" class="btn btn-submit">Kirim</button></p>
                     </form>
             <br><br>
                     

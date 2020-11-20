@@ -48,5 +48,12 @@ a.btn.btn-primary
 	border-radius: 4px
 }
 
-
-
+.btn.btn-submit
+{
+	border-radius: 10px;
+	width: 60%;
+	color: white;
+	background-color: #E24901;
+	border: none;
+	padding: 6px 12px;
+}

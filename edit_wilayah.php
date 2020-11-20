@@ -92,7 +92,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <b>Dashboard Admin - TKJB</b>
+            <b>Kelola Wilayah</b>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">  
                 <li class="nav-item dropdown">
@@ -273,7 +273,8 @@
                                 <label for="nama_wilayah">ID User Pengelola</label>
                                 <input type="#" value="<?=$rowitem->id_user_pengelola?>" class="form-control" name="tb_id_user_pengelola" id="#" placeholder="Nomor ID User">
                           </div>
-                          <button type="submit" name="submit" value="Simpan" class="btn btn-primary">Simpan</button>
+                         <p align="center">
+                        <button type="submit" class="btn btn-submit">Kirim</button></p>
                     </form>
             <br><br>
                     

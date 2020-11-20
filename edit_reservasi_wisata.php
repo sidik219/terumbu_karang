@@ -215,7 +215,9 @@
                         </div>
                     </div>
                      <br>
-                          <button type="submit" class="btn btn-primary">Kirim</button>
+                     <p align="center">
+                    <button type="submit" class="btn btn-submit">Kirim</button></p>
+                    </form>
                     </form>
                     <br><br>
                     
