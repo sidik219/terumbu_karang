@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Batch - Terumbu Karang</title>
+    <title>Kelola Wisata - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
@@ -62,7 +62,7 @@
         <!-- TOP SIDEBAR -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
-            <a href="index.php" class="brand-link">
+            <a href="../index_admin.php" class="brand-link">
                 <img src="../dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
                 <!-- BRAND TEXT (TOP) -->
                 <span class="brand-text font-weight-bold">TKJB</span>
@@ -75,67 +75,87 @@
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item ">
-                           <a href="index.php" class="nav-link ">
+                           <a href="../index_admin.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p> Home </p>
                            </a>
                         </li>
                         <li class="nav-item ">
-                            <a href="tabel_donasi.php" class="nav-link ">
+                            <a href="../kelola_donasi.php" class="nav-link ">
                                 <i class="nav-icon fas fa-hand-holding-usd"></i>
                                 <p> Kelola Donasi </p>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a href="tabel_wilayah.php" class="nav-link ">
+                        <li class="nav-item menu-open">
+                            <a href="../kelola_wisata.php" class="nav-link active">
+                                <i class="nav-icon fas fa-suitcase"></i>
+                                <p> Kelola Wisata </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../kelola_reservasi_wisata.php" class="nav-link">
+                                <i class="nav-icon fas fa-th-list"></i>
+                                <p> Kelola Reservasi </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../kelola_wilayah.php" class="nav-link">
                                 <i class="nav-icon fas fa-globe-asia"></i>
                                 <p> Kelola Wilayah </p>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a href="tabel_lokasi.php" class="nav-link ">
+                        
+                        <li class="nav-item">
+                            <a href="../kelola_lokasi.php" class="nav-link">
                                 <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
                                 <p> Kelola Lokasi </p>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a href="tabel_titik.php" class="nav-link ">
+                        <li class="nav-item">
+                            <a href="../kelola_titik.php" class="nav-link">
                                  <i class="nav-icon fas fa-crosshairs"></i>
                                  <p> Kelola Titik </p>
                             </a>
                         </li>
-                        <li class="nav-item menu-open">
-                            <a href="tabel_batch.php" class="nav-link active">
+                        <li class="nav-item">
+                            <a href="../kelola_detail_titik.php" class="nav-link">
+                                 <i class="nav-icon fas fa-podcast"></i>
+                                 <p> Kelola Detail Titik </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../kelola_batch.php" class="nav-link">
                                   <i class="nav-icon fas fa-boxes"></i>
                                   <p> Kelola Batch </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="tabel_tk.php" class="nav-link">
-                                  <i class="nav-icon fas fa-disease"></i>
-                                  <p> Kelola Terumbu Karang </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                             <a href="tabel_jenis_tk.php" class="nav-link">
+                         <li class="nav-item">
+                             <a href="../kelola_jenis_tk.php" class="nav-link">
                                    <i class="nav-icon fas fa-certificate"></i>
                                    <p> Kelola Jenis Terumbu </p>
                              </a>
                         </li>
                         <li class="nav-item">
-                             <a href="tabel_perizinan.php" class="nav-link">
+                            <a href="../kelola_tk.php" class="nav-link">
+                                  <i class="nav-icon fas fa-disease"></i>
+                                  <p> Kelola Terumbu Karang </p>
+                            </a>
+                        </li>
+                       
+                        <li class="nav-item">
+                             <a href="../kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
                                     <p> Kelola Perizinan </p>
                              </a>
                         </li>
                         <li class="nav-item">
-                            <a href="tabel_laporan.php" class="nav-link">
+                            <a href="../kelola_laporan.php" class="nav-link">
                                     <i class="nav-icon fas fa-book"></i>
                                     <p> Kelola Laporan </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="tabel_user.php" class="nav-link">
+                            <a href="../kelola_user.php" class="nav-link">
                                     <i class="nav-icon fas fa-user"></i>
                                     <p> Kelola User </p>
                             </a>
@@ -152,8 +172,8 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                  
-                   <h3>Kelola Batch</h3>
+                    <a href="../kelola_wisata.php">< Kembali</a><br><br>
+                   <h3>Edit Data Wisata</h3>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -162,6 +182,40 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+                     <form action="" enctype="multipart/form-data" method="POST">
+                     <div class="form-group">
+                        <label for="tb_judul_wisata">Judul Wisata</label>
+                        <input type="text" id="tb_judul_wisata" name="tb_judul_wisata" class="form-control">
+                     </div>
+                     <div class="form-group">
+                        <label for="tb_deskripsi_wisata">Deskripsi Wisata</label>
+                        <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" class="form-control">
+                     </div>
+                    <div class="form-group">
+                        <label for="num_biaya_wisata">Biaya Wisata</label>
+                        <input type="number" id="num_biaya_wisata" name="num_biaya_wisata" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="file_foto_wisata">Foto Wisata</label>
+                        <div class="file-form">
+                        <input type="file" id="file_foto_wisata" name="file_foto_wisata" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="rb_status_wisata">Status</label><br>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="rb_status_aktif" name="rb_status_wisata" value="aktif" class="form-check-input">
+                            <label class="form-check-label" for="rb_status_aktif">Aktif</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="rb_status_tidak_aktif" name="rb_status_wisata" value="tidak_aktif" class="form-check-input">
+                            <label class="form-check-label" for="rb_status_tidak_aktif">Tidak Aktif</label>
+                        </div>
+                    </div>
+                          <br>
+                          <button type="submit" class="btn btn-primary">Kirim</button>
+                    </form>
+                    <br><br>
                     
             
             </section>
@@ -186,7 +240,7 @@
     <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
-
+<div>
     <!-- jQuery -->
     <script src="../plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -231,6 +285,7 @@
     <script src="../dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
     <script src="../dist/js/leaflet-map.js"></script>
+</div>
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Titik - TKJB</title>
+    <title>Kelola Lokasi - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
@@ -62,7 +62,7 @@
         <!-- TOP SIDEBAR -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
-            <a href="index.php" class="brand-link">
+            <a href="../index_admin.php" class="brand-link">
                 <img src="../dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
                 <!-- BRAND TEXT (TOP) -->
                 <span class="brand-text font-weight-bold">TKJB</span>
@@ -75,67 +75,86 @@
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item ">
-                           <a href="index.php" class="nav-link ">
+                           <a href="../index_admin.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p> Home </p>
                            </a>
                         </li>
-                        <li class="nav-item menu-open">
-                            <a href="tabel_donasi.php" class="nav-link active">
+                        <li class="nav-item ">
+                            <a href="../kelola_donasi.php" class="nav-link ">
                                 <i class="nav-icon fas fa-hand-holding-usd"></i>
                                 <p> Kelola Donasi </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="../kelola_wisata.php" class="nav-link">
+                                <i class="nav-icon fas fa-suitcase"></i>
+                                <p> Kelola Wisata </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../kelola_reservasi_wisata.php" class="nav-link">
+                                <i class="nav-icon fas fa-th-list"></i>
+                                <p> Kelola Reservasi </p>
+                            </a>
+                        </li>
                         <li class="nav-item ">
-                            <a href="tabel_wilayah.php" class="nav-link ">
+                            <a href="../kelola_wilayah.php" class="nav-link ">
                                 <i class="nav-icon fas fa-globe-asia"></i>
                                 <p> Kelola Wilayah </p>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a href="tabel_lokasi.php" class="nav-link ">
+                        <li class="nav-item menu-open">
+                            <a href="../kelola_lokasi.php" class="nav-link active">
                                 <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
                                 <p> Kelola Lokasi </p>
                             </a>
                         </li>
                         <li class="nav-item ">
-                            <a href="tabel_titik.php" class="nav-link ">
+                            <a href="../kelola_titik.php" class="nav-link ">
                                  <i class="nav-icon fas fa-crosshairs"></i>
                                  <p> Kelola Titik </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="tabel_batch.php" class="nav-link">
+                            <a href="../kelola_detail_titik.php" class="nav-link">
+                                 <i class="nav-icon fas fa-podcast"></i>
+                                 <p> Kelola Detail Titik </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../kelola_batch.php" class="nav-link">
                                   <i class="nav-icon fas fa-boxes"></i>
                                   <p> Kelola Batch </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="tabel_tk.php" class="nav-link">
-                                  <i class="nav-icon fas fa-disease"></i>
-                                  <p> Kelola Terumbu Karang </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                             <a href="tabel_jenis_tk.php" class="nav-link">
+                             <a href="../kelola_jenis_tk.php" class="nav-link">
                                    <i class="nav-icon fas fa-certificate"></i>
                                    <p> Kelola Jenis Terumbu </p>
                              </a>
                         </li>
                         <li class="nav-item">
-                             <a href="tabel_perizinan.php" class="nav-link">
+                            <a href="../kelola_tk.php" class="nav-link">
+                                  <i class="nav-icon fas fa-disease"></i>
+                                  <p> Kelola Terumbu Karang </p>
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                             <a href="../kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
                                     <p> Kelola Perizinan </p>
                              </a>
                         </li>
                         <li class="nav-item">
-                            <a href="tabel_laporan.php" class="nav-link">
+                            <a href="../kelola_laporan.php" class="nav-link">
                                     <i class="nav-icon fas fa-book"></i>
                                     <p> Kelola Laporan </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="tabel_user.php" class="nav-link">
+                            <a href="../kelola_user.php" class="nav-link">
                                     <i class="nav-icon fas fa-user"></i>
                                     <p> Kelola User </p>
                             </a>
@@ -152,8 +171,8 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                     <div class="container-fluid">
-                        <a href="tabel_donasi.php">< Kembali</a><br><br>
-                         <h3>Input Data Donasi</h3>
+                        <a href="../kelola_lokasi.php">< Kembali</a><br><br>
+                         <h3>Edit Data Lokasi</h3>
                     </div>
                 <!-- /.container-fluid -->
             </div>
@@ -162,22 +181,55 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <form>
-                          <div class="form-group">
-                                <label for="exampleInputEmail1">ID Donasi</label>
-                                <input type="#" class="form-control" id="#">
-                          </div>
-                          <div class="form-group">
-                                <label for="exampleInputEmail1">ID User</label>
-                                <input type="#" class="form-control" id="#">
-                          </div>
-                          <div class="form-group">
-                                <label for="exampleInputEmail1">Nominal</label>
-                                <input type="#" class="form-control" id="#">
-                          </div>
-                          
-                        <br>
-                          <button type="submit" class="btn btn-primary">Kirim</button>
+                    <form action="" enctype="multipart/form-data" method="POST">
+                    <div class="form-group">
+                        <label for="dd_id_wilayah">ID Wilayah</label>
+                        <select id="dd_id_wilayah" name="dd_id_wilayah" class="form-control">
+                            <option value="">41051 - Karawang</option>
+                            <option value="">45211 - Indramayu</option>
+                            <option value="">46396 - Pangandaran</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tb_nama_lokasi">Nama Lokasi</label>
+                        <input type="text" id="tb_nama_lokasi" name="tb_nama_lokasi" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="num_luas_lokasi">Luas Lokasi (m2)</label>
+                        <input type="number" id="num_luas_lokasi" name="num_luas_lokasi" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="file_foto_lokasi">Foto</label>
+                        <div class="file-form">
+                        <input type="file" id="file_foto_lokasi" name="file_foto_lokasi" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tb_deskripsi_lokasi">Deskripsi</label>
+                        <input type="text" id="tb_deskripsi_lokasi" name="tb_deskripsi_lokasi" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="tb_id_pengelola">ID User Pengelola</label>
+                        <input type="text" id="tb_id_pengelola" name="tb_id_pengelola" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="num_kontak_lokasi">Kontak Lokasi</label>
+                        <input type="number" id="num_kontak_lokasi" name="num_kontak_lokasi" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="tb_nama_bank">Nama Bank</label>
+                        <input type="text" id="tb_nama_bank" name="tb_nama_bank" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="tb_nama_rekening">Nama Rekening</label>
+                        <input type="text" id="tb_nama_rekening" name="tb_nama_rekening" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="num_nomor_rekening">Nomor Rekening</label>
+                        <input type="number" id="num_nomor_rekening" name="num_nomor_rekening" class="form-control">
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Kirim</button>
                     </form>
             <br><br>
                     

@@ -1,5 +1,5 @@
 <?php
-include 'connection.php';
+include '..\build\config\connection.php';
 session_start();
 $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
 
@@ -116,57 +116,20 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
     }
 
     function addWilayah(){
-        $isAdmin = $_SESSION['level_user'] == 2;
+        // $isAdmin = $_SESSION['level_user'] == 2;
 
-        if (!$isLoggedIn) {
-            header('Location: login.php');
-        }
-        else if (!$isAdmin) {
-            header('Location: dashboard.php');
-        }
-        else{
-        if (isset($_POST['submit'])) {
-            $nama_wilayah        = $_POST['tbnama_wilayah'];
-            $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
-            $randomstring = substr(md5(rand()), 0, 7);
-
-            //Image upload
-            if (isset($_FILES['image_uploads'])) {
-            //Image upload
-            $target_dir  = "images/foto_wilayah/";
-            $foto_wilayah = $target_dir .'WIL_'.$randomstring. '.jpg';
-            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wilayah);  
-
-            }
-            else if($_FILES["file"]["error"] == 4) {
-                $foto_wilayah = "images/fwdefault.png";
-            }
-            //---image upload end   
-
-            $sqlwilayah = "INSERT INTO t_wilayah
-                            (nama_wilayah, deskripsi_wilayah, foto_wilayah)
-                            VALUES (:nama_wilayah, :deskripsi_wilayah, :foto_wilayah)";
-
-            $stmt = $pdo->prepare($sqlwilayah);
-            $stmt->execute(['nama_wilayah' => $nama_wilayah, 'deskripsi_wilayah' => $deskripsi_wilayah, 'foto_wilayah' => $foto_wilayah]);
-
-            $affectedrows = $stmt->rowCount();
-            if ($affectedrows == '0') {
-            //echo "HAHAHAAHA INSERT FAILED !";
-            } else {
-                //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: kelola_wilayah.php?status=addsuccess");
-                }
-            }        
-        }
+        // if (!$isLoggedIn) {
+        //     header('Location: login.php');
+        // }
+        // else if (!$isAdmin) {
+        //     header('Location: dashboard.php');
+        // }
+        // else{
+        
     }
 
     function viewWilayah(){
-        $sqlviewwilayah = 'SELECT * FROM t_wilayah
-                        ORDER BY nama_wilayah';
-        $stmt = $pdo->prepare($sqlviewwilayah);
-        $stmt->execute();
-        $row = $stmt->fetchAll();
+        
     }
     
 
@@ -780,7 +743,8 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
     }
 
     function hello(){
-        echo "Function works, praise KEK";
+        $msg = "Function works, praise KEK";
+        return $msg;
     }
 
 
