@@ -2,6 +2,7 @@
     include 'build\config\connection.php';
     
     if (isset($_POST['submit'])) {
+        if($_POST['submit'] == 'Simpan'){
             $nama_wilayah        = $_POST['tbnama_wilayah'];
             $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
             $id_user_pengelola     = $_POST['tb_id_user_pengelola'];
@@ -28,12 +29,13 @@
 
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
-            //echo "HAHAHAAHA INSERT FAILED !";
+                //echo "HAHAHAAHA INSERT FAILED !";
             } else {
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
                 header("Location: kelola_wilayah.php?status=addsuccess");
                 }
-            }        
+            }
+        }        
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -265,7 +267,7 @@
                                 <input type="#" class="form-control" name="tb_id_user_pengelola" id="#" placeholder="Nomor ID User">
                           </div>
                           <p align="center">
-                            <button type="submit" class="btn btn-submit">Kirim</button></p>
+                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
             <br><a href="input_lokasi.php">Lanjut isi data lokasi ></a>
             </section>
