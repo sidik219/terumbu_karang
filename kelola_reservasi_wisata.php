@@ -207,7 +207,7 @@
                               <td>-</td>
                               <td>
                                <button type="button" class="btn btn-act">
-                                <a href="edit/edit_reservasi_wisata.php" class="fas fa-edit"></a>
+                                <a href="edit_reservasi_wisata.php" class="fas fa-edit"></a>
                                 </button>
                               <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
                               </td>

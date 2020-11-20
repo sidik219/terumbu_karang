@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Donasi - TKJB</title>
+    <title>Kelola Batch - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-        <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
         <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" href="../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
     <!-- iCheck -->
-        <link rel="stylesheet" href="../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- JQVMap -->
-        <link rel="stylesheet" href="../plugins/jqvmap/jqvmap.min.css">
+        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
-        <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+        <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
-        <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+        <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Daterange picker -->
-        <link rel="stylesheet" href="../plugins/daterangepicker/daterangepicker.css">
+        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
-        <link rel="stylesheet" href="../plugins/summernote/summernote-bs4.min.css">
+        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
     <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/../dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
     <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="../dist/css/leaflet-panel-layers.css" />
+        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
     <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="../dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="../dist/css/MarkerCluster.Default.css" />
+        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
+        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -62,8 +62,8 @@
         <!-- TOP SIDEBAR -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
-            <a href="../index_admin.php" class="brand-link">
-                <img src="../dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
+            <a href="index_admin.php" class="brand-link">
+                <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
                 <!-- BRAND TEXT (TOP) -->
                 <span class="brand-text font-weight-bold">TKJB</span>
             </a>
@@ -75,86 +75,86 @@
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item ">
-                           <a href="../index_admin.php" class="nav-link ">
+                           <a href="index_admin.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p> Home </p>
                            </a>
                         </li>
-                        <li class="nav-item menu-open">
-                            <a href="../kelola_donasi.php" class="nav-link active">
+                        <li class="nav-item ">
+                            <a href="kelola_donasi.php" class="nav-link ">
                                 <i class="nav-icon fas fa-hand-holding-usd"></i>
                                 <p> Kelola Donasi </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../kelola_wisata.php" class="nav-link">
+                            <a href="kelola_wisata.php" class="nav-link">
                                 <i class="nav-icon fas fa-suitcase"></i>
                                 <p> Kelola Wisata </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../kelola_reservasi_wisata.php" class="nav-link">
+                            <a href="kelola_reservasi_wisata.php" class="nav-link">
                                 <i class="nav-icon fas fa-th-list"></i>
                                 <p> Kelola Reservasi </p>
                             </a>
                         </li>
                         <li class="nav-item ">
-                            <a href="../kelola_wilayah.php" class="nav-link ">
+                            <a href="kelola_wilayah.php" class="nav-link ">
                                 <i class="nav-icon fas fa-globe-asia"></i>
                                 <p> Kelola Wilayah </p>
                             </a>
                         </li>
                         <li class="nav-item ">
-                            <a href="../kelola_lokasi.php" class="nav-link ">
+                            <a href="kelola_lokasi.php" class="nav-link ">
                                 <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
                                 <p> Kelola Lokasi </p>
                             </a>
                         </li>
                         <li class="nav-item ">
-                            <a href="../kelola_titik.php" class="nav-link ">
+                            <a href="kelola_titik.php" class="nav-link ">
                                  <i class="nav-icon fas fa-crosshairs"></i>
                                  <p> Kelola Titik </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../kelola_detail_titik.php" class="nav-link">
+                            <a href="kelola_detail_titik.php" class="nav-link">
                                  <i class="nav-icon fas fa-podcast"></i>
                                  <p> Kelola Detail Titik </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="../kelola_batch.php" class="nav-link">
+                        <li class="nav-item menu-open">
+                            <a href="kelola_batch.php" class="nav-link active">
                                   <i class="nav-icon fas fa-boxes"></i>
                                   <p> Kelola Batch </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                             <a href="../kelola_jenis_tk.php" class="nav-link">
+                             <a href="kelola_jenis_tk.php" class="nav-link">
                                    <i class="nav-icon fas fa-certificate"></i>
                                    <p> Kelola Jenis Terumbu </p>
                              </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../kelola_tk.php" class="nav-link">
+                            <a href="kelola_tk.php" class="nav-link">
                                   <i class="nav-icon fas fa-disease"></i>
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
                         
                         <li class="nav-item">
-                             <a href="../kelola_perizinan.php" class="nav-link">
+                             <a href="kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
                                     <p> Kelola Perizinan </p>
                              </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../kelola_laporan.php" class="nav-link">
+                            <a href="kelola_laporan.php" class="nav-link">
                                     <i class="nav-icon fas fa-book"></i>
                                     <p> Kelola Laporan </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="../kelola_user.php" class="nav-link">
+                            <a href="kelola_user.php" class="nav-link">
                                     <i class="nav-icon fas fa-user"></i>
                                     <p> Kelola User </p>
                             </a>
@@ -171,8 +171,8 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                     <div class="container-fluid">
-                        <a href="../kelola_donasi.php">< Kembali</a><br><br>
-                         <h3>Edit Data Donasi</h3>
+                        <a href="kelola_batch.php">< Kembali</a><br><br>
+                         <h3>Edit Data Batch</h3>
                     </div>
                 <!-- /.container-fluid -->
             </div>
@@ -183,25 +183,34 @@
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
-                        <label for="tb_id_user">ID User</label>
-                        <input type="text" id="tb_id_user" name="tb_id_user" class="form-control">
+                        <label for="dd_id_titik">ID Titik</label>
+                        <select id="dd_id_titik" name="dd_id_titik" class="form-control">
+                            <option value="">1</option>
+                            <option value="">2</option>
+                            <option value="">3</option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label for="tb_nominal_donasi">Nominal</label>
-                        <input type="number" id="tb_nominal_donasi" name="tb_nominal_donasi" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="file_bukti_donasi">Bukti Donasi</label>
-                        <div class="file-form">
-                        <input type="file" id="file_bukti_donasi" name="file_bukti_donasi" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                         <label for="date_donasi">Tanggal Donasi</label>
+                         <label for="date_penanaman">Tanggal Penanaman</label>
                          <div class="file-form">
-                         <input type="date" id="date_donasi" name="date_donasi" class="form-control" >
+                         <input type="date" id="date_penanaman" name="date_penanaman" class="form-control" >
                          </div>
                      </div>
+                     <div class="form-group">
+                        <label for="rb_status_batch">Status</label><br>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="rb_status_batch_penyemaian" name="rb_status_batch" value="penyemaian" class="form-check-input">
+                            <label class="form-check-label" for="rb_status_batch_penyemaian">Penyemaian</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="rb_status_batch_penyebaran" name="rb_status_batch" value="penyebaran" class="form-check-input">
+                            <label class="form-check-label" for="rb_status_batch_penyebaran">Penyebaran</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="rb_status_batch_monitoring" name="rb_status_batch" value="monitoring" class="form-check-input">
+                            <label class="form-check-label" for="rb_status_batch_monitoring">Monitoring</label>
+                        </div>
+                    </div>
                     <br>
                     <button type="submit" class="btn btn-primary">Kirim</button>
                     </form>
@@ -231,49 +240,49 @@
     <!-- ./wrapper -->
 
     <!-- jQuery -->
-    <script src="../plugins/jquery/jquery.min.js"></script>
+    <script src="plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
-    <script src="../plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
         $.widget.bridge('uibutton', $.ui.button)
     </script>
     <!-- Bootstrap 4 -->
-    <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- ChartJS -->
-    <script src="../plugins/chart.js/Chart.min.js"></script>
+    <script src="plugins/chart.js/Chart.min.js"></script>
     <!-- Sparkline -->
-    <script src="../plugins/sparklines/sparkline.js"></script>
+    <script src="plugins/sparklines/sparkline.js"></script>
     <!-- JQVMap -->
-    <script src="../plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="../plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
     <!-- jQuery Knob Chart -->
-    <script src="../plugins/jquery-knob/jquery.knob.min.js"></script>
+    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
     <!-- daterangepicker -->
-    <script src="../plugins/moment/moment.min.js"></script>
-    <script src="../plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="plugins/moment/moment.min.js"></script>
+    <script src="plugins/daterangepicker/daterangepicker.js"></script>
     <!-- Tempusdominus Bootstrap 4 -->
-    <script src="../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
     <!-- Summernote -->
-    <script src="../plugins/summernote/summernote-bs4.min.js"></script>
+    <script src="plugins/summernote/summernote-bs4.min.js"></script>
     <!-- overlayScrollbars -->
-    <script src="../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="../dist/js/adminlte.js"></script>
+    <script src="dist/js/adminlte.js"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="../dist/js/demo.js"></script>
+    <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="../dist/js/pages/dashboard.js"></script>
+    <script src="dist/js/pages/dashboard.js"></script>
     <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/../dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <!-- Leaflet Marker Cluster -->
-    <script src="../dist/js/leaflet.markercluster-src.js"></script>
+    <script src="dist/js/leaflet.markercluster-src.js"></script>
     <!-- Leaflet panel layer JS-->
-    <script src="../dist/js/leaflet-panel-layers.js"></script>
+    <script src="dist/js/leaflet-panel-layers.js"></script>
     <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-    <script src="../dist/js/leaflet.ajax.js"></script>
+    <script src="dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
-    <script src="../dist/js/leaflet-map.js"></script>
+    <script src="dist/js/leaflet-map.js"></script>
 
 </body>
 </html>

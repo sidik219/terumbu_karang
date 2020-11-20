@@ -206,7 +206,7 @@
                               <td>Aktif</td>
                               <td>
                               <button type="button" class="btn btn-act">
-                                <a href="edit/edit_wisata.php" class="fas fa-edit"></a>
+                                <a href="edit_wisata.php" class="fas fa-edit"></a>
                                 </button>
                               <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
                               </td>
