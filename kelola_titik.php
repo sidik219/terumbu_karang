@@ -46,7 +46,6 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <b>Kelola Titik</b>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">  
                 <li class="nav-item dropdown">
@@ -171,9 +170,16 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                <p align="right">
-                        <a class="btn btn-primary" href="input_titik.php" role="button">Input Data Baru (+)</a>
-                    </p>
+                <div class="row">
+                        <div class="col">
+                            <h4><span class="align-middle font-weight-bold">Kelola Titik</span></h4>
+                        </div>
+                        <div class="col">
+                           
+                        <a class="btn btn-primary float-right" href="input_titik.php" role="button">Input Data Baru (+)</a>
+                   
+                        </div>
+                    </div>
                 </div>
                 <!-- /.container-fluid -->
             </div>
