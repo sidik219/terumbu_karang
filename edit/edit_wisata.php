@@ -182,7 +182,7 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                     <form>
+                     <form action="" enctype="multipart/form-data" method="POST">
                      <div class="form-group">
                         <label for="tb_judul_wisata">Judul Wisata</label>
                         <input type="text" id="tb_judul_wisata" name="tb_judul_wisata" class="form-control">

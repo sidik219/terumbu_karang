@@ -181,7 +181,7 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">  
-                    <form>
+                    <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
                         <label for="dd_id_lokasi_wisata">ID Lokasi</label>
                         <select id="dd_id_lokasi_wisata" name="dd_id_lokasi_wisata" class="form-control">

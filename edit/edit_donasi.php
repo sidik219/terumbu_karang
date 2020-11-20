@@ -181,7 +181,7 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <form>
+                    <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
                         <label for="tb_id_user">ID User</label>
                         <input type="text" id="tb_id_user" name="tb_id_user" class="form-control">
