@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Terumbu Karang - TKJB</title>
+    <title>Kelola Perizinan - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
@@ -121,27 +121,27 @@
                                  <p> Kelola Detail Titik </p>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a href="kelola_batch.php" class="nav-link ">
+                        <li class="nav-item">
+                            <a href="kelola_batch.php" class="nav-link">
                                   <i class="nav-icon fas fa-boxes"></i>
                                   <p> Kelola Batch </p>
                             </a>
                         </li>
-                        <li class="nav-item ">
+                         <li class="nav-item ">
                              <a href="kelola_jenis_tk.php" class="nav-link ">
                                    <i class="nav-icon fas fa-certificate"></i>
                                    <p> Kelola Jenis Terumbu </p>
                              </a>
                         </li>
-                        <li class="nav-item menu-open">
-                            <a href="kelola_tk.php" class="nav-link active">
+                        <li class="nav-item ">
+                            <a href="kelola_tk.php" class="nav-link ">
                                   <i class="nav-icon fas fa-disease"></i>
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                        
-                        <li class="nav-item">
-                             <a href="kelola_perizinan.php" class="nav-link">
+                       
+                        <li class="nav-item menu-open">
+                             <a href="kelola_perizinan.php" class="nav-link active">
                                     <i class="nav-icon fas fa-scroll"></i>
                                     <p> Kelola Perizinan </p>
                              </a>
@@ -169,18 +169,10 @@
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <div class="content-header">
-                <div class="container-fluid">
-                <div class="row">
-                        <div class="col">
-                            <h4><span class="align-middle font-weight-bold">Kelola Terumbu Karang</span></h4>
-                        </div>
-                        <div class="col">
-                           
-                        <a class="btn btn-primary float-right" href="input_tk.php" role="button">Input Data Baru (+)</a>
-                   
-                        </div>
+                    <div class="container-fluid">
+                        <a href="kelola_perizinan.php">< Kembali</a><br><br>
+                        <h4><span class="align-middle font-weight-bold">Input Data Perizinan</h4></span>
                     </div>
-                </div>
                 <!-- /.container-fluid -->
             </div>
             <!-- /.content-header -->
@@ -188,34 +180,33 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <table class="table table-striped">
-                     <thead>
-                            <tr>
-                                <th scope="col">ID Terumbu Karang</th>
-                                <th scope="col">ID Jenis</th>
-                                <th scope="col">Nama Terumbu Karang</th>
-                                <th scope="col">Deskripsi</th>
-                                <th scope="col">Foto</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                          </thead>
-                    <tbody>
-                          <tr>
-                              <th scope="row">-</th>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>
-                              <button type="button" class="btn btn-act">
-                                <a href="edit_tk.php" class="fas fa-edit"></a>
-                            	</button>
-                                <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
-                              </td>
-                          </tr>
-                    </tbody>
-                  </table> 
-            
+                    <form action="" enctype="multipart/form-data" method="POST">
+                    <div class="form-group">
+                    <div class="form-group">
+                        <label for="tb_judul_perizinan">Judul Perizinan</label>
+                        <input type="text" id="tb_judul_perizinan" name="tb_judul_perizinan" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="tb_deskripsi_perizinan">Deskripsi Perizinan</label>
+                        <input type="text" id="tb_deskripsi_perizinan" name="tb_deskripsi_perizinan" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="file_proposal">File Proposal (.docx / .pdf)</label>
+                        <div class="file-form">
+                        <input type="file" id="file_proposal" name="file_proposal" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="num_biaya_pergantian">Biaya Pergantian</label>
+                        <input type="number" id="num_biaya_pergantian" name="num_biaya_pergantian" class="form-control">
+                    </div>
+                  
+                    <br>
+                    <p align="center">
+                         <button type="submit" class="btn btn-submit">Kirim</button></p>
+                    </form>
+            <br><br>
+                    
             </section>
             <!-- /.Left col -->
             </div>
@@ -226,7 +217,7 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-
+    <br><br>
     <footer class="main-footer">
         <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
     </footer>

@@ -46,7 +46,6 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <b>Dashboard Admin - TKJB</b>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">  
                 <li class="nav-item dropdown">
@@ -128,7 +127,7 @@
                                   <p> Kelola Batch </p>
                             </a>
                         </li>
-                         <li class="nav-item ">
+                        <li class="nav-item ">
                              <a href="kelola_jenis_tk.php" class="nav-link ">
                                    <i class="nav-icon fas fa-certificate"></i>
                                    <p> Kelola Jenis Terumbu </p>
@@ -140,7 +139,7 @@
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                       
+                        
                         <li class="nav-item ">
                              <a href="kelola_perizinan.php" class="nav-link ">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -171,8 +170,17 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                  
-                   <h3>Kelola Laporan</h3>
+                <div class="row">
+                        <div class="col">
+                            <h4><span class="align-middle font-weight-bold">Kelola Laporan</span></h4>
+                        </div>
+                        <div class="col">
+                           
+                        <a class="btn btn-primary float-right" href="input_laporan.php" role="button">Input Data Baru (+)</a>
+                   
+                        </div>
+                    </div>
+        
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -181,7 +189,26 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    
+                
+                <table class="table table-striped">
+                     <thead>
+                            <tr>
+                                <th scope="col">ID Laporan</th>
+                                <th scope="col">Aksi</th>
+                            </tr>
+                          </thead>
+                    <tbody>
+                          <tr>
+                              <th scope="row">1212</th>
+                              <td>
+                              <button type="button" class="btn btn-act">
+                                <a href="edit_laporan.php" class="fas fa-edit"></a>
+                            	</button>
+                                <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
+                              </td>
+                          </tr>
+                    </tbody>
+                  </table>  
             
             </section>
             <!-- /.Left col -->

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Donasi - TKJB</title>
+    <title>Kelola Detail Titik - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
@@ -79,8 +79,8 @@
                                 <p> Home </p>
                            </a>
                         </li>
-                        <li class="nav-item menu-open">
-                            <a href="kelola_donasi.php" class="nav-link active">
+                        <li class="nav-item ">
+                            <a href="kelola_donasi.php" class="nav-link ">
                                 <i class="nav-icon fas fa-hand-holding-usd"></i>
                                 <p> Kelola Donasi </p>
                             </a>
@@ -115,8 +115,8 @@
                                  <p> Kelola Titik </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="kelola_detail_titik.php" class="nav-link">
+                        <li class="nav-item menu-open">
+                            <a href="kelola_detail_titik.php" class="nav-link active">
                                  <i class="nav-icon fas fa-podcast"></i>
                                  <p> Kelola Detail Titik </p>
                             </a>
@@ -170,8 +170,8 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                     <div class="container-fluid">
-                        <a href="kelola_donasi.php">< Kembali</a><br><br>
-                         <h3>Edit Data Detail Titik</h3>
+                        <a href="kelola_detail_titik.php">< Kembali</a><br><br>
+                        <h4><span class="align-middle font-weight-bold">Edit Data Detail Titik</span></h4>
                     </div>
                 <!-- /.container-fluid -->
             </div>
@@ -183,18 +183,20 @@
                 <div class="form-group">
                         <label for="dd_id_titik">ID Titik</label>
                         <select id="dd_id_titik" name="dd_id_titik" class="form-control">
-                            <option value="">-</option>
-                            <option value="">-</option>
-                            <option value="">-</option>
+                            <option value="">1</option>
+                            <option value="">3</option>
+                            <option value="">5</option>
                         </select>
                 </div>
                     <div class="form-group">
-                        <label for="tb_nominal_donasi">Nominal</label>
-                        <input type="number" id="tb_nominal_donasi" name="tb_nominal_donasi" class="form-control">
+                        <label for="tb_id_tk">ID Terumbu Karang</label>
+                        <input type="text" id="tb_id_tk" name="tb_id_tk" class="form-control">
                     </div>
 
                     <br>
-                    <button type="submit" class="btn btn-primary">Kirim</button>
+                    <p align="center">
+                         <button type="submit" class="btn btn-submit">Kirim</button></p>
+                    </form>
                     </form>
             <br><br>
                     

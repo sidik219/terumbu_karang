@@ -46,7 +46,6 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <b>Dashboard Admin - TKJB</b>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">  
                 <li class="nav-item dropdown">
@@ -128,7 +127,7 @@
                                   <p> Kelola Batch </p>
                             </a>
                         </li>
-                         <li class="nav-item ">
+                        <li class="nav-item ">
                              <a href="kelola_jenis_tk.php" class="nav-link ">
                                    <i class="nav-icon fas fa-certificate"></i>
                                    <p> Kelola Jenis Terumbu </p>
@@ -140,15 +139,15 @@
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                       
+                        
                         <li class="nav-item ">
                              <a href="kelola_perizinan.php" class="nav-link ">
                                     <i class="nav-icon fas fa-scroll"></i>
                                     <p> Kelola Perizinan </p>
                              </a>
                         </li>
-                        <li class="nav-item ">
-                            <a href="kelola_laporan.php" class="nav-link ">
+                        <li class="nav-item">
+                            <a href="kelola_laporan.php" class="nav-link">
                                     <i class="nav-icon fas fa-book"></i>
                                     <p> Kelola Laporan </p>
                             </a>
@@ -171,8 +170,17 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                  
-                   <h3>Kelola User</h3>
+                <div class="row">
+                        <div class="col">
+                        <h4><span class="align-middle font-weight-bold">Kelola User</span></h4>
+                        </div>
+                        <!-- <div class="col">
+                           
+                        <a class="btn btn-primary float-right" href="input_user.php" role="button">Input Data Baru (+)</a>
+                   
+                        </div> -->
+                    </div>
+        
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -181,7 +189,52 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    
+                
+                <table class="table table-striped">
+                     <thead>
+                            <tr>
+                                <th scope="col">ID User</th>
+                                <th scope="col">Nama User</th>
+                                <th scope="col">Jenis Kelamin</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">No HP</th>
+                                <th scope="col">Alamat</th>
+                                <th scope="col">No KTP</th>
+                                <th scope="col">Fotokopi KTP</th>
+                                <th scope="col">Tempat Lahir</th>
+                                <th scope="col">Tanggal Lahir</th>
+                                <th scope="col">Foto User</th>
+                                <th scope="col">Level User</th>
+                                <th scope="col">Aktivasi User</th>
+                                <th scope="col">username</th>
+                                <th scope="col">Aksi</th>
+                            </tr>
+                          </thead>
+                    <tbody>
+                          <tr>
+                          <th scope="row">-</th>
+                                <th scope="col">-</th>
+                                <th scope="col">-</th>
+                                <th scope="col">-</th>
+                                <th scope="col">-</th>
+                                <th scope="col">-</th>
+                                <th scope="col">-</th>
+                                <th scope="col">-</th>
+                                <th scope="col">-</th>
+                                <th scope="col">-</th>
+                                <th scope="col">-</th>
+                                <th scope="col">-</th>
+                                <th scope="col">-</th>
+                                <th scope="col">-</th>
+                              <td>
+                              <button type="button" class="btn btn-act">
+                                <a href="edit_user.php" class="fas fa-edit"></a>
+                            	</button>
+                                <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
+                              </td>
+                          </tr>
+                    </tbody>
+                  </table>  
             
             </section>
             <!-- /.Left col -->

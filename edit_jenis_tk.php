@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Donasi - TKJB</title>
+    <title>Kelola Jenis Terumbu Karang - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
@@ -46,7 +46,6 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <b>Dashboard Admin - TKJB</b>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">  
                 <li class="nav-item dropdown">
@@ -80,8 +79,8 @@
                                 <p> Home </p>
                            </a>
                         </li>
-                        <li class="nav-item menu-open">
-                            <a href="kelola_donasi.php" class="nav-link active">
+                        <li class="nav-item ">
+                            <a href="kelola_donasi.php" class="nav-link ">
                                 <i class="nav-icon fas fa-hand-holding-usd"></i>
                                 <p> Kelola Donasi </p>
                             </a>
@@ -128,8 +127,8 @@
                                   <p> Kelola Batch </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                             <a href="kelola_jenis_tk.php" class="nav-link">
+                        <li class="nav-item menu-open">
+                             <a href="kelola_jenis_tk.php" class="nav-link active">
                                    <i class="nav-icon fas fa-certificate"></i>
                                    <p> Kelola Jenis Terumbu </p>
                              </a>
@@ -171,8 +170,8 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                     <div class="container-fluid">
-                        <a href="kelola_donasi.php">< Kembali</a><br><br>
-                         <h3>Edit Data Donasi</h3>
+                        <a href="kelola_jenis_tk.php">< Kembali</a><br><br>
+                        <h4><span class="align-middle font-weight-bold">Edit Data Jenis Terumbu Karang</span></h4>
                     </div>
                 <!-- /.container-fluid -->
             </div>
@@ -181,29 +180,25 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <form action="" enctype="multipart/form-data" method="POST">
+                <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
-                        <label for="tb_id_user">ID User</label>
-                        <input type="text" id="tb_id_user" name="tb_id_user" class="form-control">
+                        <label for="tb_nama_jenis">Nama Jenis</label>
+                        <input type="text" id="tb_nama_jenis" name="tb_nama_jenis" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="tb_nominal_donasi">Nominal</label>
-                        <input type="number" id="tb_nominal_donasi" name="tb_nominal_donasi" class="form-control">
+                        <label for="tb_deskripsi_jenis">Deskripsi Jenis</label>
+                        <input type="text" id="tb_deskripsi_jenis" name="tb_deskripsi_jenis" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="file_bukti_donasi">Bukti Donasi</label>
+                        <label for="file_jenis_tk">Foto Jenis Terumbu Karang</label>
                         <div class="file-form">
-                        <input type="file" id="file_bukti_donasi" name="file_bukti_donasi" class="form-control">
+                        <input type="file" id="file_jenis_tk" name="file_jenis_tk" class="form-control">
                         </div>
                     </div>
-                    <div class="form-group">
-                         <label for="date_donasi">Tanggal Donasi</label>
-                         <div class="file-form">
-                         <input type="date" id="date_donasi" name="date_donasi" class="form-control" >
-                         </div>
-                     </div>
+                  
                     <br>
-                    <button type="submit" class="btn btn-primary">Kirim</button>
+                    <p align="center">
+                    <button type="submit" class="btn btn-submit">Kirim</button></p>
                     </form>
             <br><br>
                     

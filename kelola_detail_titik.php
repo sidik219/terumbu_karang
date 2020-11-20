@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Titik - TKJB</title>
+    <title>Kelola Detail Titik - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
@@ -46,7 +46,6 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <b>Dashboard Admin - TKJB</b>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">  
                 <li class="nav-item dropdown">
@@ -172,7 +171,7 @@
             <div class="content-header">
                 <div class="container-fluid">
                   
-                   <h3>Kelola Detail Titik</h3>
+                <h4><span class="align-middle font-weight-bold">Kelola Detail Titik</span></h4>
                 </div>
                 <!-- /.container-fluid -->
             </div>
