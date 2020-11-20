@@ -219,18 +219,17 @@
                       <td class="ukuran-table">Lokasi penanaman dipilih:</td>
                       <td rowspan="2"></td>
                     </tr>
+                    <!-- Query Lokasi -->
                     <?php
-                    $sql_view = mysqli_query($koneksi, "SELECT
-                      id_lokasi,
-                      nama_lokasi
-                      FROM t_lokasi");
+                    $sql_view = "SELECT * FROM t_lokasi";
 
-                    while ($result = mysqli_fetch_row($sql_view)) {?>
+                    foreach ($pdo->query($sql_view) as $result) { ?>
                     <tr>
-                      <span style="display:none;"><?php echo $result[0]; ?></span>
-                      <td style="color: #30A0E0; font-weight:bold;"><?php echo $result[1]; ?></td>
+                      <span style="display:none;"><?php echo $result->id_lokasi; ?></span>
+                      <td style="color: #30A0E0; font-weight:bold;"><?php echo $result->nama_lokasi; ?></td>
                     </tr>
-                    <?php } ?>  
+                    <?php } ?>
+                    <!-- End -->   
                   </table>
                   <!-- Halaman Data Metode Pembayaran -->
                   <table align="center" style="color: #30A0E0;">
@@ -320,10 +319,11 @@
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.1.0-pre
+    <strong>Copyright &copy; 2020 .</strong>
+    Terumbu Karang Jawa Barat.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 1.0.0
     </div>
-    <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->

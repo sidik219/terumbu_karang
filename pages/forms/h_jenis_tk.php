@@ -217,18 +217,17 @@
                       <td style="color: #30A0E0; font-size: 18px; padding-right: 116px;">Lokasi penanaman dipilih:</td>
                       <td rowspan="2"></td>
                     </tr>
+                    <!-- Query Lokasi -->
                     <?php
-                    $sql_view = mysqli_query($koneksi, "SELECT
-                      id_lokasi,
-                      nama_lokasi
-                      FROM t_lokasi");
+                    $sql_view = "SELECT * FROM t_lokasi";
 
-                    while ($result = mysqli_fetch_row($sql_view)) {?>
+                    foreach ($pdo->query($sql_view) as $result) { ?>
                     <tr>
-                      <span style="display:none;"><?php echo $result[0]; ?></span>
-                      <td style="color: #30A0E0; font-weight:bold;"><?php echo $result[1]; ?></td>
+                      <span style="display:none;"><?php echo $result->id_lokasi; ?></span>
+                      <td style="color: #30A0E0; font-weight:bold;"><?php echo $result->nama_lokasi; ?></td>
                     </tr>
-                    <?php } ?>  
+                    <?php } ?>
+                    <!-- End -->  
                   </table>
 
                   <table align="center">
@@ -236,41 +235,42 @@
                       <tr>
                         <p>
                         <th>
-                          <h5 style="font-weight:bold; text-align: center; color: #30A0E0;">Jenis terumbu karang:</h5>
+                          <h5 style="font-weight:bold; text-align: center; color: #30A0E0;">
+                            Jenis terumbu karang:
+                          </h5>
                         </th>
                       </tr>
                     </thead>
-
+                    <!-- Query Jenis Terumbu Karang -->
                     <?php
-                    $sql_view = mysqli_query($koneksi, "SELECT
-                      id_jenis,
-                      foto_jenis,
-                      deskripsi_jenis,
-                      nama_jenis,
-                      tipe_gambar
-                      FROM t_jenis_terumbu_karang");
+                    $sql_view = "SELECT * FROM t_jenis_terumbu_karang";
 
-                    while ($result = mysqli_fetch_array($sql_view)) {
-                    ?>
-                      <tbody>
-                        <tr>
-                          <td style="display:none;"><?php echo $result['id_jenis']; ?></td>
-                          <td>
-                            <img src="get_image_jenis_tk.php?id_jenis=<?php echo $result['id_jenis'];?>" width="300" height="200"/>
-                          </td>
-                          <td style="display:none;"><?php echo $result['deskripsi_jenis']; ?></td>
-                        </tr>
-                        <tr>
-                          <td align="center">
-                            <p>
-                            <button type="button" class="btn btn-warning" style="background-color: #FF5733; width: 300px; border: none;">
-                              <a href="h_terumbu_karang.php?id_jenis=<?php echo $result['id_jenis'];?>" style="color: white;"><?php echo $result['nama_jenis']; ?></a>
-                            </button>
-                          </td>
-                          <td style="display:none;"><?php echo $result['tipe_gambar']; ?></td>
-                        </tr>
-                      </tbody>
+                    foreach ($pdo->query($sql_view) as $result) { ?>
+                    <tbody>
+                      <tr>
+                        <td style="display:none;">
+                          <?php echo $result->id_jenis; ?>    
+                        </td>
+                        <td>
+                          <img src="../image/<?php echo $result->foto_jenis?>" width="300" height="200"/>
+                        </td>
+                        <td style="display:none;">
+                          <?php echo $result->deskripsi_jenis; ?>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center">
+                          <p>
+                          <button type="button" class="btn btn-warning" style="background-color: #FF5733; width: 300px; border: none;">
+                            <a href="h_terumbu_karang.php?id_jenis=<?php echo $result->id_jenis; ?>" style="color: white;">
+                              <?php echo $result->nama_jenis; ?>
+                            </a>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
                     <?php } ?>
+                    <!-- End -->
                   </table>
                 </div>
               </form>
@@ -284,10 +284,11 @@
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.1.0-pre
+    <strong>Copyright &copy; 2020 .</strong>
+    Terumbu Karang Jawa Barat.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 1.0.0
     </div>
-    <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->

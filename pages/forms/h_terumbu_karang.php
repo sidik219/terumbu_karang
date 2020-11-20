@@ -214,74 +214,82 @@
                   <table align="center">
                     <thead>
                       <tr>
+                        <!-- Query GET Jenis Terumbu Karang -->
                       <?php
                         $get = $_GET['id_jenis'];
-                        $sql_get = mysqli_query($koneksi, "SELECT id_jenis, nama_jenis
-                          FROM t_jenis_terumbu_karang
-                          WHERE id_jenis='$get'");
+                        $sql_get = "SELECT * FROM t_jenis_terumbu_karang
+                        WHERE id_jenis='$get'";
 
-                        while ($result = mysqli_fetch_array($sql_get)) {
-                        ?>
-                        <i style="display:none;"><?php echo $result['id_jenis']; ?></i>
+                        foreach ($pdo->query($sql_get) as $result) { ?>
+
+                        <i style="display:none;">
+                          <?php echo $result->id_jenis; ?>
+                        </i>
                         <h5 align="center" style="color: #30A0E0; padding-right: 100px;">
-                          <b><?php echo $result['nama_jenis']; ?></b>
+                          <b><?php echo $result->nama_jenis; ?></b>
                         </h5>
                       <?php } ?>
+                      <!-- End -->
+
                         <h5 style="color: #30A0E0; margin-left: 665px;">
                           Qty
                         </h5>
+
+                      <!-- Query Terumbu Karang -->
                       <?php
                       $get = $_GET['id_jenis'];
-                      if($get == 'Goniopora'){
-                        $sql_view = mysqli_query($koneksi, "SELECT * FROM t_terumbu_karang
-                        WHERE nama_terumbu_karang LIKE '%Goniopora%'");
-                      }else{
-                        $sql_view = mysqli_query($koneksi, "SELECT * FROM t_terumbu_karang
-                        WHERE nama_terumbu_karang LIKE '%Acropora%'");
-                      }
+                      $sql_view = "SELECT * FROM t_terumbu_karang
+                      WHERE nama_terumbu_karang LIKE '%Acropora%'";
 
                       $subtotal = 0;
 
-                      while ($result = mysqli_fetch_array($sql_view)) {
-                      ?>
+                      foreach ($pdo->query($sql_view) as $result) { ?>
                         <th>
-                          <input type="text" value="Rp. <?php echo $result['harga_tk']; ?>" style="color: #30A0E0; text-align: center; opacity: 1; border: none; border: solid 1px; border-radius: 3px; width: 90px; position: absolute;" readonly>
+                          <input type="text" value="harga" style="color: #30A0E0; text-align: center; opacity: 1; border: none; border: solid 1px; border-radius: 3px; width: 90px; position: absolute;" readonly>
                         </th>
                       </tr>
                     </thead>
 
-                    <?php $subtotal = $result['harga_tk'] * $result['qty']; ?>
-
+                    <?php //$subtotal = $result['harga_tk'] * $result['qty']; ?>
+                    
                     <tbody>
                       <tr>
-                        <td style="display:none;"><?php echo $result['id_terumbu_karang']; ?></td>
-                        <td>
-                          <img src="get_image_tk.php?id_tk=<?php echo $result['id_terumbu_karang']; ?>" width="300" height="200"/>
+                        <td style="display:none;">
+                          <?php echo $result->id_terumbu_karang; ?>
                         </td>
                         <td>
-                          <input type="text" value="<?php echo $result['qty']; ?>" style="border: none; border: solid 1px; border-radius: 10px; width: 50px; height: 50px; margin-left: 20px; color: #30A0E0; text-align: center" readonly>
+                          <img src="../image/terumbu-karang/<?php echo $result->foto_terumbu_karang?>" width="300" height="200"/>
+                        </td>
+                        <td>
+                          <input type="text" value="QTY" style="border: none; border: solid 1px; border-radius: 10px; width: 50px; height: 50px; margin-left: 20px; color: #30A0E0; text-align: center" readonly>
                         </td>
                       </tr>
                       <tr>
                         <td align="center">
                           <p>
-                          <input type="button" class="btn btn-warning" style="color: white; background-color: #FF5733; width: 300px; border: none;" value="<?php echo $result['nama_terumbu_karang']; ?>" disable>
+                          <input type="button" class="btn btn-warning" style="color: white; background-color: #FF5733; width: 300px; border: none;" value="<?php echo $result->nama_terumbu_karang; ?>" disable>
                         </td>
-                        <td style="display:none;"><?php echo $result['tipe_gambar']; ?></td>
-                        <td style="display:none;"><?php echo $result['deskripsi_terumbu_karang']; ?></td>
+                        <td style="display:none;">
+                          <?php echo $result->deskripsi_terumbu_karang; ?>
+                        </td>
                       </tr>
                     </tbody>
                     <?php } ?>
+                    <!-- End -->
                   </table>
                 
                   <table align="center">
                     <tr>
                       <td style="color: #30A0E0; padding-right: 50px;">Subtotal:<br>
-                        <span style="font-weight:bold; font-size: 19px;">Rp. <?php echo"$subtotal"; ?></span>
+                        <span style="font-weight:bold; font-size: 19px;">
+                          Rp. <?php echo"$subtotal"; ?>
+                        </span>
                       </td>
                       <td>
                         <button type="button" name="submit" class="btn btn-warning" style="color: white; background-color: #FF5733; margin-right: 65px; border: none; border-radius: 20px;">
-                          <a href="h_review_donasi.php" style="color: white;">Konfirmasi Pilihan</a>
+                          <a href="h_review_donasi.php" style="color: white;">
+                            Konfirmasi Pilihan
+                          </a>
                         </button>
                       </td>
                     </tr>
@@ -298,10 +306,11 @@
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.1.0-pre
+    <strong>Copyright &copy; 2020 .</strong>
+    Terumbu Karang Jawa Barat.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 1.0.0
     </div>
-    <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->

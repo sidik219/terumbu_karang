@@ -11,19 +11,23 @@
       accessToken: 'pk.eyJ1Ijoic2lkZTkxMCIsImEiOiJja2c3djF3a3gwYjU0MnBxb3lobDFtcmJ0In0.DwvJMR6_vALxyC1KyMiyTA'
   }).addTo(mymap);
 
-  <?php
-      $sql_map = "SELECT * FROM t_titik";
-      $stmt = $pdo->prepare($sql_map);
-      $stmt->execute();
-      $sql_view = $stmt->fetchAll();
-      foreach ($sql_view as $value) { ?>
+    <?php 
+        $sql_map = "SELECT * FROM t_titik";
+        $stmt = $pdo->prepare($sql_map);
+        $stmt->execute();
+        $sql_view = $stmt->fetchAll();
+        foreach ($sql_view as $value) { ?>
+
+        var id_titik = <?=$value->id_titik?>;
 
         L.marker([<?=$value->longitude?>,<?=$value->latitude?>]).addTo(mymap)
-        .bindPopup("<b>Latitude: <?=$value->latitude?></b><br/>"+
-        "<b>Longtitude: <?=$value->longitude?></b><br/>"+
-        "<b>Luas Titik: <?=$value->luas_titik?></b><br/>");
-        
-  <?php } ?>
+        .bindPopup("<b>Longitude:</b> <?=$value->longitude?><br/>"+
+        "<b>Latitude:</b> <?=$value->latitude?><br/>"+
+        "<b>Luas Titik:</b> <?=$value->luas_titik?> m2<p>"+
+        "<a href='pages/forms/h_jenis_tk.php?id_titik=<?=$value->id_titik?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
 
+    <?php
+        }
+    ?>
 </script>
 

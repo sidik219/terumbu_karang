@@ -1,4 +1,9 @@
-<?php include 'build/config/connection.php'; ?>
+<?php 
+include 'build/config/connection.php';
+include 'dist\js\leaflet_map.php';
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -205,7 +210,8 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+            <h1 class="m-0">Dashboard</h1> 
+           
           </div>
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -215,61 +221,51 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-
         <!-- Query Donasi -->
         <?php
-        $sql_view = mysqli_query($koneksi, "SELECT 
-          t_donasi.id_donasi,
-          t_user.nama_user,
-          t_donasi.nominal,
-          t_donasi.tgl_donasi,
-          t_lokasi.nama_lokasi,
-          t_donasi.status_donasi
+        $sql_view = "SELECT * FROM t_donasi
+        LEFT JOIN t_user ON t_user.id_user=t_user.id_user";
 
-          FROM t_donasi 
-          JOIN t_user ON t_user.id_user=t_user.id_user
-          JOIN t_lokasi ON t_lokasi.id_lokasi=t_lokasi.id_lokasi");
-        while ($result = mysqli_fetch_row($sql_view)) {
-        ?>
+        foreach ($pdo->query($sql_view) as $result) { ?>
           <div class="row">
-            <div class="col-lg-3 col-6">
+            <div class="col-lg-4 col-9">
               <!-- small box -->
                 <div class="small-box bg-info">
                   <div class="inner">
-                    <table>
+                    <table style="color: white;">
                       <thead>
                         <h4><b>Donasi Saya</b></h4>
                         <tr>
                           <th>ID</th>
-                          <th colspan="2">Nominal</th>
+                          <th style="padding-right: 30px;">Nominal</th>
                           <th>Tanggal</th>
                         </tr>
                       </thead>
 
                       <tbody>
                         <tr>
-                          <td><?php echo $result[0]; ?></td>
-                          <td style="display:none;"><?php echo $result[1]; ?></td>
-                          <td colspan="2"><?php echo $result[2]; ?></td>
-                          <td><?php echo $result[3]; ?></td>
+                          <td><?php echo $result->id_donasi; ?></td>
+                          <td style="display: none;"><?php echo $result->nama_user; ?></td>
+                          <td><?php echo $result->nominal; ?></td>
+                          <td><?php echo $result->tgl_donasi; ?></td>
                         </tr>
                         <tr>
-                          <td style="font-weight:bold;">Lokasi:</td> 
-                          <td colspan="2" style="font-size:14px;"><?php echo $result[4]; ?></td>
-                        </tr>
-                        <tr>
-                          <td style="font-weight:bold;">Status:</td>
-                          <td colspan="2" style="font-size:14px;"><?php echo $result[5]; ?></td>
+                          <td style="font-weight:bold; padding-top: 10px;">Status:</td>
+                          <td colspan="2" style="font-size:14px; padding-top: 10px;">
+                            <?php echo $result->status_donasi; ?>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
-                  <a href="pages/forms/h_detail_donasi.php?edit=<?php echo $result[0];?>" class="small-box-footer">Lihat Detail<i class="fas fa-arrow-circle-right"></i></a>
+                  <a href="pages/forms/h_detail_donasi.php?edit=<?php echo $result->id_donasi;?>" class="small-box-footer">
+                    Lihat Detail<i class="fas fa-arrow-circle-right"></i>
+                  </a>
                 </div>
             </div>
           </div>
         <?php } ?>
+        <!-- End -->
 
         <!-- Main row -->
         <div class="row">
@@ -329,10 +325,10 @@
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-    All rights reserved.
+    <strong>Copyright &copy; 2020 .</strong>
+    Terumbu Karang Jawa Barat.
     <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.1.0-pre
+      <b>Version</b> 1.0.0
     </div>
   </footer>
 

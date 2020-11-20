@@ -214,21 +214,22 @@
                 <form action="#" method="POST">
                   <table align="center">
                     <tr>
-                      <td style="color: #30A0E0; font-size: 18px; padding-right: 116px;">Lokasi penanaman dipilih:</td>
+                      <td style="color: #30A0E0; font-size: 18px; padding-right: 116px;">
+                        Lokasi penanaman dipilih:
+                      </td>
                       <td rowspan="2"></td>
                     </tr>
+                    <!-- Query Lokasi -->
                     <?php
-                    $sql_view = mysqli_query($koneksi, "SELECT
-                      id_lokasi,
-                      nama_lokasi
-                      FROM t_lokasi");
+                    $sql_view = "SELECT * FROM t_lokasi";
 
-                    while ($result = mysqli_fetch_row($sql_view)) {?>
+                    foreach ($pdo->query($sql_view) as $result) { ?>
                     <tr>
-                      <span style="display:none;"><?php echo $result[0]; ?></span>
-                      <td style="color: #30A0E0; font-weight:bold;"><?php echo $result[1]; ?></td>
+                      <span style="display:none;"><?php echo $result->id_lokasi; ?></span>
+                      <td style="color: #30A0E0; font-weight:bold;"><?php echo $result->nama_lokasi; ?></td>
                     </tr>
-                    <?php } ?>  
+                    <?php } ?>
+                    <!-- End -->  
                   </table>
 
                   <table align="center">
@@ -236,41 +237,46 @@
                       <tr> 
                         <p>
                         <th style="color: #30A0E0;">
-                          Pilihan Terumbu Karang
+                          Pilihan Terumbu Karang:
                         </th>
-                        <?php
-                        $sql_view = mysqli_query($koneksi, "SELECT * FROM t_terumbu_karang
-                          WHERE nama_terumbu_karang LIKE '%Acropora%' OR 
-                          nama_terumbu_karang LIKE '%Goniopora%'");
-
-                        $subtotal = 0;
-
-                        while ($result = mysqli_fetch_array($sql_view)) {
-                        ?>
                       </tr>
                     </thead>
 
-                    <?php $subtotal = $result['harga_tk'] * $result['qty']; ?>
+                    <!-- Query Terumbu Karang -->
+                    <?php
+                    $sql_view = "SELECT * FROM t_terumbu_karang
+                    WHERE nama_terumbu_karang LIKE '%Acropora%'";
+
+                    $subtotal = 0;
+
+                    foreach ($pdo->query($sql_view) as $result) { ?>
+                    <?php //$subtotal = $result['harga_tk'] * $result['qty']; ?>
 
                     <tbody>
                       <tr>
-                        <td style="display:none;"><?php echo $result['id_terumbu_karang']; ?></td>
+                        <td style="display:none;">
+                          <?php echo $result->id_terumbu_karang; ?>
+                        </td>
                         <td>
-                          <img src="get_image_tk.php?id_tk=<?php echo $result['id_terumbu_karang'];?>" width="200" height="110"/>
+                          <img src="../image/terumbu-karang/<?php echo $result->foto_terumbu_karang?>" width="200" height="110"/>
                         </td>
                         <td>
                           <span style="color: #30A0E0; margin-left: 50px;">
-                            <b><?php echo $result['qty']; ?></b> x <?php echo $result['harga_tk']; ?> 
+                            <b>aaa</b> x aaa 
                           </span> 
                         </td>
                       </tr>
                       <tr>
-                        <td style="color: #30A0E0;"><?php echo $result['nama_terumbu_karang']; ?></td>
-                        <td style="display:none;"><?php echo $result['tipe_gambar']; ?></td>
-                        <td style="display:none;"><?php echo $result['deskripsi_terumbu_karang']; ?></td>
+                        <td style="color: #30A0E0;">
+                          <?php echo $result->nama_terumbu_karang; ?>
+                        </td>
+                        <td style="display:none;">
+                          <?php echo $result->deskripsi_terumbu_karang; ?>
+                        </td>
                       </tr>
                     </tbody>
                     <?php } ?>
+                    <!-- End -->
                   </table>
                 
                   <table align="center">
@@ -283,7 +289,9 @@
                     </tr>
                     <tr>
                       <td style="color: #30A0E0; padding-left: 20px;">Subtotal:<br>
-                        <i style="font-weight:bold; font-size: 19px;">Rp. <?php echo"$subtotal"; ?></i>
+                        <i style="font-weight:bold; font-size: 19px;">
+                          Rp. <?php echo"$subtotal"; ?>
+                        </i>
                       </td>
                       <td>
                         <button type="button" name="submit" class="btn btn-warning" style="color: white; background-color: #FF5733; margin-left: 100px; border: none; border-radius: 20px;">
@@ -306,10 +314,11 @@
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.1.0-pre
+    <strong>Copyright &copy; 2020 .</strong>
+    Terumbu Karang Jawa Barat.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 1.0.0
     </div>
-    <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->
