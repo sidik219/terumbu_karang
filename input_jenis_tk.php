@@ -46,7 +46,6 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <b>Dashboard Admin - TKJB</b>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">  
                 <li class="nav-item dropdown">
@@ -172,7 +171,7 @@
             <div class="content-header">
                     <div class="container-fluid">
                         <a href="kelola_jenis_tk.php">< Kembali</a><br><br>
-                         <h3>Input Data Jenis Terumbu Karang</h3>
+                        <h4><span class="align-middle font-weight-bold">Input Data Jenis Terumbu Karang</span></h4>
                     </div>
                 <!-- /.container-fluid -->
             </div>
@@ -198,7 +197,8 @@
                     </div>
                   
                     <br>
-                    <button type="submit" class="btn btn-primary">Kirim</button>
+                    <p align="center">
+                    <button type="submit" class="btn btn-submit">Kirim</button></p>
                     </form>
             <br><br>
                     
