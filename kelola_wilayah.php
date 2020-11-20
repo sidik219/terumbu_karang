@@ -195,9 +195,6 @@
                             <tr>
                             <th scope="col">ID Wilayah</th>
                             <th scope="col">Nama Wilayah</th>
-                            <th scope="col">Deskripsi Wilayah</th>
-                            <th scope="col">Foto Wilayah</th>
-                            <th scope="col">ID Pengelola</th>
                             <th scope="col">Aksi</th>
                             </tr>
                           </thead>
@@ -209,16 +206,58 @@
                             <tr>
                               <th scope="row"><?=$rowitem->id_wilayah?></th>
                               <td><?=$rowitem->nama_wilayah?></td>
-                              <td><?=$rowitem->deskripsi_wilayah?></td>
-                              <td><img src="<?=$rowitem->foto_wilayah?>" width="50px"></td>
-                              <td><?=$rowitem->id_user_pengelola?></td>
                               <td>
                               <button type="button" class="btn btn-act">
                                 <a href="edit/edit_wilayah.php" class="fas fa-edit"></a>
                                 </button>
                               <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
-                                </td>
+                                </td>                                
                           </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <!--collapse start -->
+                          <div class="row  m-0">
+                            <div class="col-12 keadaan detailcollapser<?=$rowitem->id_wilayah?>"
+                                data-toggle="collapse"
+                                data-target=".contentkeadaan<?=$rowitem->id_wilayah?>, .contentall<?=$rowitem->id_wilayah?>">
+                                <p
+                                    class="fielddetail<?=$rowitem->id_wilayah?>">
+                                    <i
+                                        class="icon fas fa-chevron-down"></i>
+                                    Rinician Wilayah</p>
+                            </div>
+                            <div class="col-12 contentkeadaan<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?>">                               
+                                <div class="row mb-1">
+                                    <div class="col kolom font-weight-bold">
+                                        Deskripsi Wilayah 
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->deskripsi_wilayah?>
+                                    </div>
+                                </div>
+                                <div class="row  mb-1">
+                                    <div class="col kolom font-weight-bold">
+                                        Foto Wilayah 
+                                    </div>
+                                    <div class="col isi">
+                                        <img src="<?=$rowitem->foto_wilayah?>" width="50px">
+                                    </div>
+                                </div>
+                                <div class="row mb-1">
+                                    <div class="col kolom font-weight-bold">
+                                        ID Pengelola
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->id_user_pengelola?>
+                                    </div>
+                                </div>
+                                    
+                            </div>
+                        </div>
+
+                        <!--collapse end -->
+                                </td>
+                            <tr>
 
                           <?php } ?>
                           </tbody>
@@ -299,6 +338,14 @@
     <!-- Leaflet Map -->
     <script src="dist/js/leaflet-map.js"></script>
 </div>
+
+<script>
+$(document).ready(function(){
+  $("button").click(function(){
+    $("p").slideToggle();
+  });
+});
+</script>
 
 </body>
 </html>
