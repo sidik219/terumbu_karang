@@ -214,7 +214,7 @@
                               <th scope="row"><?=$rowitem->id_jenis?></th>
                               <td><?=$rowitem->nama_jenis?></td>
                               <td>
-                              <a href="edit_jenis.php?id_jenis=<?=$rowitem->id_jenis?>" class="fas fa-edit mr-3"></a>
+                              <a href="edit_jenis_tk.php?id_jenis=<?=$rowitem->id_jenis?>" class="fas fa-edit mr-3"></a>
                                 <a href="hapus.php?type=jenis&id_jenis=<?=$rowitem->id_jenis?>" class="far fa-trash-alt"></a>
                               </td>
                           </tr>

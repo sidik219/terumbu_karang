@@ -8,7 +8,7 @@
         
         //Image upload
         if($_FILES["image_uploads"]["size"] == 0) {
-            $foto_wilayah = "images/image_default.jpg";
+            $foto_jenis = "images/image_default.jpg";
         }
         else if (isset($_FILES['image_uploads'])) {
             $target_dir  = "images/foto_jenis_tk/";

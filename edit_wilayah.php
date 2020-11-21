@@ -23,7 +23,7 @@
                 $pic = "&none=";
             }
             else if (isset($_FILES['image_uploads'])) {
-                if ($rowitem->foto_wilayah == $defaultpic){
+                if (($rowitem->foto_wilayah == $defaultpic) || (!$rowitem->foto_wilayah)){
                     $randomstring = substr(md5(rand()), 0, 7);
                     $target_dir  = "images/foto_wilayah/";
                     $foto_wilayah = $target_dir .'WIL_'.$randomstring. '.jpg';
@@ -31,6 +31,7 @@
                     $pic = "&new=";
                 }
                 else{
+                    $foto_lokasi = $row->foto_lokasi;
                     unlink($rowitem->foto_wilayah);
                     move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowitem->foto_wilayah);
                     $pic = "&replace=";

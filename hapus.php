@@ -31,6 +31,13 @@ elseif ($type == 'titik'){
             $stmt->execute(['id_titik' => $_GET['id_titik']]);
             header('Location: kelola_titik.php?status=deletesuccess');
 }
-
+elseif ($type == 'jenis'){
+   $sql = 'DELETE FROM t_jenis_terumbu_karang
+            WHERE id_jenis = :id_jenis';
+            
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_jenis' => $_GET['id_jenis']]);
+            header('Location: kelola_jenis_tk.php?status=deletesuccess');
+}
 
  

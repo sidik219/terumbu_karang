@@ -1,3 +1,60 @@
+<?php
+    include 'build\config\connection.php';
+    
+    $id_jenis = $_GET['id_jenis'];
+    $defaultpic = "images/image_default.jpg";
+
+    
+    $sql = 'SELECT * FROM t_jenis_terumbu_karang WHERE id_jenis = :id_jenis';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_jenis' => $id_jenis]);
+    $rowitem = $stmt->fetch();
+
+    if (isset($_POST['submit'])) {
+        $nama_jenis        = $_POST['tb_nama_jenis']; 
+        $deskripsi_jenis        = $_POST['tb_deskripsi_jenis'];
+        $randomstring = substr(md5(rand()), 0, 7);
+        
+        //Image upload
+            if($_FILES["image_uploads"]["size"] == 0) {
+                $foto_jenis = $rowitem->foto_jenis;
+                $pic = "&none=";
+            }
+            else if (isset($_FILES['image_uploads'])) {
+                if (($rowitem->foto_jenis == $defaultpic) || (!$rowitem->foto_jenis)){
+                    $target_dir  = "images/foto_jenis_tk/";
+                    $foto_jenis = $target_dir .'JNS_'.$randomstring. '.jpg';
+                    move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_jenis);
+                    $pic = "&new=";
+                }
+                else if (isset($rowitem->foto_jenis)){
+                    $foto_jenis = $rowitem->foto_jenis;
+                    unlink($rowitem->foto_jenis);
+                    move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowitem->foto_jenis);
+                    $pic = "&replace=$rowitem->foto_jenis";
+                }                
+            }
+            
+            //---image upload end 
+
+        $sqljenis = "UPDATE t_jenis_terumbu_karang
+                        SET nama_jenis = :nama_jenis, deskripsi_jenis = :deskripsi_jenis, foto_jenis = :foto_jenis
+                        WHERE id_jenis = :id_jenis";
+
+        $stmt = $pdo->prepare($sqljenis);
+        $stmt->execute(['id_jenis' => $id_jenis, 'nama_jenis' => $nama_jenis, 'deskripsi_jenis' => $deskripsi_jenis, 'foto_jenis' => $foto_jenis]);
+
+        $affectedrows = $stmt->rowCount();
+        if ($affectedrows == '0') {
+        header("Location: kelola_jenis_tk.php?status=nochange.$pic");
+        } else {
+            //echo "HAHAHAAHA GREAT SUCCESSS !";
+            header("Location: kelola_jenis_tk.php?status=updatesuccess.$pic");
+            }
+        }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,13 +81,6 @@
         <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
         <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -189,22 +239,47 @@
                 <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
                         <label for="tb_nama_jenis">Nama Jenis</label>
-                        <input type="text" id="tb_nama_jenis" name="tb_nama_jenis" class="form-control">
+                        <input type="text" value="<?=$rowitem->nama_jenis?>" id="tb_nama_jenis" name="tb_nama_jenis" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="tb_deskripsi_jenis">Deskripsi Jenis</label>
-                        <input type="text" id="tb_deskripsi_jenis" name="tb_deskripsi_jenis" class="form-control">
+                        <input type="text" value="<?=$rowitem->deskripsi_jenis?>" id="tb_deskripsi_jenis" name="tb_deskripsi_jenis" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label for="file_jenis_tk">Foto Jenis Terumbu Karang</label>
-                        <div class="file-form">
-                        <input type="file" id="file_jenis_tk" name="file_jenis_tk" class="form-control">
-                        </div>
-                    </div>
+                    <div class='form-group' id='fototitik'>
+                                            <div>
+                                                <label for='image_uploads'>Upload Foto Titik</label>
+                                                <input type='file'  class='form-control' id='image_uploads'
+                                                    name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
+                                            </div>                                            
+                                        </div>
+
+                                        <div class="form-group">
+                                            <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
+                                            <img id="oldpic" src="<?=$rowitem->foto_jenis?>" width="100px">
+                                            <script>
+                                                window.onload = function() {
+                                                document.getElementById('preview').style.display = 'none';
+                                                };
+                                                function readURL(input) {
+                                                    if (input.files && input.files[0]) {
+                                                        var reader = new FileReader();
+                                                        document.getElementById('oldpic').style.display = 'none';
+                                                        reader.onload = function (e) {
+                                                            $('#preview')
+                                                                .attr('src', e.target.result)
+                                                                .width(200);
+                                                                document.getElementById('preview').style.display = 'block';
+                                                        };
+
+                                                        reader.readAsDataURL(input.files[0]);
+                                                    }
+                                                }
+                                            </script>
+                                        </div>
                   
                     <br>
                     <p align="center">
-                    <button type="submit" class="btn btn-submit">Kirim</button></p>
+                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
             <br><br>
                     
