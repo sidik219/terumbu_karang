@@ -27,11 +27,13 @@ table {
 	color: #0E447E;
 }
 
+/*button input data baru*/
 .new-entry{
 	background-color: #F5F7FA;
 	height: 40px;
 	margin-top: 40px;
 }
+/*end button input data baru*/
 
 a.btn.btn-primary
 {
@@ -57,3 +59,63 @@ a.btn.btn-primary
 	border: none;
 	padding: 6px 12px;
 }
+
+/*jumbotron dashboard user/home */
+.jumbotron.jumbotron-fluid-profil
+{
+	background-image: url(../dist/img/home-jumbotron.jpg);
+	background-size: cover;
+	height: 200px;
+	filter: brightness(58%)
+
+}
+
+/*profile pic dashboar user/home */
+.profile-pic-div{
+    height: 150px;
+    width: 150px;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid white;
+    margin-top: -110px;
+    z-index: 2;
+
+}
+
+#photo{
+    height: 100%;
+    width: 100%;
+}
+
+/*end profile pic dasbor user*/
+
+/*Container profile saya dashboard user*/
+.container-profil-saya
+{
+	height: auto;
+	width: 100%;
+	background-color: white;
+	margin-top: 10px;
+	border-radius: 8px;
+	padding-top: 20px;
+	padding-left: 20px;
+	padding-right: 20px;
+	
+}
+.container-profil-header
+{
+	/*background-color: grey;*/
+	height: 80px;
+	border-bottom: 1px solid #aaa;
+}
+.container-profil-flex{
+
+	height: auto;
+}
+.container-profil-kiri{
+	margin-top: 10px;
+}
+
+/*End Container profile saya dashboard user*/
