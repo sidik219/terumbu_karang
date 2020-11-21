@@ -1,3 +1,14 @@
+<?php
+    include 'build\config\connection.php';
+
+    $sqlviewjenis = 'SELECT * FROM t_jenis_terumbu_karang
+                        ORDER BY nama_jenis';
+        $stmt = $pdo->prepare($sqlviewjenis);
+        $stmt->execute();
+        $row = $stmt->fetchAll();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,13 +35,6 @@
         <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
         <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -193,24 +197,60 @@
                             <tr>
                                 <th scope="col">ID Jenis</th>
                                 <th scope="col">Nama Jenis</th>
-                                <th scope="col">Deskripsi</th>
-                                <th scope="col">Foto</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                           </thead>
                     <tbody>
+                        <?php
+                          foreach ($row as $rowitem) {                            
+                          ?>
                           <tr>
-                              <th scope="row">-</th>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
+                              <th scope="row"><?=$rowitem->id_jenis?></th>
+                              <td><?=$rowitem->nama_jenis?></td>
                               <td>
-                              <button type="button" class="btn btn-act">
-                                <a href="edit_jenis_tk.php" class="fas fa-edit"></a>
-                            	</button>
-                                <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
+                              <a href="edit_jenis.php?id_jenis=<?=$rowitem->id_jenis?>" class="fas fa-edit mr-3"></a>
+                                <a href="hapus.php?type=jenis&id_jenis=<?=$rowitem->id_jenis?>" class="far fa-trash-alt"></a>
                               </td>
                           </tr>
+                          <tr>
+                                <td colspan="3">
+                                    <!--collapse start -->
+                            <div class="row  m-0">
+                            <div class="col-12 cell detailcollapser<?=$rowitem->id_jenis?>"
+                                data-toggle="collapse"
+                                data-target=".cell<?=$rowitem->id_jenis?>, .contentall<?=$rowitem->id_jenis?>">
+                                <p
+                                    class="fielddetail<?=$rowitem->id_jenis?>">
+                                    <i
+                                        class="icon fas fa-chevron-down"></i>
+                                    Rinician Jenis</p>
+                            </div>
+                            <div class="col-12 cell<?=$rowitem->id_jenis?> collapse contentall<?=$rowitem->id_jenis?>">                               
+                                <div class="row mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Deskripsi Jenis 
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->deskripsi_jenis?>
+                                    </div>
+                                </div>
+                                <div class="row  mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Foto Jenis 
+                                    </div>
+                                    <div class="col isi">
+                                        <img src="<?=$rowitem->foto_jenis?>?<?php if ($status='nochange'){echo time();}?>" width="150px">
+                                    </div>
+                                </div>
+                             
+                                    
+                            </div>
+                        </div>
+
+                        <!--collapse end -->
+                                </td>
+                            </tr>
+                          <?php } ?>
                     </tbody>
                   </table> 
             
