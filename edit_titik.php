@@ -1,3 +1,59 @@
+<?php
+    include 'build\config\connection.php';
+
+    $id_titik = $_GET['id_titik'];
+
+    $sqlviewlokasi = 'SELECT * FROM t_lokasi
+                        ORDER BY nama_lokasi';
+        $stmt = $pdo->prepare($sqlviewlokasi);
+        $stmt->execute();
+        $rowlokasi = $stmt->fetchAll();
+
+        $sqlviewwilayah = 'SELECT * FROM t_wilayah
+                        ORDER BY nama_wilayah';
+        $stmt = $pdo->prepare($sqlviewwilayah);
+        $stmt->execute();
+        $rowwilayah = $stmt->fetchAll();
+
+        $sqlviewtitik = 'SELECT * FROM t_titik 
+                        LEFT JOIN t_lokasi ON t_titik.id_lokasi = t_lokasi.id_lokasi 
+                        LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                        WHERE id_titik = :id_titik';
+        $stmt = $pdo->prepare($sqlviewtitik);
+        $stmt->execute(['id_titik' => $id_titik]);
+        $row = $stmt->fetch();
+
+    if (isset($_POST['submit'])) {
+            $id_lokasi        = $_POST['dd_id_lokasi'];
+            $id_wilayah        = $_POST['dd_id_wilayah'];
+            $luas_titik        = $_POST['tbluas_titik']; 
+            $longitude        = $_POST['tblongitude'];
+            $latitude        = $_POST['tblatitude'];
+            $kondisi_titik        = $_POST['rb_kondisi_titik'];
+
+            $sqltitik = "UPDATE t_titik
+                            SET id_wilayah = :id_wilayah, id_lokasi = :id_lokasi, 
+                            luas_titik = :luas_titik, longitude = :longitude, 
+                            latitude = :latitude, kondisi_titik = :kondisi_titik
+                            WHERE id_titik = :id_titik";
+
+            $stmt = $pdo->prepare($sqltitik);
+            $stmt->execute(['id_titik' => $id_titik, 'id_wilayah' => $id_wilayah, 'id_lokasi' => $id_lokasi, 
+            'luas_titik' => $luas_titik, 'longitude' => $longitude, 
+            'latitude' => $latitude, 'kondisi_titik' => $kondisi_titik]);
+
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+            header("Location: kelola_titik.php?status=nochange");
+            } else {
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                header("Location: kelola_titik.php?status=addsuccess");
+            }
+        } 
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -184,61 +240,67 @@
                     <div class="form-group">
                         <label for="dd_id_wilayah">ID Wilayah</label>
                         <select id="dd_id_wilayah" name="dd_id_wilayah" class="form-control">
-                            <option value="">41051 - Karawang</option>
-                            <option value="">45211 - Indramayu</option>
-                            <option value="">46396 - Pangandaran</option>
+                            <?php foreach ($rowwilayah as $rowitem) {                            
+                            ?>
+                            <option value="<?=$rowitem->id_wilayah?>" <?php if ($rowitem->id_wilayah == $row->id_wilayah) {echo " selected";} ?>>
+                            ID <?=$rowitem->id_wilayah?> - <?=$rowitem->nama_wilayah?></option>
+
+                            <?php } ?>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="dd_id_lokasi">ID Lokasi</label>
                         <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control">
-                            <option value="">10</option>
-                            <option value="">11</option>
-                            <option value="">12</option>
+                            <?php foreach ($rowlokasi as $rowitem) {                            
+                            ?>
+                            <option value="<?=$rowitem->id_lokasi?>" <?php if ($rowitem->id_lokasi == $row->id_lokasi) {echo " selected";} ?>>
+                            ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
+
+                            <?php } ?>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Longitude</label>
-                        <input type="#" class="form-control" id="#">
+                        <input type="#" value="<?=$row->longitude?>" name="tblongitude" class="form-control" id="#">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Latitude</label>
-                        <input type="#" class="form-control" id="#">
+                        <input type="#" value="<?=$row->latitude?>" name="tblatitude" class="form-control" id="#">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Luas Titik</label>
-                        <input type="#" class="form-control" id="#" placeholder="m2">
+                        <label for="exampleInputEmail1">Luas Titik (m2)</label>
+                        <input type="number" value="<?=$row->luas_titik?>" name="tbluas_titik" class="form-control" id="#" placeholder="m2">
                     </div> 
                     <div class="form-group">
                         <label for="rb_status_wisata">Kondisi</label><br>
                             <div class="form-check form-check-inline">
-                                <input type="radio" id="rb_kondisi_kurang" name="rb_kondisi_titik" value="kurang" class="form-check-input">
-                                <label class="form-check-label" for="rb_kondisi_titik" style="color: #DE4C4F">
-                                    Kurang (0-24.99%)
+                                <input type="radio" id="rb_kondisi_kurang" name="rb_kondisi_titik" value="Kurang" class="form-check-input"<?php if ($row->kondisi_titik == "Kurang"){echo " checked";} ?>>
+                                <label class="form-check-label" for="rb_kondisi_kurang" style="color: #DE4C4F">
+                                    Kurang (0-24%)
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input type="radio" id="rb_kondisi_cukup" name="rb_kondisi_titik" value="cukup" class="form-check-input">
-                                <label class="form-check-label" for="rb_kondisi_titik" style="color: #D8854F">
-                                    Cukup (25-49.99%)
+                                <input type="radio" id="rb_kondisi_cukup" name="rb_kondisi_titik" value="Cukup" class="form-check-input"<?php if ($row->kondisi_titik == "Cukup"){echo " checked";} ?>>
+                                <label class="form-check-label" for="rb_kondisi_cukup" style="color: #D8854F">
+                                    Cukup (25-49%)
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input type="radio" id="rb_kondisi_baik" name="rb_kondisi_titik" value="baik" class="form-check-input">
-                                <label class="form-check-label" for="rb_kondisi_titik" style="color: #EEA637">
-                                    Baik (50-74.99%)
+                                <input type="radio" id="rb_kondisi_baik" name="rb_kondisi_titik" value="Baik" class="form-check-input"<?php if ($row->kondisi_titik == "Baik"){echo " checked";} ?>>
+                                <label class="form-check-label" for="rb_kondisi_baik" style="color: #EEA637">
+                                    Baik (50-74%)
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input type="radio" id="rb_kondisi_sangat_baik" name="rb_kondisi_titik" value="sangat_baik" class="form-check-input">
-                                <label class="form-check-label" for="rb_kondisi_titik" style="color: #A7A737">
+                                <input type="radio" id="rb_kondisi_sangat_baik" name="rb_kondisi_titik" value="Sangat Baik" class="form-check-input"<?php if ($row->kondisi_titik == "Sangat Baik"){echo " checked";} ?>>
+                                <label class="form-check-label" for="rb_kondisi_sangat_baik" style="color: #A7A737">
                                     Sangat Baik (75-100%)
                                 </label> 
                             </div>
                     </div> 
                         <br>
                         <p align="center">
-                    <button type="submit" class="btn btn-submit">Kirim</button></p>
+                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
             <br><br>
                     

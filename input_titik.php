@@ -254,7 +254,7 @@
                         <input type="#" name="tblatitude" class="form-control" id="#">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Luas Titik</label>
+                        <label for="exampleInputEmail1">Luas Titik (m2)</label>
                         <input type="number" name="tbluas_titik" class="form-control" id="#" placeholder="m2">
                     </div> 
                     <div class="form-group">

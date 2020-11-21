@@ -23,3 +23,14 @@ elseif ($type == 'lokasi'){
     $stmt->execute(['id_lokasi' => $_GET['id_lokasi']]);
     header('Location: kelola_lokasi.php?status=deletesuccess');
 }
+elseif ($type == 'titik'){
+    $sql = 'DELETE FROM t_titik
+            WHERE id_titik = :id_titik';
+            
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_titik' => $_GET['id_titik']]);
+            header('Location: kelola_titik.php?status=deletesuccess');
+}
+
+
+ 
