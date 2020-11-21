@@ -203,6 +203,10 @@
                         <input type="file" id="file_terumbu_karang" name="file_terumbu_karang" class="form-control">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="num_harga_terumbu_karang">Harga Terumbu Karang</label>
+                        <input type="number" id="num_harga_terumbu_karang" name="num_harga_terumbu_karang" class="form-control">
+                    </div>
                   
                     <br>
                     <p align="center">

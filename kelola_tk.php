@@ -196,12 +196,15 @@
                                 <th scope="col">Nama Terumbu Karang</th>
                                 <th scope="col">Deskripsi</th>
                                 <th scope="col">Foto</th>
+                                <th scope="col">Harga</th>
                                 <th scope="col">Aksi</th>
+                                
                             </tr>
                           </thead>
                     <tbody>
                           <tr>
                               <th scope="row">-</th>
+                              <td>-</td>
                               <td>-</td>
                               <td>-</td>
                               <td>-</td>
