@@ -2,6 +2,9 @@
     include 'build\config\connection.php';
     
     $id_wilayah = $_GET['id_wilayah'];
+    $defaultpic = "images/image_default.jpg";
+
+    
     $sql = 'SELECT * FROM t_wilayah WHERE id_wilayah = :id_wilayah';
 
     $stmt = $pdo->prepare($sql);
@@ -12,15 +15,26 @@
             if($_POST['submit'] == 'Simpan'){
                 $nama_wilayah        = $_POST['tbnama_wilayah'];
                 $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
-                $id_user_pengelola     = $_POST['tb_id_user_pengelola'];
+                $id_user_pengelola     = $_POST['tb_id_user_pengelola'];                
 
                 //Image upload
             if($_FILES["image_uploads"]["size"] == 0) {
                 $foto_wilayah = $rowitem->foto_wilayah;
+                $pic = "&none=";
             }
             else if (isset($_FILES['image_uploads'])) {
-                unlink($rowitem->foto_lokasi);
-                move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowitem->foto_wilayah);
+                if ($rowitem->foto_wilayah == $defaultpic){
+                    $randomstring = substr(md5(rand()), 0, 7);
+                    $target_dir  = "images/foto_wilayah/";
+                    $foto_wilayah = $target_dir .'WIL_'.$randomstring. '.jpg';
+                    move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wilayah);
+                    $pic = "&new=";
+                }
+                else{
+                    unlink($rowitem->foto_wilayah);
+                    move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowitem->foto_wilayah);
+                    $pic = "&replace=";
+                }                
             }
             
             //---image upload end   
@@ -34,12 +48,12 @@
                 $stmt = $pdo->prepare($sqleditwilayah);
                 $stmt->execute(['nama_wilayah' => $nama_wilayah, 
                 'deskripsi_wilayah' => $deskripsi_wilayah, 
-                'foto_wilayah' => $rowitem->foto_wilayah, 'id_wilayah' => $id_wilayah, 
+                'foto_wilayah' => $foto_wilayah, 'id_wilayah' => $id_wilayah, 
                 'id_user_pengelola' => $id_user_pengelola]);
 
                 $affectedrows = $stmt->rowCount();
                 if ($affectedrows == '0') {
-                header("Location: kelola_wilayah.php?status=nochange");
+                header("Location: kelola_wilayah.php?status=nochange".$pic);
                 } else {
                 header("Location: kelola_wilayah.php?status=updatesuccess");
                 }

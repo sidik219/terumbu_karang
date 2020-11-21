@@ -2,6 +2,7 @@
     include 'build\config\connection.php';
 
     $id_lokasi = $_GET['id_lokasi'];
+    $defaultpic = "images/image_default.jpg";
     
     $sqlviewlokasi = 'SELECT * FROM t_lokasi
     LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah WHERE id_lokasi = :id_lokasi';
@@ -33,14 +34,22 @@
                 $foto_lokasi = $row->foto_lokasi;
             }
             else if (isset($_FILES['image_uploads'])) {
-                unlink($row->foto_lokasi);
-                move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $row->foto_lokasi);
+                if ($row->foto_lokasi == $defaultpic){
+                    $randomstring = substr(md5(rand()), 0, 7);
+                    $target_dir  = "images/foto_lokasi/";
+                    $foto_lokasi = $target_dir .'LOK_'.$randomstring. '.jpg';
+                    move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_lokasi);
+                }
+                else{
+                    unlink($row->foto_lokasi);
+                    move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $row->foto_lokasi);
+                }                
             }
             
             //---image upload end   
 
             $sqllokasi = "UPDATE t_lokasi
-                        SET id_wilayah = :id_wilayah, nama_lokasi=:nama_lokasi, deskripsi_lokasi=:deskripsi_lokasi, 
+                        SET id_wilayah = :id_wilayah, nama_lokasi=:nama_lokasi, deskripsi_lokasi=:deskripsi_lokasi, foto_lokasi = :foto_lokasi, 
                         luas_lokasi=:luas_lokasi, id_user_pengelola=:id_user_pengelola,
                         kontak_lokasi=:kontak_lokasi, nama_bank=:nama_bank, nama_rekening=:nama_rekening, nomor_rekening=:nomor_rekening
 
@@ -51,7 +60,8 @@
             'deskripsi_lokasi' => $deskripsi_lokasi, 
             'luas_lokasi' => $luas_lokasi, 'id_user_pengelola' => $id_user_pengelola,
             'kontak_lokasi' => $kontak_lokasi,'nama_bank' => $nama_bank,
-            'nama_rekening' => $nama_rekening,'nomor_rekening' => $nomor_rekening,'id_lokasi' => $id_lokasi]);
+            'nama_rekening' => $nama_rekening,'nomor_rekening' => $nomor_rekening,'id_lokasi' => $id_lokasi,
+            'foto_lokasi' => $foto_lokasi]);
 
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
