@@ -46,7 +46,6 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <b>Dashboard Admin - TKJB</b>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">  
                 <li class="nav-item dropdown">
@@ -62,7 +61,7 @@
         <!-- TOP SIDEBAR -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
-            <a href="index_admin.php" class="brand-link">
+            <a href="dashboard_admin.php" class="brand-link">
                 <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
                 <!-- BRAND TEXT (TOP) -->
                 <span class="brand-text font-weight-bold">TKJB</span>
@@ -75,7 +74,7 @@
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <li class="nav-item menu-open">
-                           <a href="index_admin.php" class="nav-link active">
+                           <a href="dashboard_admin.php" class="nav-link active">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p> Home </p>
                            </a>
@@ -176,7 +175,16 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                   <h3>Home</h3>
+                   <div class="jumbotron jumbotron-fluid-profil">
+         
+                    </div>
+                    <!-- end jumbotro profil -->
+                    <!-- profil pic holder -->
+                    <div class="row justify-content-center">
+                         <div class ="profile-pic-div" >
+                            <img src="dist/img/profil-example.jpg" id="photo">   
+                         </div>
+                    </div>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -185,7 +193,7 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    Hello World !
+                  
             
             </section>
             <!-- /.Left col -->
