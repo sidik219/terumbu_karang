@@ -1,3 +1,14 @@
+<?php
+    include 'build\config\connection.php';
+
+     $sqlviewtitik = 'SELECT * FROM t_titik
+                    LEFT JOIN t_lokasi ON t_titik.id_lokasi = t_lokasi.id_lokasi';
+        $stmt = $pdo->prepare($sqlviewtitik);
+        $stmt->execute();
+        $row = $stmt->fetchAll();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -192,31 +203,28 @@
                      <thead>
                             <tr>
                             <th scope="col">ID Titik</th>
-                            <th scope="col">ID Wilayah</th>
                             <th scope="col">ID Lokasi</th>
-                            <th scope="col">Longitude</th>
-                            <th scope="col">Latitude</th>
+                            <th scope="col">Koordinat</th>
                             <th scope="col">Luas Titik (m2)</th>
                             <th scope="col">Kondisi</th>
                             <th scope="col">Aksi</th>
                             </tr>
                           </thead>
                     <tbody>
+                            <?php foreach ($row as $rowitem) {                            
+                            ?>
                           <tr>
-                              <th scope="row">T6969</th>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-7.012798</td>
-                              <td>107.576060</td>
-                              <td>-</td>
-                              <td>-</td>
+                              <th scope="row"><?=$rowitem->id_titik?></th>
+                              <td>ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></td>
+                              <td>Lat: <?=$rowitem->latitude?><br> Long: <?=$rowitem->longitude?></td>
+                              <td><?=$rowitem->luas_titik?></td>
+                              <td><?=$rowitem->kondisi_titik?></td>
                               <td>
-                                <button type="button" class="btn btn-act">
-                                <a href="edit_titik.php" class="fas fa-edit"></a>
-                                </button>
-                                <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
+                                <a href="edit_titik.php?id_titik=<?=$rowitem->id_titik?>" class="fas fa-edit mr-3"></a>
+                                <a href="hapus.php?type=titik&id_titik=<?=$rowitem->id_titik?>" class="far fa-trash-alt"></a>
                               </td>
                           </tr>
+                          <?php } ?>
                     </tbody>
                   </table>
             
