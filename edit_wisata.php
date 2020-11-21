@@ -128,6 +128,12 @@
                                   <p> Kelola Batch </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="kelola_pemeliharaan.php" class="nav-link">
+                                  <i class="nav-icon fas fa-heart"></i>
+                                  <p> Kelola Pemeliharaan </p>
+                            </a>
+                        </li>
                          <li class="nav-item">
                              <a href="kelola_jenis_tk.php" class="nav-link">
                                    <i class="nav-icon fas fa-certificate"></i>

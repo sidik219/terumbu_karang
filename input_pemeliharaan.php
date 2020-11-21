@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Detail Titik - TKJB</title>
+    <title>Kelola Pemeliharaan - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
@@ -115,8 +115,8 @@
                                  <p> Kelola Titik </p>
                             </a>
                         </li>
-                        <li class="nav-item menu-open">
-                            <a href="kelola_detail_titik.php" class="nav-link active">
+                        <li class="nav-item">
+                            <a href="kelola_detail_titik.php" class="nav-link">
                                  <i class="nav-icon fas fa-podcast"></i>
                                  <p> Kelola Detail Titik </p>
                             </a>
@@ -127,25 +127,25 @@
                                   <p> Kelola Batch </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="kelola_pemeliharaan.php" class="nav-link">
+                         <li class="nav-item menu-open">
+                            <a href="kelola_pemeliharaan.php" class="nav-link active">
                                   <i class="nav-icon fas fa-heart"></i>
                                   <p> Kelola Pemeliharaan </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                             <a href="kelola_jenis_tk.php" class="nav-link">
+                         <li class="nav-item ">
+                             <a href="kelola_jenis_tk.php" class="nav-link ">
                                    <i class="nav-icon fas fa-certificate"></i>
                                    <p> Kelola Jenis Terumbu </p>
                              </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="kelola_tk.php" class="nav-link">
+                        <li class="nav-item ">
+                            <a href="kelola_tk.php" class="nav-link ">
                                   <i class="nav-icon fas fa-disease"></i>
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                        
+                       
                         <li class="nav-item">
                              <a href="kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -176,8 +176,8 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                     <div class="container-fluid">
-                        <a href="kelola_detail_titik.php">< Kembali</a><br><br>
-                        <h4><span class="align-middle font-weight-bold">Edit Data Detail Titik</span></h4>
+                        <a href="kelola_pemeliharaan.php">< Kembali</a><br><br>
+                        <h4><span class="align-middle font-weight-bold">Input Data Pemeliharaan</h4></span>
                     </div>
                 <!-- /.container-fluid -->
             </div>
@@ -186,23 +186,45 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                <div class="form-group">
-                        <label for="dd_id_titik">ID Titik</label>
-                        <select id="dd_id_titik" name="dd_id_titik" class="form-control">
-                            <option value="">1</option>
-                            <option value="">3</option>
-                            <option value="">5</option>
-                        </select>
-                </div>
+                    <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
-                        <label for="tb_id_tk">ID Terumbu Karang</label>
-                        <input type="text" id="tb_id_tk" name="tb_id_tk" class="form-control">
+                        <label for="dd_id_batch">ID Batch</label>
+                        <select id="dd_id_batch" name="dd_id_batch" class="form-control">
+                            <option value="">1</option>
+                            <option value="">2</option>
+                            <option value="">3</option>
+                        </select>
                     </div>
-
+                    <div class="form-group">
+                        <label for="rb_kondisi_pemeliharaan">Kondisi Pemeliharaan</label><br>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="rb_kondisi_pemeliharaan_baik" name="rb_kondisi_pemeliharaan" value="baik" class="form-check-input">
+                            <label class="form-check-label" for="rb_kondisi_pemeliharaan_baik">Baik</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="rb_kondisi_pemeliharaan_buruk" name="rb_kondisi_pemeliharaan" value="buruk" class="form-check-input">
+                            <label class="form-check-label" for="rb_kondisi_pemeliharaan_buruk">Buruk</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="rb_status_batch">Status Pemeliharaan</label><br>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="rb_status_batch_penyemaian" name="rb_status_batch" value="penyemaian" class="form-check-input">
+                            <label class="form-check-label" for="rb_status_batch_penyemaian">Penyemaian</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="rb_status_batch_penyebaran" name="rb_status_batch" value="penyebaran" class="form-check-input">
+                            <label class="form-check-label" for="rb_status_batch_penyebaran">Penyebaran</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="rb_status_batch_monitoring" name="rb_status_batch" value="monitoring" class="form-check-input">
+                            <label class="form-check-label" for="rb_status_batch_monitoring">Monitoring</label>
+                        </div>
+                    </div>
+                  
                     <br>
                     <p align="center">
                          <button type="submit" class="btn btn-submit">Kirim</button></p>
-                    </form>
                     </form>
             <br><br>
                     
