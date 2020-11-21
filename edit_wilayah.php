@@ -19,6 +19,7 @@
                 $foto_wilayah = $rowitem->foto_wilayah;
             }
             else if (isset($_FILES['image_uploads'])) {
+                unlink($rowitem->foto_lokasi);
                 move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowitem->foto_wilayah);
             }
             
@@ -33,7 +34,8 @@
                 $stmt = $pdo->prepare($sqleditwilayah);
                 $stmt->execute(['nama_wilayah' => $nama_wilayah, 
                 'deskripsi_wilayah' => $deskripsi_wilayah, 
-                'foto_wilayah' => $rowitem->foto_wilayah, 'id_wilayah' => $id_wilayah, 'id_user_pengelola' => $id_user_pengelola]);
+                'foto_wilayah' => $rowitem->foto_wilayah, 'id_wilayah' => $id_wilayah, 
+                'id_user_pengelola' => $id_user_pengelola]);
 
                 $affectedrows = $stmt->rowCount();
                 if ($affectedrows == '0') {
@@ -242,7 +244,7 @@
 
                                         <div class="form-group">
                                             <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
-                                            <img id="oldpic" src="<?=$rowitem->foto_wilayah?>" width="50px">
+                                            <img id="oldpic" src="<?=$rowitem->foto_wilayah?>" width="100px">
                                             <script>
                                                 window.onload = function() {
                                                 document.getElementById('preview').style.display = 'none';

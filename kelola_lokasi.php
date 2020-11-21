@@ -1,13 +1,15 @@
 <?php
     include 'build\config\connection.php';
 
+    if (isset($_GET['status'])){
+        $status = $_GET['status'];
+    }
+    
     $sqlviewlokasi = 'SELECT * FROM t_lokasi
                     LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah';
         $stmt = $pdo->prepare($sqlviewlokasi);
         $stmt->execute();
         $row = $stmt->fetchAll();
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -218,7 +220,7 @@
                             <td><?=$rowitem->nama_lokasi?></td>
                             <td><?=$rowitem->luas_lokasi?></td>
                             <td>
-                                <a href="edit_wilayah.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="fas fa-edit mr-3"></a>
+                                <a href="edit_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="fas fa-edit mr-3"></a>
                                 <a href="hapus.php?type=lokasi&id_lokasi=<?=$rowitem->id_lokasi?>" class="far fa-trash-alt"></a>
                                 </td>
                             </tr>
@@ -250,7 +252,7 @@
                                         Foto Lokasi 
                                     </div>
                                     <div class="col isi">
-                                        <img src="<?=$rowitem->foto_lokasi?>" width="50px">
+                                        <img src="<?=$rowitem->foto_lokasi?>?<?php if ($status='nochange'){echo time();}?>" width="50px">
                                     </div>
                                 </div>
                                 <div class="row">

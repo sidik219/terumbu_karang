@@ -1,6 +1,9 @@
 <?php
     include 'build\config\connection.php';
     
+    if (isset($_GET['status'])){
+        $status = $_GET['status'];
+    }
     $sqlviewwilayah = 'SELECT * FROM t_wilayah
                         ORDER BY nama_wilayah';
         $stmt = $pdo->prepare($sqlviewwilayah);
@@ -248,7 +251,7 @@
                                         Foto Wilayah 
                                     </div>
                                     <div class="col isi">
-                                        <img src="<?=$rowitem->foto_wilayah?>" width="50px">
+                                        <img src="<?=$rowitem->foto_wilayah?>?<?php if ($status='nochange'){echo time();}?>" width="50px">
                                     </div>
                                 </div>
                                 <div class="row">
