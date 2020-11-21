@@ -30,8 +30,8 @@
                     move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wilayah);
                     $pic = "&new=";
                 }
-                else{
-                    $foto_lokasi = $row->foto_lokasi;
+                else if (isset($rowitem->foto_wilayah)){
+                    $foto_wilayah = $rowitem->foto_wilayah;
                     unlink($rowitem->foto_wilayah);
                     move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowitem->foto_wilayah);
                     $pic = "&replace=";
@@ -56,7 +56,7 @@
                 if ($affectedrows == '0') {
                 header("Location: kelola_wilayah.php?status=nochange".$pic);
                 } else {
-                header("Location: kelola_wilayah.php?status=updatesuccess");
+                header("Location: kelola_wilayah.php?status=updatesuccess".$pic);
                 }
             }           
         }

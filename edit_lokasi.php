@@ -35,7 +35,6 @@
             }
             else if (isset($_FILES['image_uploads'])) {
                 if (($row->foto_lokasi == $defaultpic)  || (!$rowitem->foto_lokasi)){
-                    $randomstring = substr(md5(rand()), 0, 7);
                     $target_dir  = "images/foto_lokasi/";
                     $foto_lokasi = $target_dir .'LOK_'.$randomstring. '.jpg';
                     move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_lokasi);

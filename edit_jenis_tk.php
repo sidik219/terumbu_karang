@@ -32,7 +32,7 @@
                     $foto_jenis = $rowitem->foto_jenis;
                     unlink($rowitem->foto_jenis);
                     move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowitem->foto_jenis);
-                    $pic = "&replace=$rowitem->foto_jenis";
+                    $pic = "&replace=";
                 }                
             }
             
@@ -247,7 +247,7 @@
                     </div>
                     <div class='form-group' id='fototitik'>
                                             <div>
-                                                <label for='image_uploads'>Upload Foto Titik</label>
+                                                <label for='image_uploads'>Upload Foto Jenis</label>
                                                 <input type='file'  class='form-control' id='image_uploads'
                                                     name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
                                             </div>                                            

@@ -1,3 +1,72 @@
+<?php
+    include 'build\config\connection.php';
+
+    $id_terumbu_karang = $_GET['id_terumbu_karang'];
+    $defaultpic = "images/image_default.jpg";
+
+    $sqlviewjenis = 'SELECT * FROM t_jenis_terumbu_karang
+                        ORDER BY id_jenis';
+        $stmt = $pdo->prepare($sqlviewjenis);
+        $stmt->execute();
+        $rowviewjenis = $stmt->fetchAll();
+
+    $sqlviewtk = 'SELECT * FROM t_terumbu_karang
+                        LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis';
+        $stmt = $pdo->prepare($sqlviewtk);
+        $stmt->execute();
+        $rowitem = $stmt->fetch();
+
+        if (isset($_POST['submit'])) {
+            $id_jenis      = $_POST['dd_id_jenis'];
+            $nama_terumbu_karang        = $_POST['tb_nama_terumbu']; 
+            $deskripsi_terumbu_karang        = $_POST['tb_deskripsi_terumbu'];
+            $randomstring = substr(md5(rand()), 0, 7);
+            $harga_terumbu_karang = $_POST['num_harga_terumbu_karang'];
+
+            //Image upload
+            if($_FILES["image_uploads"]["size"] == 0) {
+                $foto_terumbu_karang = $rowitem->foto_terumbu_karang;
+                $pic = "&none=";
+            }
+            else if (isset($_FILES['image_uploads'])) {
+                if (($rowitem->foto_terumbu_karang == $defaultpic) || (!$rowitem->foto_terumbu_karang)){
+                    $target_dir  = "images/foto_terumbu_karang/";
+                    $foto_terumbu_karang = $target_dir .'TK_'.$randomstring. '.jpg';
+                    move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_terumbu_karang);
+                    $pic = "&new=";
+                }
+                else if (isset($rowitem->foto_terumbu_karang)){
+                    $foto_terumbu_karang = $rowitem->foto_terumbu_karang;
+                    unlink($rowitem->foto_terumbu_karang);
+                    move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowitem->foto_terumbu_karang);
+                    $pic = "&replace=";
+                }                
+            }
+            
+            //---image upload end  
+
+    $sqlterumbu_karang = "UPDATE t_terumbu_karang
+                            SET id_jenis = :id_jenis, nama_terumbu_karang = :nama_terumbu_karang, 
+                            deskripsi_terumbu_karang = :deskripsi_terumbu_karang, 
+                            foto_terumbu_karang = :foto_terumbu_karang, harga_terumbu_karang = :harga_terumbu_karang
+                            WHERE id_terumbu_karang = :id_terumbu_karang";
+
+    $stmt = $pdo->prepare($sqlterumbu_karang);
+    $stmt->execute(['id_terumbu_karang' => $id_terumbu_karang,'id_jenis' => $id_jenis,'nama_terumbu_karang' => $nama_terumbu_karang, 
+    'deskripsi_terumbu_karang' => $deskripsi_terumbu_karang, 
+    'foto_terumbu_karang' => $foto_terumbu_karang, 'harga_terumbu_karang' => $harga_terumbu_karang]);
+
+    $affectedrows = $stmt->rowCount();
+    if ($affectedrows == '0') {
+    header("Location: kelola_tk.php?status=nochange");
+    } else {
+        //echo "HAHAHAAHA GREAT SUCCESSS !";
+        header("Location: kelola_tk.php?status=addsuccess");
+        }
+    }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,13 +93,7 @@
         <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
         <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
+
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -190,33 +253,60 @@
                     <div class="form-group">
                         <label for="dd_id_jenis">ID Jenis</label>
                         <select id="dd_id_jenis" name="dd_id_jenis" class="form-control">
-                            <option value="">1-Acropora</option>
-                            <option value="">2-Retropora</option>
-                            <option value="">3-Macropora</option>
+                            <?php foreach ($rowviewjenis as $rowitems) {                            
+                            ?>
+                            <option value="<?=$rowitems->id_jenis?>"  <?php if ($rowitem->id_jenis == $rowitems->id_jenis) {echo " selected";} ?>>
+                            ID <?=$rowitems->id_jenis?> - <?=$rowitems->nama_jenis?></option>
+
+                            <?php } ?>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="tb_nama_terumbu">Nama Terumbu Karang</label>
-                        <input type="text" id="tb_nama_terumbu" name="tb_nama_terumbu" class="form-control">
+                        <input type="text" value="<?=$rowitem->nama_terumbu_karang?>" id="tb_nama_terumbu" name="tb_nama_terumbu" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="tb_deskripsi_terumbu">Deskripsi Terumbu Karang</label>
-                        <input type="text" id="tb_deskripsi_terumbu" name="tb_deskripsi_terumbu" class="form-control">
+                        <input type="text"  value="<?=$rowitem->deskripsi_terumbu_karang?>"  id="tb_deskripsi_terumbu" name="tb_deskripsi_terumbu" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label for="file_terumbu_karang">Foto Terumbu Karang</label>
-                        <div class="file-form">
-                        <input type="file" id="file_terumbu_karang" name="file_terumbu_karang" class="form-control">
+                    <div class='form-group' id='fototk'>
+                        <div>
+                            <label for='image_uploads'>Upload Foto Terumbu Karang</label>
+                            <input type='file'  class='form-control' id='image_uploads'
+                                name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
                         </div>
                     </div>
                     <div class="form-group">
+                        <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
+                        <img id="oldpic" src="<?=$rowitem->foto_terumbu_karang?>" width="100px">
+                        <script>
+                            window.onload = function() {
+                            document.getElementById('preview').style.display = 'none';
+                            };
+                            function readURL(input) {
+                                if (input.files && input.files[0]) {
+                                    var reader = new FileReader();
+                                    document.getElementById('oldpic').style.display = 'none';
+                                    reader.onload = function (e) {
+                                        $('#preview')
+                                            .attr('src', e.target.result)
+                                            .width(200);
+                                            document.getElementById('preview').style.display = 'block';
+                                    };
+
+                                    reader.readAsDataURL(input.files[0]);
+                                }
+                            }
+                        </script>
+                    </div>
+                    <div class="form-group">
                         <label for="num_harga_terumbu_karang">Harga Terumbu Karang</label>
-                        <input type="number" id="num_harga_terumbu_karang" name="num_harga_terumbu_karang" class="form-control">
+                        <input type="number"  value="<?=$rowitem->harga_terumbu_karang?>"  id="num_harga_terumbu_karang" name="num_harga_terumbu_karang" class="form-control">
                     </div>
                   
                     <br>
                     <p align="center">
-                         <button type="submit" class="btn btn-submit">Kirim</button></p>
+                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
             <br><br>
                     

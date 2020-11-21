@@ -1,3 +1,14 @@
+<?php
+    include 'build\config\connection.php';
+
+    $sqlviewtk = 'SELECT * FROM t_terumbu_karang
+                        LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis';
+        $stmt = $pdo->prepare($sqlviewtk);
+        $stmt->execute();
+        $row = $stmt->fetchAll();
+
+  
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,13 +35,6 @@
         <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
         <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -196,32 +200,75 @@
                 <div class="container-fluid">
                     <table class="table table-striped">
                      <thead>
+                         <?php foreach ($row as $rowitem) {                            
+                        ?>
                             <tr>
                                 <th scope="col">ID Terumbu Karang</th>
                                 <th scope="col">ID Jenis</th>
                                 <th scope="col">Nama Terumbu Karang</th>
-                                <th scope="col">Deskripsi</th>
+                                <!-- <th scope="col">Deskripsi</th>
                                 <th scope="col">Foto</th>
-                                <th scope="col">Harga</th>
+                                <th scope="col">Harga</th> -->
                                 <th scope="col">Aksi</th>
                                 
                             </tr>
                           </thead>
                     <tbody>
                           <tr>
-                              <th scope="row">-</th>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
+                              <th scope="row"><?=$rowitem->id_terumbu_karang?></th>
+                              <td>ID <?=$rowitem->id_jenis?> - <?=$rowitem->nama_jenis?></td>
+                              <td><?=$rowitem->nama_terumbu_karang?></td>
                               <td>
-                              <button type="button" class="btn btn-act">
-                                <a href="edit_tk.php" class="fas fa-edit"></a>
-                            	</button>
-                                <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
+                              <a href="edit_tk.php?id_terumbu_karang=<?=$rowitem->id_terumbu_karang?>" class="fas fa-edit mr-3"></a>
+                                <a href="hapus.php?type=terumbu_karang&id_terumbu_karang=<?=$rowitem->id_terumbu_karang?>" class="far fa-trash-alt"></a>
                               </td>
                           </tr>
+                          <tr>
+                                <td colspan="4">
+                                    <!--collapse start -->
+                            <div class="row  m-0">
+                            <div class="col-12 cell detailcollapser<?=$rowitem->id_terumbu_karang?>"
+                                data-toggle="collapse"
+                                data-target=".cell<?=$rowitem->id_terumbu_karang?>, .contentall<?=$rowitem->id_terumbu_karang?>">
+                                <p
+                                    class="fielddetail<?=$rowitem->id_terumbu_karang?>">
+                                    <i
+                                        class="icon fas fa-chevron-down"></i>
+                                    Rincian Terumbu Karang</p>
+                            </div>
+                            <div class="col-12 cell<?=$rowitem->id_terumbu_karang?> collapse contentall<?=$rowitem->id_terumbu_karang?>">                               
+                                <div class="row mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Deskripsi 
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->deskripsi_terumbu_karang?>
+                                    </div>
+                                </div>
+                                <div class="row  mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Foto 
+                                    </div>
+                                    <div class="col isi">
+                                        <img src="<?=$rowitem->foto_terumbu_karang?>?<?php if ($status='nochange'){echo time();}?>" width="50px">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Harga
+                                    </div>
+                                    <div class="col isi">
+                                        Rp. <?=$rowitem->harga_terumbu_karang?>
+                                    </div>
+                                </div>
+                                    
+                            </div>
+                        </div>
+
+                        <!--collapse end -->
+                                </td>
+                            </tr>
+                          <?php } ?>
                     </tbody>
                   </table> 
             

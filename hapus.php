@@ -32,12 +32,20 @@ elseif ($type == 'titik'){
             header('Location: kelola_titik.php?status=deletesuccess');
 }
 elseif ($type == 'jenis'){
-   $sql = 'DELETE FROM t_jenis_terumbu_karang
+    $sql = 'DELETE FROM t_jenis_terumbu_karang
             WHERE id_jenis = :id_jenis';
             
             $stmt = $pdo->prepare($sql);
             $stmt->execute(['id_jenis' => $_GET['id_jenis']]);
             header('Location: kelola_jenis_tk.php?status=deletesuccess');
 }
+elseif ($type == 'terumbu_karang'){
+    $sql = 'DELETE FROM t_terumbu_karang
+            WHERE id_terumbu_karang = :id_terumbu_karang';
+            
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_terumbu_karang' => $_POST['id_terumbu_karang']]);
+            header('Location: kelola_tk.php?status=deletesuccess');
+}
 
- 
+
