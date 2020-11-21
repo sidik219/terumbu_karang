@@ -1,3 +1,14 @@
+<?php
+    include 'build\config\connection.php';
+
+    $sqlviewlokasi = 'SELECT * FROM t_lokasi
+                    LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah';
+        $stmt = $pdo->prepare($sqlviewlokasi);
+        $stmt->execute();
+        $row = $stmt->fetchAll();
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -189,42 +200,106 @@
             <section class="content">
                 <div class="container-fluid">
                     <table class="table table-striped">
-                     <thead>
+                    <thead>
                             <tr>
                             <th scope="col">ID Lokasi</th>
                             <th scope="col">ID Wilayah</th>
                             <th scope="col">Nama Lokasi</th>
                             <th scope="col">Luas (m2)</th>
-                            <th scope="col">Foto Lokasi</th>
-                            <th scope="col">Deskripsi</th>
-                            <th scope="col">ID Pengelola</th>
-                            <th scope="col">Kontak</th>
-                            <th scope="col">Nama Bank</th>
-                            <th scope="col">Nama Rekening</th>
-                            <th scope="col">Nomor Rekening</th>
                             <th scope="col">Aksi</th>
-                              </tr>
-                          </thead>
+                            </tr>
+                        </thead>
                     <tbody>
-                          <tr>
-                              <th scope="row">L001</th>
-                              <td>41051</td>
-                              <td>Pantai Tangkolak</td>
-                              <td>5000</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>
-                                <button type="button" class="btn btn-act">
-                                <a href="edit_lokasi.php" class="fas fa-edit"></a>
-                                </button>
-                                <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
-                              </td>
-                          </tr>
+                        <?php foreach ($row as $rowitem) {                            
+                        ?>
+                            <tr>
+                            <th scope="row"><?=$rowitem->id_lokasi?></th>
+                            <td><?=$rowitem->id_wilayah?> - <?=$rowitem->nama_wilayah?></td>
+                            <td><?=$rowitem->nama_lokasi?></td>
+                            <td><?=$rowitem->luas_lokasi?></td>
+                            <td>
+                                <a href="edit_wilayah.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="fas fa-edit mr-3"></a>
+                                <a href="hapus.php?type=lokasi&id_lokasi=<?=$rowitem->id_lokasi?>" class="far fa-trash-alt"></a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3">
+                                    <!--collapse start -->
+                            <div class="row  m-0">
+                            <div class="col-12 cell detailcollapser<?=$rowitem->id_lokasi?>"
+                                data-toggle="collapse"
+                                data-target=".cell<?=$rowitem->id_lokasi?>, .contentall<?=$rowitem->id_lokasi?>">
+                                <p
+                                    class="fielddetail<?=$rowitem->id_lokasi?>">
+                                    <i
+                                        class="icon fas fa-chevron-down"></i>
+                                    Rinician Lokasi</p>
+                            </div>
+                            <div class="col-12 cell<?=$rowitem->id_lokasi?> collapse contentall<?=$rowitem->id_lokasi?>">                               
+                                <div class="row mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Deskripsi Lokasi 
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->deskripsi_lokasi?>
+                                    </div>
+                                </div>
+                                <div class="row  mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Foto Lokasi 
+                                    </div>
+                                    <div class="col isi">
+                                        <img src="<?=$rowitem->foto_lokasi?>" width="50px">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        ID Pengelola
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->id_user_pengelola?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Kontak Lokasi
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->kontak_lokasi?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Nama Bank
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->nama_bank?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Nama Rekening
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->nama_rekening?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Nomor Rekening
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->nomor_rekening?>
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+
+                        <!--collapse end -->
+                                </td>
+                            </tr>
+                           <?php } ?>
                     </tbody>
                   </table>
             

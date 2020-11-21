@@ -147,11 +147,7 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
     }
 
     function viewLokasi(){
-        $sqlviewlokasi = 'SELECT * FROM t_lokasi
-                        ORDER BY nama_lokasi';
-        $stmt = $pdo->prepare($sqlviewlokasi);
-        $stmt->execute();
-        $row = $stmt->fetchAll();
+        
     }
 
     function editLokasi(){

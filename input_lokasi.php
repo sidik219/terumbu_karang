@@ -26,7 +26,7 @@
             }
             else if (isset($_FILES['image_uploads'])) {
                 $target_dir  = "images/foto_lokasi/";
-                $foto_lokasi = $target_dir .'WIL_'.$randomstring. '.jpg';
+                $foto_lokasi = $target_dir .'LOK_'.$randomstring. '.jpg';
                 move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_lokasi);
             }
             

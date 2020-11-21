@@ -225,16 +225,16 @@
                                 <td colspan="3">
                                     <!--collapse start -->
                             <div class="row  m-0">
-                            <div class="col-12 keadaan detailcollapser<?=$rowitem->id_wilayah?>"
+                            <div class="col-12 cell detailcollapser<?=$rowitem->id_wilayah?>"
                                 data-toggle="collapse"
-                                data-target=".contentkeadaan<?=$rowitem->id_wilayah?>, .contentall<?=$rowitem->id_wilayah?>">
+                                data-target=".cell<?=$rowitem->id_wilayah?>, .contentall<?=$rowitem->id_wilayah?>">
                                 <p
                                     class="fielddetail<?=$rowitem->id_wilayah?>">
                                     <i
                                         class="icon fas fa-chevron-down"></i>
                                     Rinician Wilayah</p>
                             </div>
-                            <div class="col-12 contentkeadaan<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?>">                               
+                            <div class="col-12 cell<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?>">                               
                                 <div class="row mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Deskripsi Wilayah 
