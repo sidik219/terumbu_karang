@@ -229,7 +229,7 @@
                                     class="fielddetail<?=$rowitem->id_jenis?>">
                                     <i
                                         class="icon fas fa-chevron-down"></i>
-                                    Rinician Jenis</p>
+                                    Rincian Jenis</p>
                             </div>
                             <div class="col-12 cell<?=$rowitem->id_jenis?> collapse contentall<?=$rowitem->id_jenis?>">                               
                                 <div class="row mb-3">
