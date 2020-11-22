@@ -1,4 +1,6 @@
-<?php include '../../build/config/connection.php'; ?>
+<?php 
+include '../../build/config/connection.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,96 +40,6 @@
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-      <!-- Messages Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-comments"></i>
-          <span class="badge badge-danger navbar-badge">3</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="../../dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Brad Diesel
-                  <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">Call me whenever you can...</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="../../dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  John Pierce
-                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">I got your message bro</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="../../dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Nora Silvester
-                  <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">The subject goes here</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-        </div>
-      </li>
-      <!-- Notifications Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-          <i class="fas fa-expand-arrows-alt"></i>
-        </a>
-      </li>
       <li class="nav-item">
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
           <i class="fas fa-th-large"></i>
@@ -158,14 +70,6 @@
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Home
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="../forms/h_jenis_tk.php" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
-              <p>
-                Jenis Terumbu Karang
               </p>
             </a>
           </li>
@@ -210,7 +114,7 @@
 
               <!-- form start -->
               <div class="card-body">
-                <form action="#" method="POST">
+                <form action="h_terumbu_karang1.php" method="POST">
                   <table align="center">
                     <thead>
                       <tr>
@@ -222,56 +126,48 @@
 
                         foreach ($pdo->query($sql_get) as $result) { ?>
 
-                        <i style="display:none;">
-                          <?php echo $result->id_jenis; ?>
-                        </i>
+                        <i style="display:none;"><?php echo $result->id_jenis; ?></i>
                         <h5 align="center" style="color: #30A0E0; padding-right: 100px;">
                           <b><?php echo $result->nama_jenis; ?></b>
                         </h5>
                       <?php } ?>
                       <!-- End -->
 
-                        <h5 style="color: #30A0E0; margin-left: 665px;">
+                        <th style="color: #30A0E0; margin-left: 255px; position: absolute;">
                           Qty
-                        </h5>
-
-                      <!-- Query Terumbu Karang -->
-                      <?php
-                      $get = $_GET['id_jenis'];
-                      $sql_view = "SELECT * FROM t_terumbu_karang
-                      WHERE nama_terumbu_karang LIKE '%Acropora%'";
-
-                      $subtotal = 0;
-
-                      foreach ($pdo->query($sql_view) as $result) { ?>
-                        <th>
-                          <input type="text" value="harga" style="color: #30A0E0; text-align: center; opacity: 1; border: none; border: solid 1px; border-radius: 3px; width: 90px; position: absolute;" readonly>
                         </th>
-                      </tr>
                     </thead>
 
-                    <?php //$subtotal = $result['harga_tk'] * $result['qty']; ?>
-                    
+                    <!-- Query Terumbu Karang -->
+                    <?php
+                    $get = $_GET['id_jenis'];
+                    $sql_view = "SELECT * FROM t_terumbu_karang 
+                    WHERE nama_terumbu_karang LIKE '%Acropora%'";
+
+                    foreach ($pdo->query($sql_view) as $result) { ?>
                     <tbody>
                       <tr>
-                        <td style="display:none;">
-                          <?php echo $result->id_terumbu_karang; ?>
-                        </td>
+                        <!-- Harga TK -->
                         <td>
-                          <img src="../image/terumbu-karang/<?php echo $result->foto_terumbu_karang?>" width="300" height="200"/>
-                        </td>
-                        <td>
-                          <input type="text" value="QTY" style="border: none; border: solid 1px; border-radius: 10px; width: 50px; height: 50px; margin-left: 20px; color: #30A0E0; text-align: center" readonly>
+                          <input type="text" name="hargaTK" id="hargaTK" value="<?php echo $result->harga_tk; ?>" style="color: #30A0E0; text-align: center; opacity: 1; border: none; border: solid 1px; border-radius: 3px; width: 90px; position: absolute;" readonly>
                         </td>
                       </tr>
                       <tr>
-                        <td align="center">
+                        <td style="display: none;"><?php echo $result->id_terumbu_karang; ?></td>
+                        <td>
+                          <img src="../image/terumbu-karang/<?php echo $result->foto_terumbu_karang?>" width="240" height="200"/>
+                        </td>
+                        <!-- QTY -->
+                        <td style="padding-right: 50px;">
+                          <input type="text" name="qty" id="qty<?php echo $result->id_terumbu_karang; ?>" value="0" onchange="myFunction()" style="color: #30A0E0; text-align: center; border: none; border: solid 1px; border-radius: 10px; width: 50px; height: 50px; margin-left: 5px; position: absolute;">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
                           <p>
-                          <input type="button" class="btn btn-warning" style="color: white; background-color: #FF5733; width: 300px; border: none;" value="<?php echo $result->nama_terumbu_karang; ?>" disable>
+                          <input type="button" class="btn btn-warning" style="color: white; background-color: #FF5733; width: 240px; border: none;" value="<?php echo $result->nama_terumbu_karang; ?>" disable>
                         </td>
-                        <td style="display:none;">
-                          <?php echo $result->deskripsi_terumbu_karang; ?>
-                        </td>
+                        <td style="display:none;"><?php echo $result->deskripsi_terumbu_karang; ?></td>
                       </tr>
                     </tbody>
                     <?php } ?>
@@ -281,13 +177,11 @@
                   <table align="center">
                     <tr>
                       <td style="color: #30A0E0; padding-right: 50px;">Subtotal:<br>
-                        <span style="font-weight:bold; font-size: 19px;">
-                          Rp. <?php echo"$subtotal"; ?>
-                        </span>
+                        <span id="subtotal" style="font-weight:bold; font-size: 19px;">Rp. </span>
                       </td>
                       <td>
-                        <button type="button" name="submit" class="btn btn-warning" style="color: white; background-color: #FF5733; margin-right: 65px; border: none; border-radius: 20px;">
-                          <a href="h_review_donasi.php" style="color: white;">
+                        <button type="submit" name="submit" class="btn btn-warning" style="color: white; background-color: #FF5733; margin-right: 20px; border: none; border-radius: 20px;">
+                          <a href="h_review_donasi.php?id_tk=<?php echo $result->id_terumbu_karang; ?>" style="color: white;">
                             Konfirmasi Pilihan
                           </a>
                         </button>
@@ -339,5 +233,15 @@ $(function () {
 </script>
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="crossorigin=""></script>
+<script type="text/javascript">
+  function myFunction()
+  {
+    var qty = document.getElementById("qty").value;
+    var hargaTK = document.getElementById("hargaTK").value;
+    var subtotal = qty * hargaTK;
+
+    document.getElementById("subtotal").innerHTML = "Rp. " + subtotal;
+  }
+</script>
 </body>
 </html>

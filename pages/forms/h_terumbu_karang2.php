@@ -1,5 +1,4 @@
 <?php include '../../build/config/connection.php'; ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,7 +90,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="../../index.php">Home</a></li>
-              <li class="breadcrumb-item active">Jenis Terumbu Karang</li>
+              <li class="breadcrumb-item active">Terumbu Karang</li>
             </ol>
           </div>
         </div>
@@ -107,102 +106,87 @@
             <!-- general form elements -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title" style="font-weight:bold; text-align: center;">Pilih Jenis Terumbu</h3>
+                <h3 class="card-title" style="font-weight:bold; text-align: center;">Terumbu Karang</h3>
               </div>
               <!-- /.card-header -->
 
               <!-- form start -->
-              <form action="#" method="POST">
-                <div class="card-body">
-                  <table align="center">
-                    <tr>
-                      <td style="color: #30A0E0; font-size: 18px; padding-right: 116px;">
-                        Lokasi penanaman dipilih:
-                      </td>
-                      <td rowspan="2"></td>
-                    </tr>
-                    <!-- Query Lokasi -->
-                    <?php
-                    $sql_view = "SELECT * FROM t_lokasi";
-
-                    foreach ($pdo->query($sql_view) as $result) { ?>
-                    <tr>
-                      <span style="display:none;"><?php echo $result->id_lokasi; ?></span>
-                      <td style="color: #30A0E0; font-weight:bold;"><?php echo $result->nama_lokasi; ?></td>
-                    </tr>
-                    <?php } ?>
-                    <!-- End -->  
-                  </table>
-
+              <div class="card-body">
+                <form action="#" method="POST">
                   <table align="center">
                     <thead>
                       <tr>
-                        <p>
-                        <th>
-                          <h5 style="font-weight:bold; text-align: center; color: #30A0E0;">
-                            Jenis terumbu karang:
-                          </h5>
+                        <!-- Query GET Jenis Terumbu Karang -->
+                      <?php
+                        $get = $_GET['id_jenis'];
+                        $sql_get = "SELECT * FROM t_jenis_terumbu_karang
+                        WHERE id_jenis='$get'";
+
+                        foreach ($pdo->query($sql_get) as $result) { ?>
+
+                        <i style="display:none;"><?php echo $result->id_jenis; ?></i>
+                        <h5 align="center" style="color: #30A0E0; padding-right: 100px;">
+                          <b><?php echo $result->nama_jenis; ?></b>
+                        </h5>
+                      <?php } ?>
+                      <!-- End -->
+
+                        <th style="color: #30A0E0; margin-left: 255px; position: absolute;">
+                          Qty
                         </th>
-                      </tr>
                     </thead>
-                    <!-- Query Jenis Terumbu Karang -->
+
+                    <!-- Query Terumbu Karang -->
                     <?php
-                    $sql_view = "SELECT * FROM t_jenis_terumbu_karang
-                     WHERE nama_jenis LIKE '%Acropora%'";
+                    $sql_view = "SELECT * FROM t_terumbu_karang 
+                    WHERE nama_terumbu_karang LIKE '%Goniopora%'";
 
                     foreach ($pdo->query($sql_view) as $result) { ?>
                     <tbody>
                       <tr>
-                        <td style="display:none;"><?php echo $result->id_jenis; ?></td>
+                        <!-- Harga TK -->
                         <td>
-                          <img src="../image/<?php echo $result->foto_jenis?>" width="300" height="200"/>
+                          <input type="text" name="hargaTK" id="hargaTK" value="<?php echo $result->harga_tk; ?>" style="color: #30A0E0; text-align: center; opacity: 1; border: none; border: solid 1px; border-radius: 3px; width: 90px; position: absolute;" readonly>
                         </td>
-                        <td style="display:none;"><?php echo $result->deskripsi_jenis; ?></td>
                       </tr>
                       <tr>
-                        <td align="center">
-                          <p>
-                          <button type="button" class="btn btn-warning" style="background-color: #FF5733; width: 300px; border: none;">
-                            <a href="h_terumbu_karang1.php?id_jenis=<?php echo $result->id_jenis; ?>" style="color: white;">
-                              <?php echo $result->nama_jenis; ?>
-                            </a>
-                          </button>
+                        <td style="display:none;"><?php echo $result->id_terumbu_karang; ?></td>
+                        <td>
+                          <img src="../image/terumbu-karang/<?php echo $result->foto_terumbu_karang?>" width="240" height="200"/>
                         </td>
+                        <!-- QTY -->
+                        <td style="padding-right: 50px;">
+                          <input type="text" name="qty" id="qty" value="0" onchange="myFunction()" style="color: #30A0E0; text-align: center; border: none; border: solid 1px; border-radius: 10px; width: 50px; height: 50px; margin-left: 5px; position: absolute;">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <p>
+                          <input type="button" class="btn btn-warning" style="color: white; background-color: #FF5733; width: 240px; border: none;" value="<?php echo $result->nama_terumbu_karang; ?>" disable>
+                        </td>
+                        <td style="display:none;"><?php echo $result->deskripsi_terumbu_karang; ?></td>
                       </tr>
                     </tbody>
                     <?php } ?>
-
-                    <!-- Query Jenis Terumbu Karang -->
-                    <?php
-                    $sql_view = "SELECT * FROM t_jenis_terumbu_karang
-                     WHERE nama_jenis LIKE '%Goniopora%'";
-
-                    foreach ($pdo->query($sql_view) as $result) { ?>
-                    <tbody>
-                      <tr>
-                        <td style="display:none;"><?php echo $result->id_jenis; ?></td>
-                        <td>
-                          <img src="../image/<?php echo $result->foto_jenis?>" width="300" height="200"/>
-                        </td>
-                        <td style="display:none;"><?php echo $result->deskripsi_jenis; ?></td>
-                      </tr>
-                      <tr>
-                        <td align="center">
-                          <p>
-                          <button type="button" class="btn btn-warning" style="background-color: #FF5733; width: 300px; border: none;">
-                            <a href="h_terumbu_karang2.php?id_jenis=<?php echo $result->id_jenis; ?>" style="color: white;">
-                              <?php echo $result->nama_jenis; ?>
-                            </a>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                    <?php } ?>
-
                     <!-- End -->
                   </table>
-                </div>
-              </form>
+                
+                  <table align="center">
+                    <tr>
+                      <td style="color: #30A0E0; padding-right: 50px;">Subtotal:<br>
+                        <span id="subtotal" style="font-weight:bold; font-size: 19px;">Rp. </span>
+                      </td>
+                      <td>
+                        <button type="button" name="submit" class="btn btn-warning" style="color: white; background-color: #FF5733; margin-right: 20px; border: none; border-radius: 20px;">
+                          <a href="h_review_donasi.php" style="color: white;">
+                            Konfirmasi Pilihan
+                          </a>
+                        </button>
+                      </td>
+                    </tr>
+                  </table>
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -246,5 +230,15 @@ $(function () {
 </script>
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="crossorigin=""></script>
+<script type="text/javascript">
+  function myFunction()
+  {
+    var qty = document.getElementById("qty").value;
+    var hargaTK = document.getElementById("hargaTK").value;
+    var subtotal = qty * hargaTK;
+
+    document.getElementById("subtotal").innerHTML = "Rp. " + subtotal;
+  }
+</script>
 </body>
 </html>
