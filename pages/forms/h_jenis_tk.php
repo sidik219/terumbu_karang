@@ -1,4 +1,13 @@
-<?php include '../../build/config/connection.php'; ?>
+<?php include '../../build/config/connection.php'; 
+
+  $sqlviewjenis = 'SELECT * FROM t_jenis_terumbu_karang
+                        ORDER BY nama_jenis';
+    $stmt = $pdo->prepare($sqlviewjenis);
+    $stmt->execute();
+    $rowjenis = $stmt->fetchAll();
+
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -100,112 +109,57 @@
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <!-- left column -->
-          <div class="col-md-12">
-            <!-- general form elements -->
-            <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title" style="font-weight:bold; text-align: center;">Pilih Jenis Terumbu</h3>
-              </div>
-              <!-- /.card-header -->
+      <main role="main">
 
-              <!-- form start -->
-              <form action="#" method="POST">
-                <div class="card-body">
-                  <table align="center">
-                    <tr>
-                      <td style="color: #30A0E0; font-size: 18px; padding-right: 116px;">
-                        Lokasi penanaman dipilih:
-                      </td>
-                      <td rowspan="2"></td>
-                    </tr>
-                    <!-- Query Lokasi -->
-                    <?php
-                    $sql_view = "SELECT * FROM t_lokasi";
+  <section class="jumbotron">
+    <div class="container">
+      <h1>Pilih Jenis Terumbu Karang</h1>
+      <div class="row">
+      <?php
+                          foreach ($rowjenis as $rowitem) {                            
+                          ?>
+      <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <a href="edit_jenis_tk.php?id_jenis=<?=$rowitem->id_jenis?>"><img class="card-img-top"
+              width="100%" src="../../<?=$rowitem->foto_jenis?>" height="160px" width="150px"></a>
+            <div class="card-body">
+    <a href="edit_jenis_tk.php?id_jenis=<?=$rowitem->id_jenis?>"><h5 class="card-title"><?=$rowitem->nama_jenis?></h5></a>
+    <p class="card-text"><?=$rowitem->deskripsi_jenis?></p>
+  <a href="edit_jenis_tk.php?id_jenis=<?=$rowitem->id_jenis?>" class="btn btn-outline-primary">Pilih Jenis</a>
+  </div>
+          </div>
+        </div>
+          <?php } ?>
+      </div>
+        
+     
+    </div>
+  </section>
 
-                    foreach ($pdo->query($sql_view) as $result) { ?>
-                    <tr>
-                      <span style="display:none;"><?php echo $result->id_lokasi; ?></span>
-                      <td style="color: #30A0E0; font-weight:bold;"><?php echo $result->nama_lokasi; ?></td>
-                    </tr>
-                    <?php } ?>
-                    <!-- End -->  
-                  </table>
+  <div class="album py-5 bg-light">
+    <div class="container">
 
-                  <table align="center">
-                    <thead>
-                      <tr>
-                        <p>
-                        <th>
-                          <h5 style="font-weight:bold; text-align: center; color: #30A0E0;">
-                            Jenis terumbu karang:
-                          </h5>
-                        </th>
-                      </tr>
-                    </thead>
-                    <!-- Query Jenis Terumbu Karang -->
-                    <?php
-                    $sql_view = "SELECT * FROM t_jenis_terumbu_karang
-                     WHERE nama_jenis LIKE '%Acropora%'";
-
-                    foreach ($pdo->query($sql_view) as $result) { ?>
-                    <tbody>
-                      <tr>
-                        <td style="display:none;"><?php echo $result->id_jenis; ?></td>
-                        <td>
-                          <img src="../image/<?php echo $result->foto_jenis?>" width="300" height="200"/>
-                        </td>
-                        <td style="display:none;"><?php echo $result->deskripsi_jenis; ?></td>
-                      </tr>
-                      <tr>
-                        <td align="center">
-                          <p>
-                          <button type="button" class="btn btn-warning" style="background-color: #FF5733; width: 300px; border: none;">
-                            <a href="h_terumbu_karang1.php?id_jenis=<?php echo $result->id_jenis; ?>" style="color: white;">
-                              <?php echo $result->nama_jenis; ?>
-                            </a>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                    <?php } ?>
-
-                    <!-- Query Jenis Terumbu Karang -->
-                    <?php
-                    $sql_view = "SELECT * FROM t_jenis_terumbu_karang
-                     WHERE nama_jenis LIKE '%Goniopora%'";
-
-                    foreach ($pdo->query($sql_view) as $result) { ?>
-                    <tbody>
-                      <tr>
-                        <td style="display:none;"><?php echo $result->id_jenis; ?></td>
-                        <td>
-                          <img src="../image/<?php echo $result->foto_jenis?>" width="300" height="200"/>
-                        </td>
-                        <td style="display:none;"><?php echo $result->deskripsi_jenis; ?></td>
-                      </tr>
-                      <tr>
-                        <td align="center">
-                          <p>
-                          <button type="button" class="btn btn-warning" style="background-color: #FF5733; width: 300px; border: none;">
-                            <a href="h_terumbu_karang2.php?id_jenis=<?php echo $result->id_jenis; ?>" style="color: white;">
-                              <?php echo $result->nama_jenis; ?>
-                            </a>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                    <?php } ?>
-
-                    <!-- End -->
-                  </table>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+            <div class="card-body">
+              <p class="card-text"><?=$rowitem->deskripsi_jenis?></p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
                 </div>
-              </form>
+                <small class="text-muted">9 mins</small>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+</main>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </section>
