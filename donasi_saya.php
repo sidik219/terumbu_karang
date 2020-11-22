@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Home - TKJB</title>
+    <title>Donasi Saya - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
@@ -46,7 +46,6 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <b>Dashboard Admin - TKJB</b>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">  
                 <li class="nav-item dropdown">
@@ -62,7 +61,7 @@
         <!-- TOP SIDEBAR -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
-            <a href="index_admin.php" class="brand-link">
+            <a href="dashboard_user.php" class="brand-link">
                 <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
                 <!-- BRAND TEXT (TOP) -->
                 <span class="brand-text font-weight-bold">TKJB</span>
@@ -74,95 +73,29 @@
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item menu-open">
-                           <a href="index_admin.php" class="nav-link active">
+                        <li class="nav-item  ">
+                           <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p> Home </p>
                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="kelola_donasi.php" class="nav-link">
+                        <li class="nav-item menu-open">
+                           <a href="donasi_saya.php" class="nav-link active">
                                 <i class="nav-icon fas fa-hand-holding-usd"></i>
-                                <p> Kelola Donasi </p>
-                            </a>
+                                <p> Donasi Saya </p>
+                           </a>
                         </li>
-                          <li class="nav-item">
-                            <a href="kelola_wisata.php" class="nav-link">
+                        <li class="nav-item">
+                           <a href="reservasi_saya.php" class="nav-link">
                                 <i class="nav-icon fas fa-suitcase"></i>
-                                <p> Kelola Wisata </p>
-                            </a>
+                                <p> Reservasi Saya  </p>
+                           </a>
                         </li>
                         <li class="nav-item">
-                            <a href="kelola_reservasi_wisata.php" class="nav-link">
-                                <i class="nav-icon fas fa-th-list"></i>
-                                <p> Kelola Reservasi </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="kelola_wilayah.php" class="nav-link">
-                                <i class="nav-icon fas fa-globe-asia"></i>
-                                <p> Kelola Wilayah </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="kelola_lokasi.php" class="nav-link">
-                                <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
-                                <p> Kelola Lokasi </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="kelola_titik.php" class="nav-link">
-                                 <i class="nav-icon fas fa-crosshairs"></i>
-                                 <p> Kelola Titik </p>
-                            </a>
-                        </li>
-                         <li class="nav-item">
-                            <a href="kelola_detail_titik.php" class="nav-link">
-                                 <i class="nav-icon fas fa-podcast"></i>
-                                 <p> Kelola Detail Titik </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="kelola_batch.php" class="nav-link">
-                                  <i class="nav-icon fas fa-boxes"></i>
-                                  <p> Kelola Batch </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="kelola_pemeliharaan.php" class="nav-link">
-                                  <i class="nav-icon fas fa-heart"></i>
-                                  <p> Kelola Pemeliharaan </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                             <a href="kelola_jenis_tk.php" class="nav-link">
-                                   <i class="nav-icon fas fa-certificate"></i>
-                                   <p> Kelola Jenis Terumbu </p>
-                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="kelola_tk.php" class="nav-link">
-                                  <i class="nav-icon fas fa-disease"></i>
-                                  <p> Kelola Terumbu Karang </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                             <a href="kelola_perizinan.php" class="nav-link">
-                                    <i class="nav-icon fas fa-scroll"></i>
-                                    <p> Kelola Perizinan </p>
-                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="kelola_laporan.php" class="nav-link">
-                                    <i class="nav-icon fas fa-book"></i>
-                                    <p> Kelola Laporan </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="kelola_user.php" class="nav-link">
-                                    <i class="nav-icon fas fa-user"></i>
-                                    <p> Kelola User </p>
-                            </a>
+                           <a href="profil_saya.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-user"></i>
+                                <p> Profil Saya  </p>
+                           </a>
                         </li>
                     </ul>      
                 </nav>
@@ -176,7 +109,11 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                   <h3>Home</h3>
+                <div class="row">
+                        <div class="col">
+                            <h4><span class="align-middle font-weight-bold">Donasi Saya</span></h4>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -185,7 +122,9 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    Hello World !
+                   
+                   
+                </div>
             
             </section>
             <!-- /.Left col -->
@@ -210,7 +149,6 @@
     </div>
     <!-- ./wrapper -->
 
-<div>
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -255,6 +193,6 @@
     <script src="dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
     <script src="dist/js/leaflet-map.js"></script>
-</div>
+
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Laporan - TKJB</title>
+    <title>Home - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
@@ -73,19 +73,19 @@
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item ">
-                           <a href="dashboard_admin.php" class="nav-link ">
+                        <li class="nav-item menu-open">
+                           <a href="dashboard_admin.php" class="nav-link active">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p> Home </p>
                            </a>
                         </li>
-                        <li class="nav-item ">
-                            <a href="kelola_donasi.php" class="nav-link ">
+                        <li class="nav-item">
+                            <a href="kelola_donasi.php" class="nav-link">
                                 <i class="nav-icon fas fa-hand-holding-usd"></i>
                                 <p> Kelola Donasi </p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                          <li class="nav-item">
                             <a href="kelola_wisata.php" class="nav-link">
                                 <i class="nav-icon fas fa-suitcase"></i>
                                 <p> Kelola Wisata </p>
@@ -97,25 +97,25 @@
                                 <p> Kelola Reservasi </p>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a href="kelola_wilayah.php" class="nav-link ">
+                        <li class="nav-item">
+                            <a href="kelola_wilayah.php" class="nav-link">
                                 <i class="nav-icon fas fa-globe-asia"></i>
                                 <p> Kelola Wilayah </p>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a href="kelola_lokasi.php" class="nav-link ">
+                        <li class="nav-item">
+                            <a href="kelola_lokasi.php" class="nav-link">
                                 <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
                                 <p> Kelola Lokasi </p>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a href="kelola_titik.php" class="nav-link ">
+                        <li class="nav-item">
+                            <a href="kelola_titik.php" class="nav-link">
                                  <i class="nav-icon fas fa-crosshairs"></i>
                                  <p> Kelola Titik </p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                         <li class="nav-item">
                             <a href="kelola_detail_titik.php" class="nav-link">
                                  <i class="nav-icon fas fa-podcast"></i>
                                  <p> Kelola Detail Titik </p>
@@ -133,27 +133,26 @@
                                   <p> Kelola Pemeliharaan </p>
                             </a>
                         </li>
-                         <li class="nav-item ">
-                             <a href="kelola_jenis_tk.php" class="nav-link ">
+                        <li class="nav-item">
+                             <a href="kelola_jenis_tk.php" class="nav-link">
                                    <i class="nav-icon fas fa-certificate"></i>
                                    <p> Kelola Jenis Terumbu </p>
                              </a>
                         </li>
-                        <li class="nav-item ">
-                            <a href="kelola_tk.php" class="nav-link ">
+                        <li class="nav-item">
+                            <a href="kelola_tk.php" class="nav-link">
                                   <i class="nav-icon fas fa-disease"></i>
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                       
-                        <li class="nav-item ">
-                             <a href="kelola_perizinan.php" class="nav-link ">
+                        <li class="nav-item">
+                             <a href="kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
                                     <p> Kelola Perizinan </p>
                              </a>
                         </li>
-                        <li class="nav-item menu-open">
-                            <a href="kelola_laporan.php" class="nav-link active">
+                        <li class="nav-item">
+                            <a href="kelola_laporan.php" class="nav-link">
                                     <i class="nav-icon fas fa-book"></i>
                                     <p> Kelola Laporan </p>
                             </a>
@@ -175,10 +174,18 @@
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <div class="content-header">
-                    <div class="container-fluid">
-                        <a href="kelola_laporan.php">< Kembali</a><br><br>
-                        <h4><span class="align-middle font-weight-bold">Edit Data Laporan</h4></span>
+                <div class="container-fluid">
+                   <div class="jumbotron jumbotron-fluid-profil">
+         
                     </div>
+                    <!-- end jumbotro profil -->
+                    <!-- profil pic holder -->
+                    <div class="row justify-content-center">
+                         <div class ="profile-pic-div" >
+                            <img src="dist/img/profil-example.jpg" id="photo">   
+                         </div>
+                    </div>
+                </div>
                 <!-- /.container-fluid -->
             </div>
             <!-- /.content-header -->
@@ -186,15 +193,8 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <form action="" enctype="multipart/form-data" method="POST">
-                    
                   
-                    <br>
-                    <p align="center">
-                         <button type="submit" class="btn btn-submit">Kirim</button></p>
-                    </form>
-            <br><br>
-                    
+            
             </section>
             <!-- /.Left col -->
             </div>
@@ -205,7 +205,7 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    <br><br>
+
     <footer class="main-footer">
         <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
     </footer>
@@ -218,6 +218,7 @@
     </div>
     <!-- ./wrapper -->
 
+<div>
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -262,6 +263,6 @@
     <script src="dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
     <script src="dist/js/leaflet-map.js"></script>
-
+</div>
 </body>
 </html>
