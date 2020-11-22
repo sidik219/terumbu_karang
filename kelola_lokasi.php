@@ -252,12 +252,20 @@
                                     Rincian Lokasi</p>
                             </div>
                             <div class="col-12 cell<?=$rowitem->id_lokasi?> collapse contentall<?=$rowitem->id_lokasi?>">                               
-                                 <div class="row mb-3">
+                                 <div class="row">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Estimasi Total Luas Titik
                                     </div>
                                     <div class="col isi">
                                         <?=$rowitem->luas_lokasi. ' m<sup>2</sup>'?> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Jumlah Titik Terdata
+                                    </div>
+                                    <div class="col isi mb-3">
+                                        <?=$rowitem->jumlah_titik?>
                                     </div>
                                 </div>
                                 <h5>Kondisi Titik</h5>
@@ -292,7 +300,7 @@
                                     <div class="col isi mb-3">
                                         <?=$rowitem->jumlah_kurang?>
                                     </div>
-                                </div>
+                                </div>                                
                                 <div class="row mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Deskripsi Lokasi 
