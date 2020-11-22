@@ -252,7 +252,7 @@
                         <input type="text" id="tb_nama_lokasi" name="tb_nama_lokasi" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="num_luas_lokasi">Luas Lokasi (m2)</label>
+                        <label for="num_luas_lokasi">Luas Lokasi (m<sup>2</sup>)</label>
                         <input type="number" id="num_luas_lokasi" name="num_luas_lokasi" class="form-control">
                     </div>
                     <div class='form-group' id='fotowilayah'>

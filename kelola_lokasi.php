@@ -213,7 +213,7 @@
                             <th scope="col">ID Lokasi</th>
                             <th scope="col">ID Wilayah</th>
                             <th scope="col">Nama Lokasi</th>
-                            <th scope="col">Luas (m2)</th>
+                            <th scope="col">Luas (m<sup>2</sup>)</th>
                             <th scope="col">Aksi</th>
                             </tr>
                         </thead>

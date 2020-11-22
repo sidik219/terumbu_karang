@@ -274,8 +274,8 @@
                         <input type="#" value="<?=$row->latitude?>" name="tblatitude" class="form-control" id="#">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Luas Titik (m2)</label>
-                        <input type="number" value="<?=$row->luas_titik?>" name="tbluas_titik" class="form-control" id="#" placeholder="m2">
+                        <label for="exampleInputEmail1">Luas Titik (m<sup>2</sup>)</label>
+                        <input type="number" value="<?=$row->luas_titik?>" name="tbluas_titik" class="form-control" id="#">
                     </div> 
                     <div class="form-group">
                         <label for="rb_status_wisata">Kondisi</label><br>

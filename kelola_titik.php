@@ -211,7 +211,7 @@
                             <th scope="col">ID Titik</th>
                             <th scope="col">ID Lokasi</th>
                             <th scope="col">Koordinat</th>
-                            <th scope="col">Luas Titik (m2)</th>
+                            <th scope="col">Luas Titik (m<sup>2</sup>)</th>
                             <th scope="col">Kondisi</th>
                             <th scope="col">Aksi</th>
                             </tr>
