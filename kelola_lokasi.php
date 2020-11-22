@@ -5,8 +5,15 @@
         $status = $_GET['status'];
     }
     
-    $sqlviewlokasi = 'SELECT * FROM t_lokasi
-                    LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah';
+    $sqlviewlokasi = 'SELECT *, nama_wilayah, SUM(luas_titik) AS luas_total, 
+    COUNT(id_titik) AS jumlah_titik, COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang, 
+    COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup, 
+    COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik, 
+    COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
+    FROM t_lokasi LEFT JOIN t_titik ON t_lokasi.id_lokasi = t_titik.id_lokasi 
+    LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah 
+    GROUP BY nama_lokasi
+';
         $stmt = $pdo->prepare($sqlviewlokasi);
         $stmt->execute();
         $row = $stmt->fetchAll();
@@ -213,7 +220,7 @@
                             <th scope="col">ID Lokasi</th>
                             <th scope="col">ID Wilayah</th>
                             <th scope="col">Nama Lokasi</th>
-                            <th scope="col">Luas (m<sup>2</sup>)</th>
+                            <th scope="col">Luas Titik Terdata</th>
                             <th scope="col">Aksi</th>
                             </tr>
                         </thead>
@@ -224,7 +231,7 @@
                             <th scope="row"><?=$rowitem->id_lokasi?></th>
                             <td><?=$rowitem->id_wilayah?> - <?=$rowitem->nama_wilayah?></td>
                             <td><?=$rowitem->nama_lokasi?></td>
-                            <td><?=$rowitem->luas_lokasi?></td>
+                            <td><?=$rowitem->luas_total?> m<sup>2</sup></td>
                             <td>
                                 <a href="edit_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="fas fa-edit mr-3"></a>
                                 <a href="hapus.php?type=lokasi&id_lokasi=<?=$rowitem->id_lokasi?>" class="far fa-trash-alt"></a>
@@ -245,6 +252,47 @@
                                     Rincian Lokasi</p>
                             </div>
                             <div class="col-12 cell<?=$rowitem->id_lokasi?> collapse contentall<?=$rowitem->id_lokasi?>">                               
+                                 <div class="row mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Estimasi Total Luas Titik
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->luas_lokasi. ' m<sup>2</sup>'?> 
+                                    </div>
+                                </div>
+                                <h5>Kondisi Titik</h5>
+                                <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Sangat Baik 
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->jumlah_sangat_baik?>
+                                    </div>
+                                </div>
+                                <div class="row ">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Baik
+                                    </div>
+                                     <div class="col isi">
+                                        <?=$rowitem->jumlah_baik?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Cukup
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->jumlah_cukup?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Kurang
+                                    </div>
+                                    <div class="col isi mb-3">
+                                        <?=$rowitem->jumlah_kurang?>
+                                    </div>
+                                </div>
                                 <div class="row mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Deskripsi Lokasi 
