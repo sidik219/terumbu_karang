@@ -1,3 +1,23 @@
+<?php
+    include 'build\config\connection.php';
+
+    $sqlviewwilayah = 'SELECT *, 
+                SUM(luas_titik) AS luas_total, COUNT(id_titik) AS jumlah_titik,
+                COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang,
+                COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup,
+                COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
+                COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
+
+                FROM t_wilayah
+                LEFT JOIN t_titik ON t_wilayah.id_wilayah = t_titik.id_wilayah 
+                GROUP BY nama_wilayah';
+    
+    $stmt = $pdo->prepare($sqlviewwilayah);
+    $stmt->execute();
+    $rowwilayah = $stmt->fetchAll();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -178,13 +198,13 @@
                 <div class="container-fluid">
                 <div class="row">
                         <div class="col">
-                            <h4><span class="align-middle font-weight-bold">Kelola Laporan</span></h4>
+                            <h4><span class="align-middle font-weight-bold">Laporan Wilayah</span></h4>
                         </div>
-                        <div class="col">
+                        <!-- <div class="col">
                            
                         <a class="btn btn-primary float-right" href="input_laporan.php" role="button">Input Data Baru (+)</a>
                    
-                        </div>
+                        </div> -->
                     </div>
         
                 </div>
@@ -196,25 +216,101 @@
             <section class="content">
                 <div class="container-fluid">
                 
-                <table class="table table-striped">
-                     <thead>
-                            <tr>
-                                <th scope="col">ID Laporan</th>
-                                <th scope="col">Aksi</th>
+                <!-- <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID Laporan</th>
+                            <th scope="col">Aksi</th>
+                        </tr>
+                        </thead>
+                <tbody>
+                        <tr>
+                            <th scope="row">1212</th>
+                            <td>
+                            <button type="button" class="btn btn-act">
+                            <a href="edit_laporan.php" class="fas fa-edit"></a>
+                            </button>
+                            <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
+                            </td>
+                        </tr>
+                </tbody>
+                </table>   -->
+
+                    <table class="table table-striped DataWilayah">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nama Wilayah</th>
+                            <th scope="col">Jumlah Titik</th>
+                            <th scope="col">Luas Titik Keseluruhan</th>
+                        </tr>
+                        </thead>
+                <tbody>
+                <?php
+                    foreach ($rowwilayah as $rowitem) {                          
+                ?>
+                        <tr>
+                            <th scope="row"><?=$rowitem->nama_wilayah?></th>
+                            <td><?=$rowitem->jumlah_titik?></td>
+                            <td><?=$rowitem->luas_total?> m<sup>2</sup></td>
+                        </tr>
+                        <tr>
+                                <td colspan="3">
+                                    <!--collapse start -->
+                            <div class="row  m-0">
+                            <div class="col-12 cell detailcollapser<?=$rowitem->id_wilayah?>"
+                                data-toggle="collapse"
+                                data-target=".cell<?=$rowitem->id_wilayah?>, .contentall<?=$rowitem->id_wilayah?>">
+                                <p
+                                    class="fielddetail<?=$rowitem->id_wilayah?>">
+                                    <i
+                                        class="icon fas fa-chevron-down"></i>
+                                    Rinician Wilayah</p>
+                            </div>
+                            <div class="col-12 cell<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?>">                               
+                                <h5>Kondisi Titik</h5>
+                                <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Sangat Baik 
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->jumlah_sangat_baik?>
+                                    </div>
+                                </div>
+                                <div class="row ">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Baik
+                                    </div>
+                                     <div class="col isi">
+                                        <?=$rowitem->jumlah_baik?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Cukup
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->jumlah_cukup?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Kurang
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->jumlah_kurang?>
+                                    </div>
+                                </div>
+                                    
+                            </div>
+                        </div>
+
+                        <!--collapse end -->
+                                </td>
                             </tr>
-                          </thead>
-                    <tbody>
-                          <tr>
-                              <th scope="row">1212</th>
-                              <td>
-                              <button type="button" class="btn btn-act">
-                                <a href="edit_laporan.php" class="fas fa-edit"></a>
-                            	</button>
-                                <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
-                              </td>
-                          </tr>
-                    </tbody>
-                  </table>  
+                            <?php } ?>
+                </tbody>
+                </table>
+
             
             </section>
             <!-- /.Left col -->
