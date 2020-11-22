@@ -1,3 +1,59 @@
+<?php
+    include 'build\config\connection.php';
+
+    $sqlviewlokasi = 'SELECT * FROM t_lokasi
+                        ORDER BY nama_lokasi';
+        $stmt = $pdo->prepare($sqlviewlokasi);
+        $stmt->execute();
+        $row = $stmt->fetchAll();
+    
+    if (isset($_POST['submit'])) {
+        if($_POST['submit'] == 'Simpan'){
+            $id_lokasi = $_POST['dd_id_lokasi'];
+            $judul_perizinan        = $_POST['tb_judul_perizinan'];
+            $deskripsi_perizinan        = $_POST['tb_deskripsi_perizinan'];
+            $biaya_pergantian     = $_POST['num_biaya_pergantian'];
+            $id_user     = $_POST['tb_id_user'];
+            $status_perizinan     ="Pending";
+
+            $randomstring = substr(md5(rand()), 0, 7);
+
+            //document upload
+            if($_FILES["doc_uploads"]["size"] == 0) {
+                $file_proposal = "images/image_default.jpg";
+            }
+            else if (isset($_FILES['doc_uploads'])) {
+                $target_dir  = "documents/Perizinan/";
+                $file_proposal = $target_dir .'IZIN_'.$randomstring. $_FILES["doc_uploads"]['name'];
+                move_uploaded_file($_FILES["doc_uploads"]["tmp_name"], $file_proposal);
+            }
+            
+            //---document upload end   
+
+            $sqllokasi = "INSERT INTO t_perizinan
+                            (id_lokasi, judul_perizinan, deskripsi_perizinan, foto_lokasi, luas_lokasi, id_user_pengelola,
+                            kontak_lokasi, nama_bank, nama_rekening, nomor_rekening)
+                            VALUES (:id_lokasi, :judul_perizinan, :deskripsi_perizinan, :foto_lokasi, :luas_lokasi,
+                            :id_user_pengelola, :kontak_lokasi, :nama_bank, :nama_rekening, :nomor_rekening)";
+
+            $stmt = $pdo->prepare($sqllokasi);
+            $stmt->execute(['id_lokasi' => $id_lokasi, 'judul_perizinan' => $judul_perizinan, 
+            'deskripsi_perizinan' => $deskripsi_perizinan, 'foto_lokasi' => $foto_lokasi, 
+            'luas_lokasi' => $luas_lokasi, 'id_user_pengelola' => $id_user_pengelola,
+            'kontak_lokasi' => $kontak_lokasi,'nama_bank' => $nama_bank,
+            'nama_rekening' => $nama_rekening,'nomor_rekening' => $nomor_rekening]);
+
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+            //echo "HAHAHAAHA INSERT FAILED !";
+            } else {
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                header("Location: kelola_lokasi.php?status=addsuccess");
+                }
+            }
+        }        
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,29 +64,10 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -188,6 +225,15 @@
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
+                        <label for="dd_id_lokasi">ID Lokasi</label>
+                        <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control">
+                            <?php foreach ($row as $rowitem) {                            
+                            ?>
+                            <option value="<?=$rowitem->id_lokasi?>">ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
+
+                            <?php } ?>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label for="tb_judul_perizinan">Judul Perizinan</label>
                         <input type="text" id="tb_judul_perizinan" name="tb_judul_perizinan" class="form-control">
@@ -196,20 +242,28 @@
                         <label for="tb_deskripsi_perizinan">Deskripsi Perizinan</label>
                         <input type="text" id="tb_deskripsi_perizinan" name="tb_deskripsi_perizinan" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label for="file_proposal">File Proposal (.docx / .pdf)</label>
-                        <div class="file-form">
-                        <input type="file" id="file_proposal" name="file_proposal" class="form-control">
+                    <div class='form-group' id='docizin'>
+                        <div>
+                            <label for='doc_uploads'>Upload Dokumen Proposal</label>
+                            <input type='file'  class='form-control' id='doc_uploads'
+                                name='doc_uploads' accept='.doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx'>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="num_biaya_pergantian">Biaya Pergantian</label>
                         <input type="number" id="num_biaya_pergantian" name="num_biaya_pergantian" class="form-control">
                     </div>
+                    <div class="form-group">
+                    <div class="form-group">
+                        <label for="tb_id_user">ID User Pemohon</label>
+                        <input type="number" id="tb_id_user" name="tb_id_user" class="form-control">
+                    </div>
+                    <div class="form-group">
+                    
                   
                     <br>
                     <p align="center">
-                         <button type="submit" class="btn btn-submit">Kirim</button></p>
+                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
             <br><br>
                     
@@ -244,42 +298,12 @@
     <script>
         $.widget.bridge('uibutton', $.ui.button)
     </script>
-    <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="plugins/summernote/summernote-bs4.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard.js"></script>
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-    <!-- Leaflet Marker Cluster -->
-    <script src="dist/js/leaflet.markercluster-src.js"></script>
-    <!-- Leaflet panel layer JS-->
-    <script src="dist/js/leaflet-panel-layers.js"></script>
-    <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-    <script src="dist/js/leaflet.ajax.js"></script>
-    <!-- Leaflet Map -->
-    <script src="dist/js/leaflet-map.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
