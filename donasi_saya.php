@@ -97,6 +97,12 @@
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
+                        <li class="nav-item">
+                           <a href="map.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-user"></i>
+                                <p> Map  </p>
+                           </a>
+                        </li>
                     </ul>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -113,6 +119,12 @@
                         <div class="col">
                             <h4><span class="align-middle font-weight-bold">Donasi Saya</span></h4>
                         </div>
+
+                        <div class="col">
+                           
+                        <a class="btn btn-primary float-right" href="map.php" role="button">Donasi Sekarang (+)</a>
+                   
+                        </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -122,8 +134,9 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                   
-                   
+                    <div>
+                        
+                    </div>
                 </div>
             
             </section>
@@ -192,7 +205,7 @@
     <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
     <script src="dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
-    <script src="dist/js/leaflet-map.js"></script>
+    <?php include 'dist/js/leaflet_map.php'; ?>
 
 </body>
 </html>

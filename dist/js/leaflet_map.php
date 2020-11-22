@@ -11,23 +11,37 @@
       accessToken: 'pk.eyJ1Ijoic2lkZTkxMCIsImEiOiJja2c3djF3a3gwYjU0MnBxb3lobDFtcmJ0In0.DwvJMR6_vALxyC1KyMiyTA'
   }).addTo(mymap);
 
-    <?php 
-        $sql_map = "SELECT * FROM t_titik";
-        $stmt = $pdo->prepare($sql_map);
-        $stmt->execute();
-        $sql_view = $stmt->fetchAll();
-        foreach ($sql_view as $value) { ?>
 
-        var id_titik = <?=$value->id_titik?>;
+  var karawang = {
+    "color": "#f37735",
+    "weight": 3,
+    "opacity": 0.65
+  };
 
-        L.marker([<?=$value->longitude?>,<?=$value->latitude?>]).addTo(mymap)
-        .bindPopup("<b>Longitude:</b> <?=$value->longitude?><br/>"+
-        "<b>Latitude:</b> <?=$value->latitude?><br/>"+
-        "<b>Luas Titik:</b> <?=$value->luas_titik?> m2<p>"+
-        "<a href='pages/forms/h_jenis_tk.php?id_titik=<?=$value->id_titik?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
+  var overLayers = [
+    {
+        name: "Karawang",
+        layer: new L.GeoJSON.AJAX(["dist/js/geojson/wilayah-karawang.geojson"],{onEachFeature:popUp,style: karawang,pointToLayer: featureToMarker}).addTo(mymap)
+    }
+];
 
-    <?php
-        }
-    ?>
+  <?php 
+      $sql_map = "SELECT * FROM t_titik";
+      $stmt = $pdo->prepare($sql_map);
+      $stmt->execute();
+      $sql_view = $stmt->fetchAll();
+      foreach ($sql_view as $value) { ?>
+
+      var id_titik = <?=$value->id_titik?>;
+
+      L.marker([<?=$value->longitude?>,<?=$value->latitude?>]).addTo(mymap)
+      .bindPopup("<b>Longitude:</b> <?=$value->longitude?><br/>"+
+      "<b>Latitude:</b> <?=$value->latitude?><br/>"+
+      "<b>Luas Titik:</b> <?=$value->luas_titik?> m2<p>"+
+      "<a href='jenis_tk.php?id_titik=<?=$value->id_titik?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
+
+  <?php
+      }
+  ?>
 </script>
 

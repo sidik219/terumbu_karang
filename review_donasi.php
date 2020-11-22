@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Reservasi Saya - TKJB</title>
+    <title>Donasi Saya - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
@@ -61,7 +61,7 @@
         <!-- TOP SIDEBAR -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
-            <a href="index_admin.php" class="brand-link">
+            <a href="dashboard_user.php" class="brand-link">
                 <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
                 <!-- BRAND TEXT (TOP) -->
                 <span class="brand-text font-weight-bold">TKJB</span>
@@ -73,8 +73,8 @@
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item ">
-                           <a href="dashboard_user.php" class="nav-link  ">
+                        <li class="nav-item  ">
+                           <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p> Home </p>
                            </a>
@@ -85,8 +85,8 @@
                                 <p> Donasi Saya </p>
                            </a>
                         </li>
-                        <li class="nav-item  menu-open">
-                           <a href="reservasi_saya.php" class="nav-link active">
+                        <li class="nav-item">
+                           <a href="reservasi_saya.php" class="nav-link">
                                 <i class="nav-icon fas fa-suitcase"></i>
                                 <p> Reservasi Saya  </p>
                            </a>
@@ -103,6 +103,30 @@
                                 <p> Map  </p>
                            </a>
                         </li>
+                        <li class="nav-item">
+                           <a href="jenis_tk.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-user"></i>
+                                <p> Jenis Terumbu Karang  </p>
+                           </a>
+                        </li>
+                        <li class="nav-item">
+                           <a href="terumbu_karang.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-user"></i>
+                                <p> Terumbu Karang  </p>
+                           </a>
+                        </li>
+                        <li class="nav-item menu-open">
+                           <a href="review_donasi.php" class="nav-link active">
+                                <i class="nav-icon fas fas fa-user"></i>
+                                <p> Review Donasi  </p>
+                           </a>
+                        </li>
+                        <li class="nav-item">
+                           <a href="metode_pembayaran.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-user"></i>
+                                <p> Metode Pembayaran  </p>
+                           </a>
+                        </li>
                     </ul>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -115,7 +139,11 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-
+                <div class="row">
+                        <div class="col">
+                            <h4><span class="align-middle font-weight-bold">Review Donasi</span></h4>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -124,8 +152,10 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                   
-            </div>
+                    <div>
+                        
+                    </div>
+                </div>
             
             </section>
             <!-- /.Left col -->
@@ -193,7 +223,7 @@
     <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
     <script src="dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
-    <script src="dist/js/leaflet-map.js"></script>
+    <?php include 'dist/js/leaflet_map.php'; ?>
 
 </body>
 </html>

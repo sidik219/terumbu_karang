@@ -97,6 +97,12 @@
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
+                        <li class="nav-item">
+                           <a href="map.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-user"></i>
+                                <p> Map  </p>
+                           </a>
+                        </li>
                     </ul>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
