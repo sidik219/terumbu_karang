@@ -242,7 +242,7 @@
                                     class="fielddetail<?=$rowitem->id_lokasi?>">
                                     <i
                                         class="icon fas fa-chevron-down"></i>
-                                    Rinician Lokasi</p>
+                                    Rincian Lokasi</p>
                             </div>
                             <div class="col-12 cell<?=$rowitem->id_lokasi?> collapse contentall<?=$rowitem->id_lokasi?>">                               
                                 <div class="row mb-3">

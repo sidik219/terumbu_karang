@@ -264,7 +264,7 @@
                                     class="fielddetail<?=$rowitem->id_wilayah?>">
                                     <i
                                         class="icon fas fa-chevron-down"></i>
-                                    Rinician Wilayah</p>
+                                    Rincian Wilayah</p>
                             </div>
                             <div class="col-12 cell<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?>">                               
                                 <h5>Kondisi Titik</h5>
