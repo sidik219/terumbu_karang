@@ -250,7 +250,7 @@
                                         Foto Wilayah 
                                     </div>
                                     <div class="col isi">
-                                        <img src="<?=$rowitem->foto_wilayah?>?<?php if ($status='nochange'){echo time();}?>" width="50px">
+                                        <img src="<?=$rowitem->foto_wilayah?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
                                     </div>
                                 </div>
                                 <div class="row">

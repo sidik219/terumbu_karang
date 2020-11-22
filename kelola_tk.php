@@ -200,8 +200,7 @@
                 <div class="container-fluid">
                     <table class="table table-striped">
                      <thead>
-                         <?php foreach ($row as $rowitem) {                            
-                        ?>
+                         
                             <tr>
                                 <th scope="col">ID Terumbu Karang</th>
                                 <th scope="col">ID Jenis</th>
@@ -214,6 +213,8 @@
                             </tr>
                           </thead>
                     <tbody>
+                        <?php foreach ($row as $rowitem) {                            
+                        ?>
                           <tr>
                               <th scope="row"><?=$rowitem->id_terumbu_karang?></th>
                               <td>ID <?=$rowitem->id_jenis?> - <?=$rowitem->nama_jenis?></td>
@@ -250,7 +251,7 @@
                                         Foto 
                                     </div>
                                     <div class="col isi">
-                                        <img src="<?=$rowitem->foto_terumbu_karang?>?<?php if ($status='nochange'){echo time();}?>" width="50px">
+                                        <img src="<?=$rowitem->foto_terumbu_karang?>?<?php if ($status='nochange'){echo time();}?>" width="150px">
                                     </div>
                                 </div>
                                 <div class="row">

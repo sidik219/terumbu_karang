@@ -258,7 +258,7 @@
                                         Foto Lokasi 
                                     </div>
                                     <div class="col isi">
-                                        <img src="<?=$rowitem->foto_lokasi?>?<?php if ($status='nochange'){echo time();}?>" width="50px">
+                                        <img src="<?=$rowitem->foto_lokasi?>?<?php if ($status='nochange'){echo time();}?>" width="150px">
                                     </div>
                                 </div>
                                 <div class="row">
