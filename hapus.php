@@ -44,7 +44,7 @@ elseif ($type == 'terumbu_karang'){
             WHERE id_terumbu_karang = :id_terumbu_karang';
             
             $stmt = $pdo->prepare($sql);
-            $stmt->execute(['id_terumbu_karang' => $_POST['id_terumbu_karang']]);
+            $stmt->execute(['id_terumbu_karang' => $_GET['id_terumbu_karang']]);
             header('Location: kelola_tk.php?status=deletesuccess');
 }
 
