@@ -77,25 +77,7 @@ $rowjenis = $stmt->fetchAll();
                 <span class="brand-text font-weight-bold">TKJB</span>
             </a>
             <!-- END OF TOP SIDEBAR -->
-
-    <section class="jumbotron">
-        <div class="container">
-        <h1>Pilih Jenis Terumbu Karang</h1>
-        <div class="row">
-        <?php
-                            foreach ($rowjenis as $rowitem) {                            
-                            ?>
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <a href="pilih_terumbu_karang.php?id_jenis=<?=$rowitem->id_jenis?>"><img class="card-img-top"
-                width="100%" src="<?=$rowitem->foto_jenis?>" height="160px" width="150px"></a>
-                <div class="card-body">
-        <a href="pilih_terumbu_karang.php?id_jenis=<?=$rowitem->id_jenis?>"><h5 class="card-title"><?=$rowitem->nama_jenis?></h5></a>
-        <p class="card-text"><?=$rowitem->deskripsi_jenis?></p>
-    <a href="pilih_terumbu_karang.php?id_jenis=<?=$rowitem->id_jenis?>" class="btn btn-outline-primary">Pilih Jenis</a>
-    </div>
-
-
+     
             <!-- SIDEBAR -->
             <div class="sidebar">
                 <!-- SIDEBAR MENU -->
@@ -175,18 +157,19 @@ $rowjenis = $stmt->fetchAll();
                 </div>
                 <!-- /.container-fluid -->
             </div>
-            <!-- /.content-header -->
+            <!-- /.content-header -->        
 
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+                    <h3>Pilih Jenis Terumbu Karang</h3>
                     <div class="row">
                     <?php
                     foreach ($rowjenis as $rowitem) { ?>
                         <div class="col-md-4">
                             <div class="card mb-4 shadow-sm">
                             <a href="edit_jenis_tk.php?id_jenis=<?=$rowitem->id_jenis?>">
-                                <img class="card-img-top" width="100%" src="images/foto_jenis_tk/<?=$rowitem->foto_jenis?>" height="160px" width="150px">
+                                <img class="card-img-top" width="100%" src="<?=$rowitem->foto_jenis?>" height="160px" width="150px">
                             </a>
                                 <div class="card-body">
                                     <a href="edit_jenis_tk.php?id_jenis=<?=$rowitem->id_jenis?>">
@@ -194,7 +177,7 @@ $rowjenis = $stmt->fetchAll();
                                     </a>
                                     <p class="card-text font-weight-bold">Deskripsi Jenis Terumbu Karang:</p>
                                     <p class="card-text"><?=$rowitem->deskripsi_jenis?></p>
-                                    <a href="edit_jenis_tk.php?id_jenis=<?=$rowitem->id_jenis?>" class="btn btn-outline-primary">Pilih Jenis</a>
+                                    <a href="pilih_terumbu_karang.php?id_jenis=<?=$rowitem->id_jenis?>" class="btn btn-outline-primary">Pilih Jenis</a>
                                 </div>
                             </div>
                         </div>
@@ -259,16 +242,6 @@ $rowjenis = $stmt->fetchAll();
     <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-    <!-- Leaflet Marker Cluster -->
-    <script src="dist/js/leaflet.markercluster-src.js"></script>
-    <!-- Leaflet panel layer JS-->
-    <script src="dist/js/leaflet-panel-layers.js"></script>
-    <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-    <script src="dist/js/leaflet.ajax.js"></script>
-    <!-- Leaflet Map -->
-    <?php include 'dist/js/leaflet_map.php'; ?>
 
 </body>
 </html>
