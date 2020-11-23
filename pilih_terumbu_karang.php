@@ -189,23 +189,6 @@ $row = $stmt->fetchAll();
     </div>
         <?php } ?>
 </div>
-        
-        <section class="container content-section">
-            <h2 class="section-header">Keranjang</h2>
-            <div class="cart-row">
-                <span class="cart-item cart-header cart-column">Nama</span>
-                <span class="cart-price cart-header cart-column">Harga</span>
-                <span class="cart-quantity cart-header cart-column">Jumlah</span>
-            </div>
-            <div class="cart-items">
-            </div>
-            <div class="cart-total">
-                <strong class="cart-total-title">Total</strong>
-                <span class="cart-total-price">Rp0</span>
-            </div>
-            <button class="btn btn-primary btn-purchase" type="button">Selesai Pilih ></button>
-        </section>
-
 
       
         </div>
@@ -226,8 +209,21 @@ $row = $stmt->fetchAll();
     <!-- /.content-wrapper -->
 
     <footer class="main-footer">
-        <strong><h5>Subtotal: </h5></strong><h5>Rp. 150000</h5>
-        <button type="button" class="btn btn-success btn-lg btn-block">Bayar Donasi</button>
+        <section class="container content-section">
+            <h2 class="section-header">Keranjang</h2>
+            <div class="cart-row">
+                <span class="cart-item cart-header cart-column">Nama</span>
+                <span class="cart-price cart-header cart-column">Harga</span>
+                <span class="cart-quantity cart-header cart-column">Jumlah</span>
+            </div>
+            <div class="cart-items">
+            </div>
+            <div class="cart-total">
+                <strong class="cart-total-title">Total</strong>
+                <span class="cart-total-price">Rp0</span>
+            </div>
+            <button class="btn btn-primary btn-purchase" type="button">Selesai Pilih ></button>
+        </section>
     </footer>
 
     <!-- Control Sidebar -->
