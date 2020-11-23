@@ -168,12 +168,13 @@ $rowjenis = $stmt->fetchAll();
                         <div class="col-md-4">
                             <div class="card mb-4 shadow-sm">
                             <a href="edit_jenis_tk.php?id_jenis=<?=$rowitem->id_jenis?>">
-                                <img class="card-img-top" width="100%" src="images/<?=$rowitem->foto_jenis?>" height="160px" width="150px">
+                                <img class="card-img-top" width="100%" src="images/foto_jenis_tk/<?=$rowitem->foto_jenis?>" height="160px" width="150px">
                             </a>
                                 <div class="card-body">
                                     <a href="edit_jenis_tk.php?id_jenis=<?=$rowitem->id_jenis?>">
-                                        <h5 class="card-title"><?=$rowitem->nama_jenis?></h5>
+                                        <h5 class="card-title font-weight-bold"><?=$rowitem->nama_jenis?></h5>
                                     </a>
+                                    <p class="card-text font-weight-bold">Deskripsi Jenis Terumbu Karang:</p>
                                     <p class="card-text"><?=$rowitem->deskripsi_jenis?></p>
                                     <a href="edit_jenis_tk.php?id_jenis=<?=$rowitem->id_jenis?>" class="btn btn-outline-primary">Pilih Jenis</a>
                                 </div>

@@ -153,10 +153,34 @@
             <section class="content">
                 <div class="container-fluid">
                     <div>
-                        
+                        <h6>Lokasi penanaman dipilih:</h6>
+                        <div>
+                            <p>
+                                <label>Pantai Tangkolak</label>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card" style="width: 20rem;">
+                              <img class="card-img-top" src="images/foto_terumbu_karang/foto-acropora-aculeus.jpg" alt="Card image cap">
+                              <div class="card-body">
+                                <h5 class="card-title">Acropora Aculeus</h5>
+                                <p class="card-text">1 x 50000</p>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card" style="width: 20rem;">
+                              <img class="card-img-top" src="images/foto_terumbu_karang/foto-acropora-humilis.jpg" alt="Card image cap">
+                              <div class="card-body">
+                                <h5 class="card-title">Acropora Humilis</h5>
+                                <p class="card-text">2 x 50000</p>
+                              </div>
+                            </div>
+                        <div>
                     </div>
                 </div>
-            
             </section>
             <!-- /.Left col -->
             </div>
@@ -167,9 +191,9 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-
     <footer class="main-footer">
-        <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
+        <strong><h5>Subtotal: </h5></strong><h5>Rp. 150000</h5>
+        <button type="button" class="btn btn-success btn-lg btn-block">Bayar Donasi</button>
     </footer>
 
     <!-- Control Sidebar -->
