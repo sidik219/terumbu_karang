@@ -220,6 +220,7 @@ $row = $stmt->fetchAll();
         </section>
     </footer>
 
+    
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
@@ -263,17 +264,9 @@ $row = $stmt->fetchAll();
     <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-    <!-- Leaflet Marker Cluster -->
-    <script src="dist/js/leaflet.markercluster-src.js"></script>
-    <!-- Leaflet panel layer JS-->
-    <script src="dist/js/leaflet-panel-layers.js"></script>
-    <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-    <script src="dist/js/leaflet.ajax.js"></script>
-    <!-- Leaflet Map -->
-    <?php include 'dist/js/leaflet_map.php'; ?>
     <!-- Shopping Cart -->
     <script src="js\shopping_cart.js" async></script>
+
+    
 </body>
 </html>

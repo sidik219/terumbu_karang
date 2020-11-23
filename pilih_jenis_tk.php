@@ -1,5 +1,9 @@
 <?php include 'build/config/connection.php';
 
+if(!$_GET['id_lokasi']){
+        header("Location: map.php");
+    }
+
 $sqlviewjenis = 'SELECT * FROM t_jenis_terumbu_karang
 ORDER BY nama_jenis';
 
@@ -229,5 +233,17 @@ $rowjenis = $stmt->fetchAll();
     <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
+
+    <script>
+        sessionStorage.clear()
+
+        var keranjang_deserialised = []
+
+        keranjang_deserialised.push(<?=$_GET['id_lokasi']?>)
+
+        var keranjang_serialised = JSON.stringify(keranjang_deserialised)
+        sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
+        
+    </script>
 </body>
 </html>
