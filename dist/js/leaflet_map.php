@@ -129,13 +129,7 @@
   mymap.addLayer(markers);
   //End
 
-  //Lokasi
-  L.circle([-6.1815766,107.5597572], {
-    color: 'green',
-    fillColor: '#3CAEA3',
-    fillOpacity: 0.5,
-    radius: 700
-  }).addTo(mymap)
+  //Query untuk menampilkan lat long lokasi pada map
   <?php 
     $sql_map = "SELECT * FROM t_lokasi";
     $stmt = $pdo->prepare($sql_map);
@@ -143,12 +137,17 @@
     $sql_view = $stmt->fetchAll();
     foreach ($sql_view as $value) { ?>
 
-  .bindPopup("<b>Lokasi: </b><?=$value->nama_lokasi?><br/>"+
+  L.circle([<?=$value->longitude?>,<?=$value->latitude?>], {
+    color: 'green',
+    fillColor: '#3CAEA3',
+    fillOpacity: 0.5,
+    radius: 700
+  }).addTo(mymap).bindPopup("<b>Lokasi: </b><?=$value->nama_lokasi?><br/>"+
   "<b>Deskripsi Lokasi: </b><?=$value->deskripsi_lokasi?><br/>"+
-  "<b>Foto Lokasi: </b><br/><img src='images/foto_lokasi/<?=$value->foto_lokasi?>.jpg' width='100%'><br/><p>"+
+  "<b>Foto Lokasi: </b><br/><img src='<?=$value->foto_lokasi?>' width='100%'><br/><p>"+
   "<a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
   <?php
     }
   ?>
-
+  //End
 </script>
