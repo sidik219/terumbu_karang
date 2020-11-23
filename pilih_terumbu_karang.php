@@ -171,6 +171,7 @@
                 <a href="#" id="nama"><h5 class="card-title shop-item-title"><?=$rowitem->nama_terumbu_karang?></h5></a>
                 <p class="card-text"><?=$rowitem->deskripsi_terumbu_karang?></p>
                 <span class="shop-item-price">Rp. <?=$rowitem->harga_terumbu_karang?></span>
+                <input type="hidden" class="shop-item-id" value="<?=$rowitem->id_terumbu_karang?>">
                 <div class="row">
                     <!-- <div class="col-2">
                         <input type="number" min="1" id="tbqty" style="width: 100%; height:100%;">

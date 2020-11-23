@@ -27,12 +27,33 @@ function ready() {
 }
 
 function purchaseClicked() {
-    alert('Thank you for your purchase')
-    var cartItems = document.getElementsByClassName('cart-items')[0]
-    while (cartItems.hasChildNodes()) {
-        cartItems.removeChild(cartItems.firstChild)
+    var cartItemContainer = document.getElementsByClassName('cart-items')[0]
+    var cartRows = cartItemContainer.getElementsByClassName('cart-row')
+    var total = 0
+    var keranjang = []
+    for (var i = 0; i < cartRows.length; i++) {
+        var cartRow = cartRows[i]
+        var nama_tk = cartRow.getElementsByClassName('cart-item-title')[0].innerText
+        var priceElement = cartRow.getElementsByClassName('cart-price')[0]
+        var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
+        var itemID = cartRow.getElementsByClassName('cart-item-id')[0].value
+        var price = parseFloat(priceElement.innerText.replace('Rp.', ''))
+        var quantity = quantityElement.value
+        total = total + (price * quantity)
+
+        var terumbu = {
+            nama_tk: nama_tk,
+            id_tk: itemID,
+            jumlah_tk: quantityElement.value
+        }
+        keranjang.push(terumbu)
     }
-    updateCartTotal()
+    total = Math.round(total * 100) / 100
+    document.getElementsByClassName('cart-total-price')[0].innerText = 'Rp. ' + total
+    keranjang.push(total)
+    var keranjang_serialised = JSON.stringify(keranjang)
+    sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
+    document.location.href = 'review_donasi.php';
 }
 
 function removeCartItem(event) {
@@ -55,11 +76,12 @@ function addToCartClicked(event) {
     var title = shopItem.getElementsByClassName('shop-item-title')[0].innerText
     var price = shopItem.getElementsByClassName('shop-item-price')[0].innerText
     var imageSrc = shopItem.getElementsByClassName('shop-item-image')[0].src
-    addItemToCart(title, price, imageSrc)
+    var itemID = shopItem.getElementsByClassName('shop-item-id')[0].value
+    addItemToCart(title, price, imageSrc, itemID)
     updateCartTotal()
 }
 
-function addItemToCart(title, price, imageSrc) {
+function addItemToCart(title, price, imageSrc, itemID) {
     var cartRow = document.createElement('div')
     cartRow.classList.add('cart-row')
     var cartItems = document.getElementsByClassName('cart-items')[0]
@@ -78,6 +100,7 @@ function addItemToCart(title, price, imageSrc) {
         <span class="cart-price cart-column">${price}</span>
         <div class="cart-quantity cart-column">
             <input class="cart-quantity-input" type="number" value="1">
+            <input type="hidden" class="cart-item-id" value="${itemID}">
             <button class="btn btn-danger" type="button">Hapus</button>
         </div>`
     cartRow.innerHTML = cartRowContents
