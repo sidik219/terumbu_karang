@@ -116,12 +116,6 @@ include 'build/config/connection.php';
                                 <p> Review Donasi  </p>
                            </a>
                         </li>
-                        <li class="nav-item">
-                           <a href="metode_pembayaran.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Metode Pembayaran  </p>
-                           </a>
-                        </li>
                     </ul>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->

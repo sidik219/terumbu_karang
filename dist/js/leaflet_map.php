@@ -116,10 +116,11 @@
     var id_titik = <?=$value->id_titik?>;
 
     var marker = L.marker([<?=$value->longitude?>,<?=$value->latitude?>], {icon: myIcon<?=$value->id_titik?>})
-    .bindPopup("<b>Longitude:</b> <?=$value->longitude?><br/>"+
-    "<b>Latitude:</b> <?=$value->latitude?><br/>"+
-    "<b>Luas Titik:</b> <?=$value->luas_titik?> m2<p>"+
-    "<p><a href='pilih_jenis_tk.php?id_titik=<?=$value->id_titik?>' class='btn btn-primary' style='color:white;'>Pilih Titik</a>");
+    .bindPopup("<b>Longitude: </b><?=$value->longitude?><br/>"+
+    "<b>Latitude: </b><?=$value->latitude?><br/>"+
+    "<b>Luas Titik: </b><?=$value->luas_titik?> m2<br/>"+
+    "<b>Kondisi Titik: </b><?=$value->kondisi_titik?><p>"+
+    "<a href='pilih_jenis_tk.php?id_titik=<?=$value->id_titik?>' class='btn btn-primary' style='color:white;'>Pilih Titik</a>");
     markers.addLayer(marker);
 
   <?php
@@ -142,13 +143,12 @@
     $sql_view = $stmt->fetchAll();
     foreach ($sql_view as $value) { ?>
 
-  .bindPopup("<b>Lokasi:</b> <?=$value->nama_lokasi?><br/>"+
-  "<b>Deskripsi Lokasi:</b> <?=$value->deskripsi_lokasi?><br/>"+
-  "<b>Foto Lokasi:</b><br/> <img src='images/foto_lokasi/<?=$value->foto_lokasi?>.jpg' width='100%'><br/>"+
-  "<p><a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
+  .bindPopup("<b>Lokasi: </b><?=$value->nama_lokasi?><br/>"+
+  "<b>Deskripsi Lokasi: </b><?=$value->deskripsi_lokasi?><br/>"+
+  "<b>Foto Lokasi: </b><br/><img src='images/foto_lokasi/<?=$value->foto_lokasi?>.jpg' width='100%'><br/><p>"+
+  "<a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
   <?php
     }
   ?>
 
 </script>
-
