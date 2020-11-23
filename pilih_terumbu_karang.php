@@ -171,6 +171,7 @@ $row = $stmt->fetchAll();
                 <a href="#" id="nama"><h5 class="card-title shop-item-title"><?=$rowitem->nama_terumbu_karang?></h5></a>
                 <p class="card-text"><?=$rowitem->deskripsi_terumbu_karang?></p>
                 <span class="shop-item-price">Rp. <?=$rowitem->harga_terumbu_karang?></span>
+                <input type="hidden" class="shop-item-id" value="<?=$rowitem->id_terumbu_karang?>">
                 <div class="row">
                     <!-- <div class="col-2">
                         <input type="number" min="1" id="tbqty" style="width: 100%; height:100%;">
@@ -178,7 +179,7 @@ $row = $stmt->fetchAll();
                     <div class="col">
                             <a data-nama_tk="<?=$rowitem->id_terumbu_karang?>" data-harga_tk="<?=$rowitem->harga_terumbu_karang?>" 
                             data-id_tk="<?=$rowitem->id_terumbu_karang?>"
-                            class="add-to-cart btn btn-warning shop-item-button">Tambah ke Keranjang</a>
+                            class="add-to-cart btn btn-warning shop-item-button"><i class="nav-icon fas fa-cart-plus"></i> Tambah ke Keranjang</a>
                     </div>
                 </div>
             </div>
