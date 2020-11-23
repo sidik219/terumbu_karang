@@ -97,6 +97,9 @@
   //End
 
   //Query untuk menampilkan lat long titik pada map
+  //Clustering marker pada map
+  var markers = L.markerClusterGroup();
+
   <?php 
     $sql_map = "SELECT * FROM t_titik";
     $stmt = $pdo->prepare($sql_map);
@@ -104,17 +107,33 @@
     $sql_view = $stmt->fetchAll();
     foreach ($sql_view as $value) { ?>
 
+    //Icon marker sesuai kondisi titik
+    var myIcon<?=$value->id_titik?> = L.icon({
+        iconUrl: '<?=($value->kondisi_titik=='')?('images/foto_kondisi_titik/baik.png'):('images/foto_kondisi_titik/'.$value->kondisi_titik.'.png')?>',
+        iconSize: [38, 45]
+    });
+
     var id_titik = <?=$value->id_titik?>;
 
-    L.marker([<?=$value->longitude?>,<?=$value->latitude?>]).addTo(mymap)
+    var marker = L.marker([<?=$value->longitude?>,<?=$value->latitude?>], {icon: myIcon<?=$value->id_titik?>})
     .bindPopup("<b>Longitude:</b> <?=$value->longitude?><br/>"+
     "<b>Latitude:</b> <?=$value->latitude?><br/>"+
     "<b>Luas Titik:</b> <?=$value->luas_titik?> m2<p>"+
     "<a href='pilih_jenis_tk.php?id_titik=<?=$value->id_titik?>' class='btn btn-primary' style='color:white;'>Pilih Titik</a>");
+    markers.addLayer(marker);
 
   <?php
     }
   ?>
+  mymap.addLayer(markers);
   //End
+
+  L.circle([-6.1815766,107.5597572], {
+    color: 'green',
+    fillColor: '#3CAEA3',
+    fillOpacity: 0.5,
+    radius: 700
+  }).addTo(mymap).bindPopup("<b>Lokasi: </b>Pantai Tangkolak");
+
 </script>
 
