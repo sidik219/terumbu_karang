@@ -191,31 +191,20 @@ include 'build/config/connection.php';
           
         </div>
         <div class="col-md-8 order-md-1">
-            <h4 class="mb-3">Data Billing Donatur</h4>
+            <h4 class="mb-3">Data Rekening Donatur</h4>
             <form class="needs-validation" novalidate>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                <label for="firstName">Nama Rekening</label>
-                <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
-                <div class="invalid-feedback">
-                    Valid first name is required.
-                </div>
+            <div class="mb-3">
+              <label for="email">Nama Pemilik Rekening</label>
+              <input type="email" class="form-control" id="email">
             </div>
-            <div class="col-md-6 mb-3">
-                <label for="lastName">Nomor Rekening</label>
-                <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
-                <div class="invalid-feedback">
-                    Valid last name is required.
-                </div>
+            <div class="mb-3">
+              <label for="email">NomorRekening</label>
+              <input type="email" class="form-control" id="email">
             </div>
-            <div class="col-md-6 mb-3">
-                <label for="firstName">Nama Bank</label>
-                <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
-                <div class="invalid-feedback">
-                    Valid first name is required.
-                </div>
+            <div class="mb-3">
+              <label for="email">Nama Bank</label>
+              <input type="email" class="form-control" id="email">
             </div>
-        </div>
 
             
 
@@ -228,7 +217,7 @@ include 'build/config/connection.php';
               </div>
              
             <hr class="mb-4">
-            <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Konfirmasi Donasi ></button>
           </form>
         </div>
       </div>
