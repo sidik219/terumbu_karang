@@ -1,7 +1,10 @@
+<?php 
+include 'build/config/connection.php'; 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Donasi Saya - TKJB</title>
+    <title>Review Donasi - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
@@ -23,7 +26,6 @@
     <!-- Daterange picker -->
         <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
-        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -281,7 +283,6 @@
     <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
- 
 
 </body>
 </html>

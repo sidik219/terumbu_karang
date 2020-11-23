@@ -1,4 +1,4 @@
-<?php include 'build/config/connection.php'; 
+<?php include 'build/config/connection.php';
 
 $sqlviewjenis = 'SELECT * FROM t_jenis_terumbu_karang
 ORDER BY nama_jenis';
@@ -34,13 +34,6 @@ $rowjenis = $stmt->fetchAll();
         <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
         <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -242,6 +235,5 @@ $rowjenis = $stmt->fetchAll();
     <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
-
 </body>
 </html>

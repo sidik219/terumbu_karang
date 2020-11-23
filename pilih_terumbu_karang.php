@@ -3,14 +3,14 @@
         header("Location: pilih_jenis_tk.php");
     }
 
-     $sqlviewtk = 'SELECT * FROM t_terumbu_karang
-                        LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
-                        WHERE t_terumbu_karang.id_jenis = :id_jenis';
-    $stmt = $pdo->prepare($sqlviewtk);
-    $stmt->execute(['id_jenis' => $_GET['id_jenis']]);
-    $row = $stmt->fetchAll();
+$sqlviewtk = 'SELECT * FROM t_terumbu_karang
+                LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
+                WHERE t_terumbu_karang.id_jenis = :id_jenis';
+$stmt = $pdo->prepare($sqlviewtk);
+$stmt->execute(['id_jenis' => $_GET['id_jenis']]);
+$row = $stmt->fetchAll();
 
-    ?>
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,13 +109,13 @@
                            </a>
                         </li>
                         <li class="nav-item">
-                           <a href="jenis_tk.php" class="nav-link">
+                           <a href="pilih_jenis_tk.php" class="nav-link">
                                 <i class="nav-icon fas fas fa-user"></i>
                                 <p> Jenis Terumbu Karang  </p>
                            </a>
                         </li>
                         <li class="nav-item menu-open">
-                           <a href="terumbu_karang.php" class="nav-link active">
+                           <a href="pilih_terumbu_karang.php" class="nav-link active">
                                 <i class="nav-icon fas fas fa-user"></i>
                                 <p> Terumbu Karang  </p>
                            </a>
@@ -285,11 +285,5 @@
     <?php include 'dist/js/leaflet_map.php'; ?>
     <!-- Shopping Cart -->
     <script src="js\shopping_cart.js" async></script>
-
-
-   
-
-   
-
 </body>
 </html>
