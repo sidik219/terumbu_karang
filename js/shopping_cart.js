@@ -27,6 +27,8 @@ function ready() {
 }
 
 function purchaseClicked() {
+    var keranjang_deserialised = JSON.parse(sessionStorage.getItem('keranjang_serialised'))
+
     var cartItemContainer = document.getElementsByClassName('cart-items')[0]
     var cartRows = cartItemContainer.getElementsByClassName('cart-row')
     var total = 0
@@ -46,12 +48,12 @@ function purchaseClicked() {
             id_tk: itemID,
             jumlah_tk: quantityElement.value
         }
-        keranjang.push(terumbu)
+        keranjang_deserialised.push(terumbu)
     }
     total = Math.round(total * 100) / 100
     document.getElementsByClassName('cart-total-price')[0].innerText = 'Rp. ' + total
-    keranjang.push(total)
-    var keranjang_serialised = JSON.stringify(keranjang)
+    keranjang_deserialised.push(total)
+    var keranjang_serialised = JSON.stringify(keranjang_deserialised)
     sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
     document.location.href = 'review_donasi.php';
 }
@@ -99,9 +101,9 @@ function addItemToCart(title, price, imageSrc, itemID) {
         </div>
         <span class="cart-price cart-column">${price}</span>
         <div class="cart-quantity cart-column">
-            <input class="cart-quantity-input" type="number" value="1">
-            <input type="hidden" class="cart-item-id" value="${itemID}">
+            <input class="cart-quantity-input" type="number" value="1">            
             <button class="btn btn-danger" type="button"><i class="nav-icon fas fa-times-circle"></i></button>
+            <input type="hidden" class="cart-item-id" value="${itemID}">
         </div>`
     cartRow.innerHTML = cartRowContents
     cartItems.append(cartRow)
