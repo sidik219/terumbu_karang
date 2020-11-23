@@ -119,7 +119,7 @@
     .bindPopup("<b>Longitude:</b> <?=$value->longitude?><br/>"+
     "<b>Latitude:</b> <?=$value->latitude?><br/>"+
     "<b>Luas Titik:</b> <?=$value->luas_titik?> m2<p>"+
-    "<a href='pilih_jenis_tk.php?id_titik=<?=$value->id_titik?>' class='btn btn-primary' style='color:white;'>Pilih Titik</a>");
+    "<p><a href='pilih_jenis_tk.php?id_titik=<?=$value->id_titik?>' class='btn btn-primary' style='color:white;'>Pilih Titik</a>");
     markers.addLayer(marker);
 
   <?php
@@ -128,12 +128,27 @@
   mymap.addLayer(markers);
   //End
 
+  //Lokasi
   L.circle([-6.1815766,107.5597572], {
     color: 'green',
     fillColor: '#3CAEA3',
     fillOpacity: 0.5,
     radius: 700
-  }).addTo(mymap).bindPopup("<b>Lokasi: </b>Pantai Tangkolak");
+  }).addTo(mymap)
+  <?php 
+    $sql_map = "SELECT * FROM t_lokasi";
+    $stmt = $pdo->prepare($sql_map);
+    $stmt->execute();
+    $sql_view = $stmt->fetchAll();
+    foreach ($sql_view as $value) { ?>
+
+  .bindPopup("<b>Lokasi:</b> <?=$value->nama_lokasi?><br/>"+
+  "<b>Deskripsi Lokasi:</b> <?=$value->deskripsi_lokasi?><br/>"+
+  "<b>Foto Lokasi:</b><br/> <img src='images/foto_lokasi/<?=$value->foto_lokasi?>.jpg' width='100%'><br/>"+
+  "<p><a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
+  <?php
+    }
+  ?>
 
 </script>
 
