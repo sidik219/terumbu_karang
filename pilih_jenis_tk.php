@@ -78,7 +78,6 @@ $rowjenis = $stmt->fetchAll();
             </a>
             <!-- END OF TOP SIDEBAR -->
 
-
     <section class="jumbotron">
         <div class="container">
         <h1>Pilih Jenis Terumbu Karang</h1>
@@ -95,6 +94,7 @@ $rowjenis = $stmt->fetchAll();
         <p class="card-text"><?=$rowitem->deskripsi_jenis?></p>
     <a href="pilih_terumbu_karang.php?id_jenis=<?=$rowitem->id_jenis?>" class="btn btn-outline-primary">Pilih Jenis</a>
     </div>
+
 
             <!-- SIDEBAR -->
             <div class="sidebar">
