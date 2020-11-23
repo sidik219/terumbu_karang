@@ -2,7 +2,8 @@
     include 'build\config\connection.php';
 
     $sqlviewtk = 'SELECT * FROM t_terumbu_karang
-                        LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis';
+                        LEFT JOIN t_jenis_terumbu_karang 
+                        ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis';
         $stmt = $pdo->prepare($sqlviewtk);
         $stmt->execute();
         $row = $stmt->fetchAll();

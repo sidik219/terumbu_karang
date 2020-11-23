@@ -1,3 +1,13 @@
+<?php include 'build/config/connection.php';
+
+     $sqlviewtk = 'SELECT * FROM t_terumbu_karang
+                        LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
+                        WHERE t_terumbu_karang.id_jenis = :id_jenis';
+    $stmt = $pdo->prepare($sqlviewtk);
+    $stmt->execute(['id_jenis' => $_GET['id_jenis']]);
+    $row = $stmt->fetchAll();
+
+    ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,18 +31,10 @@
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Daterange picker -->
-        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
         <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -149,15 +151,67 @@
             </div>
             <!-- /.content-header -->
 
-            <!-- Main content -->
-            <section class="content">
-                <div class="container-fluid">
-                    <div>
-                        
+           <!-- Main content -->
+        <section class="content">
+        <main role="main">
+
+    <section class="jumbotron">
+        <div class="container">
+        <h1>Pilih Terumbu Karang</h1>
+        <div class="row shop-items">
+        <?php
+            foreach ($row as $rowitem) {                            
+        ?>
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm shop-item">
+                <a href="#">
+                    <img class="card-img-top shop-item-image" width="100%" src="<?=$rowitem->foto_terumbu_karang?>" height="160px" width="150px"
+                ></a>
+                <div class="card-body">
+                <a href="#" id="nama"><h5 class="card-title shop-item-title"><?=$rowitem->nama_terumbu_karang?></h5></a>
+                <p class="card-text"><?=$rowitem->deskripsi_terumbu_karang?></p>
+                <span class="shop-item-price">Rp. <?=$rowitem->harga_terumbu_karang?></span>
+                <div class="row">
+                    <!-- <div class="col-2">
+                        <input type="number" min="1" id="tbqty" style="width: 100%; height:100%;">
+                    </div> -->
+                    <div class="col">
+                            <a data-nama_tk="<?=$rowitem->id_terumbu_karang?>" data-harga_tk="<?=$rowitem->harga_terumbu_karang?>" 
+                            data-id_tk="<?=$rowitem->id_terumbu_karang?>"
+                            class="add-to-cart btn btn-warning shop-item-button">Tambah ke Keranjang</a>
                     </div>
                 </div>
-            
-            </section>
+            </div>
+        </div>
+    </div>
+        <?php } ?>
+</div>
+        
+        <section class="container content-section">
+            <h2 class="section-header">Keranjang</h2>
+            <div class="cart-row">
+                <span class="cart-item cart-header cart-column">Nama</span>
+                <span class="cart-price cart-header cart-column">Harga</span>
+                <span class="cart-quantity cart-header cart-column">Jumlah</span>
+            </div>
+            <div class="cart-items">
+            </div>
+            <div class="cart-total">
+                <strong class="cart-total-title">Total</strong>
+                <span class="cart-total-price">Rp0</span>
+            </div>
+            <button class="btn btn-primary btn-purchase" type="button">Selesai Pilih ></button>
+        </section>
+
+
+      
+        </div>
+    </section>    
+                                
+    </main>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+        </section>
             <!-- /.Left col -->
             </div>
             <!-- /.row (main row) -->
@@ -179,6 +233,7 @@
     <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
+    
 
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
@@ -224,6 +279,13 @@
     <script src="dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
     <?php include 'dist/js/leaflet_map.php'; ?>
+    <!-- Shopping Cart -->
+    <script src="js\shopping_cart.js" async></script>
+
+
+   
+
+   
 
 </body>
 </html>
