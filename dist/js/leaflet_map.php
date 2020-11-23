@@ -98,7 +98,7 @@
 
   //Query untuk menampilkan lat long titik pada map
   //Clustering marker pada map
-  var markers = L.markerClusterGroup();
+  var marker_titik = L.markerClusterGroup();
 
   <?php 
     $sql_map = "SELECT * FROM t_titik";
@@ -121,12 +121,12 @@
     "<b>Luas Titik: </b><?=$value->luas_titik?> m2<br/>"+
     "<b>Kondisi Titik: </b><?=$value->kondisi_titik?><p>"+
     "<a href='pilih_jenis_tk.php?id_titik=<?=$value->id_titik?>' class='btn btn-primary' style='color:white;'>Pilih Titik</a>");
-    markers.addLayer(marker);
+    marker_titik.addLayer(marker);
 
   <?php
     }
   ?>
-  mymap.addLayer(markers);
+  mymap.addLayer(marker_titik);
   //End
 
   //Query untuk menampilkan lat long lokasi pada map
@@ -137,15 +137,15 @@
     $sql_view = $stmt->fetchAll();
     foreach ($sql_view as $value) { ?>
 
-  L.circle([<?=$value->longitude?>,<?=$value->latitude?>], {
-    color: 'green',
-    fillColor: '#3CAEA3',
-    fillOpacity: 0.5,
-    radius: 700
-  }).addTo(mymap).bindPopup("<b>Lokasi: </b><?=$value->nama_lokasi?><br/>"+
-  "<b>Deskripsi Lokasi: </b><?=$value->deskripsi_lokasi?><br/>"+
-  "<b>Foto Lokasi: </b><br/><img src='<?=$value->foto_lokasi?>' width='100%'><br/><p>"+
-  "<a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
+    L.circle([<?=$value->longitude?>,<?=$value->latitude?>], {
+      color: 'green',
+      fillColor: '#3CAEA3',
+      fillOpacity: 0.5,
+      radius: 700
+    }).addTo(mymap).bindPopup("<b>Lokasi: </b><?=$value->nama_lokasi?><br/>"+
+    "<b>Deskripsi Lokasi: </b><?=$value->deskripsi_lokasi?><br/>"+
+    "<b>Foto Lokasi: </b><br/><img src='<?=$value->foto_lokasi?>' width='100%'><br/><p>"+
+    "<a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
   <?php
     }
   ?>
