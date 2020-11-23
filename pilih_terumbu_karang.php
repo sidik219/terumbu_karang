@@ -1,4 +1,7 @@
 <?php include 'build/config/connection.php';
+    if(!$_GET['id_jenis']){
+        header("Location: pilih_jenis_tk.php");
+    }
 
 $sqlviewtk = 'SELECT * FROM t_terumbu_karang
                 LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
@@ -155,9 +158,8 @@ $row = $stmt->fetchAll();
         <section class="content">
         <main role="main">
 
-    <section class="jumbotron">
         <div class="container">
-        <h1>Pilih Terumbu Karang</h1>
+        <h3>Pilih Terumbu Karang</h3>
         <div class="row shop-items">
         <?php
             foreach ($row as $rowitem) {                            
@@ -187,23 +189,6 @@ $row = $stmt->fetchAll();
     </div>
         <?php } ?>
 </div>
-        
-        <section class="container content-section">
-            <h2 class="section-header">Keranjang</h2>
-            <div class="cart-row">
-                <span class="cart-item cart-header cart-column">Nama</span>
-                <span class="cart-price cart-header cart-column">Harga</span>
-                <span class="cart-quantity cart-header cart-column">Jumlah</span>
-            </div>
-            <div class="cart-items">
-            </div>
-            <div class="cart-total">
-                <strong class="cart-total-title">Total</strong>
-                <span class="cart-total-price">Rp0</span>
-            </div>
-            <button class="btn btn-primary btn-purchase" type="button">Selesai Pilih ></button>
-        </section>
-
 
       
         </div>
@@ -224,7 +209,21 @@ $row = $stmt->fetchAll();
     <!-- /.content-wrapper -->
 
     <footer class="main-footer">
-        <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
+        <section class="container content-section">
+            <h2 class="section-header">Keranjang</h2>
+            <div class="cart-row">
+                <span class="cart-item cart-header cart-column">Nama</span>
+                <span class="cart-price cart-header cart-column">Harga</span>
+                <span class="cart-quantity cart-header cart-column">Jumlah</span>
+            </div>
+            <div class="cart-items">
+            </div>
+            <div class="cart-total">
+                <strong class="cart-total-title">Total</strong>
+                <span class="cart-total-price">Rp0</span>
+            </div>
+            <button class="btn btn-primary btn-purchase" type="button">Selesai Pilih ></button>
+        </section>
     </footer>
 
     <!-- Control Sidebar -->
