@@ -110,7 +110,7 @@
     .bindPopup("<b>Longitude:</b> <?=$value->longitude?><br/>"+
     "<b>Latitude:</b> <?=$value->latitude?><br/>"+
     "<b>Luas Titik:</b> <?=$value->luas_titik?> m2<p>"+
-    "<a href='jenis_tk.php?id_titik=<?=$value->id_titik?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
+    "<a href='pilih_jenis_tk.php?id_titik=<?=$value->id_titik?>' class='btn btn-primary' style='color:white;'>Pilih Titik</a>");
 
   <?php
     }

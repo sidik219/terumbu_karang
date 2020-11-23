@@ -104,13 +104,13 @@
                            </a>
                         </li>
                         <li class="nav-item">
-                           <a href="jenis_tk.php" class="nav-link">
+                           <a href="pilih_jenis_tk.php" class="nav-link">
                                 <i class="nav-icon fas fas fa-user"></i>
                                 <p> Jenis Terumbu Karang  </p>
                            </a>
                         </li>
                         <li class="nav-item">
-                           <a href="terumbu_karang.php" class="nav-link">
+                           <a href="pilih_terumbu_karang.php" class="nav-link">
                                 <i class="nav-icon fas fas fa-user"></i>
                                 <p> Terumbu Karang  </p>
                            </a>
@@ -141,7 +141,7 @@
                 <div class="container-fluid">
                 <div class="row">
                         <div class="col">
-                            <h4><span class="align-middle font-weight-bold">Donasi Saya</span></h4>
+                            <h4><span class="align-middle font-weight-bold">Map</span></h4>
                         </div>
                     </div>
                 </div>
