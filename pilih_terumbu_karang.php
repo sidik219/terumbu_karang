@@ -179,7 +179,7 @@
                     <div class="col">
                             <a data-nama_tk="<?=$rowitem->id_terumbu_karang?>" data-harga_tk="<?=$rowitem->harga_terumbu_karang?>" 
                             data-id_tk="<?=$rowitem->id_terumbu_karang?>"
-                            class="add-to-cart btn btn-warning shop-item-button">Tambah ke Keranjang</a>
+                            class="add-to-cart btn btn-warning shop-item-button"><i class="nav-icon fas fa-cart-plus"></i> Tambah ke Keranjang</a>
                     </div>
                 </div>
             </div>

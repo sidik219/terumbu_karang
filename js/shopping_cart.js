@@ -101,7 +101,7 @@ function addItemToCart(title, price, imageSrc, itemID) {
         <div class="cart-quantity cart-column">
             <input class="cart-quantity-input" type="number" value="1">
             <input type="hidden" class="cart-item-id" value="${itemID}">
-            <button class="btn btn-danger" type="button">Hapus</button>
+            <button class="btn btn-danger" type="button"><i class="nav-icon fas fa-times-circle"></i></button>
         </div>`
     cartRow.innerHTML = cartRowContents
     cartItems.append(cartRow)

@@ -165,9 +165,9 @@ shop-item {
 }
 
 .cart-column {
-    display: flex;
+    /* display: flex; */
+    word-wrap: break-word;
     align-items: center;
-    border-bottom: 1px solid black;
     margin-right: 1.5em;
     padding-bottom: 10px;
     margin-top: 10px;
@@ -216,8 +216,8 @@ shop-item {
     margin-right: 25px;
 }
 
-.cart-row:last-child {
-    border-bottom: 1px solid black;
+.cart-row {
+    border-bottom: 1px solid rgb(116, 116, 116);
 }
 
 .cart-row:last-child .cart-column {
