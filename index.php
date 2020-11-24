@@ -1,292 +1,325 @@
-<?php 
-include 'build/config/connection.php';
-include 'dist\js\leaflet_map.php';
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Terumbu Karang</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Styles Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer felis neque, suscipit eget dolor quis, accumsan imperdiet elit. Praesent quis mauris eu quam malesuada auctor. Etiam vitae ante sapien. Sed mauris dui, varius non tempor in, semper fringilla ipsum. Phasellus nec purus enim. Nulla eget fringilla mi, id iaculis ante.">
+    <meta name="author" content="">
+    <link rel="icon" href="dist/img/KKPlogo.png">
 
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- JQVMap -->
-  <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-  <!-- summernote -->
-  <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="crossorigin=""/>
-  <!--Leaflet panel layer CSS-->
-  <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css"/>
-  <!-- Leaflet Marker Cluster CSS -->
-  <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-	<link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
+    <title>TKJB | Terumbu Karang Jawa Barat</title>
+
+    <!-- GOOGLE FONT -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Roboto&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link href="css/konten.css" rel="stylesheet">
+    
+    <!-- Font Awesome CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
 
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-    </ul>
 
-    <!-- SEARCH FORM -->
-    <form class="form-inline ml-3">
-      <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
+<body >
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light  main-navigation fixed-top">
+        <!-- LOGO HOLDER -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="index.php"><img id=logo src="dist/img/logo.png"></a>
+        </nav>
+        <!-- END OF LOGO HOLDER -->
+
+        <!-- MENU NAVBAR -->
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ml-auto ">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.php">Beranda <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="donasi.php">Donasi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="wisata.php">Wisata</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="coralmaps.php">Coralmaps</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="coralpedia.php">Coralpedia</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="login.php">Login</a>
+                </li>
+                <!-- <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="#">Edit Profil</a>
+                    <a class="dropdown-item" href="#">Logout</a>              
+                </li>  -->
+            </ul> 
         </div>
-      </div>
-    </form>
+        <!-- END OF MENU NAVBAR -->
+</nav> 
+<!-- END OF NAVBAR -->
 
-    <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li>
-    </ul>
-  </nav>
-  <!-- /.navbar -->
+<!-- CAROUSEL SLIDE -->
+    
+    <div id="carouselFull" class="carousel slide" data-ride="carousel">
+       <ol class="carousel-indicators">
+           <li data-target="#carouselIndicators" data-slide-to="0" class="active"></li>
+           <li data-target="#carouselIndicators" data-slide-to="1"></li>
+           <li data-target="#carouselIndicators" data-slide-to="2"></li>
+           <li data-target="#carouselIndicators" data-slide-to="3"></li>
+       </ol>
+       <div class="carousel-inner">
+           <div class="carousel-item active">
+               <img class="d-block" src="dist/img/home-slide1-darken.jpg" alt="First slide">
+               <div class="carousel-caption  d-md-block">
+                   <h3>BANTU PULIHKAN RUMAH MEREKA</h3><br>
+                   <p>Terumbu Karang merupakan rumah bagi ribuan ikan hias. Kerusakan yang
+                    disebabkan manusia berdampak buruk pada kehidupan mereka.</p><br>
+                    <a href="php.html" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                      Donasi Sekarang
+                    </a>
+               </div>
+           </div>
+           <div class="carousel-item">
+               <img class="d-block" src="dist/img/home-slide2-darken.jpg" alt="Second slide">
+               <div class="carousel-caption d-md-block">
+                   <h3>MARI NIKMATI HASIL
+                    PELESTARIAN</h3><br>
+                   <p>Terimakasih telah ikut melestarikan biota laut Jawa Barat. Jangan lupa
+                    untuk menikmati keindahannya dengan berwisata.</p><br>
+                    <a href="php.html" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                        Wisata Sekarang
+                      </a>
+               </div>
+           </div>
+           <div class="carousel-item">
+               <img class="d-block" src="dist/img/home-slide3-darken.jpg" alt="Third slide">
+               <div class="carousel-caption d-md-block">
+                   <h3>AMATI KONDISINYA </h3><br>
+                   <p>Beberapa titik terumbu karang berada dalam kondisi rusak parah dan 
+                    membutuhkan bantuan kita.</p><br>
+                    <a href="php.html" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                        Coralmaps
+                      </a>
+               </div>
+           </div>
+           <div class="carousel-item">
+            <img class="d-block" src="dist/img/home-slide4-darken.jpg" alt="Third slide">
+            <div class="carousel-caption d-md-block">
+                <h3>TAK KENAL MAKA
+                    TAK SAYANG</h3><br>
+                <p>Mari kenali beragam jenis terumbu karang cantik yang terdapat di Jawa Barat.</p><br>
+                    <a href="php.html" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                       Coralpedia
+                      </a>
+            </div>
+        </div>
+       </div>
+       <a class="carousel-control-prev" href="#carouselFull" role="button" data-slide="prev">
+           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+           <span class="sr-only">Previous</span>
+       </a>
+       <a class="carousel-control-next" href="#carouselFull" role="button" data-slide="next">
+           <span class="carousel-control-next-icon" aria-hidden="true"></span>
+           <span class="sr-only">Next</span>
+       </a>
+   </div>
 
-  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="index.php" class="brand-link">
-      <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
-    </a>
+   <!-- END CAROUSEL SLIDE -->
+    
+    <!-- BODY CONTAINER -->
+    
+    
+    <div id="about" class="container">
+        <!-- 1st PARAGRAPH -->
+        <div class="starter-template">
+            <h1 class="mb-5">TENTANG KAMI</h1><br>
+            <p><b>TKJB</b> (Terumbu Karang Jawa Barat) merupakan bentuk kerjasama
+                antara Kementrian Kelautan dan
+                Perikanan (KKP) dengan Kelompok
+                Usaha Bersama (KUB) masyarakat
+                pesisir pantai di Provinsi Jawa Barat yang memiliki tujuan sebagai berikut :</p><br><br>
+        </div>
+        <!-- END 1st PARAGRAPH -->
+        <!-- ROW WITH ICON -->
+        <div class="row text-center pb-4">
+            <div class="col-md-12 col-lg-4 p-1">
+                <img src="dist/img/konservasi.jpg" class="rounded-circle p-3" alt="Prime Meat Image" width="250" height="250">
+                <h3>Konservasi <br>Terumbu Karang</h3><br>
+                <p>Melestarikan dan melakukan
+                    pemulihan pada terumbu
+                    karang sekitar pantai Jawa
+                    Barat.</p>
+            </div>
+            <div class="col-md-12 col-lg-4 p-1-middle">
+                <img src="dist/img/informasi.jpg" class="rounded-circle p-3" alt="Fish Image" width="250" height="250">
+                <h3>Informasi <br> Terumbu Karang</h3><br>
+                <p>Menyajikan informasi pada
+                    masyarakat umum tentang
+                    kondisi terumbu karang
+                    di Jawa Barat.
+                    </p>
+            </div>
+            <div class="col-md-12 col-lg-4 p-1">
+                <img src="dist/img/ekonomi.jpg" class="rounded-circle p-3" alt="Vegetables Image" width="250" height="250">
+                <h3>Ekonomi <br>Terumbu Karang</h3><br>
+                <p>Mendukung wisata terumbu
+                    karang untuk meningkatkan
+                    ekonomi masyarakat pesisir.</p>
+            </div>
+        </div>
+        <!-- END OF ROW WITH ICON -->
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user (optional) -->
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item menu-open">
-            <a href="./index.php" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Home
-              </p>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->
-  </aside>
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1> 
-           
-          </div>
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- Query Donasi -->
-        <?php
-        $sql_view = "SELECT * FROM t_donasi
-        LEFT JOIN t_user ON t_user.id_user=t_user.id_user";
-
-        foreach ($pdo->query($sql_view) as $result) { ?>
-          <div class="row">
-            <div class="col-lg-4 col-9">
-              <!-- small box -->
-                <div class="small-box bg-info">
-                  <div class="inner">
-                    <table style="color: white;">
-                      <thead>
-                        <h4><b>Donasi Saya</b></h4>
-                        <tr>
-                          <th>ID</th>
-                          <th style="padding-right: 30px;">Nominal</th>
-                          <th>Tanggal</th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        <tr>
-                          <td><?php echo $result->id_donasi; ?></td>
-                          <td style="display: none;"><?php echo $result->nama_user; ?></td>
-                          <td><?php echo $result->nominal; ?></td>
-                          <td><?php echo $result->tgl_donasi; ?></td>
-                        </tr>
-                        <tr>
-                          <td style="font-weight:bold; padding-top: 10px;">Status:</td>
-                          <td colspan="2" style="font-size:14px; padding-top: 10px;">
-                            <?php echo $result->status_donasi; ?>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <a href="pages/forms/h_detail_donasi.php?edit=<?php echo $result->id_donasi;?>" class="small-box-footer">
-                    Lihat Detail<i class="fas fa-arrow-circle-right"></i>
-                  </a>
+    <!-- END OF BODY CONTAINER -->
+    
+    <div id="carouselFull" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="d-block" src="dist/img/home-donasi.jpg" alt="First slide">
+                <div class="carousel-caption  d-md-block">
+                <center>
+                    <h3>SISTEM DONASI MENARIK</h3><br>
+                    <p>
+                    Simak menariknya sistem donasi yang kami hadirkan, mulai dari pemilihan lokasi hingga pemilihan terumbu karang yang 
+                    akan ditanam.
+                    </p><br>
+                     <a href="php.html" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                       Info Donasi
+                     </a>
+                    </center>  
                 </div>
             </div>
-          </div>
-        <?php } ?>
-        <!-- End -->
-
-        <!-- Main row -->
-        <div class="row">
-          <div class="col-md-12">
-            <!-- Map card -->
-            <div class="card bg-gradient-primary">
-              <div class="card-header border-0">
-                <h3 class="card-title">
-                  <i class="fas fa-map-marker-alt mr-1"></i>
-                  Map
-                </h3>
-                <!-- card tools -->
-                <div class="card-tools">
-                  <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                </div>
-                <!-- /.card-tools -->
-              </div>
-              <div class="card-body">
-                <div id="mapid" style="height: 560px; width: 100%;">
-                </div>
-              </div>
-              <!-- /.card-body-->
-              <div class="card-footer bg-transparent">
-                <div class="row">
-                  <div class="col-3 text-center">
-                    <div>0% - 24%</div>
-                    <div class="text-white">Kurang</div>
-                  </div>
-                  <!-- ./col -->
-                  <div class="col-3 text-center">
-                    <div>25% - 49%</div>
-                    <div class="text-white">Cukup</div>
-                  </div>
-                  <!-- ./col -->
-                  <div class="col-3 text-center">
-                    <div>50% - 74%</div>
-                    <div class="text-white">Baik</div>
-                  </div>
-                  <!-- ./col -->
-                  <div class="col-3 text-center">
-                    <div>75% - 100%</div>
-                    <div class="text-white">Sangat Baik</div>
-                  </div>
-                </div>
-                <!-- /.row -->
-              </div>
-            </div>
-            <!-- /.card -->
-          <div>
         </div>
-        <!-- /.row (main row) -->
-      </div><!-- /.container-fluid -->
+    </div>
+
+    <div class="wisata-container">
+        <div id="about" class="container" ">
+            <!-- 1st PARAGRAPH -->
+            <div class="starter-template">
+                <h3 class="mb-5">WISATA TERUMBU
+                    KARANG JABAR</h3><br>
+                <p style="text-align: center;">Temukan spot favoritmu untuk
+                    melihat indahnya terumbu
+                    karang Jawa Barat !</p><br><br>
+                    <a href="php.html" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                        Info Wisata
+                      </a>
+            </div>
+        </div>
+    </div>
+
+    <section id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="blogo col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                    <!-- <a href="#"><img src="dist/img/logo.png" alt="Styles logo"></a> -->
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                    <div class="cpt text-light text-center">
+                        <p>© 2020-Terumbu Karang Jawa Barat.</p>                    
+                    </div>
+                </div>
+             
+            </div>
+        </div>
     </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <strong>Copyright &copy; 2020 .</strong>
-    Terumbu Karang Jawa Barat.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 1.0.0
+
+    <div id="bttp" class="btt">
+        <a href="#"><i class="fa fa-arrow-circle-up"></i></a>
     </div>
-  </footer>
+ 
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
 
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="plugins/moment/moment.min.js"></script>
-<script src="plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js"></script>
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="crossorigin=""></script>
-<!-- Leaflet Marker Cluster -->
-<script src="dist/js/leaflet.markercluster-src.js"></script>
-<!-- Leaflet panel layer JS-->
-<script src="dist/js/leaflet-panel-layers.js"></script>
-<!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-<script src="dist/js/leaflet.ajax.js"></script>
-<!-- Leaflet Map -->
-<?php 
-include 'dist/js/leaflet_map.php'; 
-?>
+
+    <!-- <div class="prologue" style="background-color: white; width: 100%; margin-top: -40px; padding-top: 30px;">
+        <div id="about" class="container" style="background-color: white;">
+            <div class="starter-template">
+                <h1 class="mb-5">TERUMBU KARANG</h1>
+                <p>
+                    Terumbu karang merupakan salah satu komponen utama sumber daya alam laut dan pesisir, 
+                    disamping hutan bakau (mangrove) dan padang lamun. Berbagai manfaat yang dihasilkan terumbu karang antara lain :</p><br><br>
+            </div>
+        </div>
+    </div>
+     -->
+    
+    
+   
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- Scrollspy -->
+    <script>$('body').scrollspy({ target: '#navbarsExampleDefault', offset: 108 })</script>
+    <!-- Smooth Scroll -->
+    <script src="js/smooth-scroll.js"></script>
+    <!-- Video Full Width -->
+    <script src="js/jquery.vide.js"></script> 
+    <script>
+        var scroll = new SmoothScroll('a[href*="#"]');
+    </script>
+    <!-- Number Counter -->
+    <script src="js/nsc.js"></script>
+    <!-- Video -->
+    <script async src="https://www.youtube.com/iframe_api"></script>
+    <script>
+     function onYouTubeIframeAPIReady() {
+      var player;
+      player = new YT.Player('muteYouTubeVideoPlayer', {
+        videoId: 'iLs5c2Y1BOM', // YouTube Video ID
+        width: 560,               // Player width (in px)
+        height: 316,              // Player height (in px)
+        playerVars: {
+          autoplay: 1,        // Auto-play the video on load
+          controls: 1,        // Show pause/play buttons in player
+          showinfo: 0,        // Hide the video title
+          modestbranding: 1,  // Hide the Youtube Logo
+          loop: 1,            // Run the video in a loop
+          fs: 0,              // Hide the full screen button
+          cc_load_policy: 0, // Hide closed captions
+          iv_load_policy: 3,  // Hide the Video Annotations
+          autohide: 0         // Hide video controls when playing
+        },
+        events: {
+          onReady: function(e) {
+            e.target.mute();
+          }
+        }
+      });
+     }
+
+     // Written by @labnol 
+    </script>
+    <script>
+        myID = document.getElementById("bttp");
+
+        var myScrollFunc = function() {
+          var y = window.scrollY;
+          if (y >= 1200) {
+            myID.className = "btt show"
+          } else {
+            myID.className = "btt hide"
+          }
+        };
+
+        window.addEventListener("scroll", myScrollFunc);
+    </script>
 </body>
 </html>
