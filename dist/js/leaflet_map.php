@@ -97,7 +97,7 @@
   //End
 
   //Query untuk menampilkan lat long titik pada map
-  //Clustering marker pada map
+  //Clustering marker pada bagian titik
   var marker_titik = L.markerClusterGroup();
 
   <?php 
@@ -131,7 +131,14 @@
   //End
 
   //Query untuk menampilkan lat long lokasi pada map
+  //Clustering marker pada bagian lokasi
   var marker_lokasi = L.markerClusterGroup();
+
+  //Icon marker sesuai lokasi pantai
+  var myIcon = L.icon({
+      iconUrl: '<?=('images/foto_lokasi/icon_lokasi/icon_lokasi.png')?>',
+      iconSize: [38, 45]
+  });
 
   <?php 
     $sql_map = "SELECT * FROM t_lokasi";
@@ -140,7 +147,7 @@
     $sql_viewlokasi = $stmt->fetchAll();
     foreach ($sql_viewlokasi as $value) { ?>
 
-    var marker = L.marker([<?=$value->longitude?>,<?=$value->latitude?>])
+    var marker = L.marker([<?=$value->longitude?>,<?=$value->latitude?>], {icon: myIcon})
     .bindPopup(
     "<b>Nama Lokasi: </b><?=$value->nama_lokasi?><br/>"+
     "<b>Luas Lokasi: </b><?=$value->luas_lokasi?> m<sup>2</sup><br/>"+
