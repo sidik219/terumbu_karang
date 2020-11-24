@@ -91,30 +91,58 @@ function addToCartClicked(event) {
     updateCartTotal()
 }
 
+// function addItemToCart(title, price, imageSrc, itemID) {
+//     var cartRow = document.createElement('div')
+//     cartRow.classList.add('cart-row', 'row')
+//     var cartItems = document.getElementsByClassName('cart-items')[0]
+//     var cartItemNames = cartItems.getElementsByClassName('cart-item-title')
+//     for (var i = 0; i < cartItemNames.length; i++) {
+//         if (cartItemNames[i].innerText == title) {
+//             alert('Terumbu karang ini sudah ditambahkan ke keranjang')
+//             return
+//         }
+//     }
+//     var cartRowContents = `
+//         <div class="cart-item cart-column col">
+//             <img class="cart-item-image" src="${imageSrc}" width="100" height="100">
+//         <div class="col">
+//             <span class="cart-item-title text-break">${title}</span>
+//         </div>
+//         </div>
+//         <div class="col">
+//             <span class="cart-price cart-column">${price}</span>
+//         </div>
+//         <div class="cart-quantity cart-column col">
+//             <input class="cart-quantity-input" type="number" value="1">            
+//             <button class="btn btn-danger" type="button"><i class="nav-icon fas fa-times-circle"></i></button>
+//             <input type="hidden" class="cart-item-id" value="${itemID}">
+//         </div>`
+//     cartRow.innerHTML = cartRowContents
+//     cartItems.append(cartRow)
+//     cartRow.getElementsByClassName('btn-danger')[0].addEventListener('click', removeCartItem)
+//     cartRow.getElementsByClassName('cart-quantity-input')[0].addEventListener('change', quantityChanged)
+// }
+
 function addItemToCart(title, price, imageSrc, itemID) {
     var cartRow = document.createElement('div')
-    cartRow.classList.add('cart-row', 'row')
+    cartRow.classList.add('cart-row')
     var cartItems = document.getElementsByClassName('cart-items')[0]
     var cartItemNames = cartItems.getElementsByClassName('cart-item-title')
     for (var i = 0; i < cartItemNames.length; i++) {
         if (cartItemNames[i].innerText == title) {
-            alert('Terumbu karang ini sudah ditambahkan ke keranjang')
+            alert('This item is already added to the cart')
             return
         }
     }
     var cartRowContents = `
-        <div class="cart-item cart-column col">
+        <div class="cart-item cart-column">
             <img class="cart-item-image" src="${imageSrc}" width="100" height="100">
-        <div class="col">
-            <span class="cart-item-title text-break">${title}</span>
+            <span class="cart-item-title">${title}</span>
         </div>
-        </div>
-        <div class="col">
-            <span class="cart-price cart-column">${price}</span>
-        </div>
-        <div class="cart-quantity cart-column col">
-            <input class="cart-quantity-input" type="number" value="1">            
-            <button class="btn btn-danger" type="button"><i class="nav-icon fas fa-times-circle"></i></button>
+        <span class="cart-price cart-column">${price}</span>
+        <div class="cart-quantity cart-column">
+            <input class="cart-quantity-input" type="number" max="999" value="1">
+            <button class="btn btn-danger" type="button">X</button>
             <input type="hidden" class="cart-item-id" value="${itemID}">
         </div>`
     cartRow.innerHTML = cartRowContents

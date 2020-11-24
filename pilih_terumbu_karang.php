@@ -165,7 +165,7 @@ $row = $stmt->fetchAll();
                     <img class="card-img-top shop-item-image" width="100%" src="<?=$rowitem->foto_terumbu_karang?>" height="160px" width="150px"
                 ></a>
                 <div class="card-body">
-                <a href="#" id="nama"><h5 class="card-title shop-item-title"><?=$rowitem->nama_terumbu_karang?></h5></a>
+                <p class="card-title"><h5 class="shop-item-title"><?=$rowitem->nama_terumbu_karang?></h5></p>
                 <p class="card-text"><?=$rowitem->deskripsi_terumbu_karang?></p>
                 <span class="shop-item-price">Rp. <?=$rowitem->harga_terumbu_karang?></span>
                 <input type="hidden" class="shop-item-id" value="<?=$rowitem->id_terumbu_karang?>">
@@ -273,6 +273,7 @@ $row = $stmt->fetchAll();
     <script src="dist/js/pages/dashboard.js"></script>
     <!-- Shopping Cart -->
     <script src="js\shopping_cart.js" async></script>
+    <script src="js\numberformat.js" async></script>
 
     
 </body>

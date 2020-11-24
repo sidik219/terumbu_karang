@@ -163,10 +163,7 @@ $rowjenis = $stmt->fetchAll();
                                 <img class="card-img-top" width="100%" src="<?=$rowitem->foto_jenis?>" height="160px" width="150px">
                             </a>
                                 <div class="card-body">
-                                    <a href="edit_jenis_tk.php?id_jenis=<?=$rowitem->id_jenis?>">
-                                        <h5 class="card-title font-weight-bold"><?=$rowitem->nama_jenis?></h5>
-                                    </a>
-                                    <p class="card-text font-weight-bold">Deskripsi Jenis Terumbu Karang:</p>
+                                    <p class="card-title"><h5 class="font-weight-bold"><?=$rowitem->nama_jenis?></h5></p>
                                     <p class="card-text"><?=$rowitem->deskripsi_jenis?></p>
                                     <a href="pilih_terumbu_karang.php?id_jenis=<?=$rowitem->id_jenis?>" class="btn btn-outline-primary">Pilih Jenis</a>
                                 </div>

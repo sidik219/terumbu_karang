@@ -132,13 +132,11 @@ shop-item {
     width: 100%;
     text-align: center;
     font-weight: bold;
-    font-size: 1.5em;
     color: #333;
-    margin-bottom: 15px;
 }
 
 .shop-item-image {
-    height: 250px;
+    height: auto;
 }
 
 .shop-item-details {
@@ -263,4 +261,9 @@ shop-item {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+}
+
+.card-body {
+    text-align: center;
+    padding-top: 0.25em;
 }

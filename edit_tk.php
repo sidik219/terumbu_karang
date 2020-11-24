@@ -11,9 +11,11 @@
         $rowviewjenis = $stmt->fetchAll();
 
     $sqlviewtk = 'SELECT * FROM t_terumbu_karang
-                        LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis';
+                        LEFT JOIN t_jenis_terumbu_karang 
+                        ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
+                        WHERE id_terumbu_karang = :id_terumbu_karang';
         $stmt = $pdo->prepare($sqlviewtk);
-        $stmt->execute();
+        $stmt->execute(['id_terumbu_karang' => $id_terumbu_karang]);
         $rowitem = $stmt->fetch();
 
         if (isset($_POST['submit'])) {
