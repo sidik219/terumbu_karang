@@ -118,9 +118,9 @@
     var marker = L.marker([<?=$value->longitude?>,<?=$value->latitude?>], {icon: myIcon<?=$value->id_titik?>})
     .bindPopup("<b>Longitude: </b><?=$value->longitude?><br/>"+
     "<b>Latitude: </b><?=$value->latitude?><br/>"+
-    "<b>Luas Titik: </b><?=$value->luas_titik?> m2<br/>"+
+    "<b>Luas Titik: </b><?=$value->luas_titik?> m<sup>2</sup><br/>"+
     "<b>Kondisi Titik: </b><?=$value->kondisi_titik?><p>"+
-    "<a href='pilih_jenis_tk.php?id_titik=<?=$value->id_titik?>' class='btn btn-primary' style='color:white;'>Pilih Titik</a>");
+    "<a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
     marker_titik.addLayer(marker);
 
   <?php
@@ -128,4 +128,40 @@
   ?>
   mymap.addLayer(marker_titik);
   //End
+
+
+
+
+
+
+
+
+var marker_lokasi = L.markerClusterGroup();
+
+  <?php 
+    $sql_map = "SELECT * FROM t_lokasi";
+    $stmt = $pdo->prepare($sql_map);
+    $stmt->execute();
+    $sql_viewlokasi = $stmt->fetchAll();
+    foreach ($sql_viewlokasi as $value) { ?>
+
+    var marker = L.marker([<?=$value->longitude?>,<?=$value->latitude?>])
+    .bindPopup(
+    "<b>Nama Lokasi: </b><?=$value->nama_lokasi?><br/>"+
+    "<b>Luas Lokasi: </b><?=$value->luas_lokasi?> m<sup>2</sup><br/>"+
+    "<b>Foto Lokasi: <br/></b><img src='<?=$value->foto_lokasi?>' class='card-img-top mb-2'><br/>"+
+    "<a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
+    marker_lokasi.addLayer(marker);
+
+  <?php
+    }
+  ?>
+  mymap.addLayer(marker_lokasi);
+  //End
+
+
+
+
+
+
 </script>
