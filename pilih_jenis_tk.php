@@ -237,9 +237,9 @@ $rowjenis = $stmt->fetchAll();
     <script>
         sessionStorage.clear()
 
-        var keranjang_deserialised = []
+        var keranjang_deserialised = {}
 
-        keranjang_deserialised.push({id_lokasi: <?=$_GET['id_lokasi']?>})
+        keranjang_deserialised["id_lokasi"] = <?=$_GET['id_lokasi']?>
 
         var keranjang_serialised = JSON.stringify(keranjang_deserialised)
         sessionStorage.setItem('keranjang_serialised', keranjang_serialised)

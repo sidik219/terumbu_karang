@@ -204,7 +204,7 @@ $row = $stmt->fetchAll();
 
     <footer class="main-footer">
         <section class="container content-section">
-            <h2 class="section-header">Keranjang</h2>
+            <h2 class="section-header font-weight-bold">Keranjang</h2>
             <div class="cart-row">
                 <span class="cart-item cart-header cart-column">Nama</span>
                 <span class="cart-price cart-header cart-column">Harga</span>
@@ -215,6 +215,11 @@ $row = $stmt->fetchAll();
             <div class="cart-total">
                 <strong class="cart-total-title">Total</strong>
                 <span class="cart-total-price">Rp0</span>
+            </div>
+            <div class="mb-3 text-center mt-2">
+              <h4 class="font-weight-bold">Pesan / Ekspresi</h4><label for="pesan" class="font-weight-normal"> 
+              (Opsional. Pesan akan disertakan dalam label khusus pada terumbu karang )</label>
+              <input type="text" maxlength="64" class="form-control success" id="pesan">
             </div>
             <button class="btn btn-primary btn-purchase" type="button">Selesai Pilih ></button>
         </section>

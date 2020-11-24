@@ -31,6 +31,14 @@ include 'build/config/connection.php';
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
+<script>
+if (sessionStorage.getItem('keranjang_serialised') == undefined){
+  document.location.href = 'map.php';
+}
+  var keranjang = JSON.parse(sessionStorage.getItem('keranjang_serialised'))  
+</script>
+
+
     <div class="wrapper">
 
         <!-- NAVBAR -->
@@ -67,54 +75,54 @@ include 'build/config/connection.php';
             <div class="sidebar">
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
-                   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item  ">
-                           <a href="dashboard_user.php" class="nav-link ">
-                                <i class="nav-icon fas fa-home"></i>
-                                <p> Home </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="donasi_saya.php" class="nav-link">
-                                <i class="nav-icon fas fa-hand-holding-usd"></i>
-                                <p> Donasi Saya </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="reservasi_saya.php" class="nav-link">
-                                <i class="nav-icon fas fa-suitcase"></i>
-                                <p> Reservasi Saya  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="profil_saya.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Profil Saya  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="map.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Map  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="pilih_jenis_tk.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Jenis Terumbu Karang  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="pilih_terumbu_karang.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Terumbu Karang  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item menu-open">
-                           <a href="review_donasi.php" class="nav-link active">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Review Donasi  </p>
-                           </a>
+                  <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                      <li class="nav-item  ">
+                          <a href="dashboard_user.php" class="nav-link ">
+                              <i class="nav-icon fas fa-home"></i>
+                              <p> Home </p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="donasi_saya.php" class="nav-link">
+                              <i class="nav-icon fas fa-hand-holding-usd"></i>
+                              <p> Donasi Saya </p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="reservasi_saya.php" class="nav-link">
+                              <i class="nav-icon fas fa-suitcase"></i>
+                              <p> Reservasi Saya  </p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="profil_saya.php" class="nav-link">
+                              <i class="nav-icon fas fas fa-user"></i>
+                              <p> Profil Saya  </p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="map.php" class="nav-link">
+                              <i class="nav-icon fas fas fa-user"></i>
+                              <p> Map  </p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="pilih_jenis_tk.php" class="nav-link">
+                              <i class="nav-icon fas fas fa-user"></i>
+                              <p> Jenis Terumbu Karang  </p>
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a href="pilih_terumbu_karang.php" class="nav-link">
+                              <i class="nav-icon fas fas fa-user"></i>
+                              <p> Terumbu Karang  </p>
+                          </a>
+                      </li>
+                      <li class="nav-item menu-open">
+                          <a href="review_donasi.php" class="nav-link active">
+                              <i class="nav-icon fas fas fa-user"></i>
+                              <p> Review Donasi  </p>
+                          </a>
                         </li>
                     </ul>      
                 </nav>
@@ -145,41 +153,11 @@ include 'build/config/connection.php';
         <div class="col-md-4 order-md-2 mb-4">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
             <span class="text-muted">Keranjang Anda</span>
-            <span class="badge badge-secondary badge-pill">3</span>
+            <span id="badge-jumlah" class="badge badge-secondary badge-pill"></span>
           </h4>
-          <ul class="list-group mb-3">
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0">Product name</h6>
-                <small class="text-muted">Brief description</small>
-              </div>
-              <span class="text-muted">$12</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0">Second product</h6>
-                <small class="text-muted">Brief description</small>
-              </div>
-              <span class="text-muted">$8</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0">Third item</h6>
-                <small class="text-muted">Brief description</small>
-              </div>
-              <span class="text-muted">$5</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between bg-light">
-              <div class="text-success">
-                <h6 class="my-0">Promo code</h6>
-                <small>EXAMPLECODE</small>
-              </div>
-              <span class="text-success">-$5</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Total (USD)</span>
-              <strong>$20</strong>
-            </li>
+
+          <ul class="list-group mb-3" id="keranjangancestor">
+            <!-- listcontentrow cetak di sini -->
           </ul>
 
           
@@ -192,7 +170,7 @@ include 'build/config/connection.php';
               <input type="email" class="form-control" id="email">
             </div>
             <div class="mb-3">
-              <label for="email">NomorRekening</label>
+              <label for="email">Nomor Rekening</label>
               <input type="email" class="form-control" id="email">
             </div>
             <div class="mb-3">
@@ -266,6 +244,51 @@ include 'build/config/connection.php';
     <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
+
+    <script>
+      var keranjangancestor = document.getElementById("keranjangancestor")
+      var listcontentrow = document.createElement('li')
+      listcontentrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed")
+      // for (i = 0; i < keranjang.keranjang.length; i++){
+      //   var listcontentrow = document.createElement('li')
+      //   listcontentrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed")
+      //   var listcontent = 
+      //   `<div>
+      //       <h6 class="my-0">${keranjang.keranjang[i].nama_tk}</h6>
+      //     </div>
+      //     <span class="text-muted">x${keranjang.keranjang[i].jumlah_tk}</span>`
+      //   listcontentrow.innerHTML = listcontent
+      //   keranjangancestor.prepend(listcontentrow)
+      // }
+
+
+
+      for (item in keranjang.keranjang){
+        var listcontentrow = document.createElement('li')
+        listcontentrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed")
+        var listcontent = 
+        `<div>
+            <h6 class="my-0">${keranjang.keranjang[item].nama_tk}</h6>
+          </div>
+          <span class="font-weight-bold">x${keranjang.keranjang[item].jumlah_tk}</span>`
+        listcontentrow.innerHTML = listcontent
+        keranjangancestor.prepend(listcontentrow)
+      }
+
+
+      var listtotalrow = document.createElement('li')
+        listtotalrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed")
+      var listtotal = 
+        `<div>
+            <h6 class="my-0 font-weight-bold">Total</h6>
+          </div>
+          <span class="font-weight-bold">Rp. ${keranjang.nominal}</span>`
+        listtotalrow.innerHTML = listtotal
+        keranjangancestor.append(listtotalrow)
+
+      var badgejumlah = document.getElementById("badge-jumlah")
+      badgejumlah.innerText = keranjang.keranjang.length
+    </script>
 
 </body>
 </html>
