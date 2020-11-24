@@ -247,3 +247,13 @@ shop-item {
     margin: 40px auto 80px auto;
     font-size: 1.25em;
 }
+
+.scrollup {
+    width: 40px;
+    height: 40px;
+    position: fixed;
+    z-index: 999;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+}

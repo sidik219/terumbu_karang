@@ -41,6 +41,7 @@ $row = $stmt->fetchAll();
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
+    <a href="#" class="scrollup"><img class="scrollup" src="images/cart.png"></a>
     <div class="wrapper">
 
         <!-- NAVBAR -->
@@ -201,25 +202,26 @@ $row = $stmt->fetchAll();
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+    
 
     <footer class="main-footer">
         <section class="container content-section">
-            <h2 class="section-header font-weight-bold">Keranjang</h2>
-            <div class="cart-row">
-                <span class="cart-item cart-header cart-column">Nama</span>
-                <span class="cart-price cart-header cart-column">Harga</span>
-                <span class="cart-quantity cart-header cart-column">Jumlah</span>
+            <h2 class="section-header font-weight-bold" id="keranjang">Keranjang Anda</h2>
+            <div class="cart-row row">
+                <div class="col"><span class="cart-item cart-header cart-column">Nama</span></div>
+                <div class="col"><span class="cart-price cart-header cart-column">Harga</span></div>
+                <div class="col"><span class="cart-quantity cart-header cart-column">Jumlah</span></div>
             </div>
             <div class="cart-items">
             </div>
             <div class="cart-total">
                 <strong class="cart-total-title">Total</strong>
-                <span class="cart-total-price">Rp0</span>
+                <span class="cart-total-price font-weight-bold">Rp0</span>
             </div>
             <div class="mb-3 text-center mt-2">
               <h4 class="font-weight-bold">Pesan / Ekspresi</h4><label for="pesan" class="font-weight-normal"> 
               (Opsional. Pesan akan disertakan dalam label khusus pada terumbu karang )</label>
-              <input type="text" maxlength="64" class="form-control success" id="pesan">
+              <input type="text" maxlength="64" class="form-control success" id="pesan" placeholder="Isi pesan anda di sini...">
             </div>
             <button class="btn btn-primary btn-purchase" type="button">Selesai Pilih ></button>
         </section>

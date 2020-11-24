@@ -93,7 +93,7 @@ function addToCartClicked(event) {
 
 function addItemToCart(title, price, imageSrc, itemID) {
     var cartRow = document.createElement('div')
-    cartRow.classList.add('cart-row')
+    cartRow.classList.add('cart-row', 'row')
     var cartItems = document.getElementsByClassName('cart-items')[0]
     var cartItemNames = cartItems.getElementsByClassName('cart-item-title')
     for (var i = 0; i < cartItemNames.length; i++) {
@@ -103,12 +103,16 @@ function addItemToCart(title, price, imageSrc, itemID) {
         }
     }
     var cartRowContents = `
-        <div class="cart-item cart-column">
+        <div class="cart-item cart-column col">
             <img class="cart-item-image" src="${imageSrc}" width="100" height="100">
-            <span class="cart-item-title">${title}</span>
+        <div class="col">
+            <span class="cart-item-title text-break">${title}</span>
         </div>
-        <span class="cart-price cart-column">${price}</span>
-        <div class="cart-quantity cart-column">
+        </div>
+        <div class="col">
+            <span class="cart-price cart-column">${price}</span>
+        </div>
+        <div class="cart-quantity cart-column col">
             <input class="cart-quantity-input" type="number" value="1">            
             <button class="btn btn-danger" type="button"><i class="nav-icon fas fa-times-circle"></i></button>
             <input type="hidden" class="cart-item-id" value="${itemID}">
@@ -134,3 +138,25 @@ function updateCartTotal() {
     total = Math.round(total * 100) / 100
     document.getElementsByClassName('cart-total-price')[0].innerText = 'Rp. ' + total
 }
+
+$(document).ready(function() {
+
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 50) {
+            $('.scrollup').fadeIn();
+        } else {
+            $('.scrollup').fadeOut();
+        }
+    });
+
+    $('.scrollup').click(function() {
+        // $("html, body").animate({
+        //     scrollTop: 0
+        // }, 600);
+        // return false;
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $("#keranjang").offset().top
+        }, 1000);
+    });
+
+});

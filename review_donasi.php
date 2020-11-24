@@ -262,8 +262,9 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
       // }
 
 
-
+      var jumlahitem = 0;
       for (item in keranjang.keranjang){
+        
         var listcontentrow = document.createElement('li')
         listcontentrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed")
         var listcontent = 
@@ -273,7 +274,23 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
           <span class="font-weight-bold">x${keranjang.keranjang[item].jumlah_tk}</span>`
         listcontentrow.innerHTML = listcontent
         keranjangancestor.prepend(listcontentrow)
+
+        jumlahitem += parseInt(keranjang.keranjang[item].jumlah_tk)
       }
+
+        var listpesanrow = document.createElement('li')
+        listpesanrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed", "text-break")
+        var listpesan = 
+        `<div class="row">
+        <div class="col-12">
+            <h6 class="my-0">Pesan/Ekspresi</h6>
+          </div>
+          <div class="col">
+          <span><i>${keranjang.pesan}</i></span>
+          </div>
+        </div>`
+        listpesanrow.innerHTML = listpesan
+        keranjangancestor.append(listpesanrow)
 
 
       var listtotalrow = document.createElement('li')
@@ -284,10 +301,12 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
           </div>
           <span class="font-weight-bold">Rp. ${keranjang.nominal}</span>`
         listtotalrow.innerHTML = listtotal
-        keranjangancestor.append(listtotalrow)
+        keranjangancestor.append(listtotalrow)       
 
       var badgejumlah = document.getElementById("badge-jumlah")
-      badgejumlah.innerText = keranjang.keranjang.length
+      badgejumlah.innerText = jumlahitem
+
+
     </script>
 
 </body>
