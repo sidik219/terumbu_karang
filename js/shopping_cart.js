@@ -43,16 +43,17 @@ function purchaseClicked() {
         var quantity = quantityElement.value
         total = total + (price * quantity)
 
-        var terumbu = {
+
+        keranjang.push({
             nama_tk: nama_tk,
             id_tk: itemID,
             jumlah_tk: quantityElement.value
-        }
-        keranjang_deserialised.push(terumbu)
+        })
     }
     total = Math.round(total * 100) / 100
     document.getElementsByClassName('cart-total-price')[0].innerText = 'Rp. ' + total
-    keranjang_deserialised.push(total)
+    keranjang_deserialised.push({ nominal: total })
+    keranjang_deserialised.push({ keranjang })
     var keranjang_serialised = JSON.stringify(keranjang_deserialised)
     sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
     document.location.href = 'review_donasi.php';
