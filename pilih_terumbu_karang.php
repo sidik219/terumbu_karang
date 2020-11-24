@@ -39,7 +39,7 @@ $row = $stmt->fetchAll();
     <link rel="stylesheet" type="text/css" href="css/style.css">
     
 </head>
-
+ <script src="js\numberformat.js"></script>
 <body class="hold-transition sidebar-mini layout-fixed">
     <a href="#" class="scrollup"><img class="scrollup" src="images/cart.png"></a>
     <div class="wrapper">
@@ -134,27 +134,16 @@ $row = $stmt->fetchAll();
             <!-- SIDEBAR -->
         </aside>
 
-        <!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
                 <div class="row">
                         <div class="col">
-                            <h4><span class="align-middle font-weight-bold">Terumbu Karang</span></h4>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.container-fluid -->
-            </div>
-            <!-- /.content-header -->
+     
 
-           <!-- Main content -->
-        <section class="content">
-        <main role="main">
-
-        <div class="container">
-        <h3>Pilih Terumbu Karang</h3>
+        <h4 class="font-weight-bold twat">Pilih Terumbu Karang</h4>
         <div class="row shop-items">
         <?php
             foreach ($row as $rowitem) {                            
@@ -166,8 +155,14 @@ $row = $stmt->fetchAll();
                 ></a>
                 <div class="card-body">
                 <p class="card-title"><h5 class="shop-item-title"><?=$rowitem->nama_terumbu_karang?></h5></p>
-                <p class="card-text"><?=$rowitem->deskripsi_terumbu_karang?></p>
-                <span class="shop-item-price">Rp. <?=$rowitem->harga_terumbu_karang?></span>
+                <p class="card-text text-muted"><?=$rowitem->deskripsi_terumbu_karang?></p>
+                <span class="font-weight-bold" id="harga<?=$rowitem->id_terumbu_karang?>"><script>
+                                                    var hargaformat = formatter.format(<?=$rowitem->harga_terumbu_karang?>);
+                                                    var hargap =  document.createElement('p')
+                                                    hargap.textContent = hargaformat
+                                                    document.getElementById("harga<?=$rowitem->id_terumbu_karang?>").appendChild(hargap)
+                                            </script></span>
+                <span class="shop-item-price d-none">Rp. <?=$rowitem->harga_terumbu_karang?></span>
                 <input type="hidden" class="shop-item-id" value="<?=$rowitem->id_terumbu_karang?>">
                 <div class="row">
                     <!-- <div class="col-2">
@@ -183,16 +178,10 @@ $row = $stmt->fetchAll();
         </div>
     </div>
         <?php } ?>
-</div>
-
-      
-        </div>
-    </section>    
-                                
-    </main>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
-        </section>
+        
+</div>   
+        </div>        
+            </section>
             <!-- /.Left col -->
             </div>
             <!-- /.row (main row) -->
@@ -203,10 +192,17 @@ $row = $stmt->fetchAll();
     </div>
     <!-- /.content-wrapper -->
     
-
-    <footer class="main-footer">
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+    
+ <footer class="main-footer">
         <section class="container content-section">
-            <h2 class="section-header font-weight-bold" id="keranjang">Keranjang Anda</h2>
+            <h4 class="section-header font-weight-bold" id="keranjang">Keranjang Anda</h4>
             <div class="cart-row row">
                 <div class="col"><span class="cart-item cart-header cart-column">Nama</span></div>
                 <div class="col"><span class="cart-price cart-header cart-column">Harga</span></div>
@@ -219,24 +215,13 @@ $row = $stmt->fetchAll();
                 <span class="cart-total-price font-weight-bold">Rp0</span>
             </div>
             <div class="mb-3 text-center mt-2">
-              <h4 class="font-weight-bold">Pesan / Ekspresi</h4><label for="pesan" class="font-weight-normal"> 
+              <h5 class="font-weight-bold">Pesan / Ekspresi</h5><label for="pesan" class="font-weight-normal"> 
               (Opsional. Pesan akan disertakan dalam label khusus pada terumbu karang )</label>
               <input type="text" maxlength="64" class="form-control success" id="pesan" placeholder="Isi pesan anda di sini...">
             </div>
             <button class="btn btn-primary btn-purchase" type="button">Selesai Pilih ></button>
         </section>
     </footer>
-
-    
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
-    </div>
-    <!-- ./wrapper -->
-    
-
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -273,7 +258,7 @@ $row = $stmt->fetchAll();
     <script src="dist/js/pages/dashboard.js"></script>
     <!-- Shopping Cart -->
     <script src="js\shopping_cart.js" async></script>
-    <script src="js\numberformat.js" async></script>
+    <script src="js\numberformat.js"></script>
 
     
 </body>
