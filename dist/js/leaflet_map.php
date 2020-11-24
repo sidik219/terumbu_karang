@@ -143,13 +143,8 @@
     $sql_view = $stmt->fetchAll();
     foreach ($sql_view as $value) { ?>
 
-    L.marker([<?=$value->longitude?>,<?=$value->latitude?>], { 
-      icon: myIcon,
-      color: 'green',
-      fillColor: '#3CAEA3',
-      fillOpacity: 0.5,
-      radius: 700
-    },).addTo(mymap).bindPopup("<b>Lokasi: </b><?=$value->nama_lokasi?><br/>"+
+    L.marker([<?=$value->longitude?>,<?=$value->latitude?>], {icon: myIcon}).addTo(mymap)
+    .bindPopup("<b>Lokasi: </b><?=$value->nama_lokasi?><br/>"+
     "<b>Deskripsi Lokasi: </b><?=$value->deskripsi_lokasi?><br/>"+
     "<b>Foto Lokasi: </b><br/><img src='<?=$value->foto_lokasi?>' width='100%'><br/><p>"+
     "<a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
