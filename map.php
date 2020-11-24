@@ -150,7 +150,6 @@
                         <div id="mapid" style="height: 560px; width: 100%;"></div>
                     </div>
                 </div>
-            
             </section>
             <!-- /.Left col -->
             </div>
