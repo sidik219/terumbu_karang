@@ -1,5 +1,14 @@
 <?php 
 include 'build/config/connection.php'; 
+session_start();
+
+$sqlviewlokasi = 'SELECT * FROM t_lokasi
+                WHERE id_lokasi = :id_lokasi
+                    ';
+        $stmt = $pdo->prepare($sqlviewlokasi);
+        $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
+        $rowlokasi = $stmt->fetch();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -162,34 +171,62 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
 
           
         </div>
-        <div class="col-md-8 order-md-1">
-            <h4 class="mb-3">Data Rekening Donatur</h4>
-            <form class="needs-validation" novalidate>
+        <div class="col-md-8 order-md-1 card">
+            <h4 class="mb-3 card-header">Data Rekening Donatur</h4>
+            <form action="" method="POST">
             <div class="mb-3">
               <label for="email">Nama Pemilik Rekening</label>
-              <input type="email" class="form-control" id="email">
+              <input type="email" class="form-control" id="nama_donatur">
             </div>
             <div class="mb-3">
               <label for="email">Nomor Rekening</label>
-              <input type="email" class="form-control" id="email">
+              <input type="email" class="form-control" id="no_rekening_donatur">
             </div>
             <div class="mb-3">
               <label for="email">Nama Bank</label>
-              <input type="email" class="form-control" id="email">
+              <input type="email" class="form-control" id="nama_bank_donatur">
             </div>
 
-            
 
-            <h4 class="mb-3">Metode Pembayaran</h4>
-
+            <div class="" style="width:100%;">
+                <div class="">
+                    <h4 class="card-header mb-2">Metode Pembayaran</h4>
+            <span class="">Pilihan untuk lokasi</span>  <span class="text-info font-weight-bolder"><?=$rowlokasi->nama_lokasi?> : </span>
             <div class="d-block my-3">
               <div class="custom-control custom-radio">
                 <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
-                <label class="custom-control-label" for="credit">Bank Transfer</label>
+                <label class="custom-control-label  mb-3" for="credit">Bank Transfer (Konfirmasi Manual)</label>
               </div>
+
+
+            <div class="row">
+                <div class="col">
+                     <span class="font-weight-bold">Nama Rekening Pengelola  
+                </div>
+                <div class="col-lg-8">
+                     <span class=""><?=$rowlokasi->nama_rekening?></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">                
+                    <span class="font-weight-bold">Nomor Rekening Pengelola  </span>
+                </div>
+                <div class="col-lg-8">                
+                    <span class=""><?=$rowlokasi->nomor_rekening?></span>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col">                
+                    <span class="font-weight-bold">Bank Pengelola  </span> 
+                </div>
+                <div class="col-lg-8">                
+                    <span class=""><?=$rowlokasi->nama_bank?></span>
+                </div>
+            </div>
+                </div>
+            </div>
              
-            <hr class="mb-4">
-            <button class="btn btn-primary btn-lg btn-block" type="submit">Konfirmasi Donasi ></button>
+            <button class="btn btn-primary btn-lg btn-block mb-4" type="submit">Konfirmasi Donasi ></button>
           </form>
         </div>
       </div>

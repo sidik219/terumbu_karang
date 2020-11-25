@@ -130,7 +130,7 @@ function addItemToCart(title, price, imageSrc, itemID) {
     var cartItemNames = cartItems.getElementsByClassName('cart-item-title')
     for (var i = 0; i < cartItemNames.length; i++) {
         if (cartItemNames[i].innerText == title) {
-            alert('This item is already added to the cart')
+            alert('Terumbu karang ini sudah masuk keranjang')
             return
         }
     }

@@ -1,4 +1,5 @@
 <?php include 'build/config/connection.php';
+session_start();
     if(!$_GET['id_jenis']){
         header("Location: pilih_jenis_tk.php");
     }
@@ -149,7 +150,7 @@ $row = $stmt->fetchAll();
             foreach ($row as $rowitem) {                            
         ?>
         <div class="col-md-4">
-            <div class="card mb-4 shadow-sm shop-item">
+            <div class="card  card-pilihan mb-4 shadow-sm shop-item">
                 <a href="#">
                     <img class="card-img-top shop-item-image" width="100%" src="<?=$rowitem->foto_terumbu_karang?>" height="160px" width="150px"
                 ></a>

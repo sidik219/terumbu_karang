@@ -1,8 +1,12 @@
 <?php include 'build/config/connection.php';
+session_start();
 
-// if(!$_GET['id_lokasi']){
-//         header("Location: map.php");
-//     }
+if(!$_GET['id_lokasi']){
+        header("Location: map.php");
+    }
+    else{
+        $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
+    }
 
 $sqlviewjenis = 'SELECT * FROM t_jenis_terumbu_karang
 ORDER BY nama_jenis';
@@ -158,7 +162,7 @@ $rowjenis = $stmt->fetchAll();
                     <?php
                     foreach ($rowjenis as $rowitem) { ?>
                         <div class="col-md-4">
-                            <div class="card mb-4 shadow-sm">
+                            <div class="card card-pilihan mb-4 shadow-sm">
                             <a href="edit_jenis_tk.php?id_jenis=<?=$rowitem->id_jenis?>">
                                 <img class="card-img-top" width="100%" src="<?=$rowitem->foto_jenis?>" height="160px" width="150px">
                             </a>
