@@ -1,5 +1,14 @@
 <?php 
-include 'build/config/connection.php';
+    include 'build/config/connection.php';
+
+    $sqlviewdonasi = 'SELECT * FROM t_donasi 
+                    WHERE id_user = 1';
+    $stmt = $pdo->prepare($sqlviewdonasi);
+    $stmt->execute();
+    $row = $stmt->fetchAll();
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,22 +20,10 @@ include 'build/config/connection.php';
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -131,7 +128,86 @@ include 'build/config/connection.php';
             <section class="content">
                 <div class="container-fluid">
                     <div>
-                        
+                        <table class="table table-striped">
+                     <thead>
+                            <tr>
+                                <th scope="col">ID Donasi</th>
+                                <!-- <th scope="col">ID User</th> -->
+                                <th scope="col">Nominal</th>
+                                <!-- <th scope="col">Bukti Donasi</th> -->
+                                <th scope="col">Tgl Donasi</th>
+                                <th scope="col">Status Donasi</th>
+                                <th scope="col">Aksi</th>
+                            </tr>
+                          </thead>
+                    <tbody>
+                        <?php
+
+                          foreach ($row as $rowitem) {                            
+                          ?>
+                          <tr>
+                              <th scope="row"><?=$rowitem->id_donasi?></th>
+                              <!-- <td>10918004</td> -->
+                              <td>Rp. <?=$rowitem->nominal?>0</td>
+                              <!-- <td>-</td> -->
+                              <td><?=$rowitem->tanggal_donasi?></td>
+                              <td><?=$rowitem->status_donasi?></td>
+                              <td>
+                                <button type="button" class="btn btn-act">
+                                <a href="edit_donasi.php" class="fas fa-edit"></a>
+                            	</button>
+                                <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
+                              </td>
+                              <?php } ?>
+                          </tr>
+
+                          <tr>
+                                <td colspan="3">
+                                    <!--collapse start -->
+                            <div class="row  m-0">
+                            <div class="col-12 cell detailcollapser<?=$rowitem->id_donasi?>"
+                                data-toggle="collapse"
+                                data-target=".cell<?=$rowitem->id_donasi?>, .contentall<?=$rowitem->id_donasi?>">
+                                <p
+                                    class="fielddetail<?=$rowitem->id_donasi?>">
+                                    <i
+                                        class="icon fas fa-chevron-down"></i>
+                                    Rincian Donasi</p>
+                            </div>
+                            <div class="col-12 cell<?=$rowitem->id_donasi?> collapse contentall<?=$rowitem->id_donasi?>">                               
+                                <div class="row mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Deskripsi Donasi 
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->deskripsi_donasi?>
+                                    </div>
+                                </div>
+                                <!-- <div class="row  mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Foto Wilayah 
+                                    </div>
+                                    <div class="col isi">
+                                        <img src="<?=$rowitem->foto_wilayah?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
+                                    </div>
+                                </div> -->
+                                <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        ID Lokasi
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->id_lokasi?>
+                                    </div>
+                                </div>
+                                    
+                            </div>
+                        </div>
+
+                        <!--collapse end -->
+                                </td>
+                            </tr>
+                    </tbody>
+                  </table> 
                     </div>
                 </div>
             
@@ -168,28 +244,10 @@ include 'build/config/connection.php';
     </script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="plugins/summernote/summernote-bs4.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
 

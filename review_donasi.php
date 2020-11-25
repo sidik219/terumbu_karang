@@ -10,19 +10,34 @@
     $rowlokasi = $stmt->fetch();
 
 
+    if (isset($_POST['submit'])) {
+        if($_POST['submit'] == 'Simpan'){
+    $id_user = $_POST['tb_id_user'];
+    $nominal = $_POST['tb_nominal'];
+    $deskripsi_donasi = $_POST['tb_deskripsi_donasi'];
+    $id_lokasi = $_POST['tb_id_lokasi'];
+    $status_donasi = "Menunggu Konfirmasi Pembayaran";
 
-    // $sqlinsertdonasi = "";
 
-    // $stmt = $pdo->prepare($sqlinsertdonasi);
-    // $stmt->execute([]);
 
-    // $affectedrows = $stmt->rowCount();
-    // if ($affectedrows == '0') {
-    // //echo "HAHAHAAHA INSERT FAILED !";
-    // } else {
-    //     //echo "HAHAHAAHA GREAT SUCCESSS !";
-    //     header("Location:donasi_saya.php?status=addsuccess");
-    // }
+    $sqlinsertdonasi = "INSERT INTO t_donasi
+        (id_user, nominal, deskripsi_donasi, id_lokasi, status_donasi)
+        VALUES (:id_user, :nominal, :deskripsi_donasi, :id_lokasi, :status_donasi)
+    ";
+
+    $stmt = $pdo->prepare($sqlinsertdonasi);
+    $stmt->execute(['id_user' => $id_user, 'nominal' => $nominal , 'deskripsi_donasi' => $deskripsi_donasi,
+    'id_lokasi' => $id_lokasi , 'status_donasi' => $status_donasi]);
+
+    $affectedrows = $stmt->rowCount();
+    if ($affectedrows == '0') {
+    //echo "HAHAHAAHA INSERT FAILED !";
+    } else {
+        //echo "HAHAHAAHA GREAT SUCCESSS !";
+        header("Location:donasi_saya.php?status=addsuccess");
+    }
+}
+    }
 
         
 
@@ -173,15 +188,15 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
             <h4 class="mb-3 card-header">Data Rekening Donatur</h4>
             <form action="" method="POST">
             <div class="mb-3">
-              <label for="email">Nama Pemilik Rekening</label>
+              <label for="nama_donatur">Nama Pemilik Rekening</label>
               <input type="text" class="form-control data_donatur" id="nama_donatur" name="nama_donatur" required>
             </div>
             <div class="mb-3">
-              <label for="email">Nomor Rekening</label>
+              <label for="no_rekening_donatur">Nomor Rekening</label>
               <input type="number" class="form-control data_donatur" id="no_rekening_donatur" required>
             </div>
             <div class="mb-3">
-              <label for="email">Nama Bank</label>
+              <label for="nama_bank_donatur">Nama Bank</label>
               <input type="text" class="form-control data_donatur" id="nama_bank_donatur" required>
             </div>
 
@@ -257,7 +272,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
                 </div>
             </div>
              
-            <button class="btn btn-primary btn-lg btn-block mb-4" type="submit">Buat Donasi</button>
+            <button  name="submit" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4" type="submit">Buat Donasi</button>
           </form>
         </div>
       </div>

@@ -1,3 +1,14 @@
+<?php
+    include 'build\config\connection.php';
+
+    $sqlviewdonasi = 'SELECT * FROM t_donasi';
+        $stmt = $pdo->prepare($sqlviewdonasi);
+        $stmt->execute();
+        $row = $stmt->fetch();
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
