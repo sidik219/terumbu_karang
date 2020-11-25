@@ -148,7 +148,7 @@
                           <tr>
                               <th scope="row"><?=$rowitem->id_donasi?></th>
                               <!-- <td>10918004</td> -->
-                              <td>Rp. <?=$rowitem->nominal?>0</td>
+                              <td>Rp. <?=$rowitem->nominal?></td>
                               <!-- <td>-</td> -->
                               <td><?=$rowitem->tanggal_donasi?></td>
                               <td><?=$rowitem->status_donasi?></td>
@@ -158,7 +158,7 @@
                             	</button>
                                 <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
                               </td>
-                              <?php } ?>
+                              
                           </tr>
 
                           <tr>
@@ -206,6 +206,7 @@
                         <!--collapse end -->
                                 </td>
                             </tr>
+                            <?php } ?>
                     </tbody>
                   </table> 
                     </div>
