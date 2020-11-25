@@ -114,7 +114,6 @@ body
     {
         text-align: justify;
         padding: 0 0.8rem 0;
-    
     }
 
     .p-1 h3
@@ -184,8 +183,9 @@ body
 {
     background-color: #F5F7FA;
     margin-top: -40px;
-    padding-top: 80px;
-    padding-bottom: 80px;
+    padding-top: 120px;
+    padding-bottom: 100px;
+    height: 600px;
 }
 
 .wisata-container h3{
@@ -197,6 +197,70 @@ body
     margin-top: -20px;
     color: #212121;
 }
+
+.starter-title
+{
+    margin-top: 20px;
+    padding: 0.5rem 0.5rem;
+    text-align: center;
+    margin-bottom: -40px;
+}
+
+.starter-title h1
+    {
+        font-size: 30px;
+    }
+
+/* Team */
+
+#benefit {
+    margin-top: 30px;
+    padding: 50px 10px;
+    line-height: 1.6;
+    background-color: white;
+    
+}
+
+#benefit img
+{
+    border-radius: 12px;
+}
+
+#benefit h1{
+    color: #0E447E;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#benefit h2{
+    color: #0E447E;
+    font-size: 24px;
+    font-weight: bold;
+    padding-bottom: 20px;
+}
+
+#benefit p{
+    color: #212121;
+    text-align: justify;
+    
+}
+
+#benefit ol{
+    color: #212121;
+    margin-left: -40px;
+}
+
+#benefit li{
+    color: #212121;
+    margin-left: 15px;
+}
+
+
+
+
+
+
+
 /* MEDIA QUERIES */
 
 #footer {
@@ -328,6 +392,12 @@ body
         text-transform: uppercase;
     }
 
+    .starter-title h1
+    {
+        font-size: 26px;
+        text-transform: uppercase;
+    }
+
     .starter-template p
     {
         text-align: justify;
@@ -371,6 +441,10 @@ body
     .blogo {
         text-align:center;
     }   
+
+    #benefit h1{
+        font-size: 24px;
+    }
 
 }
 

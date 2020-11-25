@@ -194,8 +194,7 @@
                 <center>
                     <h3>SISTEM DONASI MENARIK</h3><br>
                     <p>
-                    Simak menariknya sistem donasi yang kami hadirkan, mulai dari pemilihan lokasi hingga pemilihan terumbu karang yang 
-                    akan ditanam.
+                    Simak menariknya sistem donasi yang kami hadirkan
                     </p><br>
                      <a href="php.html" class="btn btn-link-slide" role="button" aria-pressed="true">        
                        Info Donasi
