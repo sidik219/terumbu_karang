@@ -1,8 +1,8 @@
 <?php include 'build/config/connection.php';
 
-if(!$_GET['id_lokasi']){
-        header("Location: map.php");
-    }
+// if(!$_GET['id_lokasi']){
+//         header("Location: map.php");
+//     }
 
 $sqlviewjenis = 'SELECT * FROM t_jenis_terumbu_karang
 ORDER BY nama_jenis';
