@@ -1,40 +1,46 @@
 <?php 
-include 'build/config/connection.php'; 
-session_start();
+    include 'build/config/connection.php'; 
+    session_start();
 
-$sqlviewlokasi = 'SELECT * FROM t_lokasi
+    $sqlviewlokasi = 'SELECT * FROM t_lokasi
                 WHERE id_lokasi = :id_lokasi
                     ';
-        $stmt = $pdo->prepare($sqlviewlokasi);
-        $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
-        $rowlokasi = $stmt->fetch();
+    $stmt = $pdo->prepare($sqlviewlokasi);
+    $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
+    $rowlokasi = $stmt->fetch();
+
+
+
+    // $sqlinsertdonasi = "";
+
+    // $stmt = $pdo->prepare($sqlinsertdonasi);
+    // $stmt->execute([]);
+
+    // $affectedrows = $stmt->rowCount();
+    // if ($affectedrows == '0') {
+    // //echo "HAHAHAAHA INSERT FAILED !";
+    // } else {
+    //     //echo "HAHAHAAHA GREAT SUCCESSS !";
+    //     header("Location:donasi_saya.php?status=addsuccess");
+    // }
+
+        
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Review Donasi - TKJB</title>
+    <title>Review Informasi Donasi - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -149,7 +155,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
             <!-- Main content -->
             <section class="content">
                 <div class="container">
-                            <h4 class="mt-3 mb-3"><span class="font-weight-bold">Review Donasi</span></h4>
+                            <h4 class="mt-3 mb-3"><span class="font-weight-bold">Review Informasi Donasi</span></h4>
             <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -168,17 +174,49 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
             <form action="" method="POST">
             <div class="mb-3">
               <label for="email">Nama Pemilik Rekening</label>
-              <input type="email" class="form-control" id="nama_donatur">
+              <input type="text" class="form-control data_donatur" id="nama_donatur" name="nama_donatur" required>
             </div>
             <div class="mb-3">
               <label for="email">Nomor Rekening</label>
-              <input type="email" class="form-control" id="no_rekening_donatur">
+              <input type="number" class="form-control data_donatur" id="no_rekening_donatur" required>
             </div>
             <div class="mb-3">
               <label for="email">Nama Bank</label>
-              <input type="email" class="form-control" id="nama_bank_donatur">
+              <input type="text" class="form-control data_donatur" id="nama_bank_donatur" required>
             </div>
 
+
+            <!-- Hidden fields for POST data -->
+
+            <input type="number" class="d-none" value="1" id="tb_id_user" name="tb_id_user">
+            <input type="number" class="d-none" value="" id="tb_nominal" name="tb_nominal">
+            <input type="hidden" value="" id="tb_deskripsi_donasi" name="tb_deskripsi_donasi">            
+            <input type="number" class="d-none" value="" id="tb_id_lokasi" name="tb_id_lokasi">
+
+            <script>
+                var tbnama_donatur = document.getElementById('nama_donatur')
+                var tbno_rekening_donatur = document.getElementById('no_rekening_donatur')
+                var tbnama_bank_donatur = document.getElementById('nama_bank_donatur')
+                
+                var tbdata_donatur = document.getElementsByClassName('data_donatur')
+
+                for (i = 0; i < tbdata_donatur.length; i++){
+                    tbdata_donatur[i].addEventListener('keyup', updateData);
+                }
+                
+
+                function updateData(){
+                    keranjang["nama_donatur"] = tbnama_donatur.value
+                    keranjang["no_rekening_donatur"] = tbno_rekening_donatur.value
+                    keranjang["nama_bank_donatur"] = tbnama_bank_donatur.value
+                    document.getElementById('tb_deskripsi_donasi').value = JSON.stringify(keranjang)
+                }
+
+                document.getElementById('tb_id_lokasi').value = keranjang.id_lokasi
+                document.getElementById('tb_nominal').value = keranjang.nominal
+
+                //console.log(document.getElementById('tb_deskripsi_donasi').value)
+            </script>
 
             <div class="" style="width:100%;">
                 <div class="">
@@ -188,7 +226,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
               <div class="custom-control custom-radio">
                 <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
                 <label class="custom-control-label  mb-2" for="credit">Bank Transfer (Konfirmasi Manual)</label>
-                <p class="text-muted">Harap upload bukti transfer di halaman "Donasi Saya" setelah menekan tombol konfirmasi donasi.</p>
+                <p class="text-muted">Harap upload bukti transfer di halaman "Donasi Saya" setelah menekan tombol Buat Donasi.</p>
               </div>
 <hr class="mb-2"/>
 
@@ -219,7 +257,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
                 </div>
             </div>
              
-            <button class="btn btn-primary btn-lg btn-block mb-4" type="submit">Konfirmasi Donasi</button>
+            <button class="btn btn-primary btn-lg btn-block mb-4" type="submit">Buat Donasi</button>
           </form>
         </div>
       </div>
@@ -250,28 +288,9 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
     </script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="plugins/summernote/summernote-bs4.min.js"></script>
-    <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
 

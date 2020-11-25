@@ -145,9 +145,7 @@ $rowjenis = $stmt->fetchAll();
             <div class="content-header">
                 <div class="container-fluid">
                 <div class="row">
-                        <div class="col">
-                            <h4><span class="align-middle font-weight-bold">Jenis Terumbu Karang</span></h4>
-                        </div>
+                        
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -164,7 +162,7 @@ $rowjenis = $stmt->fetchAll();
                         <div class="col-md-4">
                             <div class="card card-pilihan mb-4 shadow-sm">
                             <a href="pilih_terumbu_karan.php?id_jenis=<?=$rowitem->id_jenis?>">
-                                <img class="card-img-top" width="100%" src="<?=$rowitem->foto_jenis?>" height="160px" width="150px">
+                                <img class="card-img-top" width="100%" src="<?=$rowitem->foto_jenis?>" height="auto" width="150px">
                             </a>
                                 <div class="card-body">
                                     <p class="card-title"><h5 class="font-weight-bold"><?=$rowitem->nama_jenis?></h5></p>

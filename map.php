@@ -135,7 +135,7 @@
                 <div class="container-fluid">
                 <div class="row">
                         <div class="col">
-                            <h4><span class="align-middle font-weight-bold">Map</span></h4>
+                            <h4><span class="align-middle font-weight-bold">Pilih Lokasi Penanaman</span></h4>
                         </div>
                     </div>
                 </div>
