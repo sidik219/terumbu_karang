@@ -163,7 +163,7 @@ $rowjenis = $stmt->fetchAll();
                     foreach ($rowjenis as $rowitem) { ?>
                         <div class="col-md-4">
                             <div class="card card-pilihan mb-4 shadow-sm">
-                            <a href="edit_jenis_tk.php?id_jenis=<?=$rowitem->id_jenis?>">
+                            <a href="pilih_terumbu_karan.php?id_jenis=<?=$rowitem->id_jenis?>">
                                 <img class="card-img-top" width="100%" src="<?=$rowitem->foto_jenis?>" height="160px" width="150px">
                             </a>
                                 <div class="card-body">

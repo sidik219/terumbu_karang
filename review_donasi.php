@@ -143,21 +143,13 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            <div class="content-header">
-                <div class="container-fluid">
-                <div class="row">
-                        <div class="col">
-                            <h4><span class="align-middle font-weight-bold">Review Donasi</span></h4>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.container-fluid -->
-            </div>
+   
             <!-- /.content-header -->
 
             <!-- Main content -->
             <section class="content">
                 <div class="container">
+                            <h4 class="mt-3 mb-3"><span class="font-weight-bold">Review Donasi</span></h4>
             <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -195,15 +187,16 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
             <div class="d-block my-3">
               <div class="custom-control custom-radio">
                 <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
-                <label class="custom-control-label  mb-3" for="credit">Bank Transfer (Konfirmasi Manual)</label>
+                <label class="custom-control-label  mb-2" for="credit">Bank Transfer (Konfirmasi Manual)</label>
+                <p class="text-muted">Harap upload bukti transfer di halaman "Donasi Saya" setelah menekan tombol konfirmasi donasi.</p>
               </div>
+<hr class="mb-2"/>
 
-
-            <div class="row">
+            <div class="row">                
                 <div class="col">
                      <span class="font-weight-bold">Nama Rekening Pengelola  
                 </div>
-                <div class="col-lg-8">
+                <div class="col-lg-8 mb-2">
                      <span class=""><?=$rowlokasi->nama_rekening?></span>
                 </div>
             </div>
@@ -211,7 +204,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
                 <div class="col">                
                     <span class="font-weight-bold">Nomor Rekening Pengelola  </span>
                 </div>
-                <div class="col-lg-8">                
+                <div class="col-lg-8  mb-2">                
                     <span class=""><?=$rowlokasi->nomor_rekening?></span>
                 </div>
             </div>
@@ -219,14 +212,14 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
                 <div class="col">                
                     <span class="font-weight-bold">Bank Pengelola  </span> 
                 </div>
-                <div class="col-lg-8">                
+                <div class="col-lg-8  mb-2">                
                     <span class=""><?=$rowlokasi->nama_bank?></span>
                 </div>
             </div>
                 </div>
             </div>
              
-            <button class="btn btn-primary btn-lg btn-block mb-4" type="submit">Konfirmasi Donasi ></button>
+            <button class="btn btn-primary btn-lg btn-block mb-4" type="submit">Konfirmasi Donasi</button>
           </form>
         </div>
       </div>
