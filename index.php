@@ -88,7 +88,7 @@
                    <h3>BANTU PULIHKAN RUMAH MEREKA</h3><br>
                    <p>Terumbu Karang merupakan rumah bagi ribuan ikan hias. Kerusakan yang
                     disebabkan manusia berdampak buruk pada kehidupan mereka.</p><br>
-                    <a href="php.html" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                    <a href="donasi.php" class="btn btn-link-slide" role="button" aria-pressed="true">        
                       Donasi Sekarang
                     </a>
                </div>
@@ -100,7 +100,7 @@
                     PELESTARIAN</h3><br>
                    <p>Terimakasih telah ikut melestarikan biota laut Jawa Barat. Jangan lupa
                     untuk menikmati keindahannya dengan berwisata.</p><br>
-                    <a href="php.html" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                    <a href="wisata.php" class="btn btn-link-slide" role="button" aria-pressed="true">        
                         Wisata Sekarang
                       </a>
                </div>
@@ -111,7 +111,7 @@
                    <h3>AMATI KONDISINYA </h3><br>
                    <p>Beberapa titik terumbu karang berada dalam kondisi rusak parah dan 
                     membutuhkan bantuan kita.</p><br>
-                    <a href="php.html" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                    <a href="coralmaps.php" class="btn btn-link-slide" role="button" aria-pressed="true">        
                         Coralmaps
                       </a>
                </div>
@@ -122,7 +122,7 @@
                 <h3>TAK KENAL MAKA
                     TAK SAYANG</h3><br>
                 <p>Mari kenali beragam jenis terumbu karang cantik yang terdapat di Jawa Barat.</p><br>
-                    <a href="php.html" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                    <a href="coralpedia.php" class="btn btn-link-slide" role="button" aria-pressed="true">        
                        Coralpedia
                       </a>
             </div>
@@ -196,7 +196,7 @@
                     <p>
                     Simak menariknya sistem donasi yang kami hadirkan
                     </p><br>
-                     <a href="php.html" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                     <a href="donasi.php" class="btn btn-link-slide" role="button" aria-pressed="true">        
                        Info Donasi
                      </a>
                     </center>  
@@ -214,7 +214,7 @@
                 <p style="text-align: center;">Temukan spot favoritmu untuk
                     melihat indahnya terumbu
                     karang Jawa Barat !</p><br><br>
-                    <a href="php.html" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                    <a href="wisata.php" class="btn btn-link-slide" role="button" aria-pressed="true">        
                         Info Wisata
                       </a>
             </div>

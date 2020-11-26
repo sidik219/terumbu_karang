@@ -21,6 +21,8 @@
     
     <!-- Font Awesome CSS -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     
     
 </head>
@@ -45,8 +47,8 @@
                 <li class="nav-item ">
                     <a class="nav-link" href="index.php">Beranda </a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="donasi.php">Donasi<span class="sr-only">(current)</span></a>
+                <li class="nav-item ">
+                    <a class="nav-link" href="donasi.php">Donasi</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="wisata.php">Wisata</a>
@@ -57,8 +59,8 @@
                 <li class="nav-item">
                     <a class="nav-link" href="coralpedia.php">Coralpedia</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="login.php">Login</a>
+                <li class="nav-item active">
+                    <a class="nav-link" href="login.php">Login <span class="sr-only">(current)</span></a>
                 </li>
                 <!-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
@@ -72,75 +74,86 @@
     </nav> 
     <!-- END OF NAVBAR -->
 
-    <section id="benefit">
-        <div class="container">
-            <div class="starter-title">
-                <h1 class="mb-5">MANFAAT DONASI TERUMBU KARANG</h1><br>
-            </div>
-            <div class="row">
-                <div class="col-md-12 col-lg-6 p-5 text-center">
-                    <img src="dist/img/nelayan.jpg" class="img-fluid" alt="team">
-                </div>                
-                <div class="col-md-12 col-lg-6 p-5 text-light">
-                    <h2>Bagi Masyarakat Pesisir</h2>
-                    <p>
-                    Terumbu karang yang anda donasikan bermanfaat untuk perbaikan dan perluasan titik
-                    terumbu karang di tempat tinggal mereka. 
-                    <br>
-                    <ol>
-                        Manfaat yang didapat antara lain:
-                        <li>Terumbu karang melindungi pantai dan daerah pesisir dari ombak besar.</li>
-                        <li>Terumbu karang dapat mencegah abrasi.</li>
-                        <li>Terumbu karang dapat dijadikan tempat wisata yang mendorong ekonomi masyarakat pesisir.</li>
-                    </ol>
-                    <a href="coralpedia.php"> <p>Pelajari manfaat terumbu karang lebih lanjut ></p></a>
-                </div>
-            </div>
-
-        </div>
-    </section>
 
     <div id="about" class="container">
-        <!-- 1st PARAGRAPH -->
-        <div class="starter-template">
-            <h1 class="mb-5">SISTEM DONASI</h1><br>
-        </div>
-        <!-- END 1st PARAGRAPH -->
-        <!-- ROW WITH ICON -->
-        <div class="row text-center pb-4">
-            <div class="col-md-12 col-lg-4 p-1">
-                <img src="dist/img/choose.jpg" class="rounded-circle p-3" alt="Prime Meat Image" width="250" height="250">
-                <h3>Pilih</h3><br>
-                <p>Pilih sendiri lokasi penanaman dan jenis terumbu karang yang tersedia pada lokasi pilihan.</p>
-            </div>
-            <div class="col-md-12 col-lg-4 p-1-middle">
-                <img src="dist/img/pesan.jpg" class="rounded-circle p-3" alt="Fish Image" width="250" height="250">
-                <h3>Pesan</h3><br>
-                <p>Tulis pesan untuk dipasang pada terumbu karang, yang nantinya bisa kita lihat pada saat menyelam nanti.
-                    </p>
-            </div>
-            <div class="col-md-12 col-lg-4 p-1">
-                <img src="dist/img/coral-status.jpg" class="rounded-circle p-3" alt="Vegetables Image" width="250" height="250">
-                <h3>Pantau</h3><br>
-                <p>Pantau status perkembangan dan kondisi terumbu karang yang telah kita donasikan.</p>
-            </div>
-        </div>
-        <!-- END OF ROW WITH ICON -->
-
         
+        <div class="starter-template">
+            <h1 class="mb-5"><br>REGISTRASI AKUN</h1><br>
+        </div>
+       
+        <form action="" enctype="multipart/form-data" method="POST">
+                    <div class="form-group">
+                    <div class="form-group">
+                        <label for="tb_nama_user">Nama User</label>
+                        <input type="text" id="tb_nama_user" name="tb_nama_user" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="rb_jenis_kelamin">Jenis Kelamin</label><br>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="rb_jenis_kelamin_pria" name="rb_jenis_kelamin" value="pria" class="form-check-input">
+                            <label class="form-check-label" for="rb_jenis_kelamin_pria">Pria</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="rb_jenis_kelamin_wanita" name="rb_jenis_kelamin" value="wanita" class="form-check-input">
+                            <label class="form-check-label" for="rb_jenis_kelamin_wanita">Wanita</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tb_email">Email</label>
+                        <input type="text" id="tb_email" name="tb_email" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="num_nomer_hp">No. HP</label>
+                        <input type="number" id="num_nomer_hp" name="num_nomer_hp" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="tb_alamat_user">Alamat</label>
+                        <input type="text" id="tb_email" name="tb_alamat_user" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="num_ktp_user">No. KTP</label>
+                        <input type="number" id="num_ktp_user" name="num_ktp_user" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="file_fc_ktp">Fotokopi KTP</label>
+                        <div class="file-form">
+                        <input type="file" id="file_fc_ktp" name="file_fc_ktp" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tb_tempat_lahir">Tempat Lahir</label>
+                        <input type="text" id="tb_tempat_lahir" name="tb_tempat_lahir" class="form-control">
+                    </div>
+                    <div class="form-group">
+                         <label for="date_tanggal_lahir">Tanggal Lahir</label>
+                         <div class="file-form">
+                         <input type="date" id="date_tanggal_lahir" name="date_tanggal_lahir" class="form-control" >
+                         </div>
+                     </div>
+                     <div class="form-group">
+                        <label for="file_foto_user">Foto Diri</label>
+                        <div class="file-form">
+                        <input type="file" id="file_foto_user" name="file_foto_user" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tb_username">Username</label>
+                        <input type="text" id="tb_username" name="tb_username" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Password</label>
+                        <input type="password" id="pwd" name="pwd" class="form-control">
+                    </div>
+                    <br>
+                    <p align="center">
+                         <button type="submit" class="btn btn-submit">Kirim</button></p>
+                    </form>
+
+</div>
         
     </div>
     <!-- END OF BODY CONTAINER -->
-    
-    <div id="about" class="container">
-        <!-- 1st PARAGRAPH -->
-        <div class="starter-template">
-        <a href="coralmaps.php" class="btn btn-link-slide" role="button" aria-pressed="true">        
-        Donasi Sekarang
-        </a>
-        </div>
-    </div>
-
+   
     <br><br><br><br><br><br>
     <section id="footer">
         <div class="container">
