@@ -135,15 +135,16 @@
                                 <!-- <th scope="col">ID User</th> -->
                                 <th scope="col">Nominal</th>
                                 <!-- <th scope="col">Bukti Donasi</th> -->
-                                <th scope="col">Tgl Donasi</th>
+                                <th scope="col">Tanggal Donasi</th>
                                 <th scope="col">Status Donasi</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                           </thead>
                     <tbody>
                         <?php
-
-                          foreach ($row as $rowitem) {                            
+                         //$index = 0;
+                          foreach ($row as $rowitem) {    
+                            $deskripsi = json_decode($rowitem->deskripsi_donasi);                    
                           ?>
                           <tr>
                               <th scope="row"><?=$rowitem->id_donasi?></th>
@@ -177,12 +178,30 @@
                             <div class="col-12 cell<?=$rowitem->id_donasi?> collapse contentall<?=$rowitem->id_donasi?>">                               
                                 <div class="row mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">
-                                        Deskripsi Donasi 
+                                        Pesan/Ekspresi 
                                     </div>
                                     <div class="col isi">
-                                        <?=$rowitem->deskripsi_donasi?>
+                                        <?php 
+                                            echo $deskripsi->pesan;
+                                        ?>
                                     </div>
                                 </div>
+                                
+
+                                <div class="row mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Pilihan 
+                                    </div>
+                                    <div class="col isi">
+                                        <?php 
+                                           foreach ($deskripsi->keranjang as $isi){?>
+                                              <span>Nama : <?= $isi->nama_tk?> Jumlah : <?= $isi->jumlah_tk?></span><br/>
+                                           
+                                        <?php   }
+                                        ?>
+                                    </div>
+                                </div>
+
                                 <!-- <div class="row  mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Foto Wilayah 
@@ -206,7 +225,8 @@
                         <!--collapse end -->
                                 </td>
                             </tr>
-                            <?php } ?>
+                            <?php //$index++; 
+                            } ?>
                     </tbody>
                   </table> 
                     </div>
