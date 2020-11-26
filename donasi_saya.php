@@ -195,7 +195,7 @@
                                     <div class="col isi">
                                         <?php 
                                            foreach ($deskripsi->keranjang as $isi){?>
-                                              <span>Nama : <?= $isi->nama_tk?> Jumlah : <?= $isi->jumlah_tk?></span><br/>
+                                              <span><?= $isi->nama_tk?> x<?= $isi->jumlah_tk?></span><br/>
                                            
                                         <?php   }
                                         ?>
