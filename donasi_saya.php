@@ -96,6 +96,12 @@
                                 <p> Map  </p>
                            </a>
                         </li>
+                        <li class="nav-item">
+                           <a href="review_donasi.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-user"></i>
+                                <p> Review Donasi  </p>
+                           </a>
+                        </li>
                     </ul>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->

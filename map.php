@@ -104,18 +104,6 @@
                            </a>
                         </li>
                         <li class="nav-item">
-                           <a href="pilih_jenis_tk.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Jenis Terumbu Karang  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="pilih_terumbu_karang.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Terumbu Karang  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
                            <a href="review_donasi.php" class="nav-link">
                                 <i class="nav-icon fas fas fa-user"></i>
                                 <p> Review Donasi  </p>
@@ -147,7 +135,30 @@
             <section class="content">
                 <div class="container-fluid">
                     <div>
-                        <div id="mapid" style="height: 560px; width: 100%;"></div>
+                        <div>
+                            <label>Keterangan Icon:</label>
+                        </div>
+                        <div>
+                            <img src="images/foto_lokasi/icon_lokasi/icon_lokasi.png" style="width: 3%;">:
+                            <label>Lokasi Pantai</label>
+                            <img src="images/kumpulan_icon/cluster.png" style="width: 3%;">:
+                            <label>Pengelompokan Jarak Terdekat</label>
+                            <img src="images/kumpulan_icon/geo_wilayah1.png" style="width: 3%;">:
+                            <label>Geo Wilayah</label>
+                            <img src="images/kumpulan_icon/geo_wilayah2.png" style="width: 3%;">:
+                            <label>Geo Wilayah</label>
+                        </div>
+                        <div>
+                            <img src="images/foto_kondisi_titik/Sangat Baik.png" style="width: 3%;">:
+                            <label>Sangat Baik, </label>
+                            <img src="images/foto_kondisi_titik/Baik.png" style="width: 3%;">:
+                            <label>Baik, </label>
+                            <img src="images/foto_kondisi_titik/Cukup.png" style="width: 3%;">:
+                            <label>Cukup, </label>
+                            <img src="images/foto_kondisi_titik/Kurang.png" style="width: 3%;">:
+                            <label>Kurang</label>
+                        </div>
+                        <div id="mapid" style="height: 560px; width: 100%; margin-top: 20px;"></div>
                     </div>
                 </div>
             </section>

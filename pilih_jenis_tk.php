@@ -114,18 +114,6 @@ $rowjenis = $stmt->fetchAll();
                                 <p> Map  </p>
                            </a>
                         </li>
-                        <li class="nav-item menu-open">
-                           <a href="pilih_jenis_tk.php" class="nav-link active">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Jenis Terumbu Karang  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="pilih_terumbu_karang.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Terumbu Karang  </p>
-                           </a>
-                        </li>
                         <li class="nav-item">
                            <a href="review_donasi.php" class="nav-link">
                                 <i class="nav-icon fas fas fa-user"></i>
