@@ -176,7 +176,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
 
         </div>
         <div class="col-md-8 order-md-1 card">
-            <h4 class="mb-3 card-header">Data Rekening Donatur</h4>
+            <h4 class="mb-3 card-header pl-0">Data Rekening Donatur</h4>
             <form action="" method="POST">
             <div class="mb-3">
               <label for="nama_donatur">Nama Pemilik Rekening</label>
@@ -228,7 +228,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
 
             <div class="" style="width:100%;">
                 <div class="">
-                    <h4 class="card-header mb-2">Metode Pembayaran</h4>
+                    <h4 class="card-header mb-2 pl-0">Metode Pembayaran</h4>
             <span class="">Pilihan untuk lokasi</span>  <span class="text-info font-weight-bolder"><?=$rowlokasi->nama_lokasi?> : </span>
             <div class="d-block my-3">
               <div class="custom-control custom-radio">

@@ -225,14 +225,6 @@ $rowjenis = $stmt->fetchAll();
     <script src="dist/js/pages/dashboard.js"></script>
 
     <script>
-        if(sessionStorage.getItem(keranjang_serialised) == null){
-          var keranjang_deserialised = {}
-          keranjang_deserialised["id_lokasi"] = <?=$_SESSION['id_lokasi']?>
-
-          var keranjang_serialised = JSON.stringify(keranjang_deserialised)
-          sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
-        }
-
 
 
     </script>

@@ -160,6 +160,7 @@ $row = $stmt->fetchAll();
         </div>
     </div>
         <?php } ?>
+        <input type="text" class="d-none" id="id-lokasi" value="<?=$_SESSION['id_lokasi']?>">
             </div>
 </div>
         </div>

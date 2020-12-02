@@ -170,7 +170,7 @@
                           </tr>
 
                           <tr>
-                                <td colspan="3">
+                                <td colspan="5">
                                     <!--collapse start -->
                             <div class="row  m-0">
                             <div class="col-12 cell detailcollapser<?=$rowitem->id_donasi?>"
@@ -231,7 +231,6 @@
 
                                              <hr class="mb-2"/>
                                              </div>
-
 
                                         <?php   }
                                         ?>

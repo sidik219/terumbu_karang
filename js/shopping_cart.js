@@ -34,40 +34,84 @@ function purchaseClicked() {
     var cartItemContainer = document.getElementsByClassName('cart-items')[0]
     var cartRows = cartItemContainer.getElementsByClassName('cart-row')
     var total = 0
-    var keranjang = []
-    for (var i = 0; i < cartRows.length; i++) {
-        var cartRow = cartRows[i]
-        var nama_tk = cartRow.getElementsByClassName('cart-item-title')[0].innerText
-        var priceElement = cartRow.getElementsByClassName('cart-price')[0]
-        var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
-        var itemID = cartRow.getElementsByClassName('cart-item-id')[0].value
-        var price = parseFloat(priceElement.innerText.replace('Rp.', ''))
-        var cart_image = cartRow.getElementsByClassName('cart-item-image')[0].src;
-        var quantity = quantityElement.value
-        total = total + (price * quantity)
+    if (!keranjang_deserialised) {
+        keranjang_deserialised = {}
+        var keranjang = []
+        for (var i = 0; i < cartRows.length; i++) {
+            var cartRow = cartRows[i]
+            var nama_tk = cartRow.getElementsByClassName('cart-item-title')[0].innerText
+            var priceElement = cartRow.getElementsByClassName('cart-price')[0]
+            var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
+            var itemID = cartRow.getElementsByClassName('cart-item-id')[0].value
+            var price = parseFloat(priceElement.innerText.replace('Rp.', ''))
+            var cart_image = cartRow.getElementsByClassName('cart-item-image')[0].src;
+            var quantity = quantityElement.value
+            total = total + (price * quantity)
 
-        // keranjang["nama_tk"] = nama_tk
-        // keranjang["id_tk"] = itemID
-        // keranjang["jumlah_tk"] = quantityElement.value
+            // keranjang["nama_tk"] = nama_tk
+            // keranjang["id_tk"] = itemID
+            // keranjang["jumlah_tk"] = quantityElement.value
 
-        keranjang.push({
-            nama_tk: nama_tk,
-            id_tk: itemID,
-            image: cart_image,
-            jumlah_tk: quantityElement.value
-        })
+            keranjang.push({
+                nama_tk: nama_tk,
+                id_tk: itemID,
+                image: cart_image,
+                jumlah_tk: quantityElement.value
+            })
+        }
+        total = Math.round(total * 100) / 100
+        document.getElementsByClassName('cart-total-price')[0].innerText = 'Rp. ' + total
+
+        var isipesan = document.getElementById("pesan").value;
+        keranjang_deserialised["pesan"] = isipesan
+        keranjang_deserialised["nominal"] = total
+        keranjang_deserialised["status"] = "New keranjang"
+        keranjang_deserialised["id_lokasi"] = document.getElementById("id-lokasi").value
+
+        keranjang_deserialised["keranjang"] = keranjang
+        var keranjang_serialised = JSON.stringify(keranjang_deserialised)
+        sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
+        document.location.href = `pilih_jenis_tk.php?id_lokasi=${keranjang_deserialised.id_lokasi}`;
+
+    } else {
+        var keranjang_old = keranjang_deserialised.keranjang
+        for (var i = 0; i < cartRows.length; i++) {
+            var cartRow = cartRows[i]
+            var nama_tk = cartRow.getElementsByClassName('cart-item-title')[0].innerText
+            var priceElement = cartRow.getElementsByClassName('cart-price')[0]
+            var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
+            var itemID = cartRow.getElementsByClassName('cart-item-id')[0].value
+            var price = parseFloat(priceElement.innerText.replace('Rp.', ''))
+            var cart_image = cartRow.getElementsByClassName('cart-item-image')[0].src;
+            var quantity = quantityElement.value
+            total = total + (price * quantity)
+
+            // keranjang["nama_tk"] = nama_tk
+            // keranjang["id_tk"] = itemID
+            // keranjang["jumlah_tk"] = quantityElement.value
+
+            keranjang_old.push({
+                nama_tk: nama_tk,
+                id_tk: itemID,
+                image: cart_image,
+                jumlah_tk: quantityElement.value
+            })
+        }
+        total = Math.round(total * 100) / 100
+        document.getElementsByClassName('cart-total-price')[0].innerText = 'Rp. ' + total
+
+        var isipesan = document.getElementById("pesan").value;
+        keranjang_deserialised["pesan"] = isipesan
+        keranjang_deserialised["nominal"] += total
+        keranjang_deserialised["status"] = "OLD keranjang"
+        keranjang_deserialised["id_lokasi"] = document.getElementById("id-lokasi").value
+
+        keranjang_deserialised["keranjang"] = keranjang_old
+        var keranjang_serialised = JSON.stringify(keranjang_deserialised)
+        sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
+        document.location.href = 'review_donasi.php';
     }
-    total = Math.round(total * 100) / 100
-    document.getElementsByClassName('cart-total-price')[0].innerText = 'Rp. ' + total
 
-    var isipesan = document.getElementById("pesan").value;
-    keranjang_deserialised["pesan"] = isipesan
-    keranjang_deserialised["nominal"] = total
-
-    keranjang_deserialised["keranjang"] = keranjang
-    var keranjang_serialised = JSON.stringify(keranjang_deserialised)
-    sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
-    document.location.href = 'review_donasi.php';
 }
 
 
@@ -77,40 +121,83 @@ function backClicked() {
     var cartItemContainer = document.getElementsByClassName('cart-items')[0]
     var cartRows = cartItemContainer.getElementsByClassName('cart-row')
     var total = 0
-    var keranjang = []
-    for (var i = 0; i < cartRows.length; i++) {
-        var cartRow = cartRows[i]
-        var nama_tk = cartRow.getElementsByClassName('cart-item-title')[0].innerText
-        var priceElement = cartRow.getElementsByClassName('cart-price')[0]
-        var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
-        var itemID = cartRow.getElementsByClassName('cart-item-id')[0].value
-        var price = parseFloat(priceElement.innerText.replace('Rp.', ''))
-        var cart_image = cartRow.getElementsByClassName('cart-item-image')[0].src;
-        var quantity = quantityElement.value
-        total = total + (price * quantity)
+    if (!keranjang_deserialised) {
+        keranjang_deserialised = {}
+        var keranjang = []
+        for (var i = 0; i < cartRows.length; i++) {
+            var cartRow = cartRows[i]
+            var nama_tk = cartRow.getElementsByClassName('cart-item-title')[0].innerText
+            var priceElement = cartRow.getElementsByClassName('cart-price')[0]
+            var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
+            var itemID = cartRow.getElementsByClassName('cart-item-id')[0].value
+            var price = parseFloat(priceElement.innerText.replace('Rp.', ''))
+            var cart_image = cartRow.getElementsByClassName('cart-item-image')[0].src;
+            var quantity = quantityElement.value
+            total = total + (price * quantity)
 
-        // keranjang["nama_tk"] = nama_tk
-        // keranjang["id_tk"] = itemID
-        // keranjang["jumlah_tk"] = quantityElement.value
+            // keranjang["nama_tk"] = nama_tk
+            // keranjang["id_tk"] = itemID
+            // keranjang["jumlah_tk"] = quantityElement.value
 
-        keranjang.push({
-            nama_tk: nama_tk,
-            id_tk: itemID,
-            image: cart_image,
-            jumlah_tk: quantityElement.value
-        })
+            keranjang.push({
+                nama_tk: nama_tk,
+                id_tk: itemID,
+                image: cart_image,
+                jumlah_tk: quantityElement.value
+            })
+        }
+        total = Math.round(total * 100) / 100
+        document.getElementsByClassName('cart-total-price')[0].innerText = 'Rp. ' + total
+
+        var isipesan = document.getElementById("pesan").value;
+        keranjang_deserialised["pesan"] = isipesan
+        keranjang_deserialised["nominal"] = total
+        keranjang_deserialised["status"] = "New keranjang"
+        keranjang_deserialised["id_lokasi"] = document.getElementById("id-lokasi").value
+
+        keranjang_deserialised["keranjang"] = keranjang
+        var keranjang_serialised = JSON.stringify(keranjang_deserialised)
+        sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
+        document.location.href = `pilih_jenis_tk.php?id_lokasi=${keranjang_deserialised.id_lokasi}`;
+
+    } else {
+        var keranjang_old = keranjang_deserialised.keranjang
+        for (var i = 0; i < cartRows.length; i++) {
+            var cartRow = cartRows[i]
+            var nama_tk = cartRow.getElementsByClassName('cart-item-title')[0].innerText
+            var priceElement = cartRow.getElementsByClassName('cart-price')[0]
+            var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
+            var itemID = cartRow.getElementsByClassName('cart-item-id')[0].value
+            var price = parseFloat(priceElement.innerText.replace('Rp.', ''))
+            var cart_image = cartRow.getElementsByClassName('cart-item-image')[0].src;
+            var quantity = quantityElement.value
+            total = total + (price * quantity)
+
+            // keranjang["nama_tk"] = nama_tk
+            // keranjang["id_tk"] = itemID
+            // keranjang["jumlah_tk"] = quantityElement.value
+
+            keranjang_old.push({
+                nama_tk: nama_tk,
+                id_tk: itemID,
+                image: cart_image,
+                jumlah_tk: quantityElement.value
+            })
+        }
+        total = Math.round(total * 100) / 100
+        document.getElementsByClassName('cart-total-price')[0].innerText = 'Rp. ' + total
+
+        var isipesan = document.getElementById("pesan").value;
+        keranjang_deserialised["pesan"] = isipesan
+        keranjang_deserialised["nominal"] += total
+        keranjang_deserialised["status"] = "OLD keranjang"
+        keranjang_deserialised["id_lokasi"] = document.getElementById("id-lokasi").value
+
+        keranjang_deserialised["keranjang"] = keranjang_old
+        var keranjang_serialised = JSON.stringify(keranjang_deserialised)
+        sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
+        document.location.href = `pilih_jenis_tk.php?id_lokasi=${keranjang_deserialised.id_lokasi}`;
     }
-    total = Math.round(total * 100) / 100
-    document.getElementsByClassName('cart-total-price')[0].innerText = 'Rp. ' + total
-
-    var isipesan = document.getElementById("pesan").value;
-    keranjang_deserialised["pesan"] = isipesan
-    keranjang_deserialised["nominal"] = total
-
-    keranjang_deserialised["keranjang"] = keranjang
-    var keranjang_serialised = JSON.stringify(keranjang_deserialised)
-    sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
-    document.location.href = `pilih_jenis_tk.php?id_lokasi=${keranjang_deserialised.id_lokasi}`;
 }
 
 function removeCartItem(event) {
