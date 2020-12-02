@@ -90,12 +90,23 @@ function purchaseClicked() {
             // keranjang["id_tk"] = itemID
             // keranjang["jumlah_tk"] = quantityElement.value
 
-            keranjang_old.push({
-                nama_tk: nama_tk,
-                id_tk: itemID,
-                image: cart_image,
-                jumlah_tk: quantityElement.value
-            })
+            const listHasId = keranjang_deserialised.keranjang.some(item => item.id_tk == itemID);
+            console.log(listHasId)
+
+            if (listHasId) {
+                const oldItem = keranjang_deserialised.keranjang.find(item => item.id_tk == itemID);
+                oldItem.jumlah_tk += quantityElement.value
+            } else {
+                keranjang_old.push({
+                    nama_tk: nama_tk,
+                    id_tk: itemID,
+                    image: cart_image,
+                    jumlah_tk: quantityElement.value
+                })
+
+            }
+
+
         }
         total = Math.round(total * 100) / 100
         document.getElementsByClassName('cart-total-price')[0].innerText = 'Rp. ' + total
@@ -176,13 +187,23 @@ function backClicked() {
             // keranjang["nama_tk"] = nama_tk
             // keranjang["id_tk"] = itemID
             // keranjang["jumlah_tk"] = quantityElement.value
+            const listHasId = keranjang_deserialised.keranjang.some(item => item.id_tk == itemID);
+            console.log(listHasId)
 
-            keranjang_old.push({
-                nama_tk: nama_tk,
-                id_tk: itemID,
-                image: cart_image,
-                jumlah_tk: quantityElement.value
-            })
+            if (listHasId) {
+                const oldItem = keranjang_deserialised.keranjang.find(item => item.id_tk == itemID);
+                oldItem.jumlah_tk = parseInt(oldItem.jumlah_tk) + parseInt(quantityElement.value)
+            } else {
+                keranjang_old.push({
+                    nama_tk: nama_tk,
+                    id_tk: itemID,
+                    image: cart_image,
+                    jumlah_tk: quantityElement.value
+                })
+
+            }
+
+
         }
         total = Math.round(total * 100) / 100
         document.getElementsByClassName('cart-total-price')[0].innerText = 'Rp. ' + total
