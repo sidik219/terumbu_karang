@@ -301,6 +301,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
     <script src="dist/js/adminlte.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
+     <script src="js\numberformat.js"></script>
 
     <script>
       var keranjangancestor = document.getElementById("keranjangancestor")
@@ -362,7 +363,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
         `<div>
             <h6 class="my-0 font-weight-bold">Total</h6>
           </div>
-          <span class="font-weight-bold">Rp. ${keranjang.nominal}</span>`
+          <span class="font-weight-bold">${formatter.format(keranjang.nominal)}</span>`
         listtotalrow.innerHTML = listtotal
         keranjangancestor.append(listtotalrow)
 

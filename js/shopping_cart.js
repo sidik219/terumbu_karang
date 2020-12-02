@@ -95,7 +95,7 @@ function purchaseClicked() {
 
             if (listHasId) {
                 const oldItem = keranjang_deserialised.keranjang.find(item => item.id_tk == itemID);
-                oldItem.jumlah_tk += quantityElement.value
+                oldItem.jumlah_tk = parseInt(oldItem.jumlah_tk) + parseInt(quantityElement.value)
             } else {
                 keranjang_old.push({
                     nama_tk: nama_tk,
