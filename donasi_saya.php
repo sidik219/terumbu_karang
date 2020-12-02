@@ -1,7 +1,8 @@
-<?php 
+<?php
     include 'build/config/connection.php';
 
-    $sqlviewdonasi = 'SELECT * FROM t_donasi 
+    $sqlviewdonasi = 'SELECT * FROM t_donasi
+                      LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
                     WHERE id_user = 1';
     $stmt = $pdo->prepare($sqlviewdonasi);
     $stmt->execute();
@@ -40,13 +41,13 @@
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="#">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="#">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -102,7 +103,7 @@
                                 <p> Review Donasi  </p>
                            </a>
                         </li>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -120,9 +121,9 @@
                         </div>
 
                         <div class="col">
-                           
+
                         <a class="btn btn-primary float-right" href="map.php" role="button">Donasi Sekarang (+)</a>
-                   
+
                         </div>
                     </div>
                 </div>
@@ -149,8 +150,8 @@
                     <tbody>
                         <?php
                          //$index = 0;
-                          foreach ($row as $rowitem) {    
-                            $deskripsi = json_decode($rowitem->deskripsi_donasi);                    
+                          foreach ($row as $rowitem) {
+                            //$deskripsi = json_decode($rowitem->deskripsi_donasi);
                           ?>
                           <tr>
                               <th scope="row"><?=$rowitem->id_donasi?></th>
@@ -165,7 +166,7 @@
                             	</button>
                                 <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
                               </td>
-                              
+
                           </tr>
 
                           <tr>
@@ -181,28 +182,57 @@
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Donasi</p>
                             </div>
-                            <div class="col-12 cell<?=$rowitem->id_donasi?> collapse contentall<?=$rowitem->id_donasi?>">                               
-                                <div class="row mb-3">
+                            <div class="col-12 cell<?=$rowitem->id_donasi?> collapse contentall<?=$rowitem->id_donasi?>">
+                              <div class="row">
                                     <div class="col-md-3 kolom font-weight-bold">
-                                        Pesan/Ekspresi 
+                                        Lokasi Penanaman
                                     </div>
                                     <div class="col isi">
-                                        <?php 
-                                            echo $deskripsi->pesan;
+                                        <?="$rowitem->nama_lokasi (ID $rowitem->id_lokasi)";?>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Pesan/Ekspresi
+                                    </div>
+                                    <div class="col isi">
+                                        <?php
+                                            echo $rowitem->pesan;
                                         ?>
                                     </div>
                                 </div>
-                                
+
 
                                 <div class="row mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">
-                                        Pilihan 
+                                        Pilihan
                                     </div>
                                     <div class="col isi">
-                                        <?php 
-                                           foreach ($deskripsi->keranjang as $isi){?>
-                                              <span><?= $isi->nama_tk?> x<?= $isi->jumlah_tk?></span><br/>
-                                           
+                                        <?php
+                                              $sqlviewisi = 'SELECT jumlah_terumbu, nama_terumbu_karang, foto_terumbu_karang FROM t_detail_donasi
+                                              LEFT JOIN t_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
+                                              LEFT JOIN t_terumbu_karang ON t_detail_donasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang
+                                              WHERE t_detail_donasi.id_donasi = :id_donasi';
+                                              $stmt = $pdo->prepare($sqlviewisi);
+                                              $stmt->execute(['id_donasi' => $rowitem->id_donasi]);
+                                              $rowisi = $stmt->fetchAll();
+                                           foreach ($rowisi as $isi){
+                                             ?>
+                                             <div class="row  mb-3">
+                                               <div class="col">
+                                                <img class="" height="60px" src="<?=$isi->foto_terumbu_karang?>?<?php if ($status='nochange'){echo time();}?>">
+                                              </div>
+                                              <div class="col">
+                                                <span><?= $isi->nama_terumbu_karang?>
+                                              </div>
+                                              <div class="col">
+                                                x<?= $isi->jumlah_terumbu?></span><br/>
+                                              </div>
+
+                                             <hr class="mb-2"/>
+                                             </div>
+
+
                                         <?php   }
                                         ?>
                                     </div>
@@ -210,34 +240,26 @@
 
                                 <!-- <div class="row  mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">
-                                        Foto Wilayah 
+                                        Foto Wilayah
                                     </div>
                                     <div class="col isi">
                                         <img src="<?=$rowitem->foto_wilayah?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
                                     </div>
                                 </div> -->
-                                <div class="row">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        ID Lokasi
-                                    </div>
-                                    <div class="col isi">
-                                        <?=$rowitem->id_lokasi?>
-                                    </div>
-                                </div>
-                                    
+
                             </div>
                         </div>
 
                         <!--collapse end -->
                                 </td>
                             </tr>
-                            <?php //$index++; 
+                            <?php //$index++;
                             } ?>
                     </tbody>
-                  </table> 
+                  </table>
                     </div>
                 </div>
-            
+
             </section>
             <!-- /.Left col -->
             </div>

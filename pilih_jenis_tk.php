@@ -1,12 +1,15 @@
 <?php include 'build/config/connection.php';
 session_start();
 
-if(!$_GET['id_lokasi']){
-        header("Location: map.php");
-    }
-    else{
-        $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
-    }
+if($_GET['id_lokasi']){
+      $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
+  }
+else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
+      header("Location: map.php");
+  }
+  // else{
+  //     $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
+  // }
 
 $sqlviewjenis = 'SELECT * FROM t_jenis_terumbu_karang
 ORDER BY nama_jenis';
@@ -58,13 +61,13 @@ $rowjenis = $stmt->fetchAll();
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="#">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="#">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -78,7 +81,7 @@ $rowjenis = $stmt->fetchAll();
                 <span class="brand-text font-weight-bold">TKJB</span>
             </a>
             <!-- END OF TOP SIDEBAR -->
-     
+
             <!-- SIDEBAR -->
             <div class="sidebar">
                 <!-- SIDEBAR MENU -->
@@ -120,7 +123,7 @@ $rowjenis = $stmt->fetchAll();
                                 <p> Review Donasi  </p>
                            </a>
                         </li>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -133,12 +136,12 @@ $rowjenis = $stmt->fetchAll();
             <div class="content-header">
                 <div class="container-fluid">
                 <div class="row">
-                        
+
                     </div>
                 </div>
                 <!-- /.container-fluid -->
             </div>
-            <!-- /.content-header -->        
+            <!-- /.content-header -->
 
             <!-- Main content -->
             <section class="content">
@@ -162,7 +165,7 @@ $rowjenis = $stmt->fetchAll();
                     <?php } ?>
                     </div>
                 </div>
-            
+
             </section>
             <!-- /.Left col -->
             </div>
@@ -222,15 +225,16 @@ $rowjenis = $stmt->fetchAll();
     <script src="dist/js/pages/dashboard.js"></script>
 
     <script>
-        sessionStorage.clear()
+        if(sessionStorage.getItem(keranjang_serialised) == null){
+          var keranjang_deserialised = {}
+          keranjang_deserialised["id_lokasi"] = <?=$_SESSION['id_lokasi']?>
 
-        var keranjang_deserialised = {}
+          var keranjang_serialised = JSON.stringify(keranjang_deserialised)
+          sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
+        }
 
-        keranjang_deserialised["id_lokasi"] = <?=$_GET['id_lokasi']?>
 
-        var keranjang_serialised = JSON.stringify(keranjang_deserialised)
-        sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
-        
+
     </script>
 </body>
 </html>

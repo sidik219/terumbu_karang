@@ -28,7 +28,7 @@ $row = $stmt->fetchAll();
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    
+
 </head>
  <script src="js\numberformat.js"></script>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -44,13 +44,13 @@ $row = $stmt->fetchAll();
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="#">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="#">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -106,7 +106,7 @@ $row = $stmt->fetchAll();
                                 <p> Review Donasi  </p>
                            </a>
                         </li>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -120,13 +120,14 @@ $row = $stmt->fetchAll();
                 <div class="container-fluid">
                 <div class="row">
                         <div class="col">
-     
+
 
         <h4 class="font-weight-bold">Pilih Terumbu Karang</h4>
+        <button class="btn btn-warning btn-back" type="button">< Jenis Lainnya</button>
         <div class="row shop-items">
             <div class="card-columns">
         <?php
-            foreach ($row as $rowitem) {                            
+            foreach ($row as $rowitem) {
         ?>
 
             <div class="card  card-pilihan mb-4 shadow-sm shop-item">
@@ -150,18 +151,18 @@ $row = $stmt->fetchAll();
                         <input type="number" min="1" id="tbqty" style="width: 100%; height:100%;">
                     </div> -->
                     <div class="col">
-                            <a data-nama_tk="<?=$rowitem->id_terumbu_karang?>" data-harga_tk="<?=$rowitem->harga_terumbu_karang?>" 
+                            <a data-nama_tk="<?=$rowitem->id_terumbu_karang?>" data-harga_tk="<?=$rowitem->harga_terumbu_karang?>"
                             data-id_tk="<?=$rowitem->id_terumbu_karang?>"
                             class="add-to-cart btn btn-warning shop-item-button"><i class="nav-icon fas fa-cart-plus"></i> Tambah ke Keranjang</a>
                     </div>
                 </div>
-           
+
         </div>
     </div>
         <?php } ?>
             </div>
-</div>   
-        </div>        
+</div>
+        </div>
             </section>
             <!-- /.Left col -->
             </div>
@@ -172,7 +173,7 @@ $row = $stmt->fetchAll();
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    
+
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
@@ -180,7 +181,7 @@ $row = $stmt->fetchAll();
     <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
-    
+
  <footer class="main-footer">
         <section class="container content-section">
             <h4 class="section-header font-weight-bold" id="keranjang">Keranjang Anda</h4>
@@ -196,10 +197,11 @@ $row = $stmt->fetchAll();
                 <span class="cart-total-price font-weight-bold">Rp0</span>
             </div>
             <div class="mb-3 text-center mt-2">
-              <h5 class="font-weight-bold">Pesan / Ekspresi</h5><label for="pesan" class="font-weight-normal"> 
+              <h5 class="font-weight-bold">Pesan / Ekspresi</h5><label for="pesan" class="font-weight-normal">
               (Opsional. Pesan akan disertakan dalam label khusus pada terumbu karang )</label>
               <input type="text" maxlength="64" class="form-control success" id="pesan" placeholder="Isi pesan anda di sini...">
             </div>
+            <button class="btn btn-warning btn-back" type="button">< Jenis Lainnya</button>
             <button class="btn btn-primary btn-purchase" type="button">Selesai Pilih ></button>
         </section>
     </footer>
@@ -241,6 +243,6 @@ $row = $stmt->fetchAll();
     <script src="js\shopping_cart.js" async></script>
     <script src="js\numberformat.js"></script>
 
-    
+
 </body>
 </html>

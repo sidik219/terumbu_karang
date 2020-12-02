@@ -1,3 +1,7 @@
+<?php
+session_start();
+unset($_SESSION['id_lokasi']);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,13 +51,13 @@
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="#">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="#">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -109,7 +113,7 @@
                                 <p> Review Donasi  </p>
                            </a>
                         </li>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -228,6 +232,11 @@
     <script src="dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
     <?php include 'dist/js/leaflet_map.php'; ?>
+
+    <script>
+      sessionStorage.clear()
+
+    </script>
 
 </body>
 </html>

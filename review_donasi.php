@@ -1,5 +1,5 @@
-<?php 
-    include 'build/config/connection.php'; 
+<?php
+    include 'build/config/connection.php';
     session_start();
 
     $sqlviewlokasi = 'SELECT * FROM t_lokasi
@@ -12,34 +12,37 @@
 
     if (isset($_POST['submit'])) {
         if($_POST['submit'] == 'Simpan'){
-    $id_user = $_POST['tb_id_user'];
-    $nominal = $_POST['tb_nominal'];
-    $deskripsi_donasi = $_POST['tb_deskripsi_donasi'];
-    $id_lokasi = $_POST['tb_id_lokasi'];
-    $status_donasi = "Menunggu Konfirmasi Pembayaran";
+          $_SESSION['data_donasi'] = $_POST['tb_deskripsi_donasi'];
+          header("Location:review_donasi_proses.php?status=addsuccess");
+
+      // $id_user = $_POST['tb_id_user'];
+      // $nominal = $_POST['tb_nominal'];
+      // $deskripsi_donasi = $_POST['tb_deskripsi_donasi'];
+      // $id_lokasi = $_POST['tb_id_lokasi'];
+      // $status_donasi = "Menunggu Konfirmasi Pembayaran";
 
 
 
-    $sqlinsertdonasi = "INSERT INTO t_donasi
-        (id_user, nominal, deskripsi_donasi, id_lokasi, status_donasi)
-        VALUES (:id_user, :nominal, :deskripsi_donasi, :id_lokasi, :status_donasi)
-    ";
+      // $sqlinsertdonasi = "INSERT INTO t_donasi
+      //     (id_user, nominal, deskripsi_donasi, id_lokasi, status_donasi)
+      //     VALUES (:id_user, :nominal, :deskripsi_donasi, :id_lokasi, :status_donasi)
+      // ";
 
-    $stmt = $pdo->prepare($sqlinsertdonasi);
-    $stmt->execute(['id_user' => $id_user, 'nominal' => $nominal , 'deskripsi_donasi' => $deskripsi_donasi,
-    'id_lokasi' => $id_lokasi , 'status_donasi' => $status_donasi]);
+      // $stmt = $pdo->prepare($sqlinsertdonasi);
+      // $stmt->execute(['id_user' => $id_user, 'nominal' => $nominal , 'deskripsi_donasi' => $deskripsi_donasi,
+      // 'id_lokasi' => $id_lokasi , 'status_donasi' => $status_donasi]);
 
-    $affectedrows = $stmt->rowCount();
-    if ($affectedrows == '0') {
-    //echo "HAHAHAAHA INSERT FAILED !";
-    } else {
-        //echo "HAHAHAAHA GREAT SUCCESSS !";
-        header("Location:donasi_saya.php?status=addsuccess");
+      // $affectedrows = $stmt->rowCount();
+      // if ($affectedrows == '0') {
+      // //echo "HAHAHAAHA INSERT FAILED !";
+      // } else {
+      //     //echo "HAHAHAAHA GREAT SUCCESSS !";
+      //     header("Location:donasi_saya.php?status=addsuccess");
+      // }
     }
-}
-    }
+  }
 
-        
+
 
 ?>
 <!DOCTYPE html>
@@ -65,7 +68,7 @@
 if (sessionStorage.getItem('keranjang_serialised') == undefined){
   document.location.href = 'map.php';
 }
-  var keranjang = JSON.parse(sessionStorage.getItem('keranjang_serialised'))  
+  var keranjang = JSON.parse(sessionStorage.getItem('keranjang_serialised'))
 </script>
 
 
@@ -80,13 +83,13 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="#">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="#">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -142,7 +145,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
                               <p> Review Donasi  </p>
                           </a>
                         </li>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -152,7 +155,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-   
+
             <!-- /.content-header -->
 
             <!-- Main content -->
@@ -170,7 +173,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
             <!-- listcontentrow cetak di sini -->
           </ul>
 
-          
+
         </div>
         <div class="col-md-8 order-md-1 card">
             <h4 class="mb-3 card-header">Data Rekening Donatur</h4>
@@ -193,25 +196,27 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
 
             <input type="number" class="d-none" value="1" id="tb_id_user" name="tb_id_user">
             <input type="number" class="d-none" value="" id="tb_nominal" name="tb_nominal">
-            <input type="hidden" value="" id="tb_deskripsi_donasi" name="tb_deskripsi_donasi">            
+            <input type="hidden" value="" id="tb_deskripsi_donasi" name="tb_deskripsi_donasi">
             <input type="number" class="d-none" value="" id="tb_id_lokasi" name="tb_id_lokasi">
 
             <script>
                 var tbnama_donatur = document.getElementById('nama_donatur')
                 var tbno_rekening_donatur = document.getElementById('no_rekening_donatur')
                 var tbnama_bank_donatur = document.getElementById('nama_bank_donatur')
-                
                 var tbdata_donatur = document.getElementsByClassName('data_donatur')
 
                 for (i = 0; i < tbdata_donatur.length; i++){
+                    tbdata_donatur[i].addEventListener('load', updateData);
+                    tbdata_donatur[i].addEventListener('change', updateData);
                     tbdata_donatur[i].addEventListener('keyup', updateData);
                 }
-                
+
 
                 function updateData(){
                     keranjang["nama_donatur"] = tbnama_donatur.value
                     keranjang["no_rekening_donatur"] = tbno_rekening_donatur.value
                     keranjang["nama_bank_donatur"] = tbnama_bank_donatur.value
+                    keranjang["id_user"] = 1;
                     document.getElementById('tb_deskripsi_donasi').value = JSON.stringify(keranjang)
                 }
 
@@ -233,33 +238,33 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
               </div>
 <hr class="mb-2"/>
 
-            <div class="row">                
+            <div class="row">
                 <div class="col">
-                     <span class="font-weight-bold">Nama Rekening Pengelola  
+                     <span class="font-weight-bold">Nama Rekening Pengelola
                 </div>
                 <div class="col-lg-8 mb-2">
                      <span class=""><?=$rowlokasi->nama_rekening?></span>
                 </div>
             </div>
             <div class="row">
-                <div class="col">                
+                <div class="col">
                     <span class="font-weight-bold">Nomor Rekening Pengelola  </span>
                 </div>
-                <div class="col-lg-8  mb-2">                
+                <div class="col-lg-8  mb-2">
                     <span class=""><?=$rowlokasi->nomor_rekening?></span>
                 </div>
             </div>
             <div class="row mb-2">
-                <div class="col">                
-                    <span class="font-weight-bold">Bank Pengelola  </span> 
+                <div class="col">
+                    <span class="font-weight-bold">Bank Pengelola  </span>
                 </div>
-                <div class="col-lg-8  mb-2">                
+                <div class="col-lg-8  mb-2">
                     <span class=""><?=$rowlokasi->nama_bank?></span>
                 </div>
             </div>
                 </div>
             </div>
-             
+
             <button  name="submit" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4" type="submit">Buat Donasi</button>
           </form>
         </div>
@@ -271,7 +276,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
     <footer class="main-footer">
         <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
     </footer>
-    <!-- /.content-wrapper -->    
+    <!-- /.content-wrapper -->
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -304,7 +309,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
       // for (i = 0; i < keranjang.keranjang.length; i++){
       //   var listcontentrow = document.createElement('li')
       //   listcontentrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed")
-      //   var listcontent = 
+      //   var listcontent =
       //   `<div>
       //       <h6 class="my-0">${keranjang.keranjang[i].nama_tk}</h6>
       //     </div>
@@ -316,14 +321,20 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
 
       var jumlahitem = 0;
       for (item in keranjang.keranjang){
-        
+
         var listcontentrow = document.createElement('li')
         listcontentrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed")
-        var listcontent = 
+        var listcontent =
         `<div>
+          <img src="${keranjang.keranjang[item].image}" height="30px">
+        </div>
+          <div>
             <h6 class="my-0">${keranjang.keranjang[item].nama_tk}</h6>
           </div>
-          <span class="font-weight-bold">x${keranjang.keranjang[item].jumlah_tk}</span>`
+          <div>
+          <span class="font-weight-bold">x${keranjang.keranjang[item].jumlah_tk}</span>
+          </div>
+          `
         listcontentrow.innerHTML = listcontent
         keranjangancestor.prepend(listcontentrow)
 
@@ -332,7 +343,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
 
         var listpesanrow = document.createElement('li')
         listpesanrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed", "text-break")
-        var listpesan = 
+        var listpesan =
         `<div class="row">
         <div class="col-12">
             <h6 class="my-0">Pesan/Ekspresi</h6>
@@ -347,13 +358,13 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
 
       var listtotalrow = document.createElement('li')
         listtotalrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed")
-      var listtotal = 
+      var listtotal =
         `<div>
             <h6 class="my-0 font-weight-bold">Total</h6>
           </div>
           <span class="font-weight-bold">Rp. ${keranjang.nominal}</span>`
         listtotalrow.innerHTML = listtotal
-        keranjangancestor.append(listtotalrow)       
+        keranjangancestor.append(listtotalrow)
 
       var badgejumlah = document.getElementById("badge-jumlah")
       badgejumlah.innerText = jumlahitem
