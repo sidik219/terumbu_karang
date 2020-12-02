@@ -4,14 +4,14 @@
     if (isset($_GET['status'])){
         $status = $_GET['status'];
     }
-    
-    $sqlviewlokasi = 'SELECT *, nama_wilayah, SUM(luas_titik) AS luas_total, 
-    COUNT(id_titik) AS jumlah_titik, COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang, 
-    COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup, 
-    COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik, 
+
+    $sqlviewlokasi = 'SELECT *, nama_wilayah, SUM(luas_titik) AS luas_total,
+    COUNT(id_titik) AS jumlah_titik, COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang,
+    COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup,
+    COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
     COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
-    FROM t_lokasi LEFT JOIN t_titik ON t_lokasi.id_lokasi = t_titik.id_lokasi 
-    LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah 
+    FROM t_lokasi LEFT JOIN t_titik ON t_lokasi.id_lokasi = t_titik.id_lokasi
+    LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
     GROUP BY nama_lokasi
 ';
         $stmt = $pdo->prepare($sqlviewlokasi);
@@ -67,13 +67,13 @@
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="#">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="#">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -165,7 +165,7 @@
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item">
                              <a href="kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -184,7 +184,7 @@
                                     <p> Kelola User </p>
                             </a>
                         </li>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -201,9 +201,9 @@
                             <h4><span class="align-middle font-weight-bold">Kelola Lokasi</span></h4>
                         </div>
                         <div class="col">
-                           
+
                         <a class="btn btn-primary float-right" href="input_lokasi.php" role="button">Input Data Baru (+)</a>
-                   
+
                         </div>
                     </div>
                 </div>
@@ -220,19 +220,19 @@
                             <th scope="col">ID Lokasi</th>
                             <th scope="col">ID Wilayah</th>
                             <th scope="col">Nama Lokasi</th>
-                            <th scope="col">Luas Titik Terdata</th>
-                            <th scope="col">Aksi</th>
+                            <th class="text-right" scope="col">Luas Titik Terdata</th>
+                            <th class="text-right" scope="col">Aksi</th>
                             </tr>
                         </thead>
                     <tbody>
-                        <?php foreach ($row as $rowitem) {                            
+                        <?php foreach ($row as $rowitem) {
                         ?>
                             <tr>
                             <th scope="row"><?=$rowitem->id_lokasi?></th>
                             <td><?=$rowitem->id_wilayah?> - <?=$rowitem->nama_wilayah?></td>
                             <td><?=$rowitem->nama_lokasi?></td>
-                            <td><?=$rowitem->luas_total?> m<sup>2</sup></td>
-                            <td>
+                            <td class="text-right"><?=$rowitem->luas_total?> m<sup>2</sup></td>
+                            <td class="text-right">
                                 <a href="edit_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="fas fa-edit mr-3"></a>
                                 <a href="hapus.php?type=lokasi&id_lokasi=<?=$rowitem->id_lokasi?>" class="far fa-trash-alt"></a>
                                 </td>
@@ -251,13 +251,13 @@
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Lokasi</p>
                             </div>
-                            <div class="col-12 cell<?=$rowitem->id_lokasi?> collapse contentall<?=$rowitem->id_lokasi?>">                               
+                            <div class="col-12 cell<?=$rowitem->id_lokasi?> collapse contentall<?=$rowitem->id_lokasi?>">
                                  <div class="row">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Estimasi Total Luas Titik
                                     </div>
                                     <div class="col isi">
-                                        <?=$rowitem->luas_lokasi. ' m<sup>2</sup>'?> 
+                                        <?=$rowitem->luas_lokasi. ' m<sup>2</sup>'?>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -271,7 +271,7 @@
                                 <h5>Kondisi Titik</h5>
                                 <div class="row">
                                     <div class="col-md-3 kolom font-weight-bold">
-                                        Sangat Baik 
+                                        Sangat Baik
                                     </div>
                                     <div class="col isi">
                                         <?=$rowitem->jumlah_sangat_baik?>
@@ -300,10 +300,10 @@
                                     <div class="col isi mb-3">
                                         <?=$rowitem->jumlah_kurang?>
                                     </div>
-                                </div>                                
+                                </div>
                                 <div class="row mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">
-                                        Deskripsi Lokasi 
+                                        Deskripsi Lokasi
                                     </div>
                                     <div class="col isi">
                                         <?=$rowitem->deskripsi_lokasi?>
@@ -311,7 +311,7 @@
                                 </div>
                                 <div class="row  mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">
-                                        Foto Lokasi 
+                                        Foto Lokasi
                                     </div>
                                     <div class="col isi">
                                         <img src="<?=$rowitem->foto_lokasi?>?<?php if ($status='nochange'){echo time();}?>" width="150px">
@@ -356,7 +356,7 @@
                                     <div class="col isi">
                                         <?=$rowitem->nomor_rekening?>
                                     </div>
-                                </div>                                
+                                </div>
                             </div>
                         </div>
 
@@ -366,8 +366,8 @@
                            <?php } ?>
                     </tbody>
                   </table>
-            
-            
+
+
             </section>
             <!-- /.Left col -->
             </div>

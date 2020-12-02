@@ -58,13 +58,13 @@
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="#">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="#">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -156,7 +156,7 @@
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                       
+
                         <li class="nav-item">
                              <a href="kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -175,7 +175,7 @@
                                     <p> Kelola User </p>
                             </a>
                         </li>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -192,9 +192,9 @@
                             <h4><span class="align-middle font-weight-bold">Kelola Titik</span></h4>
                         </div>
                         <div class="col">
-                           
+
                         <a class="btn btn-primary float-right" href="input_titik.php" role="button">Input Data Baru (+)</a>
-                   
+
                         </div>
                     </div>
                 </div>
@@ -210,20 +210,20 @@
                             <tr>
                             <th scope="col">ID Titik</th>
                             <th scope="col">ID Lokasi</th>
-                            <th scope="col">Koordinat</th>
-                            <th scope="col">Luas Titik (m<sup>2</sup>)</th>
+                            <th class="text-right" scope="col">Koordinat</th>
+                            <th class="text-right" scope="col">Luas Titik (m<sup>2</sup>)</th>
                             <th scope="col">Kondisi</th>
                             <th scope="col">Aksi</th>
                             </tr>
                           </thead>
                     <tbody>
-                            <?php foreach ($row as $rowitem) {                            
+                            <?php foreach ($row as $rowitem) {
                             ?>
                           <tr>
                               <th scope="row"><?=$rowitem->id_titik?></th>
                               <td>ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></td>
-                              <td>Lat: <?=$rowitem->latitude?><br> Long: <?=$rowitem->longitude?></td>
-                              <td><?=$rowitem->luas_titik?></td>
+                              <td class="text-right">Lat: <?=$rowitem->latitude?><br> Long: <?=$rowitem->longitude?></td>
+                              <td class="text-right"><?=$rowitem->luas_titik?></td>
                               <td><?=$rowitem->kondisi_titik?></td>
                               <td>
                                 <a href="edit_titik.php?id_titik=<?=$rowitem->id_titik?>" class="fas fa-edit mr-3"></a>
@@ -233,7 +233,7 @@
                           <?php } ?>
                     </tbody>
                   </table>
-            
+
             </section>
             <!-- /.Left col -->
             </div>
