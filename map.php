@@ -1,7 +1,11 @@
-<?php
+<?php include 'build/config/connection.php';
 session_start();
-unset($_SESSION['id_lokasi']);
+
+if (isset($_SESSION['level_user']) == 0) {
+    header('location: login.php');
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,13 +55,13 @@ unset($_SESSION['id_lokasi']);
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav ml-auto">  
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="#">Logout</a>
-                </li>
+                            <a class="dropdown-item" href="logout.php">Logout</a>              
+                </li>  
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -77,6 +81,7 @@ unset($_SESSION['id_lokasi']);
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <?php if($_SESSION['level_user'] == '2') { ?>
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -113,7 +118,8 @@ unset($_SESSION['id_lokasi']);
                                 <p> Review Donasi  </p>
                            </a>
                         </li>
-                    </ul>
+                    <?php } ?>    
+                    </ul>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -138,19 +144,21 @@ unset($_SESSION['id_lokasi']);
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+                <!-- Untuk Admin -->
+                <?php if($_SESSION['level_user'] == '1') { ?>
                     <div>
                         <div>
                             <label>Keterangan Icon:</label>
                         </div>
                         <div>
                             <img src="images/foto_lokasi/icon_lokasi/icon_lokasi.png" style="width: 3%;">:
-                            <label>Lokasi Pantai</label>
+                            <label>Lokasi Pantai, </label>
                             <img src="images/kumpulan_icon/cluster.png" style="width: 3%;">:
-                            <label>Pengelompokan Jarak Terdekat</label>
+                            <label>Pengelompokan Jarak Terdekat, </label>
                             <img src="images/kumpulan_icon/geo_wilayah1.png" style="width: 3%;">:
-                            <label>Geo Wilayah</label>
+                            <label>Geo Wilayah, </label>
                             <img src="images/kumpulan_icon/geo_wilayah2.png" style="width: 3%;">:
-                            <label>Geo Wilayah</label>
+                            <label>Geo Wilayah, </label>
                         </div>
                         <div>
                             <img src="images/foto_kondisi_titik/Sangat Baik.png" style="width: 3%;">:
@@ -164,6 +172,27 @@ unset($_SESSION['id_lokasi']);
                         </div>
                         <div id="mapid" style="height: 560px; width: 100%; margin-top: 20px;"></div>
                     </div>
+                <?php } ?>
+
+                <!-- Untuk User -->
+                <?php if($_SESSION['level_user'] == '2') { ?>
+                    <div>
+                        <div>
+                            <label>Keterangan Icon:</label>
+                        </div>
+                        <div>
+                            <img src="images/foto_lokasi/icon_lokasi/icon_lokasi.png" style="width: 3%;">:
+                            <label>Lokasi Pantai, </label>
+                            <img src="images/kumpulan_icon/cluster.png" style="width: 3%;">:
+                            <label>Pengelompokan Jarak Terdekat, </label>
+                            <img src="images/kumpulan_icon/geo_wilayah1.png" style="width: 3%;">:
+                            <label>Geo Wilayah, </label>
+                            <img src="images/kumpulan_icon/geo_wilayah2.png" style="width: 3%;">:
+                            <label>Geo Wilayah, </label>
+                        </div>
+                        <div id="mapid" style="height: 560px; width: 100%; margin-top: 20px;"></div>
+                    </div>
+                <?php } ?>
                 </div>
             </section>
             <!-- /.Left col -->
@@ -232,11 +261,6 @@ unset($_SESSION['id_lokasi']);
     <script src="dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
     <?php include 'dist/js/leaflet_map.php'; ?>
-
-    <script>
-      sessionStorage.clear()
-
-    </script>
 
 </body>
 </html>

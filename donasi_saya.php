@@ -1,16 +1,18 @@
-<?php
-    include 'build/config/connection.php';
+<?php include 'build/config/connection.php';
+session_start();
 
-    $sqlviewdonasi = 'SELECT * FROM t_donasi
-                      LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
-                    WHERE id_user = 1';
-    $stmt = $pdo->prepare($sqlviewdonasi);
-    $stmt->execute();
-    $row = $stmt->fetchAll();
+if (isset($_SESSION['level_user']) == 0) {
+    header('location: login.php');
+}
 
-
-
+$sqlviewdonasi = 'SELECT * FROM t_donasi
+                  LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
+                WHERE id_user = 1';
+$stmt = $pdo->prepare($sqlviewdonasi);
+$stmt->execute();
+$row = $stmt->fetchAll(); 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,7 +48,7 @@
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="#">Logout</a>
+                            <a class="dropdown-item" href="logout.php">Logout</a>
                 </li>
             </ul>
         </nav>
@@ -67,6 +69,7 @@
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <?php if($_SESSION['level_user'] == '2') { ?>    
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -103,6 +106,7 @@
                                 <p> Review Donasi  </p>
                            </a>
                         </li>
+                    <?php } ?>
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -134,6 +138,7 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+                <?php if($_SESSION['level_user'] == '2') { ?> 
                     <div>
                         <table class="table table-striped">
                      <thead>
@@ -257,6 +262,7 @@
                     </tbody>
                   </table>
                     </div>
+                <?php } ?>
                 </div>
 
             </section>

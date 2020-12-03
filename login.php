@@ -1,3 +1,39 @@
+<?php include 'build/config/connection.php';
+session_start(); 
+
+if (isset($_POST['login'])) {
+    $username   = $_POST['tbusername'];
+    $password   = $_POST['tbpassword'];
+    
+    $sql  = "SELECT username, password, id_user, level_user FROM t_user WHERE username=:username";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['username' => $username]);
+    $row = $stmt->fetch();
+ 
+    if (!empty($row)) { 
+        if ($password == $row->password) {
+            if ($row->level_user == "1") {
+                $_SESSION['id_user']        = $row->id_user;
+                $_SESSION['level_user']     = $row->level_user;
+                header('Location: dashboard_admin.php?pesan=login_berhasil');
+
+            } elseif ($row->level_user == "2") {
+                $_SESSION['id_user']        = $row->id_user;
+                $_SESSION['level_user']     = $row->level_user;
+                header('Location: dashboard_user.php?pesan=login_berhasil');
+
+            } else {
+                header('location: login.php?pesan=gagal_login_session'); 
+            }
+        } else {
+            header('location: login.php?pesan=gagal_login');
+        }
+    } else {
+        header('location: login.php?pesan=username_atau_password_salah');
+    }
+}
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -31,72 +67,65 @@
      <!-- GOOGLE FONT -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Roboto&display=swap" rel="stylesheet">
-     <link rel="stylesheet" type="text/css" href="css/login.css">
-     <link rel="stylesheet" type="text/css" href="css/util.css">
-     <title>Login - TKJB</title>
+    <link rel="stylesheet" type="text/css" href="css/login.css">
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <title>Login - TKJB</title>
 </head>
-<body>
+<body> 
 
-    
-    
-        
-        <!-- END OF NAVBAR -->
-        <div class="login-jumbotron">
+    <!-- END OF NAVBAR -->
+    <div class="login-jumbotron">
         <div class="limiter">
-		<div class="container-login100">
-        
-			<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">
-            <div class="login100-form-back"> <a href="index.php">< Kembali   </a></div>             
-				<form class="login100-form validate-form">
-                
-					<span class="login100-form-title p-b-33">  
-                        TKJB  
-					</span>
+    		<div class="container-login100">
+            
+        		<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">
+                    <div class="login100-form-back"> <a href="index.php">< Kembali   </a></div>             
+    				<form action="" method="POST" class="login100-form validate-form">
                     
-					<div class="wrap-input100 validate-input">
-						<input class="input100" type="text" name="email" placeholder="Username">
-						<span class="focus-input100-1"></span>
-						<span class="focus-input100-2"></span>
-					</div>
+    					<span class="login100-form-title p-b-33">  
+                            TKJB  
+    					</span>
+                        
+    					<div class="wrap-input100 validate-input">
+    						<input class="input100" type="text" name="tbusername" placeholder="Username">
+    						<span class="focus-input100-1"></span>
+    						<span class="focus-input100-2"></span>
+    					</div>
 
-					<div class="wrap-input100 rs1 validate-input" data-validate="Password is required">
-						<input class="input100" type="password" name="pass" placeholder="Password">
-						<span class="focus-input100-1"></span>
-						<span class="focus-input100-2"></span>
-					</div>
+    					<div class="wrap-input100 rs1 validate-input" data-validate="Password is required">
+    						<input class="input100" type="password" name="tbpassword" placeholder="Password">
+    						<span class="focus-input100-1"></span>
+    						<span class="focus-input100-2"></span>
+    					</div>
 
-					<div class="container-login100-form-btn m-t-20">
-						<button class="login100-form-btn">
-							Login
-						</button>
-					</div>
+    					<div class="container-login100-form-btn m-t-20">
+    						<button type="submit" name="login" class="login100-form-btn">
+    							Login
+    						</button>
+    					</div>
 
-                    <br>
-					<div class="text-center">
-						<span class="txt1">
-							Belum punya akun ?
-						</span>
+                        <br>
+    					<div class="text-center">
+    						<span class="txt1">
+    							Belum punya akun ?
+    						</span>
 
-						<a href="register.php" class="txt2 hov1">
-							Daftar
-						</a>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	
+    						<a href="register.php" class="txt2 hov1">
+    							Daftar
+    						</a>
+    					</div>
+    				</form>
+        		</div>
+
+            </div>
         </div>
-
-
-    
-
+    </div> 
 
     <!-- JS Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
-    	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
 	<script src="vendor/animsition/js/animsition.min.js"></script>
 <!--===============================================================================================-->
@@ -111,5 +140,5 @@
 	<script src="vendor/countdowntime/countdowntime.js"></script>
 <!--===============================================================================================-->
 	<script src="js/main.js"></script>
-  </body>
+</body>
 </html>

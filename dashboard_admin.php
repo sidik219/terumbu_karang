@@ -1,3 +1,11 @@
+<?php include 'build/config/connection.php';
+session_start();
+
+if (isset($_SESSION['level_user']) == 0) {
+    header('location: login.php');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,6 +81,7 @@
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <?php if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item menu-open">
                            <a href="dashboard_admin.php" class="nav-link active">
                                 <i class="nav-icon fas fa-home"></i>
@@ -163,6 +172,7 @@
                                     <p> Kelola User </p>
                             </a>
                         </li>
+                    <?php } ?>
                     </ul>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
