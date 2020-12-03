@@ -92,23 +92,18 @@
                            </a>
                         </li>
                         <li class="nav-item">
+                           <a href="reservasi_saya.php" class="nav-link">
+                                <i class="nav-icon fas fa-disease"></i>
+                                <p> Terumbu Karang  </p>
+                           </a>
+                        </li>
+                        <li class="nav-item">
                            <a href="profil_saya.php" class="nav-link">
                                 <i class="nav-icon fas fas fa-user"></i>
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
-                        <li class="nav-item">
-                           <a href="map.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Map  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="review_donasi.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Review Donasi  </p>
-                           </a>
-                        </li>
+                      
                     </ul>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->

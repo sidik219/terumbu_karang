@@ -76,8 +76,8 @@ $row = $stmt->fetchAll();
                                 <p> Home </p>
                            </a>
                         </li>
-                        <li class="nav-item">
-                           <a href="donasi_saya.php" class="nav-link">
+                        <li class="nav-item menu-open">
+                           <a href="donasi_saya.php" class="nav-link active ">
                                 <i class="nav-icon fas fa-hand-holding-usd"></i>
                                 <p> Donasi Saya </p>
                            </a>
@@ -89,24 +89,19 @@ $row = $stmt->fetchAll();
                            </a>
                         </li>
                         <li class="nav-item">
+                           <a href="reservasi_saya.php" class="nav-link">
+                                <i class="nav-icon fas fa-disease"></i>
+                                <p> Terumbu Karang  </p>
+                           </a>
+                        </li>
+                        <li class="nav-item">
                            <a href="profil_saya.php" class="nav-link">
                                 <i class="nav-icon fas fas fa-user"></i>
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
-                        <li class="nav-item">
-                           <a href="map.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Map  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="review_donasi.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Review Donasi  </p>
-                           </a>
-                        </li>
-                    </ul>
+                      
+                    </ul>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -117,48 +112,55 @@ $row = $stmt->fetchAll();
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <div class="content-header">
-                <div class="container-fluid">
-                <div class="row">
-                        <div class="col">
+                    <div class="container-fluid">
+                        <a href="javascript:history.back()">< Kembali</a><br><br>
+  
+                    </div>
+                    <div class="col">
+                            <h4><span class="align-middle font-weight-bold">Pilih Terumbu Karang</span></h4>
+                        </div>
+            </div>
+            <!-- /.content-header -->
 
-
-        <h4 class="font-weight-bold">Pilih Terumbu Karang</h4>
-        <button class="btn btn-warning btn-back" type="button">< Jenis Lainnya</button>
         <div class="row shop-items">
             <div class="card-columns">
-        <?php
-            foreach ($row as $rowitem) {
-        ?>
+
+            <?php
+                foreach ($row as $rowitem) {
+            ?>
 
             <div class="card  card-pilihan mb-4 shadow-sm shop-item">
                 <a href="#">
                     <img class="card-img-top shop-item-image" width="100%" src="<?=$rowitem->foto_terumbu_karang?>" height="160px" width="150px"
                 ></a>
                 <div class="card-body pt-2">
-                <h5 class="shop-item-title mb-0 card-title"><?=$rowitem->nama_terumbu_karang?></h5>
-                <p class="card-text text-muted"><?=$rowitem->deskripsi_terumbu_karang?></p>
-                <span class="font-weight-bold" id="harga<?=$rowitem->id_terumbu_karang?>"><script>
-                                                    var hargaformat = formatter.format(<?=$rowitem->harga_terumbu_karang?>);
-                                                    var hargap =  document.createElement('p')
-                                                    hargap.classList.add("mb-0", "mt-0")
-                                                    hargap.textContent = hargaformat
-                                                    document.getElementById("harga<?=$rowitem->id_terumbu_karang?>").appendChild(hargap)
-                                            </script></span>
-                <span class="shop-item-price d-none">Rp. <?=$rowitem->harga_terumbu_karang?></span>
-                <input type="hidden" class="shop-item-id" value="<?=$rowitem->id_terumbu_karang?>">
+                    <h5 class="shop-item-title mb-0 card-title"><?=$rowitem->nama_terumbu_karang?></h5>
+                    <p class="card-text text-muted"><?=$rowitem->deskripsi_terumbu_karang?></p>
+                    <span class="font-weight-bold" id="harga<?=$rowitem->id_terumbu_karang?>"><script>
+                                                        var hargaformat = formatter.format(<?=$rowitem->harga_terumbu_karang?>);
+                                                        var hargap =  document.createElement('p')
+                                                        hargap.classList.add("mb-0", "mt-0")
+                                                        hargap.textContent = hargaformat
+                                                        document.getElementById("harga<?=$rowitem->id_terumbu_karang?>").appendChild(hargap)
+                                                </script></span>
+                    <span class="shop-item-price d-none">Rp. <?=$rowitem->harga_terumbu_karang?></span>
+                    <input type="hidden" class="shop-item-id" value="<?=$rowitem->id_terumbu_karang?>">
                 <div class="row">
                     <!-- <div class="col-2">
                         <input type="number" min="1" id="tbqty" style="width: 100%; height:100%;">
                     </div> -->
                     <div class="col">
+                        <br>
                             <a data-nama_tk="<?=$rowitem->id_terumbu_karang?>" data-harga_tk="<?=$rowitem->harga_terumbu_karang?>"
                             data-id_tk="<?=$rowitem->id_terumbu_karang?>"
-                            class="add-to-cart btn btn-warning shop-item-button"><i class="nav-icon fas fa-cart-plus"></i> Tambah ke Keranjang</a>
+                            class="add-to-cart btn btn-warning shop-item-button btn-card"><i class="nav-icon fas fa-cart-plus"></i> Tambah ke Keranjang</a>
                     </div>
                 </div>
 
+            </div>
+            
         </div>
-    </div>
+        
         <?php } ?>
         <input type="text" class="d-none" id="id-lokasi" value="<?=$_SESSION['id_lokasi']?>">
             </div>
@@ -183,9 +185,9 @@ $row = $stmt->fetchAll();
     </div>
     <!-- ./wrapper -->
 
- <footer class="main-footer">
+ <footer class="main-footer keranjang-saya-footer">
         <section class="container content-section">
-            <h4 class="section-header font-weight-bold" id="keranjang">Keranjang Anda</h4>
+        <h4 id="keranjang"><span class="align-middle font-weight-bold">Keranjang Saya</span></h4><br>
             <div class="cart-row row">
                 <div class="col"><span class="cart-item cart-header cart-column">Nama</span></div>
                 <div class="col"><span class="cart-price cart-header cart-column">Harga</span></div>
@@ -202,8 +204,7 @@ $row = $stmt->fetchAll();
               (Opsional. Pesan akan disertakan dalam label khusus pada terumbu karang )</label>
               <input type="text" maxlength="64" class="form-control success" id="pesan" placeholder="Isi pesan anda di sini...">
             </div>
-            <button class="btn btn-warning btn-back" type="button">< Jenis Lainnya</button>
-            <button class="btn btn-primary btn-purchase" type="button">Selesai Pilih ></button>
+            <button class="btn btn-primary btn-purchase btn-card" type="button">Checkout ></button>
         </section>
     </footer>
     <!-- jQuery -->
