@@ -93,8 +93,8 @@ $rowjenis = $stmt->fetchAll();
                                 <p> Home </p>
                            </a>
                         </li>
-                        <li class="nav-item menu-open">
-                           <a href="donasi_saya.php" class="nav-link active ">
+                        <li class="nav-item">
+                           <a href="donasi_saya.php" class="nav-link">
                                 <i class="nav-icon fas fa-hand-holding-usd"></i>
                                 <p> Donasi Saya </p>
                            </a>
@@ -106,19 +106,24 @@ $rowjenis = $stmt->fetchAll();
                            </a>
                         </li>
                         <li class="nav-item">
-                           <a href="reservasi_saya.php" class="nav-link">
-                                <i class="nav-icon fas fa-disease"></i>
-                                <p> Terumbu Karang  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
                            <a href="profil_saya.php" class="nav-link">
                                 <i class="nav-icon fas fas fa-user"></i>
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
-                      
-                    </ul>      
+                        <li class="nav-item">
+                           <a href="map.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-user"></i>
+                                <p> Map  </p>
+                           </a>
+                        </li>
+                        <li class="nav-item">
+                           <a href="review_donasi.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-user"></i>
+                                <p> Review Donasi  </p>
+                           </a>
+                        </li>
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -129,13 +134,11 @@ $rowjenis = $stmt->fetchAll();
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <div class="content-header">
-                    <div class="container-fluid">
-                        <a href="map.php">< Kembali</a><br><br>
-  
+                <div class="container-fluid">
+                <div class="row">
+
                     </div>
-                    <div class="col">
-                            <h4><span class="align-middle font-weight-bold">Pilih Jenis Terumbu Karang</span></h4>
-                        </div>
+                </div>
                 <!-- /.container-fluid -->
             </div>
             <!-- /.content-header -->
@@ -143,6 +146,7 @@ $rowjenis = $stmt->fetchAll();
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+                    <h3>Pilih Jenis Terumbu Karang</h3>
                     <div class="row">
                     <?php
                     foreach ($rowjenis as $rowitem) { ?>
@@ -154,8 +158,7 @@ $rowjenis = $stmt->fetchAll();
                                 <div class="card-body">
                                     <p class="card-title"><h5 class="font-weight-bold"><?=$rowitem->nama_jenis?></h5></p>
                                     <p class="card-text"><?=$rowitem->deskripsi_jenis?></p>
-                                    <!-- <a href="pilih_terumbu_karang.php?id_jenis=<?=$rowitem->id_jenis?>" class="btn btn-outline-primary">Pilih Jenis</a> -->
-                                    <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='pilih_terumbu_karang.php?id_jenis=<?=$rowitem->id_jenis?>';">Pilih Jenis</button>
+                                    <a href="pilih_terumbu_karang.php?id_jenis=<?=$rowitem->id_jenis?>" class="btn btn-outline-primary">Pilih Jenis</a>
                                 </div>
                             </div>
                         </div>

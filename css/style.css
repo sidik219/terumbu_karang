@@ -122,10 +122,8 @@
     }
     /*End Container profile saya dashboard user*/
 
-
-    .shop-item {
-        text-align: center;
-        padding-top: 0.25em;
+    shop-item {
+        margin: 30px;
     }
 
     .shop-item-title {
@@ -136,9 +134,8 @@
         color: #333;
     }
 
-    .shop-item img {
-        width: 100%;
-        object-fit: cover;
+    .shop-item-image {
+        height: auto;
     }
 
     .shop-item-details {
@@ -150,7 +147,6 @@
     .shop-item-price {
         flex-grow: 1;
         color: #333;
-        
     }
 
     .shop-items {
@@ -269,13 +265,6 @@
     .card-pilihan {
         text-align: center;
         padding-top: 0.25em;
-        margin: 10px 20px 10px;
-    }
-
-    .card-pilihan img{
-        width: 100%;
-        height: 160px;
-        object-fit: cover;
     }
 
     @font-face {
@@ -334,25 +323,9 @@
 {
     background-color: #E24901;
     border: none;
-    color: white;
-}
-
-.btn-warning:hover {
-    color: white;
-    background-color: #007bff;
 }
 
 .dashboard-home
 {
     background-color: #F5F7FA;
-}
-
-.keranjang-saya-footer
-{
-    margin-top : 40px;
-}
-
-.btn-info:hover {
-    color: #fff;
-    background-color: #007bff;
 }
