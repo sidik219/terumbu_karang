@@ -122,7 +122,7 @@
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="jumbotron jumbotron-fluid-profil">
-                            
+                        <h4>Selamat Datang, Nimo !</h4>
                     </div>
                     <!-- end jumbotro profil -->
                     <!-- profil pic holder -->
@@ -131,6 +131,54 @@
                             <img src="dist/img/profil-example.jpg" id="photo">   
                          </div>
                     </div>
+                  
+                    <!-- card menu -->
+                    <section id="menu">
+                    <div class="container">
+                        <div class="card-group text-center p-5">
+                            <div class="row">
+                                    <div class="col-md-12 col-lg-4">
+                                        <div class="card m-3 dashboard-home">
+                                            <img class="card-img-top mb-3" src="dist/img/konservasi.jpg" alt="Card image cap" id="img-cap">
+                                            <div class="card-block">
+                                                <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='donasi_saya.php';">Donasi</button>
+                                            </div>     
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-4">
+                                        <div class="card m-3 dashboard-home">
+                                            <img class="card-img-top mb-3" src="dist/img/briefcase.jpg" alt="Card image cap" id="img-cap">
+                                            <div class="card-block">
+                                            <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='reservasi_saya.php';">Reservasi</button> 
+                                            </div>     
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-12 col-lg-4">
+                                        <div class="card m-3 dashboard-home">
+                                            <img class="card-img-top mb-3" src="dist/img/coral-status.jpg" alt="Card image cap" id="img-cap">
+                                            <div class="card-block">
+                                            <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='#';">Terumbu Karang</button> 
+                                            </div>     
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-4">
+                                        <div class="card m-3 dashboard-home">
+                                            <img class="card-img-top mb-3" src="dist/img/user.jpg" alt="Card image cap" id="img-cap">
+                                            <div class="card-block">
+                                            <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='profil_saya.php';">Profil</button>
+                                            </div>     
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    
+                                   
+                            </div>  
+                        </div>
+                    </div>
+                </section>
+                    <!-- end of card menu -->
                 </div>
                 <!-- /.container-fluid -->
             </div>
