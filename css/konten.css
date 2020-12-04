@@ -9,6 +9,9 @@ body {
     font-family: MontserratRegular;
     font-family: 'Montserrat', sans-serif;
     background-color: #F5F7FA;
+    background-image: url(../dist/img/home-slide4-darken.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 
@@ -343,10 +346,8 @@ body {
 
 .login-jumbotron {
     margin-top: -85px;
-    height: 736px;
+    /* height: 736px; */
     width: 100%;
-    background-image: url(../dist/img/home-slide4-darken.jpg);
-    background-size: cover;
     position: relative;
 }
 
