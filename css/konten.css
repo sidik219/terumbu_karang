@@ -183,6 +183,33 @@ body {
 
 /* END OF DIV P-1 */
 
+.home-about-container {
+    background-color: #F5F7FA;
+    margin-top: -40px;
+    padding-top: 40px;
+    padding-bottom: 100px;
+}
+
+.donasi-about-container {
+    background-color: #F5F7FA;
+    margin-top: -40px;
+    padding-top: 40px;
+    
+}
+
+.coralmaps-about-container {
+    background-color: #F5F7FA;
+    margin-top: -40px;
+    padding-top: 40px;
+    padding-bottom: 100px;
+}
+
+.donate-now
+{
+    margin-top: -50px;
+    padding-bottom: 40px;
+}
+
 .wisata-container {
     background-color: #F5F7FA;
     margin-top: -40px;

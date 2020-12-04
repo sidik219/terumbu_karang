@@ -142,50 +142,51 @@
     
     <!-- BODY CONTAINER -->
     
-    
-    <div id="about" class="container">
-        <!-- 1st PARAGRAPH -->
-        <div class="starter-template">
-            <h1 class="mb-5">TENTANG KAMI</h1><br>
-            <p><b>TKJB</b> (Terumbu Karang Jawa Barat) merupakan bentuk kerjasama
-                antara Kementrian Kelautan dan
-                Perikanan (KKP) dengan Kelompok
-                Usaha Bersama (KUB) masyarakat
-                pesisir pantai di Provinsi Jawa Barat yang memiliki tujuan sebagai berikut :</p><br><br>
-        </div>
-        <!-- END 1st PARAGRAPH -->
-        <!-- ROW WITH ICON -->
-        <div class="row text-center pb-4">
-            <div class="col-md-12 col-lg-4 p-1">
-                <img src="dist/img/konservasi.jpg" class="rounded-circle p-3" alt="Prime Meat Image" width="250" height="250">
-                <h3>Konservasi <br>Terumbu Karang</h3><br>
-                <p>Melestarikan dan melakukan
-                    pemulihan pada terumbu
-                    karang sekitar pantai Jawa
-                    Barat.</p>
+    <div class="home-about-container">
+        <div id="about" class="container">
+            <!-- 1st PARAGRAPH -->
+            <div class="starter-template">
+                <h1 class="mb-5">TENTANG KAMI</h1><br>
+                <p><b>TKJB</b> (Terumbu Karang Jawa Barat) merupakan bentuk kerjasama
+                    antara Kementrian Kelautan dan
+                    Perikanan (KKP) dengan Kelompok
+                    Usaha Bersama (KUB) masyarakat
+                    pesisir pantai di Provinsi Jawa Barat yang memiliki tujuan sebagai berikut :</p><br><br>
             </div>
-            <div class="col-md-12 col-lg-4 p-1-middle">
-                <img src="dist/img/informasi.jpg" class="rounded-circle p-3" alt="Fish Image" width="250" height="250">
-                <h3>Informasi <br> Terumbu Karang</h3><br>
-                <p>Menyajikan informasi pada
-                    masyarakat umum tentang
-                    kondisi terumbu karang
-                    di Jawa Barat.
-                    </p>
+            <!-- END 1st PARAGRAPH -->
+            <!-- ROW WITH ICON -->
+            <div class="row text-center pb-4">
+                <div class="col-md-12 col-lg-4 p-1">
+                    <img src="dist/img/konservasi.jpg" class="rounded-circle p-3" alt="Prime Meat Image" width="250" height="250">
+                    <h3>Konservasi <br>Terumbu Karang</h3><br>
+                    <p>Melestarikan dan melakukan
+                        pemulihan pada terumbu
+                        karang sekitar pantai Jawa
+                        Barat.</p>
+                </div>
+                <div class="col-md-12 col-lg-4 p-1-middle">
+                    <img src="dist/img/informasi.jpg" class="rounded-circle p-3" alt="Fish Image" width="250" height="250">
+                    <h3>Informasi <br> Terumbu Karang</h3><br>
+                    <p>Menyajikan informasi pada
+                        masyarakat umum tentang
+                        kondisi terumbu karang
+                        di Jawa Barat.
+                        </p>
+                </div>
+                <div class="col-md-12 col-lg-4 p-1">
+                    <img src="dist/img/ekonomi.jpg" class="rounded-circle p-3" alt="Vegetables Image" width="250" height="250">
+                    <h3>Ekonomi <br>Terumbu Karang</h3><br>
+                    <p>Mendukung wisata terumbu
+                        karang untuk meningkatkan
+                        ekonomi masyarakat pesisir.</p>
+                </div>
             </div>
-            <div class="col-md-12 col-lg-4 p-1">
-                <img src="dist/img/ekonomi.jpg" class="rounded-circle p-3" alt="Vegetables Image" width="250" height="250">
-                <h3>Ekonomi <br>Terumbu Karang</h3><br>
-                <p>Mendukung wisata terumbu
-                    karang untuk meningkatkan
-                    ekonomi masyarakat pesisir.</p>
-            </div>
-        </div>
-        <!-- END OF ROW WITH ICON -->
+            <!-- END OF ROW WITH ICON -->
 
-    </div>
+        </div>
     <!-- END OF BODY CONTAINER -->
-    
+    </div>
+
     <div id="carouselFull" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
@@ -206,7 +207,7 @@
     </div>
 
     <div class="wisata-container">
-        <div id="about" class="container" ">
+        <div id="about" class="container">
             <!-- 1st PARAGRAPH -->
             <div class="starter-template">
                 <h3 class="mb-5">WISATA TERUMBU

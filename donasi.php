@@ -99,50 +99,47 @@
 
         </div>
     </section>
-
-    <div id="about" class="container">
-        <!-- 1st PARAGRAPH -->
-        <div class="starter-template">
-            <h1 class="mb-5">SISTEM DONASI</h1><br>
-        </div>
-        <!-- END 1st PARAGRAPH -->
-        <!-- ROW WITH ICON -->
-        <div class="row text-center pb-4">
-            <div class="col-md-12 col-lg-4 p-1">
-                <img src="dist/img/choose.jpg" class="rounded-circle p-3" alt="Prime Meat Image" width="250" height="250">
-                <h3>Pilih</h3><br>
-                <p>Pilih sendiri lokasi penanaman dan jenis terumbu karang yang tersedia pada lokasi pilihan.</p>
-            </div>
-            <div class="col-md-12 col-lg-4 p-1-middle">
-                <img src="dist/img/pesan.jpg" class="rounded-circle p-3" alt="Fish Image" width="250" height="250">
-                <h3>Pesan</h3><br>
-                <p>Tulis pesan untuk dipasang pada terumbu karang, yang nantinya bisa kita lihat pada saat menyelam nanti.
-                    </p>
-            </div>
-            <div class="col-md-12 col-lg-4 p-1">
-                <img src="dist/img/coral-status.jpg" class="rounded-circle p-3" alt="Vegetables Image" width="250" height="250">
-                <h3>Pantau</h3><br>
-                <p>Pantau status perkembangan dan kondisi terumbu karang yang telah kita donasikan.</p>
-            </div>
-        </div>
-        <!-- END OF ROW WITH ICON -->
-
-        
-        
+        <!-- END OF ROW WITH ICON -->   
     </div>
     <!-- END OF BODY CONTAINER -->
-    
-    <div id="about" class="container">
-        <!-- 1st PARAGRAPH -->
-        <div class="starter-template">
-        <a href="coralmaps.php" class="btn btn-link-slide" role="button" aria-pressed="true">        
-        Donasi Sekarang
-        </a>
+
+    <div class="donasi-about-container">
+        <div id="about" class="container ">
+            <!-- 1st PARAGRAPH -->
+            <div class="starter-template">
+                <h1 class="mb-5">SISTEM DONASI</h1><br>
+            </div>
+            <!-- END 1st PARAGRAPH -->
+            <!-- ROW WITH ICON -->
+            <div class="row text-center pb-4">
+                <div class="col-md-12 col-lg-4 p-1">
+                    <img src="dist/img/choose.jpg" class="rounded-circle p-3" alt="Prime Meat Image" width="250" height="250">
+                    <h3>Pilih</h3><br>
+                    <p>Pilih sendiri lokasi penanaman dan jenis terumbu karang yang tersedia pada lokasi pilihan.</p>
+                </div>
+                <div class="col-md-12 col-lg-4 p-1-middle">
+                    <img src="dist/img/pesan.jpg" class="rounded-circle p-3" alt="Fish Image" width="250" height="250">
+                    <h3>Pesan</h3><br>
+                    <p>Tulis pesan untuk dipasang pada terumbu karang, yang nantinya bisa kita lihat pada saat menyelam nanti.
+                        </p>
+                </div>
+                <div class="col-md-12 col-lg-4 p-1">
+                    <img src="dist/img/coral-status.jpg" class="rounded-circle p-3" alt="Vegetables Image" width="250" height="250">
+                    <h3>Pantau</h3><br>
+                    <p>Pantau status perkembangan dan kondisi terumbu karang yang telah kita donasikan.</p>
+                </div>
+            </div>
+        <div id="about" class="container donate-now">
+            <!-- 1st PARAGRAPH -->
+            <div class="starter-template">
+                <a href="coralmaps.php" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                Donasi Sekarang
+                </a>
+            </div>
         </div>
     </div>
 
-    <br><br><br><br><br><br>
-    <section id="footer">
+    <section id="footer" class=>
         <div class="container">
             <div class="row">
                 <div class="blogo col-xs-12 col-sm-12 col-md-12 col-lg-4">

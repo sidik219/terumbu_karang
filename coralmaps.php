@@ -1,3 +1,11 @@
+<?php include 'build/config/connection.php';
+session_start();
+
+//if (isset($_SESSION['level_user']) == 0) {
+    //header('location: login.php');
+//}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,6 +29,18 @@
     
     <!-- Font Awesome CSS -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+     <!-- summernote -->
+     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+    <!-- Leaflet CSS -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <!--Leaflet panel layer CSS-->
+        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
+    <!-- Leaflet Marker Cluster CSS -->
+        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
+        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
+    <!-- Local CSS -->
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     
     
 </head>
@@ -72,10 +92,39 @@
 </nav> 
 <!-- END OF NAVBAR -->
 
-  <div class="container">
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+ 
+  <div class="coralmaps-about-container">
+        <div id="about" class="container" style="margin-top:50px;">
+            
+        <div class="starter-template">
+                <h1 class="mb-5">PILIH LOKASI</h1><br>
+        </div>
+
+        <section class="content" style="margin-top:-50px;">
+                <div class="container-fluid">
+                <!-- Untuk User -->
+                <?php //if($_SESSION['level_user'] == '2') { ?>
+                    <div>
+                        <div>
+                            <label>Keterangan Icon:</label>
+                        </div>
+                        <div>
+                            <img src="images/foto_lokasi/icon_lokasi/icon_lokasi.png" style="width: 3%;">:
+                            <label>Lokasi Pantai, </label>
+                            <img src="images/kumpulan_icon/cluster.png" style="width: 3%;">:
+                            <label>Pengelompokan Jarak Terdekat, </label>
+                            <img src="images/kumpulan_icon/geo_wilayah1.png" style="width: 3%;">:
+                            <label>Geo Wilayah, </label>
+                            <img src="images/kumpulan_icon/geo_wilayah2.png" style="width: 3%;">:
+                            <label>Geo Wilayah, </label>
+                        </div>
+                        <div id="mapid" style="height: 560px; width: 100%; margin-top: 20px;"></div>
+                    </div>
+                <?php //} ?>
+                </div>
+        </section>
+
+        </div>
   </div>
 
     <section id="footer">
@@ -110,6 +159,16 @@
    
     <!-- Number Counter -->
     <script src="js/nsc.js"></script>
+     <!-- Leaflet JS -->
+     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <!-- Leaflet Marker Cluster -->
+    <script src="dist/js/leaflet.markercluster-src.js"></script>
+    <!-- Leaflet panel layer JS-->
+    <script src="dist/js/leaflet-panel-layers.js"></script>
+    <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
+    <script src="dist/js/leaflet.ajax.js"></script>
+    <!-- Leaflet Map -->
+    <?php include 'dist/js/leaflet_map.php'; ?>
    
 
 </body>
