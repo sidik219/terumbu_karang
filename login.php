@@ -14,11 +14,13 @@ if (isset($_POST['login'])) {
         if ($password == $row->password) {
             if ($row->level_user == "1") {
                 $_SESSION['id_user']        = $row->id_user;
+                $_SESSION['username']        = $row->username;
                 $_SESSION['level_user']     = $row->level_user;
                 header('Location: dashboard_admin.php?pesan=login_berhasil');
 
             } elseif ($row->level_user == "2") {
                 $_SESSION['id_user']        = $row->id_user;
+                $_SESSION['username']        = $row->username;
                 $_SESSION['level_user']     = $row->level_user;
                 header('Location: dashboard_user.php?pesan=login_berhasil');
 
