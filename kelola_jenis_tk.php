@@ -1,11 +1,15 @@
-<?php
-    include 'build\config\connection.php';
+<?php include 'build/config/connection.php';
+session_start();
 
-    $sqlviewjenis = 'SELECT * FROM t_jenis_terumbu_karang
-                        ORDER BY nama_jenis';
-        $stmt = $pdo->prepare($sqlviewjenis);
-        $stmt->execute();
-        $row = $stmt->fetchAll();
+if (isset($_SESSION['level_user']) == 0) {
+    header('location: login.php');
+}
+
+$sqlviewjenis = 'SELECT * FROM t_jenis_terumbu_karang
+                ORDER BY nama_jenis';
+$stmt = $pdo->prepare($sqlviewjenis);
+$stmt->execute();
+$row = $stmt->fetchAll();
 
 ?>
 
@@ -56,7 +60,7 @@
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="#">Logout</a>              
+                            <a class="dropdown-item" href="logout.php">Logout</a>              
                 </li>  
             </ul>
         </nav>
@@ -77,6 +81,7 @@
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <?php if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item ">
                            <a href="dashboard_admin.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -168,6 +173,7 @@
                                     <p> Kelola User </p>
                             </a>
                         </li>
+                    <?php } ?>
                     </ul>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -198,6 +204,7 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+                <?php if($_SESSION['level_user'] == '1') { ?>
                     <table class="table table-striped">
                      <thead>
                             <tr>
@@ -259,7 +266,7 @@
                           <?php } ?>
                     </tbody>
                   </table> 
-            
+                <?php } ?>
             </section>
             <!-- /.Left col -->
             </div>

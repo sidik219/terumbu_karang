@@ -1,22 +1,27 @@
-<?php
-    include 'build\config\connection.php';
+<?php include 'build\config\connection.php';
+session_start();
 
-    if (isset($_GET['status'])){
-        $status = $_GET['status'];
-    }
+if (isset($_SESSION['level_user']) == 0) {
+    header('location: login.php');
+}
 
-    $sqlviewlokasi = 'SELECT *, nama_wilayah, SUM(luas_titik) AS luas_total,
-    COUNT(id_titik) AS jumlah_titik, COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang,
-    COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup,
-    COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
-    COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
-    FROM t_lokasi LEFT JOIN t_titik ON t_lokasi.id_lokasi = t_titik.id_lokasi
-    LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
-    GROUP BY nama_lokasi
+if (isset($_GET['status'])){
+    $status = $_GET['status'];
+}
+
+$sqlviewlokasi = 'SELECT *, nama_wilayah, SUM(luas_titik) AS luas_total,
+COUNT(id_titik) AS jumlah_titik, COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang,
+COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup,
+COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
+COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
+FROM t_lokasi LEFT JOIN t_titik ON t_lokasi.id_lokasi = t_titik.id_lokasi
+LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
+GROUP BY nama_lokasi
 ';
-        $stmt = $pdo->prepare($sqlviewlokasi);
-        $stmt->execute();
-        $row = $stmt->fetchAll();
+
+$stmt = $pdo->prepare($sqlviewlokasi);
+$stmt->execute();
+$row = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,7 +77,7 @@
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="#">Logout</a>
+                            <a class="dropdown-item" href="logout.php">Logout</a>
                 </li>
             </ul>
         </nav>
@@ -93,6 +98,7 @@
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <?php if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item ">
                            <a href="dashboard_admin.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -184,6 +190,7 @@
                                     <p> Kelola User </p>
                             </a>
                         </li>
+                    <?php } ?>
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -214,6 +221,7 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+                <?php if($_SESSION['level_user'] == '1') { ?>
                     <table class="table table-striped">
                     <thead>
                             <tr>
@@ -366,7 +374,7 @@
                            <?php } ?>
                     </tbody>
                   </table>
-
+                <?php } ?>
 
             </section>
             <!-- /.Left col -->
