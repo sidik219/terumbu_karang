@@ -1,3 +1,56 @@
+<?php
+if (isset($_POST['register'])) {
+    $nama_user    = $_POST['tbnama_user'];
+    $jk           = $_POST['optjk'];
+    $email        = $_POST['tbemail'];
+    $no_hp        = $_POST['tbno_hp'];
+    $username     = $_POST['tbusername'];
+    $no_ktp     = $_POST['tbno_ktp'];
+    $password     = password_hash($_POST['tbpassword'], PASSWORD_DEFAULT);
+    $tanggal_lahir = $_POST['tanggal_lahir'];            
+    $alamat       = $_POST['txtalamat'];
+    $level_user = 1;
+    $aktivasi_user = 1;
+
+    //Fotokopi KTP upload
+    if (isset($_FILES['image_uploads1'])) {
+        $target_dir  = "images/ktp/";
+        $fotokopi_ktp = $target_dir . 'KTP_' .$id_user . '.jpg';
+        move_uploaded_file($_FILES["image_uploads1"]["tmp_name"], $fotokopi_ktp);
+    }
+    else if($_FILES["file"]["error"] == 4) {
+        $fotokopi_ktp = "images/ktpdefault.png";
+    }
+    //---Fotokopi KTP upload end
+
+     //Foto user upload
+    if (isset($_FILES['image_uploads2'])) {
+        $target_dir  = "images/foto_user/";
+        $foto_user = $target_dir . 'FU_' .$id_user . '.jpg';
+        move_uploaded_file($_FILES["image_uploads2"]["tmp_name"], $foto_user);
+    }
+    else if($_FILES["file"]["error"] == 4) {
+        $foto_user = "images/fudefault.png";
+    }
+    //---Foto user upload end
+
+    $sql = 'INSERT INTO t_user (nama_user, jk, email, no_hp, alamat, no_ktp, fotokopi_ktp, tanggal_lahir, foto_user, level_user, aktivasi_user, username, password )
+    VALUES (:nama_user, :jk, :email, :no_hp, :alamat, :no_ktp, :fotokopi_ktp, :tanggal_lahir, :foto_user, :level_user, :aktivasi_user, :username, :password)';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['nama_user' => $nama_user, 'jk' => $jk, 'email' => $email, 'no_hp' => $no_hp, 'alamat' => $alamat, 'no_ktp' => $no_ktp, 'fotokopi_ktp' => $fotokopi_ktp, 'tanggal_lahir' => $tanggal_lahir, 'foto_user' => $foto_user, 'level_user' => $level_user, 'aktivasi_user' => $aktivasi_user, 'username' => $username, 'password' => $password]);
+
+    $affectedrows = $stmt->rowCount();
+    if ($affectedrows == '0') {
+        echo "Failed !";
+    } else {
+        header('Location: login.php?status=regsuccess');
+    }
+} else {
+    echo '';
+} 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -146,7 +199,7 @@
                     </div>
                     <br>
                     <p align="center">
-                         <button type="submit" class="btn btn-submit">Kirim</button></p>
+                         <button type="submit" name="register" class="btn btn-submit">Kirim</button></p>
                     </form>
 
 </div>

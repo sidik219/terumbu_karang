@@ -1,9 +1,9 @@
 <?php include 'build/config/connection.php';
-session_start();
+//session_start();
 
-if (isset($_SESSION['level_user']) == 0) {
-    header('location: login.php');
-}
+//if (isset($_SESSION['level_user']) == 0) {
+    //header('location: login.php');
+//}
 
 $sqlviewwilayah = 'SELECT *, 
             SUM(luas_titik) AS luas_total, COUNT(id_titik) AS jumlah_titik,
@@ -97,7 +97,7 @@ $rowwilayah = $stmt->fetchAll();
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php if($_SESSION['level_user'] == '1') { ?>
+                    <?php //if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item ">
                            <a href="dashboard_admin.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -189,7 +189,7 @@ $rowwilayah = $stmt->fetchAll();
                                     <p> Kelola User </p>
                             </a>
                         </li>
-                    <?php } ?>
+                    <?php //} ?>
                     </ul>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -242,7 +242,7 @@ $rowwilayah = $stmt->fetchAll();
                 </tbody>
                 </table>   -->
 
-                <?php if($_SESSION['level_user'] == '1') { ?>
+                <?php //if($_SESSION['level_user'] == '1') { ?>
                     <table class="table table-striped DataWilayah">
                     <thead>
                         <tr>
@@ -317,7 +317,7 @@ $rowwilayah = $stmt->fetchAll();
                             <?php } ?>
                 </tbody>
                 </table>
-            <?php } ?>
+            <?php //} ?>
             
             </section>
             <!-- /.Left col -->

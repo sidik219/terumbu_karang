@@ -1,9 +1,9 @@
 <?php include 'build/config/connection.php';
-session_start();
+//session_start();
 
-if (isset($_SESSION['level_user']) == 0) {
-    header('location: login.php');
-}
+//if (isset($_SESSION['level_user']) == 0) {
+    //header('location: login.php');
+//}
 
 if (isset($_POST['submit'])) {
     if($_POST['submit'] == 'Simpan'){
@@ -117,7 +117,7 @@ if (isset($_POST['submit'])) {
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php if($_SESSION['level_user'] == '1') { ?>
+                    <?php //if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item ">
                            <a href="dashboard_admin.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -209,7 +209,7 @@ if (isset($_POST['submit'])) {
                                     <p> Kelola User </p>
                             </a>
                         </li>
-                    <?php } ?>
+                    <?php //} ?>
                     </ul>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -230,7 +230,7 @@ if (isset($_POST['submit'])) {
             <!-- /.content-header -->
 
             <!-- Main content -->
-        <?php if($_SESSION['level_user'] == '1') { ?>
+        <?php //if($_SESSION['level_user'] == '1') { ?>
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST" name="addWilayah">
@@ -284,7 +284,7 @@ if (isset($_POST['submit'])) {
                     </form>
             <br><a href="input_lokasi.php">Lanjut isi data lokasi ></a>
             </section>
-        <?php } ?>
+        <?php //} ?>
             <!-- /.Left col -->
             </div>
             <!-- /.row (main row) -->

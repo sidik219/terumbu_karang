@@ -1,9 +1,9 @@
 <?php include 'build/config/connection.php';
-session_start();
+//session_start();
 
-if (isset($_SESSION['level_user']) == 0) {
-    header('location: login.php');
-}
+//if (isset($_SESSION['level_user']) == 0) {
+    //header('location: login.php');
+//}
 ?>
 
 <!DOCTYPE html>
@@ -81,7 +81,7 @@ if (isset($_SESSION['level_user']) == 0) {
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php if($_SESSION['level_user'] == '1') { ?>
+                    <?php //if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item ">
                            <a href="dashboard_admin.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -174,7 +174,7 @@ if (isset($_SESSION['level_user']) == 0) {
                                     <p> Kelola User </p>
                             </a>
                         </li>
-                    <?php } ?>
+                    <?php //} ?>
                     </ul>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -205,7 +205,7 @@ if (isset($_SESSION['level_user']) == 0) {
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                <?php if($_SESSION['level_user'] == '1') { ?>
+                <?php //if($_SESSION['level_user'] == '1') { ?>
                      <table class="table table-striped">
                      <thead>
                             <tr>
@@ -239,7 +239,7 @@ if (isset($_SESSION['level_user']) == 0) {
                           </tr>
                           </tbody>
                   </table>
-                <?php } ?>
+                <?php //} ?>
 
             <!-- BUTTON SUBMIT -->
             <div class="new-entry">

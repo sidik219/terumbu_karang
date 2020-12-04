@@ -1,9 +1,9 @@
 <?php include 'build/config/connection.php';
-session_start();
+//session_start();
 
-if (isset($_SESSION['level_user']) == 0) {
-    header('location: login.php');
-}
+//if (isset($_SESSION['level_user']) == 0) {
+    //header('location: login.php');
+//}
 ?>
 
 <!DOCTYPE html>
@@ -82,7 +82,7 @@ if (isset($_SESSION['level_user']) == 0) {
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <!-- Untuk User -->
-                    <?php if($_SESSION['level_user'] == '2') { ?>
+                    <?php //if($_SESSION['level_user'] == '2') { ?>
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -119,7 +119,7 @@ if (isset($_SESSION['level_user']) == 0) {
                                 <p> Review Donasi  </p>
                            </a>
                         </li>
-                    <?php } ?>   
+                    <?php //} ?>   
                     </ul>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -135,9 +135,9 @@ if (isset($_SESSION['level_user']) == 0) {
                 <div class="row">
                         <div class="col">
                         <!-- Untuk User -->
-                        <?php if($_SESSION['level_user'] == '2') { ?>
+                        <?php //if($_SESSION['level_user'] == '2') { ?>
                             <h4><span class="align-middle font-weight-bold">Pilih Lokasi Penanaman</span></h4>
-                        <?php } ?>
+                        <?php //} ?>
                         </div>
                     </div>
                 </div>
@@ -149,7 +149,7 @@ if (isset($_SESSION['level_user']) == 0) {
             <section class="content">
                 <div class="container-fluid">
                 <!-- Untuk User -->
-                <?php if($_SESSION['level_user'] == '2') { ?>
+                <?php //if($_SESSION['level_user'] == '2') { ?>
                     <div>
                         <div>
                             <label>Keterangan Icon:</label>
@@ -166,7 +166,7 @@ if (isset($_SESSION['level_user']) == 0) {
                         </div>
                         <div id="mapid" style="height: 560px; width: 100%; margin-top: 20px;"></div>
                     </div>
-                <?php } ?>
+                <?php //} ?>
                 </div>
             </section>
             <!-- /.Left col -->

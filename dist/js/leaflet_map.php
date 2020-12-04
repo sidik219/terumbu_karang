@@ -97,7 +97,7 @@
   //End
 
   //SESSION MAP UNTUK ADMIN
-  <?php if($_SESSION['level_user'] == '1') { ?>
+  <?php //if($_SESSION['level_user'] == '1') { ?>
     //Query untuk menampilkan lat long titik pada map
     //Clustering marker pada bagian titik
     var marker_titik = L.markerClusterGroup();
@@ -129,11 +129,11 @@
     <?php } ?>
     mymap.addLayer(marker_titik); 
     //End
-  <?php } ?>
+  <?php //} ?>
   //End SESSION
 
   //SESSION MAP UNTUK USER
-  <?php if($_SESSION['level_user'] == '2') { ?>
+  <?php //if($_SESSION['level_user'] == '2') { ?>
     //Query untuk menampilkan lat long lokasi pada map
     //Clustering marker pada bagian lokasi
     var marker_lokasi = L.markerClusterGroup();
@@ -162,6 +162,6 @@
     <?php } ?>
     mymap.addLayer(marker_lokasi);
     //End
-  <?php } ?>
+  <?php //} ?>
   //End SESSION
 </script>

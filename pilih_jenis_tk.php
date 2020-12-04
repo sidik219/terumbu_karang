@@ -1,9 +1,9 @@
 <?php include 'build/config/connection.php';
-session_start(); 
+//session_start(); 
 
-if (isset($_SESSION['level_user']) == 0) {
-    header('location: login.php');
-}
+//if (isset($_SESSION['level_user']) == 0) {
+    //header('location: login.php');
+//}
 
 if($_GET['id_lokasi']){
       $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
@@ -91,7 +91,7 @@ $rowjenis = $stmt->fetchAll();
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php if($_SESSION['level_user'] == '2') { ?>
+                    <?php //if($_SESSION['level_user'] == '2') { ?>
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -128,7 +128,7 @@ $rowjenis = $stmt->fetchAll();
                                 <p> Review Donasi  </p>
                            </a>
                         </li>
-                    <?php } ?>
+                    <?php //} ?>
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -151,7 +151,7 @@ $rowjenis = $stmt->fetchAll();
 
             <!-- Main content -->
             <section class="content">
-            <?php if($_SESSION['level_user'] == '2') { ?>
+            <?php //if($_SESSION['level_user'] == '2') { ?>
                 <div class="container-fluid">
                     <h3>Pilih Jenis Terumbu Karang</h3>
                     <div class="row">
@@ -172,7 +172,7 @@ $rowjenis = $stmt->fetchAll();
                     <?php } ?>
                     </div>
                 </div>
-            <?php } ?>
+            <?php //} ?>
             </section>
             <!-- /.Left col -->
             </div>
