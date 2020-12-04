@@ -140,11 +140,11 @@ $row = $stmt->fetchAll();
 
             <div class="card  card-pilihan mb-4 shadow-sm shop-item">
                 <a href="#">
-                    <img class="card-img-top shop-item-image" width="100%" src="<?=$rowitem->foto_terumbu_karang?>" height="160px" width="150px"
+                    <img class="card-img-top shop-item-image" height="150px" width="150px" src="<?=$rowitem->foto_terumbu_karang?>"
                 ></a>
                 <div class="card-body pt-2">
                 <h5 class="shop-item-title mb-0 card-title"><?=$rowitem->nama_terumbu_karang?></h5>
-                <p class="card-text text-muted"><?=$rowitem->deskripsi_terumbu_karang?></p>
+                <p class="card-text text-muted deskripsi_pilih_tk"><?php echo strlen($rowitem->deskripsi_terumbu_karang) > 50 ? substr($rowitem->deskripsi_terumbu_karang,0,40)."..." :$rowitem->deskripsi_terumbu_karang;?></p>
                 <span class="font-weight-bold" id="harga<?=$rowitem->id_terumbu_karang?>"><script>
                                                     var hargaformat = formatter.format(<?=$rowitem->harga_terumbu_karang?>);
                                                     var hargap =  document.createElement('p')

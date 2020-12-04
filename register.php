@@ -8,7 +8,7 @@ if (isset($_POST['register'])) {
     $username     = $_POST['tb_username'];
     $no_ktp         = $_POST['num_ktp_user'];
     $password       = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
-    $tanggal_lahir  = $_POST['date_tanggal_lahir'];            
+    $tanggal_lahir  = $_POST['date_tanggal_lahir'];
     $alamat         = $_POST['tb_alamat_user'];
     $level_user     = 1;
     $aktivasi_user  = 1;
@@ -50,7 +50,7 @@ if (isset($_POST['register'])) {
     }
 } else {
     echo '';
-} 
+}
 ?>
 
 <!DOCTYPE html>
@@ -73,13 +73,13 @@ if (isset($_POST['register'])) {
 
     <!-- Custom CSS -->
     <link href="css/konten.css" rel="stylesheet">
-    
+
     <!-- Font Awesome CSS -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    
-    
+
+
 </head>
 
 
@@ -121,21 +121,21 @@ if (isset($_POST['register'])) {
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="#">Edit Profil</a>
-                    <a class="dropdown-item" href="#">Logout</a>              
+                    <a class="dropdown-item" href="#">Logout</a>
                 </li>  -->
-            </ul> 
+            </ul>
         </div>
         <!-- END OF MENU NAVBAR -->
-    </nav> 
+    </nav>
     <!-- END OF NAVBAR -->
 
 
-    <div id="about" class="container">
-        
-        <div class="starter-template">
-            <h1 class="mb-5"><br>REGISTRASI AKUN</h1><br>
+    <div id="about" class="container reg-container p-5 rounded">
+
+        <div class="starter-template p-0 mt-0">
+            <h1 ><br>REGISTRASI AKUN</h1><br>
         </div>
-       
+
         <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
                     <div class="form-group">
@@ -205,11 +205,11 @@ if (isset($_POST['register'])) {
                     </form>
 
 </div>
-        
+
     </div>
     <!-- END OF BODY CONTAINER -->
-   
-    <br><br><br><br><br><br>
+
+    <br><br>
     <section id="footer">
         <div class="container">
             <div class="row">
@@ -218,16 +218,16 @@ if (isset($_POST['register'])) {
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                     <div class="cpt text-light text-center">
-                        <p>© 2020-Terumbu Karang Jawa Barat.</p>                    
+                        <p>© 2020-Terumbu Karang Jawa Barat.</p>
                     </div>
                 </div>
-             
+
             </div>
         </div>
     </section>
 
-    
-   
+
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Optional JavaScript -->
@@ -239,10 +239,10 @@ if (isset($_POST['register'])) {
     <script>$('body').scrollspy({ target: '#navbarsExampleDefault', offset: 108 })</script>
     <!-- Smooth Scroll -->
     <script src="js/smooth-scroll.js"></script>
-   
+
     <!-- Number Counter -->
     <script src="js/nsc.js"></script>
-   
+
 
 </body>
 </html>
