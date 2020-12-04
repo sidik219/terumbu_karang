@@ -252,26 +252,12 @@ $row = $stmt->fetchAll();
     <!-- Shopping Cart -->
     <script src="js\shopping_cart.js" async></script>
     <script src="js\numberformat.js"></script>
-<!--
-    <script src="js\shopping_cart.js">
-      // if (sessionStorage.getItem("keranjang_serialised")) {
-    var keranjang_old = JSON.parse(sessionStorage.getItem("keranjang_serialised"))
-        // if (keranjang_old.keranjang.length) {
-    for (i = 0; i < keranjang_old.keranjang.length; i++) {
-        var title = keranjang_old.keranjang[i].nama_tk
-        var price = 99
-        var imageSrc = keranjang_old.keranjang[i].image
-        var itemID = keranjang_old.keranjang[i].id_tk
-        addItemToCart(title, price, imageSrc, itemID)
-        updateCartTotal()
-        alert("exucuted")
-    }
 
-    // }
-    // }
-
-
-    </script> -->
+    <script>
+       window.addEventListener('beforeunload', function(event) {
+        console.log('I am the 1st one.');
+      });
+    </script>
 
 </body>
 </html>

@@ -42,7 +42,17 @@ function ready() {
         }
     }
 
+
+    window.addEventListener('beforeunload', function(event) {
+        backClicked()
+    });
+
 }
+
+
+
+
+
 
 function purchaseClicked() {
     var keranjang_deserialised = JSON.parse(sessionStorage.getItem('keranjang_serialised'))
