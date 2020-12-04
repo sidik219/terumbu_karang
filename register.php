@@ -1,21 +1,23 @@
-<?php
+<?php include 'build/config/connection.php';
+
 if (isset($_POST['register'])) {
-    $nama_user    = $_POST['tbnama_user'];
-    $jk           = $_POST['optjk'];
-    $email        = $_POST['tbemail'];
-    $no_hp        = $_POST['tbno_hp'];
-    $username     = $_POST['tbusername'];
-    $no_ktp     = $_POST['tbno_ktp'];
-    $password     = password_hash($_POST['tbpassword'], PASSWORD_DEFAULT);
-    $tanggal_lahir = $_POST['tanggal_lahir'];            
-    $alamat       = $_POST['txtalamat'];
-    $level_user = 1;
-    $aktivasi_user = 1;
+    $nama_user    = $_POST['tb_nama_user'];
+    $jk           = $_POST['rb_jenis_kelamin'];
+    $email        = $_POST['tb_email'];
+    $no_hp        = $_POST['num_nomer_hp'];
+    $username     = $_POST['tb_username'];
+    $no_ktp         = $_POST['num_ktp_user'];
+    $password       = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
+    $tanggal_lahir  = $_POST['date_tanggal_lahir'];            
+    $alamat         = $_POST['tb_alamat_user'];
+    $level_user     = 1;
+    $aktivasi_user  = 1;
+    $randomstring = substr(md5(rand()), 0, 7);
 
     //Fotokopi KTP upload
     if (isset($_FILES['image_uploads1'])) {
-        $target_dir  = "images/ktp/";
-        $fotokopi_ktp = $target_dir . 'KTP_' .$id_user . '.jpg';
+        $target_dir     = "images/ktp/";
+        $fotokopi_ktp = $target_dir .'KTP_'. $randomstring .'.jpg';
         move_uploaded_file($_FILES["image_uploads1"]["tmp_name"], $fotokopi_ktp);
     }
     else if($_FILES["file"]["error"] == 4) {
@@ -25,8 +27,8 @@ if (isset($_POST['register'])) {
 
      //Foto user upload
     if (isset($_FILES['image_uploads2'])) {
-        $target_dir  = "images/foto_user/";
-        $foto_user = $target_dir . 'FU_' .$id_user . '.jpg';
+        $target_dir = "images/foto_user/";
+        $foto_user = $target_dir .'FU_'. $randomstring .'.jpg';
         move_uploaded_file($_FILES["image_uploads2"]["tmp_name"], $foto_user);
     }
     else if($_FILES["file"]["error"] == 4) {
@@ -35,7 +37,7 @@ if (isset($_POST['register'])) {
     //---Foto user upload end
 
     $sql = 'INSERT INTO t_user (nama_user, jk, email, no_hp, alamat, no_ktp, fotokopi_ktp, tanggal_lahir, foto_user, level_user, aktivasi_user, username, password )
-    VALUES (:nama_user, :jk, :email, :no_hp, :alamat, :no_ktp, :fotokopi_ktp, :tanggal_lahir, :foto_user, :level_user, :aktivasi_user, :username, :password)';
+        VALUES (:nama_user, :jk, :email, :no_hp, :alamat, :no_ktp, :fotokopi_ktp, :tanggal_lahir, :foto_user, :level_user, :aktivasi_user, :username, :password)';
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['nama_user' => $nama_user, 'jk' => $jk, 'email' => $email, 'no_hp' => $no_hp, 'alamat' => $alamat, 'no_ktp' => $no_ktp, 'fotokopi_ktp' => $fotokopi_ktp, 'tanggal_lahir' => $tanggal_lahir, 'foto_user' => $foto_user, 'level_user' => $level_user, 'aktivasi_user' => $aktivasi_user, 'username' => $username, 'password' => $password]);
@@ -44,7 +46,7 @@ if (isset($_POST['register'])) {
     if ($affectedrows == '0') {
         echo "Failed !";
     } else {
-        header('Location: login.php?status=regsuccess');
+        header('Location: login.php?pesan=registrasi_berhasil');
     }
 } else {
     echo '';
@@ -168,9 +170,9 @@ if (isset($_POST['register'])) {
                         <input type="number" id="num_ktp_user" name="num_ktp_user" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="file_fc_ktp">Fotokopi KTP</label>
+                        <label for="image_uploads1">Fotokopi KTP</label>
                         <div class="file-form">
-                        <input type="file" id="file_fc_ktp" name="file_fc_ktp" class="form-control">
+                        <input type="file" id="image_uploads1" name="image_uploads1" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
@@ -184,9 +186,9 @@ if (isset($_POST['register'])) {
                          </div>
                      </div>
                      <div class="form-group">
-                        <label for="file_foto_user">Foto Diri</label>
+                        <label for="image_uploads2">Foto Diri</label>
                         <div class="file-form">
-                        <input type="file" id="file_foto_user" name="file_foto_user" class="form-control">
+                        <input type="file" id="image_uploads2" name="image_uploads2" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">

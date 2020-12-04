@@ -1,5 +1,5 @@
 <?php include 'build/config/connection.php';
-//session_start();
+session_start();
 
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
@@ -132,7 +132,7 @@
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="jumbotron jumbotron-fluid-profil">
-                        <h4>Selamat Datang, <?php echo $_SESSION['username']; ?> !</h4>
+                        <h4>Selamat Datang, <?php //echo $_SESSION['username']; ?> !</h4>
                     </div>
                     <!-- end jumbotro profil -->
                     <!-- profil pic holder -->
