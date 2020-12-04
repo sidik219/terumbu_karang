@@ -1,52 +1,57 @@
 /* Custom CSS */
 
+
 /* GENERAL */
-body 
-{
+
+body {
     position: relative;
     padding-top: 3.5rem;
+    font-family: MontserratRegular;
     font-family: 'Montserrat', sans-serif;
     background-color: #F5F7FA;
 }
+
+
 /* END OF GENERAL */
 
+
 /*NAVBAR*/
-.navbar-nav
-{
+
+.navbar-nav {
     padding-left: 16px;
-    font-family: 'Roboto', sans-serif;
+    /* font-family: 'Roboto', sans-serif; */
     letter-spacing: 0.5px;
 }
 
-#logo
-{
-	height: 45px;
+#logo {
+    height: 45px;
 }
 
-.main-navigation 
-{
-    box-shadow: 0 4px 4px -2px rgba(0,0,0,.6);
+.main-navigation {
+    box-shadow: 0 4px 4px -2px rgba(0, 0, 0, .6);
 }
 
-.nav-item
-{
-	padding-right: 30px;
-	padding-right: 30px;
+.nav-item {
+    padding-right: 30px;
+    padding-right: 30px;
 }
 
-.table-container{
-	padding-top: 100px;
-	padding-right: 30px;
-	padding-left: 30px;
+.table-container {
+    padding-top: 100px;
+    padding-right: 30px;
+    padding-left: 30px;
 }
+
+
 /*END OF NAVBAR*/
 
+
 /* CAROUSEL */
+
 .carousel-caption {
     top: 50%;
     transform: translateY(-40%);
     text-align: left;
-    
 }
 
 .carousel-caption h3 {
@@ -56,131 +61,122 @@ body
 
 .carousel-caption p {
     font-size: 18px;
-    color:#F5F7FA;
+    color: #F5F7FA;
     font-weight: lighter;
 }
 
-.carousel-item
-{
+.carousel-item {
     height: 600px;
     background-size: cover;
     background-position: center;
 }
 
-.carousel-inner
-{
+.carousel-inner {
     background-size: cover;
-    
 }
 
-.btn.btn-link-slide
-{
-	border-radius: 10px;
-	color: white;
-	background-color: #E24901;
-	border: none;
+.btn.btn-link-slide {
+    border-radius: 10px;
+    color: white;
+    background-color: #E24901;
+    border: none;
     padding: 12px 24px;
     border-radius: 24px;
-    font-family: 'Roboto', sans-serif;
+    /* font-family: 'Roboto', sans-serif; */
     letter-spacing: 0.6px;
-    
 }
+
 
 /* END OF CAROUSEL */
 
+
 /* STARTER-TEMPLATE : HOME CONTENT 1 */
-.starter-template 
-{
+
+.starter-template {
     margin-top: 40px;
     padding: 1.5rem 1.5rem;
     text-align: center;
 }
 
-    .mb-5
-    {
-        color: #0E447E;
-        font-weight: bolder;
+.mb-5 {
+    color: #0E447E;
+    font-weight: bolder;
+}
 
-    }
-    
 
-    /* DIV P-1 */
-    .p-1
-    {
-        margin-top: -40px;
-    }
+/* DIV P-1 */
 
-    .p-1 p
-    {
-        text-align: justify;
-        padding: 0 0.8rem 0;
-    }
+.p-1 {
+    margin-top: -40px;
+}
 
-    .p-1 h3
-    {
-        color: #0E447E;
-        font-weight: bolder;
-    }
-    /* END OF DIV P-1 */
+.p-1 p {
+    text-align: justify;
+    padding: 0 0.8rem 0;
+}
 
-    /* DIV P-1-MIDDLE : MIDDLE ROW */
-    .p-1-middle
-    {
-        margin-top: -40px;
-        border-right: 2px solid #DCDEE6;
-        border-left: 2px solid #DCDEE6;
-    }
+.p-1 h3 {
+    color: #0E447E;
+    font-weight: bolder;
+}
 
-    .p-1-middle p 
-    {
-        text-align: justify;
-    }
 
-    .p-1-middle h3
-    {
-        color: #0E447E;
-        font-weight: bolder;
-        bor
-    }
+/* END OF DIV P-1 */
 
-    .starter-template h1
-    {
-        font-size: 30px;
-    }
 
-    .starter-template p
-    {
-        text-align: justify;
-    }
-    /* END OF DIV P-1-MIDDLE : MIDDLE ROW */
+/* DIV P-1-MIDDLE : MIDDLE ROW */
 
-    .p-5 
-    {
-        margin-top: -20px ;
-    }
+.p-1-middle {
+    margin-top: -40px;
+    border-right: 2px solid #DCDEE6;
+    border-left: 2px solid #DCDEE6;
+}
 
- /* DIV P-1 */
- .p-1
- {
-     margin-top: -40px;
- }
+.p-1-middle p {
+    text-align: justify;
+}
 
- .p-1 p
- {
-     text-align: justify;
-     padding: 0 0.8rem 0;
- 
- }
+.p-1-middle h3 {
+    color: #0E447E;
+    font-weight: bolder;
+}
 
- .p-1 h3
- {
-     color: #0E447E;
-     font-weight: bolder;
- }
- /* END OF DIV P-1 */
+.starter-template h1 {
+    font-size: 30px;
+}
 
-.wisata-container
-{
+.starter-template p {
+    text-align: justify;
+}
+
+
+/* END OF DIV P-1-MIDDLE : MIDDLE ROW */
+
+.p-5 {
+    margin-top: -20px;
+}
+
+
+/* DIV P-1 */
+
+.p-1 {
+    margin-top: -40px;
+}
+
+.p-1 p {
+    text-align: justify;
+    padding: 0 0.8rem 0;
+}
+
+.p-1 h3 {
+    color: #0E447E;
+    font-weight: bolder;
+}
+
+
+/* END OF DIV P-1 */
+
+.wisata-container {
     background-color: #F5F7FA;
     margin-top: -40px;
     padding-top: 120px;
@@ -188,28 +184,26 @@ body
     height: 600px;
 }
 
-.wisata-container h3{
+.wisata-container h3 {
     color: #212121;
 }
 
-.wisata-container p
-{
+.wisata-container p {
     margin-top: -20px;
     color: #212121;
 }
 
-.starter-title
-{
+.starter-title {
     margin-top: 20px;
     padding: 0.5rem 0.5rem;
     text-align: center;
     margin-bottom: -40px;
 }
 
-.starter-title h1
-    {
-        font-size: 30px;
-    }
+.starter-title h1 {
+    font-size: 30px;
+}
+
 
 /* Team */
 
@@ -217,43 +211,40 @@ body
     margin-top: 30px;
     padding: 50px 10px;
     line-height: 1.6;
-    background-color: white; 
+    background-color: white;
 }
 
-#benefit img
-{
+#benefit img {
     border-radius: 12px;
 }
 
-#benefit h1{
+#benefit h1 {
     color: #0E447E;
     font-size: 30px;
     font-weight: bold;
 }
 
-#benefit h2{
+#benefit h2 {
     color: #0E447E;
     font-size: 24px;
     font-weight: bold;
     padding-bottom: 20px;
 }
 
-#benefit p{
+#benefit p {
     color: #212121;
     text-align: justify;
-    
 }
 
-#benefit ol{
+#benefit ol {
     color: #212121;
     margin-left: -40px;
 }
 
-#benefit li{
+#benefit li {
     color: #212121;
     margin-left: 15px;
 }
-
 
 #coralpedia-title {
     margin-top: 30px;
@@ -263,55 +254,42 @@ body
     background-size: cover;
 }
 
-#coralpedia-title h1
-{
+#coralpedia-title h1 {
     color: white;
 }
 
-.card button
-{
-    color:#0E447E;
+.card button {
+    color: #0E447E;
     font-weight: bold;
 }
 
-#coralpedia-title ol
-{
+#coralpedia-title ol {
     margin-left: -40px;
 }
 
-#coralpedia-title li
-{
+#coralpedia-title li {
     margin-left: 40px;
 }
 
-.coralpedia-template
-{
-        margin-top: 20px;
-        padding: 1.5rem 1.5rem;
-        text-align: center;
-        margin-bottom: 85px;
+.coralpedia-template {
+    margin-top: 20px;
+    padding: 1.5rem 1.5rem;
+    text-align: center;
+    margin-bottom: 85px;
 }
 
-.card-body
-{
+.card-body {
     text-align: justify;
-    
 }
 
-.card-body p
-{
+.card-body p {
     text-indent: 50px;
 }
 
-
-
-
-
-
 #footer {
-    background:#0E447E;
+    background: #0E447E;
     padding: 10px;
-    padding-top : 40px;
+    padding-top: 40px;
 }
 
 .ftaw i {
@@ -321,9 +299,11 @@ body
     padding-right: 10px;
 }
 
+
 /* back to top */
+
 .btt {
-    display:none;
+    display: none;
     background: #212121;
     width: 65px;
     position: fixed;
@@ -331,7 +311,7 @@ body
     bottom: 19px;
     z-index: 9998;
     border: 2px solid #fff;
-    border-radius: 10px;    
+    border-radius: 10px;
 }
 
 .btt:hover {
@@ -346,34 +326,31 @@ body
 }
 
 .btt i:hover {
-    color:#fff;
+    color: #fff;
 }
 
 .hide {
-  opacity: 0;
+    opacity: 0;
 }
 
 .show {
-  opacity: 1;
-  display:block;  
+    opacity: 1;
+    display: block;
 }
 
 
 /*LOGIN PAGE*/
 
-.login-jumbotron
-{
-     margin-top: -85px; 
+.login-jumbotron {
+    margin-top: -85px;
     height: 736px;
-    width:100%;
+    width: 100%;
     background-image: url(../dist/img/home-slide4-darken.jpg);
     background-size: cover;
     position: relative;
 }
 
-
-.login-container
-{
+.login-container {
     margin: auto;
     width: 60%;
     background-color: white;
@@ -382,125 +359,79 @@ body
     position: absolute;
 }
 
-
-
-
-@media only screen and (max-width:769px) 
-{
+@media only screen and (max-width:769px) {
     /* NAVBAR */
-    .navbar-nav
-    {
+    .navbar-nav {
         text-align: center;
         font-size: 20px;
-    
     }
-    .navbar-nav li
-    {
-        padding:5px;
+    .navbar-nav li {
+        padding: 5px;
         border-top: 1px solid #0E447E;
     }
     /* END OF NAVBAR */
-
     /* CAROUSEL */
-    .carousel-caption h3 
-    {
+    .carousel-caption h3 {
         font-size: 24px;
     }
-    .carousel-caption 
-    {
+    .carousel-caption {
         margin-top: -60px;
         text-align: left;
     }
-
-    .carousel-caption p
-    {
+    .carousel-caption p {
         font-size: 16px;
     }
-
-    .btn.btn-link
-    {
+    .btn.btn-link {
         font-size: 16px;
     }
     /* END OF CAROUSEL */
-
     /* BODY CONTAINER */
     #about {
         margin-top: 40px;
     }
-
     /* END OF BODY CONTAINER */
-
     /* STARTER-TEMPLATE : HOME CONTENT 1 */
-    .starter-template h1
-    {
+    .starter-template h1 {
         font-size: 26px;
         text-transform: uppercase;
     }
-
-    .starter-title h1
-    {
+    .starter-title h1 {
         font-size: 26px;
         text-transform: uppercase;
     }
-
-    .starter-template p
-    {
+    .starter-template p {
         text-align: justify;
-        
     }
-
-   .p-1 p
-   {
-        padding: 0 1.5rem 1.5rem ;
+    .p-1 p {
+        padding: 0 1.5rem 1.5rem;
         text-align: justify;
         margin-bottom: 30px;
     }
-    
-   .p-1 h3
-   {
-      
-       font-size: 24px;
-   }
-    
-   .p-1-middle
-   {
-       
-    border-bottom: 2px solid #DCDEE6;
-    border-top: 2px solid #DCDEE6;
-    margin-bottom: 30px;
-   }
-
-   .p-1-middle p
-   {
-    padding: 0 0.6rem 0.6rem ;
-    text-align: justify;
-   }
-   /* END OF STARTER-TEMPLATE : HOME CONTENT 1 */
-
-   .wisata-container h3 
-    {
-        
+    .p-1 h3 {
         font-size: 24px;
     }
-
+    .p-1-middle {
+        border-bottom: 2px solid #DCDEE6;
+        border-top: 2px solid #DCDEE6;
+        margin-bottom: 30px;
+    }
+    .p-1-middle p {
+        padding: 0 0.6rem 0.6rem;
+        text-align: justify;
+    }
+    /* END OF STARTER-TEMPLATE : HOME CONTENT 1 */
+    .wisata-container h3 {
+        font-size: 24px;
+    }
     .blogo {
-        text-align:center;
-    }   
-
-    #benefit h1{
+        text-align: center;
+    }
+    #benefit h1 {
         font-size: 24px;
     }
-
 }
 
-
-
-
-
-
-
-
-
-
-
-
+@font-face {
+    font-family: MontserratRegular;
+    src: url(../webfonts/Montserrat-Regular.ttf);
+}
