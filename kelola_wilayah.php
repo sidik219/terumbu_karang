@@ -176,8 +176,8 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
                                     <p> Kelola User </p>
                             </a>
                         </li>
+                    <?php } ?>
                     </ul>
-                <?php } ?>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>

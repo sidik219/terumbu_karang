@@ -81,6 +81,7 @@ if (isset($_SESSION['level_user']) == 0) {
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- Untuk User -->
                     <?php if($_SESSION['level_user'] == '2') { ?>
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
@@ -118,7 +119,7 @@ if (isset($_SESSION['level_user']) == 0) {
                                 <p> Review Donasi  </p>
                            </a>
                         </li>
-                    <?php } ?>    
+                    <?php } ?>   
                     </ul>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -133,7 +134,10 @@ if (isset($_SESSION['level_user']) == 0) {
                 <div class="container-fluid">
                 <div class="row">
                         <div class="col">
+                        <!-- Untuk User -->
+                        <?php if($_SESSION['level_user'] == '2') { ?>
                             <h4><span class="align-middle font-weight-bold">Pilih Lokasi Penanaman</span></h4>
+                        <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -144,36 +148,6 @@ if (isset($_SESSION['level_user']) == 0) {
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                <!-- Untuk Admin -->
-                <?php if($_SESSION['level_user'] == '1') { ?>
-                    <div>
-                        <div>
-                            <label>Keterangan Icon:</label>
-                        </div>
-                        <div>
-                            <img src="images/foto_lokasi/icon_lokasi/icon_lokasi.png" style="width: 3%;">:
-                            <label>Lokasi Pantai, </label>
-                            <img src="images/kumpulan_icon/cluster.png" style="width: 3%;">:
-                            <label>Pengelompokan Jarak Terdekat, </label>
-                            <img src="images/kumpulan_icon/geo_wilayah1.png" style="width: 3%;">:
-                            <label>Geo Wilayah, </label>
-                            <img src="images/kumpulan_icon/geo_wilayah2.png" style="width: 3%;">:
-                            <label>Geo Wilayah, </label>
-                        </div>
-                        <div>
-                            <img src="images/foto_kondisi_titik/Sangat Baik.png" style="width: 3%;">:
-                            <label>Sangat Baik, </label>
-                            <img src="images/foto_kondisi_titik/Baik.png" style="width: 3%;">:
-                            <label>Baik, </label>
-                            <img src="images/foto_kondisi_titik/Cukup.png" style="width: 3%;">:
-                            <label>Cukup, </label>
-                            <img src="images/foto_kondisi_titik/Kurang.png" style="width: 3%;">:
-                            <label>Kurang</label>
-                        </div>
-                        <div id="mapid" style="height: 560px; width: 100%; margin-top: 20px;"></div>
-                    </div>
-                <?php } ?>
-
                 <!-- Untuk User -->
                 <?php if($_SESSION['level_user'] == '2') { ?>
                     <div>

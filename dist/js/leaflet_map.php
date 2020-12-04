@@ -122,8 +122,8 @@
       "<b>Longitude: </b><?=$value->longitude?><br/>"+
       "<b>Latitude: </b><?=$value->latitude?><br/>"+
       "<b>Luas Titik: </b><?=$value->luas_titik?> m<sup>2</sup><br/>"+
-      "<b>Kondisi Titik: </b><?=$value->kondisi_titik?><p>"+
-      "<a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
+      "<b>Kondisi Titik: </b><?=$value->kondisi_titik?><p>"/*+
+      "<a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>"*/);
       marker_titik.addLayer(marker);
 
     <?php } ?>

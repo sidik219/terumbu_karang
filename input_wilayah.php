@@ -1,41 +1,45 @@
-<?php
-    include 'build\config\connection.php';
-    
-    if (isset($_POST['submit'])) {
-        if($_POST['submit'] == 'Simpan'){
-            $nama_wilayah        = $_POST['tbnama_wilayah'];
-            $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
-            $id_user_pengelola     = $_POST['tb_id_user_pengelola'];
-            $randomstring = substr(md5(rand()), 0, 7);
+<?php include 'build/config/connection.php';
+session_start();
 
-            //Image upload
-            if($_FILES["image_uploads"]["size"] == 0) {
-                $foto_wilayah = "images/image_default.jpg";
+if (isset($_SESSION['level_user']) == 0) {
+    header('location: login.php');
+}
+
+if (isset($_POST['submit'])) {
+    if($_POST['submit'] == 'Simpan'){
+        $nama_wilayah        = $_POST['tbnama_wilayah'];
+        $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
+        $id_user_pengelola     = $_POST['tb_id_user_pengelola'];
+        $randomstring = substr(md5(rand()), 0, 7);
+
+        //Image upload
+        if($_FILES["image_uploads"]["size"] == 0) {
+            $foto_wilayah = "images/image_default.jpg";
+        }
+        else if (isset($_FILES['image_uploads'])) {
+            $target_dir  = "images/foto_wilayah/";
+            $foto_wilayah = $target_dir .'WIL_'.$randomstring. '.jpg';
+            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wilayah);
+        }
+        
+        //---image upload end   
+
+        $sqlwilayah = "INSERT INTO t_wilayah
+                        (nama_wilayah, deskripsi_wilayah, foto_wilayah, id_user_pengelola)
+                        VALUES (:nama_wilayah, :deskripsi_wilayah, :foto_wilayah, :id_user_pengelola)";
+
+        $stmt = $pdo->prepare($sqlwilayah);
+        $stmt->execute(['nama_wilayah' => $nama_wilayah, 'deskripsi_wilayah' => $deskripsi_wilayah, 'foto_wilayah' => $foto_wilayah, 'id_user_pengelola' => $id_user_pengelola]);
+
+        $affectedrows = $stmt->rowCount();
+        if ($affectedrows == '0') {
+            //echo "HAHAHAAHA INSERT FAILED !";
+        } else {
+            //echo "HAHAHAAHA GREAT SUCCESSS !";
+            header("Location: kelola_wilayah.php?status=addsuccess");
             }
-            else if (isset($_FILES['image_uploads'])) {
-                $target_dir  = "images/foto_wilayah/";
-                $foto_wilayah = $target_dir .'WIL_'.$randomstring. '.jpg';
-                move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wilayah);
-            }
-            
-            //---image upload end   
-
-            $sqlwilayah = "INSERT INTO t_wilayah
-                            (nama_wilayah, deskripsi_wilayah, foto_wilayah, id_user_pengelola)
-                            VALUES (:nama_wilayah, :deskripsi_wilayah, :foto_wilayah, :id_user_pengelola)";
-
-            $stmt = $pdo->prepare($sqlwilayah);
-            $stmt->execute(['nama_wilayah' => $nama_wilayah, 'deskripsi_wilayah' => $deskripsi_wilayah, 'foto_wilayah' => $foto_wilayah, 'id_user_pengelola' => $id_user_pengelola]);
-
-            $affectedrows = $stmt->rowCount();
-            if ($affectedrows == '0') {
-                //echo "HAHAHAAHA INSERT FAILED !";
-            } else {
-                //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: kelola_wilayah.php?status=addsuccess");
-                }
-            }
-        }        
+        }
+    }        
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -92,7 +96,7 @@
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="#">Logout</a>              
+                            <a class="dropdown-item" href="logout.php">Logout</a>              
                 </li>  
             </ul>
         </nav>
@@ -113,6 +117,7 @@
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <?php if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item ">
                            <a href="dashboard_admin.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -204,6 +209,7 @@
                                     <p> Kelola User </p>
                             </a>
                         </li>
+                    <?php } ?>
                     </ul>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -224,6 +230,7 @@
             <!-- /.content-header -->
 
             <!-- Main content -->
+        <?php if($_SESSION['level_user'] == '1') { ?>
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST" name="addWilayah">
@@ -277,6 +284,7 @@
                     </form>
             <br><a href="input_lokasi.php">Lanjut isi data lokasi ></a>
             </section>
+        <?php } ?>
             <!-- /.Left col -->
             </div>
             <!-- /.row (main row) -->

@@ -1,5 +1,9 @@
-<?php
-    include 'build\config\connection.php';
+<?php include 'build/config/connection.php';
+session_start();
+
+if (isset($_SESSION['level_user']) == 0) {
+    header('location: login.php');
+}
 
     $id_lokasi = $_GET['id_lokasi'];
     $defaultpic = "images/image_default.jpg";
@@ -127,7 +131,7 @@
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="#">Logout</a>              
+                            <a class="dropdown-item" href="logout.php">Logout</a>              
                 </li>  
             </ul>
         </nav>
@@ -148,6 +152,7 @@
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <?php if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item ">
                            <a href="dashboard_admin.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -239,6 +244,7 @@
                                     <p> Kelola User </p>
                             </a>
                         </li>
+                    <?php } ?>
                     </ul>      
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -259,6 +265,7 @@
             <!-- /.content-header -->
 
             <!-- Main content -->
+        <?php if($_SESSION['level_user'] == '1') { ?>
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
@@ -342,6 +349,7 @@
             <br><br>
                     
             </section>
+        <?php } ?>
             <!-- /.Left col -->
             </div>
             <!-- /.row (main row) -->

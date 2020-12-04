@@ -188,6 +188,14 @@ if (isset($_SESSION['level_user']) == 0) {
                    <div class="jumbotron jumbotron-fluid-profil">
                         <h4>Selamat Datang, <?php echo $_SESSION['username']; ?> !</h4>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <!-- Untuk Admin -->
+                            <?php if($_SESSION['level_user'] == '1') { ?>
+                                <h4><span class="align-middle font-weight-bold">Lokasi Penanaman</span></h4>
+                            <?php } ?>
+                        </div>
+                    </div>
                     <!-- end jumbotro profil -->
                     <!-- profil pic holder -->
                     <div class="row justify-content-center">
@@ -203,8 +211,34 @@ if (isset($_SESSION['level_user']) == 0) {
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                  
-            
+                    <!-- Untuk Admin -->
+                    <?php if($_SESSION['level_user'] == '1') { ?>
+                        <div>
+                            <div>
+                                <label>Keterangan Icon:</label>
+                            </div>
+                            <div>
+                                <img src="images/kumpulan_icon/cluster.png" style="width: 3%;">:
+                                <label>Pengelompokan Jarak Terdekat, </label>
+                                <img src="images/kumpulan_icon/geo_wilayah1.png" style="width: 3%;">:
+                                <label>Geo Wilayah, </label>
+                                <img src="images/kumpulan_icon/geo_wilayah2.png" style="width: 3%;">:
+                                <label>Geo Wilayah, </label>
+                            </div>
+                            <div>
+                                <img src="images/foto_kondisi_titik/Sangat Baik.png" style="width: 3%;">:
+                                <label>Sangat Baik, </label>
+                                <img src="images/foto_kondisi_titik/Baik.png" style="width: 3%;">:
+                                <label>Baik, </label>
+                                <img src="images/foto_kondisi_titik/Cukup.png" style="width: 3%;">:
+                                <label>Cukup, </label>
+                                <img src="images/foto_kondisi_titik/Kurang.png" style="width: 3%;">:
+                                <label>Kurang</label>
+                            </div>
+                            <div id="mapid" style="height: 560px; width: 100%; margin-top: 20px;"></div>
+                        </div>
+                    <?php } ?>
+                </div>
             </section>
             <!-- /.Left col -->
             </div>
@@ -272,7 +306,7 @@ if (isset($_SESSION['level_user']) == 0) {
     <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
     <script src="dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
-    <script src="dist/js/leaflet-map.js"></script>
+    <?php include 'dist/js/leaflet_map.php'; ?>
 </div>
 </body>
 </html>

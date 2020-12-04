@@ -174,8 +174,8 @@ if (isset($_SESSION['level_user']) == 0) {
                                     <p> Kelola User </p>
                             </a>
                         </li>
+                    <?php } ?>
                     </ul>
-                <?php } ?>   
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
