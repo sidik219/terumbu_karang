@@ -112,44 +112,39 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
             <div class="sidebar">
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
-                  <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '2') { ?>
-                      <li class="nav-item  ">
-                          <a href="dashboard_user.php" class="nav-link ">
-                              <i class="nav-icon fas fa-home"></i>
-                              <p> Home </p>
-                          </a>
-                      </li>
-                      <li class="nav-item">
-                          <a href="donasi_saya.php" class="nav-link">
-                              <i class="nav-icon fas fa-hand-holding-usd"></i>
-                              <p> Donasi Saya </p>
-                          </a>
-                      </li>
-                      <li class="nav-item">
-                          <a href="reservasi_saya.php" class="nav-link">
-                              <i class="nav-icon fas fa-suitcase"></i>
-                              <p> Reservasi Saya  </p>
-                          </a>
-                      </li>
-                      <li class="nav-item">
-                          <a href="profil_saya.php" class="nav-link">
-                              <i class="nav-icon fas fas fa-user"></i>
-                              <p> Profil Saya  </p>
-                          </a>
-                      </li>
-                      <li class="nav-item">
-                          <a href="map.php" class="nav-link">
-                              <i class="nav-icon fas fas fa-user"></i>
-                              <p> Map  </p>
-                          </a>
-                      </li>
-                      <li class="nav-item menu-open">
-                          <a href="review_donasi.php" class="nav-link active">
-                              <i class="nav-icon fas fas fa-user"></i>
-                              <p> Review Donasi  </p>
-                          </a>
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <?php //if($_SESSION['level_user'] == '2') { ?>    
+                        <li class="nav-item  ">
+                           <a href="dashboard_user.php" class="nav-link ">
+                                <i class="nav-icon fas fa-home"></i>
+                                <p> Home </p>
+                           </a>
                         </li>
+                        <li class="nav-item menu-open">
+                           <a href="donasi_saya.php" class="nav-link active">
+                                <i class="nav-icon fas fa-hand-holding-usd"></i>
+                                <p> Donasi Saya </p>
+                           </a>
+                        </li>
+                        <li class="nav-item">
+                           <a href="reservasi_saya.php" class="nav-link">
+                                <i class="nav-icon fas fa-suitcase"></i>
+                                <p> Reservasi Saya  </p>
+                           </a>
+                        </li>
+                        <li class="nav-item">
+                           <a href="profil_saya.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-disease"></i>
+                                <p> Terumbu Karang  </p>
+                           </a>
+                        </li>
+                        <li class="nav-item">
+                           <a href="profil_saya.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-user"></i>
+                                <p> Profil Saya  </p>
+                           </a>
+                        </li>
+                       
                     <?php //} ?>
                     </ul>
                 </nav>

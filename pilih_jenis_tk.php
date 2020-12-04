@@ -90,16 +90,16 @@ $rowjenis = $stmt->fetchAll();
             <div class="sidebar">
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
-                   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '2') { ?>
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <?php //if($_SESSION['level_user'] == '2') { ?>    
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p> Home </p>
                            </a>
                         </li>
-                        <li class="nav-item">
-                           <a href="donasi_saya.php" class="nav-link">
+                        <li class="nav-item menu-open">
+                           <a href="donasi_saya.php" class="nav-link active">
                                 <i class="nav-icon fas fa-hand-holding-usd"></i>
                                 <p> Donasi Saya </p>
                            </a>
@@ -112,22 +112,17 @@ $rowjenis = $stmt->fetchAll();
                         </li>
                         <li class="nav-item">
                            <a href="profil_saya.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-disease"></i>
+                                <p> Terumbu Karang  </p>
+                           </a>
+                        </li>
+                        <li class="nav-item">
+                           <a href="profil_saya.php" class="nav-link">
                                 <i class="nav-icon fas fas fa-user"></i>
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
-                        <li class="nav-item">
-                           <a href="map.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Map  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="review_donasi.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Review Donasi  </p>
-                           </a>
-                        </li>
+                       
                     <?php //} ?>
                     </ul>
                 </nav>
@@ -160,7 +155,7 @@ $rowjenis = $stmt->fetchAll();
                         <div class="col-md-4">
                             <div class="card card-pilihan mb-4 shadow-sm">
                             <a href="pilih_terumbu_karan.php?id_jenis=<?=$rowitem->id_jenis?>">
-                                <img class="card-img-top" width="100%" src="<?=$rowitem->foto_jenis?>" height="auto" width="150px">
+                                <img class="card-img-top" width="100%" src="<?=$rowitem->foto_jenis?>">
                             </a>
                                 <div class="card-body">
                                     <p class="card-title"><h5 class="font-weight-bold"><?=$rowitem->nama_jenis?></h5></p>

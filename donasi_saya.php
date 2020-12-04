@@ -90,22 +90,17 @@ $row = $stmt->fetchAll();
                         </li>
                         <li class="nav-item">
                            <a href="profil_saya.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-disease"></i>
+                                <p> Terumbu Karang  </p>
+                           </a>
+                        </li>
+                        <li class="nav-item">
+                           <a href="profil_saya.php" class="nav-link">
                                 <i class="nav-icon fas fas fa-user"></i>
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
-                        <li class="nav-item">
-                           <a href="map.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Map  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="review_donasi.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Review Donasi  </p>
-                           </a>
-                        </li>
+                       
                     <?php //} ?>
                     </ul>
                 </nav>
@@ -167,7 +162,7 @@ $row = $stmt->fetchAll();
                               <td><?=$rowitem->status_donasi?></td>
                               <td>
                                 <button type="button" class="btn btn-act">
-                                <a href="edit_donasi.php" class="fas fa-edit"></a>
+                                <a href="edit_donasi_saya.php" class="fas fa-edit"></a>
                             	</button>
                                 <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
                               </td>

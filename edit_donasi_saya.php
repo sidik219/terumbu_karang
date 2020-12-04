@@ -1,43 +1,49 @@
 <?php include 'build/config/connection.php';
-session_start();
+//session_start();
 
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
 //}
-
-if(!$_GET['id_jenis']){
-    header("Location: pilih_jenis_tk.php");
-}
-
-$sqlviewtk = 'SELECT * FROM t_terumbu_karang
-                LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
-                WHERE t_terumbu_karang.id_jenis = :id_jenis';
-$stmt = $pdo->prepare($sqlviewtk);
-$stmt->execute(['id_jenis' => $_GET['id_jenis']]);
-$row = $stmt->fetchAll();
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Donasi Saya - TKJB</title>
+    <title>Kelola Donasi - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+    <!-- Leaflet CSS -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <!--Leaflet panel layer CSS-->
+        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
+    <!-- Leaflet Marker Cluster CSS -->
+        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
+        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
-
 </head>
- <script src="js\numberformat.js"></script>
+
 <body class="hold-transition sidebar-mini layout-fixed">
-    <a href="#" class="scrollup"><img class="scrollup" src="images/cart.png"></a>
     <div class="wrapper">
 
         <!-- NAVBAR -->
@@ -49,13 +55,13 @@ $row = $stmt->fetchAll();
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav ml-auto">  
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>
-                </li>
+                            <a class="dropdown-item" href="logout.php">Logout</a>              
+                </li>  
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -63,7 +69,7 @@ $row = $stmt->fetchAll();
         <!-- TOP SIDEBAR -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
-            <a href="dashboard_user.php" class="brand-link">
+            <a href="dashboard_admin.php" class="brand-link">
                 <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
                 <!-- BRAND TEXT (TOP) -->
                 <span class="brand-text font-weight-bold">TKJB</span>
@@ -74,7 +80,7 @@ $row = $stmt->fetchAll();
             <div class="sidebar">
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <?php //if($_SESSION['level_user'] == '2') { ?>    
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
@@ -96,17 +102,22 @@ $row = $stmt->fetchAll();
                         </li>
                         <li class="nav-item">
                            <a href="profil_saya.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-disease"></i>
-                                <p> Terumbu Karang  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="profil_saya.php" class="nav-link">
                                 <i class="nav-icon fas fas fa-user"></i>
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
-                       
+                        <li class="nav-item">
+                           <a href="map.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-user"></i>
+                                <p> Map  </p>
+                           </a>
+                        </li>
+                        <li class="nav-item">
+                           <a href="review_donasi.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-user"></i>
+                                <p> Review Donasi  </p>
+                           </a>
+                        </li>
                     <?php //} ?>
                     </ul>
                 </nav>
@@ -115,69 +126,52 @@ $row = $stmt->fetchAll();
             <!-- SIDEBAR -->
         </aside>
 
-<!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-        <?php //if($_SESSION['level_user'] == '2') { ?>
-            <div class="row">
-                    <div class="col">
-
-
-        <h4 class="font-weight-bold">Pilih Terumbu Karang</h4>
-        <button class="btn btn-warning btn-back" type="button">< Jenis Lainnya</button>
-        <div class="row shop-items">
-            <div class="card-columns">
-        <?php
-            foreach ($row as $rowitem) {
-        ?>
-
-            <div class="card  card-pilihan mb-4 shadow-sm shop-item">
-                <a href="#">
-                    <img class="card-img-top shop-item-image" height="150px" width="150px" src="<?=$rowitem->foto_terumbu_karang?>"
-                ></a>
-                <div class="card-body pt-2">
-                <h5 class="shop-item-title mb-0 card-title"><?=$rowitem->nama_terumbu_karang?></h5>
-                <p class="card-text text-muted deskripsi_pilih_tk"><?php echo strlen($rowitem->deskripsi_terumbu_karang) > 50 ? substr($rowitem->deskripsi_terumbu_karang,0,40)."..." :$rowitem->deskripsi_terumbu_karang;?></p>
-                <span class="font-weight-bold" id="harga<?=$rowitem->id_terumbu_karang?>"><script>
-                                                    var hargaformat = formatter.format(<?=$rowitem->harga_terumbu_karang?>);
-                                                    var hargap =  document.createElement('p')
-                                                    hargap.classList.add("mb-0", "mt-0")
-                                                    hargap.textContent = hargaformat
-                                                    document.getElementById("harga<?=$rowitem->id_terumbu_karang?>").appendChild(hargap)
-                                            </script></span>
-                <span class="shop-item-price d-none">Rp. <?=$rowitem->harga_terumbu_karang?></span>
-                <input type="hidden" class="shop-item-id" value="<?=$rowitem->id_terumbu_karang?>">
-                <div class="row">
-                    <!-- <div class="col-2">
-                        <input type="number" min="1" id="tbqty" style="width: 100%; height:100%;">
-                    </div> -->
-                    <div class="col">
-                            <a data-nama_tk="<?=$rowitem->id_terumbu_karang?>" data-harga_tk="<?=$rowitem->harga_terumbu_karang?>"
-                            data-id_tk="<?=$rowitem->id_terumbu_karang?>"
-                            class="add-to-cart btn btn-warning shop-item-button"><i class="nav-icon fas fa-cart-plus"></i> Tambah ke Keranjang</a>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                    <div class="container-fluid">
+                        <a href="donasi_saya.php">< Kembali</a><br><br>
+                        <h4><span class="align-middle font-weight-bold">Kirim Bukti Donasi</span></h4>
                     </div>
-                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
 
-        </div>
-    </div>
-        <?php } ?>
-        <input type="text" class="d-none" id="id-lokasi" value="<?=$_SESSION['id_lokasi']?>">
-            </div>
-            </div>
-        </div>
+            <!-- Main content -->
+        <?php //if($_SESSION['level_user'] == '1') { ?>
+            <section class="content">
+                <div class="container-fluid">
+                    <form action="" enctype="multipart/form-data" method="POST">
+                    
+                    <div class="form-group">
+                        <label for="file_bukti_donasi">Bukti Donasi</label>
+                        <div class="file-form">
+                        <input type="file" id="file_bukti_donasi" name="file_bukti_donasi" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <br>
+                    <p align="center">
+                    <button type="submit" class="btn btn-submit">Kirim</button></p>
+                    </form>
+            <br><br>
+                    
             </section>
+        <?php //} ?>
             <!-- /.Left col -->
             </div>
             <!-- /.row (main row) -->
         </div>
-    <?php //} ?>
         <!-- /.container-fluid -->
         </section>
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+    <br><br>
+    <footer class="main-footer">
+        <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
+    </footer>
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -187,29 +181,6 @@ $row = $stmt->fetchAll();
     </div>
     <!-- ./wrapper -->
 
- <footer class="main-footer">
-        <section class="container content-section">
-            <h4 class="section-header font-weight-bold" id="keranjang">Keranjang Anda</h4>
-            <div class="cart-row row">
-                <div class="col"><span class="cart-item cart-header cart-column">Nama</span></div>
-                <div class="col"><span class="cart-price cart-header cart-column">Harga</span></div>
-                <div class="col"><span class="cart-quantity cart-header cart-column">Jumlah</span></div>
-            </div>
-            <div class="cart-items">
-            </div>
-            <div class="cart-total">
-                <strong class="cart-total-title">Total</strong>
-                <span class="cart-total-price font-weight-bold">Rp0</span>
-            </div>
-            <div class="mb-3 text-center mt-2">
-              <h5 class="font-weight-bold">Pesan / Ekspresi</h5><label for="pesan" class="font-weight-normal">
-              (Opsional. Pesan akan disertakan dalam label khusus pada terumbu karang )</label>
-              <input type="text" maxlength="64" class="form-control success" id="pesan" placeholder="Isi pesan anda di sini...">
-            </div>
-            <button class="btn btn-warning btn-back" type="button">< Jenis Lainnya</button>
-            <button class="btn btn-primary btn-purchase" type="button">Selesai Pilih ></button>
-        </section>
-    </footer>
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -244,15 +215,16 @@ $row = $stmt->fetchAll();
     <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
-    <!-- Shopping Cart -->
-    <script src="js\shopping_cart.js" async></script>
-    <script src="js\numberformat.js"></script>
-
-    <script>
-       window.addEventListener('beforeunload', function(event) {
-        console.log('I am the 1st one.');
-      });
-    </script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <!-- Leaflet Marker Cluster -->
+    <script src="dist/js/leaflet.markercluster-src.js"></script>
+    <!-- Leaflet panel layer JS-->
+    <script src="dist/js/leaflet-panel-layers.js"></script>
+    <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
+    <script src="dist/js/leaflet.ajax.js"></script>
+    <!-- Leaflet Map -->
+    <script src="dist/js/leaflet-map.js"></script>
 
 </body>
 </html>
