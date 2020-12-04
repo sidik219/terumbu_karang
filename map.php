@@ -55,13 +55,13 @@ session_start();
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -119,8 +119,8 @@ session_start();
                                 <p> Review Donasi  </p>
                            </a>
                         </li>
-                    <?php //} ?>   
-                    </ul>      
+                    <?php //} ?>
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -235,6 +235,12 @@ session_start();
     <script src="dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
     <?php include 'dist/js/leaflet_map.php'; ?>
+
+    <script>
+      if(sessionStorage.getItem('keranjang_serialised')){
+        sessionStorage.removeItem('keranjang_serialised')
+      }
+    </script>
 
 </body>
 </html>

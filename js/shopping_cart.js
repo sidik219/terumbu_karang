@@ -26,6 +26,22 @@ function ready() {
     document.getElementsByClassName('btn-back')[0].addEventListener('click', backClicked)
     document.getElementsByClassName('btn-back')[1].addEventListener('click', backClicked)
     document.getElementsByClassName('btn-purchase')[0].addEventListener('click', purchaseClicked)
+
+    if (sessionStorage.getItem("keranjang_serialised")) {
+        var keranjang_old = JSON.parse(sessionStorage.getItem("keranjang_serialised"))
+        if (keranjang_old.keranjang.length) {
+            for (i = 0; i < keranjang_old.keranjang.length; i++) {
+                var title = keranjang_old.keranjang[i].nama_tk
+                var price = keranjang_old.keranjang[i].harga_tk
+                var imageSrc = keranjang_old.keranjang[i].image
+                var itemID = keranjang_old.keranjang[i].id_tk
+                addItemToCart(title, price, imageSrc, itemID)
+                updateCartTotal()
+            }
+
+        }
+    }
+
 }
 
 function purchaseClicked() {
@@ -56,7 +72,8 @@ function purchaseClicked() {
                 nama_tk: nama_tk,
                 id_tk: itemID,
                 image: cart_image,
-                jumlah_tk: quantityElement.value
+                jumlah_tk: quantityElement.value,
+                harga_tk: price
             })
         }
         total = Math.round(total * 100) / 100
@@ -101,7 +118,8 @@ function purchaseClicked() {
                     nama_tk: nama_tk,
                     id_tk: itemID,
                     image: cart_image,
-                    jumlah_tk: quantityElement.value
+                    jumlah_tk: quantityElement.value,
+                    harga_tk: price
                 })
 
             }
@@ -154,7 +172,8 @@ function backClicked() {
                 nama_tk: nama_tk,
                 id_tk: itemID,
                 image: cart_image,
-                jumlah_tk: quantityElement.value
+                jumlah_tk: quantityElement.value,
+                harga_tk: price
             })
         }
         total = Math.round(total * 100) / 100
@@ -198,7 +217,8 @@ function backClicked() {
                     nama_tk: nama_tk,
                     id_tk: itemID,
                     image: cart_image,
-                    jumlah_tk: quantityElement.value
+                    jumlah_tk: quantityElement.value,
+                    harga_tk: price
                 })
 
             }
