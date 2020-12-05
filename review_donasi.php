@@ -133,7 +133,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
                            </a>
                         </li>
                         <li class="nav-item">
-                           <a href="profil_saya.php" class="nav-link">
+                           <a href="#" class="nav-link">
                                 <i class="nav-icon fas fas fa-disease"></i>
                                 <p> Terumbu Karang  </p>
                            </a>

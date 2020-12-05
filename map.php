@@ -89,8 +89,8 @@ session_start();
                                 <p> Home </p>
                            </a>
                         </li>
-                        <li class="nav-item">
-                           <a href="donasi_saya.php" class="nav-link">
+                        <li class="nav-item  menu-open">
+                           <a href="donasi_saya.php" class="nav-link active">
                                 <i class="nav-icon fas fa-hand-holding-usd"></i>
                                 <p> Donasi Saya </p>
                            </a>
@@ -102,21 +102,15 @@ session_start();
                            </a>
                         </li>
                         <li class="nav-item">
-                           <a href="profil_saya.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Profil Saya  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item menu-open">
-                           <a href="map.php" class="nav-link active">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Map  </p>
+                           <a href="#" class="nav-link">
+                                <i class="nav-icon fas fas fa-disease"></i>
+                                <p> Terumbu Karang  </p>
                            </a>
                         </li>
                         <li class="nav-item">
-                           <a href="review_donasi.php" class="nav-link">
+                           <a href="profil_saya.php" class="nav-link">
                                 <i class="nav-icon fas fas fa-user"></i>
-                                <p> Review Donasi  </p>
+                                <p> Profil Saya  </p>
                            </a>
                         </li>
                     <?php //} ?>

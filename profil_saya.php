@@ -100,22 +100,16 @@ session_start();
                                 <p> Reservasi Saya  </p>
                            </a>
                         </li>
+                        <li class="nav-item">
+                           <a href="#" class="nav-link">
+                                <i class="nav-icon fas fas fa-disease"></i>
+                                <p> Terumbu Karang  </p>
+                           </a>
+                        </li>
                         <li class="nav-item menu-open">
                            <a href="profil_saya.php" class="nav-link active">
                                 <i class="nav-icon fas fas fa-user"></i>
                                 <p> Profil Saya  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="map.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Map  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="review_donasi.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Review Donasi  </p>
                            </a>
                         </li>
                     <?php //} ?>
