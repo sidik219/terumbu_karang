@@ -35,7 +35,9 @@ function ready() {
                 var price = keranjang_old.keranjang[i].harga_tk
                 var imageSrc = keranjang_old.keranjang[i].image
                 var itemID = keranjang_old.keranjang[i].id_tk
-                addItemToCart(title, price, imageSrc, itemID)
+                keranjang_old.keranjang[i]["ignore"] = 1
+                var ignore = keranjang_old.keranjang[i].ignore
+                addItemToCart(title, price, imageSrc, itemID, ignore)
                 updateCartTotal()
             }
 
@@ -65,72 +67,80 @@ function purchaseClicked() {
         var keranjang = []
         for (var i = 0; i < cartRows.length; i++) {
             var cartRow = cartRows[i]
-            var nama_tk = cartRow.getElementsByClassName('cart-item-title')[0].innerText
-            var priceElement = cartRow.getElementsByClassName('cart-price')[0]
-            var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
-            var itemID = cartRow.getElementsByClassName('cart-item-id')[0].value
-            var price = parseFloat(priceElement.innerText.replace('Rp.', ''))
-            var cart_image = cartRow.getElementsByClassName('cart-item-image')[0].src;
-            var quantity = quantityElement.value
-            total = total + (price * quantity)
+                // if (cartRow.getElementsByClassName('cart-item-ignore')[0] != undefined) {
+            if (cartRow.getElementsByClassName('cart-item-ignore')[0].value != 1) {
+                var nama_tk = cartRow.getElementsByClassName('cart-item-title')[0].innerText
+                var priceElement = cartRow.getElementsByClassName('cart-price')[0]
+                var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
+                var itemID = cartRow.getElementsByClassName('cart-item-id')[0].value
+                var price = parseFloat(priceElement.innerText.replace('Rp.', ''))
+                var cart_image = cartRow.getElementsByClassName('cart-item-image')[0].src;
+                var quantity = quantityElement.value
+                total = total + (price * quantity)
 
-            // keranjang["nama_tk"] = nama_tk
-            // keranjang["id_tk"] = itemID
-            // keranjang["jumlah_tk"] = quantityElement.value
+                // keranjang["nama_tk"] = nama_tk
+                // keranjang["id_tk"] = itemID
+                // keranjang["jumlah_tk"] = quantityElement.value
 
-            keranjang.push({
-                nama_tk: nama_tk,
-                id_tk: itemID,
-                image: cart_image,
-                jumlah_tk: quantityElement.value,
-                harga_tk: price
-            })
+                keranjang.push({
+                    nama_tk: nama_tk,
+                    id_tk: itemID,
+                    image: cart_image,
+                    jumlah_tk: parseInt(quantityElement.value / 2 - 1),
+                    harga_tk: price
+                })
+            }
+            // }
         }
         total = Math.round(total * 100) / 100
         document.getElementsByClassName('cart-total-price')[0].innerText = 'Rp. ' + total
 
         var isipesan = document.getElementById("pesan").value;
         keranjang_deserialised["pesan"] = isipesan
-        keranjang_deserialised["nominal"] = total
+        keranjang_deserialised["nominal"] = total / 2
         keranjang_deserialised["status"] = "New keranjang"
         keranjang_deserialised["id_lokasi"] = document.getElementById("id-lokasi").value
 
         keranjang_deserialised["keranjang"] = keranjang
         var keranjang_serialised = JSON.stringify(keranjang_deserialised)
         sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
-        document.location.href = `pilih_jenis_tk.php?id_lokasi=${keranjang_deserialised.id_lokasi}`;
+        document.location.href = `review_donasi.php`;
 
     } else {
         var keranjang_old = keranjang_deserialised.keranjang
         for (var i = 0; i < cartRows.length; i++) {
             var cartRow = cartRows[i]
-            var nama_tk = cartRow.getElementsByClassName('cart-item-title')[0].innerText
-            var priceElement = cartRow.getElementsByClassName('cart-price')[0]
-            var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
-            var itemID = cartRow.getElementsByClassName('cart-item-id')[0].value
-            var price = parseFloat(priceElement.innerText.replace('Rp.', ''))
-            var cart_image = cartRow.getElementsByClassName('cart-item-image')[0].src;
-            var quantity = quantityElement.value
-            total = total + (price * quantity)
+                // if (cartRow.getElementsByClassName('cart-item-ignore')[0] != undefined) {
+            if (cartRow.getElementsByClassName('cart-item-ignore')[0].value != 1) {
+                var nama_tk = cartRow.getElementsByClassName('cart-item-title')[0].innerText
+                var priceElement = cartRow.getElementsByClassName('cart-price')[0]
+                var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
+                var itemID = cartRow.getElementsByClassName('cart-item-id')[0].value
+                var price = parseFloat(priceElement.innerText.replace('Rp.', ''))
+                var cart_image = cartRow.getElementsByClassName('cart-item-image')[0].src;
+                var quantity = quantityElement.value
+                total = total + (price * quantity)
 
-            // keranjang["nama_tk"] = nama_tk
-            // keranjang["id_tk"] = itemID
-            // keranjang["jumlah_tk"] = quantityElement.value
+                // keranjang["nama_tk"] = nama_tk
+                // keranjang["id_tk"] = itemID
+                // keranjang["jumlah_tk"] = quantityElement.value
 
-            const listHasId = keranjang_deserialised.keranjang.some(item => item.id_tk == itemID);
-            console.log(listHasId)
+                const listHasId = keranjang_deserialised.keranjang.some(item => item.id_tk == itemID);
+                console.log(listHasId)
 
-            if (listHasId) {
-                const oldItem = keranjang_deserialised.keranjang.find(item => item.id_tk == itemID);
-                oldItem.jumlah_tk = parseInt(oldItem.jumlah_tk) + parseInt(quantityElement.value)
-            } else {
-                keranjang_old.push({
-                    nama_tk: nama_tk,
-                    id_tk: itemID,
-                    image: cart_image,
-                    jumlah_tk: quantityElement.value,
-                    harga_tk: price
-                })
+                if (listHasId) {
+                    const oldItem = keranjang_deserialised.keranjang.find(item => item.id_tk == itemID);
+                    oldItem.jumlah_tk = parseInt(oldItem.jumlah_tk) + parseInt(quantityElement.value)
+                } else {
+                    keranjang_old.push({
+                        nama_tk: nama_tk,
+                        id_tk: itemID,
+                        image: cart_image,
+                        jumlah_tk: parseInt(quantityElement.value / 2 - 1),
+                        harga_tk: price
+                    })
+                }
+                // }
 
             }
 
@@ -141,7 +151,7 @@ function purchaseClicked() {
 
         var isipesan = document.getElementById("pesan").value;
         keranjang_deserialised["pesan"] = isipesan
-        keranjang_deserialised["nominal"] += total
+        keranjang_deserialised["nominal"] += total / 2
         keranjang_deserialised["status"] = "OLD keranjang"
         keranjang_deserialised["id_lokasi"] = document.getElementById("id-lokasi").value
 
@@ -165,33 +175,38 @@ function backClicked() {
         var keranjang = []
         for (var i = 0; i < cartRows.length; i++) {
             var cartRow = cartRows[i]
-            var nama_tk = cartRow.getElementsByClassName('cart-item-title')[0].innerText
-            var priceElement = cartRow.getElementsByClassName('cart-price')[0]
-            var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
-            var itemID = cartRow.getElementsByClassName('cart-item-id')[0].value
-            var price = parseFloat(priceElement.innerText.replace('Rp.', ''))
-            var cart_image = cartRow.getElementsByClassName('cart-item-image')[0].src;
-            var quantity = quantityElement.value
-            total = total + (price * quantity)
+                // if (cartRow.getElementsByClassName('cart-item-ignore')[0] != undefined) {
+            if (cartRow.getElementsByClassName('cart-item-ignore')[0].value != 1) {
+                var nama_tk = cartRow.getElementsByClassName('cart-item-title')[0].innerText
+                var priceElement = cartRow.getElementsByClassName('cart-price')[0]
+                var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
+                var itemID = cartRow.getElementsByClassName('cart-item-id')[0].value
+                var price = parseFloat(priceElement.innerText.replace('Rp.', ''))
+                var cart_image = cartRow.getElementsByClassName('cart-item-image')[0].src;
+                var quantity = quantityElement.value
+                total = total + (price * quantity)
 
-            // keranjang["nama_tk"] = nama_tk
-            // keranjang["id_tk"] = itemID
-            // keranjang["jumlah_tk"] = quantityElement.value
+                // keranjang["nama_tk"] = nama_tk
+                // keranjang["id_tk"] = itemID
+                // keranjang["jumlah_tk"] = quantityElement.value
 
-            keranjang.push({
-                nama_tk: nama_tk,
-                id_tk: itemID,
-                image: cart_image,
-                jumlah_tk: quantityElement.value,
-                harga_tk: price
-            })
+                keranjang.push({
+                    nama_tk: nama_tk,
+                    id_tk: itemID,
+                    image: cart_image,
+                    jumlah_tk: parseInt(quantityElement.value / 2 - 1),
+                    harga_tk: price
+                })
+            }
+            // }
         }
+
         total = Math.round(total * 100) / 100
         document.getElementsByClassName('cart-total-price')[0].innerText = 'Rp. ' + total
 
         var isipesan = document.getElementById("pesan").value;
         keranjang_deserialised["pesan"] = isipesan
-        keranjang_deserialised["nominal"] = total
+        keranjang_deserialised["nominal"] = total / 2
         keranjang_deserialised["status"] = "New keranjang"
         keranjang_deserialised["id_lokasi"] = document.getElementById("id-lokasi").value
 
@@ -204,32 +219,37 @@ function backClicked() {
         var keranjang_old = keranjang_deserialised.keranjang
         for (var i = 0; i < cartRows.length; i++) {
             var cartRow = cartRows[i]
-            var nama_tk = cartRow.getElementsByClassName('cart-item-title')[0].innerText
-            var priceElement = cartRow.getElementsByClassName('cart-price')[0]
-            var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
-            var itemID = cartRow.getElementsByClassName('cart-item-id')[0].value
-            var price = parseFloat(priceElement.innerText.replace('Rp.', ''))
-            var cart_image = cartRow.getElementsByClassName('cart-item-image')[0].src;
-            var quantity = quantityElement.value
-            total = total + (price * quantity)
+                // if (cartRow.getElementsByClassName('cart-item-ignore')[0] != undefined) {
+            if (cartRow.getElementsByClassName('cart-item-ignore')[0].value != 1) {
+                var nama_tk = cartRow.getElementsByClassName('cart-item-title')[0].innerText
+                var priceElement = cartRow.getElementsByClassName('cart-price')[0]
+                var quantityElement = cartRow.getElementsByClassName('cart-quantity-input')[0]
+                var itemID = cartRow.getElementsByClassName('cart-item-id')[0].value
+                var price = parseFloat(priceElement.innerText.replace('Rp.', ''))
+                var cart_image = cartRow.getElementsByClassName('cart-item-image')[0].src;
+                var quantity = quantityElement.value
+                total = total + (price * quantity)
 
-            // keranjang["nama_tk"] = nama_tk
-            // keranjang["id_tk"] = itemID
-            // keranjang["jumlah_tk"] = quantityElement.value
-            const listHasId = keranjang_deserialised.keranjang.some(item => item.id_tk == itemID);
-            console.log(listHasId)
+                // keranjang["nama_tk"] = nama_tk
+                // keranjang["id_tk"] = itemID
+                // keranjang["jumlah_tk"] = quantityElement.value
+                const listHasId = keranjang_deserialised.keranjang.some(item => item.id_tk == itemID);
+                console.log(listHasId)
 
-            if (listHasId) {
-                const oldItem = keranjang_deserialised.keranjang.find(item => item.id_tk == itemID);
-                oldItem.jumlah_tk = parseInt(oldItem.jumlah_tk) + parseInt(quantityElement.value)
-            } else {
-                keranjang_old.push({
-                    nama_tk: nama_tk,
-                    id_tk: itemID,
-                    image: cart_image,
-                    jumlah_tk: quantityElement.value,
-                    harga_tk: price
-                })
+                if (listHasId) {
+                    const oldItem = keranjang_deserialised.keranjang.find(item => item.id_tk == itemID);
+                    oldItem.jumlah_tk = parseInt(oldItem.jumlah_tk) + parseInt(quantityElement.value)
+                } else {
+                    keranjang_old.push({
+                        nama_tk: nama_tk,
+                        id_tk: itemID,
+                        image: cart_image,
+                        jumlah_tk: parseInt(quantityElement.value / 2 - 1),
+                        harga_tk: price
+                    })
+
+                }
+                // }
 
             }
 
@@ -240,7 +260,7 @@ function backClicked() {
 
         var isipesan = document.getElementById("pesan").value;
         keranjang_deserialised["pesan"] = isipesan
-        keranjang_deserialised["nominal"] += total
+        keranjang_deserialised["nominal"] += total / 2
         keranjang_deserialised["status"] = "OLD keranjang"
         keranjang_deserialised["id_lokasi"] = document.getElementById("id-lokasi").value
 
@@ -308,7 +328,7 @@ function addToCartClicked(event) {
 //     cartRow.getElementsByClassName('cart-quantity-input')[0].addEventListener('change', quantityChanged)
 // }
 
-function addItemToCart(title, price, imageSrc, itemID) {
+function addItemToCart(title, price, imageSrc, itemID, ignore) {
     var cartRow = document.createElement('div')
     cartRow.classList.add('cart-row')
     var cartItems = document.getElementsByClassName('cart-items')[0]
@@ -318,6 +338,9 @@ function addItemToCart(title, price, imageSrc, itemID) {
             alert('Terumbu karang ini sudah masuk keranjang')
             return
         }
+    }
+    if (!ignore) {
+        ignore = 0
     }
     var cartRowContents = `
         <div class="cart-item cart-column">
@@ -329,6 +352,7 @@ function addItemToCart(title, price, imageSrc, itemID) {
             <input class="cart-quantity-input" type="number" max="999" value="1">
             <button class="btn btn-danger" type="button">X</button>
             <input type="hidden" class="cart-item-id" value="${itemID}">
+            <input type="hidden" class="cart-item-ignore" value="${ignore}">
         </div>`
     cartRow.innerHTML = cartRowContents
     cartItems.append(cartRow)
