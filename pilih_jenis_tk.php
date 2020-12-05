@@ -1,5 +1,5 @@
 <?php include 'build/config/connection.php';
-session_start(); 
+session_start();
 
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
@@ -26,7 +26,7 @@ $rowjenis = $stmt->fetchAll();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Donasi Saya - TKJB</title>
+    <title>Pilih Jenis - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
@@ -91,7 +91,7 @@ $rowjenis = $stmt->fetchAll();
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '2') { ?>    
+                    <?php //if($_SESSION['level_user'] == '2') { ?>
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -122,7 +122,13 @@ $rowjenis = $stmt->fetchAll();
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
-                       
+                         <li class="nav-item">
+                           <a href="map.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-globe-asia"></i>
+                                <p> Peta Lokasi</p>
+                           </a>
+                        </li>
+
                     <?php //} ?>
                     </ul>
                 </nav>

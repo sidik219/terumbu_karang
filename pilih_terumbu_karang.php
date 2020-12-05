@@ -20,7 +20,7 @@ $row = $stmt->fetchAll();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Donasi Saya - TKJB</title>
+    <title>Pilih Jneis Terumbu Karang - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
@@ -75,7 +75,7 @@ $row = $stmt->fetchAll();
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '2') { ?>    
+                    <?php //if($_SESSION['level_user'] == '2') { ?>
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -106,7 +106,13 @@ $row = $stmt->fetchAll();
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
-                       
+                        <li class="nav-item">
+                           <a href="map.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-globe-asia"></i>
+                                <p> Peta Lokasi</p>
+                           </a>
+                        </li>
+
                     <?php //} ?>
                     </ul>
                 </nav>
@@ -249,9 +255,6 @@ $row = $stmt->fetchAll();
     <script src="js\numberformat.js"></script>
 
     <script>
-       window.addEventListener('beforeunload', function(event) {
-        console.log('I am the 1st one.');
-      });
     </script>
 
 </body>

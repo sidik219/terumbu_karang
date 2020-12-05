@@ -32,12 +32,13 @@ function ready() {
         if (keranjang_old.keranjang.length) {
             for (i = 0; i < keranjang_old.keranjang.length; i++) {
                 var title = keranjang_old.keranjang[i].nama_tk
-                var price = keranjang_old.keranjang[i].harga_tk
+                var price = `Rp. ${keranjang_old.keranjang[i].harga_tk}`
                 var imageSrc = keranjang_old.keranjang[i].image
                 var itemID = keranjang_old.keranjang[i].id_tk
+                var jumlah_tk = keranjang_old.keranjang[i].jumlah_tk
                 keranjang_old.keranjang[i]["ignore"] = 1
                 var ignore = keranjang_old.keranjang[i].ignore
-                addItemToCart(title, price, imageSrc, itemID, ignore)
+                addItemToCart(title, price, imageSrc, itemID, ignore, jumlah_tk)
                 updateCartTotal()
             }
 
@@ -82,11 +83,16 @@ function purchaseClicked() {
                 // keranjang["id_tk"] = itemID
                 // keranjang["jumlah_tk"] = quantityElement.value
 
+                var jumtk
+                if (quantity > 1) {
+                    jumtk = parseInt(quantityElement.value / 2 - 1)
+                } else jumtk = 1 / 2
+
                 keranjang.push({
                     nama_tk: nama_tk,
                     id_tk: itemID,
                     image: cart_image,
-                    jumlah_tk: parseInt(quantityElement.value / 2 - 1),
+                    jumlah_tk: jumtk,
                     harga_tk: price
                 })
             }
@@ -132,11 +138,16 @@ function purchaseClicked() {
                     const oldItem = keranjang_deserialised.keranjang.find(item => item.id_tk == itemID);
                     oldItem.jumlah_tk = parseInt(oldItem.jumlah_tk) + parseInt(quantityElement.value)
                 } else {
+                    var jumtk
+                    if (quantity > 1) {
+                        jumtk = parseInt(quantityElement.value / 2 - 1)
+                    } else jumtk = 1 / 2
+
                     keranjang_old.push({
                         nama_tk: nama_tk,
                         id_tk: itemID,
                         image: cart_image,
-                        jumlah_tk: parseInt(quantityElement.value / 2 - 1),
+                        jumlah_tk: jumtk,
                         harga_tk: price
                     })
                 }
@@ -189,12 +200,15 @@ function backClicked() {
                 // keranjang["nama_tk"] = nama_tk
                 // keranjang["id_tk"] = itemID
                 // keranjang["jumlah_tk"] = quantityElement.value
-
+                var jumtk
+                if (quantity > 1) {
+                    jumtk = parseInt(quantityElement.value / 2 - 1)
+                } else jumtk = 1 / 2
                 keranjang.push({
                     nama_tk: nama_tk,
                     id_tk: itemID,
                     image: cart_image,
-                    jumlah_tk: parseInt(quantityElement.value / 2 - 1),
+                    jumlah_tk: jumtk,
                     harga_tk: price
                 })
             }
@@ -240,11 +254,15 @@ function backClicked() {
                     const oldItem = keranjang_deserialised.keranjang.find(item => item.id_tk == itemID);
                     oldItem.jumlah_tk = parseInt(oldItem.jumlah_tk) + parseInt(quantityElement.value)
                 } else {
+                    var jumtk
+                    if (quantity > 1) {
+                        jumtk = parseInt(quantityElement.value / 2 - 1)
+                    } else jumtk = 1 / 2
                     keranjang_old.push({
                         nama_tk: nama_tk,
                         id_tk: itemID,
                         image: cart_image,
-                        jumlah_tk: parseInt(quantityElement.value / 2 - 1),
+                        jumlah_tk: jumtk,
                         harga_tk: price
                     })
 
@@ -328,7 +346,7 @@ function addToCartClicked(event) {
 //     cartRow.getElementsByClassName('cart-quantity-input')[0].addEventListener('change', quantityChanged)
 // }
 
-function addItemToCart(title, price, imageSrc, itemID, ignore) {
+function addItemToCart(title, price, imageSrc, itemID, ignore, jumlah_tk) {
     var cartRow = document.createElement('div')
     cartRow.classList.add('cart-row')
     var cartItems = document.getElementsByClassName('cart-items')[0]
@@ -342,6 +360,10 @@ function addItemToCart(title, price, imageSrc, itemID, ignore) {
     if (!ignore) {
         ignore = 0
     }
+    if (!jumlah_tk) {
+        jumlah_tk = 1
+    }
+
     var cartRowContents = `
         <div class="cart-item cart-column">
             <img class="cart-item-image" src="${imageSrc}" width="100" height="100">
@@ -349,9 +371,9 @@ function addItemToCart(title, price, imageSrc, itemID, ignore) {
         </div>
         <span class="cart-price cart-column">${price}</span>
         <div class="cart-quantity cart-column">
-            <input class="cart-quantity-input" type="number" max="999" value="1">
+            <input class="cart-quantity-input" type="number" max="999" value="${jumlah_tk}">
             <button class="btn btn-danger" type="button">X</button>
-            <input type="hidden" class="cart-item-id" value="${itemID}">
+            <input type="hidden" class="cart-item-id" value=" ${itemID}">
             <input type="hidden" class="cart-item-ignore" value="${ignore}">
         </div>`
     cartRow.innerHTML = cartRowContents

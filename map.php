@@ -2,14 +2,14 @@
 session_start();
 
 //if (isset($_SESSION['level_user']) == 0) {
-    //header('location: login.php');
+//header('location: login.php');
 //}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Donasi Saya - TKJB</title>
+    <title>Pilih Lokasi Penanaman - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
@@ -228,7 +228,7 @@ session_start();
     <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
     <script src="dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
-    <?php include 'dist/js/leaflet_map.php'; ?>
+    <?php include 'dist/js/leaflet_map.php';?>
 
     <script>
       if(sessionStorage.getItem('keranjang_serialised')){
