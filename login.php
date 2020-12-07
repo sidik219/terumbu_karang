@@ -11,7 +11,7 @@ if (isset($_POST['login'])) {
     $row = $stmt->fetch();
 
     if (!empty($row)) {
-        if ($password == $row->password) {
+        if (password_verify($password, $row->password)) {
             if ($row->level_user == "1") {
                 $_SESSION['id_user']        = $row->id_user;
                 $_SESSION['username']        = $row->username;
