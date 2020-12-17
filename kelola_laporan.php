@@ -284,7 +284,7 @@ $rowwilayah = $stmt->fetchAll();
                         <tr>
                             <th scope="row"><?=$rowitem->nama_wilayah?></th>
                             <td><?=$rowitem->jumlah_titik?></td>
-                            <td><?=$rowitem->total_titik.' / '.$rowitem->total_lokasi.' m<sup>2</sup> - '.number_format($rowitem->persentase_sebaran, 2).'% ( '.$kondisi_wilayah.' )'?></td>
+                            <td><?=$rowitem->total_titik.' / '.$rowitem->total_lokasi.' m<sup>2</sup> - '.number_format($rowitem->persentase_sebaran, 1).'% ( '.$kondisi_wilayah.' )'?></td>
                         </tr>
                         <tr>
                                 <td colspan="3">
@@ -342,7 +342,7 @@ $rowwilayah = $stmt->fetchAll();
                                     <tr>
                                       <th><?=$lokasi->nama_lokasi?></th>
                                       <td><?=$lokasi->jumlah_titik?></td>
-                                      <td><?=$lokasi->total_titik.' / '.$lokasi->total_lokasi.' m<sup>2</sup> - '.number_format($lokasi->persentase_sebaran, 2).'% ( '.$kondisi_lokasi.' )'?></td>
+                                      <td><?=$lokasi->total_titik.' / '.$lokasi->total_lokasi.' m<sup>2</sup> - '.number_format($lokasi->persentase_sebaran, 1).'% ( '.$kondisi_lokasi.' )'?></td>
                                     </tr>
 
 

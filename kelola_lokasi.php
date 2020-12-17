@@ -9,15 +9,20 @@ if (isset($_GET['status'])){
     $status = $_GET['status'];
 }
 
-$sqlviewlokasi = 'SELECT *, nama_wilayah, SUM(luas_titik) AS luas_total,
-COUNT(id_titik) AS jumlah_titik, COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang,
-COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup,
-COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
-COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
-FROM t_lokasi LEFT JOIN t_titik ON t_lokasi.id_lokasi = t_titik.id_lokasi
-LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
-GROUP BY nama_lokasi
-';
+$sqlviewlokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
+                                  COUNT(DISTINCT id_titik) AS jumlah_titik,
+                                  SUM(DISTINCT luas_lokasi) AS total_lokasi,
+                                  SUM(DISTINCT luas_titik) / SUM(DISTINCT luas_lokasi) * 100 AS persentase_sebaran,
+                                  COUNT(id_titik) AS jumlah_titik, COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang,
+                                  COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup,
+                                  COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
+                                  COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
+
+                                  FROM `t_titik`, t_lokasi, t_wilayah
+                                  WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
+                                  AND t_titik.id_wilayah = t_wilayah.id_wilayah
+                                  AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                                  GROUP BY t_lokasi.id_lokasi';
 
 $stmt = $pdo->prepare($sqlviewlokasi);
 $stmt->execute();
@@ -228,18 +233,31 @@ $row = $stmt->fetchAll();
                             <th scope="col">ID Lokasi</th>
                             <th scope="col">ID Wilayah</th>
                             <th scope="col">Nama Lokasi</th>
-                            <th class="text-right" scope="col">Luas Titik Terdata</th>
+                            <th scope="col">Persentase Sebaran</th>
                             <th class="text-right" scope="col">Aksi</th>
                             </tr>
                         </thead>
                     <tbody>
                         <?php foreach ($row as $rowitem) {
+                          $ps = $rowitem->persentase_sebaran;
+                      if($ps >= 0 && $ps < 25){
+                        $kondisi_wilayah = 'Kurang';
+                      }
+                      else if($ps >= 25 && $ps < 50){
+                        $kondisi_wilayah = 'Cukup';
+                      }
+                      else if($ps >= 50 && $ps < 75){
+                        $kondisi_wilayah = 'Baik';
+                      }
+                      else{
+                        $kondisi_wilayah = 'Sangat Baik';
+                      }
                         ?>
                             <tr>
                             <th scope="row"><?=$rowitem->id_lokasi?></th>
                             <td><?=$rowitem->id_wilayah?> - <?=$rowitem->nama_wilayah?></td>
                             <td><?=$rowitem->nama_lokasi?></td>
-                            <td class="text-right"><?=$rowitem->luas_total?> m<sup>2</sup></td>
+                            <td><?=$rowitem->total_titik.' / '.$rowitem->total_lokasi.' m<sup>2</sup> - '.number_format($rowitem->persentase_sebaran, 1).'% ( '.$kondisi_wilayah.' )'?></td>
                             <td class="text-right">
                                 <a href="edit_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="fas fa-edit mr-3"></a>
                                 <a href="hapus.php?type=lokasi&id_lokasi=<?=$rowitem->id_lokasi?>" class="far fa-trash-alt"></a>
@@ -260,12 +278,20 @@ $row = $stmt->fetchAll();
                                     Rincian Lokasi</p>
                             </div>
                             <div class="col-12 cell<?=$rowitem->id_lokasi?> collapse contentall<?=$rowitem->id_lokasi?>">
-                                 <div class="row">
+                                <div class="row">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Estimasi Total Luas Titik
                                     </div>
                                     <div class="col isi">
                                         <?=$rowitem->luas_lokasi. ' m<sup>2</sup>'?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Total Luas Titik Terdata
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$rowitem->total_titik. ' m<sup>2</sup>'?>
                                     </div>
                                 </div>
                                 <div class="row">
