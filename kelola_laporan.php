@@ -13,7 +13,8 @@ $sqlviewwilayah = 'SELECT DISTINCT *, SUM(luas_titik) AS total_titik,
                     FROM `t_titik`, t_lokasi, t_wilayah
 					          WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
                     AND t_titik.id_wilayah = t_wilayah.id_wilayah
-                    AND t_lokasi.id_wilayah = t_wilayah.id_wilayah';
+                    AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                    GROUP BY t_wilayah.id_wilayah';
 
 // 'SELECT *,
 //             SUM(luas_titik) AS luas_total, COUNT(id_titik) AS jumlah_titik,
@@ -299,39 +300,49 @@ $rowwilayah = $stmt->fetchAll();
                                     Rincian Wilayah</p>
                             </div>
                             <div class="col-12 cell<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?>">
-                                <h5>Kondisi Titik</h5>
+                                <h5>Kondisi Lokasi</h5>
+                                <?php
+                                  $sql_lokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
+                                  COUNT(DISTINCT id_titik) AS jumlah_titik,
+                                  SUM(DISTINCT luas_lokasi) AS total_lokasi,
+                                  SUM(DISTINCT luas_titik) / SUM(DISTINCT luas_lokasi) * 100 AS persentase_sebaran
+
+                                  FROM `t_titik`, t_lokasi, t_wilayah
+                                  WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
+                                  AND t_titik.id_wilayah = t_wilayah.id_wilayah
+                                  AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                                  AND t_lokasi.id_wilayah = '.$rowitem->id_wilayah.'
+                                  GROUP BY t_lokasi.id_lokasi';
+
+                                  $stmt = $pdo->prepare($sql_lokasi);
+                                  $stmt->execute();
+                                  $rowlokasi = $stmt->fetchAll();
+
+
+                                  foreach($rowlokasi as $lokasi) {
+                                    $ps = $lokasi->persentase_sebaran;
+                                  if($ps >= 0 && $ps < 25){
+                                    $kondisi_lokasi = 'Kurang';
+                                  }
+                                  else if($ps >= 25 && $ps < 50){
+                                    $kondisi_lokasi = 'Cukup';
+                                  }
+                                  else if($ps >= 50 && $ps < 75){
+                                    $kondisi_lokasi = 'Baik';
+                                  }
+                                  else{
+                                    $kondisi_lokasi = 'Sangat Baik';
+                                  }?>
                                 <div class="row">
                                     <div class="col-md-3 kolom font-weight-bold">
-                                        Sangat Baik
+                                        <?=$lokasi->nama_lokasi?>
                                     </div>
                                     <div class="col isi">
-                                        <?=$rowitem->jumlah_sangat_baik?>
+                                        <?=$lokasi->total_titik.' / '.$lokasi->total_lokasi.' m<sup>2</sup> ( '.number_format($lokasi->persentase_sebaran, 2).'% ) - '.$kondisi_lokasi?>
                                     </div>
                                 </div>
-                                <div class="row ">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Baik
-                                    </div>
-                                     <div class="col isi">
-                                        <?=$rowitem->jumlah_baik?>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Cukup
-                                    </div>
-                                    <div class="col isi">
-                                        <?=$rowitem->jumlah_cukup?>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Kurang
-                                    </div>
-                                    <div class="col isi">
-                                        <?=$rowitem->jumlah_kurang?>
-                                    </div>
-                                </div>
+                    <?php } ?>
+
 
                             </div>
                         </div>
