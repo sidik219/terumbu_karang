@@ -5,16 +5,28 @@
     //header('location: login.php');
 //}
 
-$sqlviewwilayah = 'SELECT *, 
-            SUM(luas_titik) AS luas_total, COUNT(id_titik) AS jumlah_titik,
-            COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang,
-            COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup,
-            COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
-            COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
+$sqlviewwilayah = 'SELECT DISTINCT *, SUM(luas_titik) AS total_titik,
+                    COUNT(DISTINCT id_titik) AS jumlah_titik,
+                    SUM(DISTINCT luas_lokasi) AS total_lokasi,
+                    SUM(DISTINCT luas_titik) / SUM(DISTINCT luas_lokasi) * 100 AS persentase_sebaran
 
-            FROM t_wilayah
-            LEFT JOIN t_titik ON t_wilayah.id_wilayah = t_titik.id_wilayah 
-            GROUP BY nama_wilayah';
+                    FROM `t_titik`, t_lokasi, t_wilayah
+					          WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
+                    AND t_titik.id_wilayah = t_wilayah.id_wilayah
+                    AND t_lokasi.id_wilayah = t_wilayah.id_wilayah';
+
+// 'SELECT *,
+//             SUM(luas_titik) AS luas_total, COUNT(id_titik) AS jumlah_titik,
+
+//             -- COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang,
+//             -- COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup,
+//             -- COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
+//             -- COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
+
+//             FROM t_wilayah
+//             LEFT JOIN t_titik ON t_wilayah.id_wilayah = t_titik.id_wilayah
+//             LEFT JOIN t_lokasi ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
+//             GROUP BY nama_wilayah';
 
 $stmt = $pdo->prepare($sqlviewwilayah);
 $stmt->execute();
@@ -71,13 +83,13 @@ $rowwilayah = $stmt->fetchAll();
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -170,7 +182,7 @@ $rowwilayah = $stmt->fetchAll();
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item ">
                              <a href="kelola_perizinan.php" class="nav-link ">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -190,7 +202,7 @@ $rowwilayah = $stmt->fetchAll();
                             </a>
                         </li>
                     <?php //} ?>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -207,12 +219,12 @@ $rowwilayah = $stmt->fetchAll();
                             <h4><span class="align-middle font-weight-bold">Laporan Wilayah</span></h4>
                         </div>
                         <!-- <div class="col">
-                           
+
                         <a class="btn btn-primary float-right" href="input_laporan.php" role="button">Input Data Baru (+)</a>
-                   
+
                         </div> -->
                     </div>
-        
+
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -221,7 +233,7 @@ $rowwilayah = $stmt->fetchAll();
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                
+
                 <!-- <table class="table table-striped">
                     <thead>
                         <tr>
@@ -248,17 +260,30 @@ $rowwilayah = $stmt->fetchAll();
                         <tr>
                             <th scope="col">Nama Wilayah</th>
                             <th scope="col">Jumlah Titik</th>
-                            <th scope="col">Luas Titik Keseluruhan</th>
+                            <th scope="col">Persentase Sebaran</th>
                         </tr>
                         </thead>
                 <tbody>
                 <?php
-                    foreach ($rowwilayah as $rowitem) {                          
+                    foreach ($rowwilayah as $rowitem) {
+                      $ps = $rowitem->persentase_sebaran;
+                      if($ps >= 0 && $ps < 25){
+                        $kondisi_wilayah = 'Kurang';
+                      }
+                      else if($ps >= 25 && $ps < 50){
+                        $kondisi_wilayah = 'Cukup';
+                      }
+                      else if($ps >= 50 && $ps < 75){
+                        $kondisi_wilayah = 'Baik';
+                      }
+                      else{
+                        $kondisi_wilayah = 'Sangat Baik';
+                      }
                 ?>
                         <tr>
                             <th scope="row"><?=$rowitem->nama_wilayah?></th>
                             <td><?=$rowitem->jumlah_titik?></td>
-                            <td><?=$rowitem->luas_total?> m<sup>2</sup></td>
+                            <td><?=$rowitem->total_titik.' / '.$rowitem->total_lokasi.' m<sup>2</sup> ( '.number_format($rowitem->persentase_sebaran, 2).'% ) - '.$kondisi_wilayah?></td>
                         </tr>
                         <tr>
                                 <td colspan="3">
@@ -273,11 +298,11 @@ $rowwilayah = $stmt->fetchAll();
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Wilayah</p>
                             </div>
-                            <div class="col-12 cell<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?>">                               
+                            <div class="col-12 cell<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?>">
                                 <h5>Kondisi Titik</h5>
                                 <div class="row">
                                     <div class="col-md-3 kolom font-weight-bold">
-                                        Sangat Baik 
+                                        Sangat Baik
                                     </div>
                                     <div class="col isi">
                                         <?=$rowitem->jumlah_sangat_baik?>
@@ -307,7 +332,7 @@ $rowwilayah = $stmt->fetchAll();
                                         <?=$rowitem->jumlah_kurang?>
                                     </div>
                                 </div>
-                                    
+
                             </div>
                         </div>
 
@@ -318,7 +343,7 @@ $rowwilayah = $stmt->fetchAll();
                 </tbody>
                 </table>
             <?php //} ?>
-            
+
             </section>
             <!-- /.Left col -->
             </div>
