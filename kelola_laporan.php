@@ -284,7 +284,7 @@ $rowwilayah = $stmt->fetchAll();
                         <tr>
                             <th scope="row"><?=$rowitem->nama_wilayah?></th>
                             <td><?=$rowitem->jumlah_titik?></td>
-                            <td><?=$rowitem->total_titik.' / '.$rowitem->total_lokasi.' m<sup>2</sup> ( '.number_format($rowitem->persentase_sebaran, 2).'% ) - '.$kondisi_wilayah?></td>
+                            <td><?=$rowitem->total_titik.' / '.$rowitem->total_lokasi.' m<sup>2</sup> - '.number_format($rowitem->persentase_sebaran, 2).'% ( '.$kondisi_wilayah.' )'?></td>
                         </tr>
                         <tr>
                                 <td colspan="3">
@@ -301,6 +301,10 @@ $rowwilayah = $stmt->fetchAll();
                             </div>
                             <div class="col-12 cell<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?>">
                                 <h5>Kondisi Lokasi</h5>
+                                <table class="table">
+                                    <th>Nama Lokasi</th>
+                                    <th>Jumlah Titik</th>
+                                    <th>Sebaran</th>
                                 <?php
                                   $sql_lokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
                                   COUNT(DISTINCT id_titik) AS jumlah_titik,
@@ -333,15 +337,17 @@ $rowwilayah = $stmt->fetchAll();
                                   else{
                                     $kondisi_lokasi = 'Sangat Baik';
                                   }?>
-                                <div class="row">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        <?=$lokasi->nama_lokasi?>
-                                    </div>
-                                    <div class="col isi">
-                                        <?=$lokasi->total_titik.' / '.$lokasi->total_lokasi.' m<sup>2</sup> ( '.number_format($lokasi->persentase_sebaran, 2).'% ) - '.$kondisi_lokasi?>
-                                    </div>
-                                </div>
+
+
+                                    <tr>
+                                      <th><?=$lokasi->nama_lokasi?></th>
+                                      <td><?=$lokasi->jumlah_titik?></td>
+                                      <td><?=$lokasi->total_titik.' / '.$lokasi->total_lokasi.' m<sup>2</sup> - '.number_format($lokasi->persentase_sebaran, 2).'% ( '.$kondisi_lokasi.' )'?></td>
+                                    </tr>
+
+
                     <?php } ?>
+                     </table>
 
 
                             </div>
