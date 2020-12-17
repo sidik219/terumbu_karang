@@ -300,11 +300,11 @@ $rowwilayah = $stmt->fetchAll();
                                     Rincian Wilayah</p>
                             </div>
                             <div class="col-12 cell<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?>">
-                                <h5>Kondisi Lokasi</h5>
+                                <!-- <h5>Kondisi Lokasi</h5> -->
                                 <table class="table">
-                                    <th>Nama Lokasi</th>
+                                    <!-- <th>Nama Lokasi</th>
                                     <th>Jumlah Titik</th>
-                                    <th>Sebaran</th>
+                                    <th>Sebaran</th> -->
                                 <?php
                                   $sql_lokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
                                   COUNT(DISTINCT id_titik) AS jumlah_titik,
