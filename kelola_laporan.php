@@ -316,7 +316,8 @@ $rowwilayah = $stmt->fetchAll();
                                     AND t_titik.id_wilayah = t_wilayah.id_wilayah
                                     AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
                                     AND t_lokasi.id_wilayah = '.$rowitem->id_wilayah.'
-                                    GROUP BY t_lokasi.id_lokasi';
+                                    GROUP BY t_lokasi.id_lokasi
+                                    ORDER BY persentase_sebaran DESC';
 
                                     $stmt = $pdo->prepare($sql_lokasi);
                                     $stmt->execute();
