@@ -189,7 +189,8 @@
                     </div>
                     <div class="form-group">
                         <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
-                        <img id="oldpic" src="<?=$rowitem->bukti_donasi?>" width="100px" <?php if($rowitem->bukti_donasi == NULL) echo " style='display:none;'"; ?>>
+                        <a href="<?=$rowitem->bukti_donasi?>" data-toggle="lightbox"><img class="img-fluid" id="oldpic" src="<?=$rowitem->bukti_donasi?>" width="10%" <?php if($rowitem->bukti_donasi == NULL) echo " style='display:none;'"; ?>></a>
+                        <br><small class="text-muted">Klik gambar untuk memperbesar</small>
                         <script>
                             window.onload = function() {
                             document.getElementById('preview').style.display = 'none';
@@ -302,6 +303,13 @@
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
+    <script src="js/ekko-lightbox.min.js"></script>
+    <script>
+      $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+                event.preventDefault();
+                $(this).ekkoLightbox();
+            });
+    </script>
 
 </body>
 </html>
