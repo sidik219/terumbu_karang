@@ -289,7 +289,7 @@ $rowwilayah = $stmt->fetchAll();
                         <tr>
                                 <td colspan="3">
                                     <!--collapse start -->
-                            <div class="row  m-0">
+                            <div class="row  m-0 d-flex flex-row-reverse">
                             <div class="col-12 cell detailcollapser<?=$rowitem->id_wilayah?>"
                                 data-toggle="collapse"
                                 data-target=".cell<?=$rowitem->id_wilayah?>, .contentall<?=$rowitem->id_wilayah?>">
@@ -307,47 +307,68 @@ $rowwilayah = $stmt->fetchAll();
                                     <th>Sebaran</th> -->
                                 <?php
                                   $sql_lokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
-                                  COUNT(DISTINCT id_titik) AS jumlah_titik,
-                                  SUM(DISTINCT luas_lokasi) AS total_lokasi,
-                                  SUM(DISTINCT luas_titik) / SUM(DISTINCT luas_lokasi) * 100 AS persentase_sebaran
+                                    COUNT(DISTINCT id_titik) AS jumlah_titik,
+                                    SUM(DISTINCT luas_lokasi) AS total_lokasi,
+                                    SUM(DISTINCT luas_titik) / SUM(DISTINCT luas_lokasi) * 100 AS persentase_sebaran
 
-                                  FROM `t_titik`, t_lokasi, t_wilayah
-                                  WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
-                                  AND t_titik.id_wilayah = t_wilayah.id_wilayah
-                                  AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
-                                  AND t_lokasi.id_wilayah = '.$rowitem->id_wilayah.'
-                                  GROUP BY t_lokasi.id_lokasi';
+                                    FROM `t_titik`, t_lokasi, t_wilayah
+                                    WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
+                                    AND t_titik.id_wilayah = t_wilayah.id_wilayah
+                                    AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                                    AND t_lokasi.id_wilayah = '.$rowitem->id_wilayah.'
+                                    GROUP BY t_lokasi.id_lokasi';
 
-                                  $stmt = $pdo->prepare($sql_lokasi);
-                                  $stmt->execute();
-                                  $rowlokasi = $stmt->fetchAll();
+                                    $stmt = $pdo->prepare($sql_lokasi);
+                                    $stmt->execute();
+                                    $rowlokasi = $stmt->fetchAll();
 
+                                    $kurang = 0; $cukup=0; $baik=0; $sangat_baik=0;
+                                    $kurang_luas = 0; $cukup_luas = 0; $baik_luas = 0; $sangat_baik_luas = 0;
 
-                                  foreach($rowlokasi as $lokasi) {
+                                    foreach($rowlokasi as $lokasi) {
                                     $ps = $lokasi->persentase_sebaran;
-                                  if($ps >= 0 && $ps < 25){
+                                    if($ps >= 0 && $ps < 25){
                                     $kondisi_lokasi = 'Kurang';
-                                  }
-                                  else if($ps >= 25 && $ps < 50){
+                                    $kurang_luas += $lokasi->total_titik;
+                                    }
+                                    else if($ps >= 25 && $ps < 50){
                                     $kondisi_lokasi = 'Cukup';
-                                  }
-                                  else if($ps >= 50 && $ps < 75){
+                                    $cukup_luas += $lokasi->total_titik;
+                                    }
+                                    else if($ps >= 50 && $ps < 75){
                                     $kondisi_lokasi = 'Baik';
-                                  }
-                                  else{
+                                    $baik_luas += $lokasi->total_titik;
+                                    }
+                                    else{
                                     $kondisi_lokasi = 'Sangat Baik';
-                                  }?>
+                                    $sangat_baik_luas += $lokasi->total_titik;
+                                    }?>
 
 
                                     <tr>
-                                      <th><?=$lokasi->nama_lokasi?></th>
-                                      <td><?=$lokasi->jumlah_titik?></td>
-                                      <td><?=$lokasi->total_titik.' / '.$lokasi->total_lokasi.' m<sup>2</sup> - '.number_format($lokasi->persentase_sebaran, 1).'% ( '.$kondisi_lokasi.' )'?></td>
+                                        <th><?=$lokasi->nama_lokasi?></th>
+                                        <td><?=$lokasi->jumlah_titik?></td>
+                                        <td><?=$lokasi->total_titik.' / '.$lokasi->total_lokasi.' m<sup>2</sup> - '.number_format($lokasi->persentase_sebaran, 1).'% ( '.$kondisi_lokasi.' )'?></td>
                                     </tr>
 
 
                     <?php } ?>
-                     </table>
+                                    <!-- <hr/> -->
+                                    <div class="row mb-4 ml-2">
+                                        <div class="col-sm">
+                                            <span class="mr-4"><b>Kurang :</b> <?=$kurang_luas .' m<sup>2</sup>'?></span>
+                                        </div>
+                                        <div class="col-sm">
+                                            <span class="mr-4"><b>Cukup :</b> <?=$cukup_luas .' m<sup>2</sup>'?></span>
+                                        </div>
+                                        <div class="col-sm">
+                                            <span class="mr-4"><b>Baik :</b> <?=$baik_luas .' m<sup>2</sup>'?></span>
+                                        </div>
+                                        <div class="col-sm">
+                                            <span class="mr-4"><b>Sangat Baik :</b> <?=$sangat_baik_luas .' m<sup>2</sup>'?></span>
+                                        </div>
+                                    </div>
+                        </table>
 
 
                             </div>

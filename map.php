@@ -149,13 +149,13 @@ session_start();
                             <label>Keterangan Icon:</label>
                         </div>
                         <div>
-                            <img src="images/foto_lokasi/icon_lokasi/icon_lokasi.png" style="width: 3%;">:
+                            <img src="images/foto_lokasi/icon_lokasi/icon_lokasi.png" style="width: 35px;">:
                             <label>Lokasi Pantai, </label>
-                            <img src="images/kumpulan_icon/cluster.png" style="width: 3%;">:
+                            <img src="images/kumpulan_icon/cluster.png" style="width: 35px;">:
                             <label>Pengelompokan Jarak Terdekat, </label>
-                            <img src="images/kumpulan_icon/geo_wilayah1.png" style="width: 3%;">:
+                            <img src="images/kumpulan_icon/geo_wilayah1.png" style="width: 35px;">:
                             <label>Geo Wilayah, </label>
-                            <img src="images/kumpulan_icon/geo_wilayah2.png" style="width: 3%;">:
+                            <img src="images/kumpulan_icon/geo_wilayah2.png" style="width: 35px;">:
                             <label>Geo Wilayah, </label>
                         </div>
                         <div id="mapid" style="height: 560px; width: 100%; margin-top: 20px;"></div>
