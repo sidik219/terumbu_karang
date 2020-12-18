@@ -10,7 +10,7 @@ $sqlviewdonasi = 'SELECT * FROM t_donasi
                 WHERE id_user = 1';
 $stmt = $pdo->prepare($sqlviewdonasi);
 $stmt->execute();
-$row = $stmt->fetchAll(); 
+$row = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -69,7 +69,7 @@ $row = $stmt->fetchAll();
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '2') { ?>    
+                    <?php //if($_SESSION['level_user'] == '2') { ?>
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -100,7 +100,7 @@ $row = $stmt->fetchAll();
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
-                       
+
                     <?php //} ?>
                     </ul>
                 </nav>
@@ -133,7 +133,7 @@ $row = $stmt->fetchAll();
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                <?php //if($_SESSION['level_user'] == '2') { ?> 
+                <?php //if($_SESSION['level_user'] == '2') { ?>
                     <div>
                         <table class="table table-striped">
                      <thead>
@@ -162,7 +162,7 @@ $row = $stmt->fetchAll();
                               <td><?=$rowitem->status_donasi?></td>
                               <td>
                                 <button type="button" class="btn btn-act">
-                                <a href="edit_donasi_saya.php" class="fas fa-edit"></a>
+                                <a href="edit_donasi_saya.php?id_donasi=<?=$rowitem->id_donasi?>" class="fas fa-edit"></a>
                             	</button>
                                 <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
                               </td>

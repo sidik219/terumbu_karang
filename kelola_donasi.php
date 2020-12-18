@@ -5,10 +5,11 @@
     //header('location: login.php');
 //}
 
-$sqlviewdonasi = 'SELECT * FROM t_donasi';
-    $stmt = $pdo->prepare($sqlviewdonasi);
-    $stmt->execute();
-    $row = $stmt->fetch(); 
+$sqlviewdonasi = 'SELECT * FROM t_donasi
+                  LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi';
+$stmt = $pdo->prepare($sqlviewdonasi);
+$stmt->execute();
+$row = $stmt->fetchAll();
 ?>
 
 
@@ -42,13 +43,13 @@ $sqlviewdonasi = 'SELECT * FROM t_donasi';
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -68,7 +69,7 @@ $sqlviewdonasi = 'SELECT * FROM t_donasi';
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '1') { ?>    
+                    <?php //if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item ">
                            <a href="dashboard_admin.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -81,7 +82,7 @@ $sqlviewdonasi = 'SELECT * FROM t_donasi';
                                 <p> Kelola Donasi </p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item">
                             <a href="kelola_wisata.php" class="nav-link">
                                 <i class="nav-icon fas fa-suitcase"></i>
@@ -142,7 +143,7 @@ $sqlviewdonasi = 'SELECT * FROM t_donasi';
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                       
+
                         <li class="nav-item">
                              <a href="kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -162,7 +163,7 @@ $sqlviewdonasi = 'SELECT * FROM t_donasi';
                             </a>
                         </li>
                     <?php //} ?>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -179,9 +180,9 @@ $sqlviewdonasi = 'SELECT * FROM t_donasi';
                             <h4><span class="align-middle font-weight-bold">Kelola Donasi</span></h4>
                         </div>
                         <div class="col">
-                           
+
                         <a class="btn btn-primary float-right" href="input_donasi.php" role="button">Input Data Baru (+)</a>
-                   
+
                         </div>
                     </div>
                 </div>
@@ -197,34 +198,126 @@ $sqlviewdonasi = 'SELECT * FROM t_donasi';
                      <thead>
                             <tr>
                                 <th scope="col">ID Donasi</th>
-                                <th scope="col">ID User</th>
+                                <!-- <th scope="col">ID User</th> -->
                                 <th scope="col">Nominal</th>
-                                <th scope="col">Bukti Donasi</th>
-                                <th scope="col">Tgl Donasi</th>
+                                <!-- <th scope="col">Bukti Donasi</th> -->
+                                <th scope="col">Tanggal Donasi</th>
                                 <th scope="col">Status Donasi</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                           </thead>
                     <tbody>
+                        <?php
+                         //$index = 0;
+                          foreach ($row as $rowitem) {
+                            //$deskripsi = json_decode($rowitem->deskripsi_donasi);
+                          ?>
                           <tr>
-                              <th scope="row">99002</th>
-                              <td>10918004</td>
-                              <td>Rp.69.000.000</td>
-                              <td>-</td>
-                              <td>mm/dd/yyyy</td>
-                              <td>Diterima</td>
+                              <th scope="row"><?=$rowitem->id_donasi?></th>
+                              <!-- <td>10918004</td> -->
+                              <td>Rp. <?=$rowitem->nominal?></td>
+                              <!-- <td>-</td> -->
+                              <td><?=$rowitem->tanggal_donasi?></td>
+                              <td><?=$rowitem->status_donasi?></td>
                               <td>
                                 <button type="button" class="btn btn-act">
-                                <a href="edit_donasi.php" class="fas fa-edit"></a>
+                                <a href="edit_donasi_saya.php?id_donasi=<?=$rowitem->id_donasi?>" class="fas fa-edit"></a>
                             	</button>
                                 <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
                               </td>
+
                           </tr>
+
+                          <tr>
+                                <td colspan="5">
+                                    <!--collapse start -->
+                            <div class="row  m-0">
+                            <div class="col-12 cell detailcollapser<?=$rowitem->id_donasi?>"
+                                data-toggle="collapse"
+                                data-target=".cell<?=$rowitem->id_donasi?>, .contentall<?=$rowitem->id_donasi?>">
+                                <p
+                                    class="fielddetail<?=$rowitem->id_donasi?>">
+                                    <i
+                                        class="icon fas fa-chevron-down"></i>
+                                    Rincian Donasi</p>
+                            </div>
+                            <div class="col-12 cell<?=$rowitem->id_donasi?> collapse contentall<?=$rowitem->id_donasi?>">
+                              <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Lokasi Penanaman
+                                    </div>
+                                    <div class="col isi">
+                                        <?="$rowitem->nama_lokasi (ID $rowitem->id_lokasi)";?>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Pesan/Ekspresi
+                                    </div>
+                                    <div class="col isi">
+                                        <?php
+                                            echo $rowitem->pesan;
+                                        ?>
+                                    </div>
+                                </div>
+
+
+                                <div class="row mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Pilihan
+                                    </div>
+                                    <div class="col isi">
+                                        <?php
+                                              $sqlviewisi = 'SELECT jumlah_terumbu, nama_terumbu_karang, foto_terumbu_karang FROM t_detail_donasi
+                                              LEFT JOIN t_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
+                                              LEFT JOIN t_terumbu_karang ON t_detail_donasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang
+                                              WHERE t_detail_donasi.id_donasi = :id_donasi';
+                                              $stmt = $pdo->prepare($sqlviewisi);
+                                              $stmt->execute(['id_donasi' => $rowitem->id_donasi]);
+                                              $rowisi = $stmt->fetchAll();
+                                           foreach ($rowisi as $isi){
+                                             ?>
+                                             <div class="row  mb-3">
+                                               <div class="col">
+                                                <img class="" height="60px" src="<?=$isi->foto_terumbu_karang?>?<?php if ($status='nochange'){echo time();}?>">
+                                              </div>
+                                              <div class="col">
+                                                <span><?= $isi->nama_terumbu_karang?>
+                                              </div>
+                                              <div class="col">
+                                                x<?= $isi->jumlah_terumbu?></span><br/>
+                                              </div>
+
+                                             <hr class="mb-2"/>
+                                             </div>
+
+                                        <?php   }
+                                        ?>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="row  mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Foto Wilayah
+                                    </div>
+                                    <div class="col isi">
+                                        <img src="<?=$rowitem->foto_wilayah?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
+                                    </div>
+                                </div> -->
+
+                            </div>
+                        </div>
+
+                        <!--collapse end -->
+                                </td>
+                            </tr>
+                            <?php //$index++;
+                            } ?>
                     </tbody>
                   </table>
                 <?php //} ?>
             </div>
-            
+
             </section>
             <!-- /.Left col -->
             </div>
@@ -262,7 +355,7 @@ $sqlviewdonasi = 'SELECT * FROM t_donasi';
     <script src="dist/js/adminlte.js"></script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    
+
 
 </body>
 </html>
