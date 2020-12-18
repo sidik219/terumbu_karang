@@ -19,8 +19,10 @@
         $stmt->execute();
         $rowwilayah = $stmt->fetchAll();
 
-        $sqlviewtitik = 'SELECT * FROM t_titik 
-                        LEFT JOIN t_lokasi ON t_titik.id_lokasi = t_lokasi.id_lokasi 
+        $sqlviewtitik = 'SELECT *, t_titik.latitude AS latitude_titik,
+                          t_titik.longitude AS longitude_titik
+                        FROM t_titik
+                        LEFT JOIN t_lokasi ON t_titik.id_lokasi = t_lokasi.id_lokasi
                         LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
                         WHERE id_titik = :id_titik';
         $stmt = $pdo->prepare($sqlviewtitik);
@@ -30,20 +32,20 @@
     if (isset($_POST['submit'])) {
             $id_lokasi        = $_POST['dd_id_lokasi'];
             $id_wilayah        = $_POST['dd_id_wilayah'];
-            $luas_titik        = $_POST['tbluas_titik']; 
+            $luas_titik        = $_POST['tbluas_titik'];
             $longitude        = $_POST['tblongitude'];
             $latitude        = $_POST['tblatitude'];
             $kondisi_titik        = $_POST['rb_kondisi_titik'];
 
             $sqltitik = "UPDATE t_titik
-                            SET id_wilayah = :id_wilayah, id_lokasi = :id_lokasi, 
-                            luas_titik = :luas_titik, longitude = :longitude, 
+                            SET id_wilayah = :id_wilayah, id_lokasi = :id_lokasi,
+                            luas_titik = :luas_titik, longitude = :longitude,
                             latitude = :latitude, kondisi_titik = :kondisi_titik
                             WHERE id_titik = :id_titik";
 
             $stmt = $pdo->prepare($sqltitik);
-            $stmt->execute(['id_titik' => $id_titik, 'id_wilayah' => $id_wilayah, 'id_lokasi' => $id_lokasi, 
-            'luas_titik' => $luas_titik, 'longitude' => $longitude, 
+            $stmt->execute(['id_titik' => $id_titik, 'id_wilayah' => $id_wilayah, 'id_lokasi' => $id_lokasi,
+            'luas_titik' => $luas_titik, 'longitude' => $longitude,
             'latitude' => $latitude, 'kondisi_titik' => $kondisi_titik]);
 
             $affectedrows = $stmt->rowCount();
@@ -53,7 +55,7 @@
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
                 header("Location: kelola_titik.php?status=addsuccess");
             }
-        } 
+        }
 
 
 ?>
@@ -107,13 +109,13 @@
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -206,7 +208,7 @@
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item">
                              <a href="kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -226,7 +228,7 @@
                             </a>
                         </li>
                     <?php //} ?>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -253,7 +255,7 @@
                     <div class="form-group">
                         <label for="dd_id_wilayah">ID Wilayah</label>
                         <select id="dd_id_wilayah" name="dd_id_wilayah" class="form-control">
-                            <?php foreach ($rowwilayah as $rowitem) {                            
+                            <?php foreach ($rowwilayah as $rowitem) {
                             ?>
                             <option value="<?=$rowitem->id_wilayah?>" <?php if ($rowitem->id_wilayah == $row->id_wilayah) {echo " selected";} ?>>
                             ID <?=$rowitem->id_wilayah?> - <?=$rowitem->nama_wilayah?></option>
@@ -264,7 +266,7 @@
                     <div class="form-group">
                         <label for="dd_id_lokasi">ID Lokasi</label>
                         <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control">
-                            <?php foreach ($rowlokasi as $rowitem) {                            
+                            <?php foreach ($rowlokasi as $rowitem) {
                             ?>
                             <option value="<?=$rowitem->id_lokasi?>" <?php if ($rowitem->id_lokasi == $row->id_lokasi) {echo " selected";} ?>>
                             ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
@@ -274,16 +276,16 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Longitude</label>
-                        <input type="#" value="<?=$row->longitude?>" name="tblongitude" class="form-control" id="#">
+                        <input type="#" value="<?=$row->longitude_titik?>" name="tblongitude" class="form-control" id="#">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Latitude</label>
-                        <input type="#" value="<?=$row->latitude?>" name="tblatitude" class="form-control" id="#">
+                        <input type="#" value="<?=$row->latitude_titik?>" name="tblatitude" class="form-control" id="#">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Luas Titik (m<sup>2</sup>)</label>
                         <input type="number" value="<?=$row->luas_titik?>" name="tbluas_titik" class="form-control" id="#">
-                    </div> 
+                    </div>
                     <div class="form-group">
                         <label for="rb_status_wisata">Kondisi</label><br>
                             <div class="form-check form-check-inline">
@@ -308,15 +310,15 @@
                                 <input type="radio" id="rb_kondisi_sangat_baik" name="rb_kondisi_titik" value="Sangat Baik" class="form-check-input"<?php if ($row->kondisi_titik == "Sangat Baik"){echo " checked";} ?>>
                                 <label class="form-check-label" for="rb_kondisi_sangat_baik" style="color: #A7A737">
                                     Sangat Baik (75-100%)
-                                </label> 
+                                </label>
                             </div>
-                    </div> 
+                    </div>
                         <br>
                         <p align="center">
                             <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
             <br><br>
-                    
+
             </section>
         <?php //} ?>
             <!-- /.Left col -->

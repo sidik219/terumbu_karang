@@ -5,7 +5,9 @@
    //header('location: login.php');
 //}
 
-$sqlviewtitik = 'SELECT * FROM t_titik
+$sqlviewtitik = 'SELECT *, t_titik.latitude AS latitude_titik,
+                          t_titik.longitude AS longitude_titik
+            FROM t_titik
             LEFT JOIN t_lokasi ON t_titik.id_lokasi = t_lokasi.id_lokasi';
 $stmt = $pdo->prepare($sqlviewtitik);
 $stmt->execute();
@@ -229,7 +231,7 @@ $row = $stmt->fetchAll();
                           <tr>
                               <th scope="row"><?=$rowitem->id_titik?></th>
                               <td>ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></td>
-                              <td class="text-right">Lat: <?=$rowitem->latitude?><br> Long: <?=$rowitem->longitude?></td>
+                              <td class="text-right">Lat: <?=$rowitem->latitude_titik?><br> Long: <?=$rowitem->longitude_titik?></td>
                               <td class="text-right"><?=$rowitem->luas_titik?></td>
                               <td><?=$rowitem->kondisi_titik?></td>
                               <td>

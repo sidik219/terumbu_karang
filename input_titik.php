@@ -20,19 +20,19 @@
     if (isset($_POST['submit'])) {
             $id_lokasi        = $_POST['dd_id_lokasi'];
             $id_wilayah        = $_POST['dd_id_wilayah'];
-            $luas_titik        = $_POST['tbluas_titik']; 
+            $luas_titik        = $_POST['tbluas_titik'];
             $longitude        = $_POST['tblongitude'];
             $latitude        = $_POST['tblatitude'];
             $kondisi_titik        = $_POST['rb_kondisi_titik'];
 
             $sqltitik = "INSERT INTO t_titik
                             (id_wilayah, id_lokasi, luas_titik, longitude, latitude, kondisi_titik)
-                            VALUES (:id_wilayah, :id_lokasi, :luas_titik, :longitude, 
+                            VALUES (:id_wilayah, :id_lokasi, :luas_titik, :longitude,
                             :latitude, :kondisi_titik)";
 
             $stmt = $pdo->prepare($sqltitik);
-            $stmt->execute(['id_wilayah' => $id_wilayah, 'id_lokasi' => $id_lokasi, 
-            'luas_titik' => $luas_titik, 'longitude' => $longitude, 
+            $stmt->execute(['id_wilayah' => $id_wilayah, 'id_lokasi' => $id_lokasi,
+            'luas_titik' => $luas_titik, 'longitude' => $longitude,
             'latitude' => $latitude, 'kondisi_titik' => $kondisi_titik]);
 
             $affectedrows = $stmt->rowCount();
@@ -42,7 +42,7 @@
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
                 header("Location: kelola_titik.php?status=addsuccess");
             }
-        } 
+        }
 
 
 ?>
@@ -95,13 +95,13 @@
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -194,7 +194,7 @@
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item">
                              <a href="kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -214,7 +214,7 @@
                             </a>
                         </li>
                     <?php //} ?>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -240,8 +240,9 @@
                     <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
                         <label for="dd_id_wilayah">ID Wilayah</label>
-                        <select id="dd_id_wilayah" name="dd_id_wilayah" class="form-control">
-                            <?php foreach ($rowwilayah as $rowitem) {                            
+                        <select id="dd_id_wilayah" name="dd_id_wilayah" class="form-control"  onChange="loadLokasi(this.value);" required>
+                            <option value="">Pilih Wilayah</option>
+                            <?php foreach ($rowwilayah as $rowitem) {
                             ?>
                             <option value="<?=$rowitem->id_wilayah?>">ID <?=$rowitem->id_wilayah?> - <?=$rowitem->nama_wilayah?></option>
 
@@ -250,8 +251,9 @@
                     </div>
                     <div class="form-group">
                         <label for="dd_id_lokasi">ID Lokasi</label>
-                        <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control">
-                            <?php foreach ($rowlokasi as $rowitem) {                            
+                        <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" required>
+                              <option value="">Pilih Lokasi</option>
+                            <?php foreach ($rowlokasi as $rowitem) {
                             ?>
                             <option value="<?=$rowitem->id_lokasi?>">ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
 
@@ -260,16 +262,16 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Longitude</label>
-                        <input type="#" name="tblongitude" class="form-control" id="#">
+                        <input type="text" name="tblongitude" class="form-control" id="#">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Latitude</label>
-                        <input type="#" name="tblatitude" class="form-control" id="#">
+                        <input type="text" name="tblatitude" class="form-control" id="#">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Luas Titik (m<sup>2</sup>)</label>
                         <input type="number" name="tbluas_titik" class="form-control" id="#">
-                    </div> 
+                    </div>
                     <div class="form-group">
                         <label for="rb_status_wisata">Kondisi</label><br>
                             <div class="form-check form-check-inline">
@@ -294,9 +296,9 @@
                                 <input type="radio" id="rb_kondisi_sangat_baik" name="rb_kondisi_titik" value="Sangat Baik" class="form-check-input">
                                 <label class="form-check-label" for="rb_kondisi_sangat_baik" style="color: #A7A737">
                                     Sangat Baik (75-100%)
-                                </label> 
+                                </label>
                             </div>
-                    </div> 
+                    </div>
                         <br>
                         <p align="center">
                             <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
@@ -370,6 +372,26 @@
     <script src="dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
     <script src="dist/js/leaflet-map.js"></script>
+
+    <script async>
+    function loadLokasi(id_wilayah){
+      $.ajax({
+        type: "POST",
+        url: "list_populate.php",
+        data:{
+            id_wilayah: id_wilayah,
+            type: 'load_lokasi'
+        },
+        beforeSend: function() {
+          $("#dd_id_lokasi").addClass("loader");
+        },
+        success: function(data){
+          $("#dd_id_lokasi").html(data);
+          $("#dd_id_lokasi").removeClass("loader");
+        }
+      });
+    }
+    </script>
 
 </body>
 </html>
