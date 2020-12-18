@@ -156,7 +156,7 @@ $row = $stmt->fetchAll();
                           <tr>
                               <th scope="row"><?=$rowitem->id_donasi?></th>
                               <!-- <td>10918004</td> -->
-                              <td>Rp. <?=$rowitem->nominal?></td>
+                              <td>Rp. <?=number_format($rowitem->nominal, 0)?></td>
                               <!-- <td>-</td> -->
                               <td><?=date('d F Y', strtotime($rowitem->tanggal_donasi))?></td>
                               <td><?=$rowitem->status_donasi?> <br><small class="text-muted">(Update Terakhir: <?=date('d F Y', strtotime($rowitem->update_terakhir))?>)</small></td>

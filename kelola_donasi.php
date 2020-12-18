@@ -215,10 +215,10 @@ $row = $stmt->fetchAll();
                           <tr>
                               <th scope="row"><?=$rowitem->id_donasi?></th>
                               <!-- <td>10918004</td> -->
-                              <td>Rp. <?=$rowitem->nominal?></td>
+                              <td>Rp. <?=number_format($rowitem->nominal, 0)?></td>
                               <!-- <td>-</td> -->
-                              <td><?=$rowitem->tanggal_donasi?></td>
-                              <td><?=$rowitem->status_donasi?></td>
+                              <td><?=date('d F Y', strtotime($rowitem->tanggal_donasi))?></td>
+                              <td><?=$rowitem->status_donasi?> <br><small class="text-muted">(Update Terakhir: <?=date('d F Y', strtotime($rowitem->update_terakhir))?>)</small></td>
                               <td>
                                 <button type="button" class="btn btn-act">
                                 <a href="edit_donasi_saya.php?id_donasi=<?=$rowitem->id_donasi?>" class="fas fa-edit"></a>
@@ -242,6 +242,36 @@ $row = $stmt->fetchAll();
                                     Rincian Donasi</p>
                             </div>
                             <div class="col-12 cell<?=$rowitem->id_donasi?> collapse contentall<?=$rowitem->id_donasi?>">
+                            <div class="row mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Nama Donatur
+                                    </div>
+                                    <div class="col isi">
+                                        <?php
+                                            echo $rowitem->nama_donatur;
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Nomor Rekening Donatur
+                                    </div>
+                                    <div class="col isi">
+                                        <?php
+                                            echo $rowitem->nomor_rekening_donatur;
+                                        ?>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Bank Donatur
+                                    </div>
+                                    <div class="col isi">
+                                        <?php
+                                            echo $rowitem->bank_donatur;
+                                        ?>
+                                    </div>
+                                </div>
                               <div class="row">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Lokasi Penanaman

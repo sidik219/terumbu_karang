@@ -252,6 +252,14 @@
                     <span class=""><?=$rowitem->nama_bank?></span>
                 </div>
             </div>
+            <div class="row mb-2">
+                <div class="col">
+                    <span class="font-weight-bold">Nominal  </span>
+                </div>
+                <div class="col-lg-8  mb-2">
+                    <span class="font-weight-bold">Rp. <?=number_format($rowitem->nominal, 0)?></span>
+                </div>
+            </div>
                 </div>
             </div>
             <br><br>
