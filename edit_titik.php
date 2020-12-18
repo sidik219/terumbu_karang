@@ -254,7 +254,7 @@
                     <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
                         <label for="dd_id_wilayah">ID Wilayah</label>
-                        <select id="dd_id_wilayah" name="dd_id_wilayah" class="form-control">
+                        <select id="dd_id_wilayah" name="dd_id_wilayah" class="form-control" onChange="loadLokasi(this.value);" required>
                             <?php foreach ($rowwilayah as $rowitem) {
                             ?>
                             <option value="<?=$rowitem->id_wilayah?>" <?php if ($rowitem->id_wilayah == $row->id_wilayah) {echo " selected";} ?>>
@@ -265,7 +265,7 @@
                     </div>
                     <div class="form-group">
                         <label for="dd_id_lokasi">ID Lokasi</label>
-                        <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control">
+                        <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" required>
                             <?php foreach ($rowlokasi as $rowitem) {
                             ?>
                             <option value="<?=$rowitem->id_lokasi?>" <?php if ($rowitem->id_lokasi == $row->id_lokasi) {echo " selected";} ?>>
@@ -387,6 +387,26 @@
     <script src="dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
     <script src="dist/js/leaflet-map.js"></script>
+
+    <script async>
+    function loadLokasi(id_wilayah){
+      $.ajax({
+        type: "POST",
+        url: "list_populate.php",
+        data:{
+            id_wilayah: id_wilayah,
+            type: 'load_lokasi'
+        },
+        beforeSend: function() {
+          $("#dd_id_lokasi").addClass("loader");
+        },
+        success: function(data){
+          $("#dd_id_lokasi").html(data);
+          $("#dd_id_lokasi").removeClass("loader");
+        }
+      });
+    }
+    </script>
 
 </body>
 </html>

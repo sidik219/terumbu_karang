@@ -18,7 +18,7 @@ if ($_POST['type'] == 'load_lokasi' && !empty($_POST["id_wilayah"])) {
         foreach ($rowlokasi as $lokasi) {
             ?>
     <option value="<?php echo $lokasi->id_lokasi; ?>"><?php echo $lokasi->nama_lokasi; ?></option>
-<?php
+    <?php
+        }
     }
-}
-?>
+    ?>

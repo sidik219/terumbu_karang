@@ -10,7 +10,7 @@
         $stmt = $pdo->prepare($sqlviewwilayah);
         $stmt->execute();
         $row = $stmt->fetchAll();
-    
+
     if (isset($_POST['submit'])) {
         if($_POST['submit'] == 'Simpan'){
             $id_wilayah = $_POST['dd_id_wilayah'];
@@ -22,6 +22,8 @@
             $nama_bank     = $_POST['tb_nama_bank'];
             $nama_rekening     = $_POST['tb_nama_rekening'];
             $nomor_rekening     = $_POST['num_nomor_rekening'];
+            $longitude        = $_POST['tb_longitude'];
+            $latitude        = $_POST['tb_latitude'];
             $randomstring = substr(md5(rand()), 0, 7);
 
             //Image upload
@@ -33,21 +35,21 @@
                 $foto_lokasi = $target_dir .'LOK_'.$randomstring. '.jpg';
                 move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_lokasi);
             }
-            
-            //---image upload end   
+
+            //---image upload end
 
             $sqllokasi = "INSERT INTO t_lokasi
                             (id_wilayah, nama_lokasi, deskripsi_lokasi, foto_lokasi, luas_lokasi, id_user_pengelola,
-                            kontak_lokasi, nama_bank, nama_rekening, nomor_rekening)
+                            kontak_lokasi, nama_bank, nama_rekening, nomor_rekening, longitude, latitude)
                             VALUES (:id_wilayah, :nama_lokasi, :deskripsi_lokasi, :foto_lokasi, :luas_lokasi,
-                            :id_user_pengelola, :kontak_lokasi, :nama_bank, :nama_rekening, :nomor_rekening)";
+                            :id_user_pengelola, :kontak_lokasi, :nama_bank, :nama_rekening, :nomor_rekening, :longitude, :latitude)";
 
             $stmt = $pdo->prepare($sqllokasi);
-            $stmt->execute(['id_wilayah' => $id_wilayah, 'nama_lokasi' => $nama_lokasi, 
-            'deskripsi_lokasi' => $deskripsi_lokasi, 'foto_lokasi' => $foto_lokasi, 
+            $stmt->execute(['id_wilayah' => $id_wilayah, 'nama_lokasi' => $nama_lokasi,
+            'deskripsi_lokasi' => $deskripsi_lokasi, 'foto_lokasi' => $foto_lokasi,
             'luas_lokasi' => $luas_lokasi, 'id_user_pengelola' => $id_user_pengelola,
             'kontak_lokasi' => $kontak_lokasi,'nama_bank' => $nama_bank,
-            'nama_rekening' => $nama_rekening,'nomor_rekening' => $nomor_rekening]);
+            'nama_rekening' => $nama_rekening,'nomor_rekening' => $nomor_rekening, 'longitude' => $longitude, 'latitude' => $latitude]);
 
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
@@ -57,7 +59,7 @@
                 header("Location: kelola_lokasi.php?status=addsuccess");
                 }
             }
-        }        
+        }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -101,13 +103,13 @@
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -200,7 +202,7 @@
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item">
                              <a href="kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -220,7 +222,7 @@
                             </a>
                         </li>
                     <?php //} ?>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -247,7 +249,7 @@
                     <div class="form-group">
                         <label for="dd_id_wilayah">ID Wilayah</label>
                         <select id="dd_id_wilayah" name="dd_id_wilayah" class="form-control">
-                            <?php foreach ($row as $rowitem) {                            
+                            <?php foreach ($row as $rowitem) {
                             ?>
                             <option value="<?=$rowitem->id_wilayah?>">ID <?=$rowitem->id_wilayah?> - <?=$rowitem->nama_wilayah?></option>
 
@@ -315,6 +317,14 @@
                     <div class="form-group">
                         <label for="num_nomor_rekening">Nomor Rekening</label>
                         <input type="number" id="num_nomor_rekening" name="num_nomor_rekening" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="tb_longitude">Longitude (Koordinat diperlukan agar lokasi tampil di peta)</label>
+                        <input type="text" id="tb_longitude" name="tb_longitude" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="tb_latitude">Latitude</label>
+                        <input type="text" id="tb_latitude" name="tb_latitude" class="form-control">
                     </div>
                     <br>
                     <p align="center">
