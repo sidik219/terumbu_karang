@@ -158,8 +158,8 @@ $row = $stmt->fetchAll();
                               <!-- <td>10918004</td> -->
                               <td>Rp. <?=$rowitem->nominal?></td>
                               <!-- <td>-</td> -->
-                              <td><?=$rowitem->tanggal_donasi?></td>
-                              <td><?=$rowitem->status_donasi?></td>
+                              <td><?=date('d F Y', strtotime($rowitem->tanggal_donasi))?></td>
+                              <td><?=$rowitem->status_donasi?> <br><small class="text-muted">(Update Terakhir: <?=date('d F Y', strtotime($rowitem->update_terakhir))?>)</small></td>
                               <td>
                                 <button type="button" class="btn btn-act">
                                 <a href="edit_donasi_saya.php?id_donasi=<?=$rowitem->id_donasi?>" class="fas fa-edit"></a>

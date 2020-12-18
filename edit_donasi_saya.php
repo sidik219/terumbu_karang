@@ -9,7 +9,9 @@
     $defaultpic = "images/image_default.jpg";
     $status_donasi = "Menunggu Konfirmasi oleh Pengelola Lokasi";
 
-    $sql = 'SELECT * FROM t_donasi WHERE id_donasi = :id_donasi';
+    $sql = 'SELECT * FROM t_donasi, t_lokasi
+    WHERE id_donasi = :id_donasi
+    AND t_donasi.id_lokasi = t_lokasi.id_lokasi';
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['id_donasi' => $id_donasi]);
@@ -40,12 +42,13 @@
 
             //---image upload end
 
+        $tanggal_upload_bukti = date ('Y-m-d H:i:s', time());
         $sqldonasi = "UPDATE t_donasi
-                        SET bukti_donasi = :bukti_donasi, status_donasi = :status_donasi
+                        SET bukti_donasi = :bukti_donasi, status_donasi = :status_donasi, update_terakhir = :update_terakhir
                         WHERE id_donasi = :id_donasi";
 
         $stmt = $pdo->prepare($sqldonasi);
-        $stmt->execute(['id_donasi' => $id_donasi, 'bukti_donasi' => $bukti_donasi, 'status_donasi' => $status_donasi]);
+        $stmt->execute(['id_donasi' => $id_donasi, 'bukti_donasi' => $bukti_donasi, 'status_donasi' => $status_donasi, 'update_terakhir' => $tanggal_upload_bukti]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
@@ -213,6 +216,44 @@
                     <p align="center">
                     <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
+                     <div class="" style="width:100%;">
+                <div class="">
+                    <h4 class="card-header mb-2 pl-0">Metode Pembayaran</h4>
+            <span class="">Pilihan untuk lokasi</span>  <span class="text-info font-weight-bolder"><?=$rowitem->nama_lokasi?> : </span>
+            <div class="d-block my-3">
+              <div class="custom-control custom-radio">
+                <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+                <label class="custom-control-label  mb-2" for="credit">Bank Transfer (Konfirmasi Manual)</label>
+                <p class="text-muted">Harap upload bukti transfer agar donasi segera diproses pengelola lokasi.</p>
+              </div>
+<hr class="mb-2"/>
+
+            <div class="row">
+                <div class="col">
+                     <span class="font-weight-bold">Nama Rekening Pengelola
+                </div>
+                <div class="col-lg-8 mb-2">
+                     <span class=""><?=$rowitem->nama_rekening?></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <span class="font-weight-bold">Nomor Rekening Pengelola  </span>
+                </div>
+                <div class="col-lg-8  mb-2">
+                    <span class=""><?=$rowitem->nomor_rekening?></span>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col">
+                    <span class="font-weight-bold">Bank Pengelola  </span>
+                </div>
+                <div class="col-lg-8  mb-2">
+                    <span class=""><?=$rowitem->nama_bank?></span>
+                </div>
+            </div>
+                </div>
+            </div>
             <br><br>
 
             </section>
