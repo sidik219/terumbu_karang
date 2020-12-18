@@ -179,11 +179,11 @@ $row = $stmt->fetchAll();
                         <div class="col">
                             <h4><span class="align-middle font-weight-bold">Kelola Donasi</span></h4>
                         </div>
-                        <div class="col">
+                        <!-- <div class="col">
 
                         <a class="btn btn-primary float-right" href="input_donasi.php" role="button">Input Data Baru (+)</a>
 
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <!-- /.container-fluid -->

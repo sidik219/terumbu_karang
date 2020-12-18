@@ -179,45 +179,9 @@
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
 
-                    <div class="form-group">
-                        <label for="file_bukti_donasi">Bukti Donasi</label>
-                        <div class='form-group' id='buktidonasi'>
-                        <div>
-                            <input type='file'  class='form-control' id='image_uploads'
-                                name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
-                        <a href="<?=$rowitem->bukti_donasi?>" data-toggle="lightbox"><img class="img-fluid" id="oldpic" src="<?=$rowitem->bukti_donasi?>" width="10%" <?php if($rowitem->bukti_donasi == NULL) echo " style='display:none;'"; ?>></a>
-                        <br><small class="text-muted">Klik gambar untuk memperbesar</small>
-                        <script>
-                            window.onload = function() {
-                            document.getElementById('preview').style.display = 'none';
-                            };
-                            function readURL(input) {
-                                if (input.files && input.files[0]) {
-                                    var reader = new FileReader();
-                                    document.getElementById('oldpic').style.display = 'none';
-                                    reader.onload = function (e) {
-                                        $('#preview')
-                                            .attr('src', e.target.result)
-                                            .width(200);
-                                            document.getElementById('preview').style.display = 'block';
-                                    };
-
-                                    reader.readAsDataURL(input.files[0]);
-                                }
-                            }
-                        </script>
-                    </div>
-                    </div>
-
-                    <br>
-                    <p align="center">
-                    <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
-                    </form>
-                     <div class="" style="width:100%;">
+                    <div class="row">
+                      <div class="col-lg-9 border rounded bg-white">
+                        <div class="" style="width:100%;">
                 <div class="">
                     <h4 class="card-header mb-2 pl-0">Metode Pembayaran</h4>
             <span class="">Pilihan untuk lokasi</span>  <span class="text-info font-weight-bolder"><?=$rowitem->nama_lokasi?> : </span>
@@ -263,7 +227,53 @@
             </div>
                 </div>
             </div>
-            <br><br>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-3  border rounded bg-white p-3">
+                        <div class="form-group">
+                        <label for="file_bukti_donasi">Bukti Donasi</label>
+                        <div class='form-group' id='buktidonasi'>
+                        <div>
+                            <input type='file'  class='form-control' id='image_uploads'
+                                name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
+                        <a href="<?=$rowitem->bukti_donasi?>" data-toggle="lightbox"><img class="img-fluid" id="oldpic" src="<?=$rowitem->bukti_donasi?>" width="50%" <?php if($rowitem->bukti_donasi == NULL) echo " style='display:none;'"; ?>></a>
+                        <br><small class="text-muted">Klik gambar untuk memperbesar</small>
+                        <script>
+                            window.onload = function() {
+                            document.getElementById('preview').style.display = 'none';
+                            };
+                            function readURL(input) {
+                                if (input.files && input.files[0]) {
+                                    var reader = new FileReader();
+                                    document.getElementById('oldpic').style.display = 'none';
+                                    reader.onload = function (e) {
+                                        $('#preview')
+                                            .attr('src', e.target.result)
+                                            .width(200);
+                                            document.getElementById('preview').style.display = 'block';
+                                    };
+
+                                    reader.readAsDataURL(input.files[0]);
+                                }
+                            }
+                        </script>
+                    </div>
+                    </div>
+
+                    <br>
+                    <p align="center">
+                    <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
+                    </form>
+                      </div>
+                    </div>
+
+
+
 
             </section>
         <?php //} ?>
