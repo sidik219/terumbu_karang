@@ -297,7 +297,16 @@
                     <div class="form-group">
                         <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
                         <a href="<?=$rowitem->bukti_donasi?>" data-toggle="lightbox"><img class="img-fluid" id="oldpic" src="<?=$rowitem->bukti_donasi?>" width="50%" <?php if($rowitem->bukti_donasi == NULL) echo " style='display:none;'"; ?>></a>
-                        <br><small class="text-muted">Klik gambar untuk memperbesar</small>
+                        <br>
+                        <small class="text-muted">
+                            <?php if($rowitem->bukti_donasi == NULL){
+                                echo "Bukti transfer belum diupload";
+                            }else{
+                                echo "Klik gambar untuk memperbesar";
+                            }
+
+                            ?>
+                        </small>
                         <script>
                             window.onload = function() {
                             document.getElementById('preview').style.display = 'none';
