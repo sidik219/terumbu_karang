@@ -1,6 +1,20 @@
 <?php include 'build/config/connection.php';
 //session_start();
 
+$sqlviewlokasi = 'SELECT * FROM t_lokasi
+                        ORDER BY nama_lokasi';
+        $stmt = $pdo->prepare($sqlviewlokasi);
+        $stmt->execute();
+        $rowlokasi = $stmt->fetchAll();
+
+        $sqlviewdonasi = 'SELECT * FROM t_donasi
+                  LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
+                  WHERE t_donasi.id_status_donasi = 3';
+        $stmt = $pdo->prepare($sqlviewdonasi);
+        $stmt->execute();
+        $rowdonasi = $stmt->fetchAll();
+
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
 //}
@@ -180,19 +194,48 @@
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
-                        <label for="dd_id_titik">ID Titik</label>
-                        <select id="dd_id_titik" name="dd_id_titik" class="form-control">
-                            <option value="">1</option>
-                            <option value="">2</option>
-                            <option value="">3</option>
+                        <label for="dd_id_lokasi">Lokasi Penanaman</label>
+                        <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" onChange="loadTitik(this.value);" required>
+                            <option value="">Pilih Lokasi</option>
+                            <?php foreach ($rowlokasi as $rowitem) {
+                            ?>
+                            <option value="<?=$rowitem->id_lokasi?>">ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
+
+                            <?php } ?>
                         </select>
                     </div>
+
                     <div class="form-group">
-                         <label for="date_penanaman">Tanggal Penanaman</label>
+                        <label for="dd_id_titik">Titik Penanaman (Opsional)</label>
+                        <select id="dd_id_titik" name="dd_id_titik" class="form-control" onChange="loadTitik(this.value);">
+                          <option value="">Pilih Titik</option>
+                            <?php foreach ($rowlokasi as $rowitem) {
+                            ?>
+                            <option value="<?=$rowitem->id_lokasi?>">ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
+
+                            <?php } ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                         <label for="date_penanaman">Perkiraan Tanggal Penanaman</label>
                          <div class="file-form">
                          <input type="date" id="date_penanaman" name="date_penanaman" class="form-control" >
                          </div>
                      </div>
+
+                     <div class="form-group">
+                        <label for="dd_id_donasi">Tambah Donasi ke Batch</label>
+                        <select multiple id="dd_id_donasi" name="dd_id_donasi" class="form-control">
+                            <?php foreach ($rowdonasi as $donasi) {
+                            ?>
+                            <option value="<?=$donasi->id_donasi?>">ID <?=$donasi->id_donasi?> - <?=$donasi->nama_donatur?></option>
+
+                            <?php } ?>
+                        </select>
+                    </div>
+
+
 
                     <br>
                     <p align="center">
@@ -238,6 +281,26 @@
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
+
+    <script async>
+    function loadTitik(id_lokasi){
+      $.ajax({
+        type: "POST",
+        url: "list_populate.php",
+        data:{
+            id_lokasi: id_lokasi,
+            type: 'load_titik'
+        },
+        beforeSend: function() {
+          $("#dd_id_titik").addClass("loader");
+        },
+        success: function(data){
+          $("#dd_id_titik").html(data);
+          $("#dd_id_titik").removeClass("loader");
+        }
+      });
+    }
+    </script>
 
 </body>
 </html>
