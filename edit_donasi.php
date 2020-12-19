@@ -17,6 +17,11 @@
     $stmt->execute(['id_donasi' => $id_donasi]);
     $rowitem = $stmt->fetch();
 
+     $sqlstatus = 'SELECT * FROM t_status_donasi';
+    $stmt = $pdo->prepare($sqlstatus);
+    $stmt->execute();
+    $rowstatus = $stmt->fetchAll();
+
     if (isset($_POST['submit'])) {
         // $randomstring = substr(md5(rand()), 0, 7);
 
@@ -43,13 +48,13 @@
             //---image upload end
 
         $tanggal_update_status = date ('Y-m-d H:i:s', time());
-        $status_donasi = $_POST['radio_status'];
+        $id_status_donasi = $_POST['radio_status'];
         $sqldonasi = "UPDATE t_donasi
-                        SET status_donasi = :status_donasi, update_terakhir = :update_terakhir
+                        SET id_status_donasi = :id_status_donasi, update_terakhir = :update_terakhir
                         WHERE id_donasi = :id_donasi";
 
         $stmt = $pdo->prepare($sqldonasi);
-        $stmt->execute(['id_donasi' => $id_donasi, 'status_donasi' => $status_donasi, 'update_terakhir' => $tanggal_update_status]);
+        $stmt->execute(['id_donasi' => $id_donasi, 'id_status_donasi' => $id_status_donasi, 'update_terakhir' => $tanggal_update_status]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
@@ -238,37 +243,20 @@
 
                     <div class="row">
                       <div class="col-12 mb-2 border rounded bg-white p-3">
-                  <h5>Status Donasi</h5>
-                  <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radio_status" id="radio_status" value="Menunggu Konfirmasi Pembayaran" <?php if($rowitem->status_donasi == 'Menunggu Konfirmasi Pembayaran') echo " checked"; ?>>
-                  <label class="form-check-label" for="radio_status">
-                    Menunggu Konfirmasi Pembayaran
+                  <h5 class="font-weight-bold">Status Donasi</h5>
+
+                  <?php
+                    foreach($rowstatus as $status){
+                  ?>
+
+                  <div class="form-check mb-2">
+                  <input class="form-check-input" type="radio" name="radio_status" id="radio_status<?=$status->id_status_donasi?>" value="<?=$status->id_status_donasi?>" <?php if($rowitem->id_status_donasi == $status->id_status_donasi) echo " checked"; ?>>
+                  <label class="form-check-label <?php if($rowitem->id_status_donasi == $status->id_status_donasi) echo " font-weight-bold"; ?>" for="radio_status<?=$status->id_status_donasi?>">
+                    <?=$status->nama_status_donasi?>
                   </label>
                 </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radio_status" id="radio_status2" value="Menunggu Konfirmasi oleh Pengelola Lokasi" <?php if($rowitem->status_donasi == 'Menunggu Konfirmasi oleh Pengelola Lokasi') echo " checked"; ?>>
-                  <label class="form-check-label" for="radio_status2">
-                    Menunggu Konfirmasi oleh Pengelola Lokasi
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radio_status" id="radio_status3" value="Pemeliharaan Bibit Terumbu Karang" <?php if($rowitem->status_donasi == 'Pemeliharaan Bibit Terumbu Karang') echo " checked"; ?>>
-                  <label class="form-check-label" for="radio_status3">
-                    Pemeliharaan Bibit Terumbu Karang
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radio_status" id="radio_status4" value="Proses Transplantasi Bibit Terumbu Karang" <?php if($rowitem->status_donasi == 'Proses Transplantasi Bibit Terumbu Karang') echo " checked"; ?>>
-                  <label class="form-check-label" for="radio_status4">
-                    Proses Transplantasi Bibit Terumbu Karang
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="radio_status" id="radio_status5" value="Proses Pemeliharaan Terumbu Karang" <?php if($rowitem->status_donasi == 'Proses Pemeliharaan Terumbu Karang') echo " checked"; ?>>
-                  <label class="form-check-label" for="radio_status5">
-                    Proses Pemeliharaan Terumbu Karang
-                  </label>
-                </div>
+
+                    <?php }?>
 
                 <button type="submit" name="submit" value="Simpan" class="btn btn-primary mt-2">Update Status</button></p>
 

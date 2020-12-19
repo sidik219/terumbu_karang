@@ -7,7 +7,7 @@
 
     $id_donasi = $_GET['id_donasi'];
     $defaultpic = "images/image_default.jpg";
-    $status_donasi = "Menunggu Konfirmasi oleh Pengelola Lokasi";
+    $id_status_donasi = 2;
 
     $sql = 'SELECT * FROM t_donasi, t_lokasi
     WHERE id_donasi = :id_donasi
@@ -44,11 +44,11 @@
 
         $tanggal_upload_bukti = date ('Y-m-d H:i:s', time());
         $sqldonasi = "UPDATE t_donasi
-                        SET bukti_donasi = :bukti_donasi, status_donasi = :status_donasi, update_terakhir = :update_terakhir
+                        SET bukti_donasi = :bukti_donasi, id_status_donasi = :id_status_donasi, update_terakhir = :update_terakhir
                         WHERE id_donasi = :id_donasi";
 
         $stmt = $pdo->prepare($sqldonasi);
-        $stmt->execute(['id_donasi' => $id_donasi, 'bukti_donasi' => $bukti_donasi, 'status_donasi' => $status_donasi, 'update_terakhir' => $tanggal_upload_bukti]);
+        $stmt->execute(['id_donasi' => $id_donasi, 'bukti_donasi' => $bukti_donasi, 'id_status_donasi' => $id_status_donasi, 'update_terakhir' => $tanggal_upload_bukti]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {

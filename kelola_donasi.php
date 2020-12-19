@@ -6,7 +6,8 @@
 //}
 
 $sqlviewdonasi = 'SELECT * FROM t_donasi
-                  LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi';
+                  LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi';
 $stmt = $pdo->prepare($sqlviewdonasi);
 $stmt->execute();
 $row = $stmt->fetchAll();
@@ -193,6 +194,16 @@ $row = $stmt->fetchAll();
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+
+                <?php
+                if(!empty($_GET['status'])){
+                  if($_GET['status'] == 'updatesuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Update data donasi berhasil!
+                      </div>';}
+                    }
+                ?>
+
                 <?php //if($_SESSION['level_user'] == '1') { ?>
                    <table class="table table-striped">
                      <thead>
@@ -218,7 +229,7 @@ $row = $stmt->fetchAll();
                               <td>Rp. <?=number_format($rowitem->nominal, 0)?></td>
                               <!-- <td>-</td> -->
                               <td><?=date('d F Y', strtotime($rowitem->tanggal_donasi))?></td>
-                              <td><?=$rowitem->status_donasi?> <br><small class="text-muted">(Update Terakhir: <?=date('d F Y', strtotime($rowitem->update_terakhir))?>)</small></td>
+                              <td><?=$rowitem->nama_status_donasi?> <br><small class="text-muted">(Update Terakhir: <?=date('d F Y', strtotime($rowitem->update_terakhir))?>)</small></td>
                               <td>
                                 <button type="button" class="btn btn-act">
                                 <a href="edit_donasi.php?id_donasi=<?=$rowitem->id_donasi?>" class="fas fa-edit"></a>
