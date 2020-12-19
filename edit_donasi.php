@@ -18,44 +18,45 @@
     $rowitem = $stmt->fetch();
 
     if (isset($_POST['submit'])) {
-        $randomstring = substr(md5(rand()), 0, 7);
+        // $randomstring = substr(md5(rand()), 0, 7);
 
         //Image upload
-            if($_FILES["image_uploads"]["size"] == 0) {
-                $bukti_donasi = $rowitem->bukti_donasi;
-                $pic = "&none=";
-            }
-            else if (isset($_FILES['image_uploads'])) {
-                if (($rowitem->bukti_donasi == $defaultpic) || (!$rowitem->bukti_donasi)){
-                    $target_dir  = "images/bukti_donasi/";
-                    $bukti_donasi = $target_dir .'BKTDNS_'.$randomstring. '.jpg';
-                    move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $bukti_donasi);
-                    $pic = "&new=";
-                }
-                else if (isset($rowitem->bukti_donasi)){
-                    $bukti_donasi = $rowitem->bukti_donasi;
-                    unlink($rowitem->bukti_donasi);
-                    move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowitem->bukti_donasi);
-                    $pic = "&replace=";
-                }
-            }
+            // if($_FILES["image_uploads"]["size"] == 0) {
+            //     $bukti_donasi = $rowitem->bukti_donasi;
+            //     $pic = "&none=";
+            // }
+            // else if (isset($_FILES['image_uploads'])) {
+            //     if (($rowitem->bukti_donasi == $defaultpic) || (!$rowitem->bukti_donasi)){
+            //         $target_dir  = "images/bukti_donasi/";
+            //         $bukti_donasi = $target_dir .'BKTDNS_'.$randomstring. '.jpg';
+            //         move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $bukti_donasi);
+            //         $pic = "&new=";
+            //     }
+            //     else if (isset($rowitem->bukti_donasi)){
+            //         $bukti_donasi = $rowitem->bukti_donasi;
+            //         unlink($rowitem->bukti_donasi);
+            //         move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowitem->bukti_donasi);
+            //         $pic = "&replace=";
+            //     }
+            // }
 
             //---image upload end
 
-        $tanggal_upload_bukti = date ('Y-m-d H:i:s', time());
+        $tanggal_update_status = date ('Y-m-d H:i:s', time());
+        $status_donasi = $_POST['radio_status'];
         $sqldonasi = "UPDATE t_donasi
                         SET status_donasi = :status_donasi, update_terakhir = :update_terakhir
                         WHERE id_donasi = :id_donasi";
 
         $stmt = $pdo->prepare($sqldonasi);
-        $stmt->execute(['id_donasi' => $id_donasi, 'status_donasi' => $status_donasi, 'update_terakhir' => $tanggal_upload_bukti]);
+        $stmt->execute(['id_donasi' => $id_donasi, 'status_donasi' => $status_donasi, 'update_terakhir' => $tanggal_update_status]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
-        header("Location: kelola_donasi.php?status=nochange.$pic");
+        header("Location: kelola_donasi.php?status=nochange");
         } else {
             //echo "HAHAHAAHA GREAT SUCCESSS !";
-            header("Location: kelola_donasi.php?status=updatesuccess.$pic");
+            header("Location: kelola_donasi.php?status=updatesuccess");
             }
         }
 ?>
@@ -236,6 +237,44 @@
                     <form action="" enctype="multipart/form-data" method="POST">
 
                     <div class="row">
+                      <div class="col-12 mb-2 border rounded bg-white p-3">
+                  <h5>Status Donasi</h5>
+                  <div class="form-check">
+                  <input class="form-check-input" type="radio" name="radio_status" id="radio_status" value="Menunggu Konfirmasi Pembayaran" <?php if($rowitem->status_donasi == 'Menunggu Konfirmasi Pembayaran') echo " checked"; ?>>
+                  <label class="form-check-label" for="radio_status">
+                    Menunggu Konfirmasi Pembayaran
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="radio_status" id="radio_status2" value="Menunggu Konfirmasi oleh Pengelola Lokasi" <?php if($rowitem->status_donasi == 'Menunggu Konfirmasi oleh Pengelola Lokasi') echo " checked"; ?>>
+                  <label class="form-check-label" for="radio_status2">
+                    Menunggu Konfirmasi oleh Pengelola Lokasi
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="radio_status" id="radio_status3" value="Pemeliharaan Bibit Terumbu Karang" <?php if($rowitem->status_donasi == 'Pemeliharaan Bibit Terumbu Karang') echo " checked"; ?>>
+                  <label class="form-check-label" for="radio_status3">
+                    Pemeliharaan Bibit Terumbu Karang
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="radio_status" id="radio_status4" value="Proses Transplantasi Bibit Terumbu Karang" <?php if($rowitem->status_donasi == 'Proses Transplantasi Bibit Terumbu Karang') echo " checked"; ?>>
+                  <label class="form-check-label" for="radio_status4">
+                    Proses Transplantasi Bibit Terumbu Karang
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="radio_status" id="radio_status5" value="Proses Pemeliharaan Terumbu Karang" <?php if($rowitem->status_donasi == 'Proses Pemeliharaan Terumbu Karang') echo " checked"; ?>>
+                  <label class="form-check-label" for="radio_status5">
+                    Proses Pemeliharaan Terumbu Karang
+                  </label>
+                </div>
+
+                <button type="submit" name="submit" value="Simpan" class="btn btn-primary mt-2">Update Status</button></p>
+
+          </div>
+
+
                       <div class="col-lg-9 border rounded bg-white">
                              <div class="" style="width:100%;">
                 <div class="">
