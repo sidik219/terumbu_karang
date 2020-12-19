@@ -195,6 +195,26 @@ $row = $stmt->fetchAll();
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
+
+                      <?php
+                if(!empty($_GET['status'])){
+                  if($_GET['status'] == 'updatesuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Update data berhasil
+                      </div>';}
+                      else if($_GET['status'] == 'addsuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Data baru berhasil ditambahkan
+                      </div>';}
+                      else if($_GET['status'] == 'deletesuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Data berhasil dihapus
+                      </div>';
+                    }
+                  }
+                ?>
+
+
                 <div class="row">
                         <div class="col">
                             <h4><span class="align-middle font-weight-bold">Kelola Titik</span></h4>

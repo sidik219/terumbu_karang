@@ -4,7 +4,7 @@
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
 //}
-    
+
 if (isset($_GET['status'])){
     $status = $_GET['status'];
 }
@@ -56,15 +56,15 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            
+
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -157,7 +157,7 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item">
                              <a href="kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -189,17 +189,36 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
+
+                      <?php
+                if(!empty($_GET['status'])){
+                  if($_GET['status'] == 'updatesuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Update data berhasil
+                      </div>';}
+                      else if($_GET['status'] == 'addsuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Data baru berhasil ditambahkan
+                      </div>';}
+                      else if($_GET['status'] == 'deletesuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Data berhasil dihapus
+                      </div>';
+                    }
+                  }
+                ?>
+
                     <div class="row">
                         <div class="col">
                             <h4><span class="align-middle font-weight-bold">Kelola Wilayah</span></h4>
                         </div>
                         <div class="col">
-                           
+
                         <a class="btn btn-primary float-right" href="input_wilayah.php" role="button">Input Data Baru (+)</a>
-                   
+
                         </div>
                     </div>
-                  
+
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -220,7 +239,7 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
                           <tbody>
                           <?php
 
-                          foreach ($row as $rowitem) {                            
+                          foreach ($row as $rowitem) {
                           ?>
                             <tr>
                               <th scope="row"><?=$rowitem->id_wilayah?></th>
@@ -228,7 +247,7 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
                               <td>
                                 <a href="edit_wilayah.php?id_wilayah=<?=$rowitem->id_wilayah?>" class="fas fa-edit mr-3"></a>
                                 <a href="hapus.php?type=wilayah&id_wilayah=<?=$rowitem->id_wilayah?>" class="far fa-trash-alt"></a>
-                                </td>                                
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="3">
@@ -243,10 +262,10 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Wilayah</p>
                             </div>
-                            <div class="col-12 cell<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?>">                               
+                            <div class="col-12 cell<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?>">
                                 <div class="row mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">
-                                        Deskripsi Wilayah 
+                                        Deskripsi Wilayah
                                     </div>
                                     <div class="col isi">
                                         <?=$rowitem->deskripsi_wilayah?>
@@ -254,7 +273,7 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
                                 </div>
                                 <div class="row  mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">
-                                        Foto Wilayah 
+                                        Foto Wilayah
                                     </div>
                                     <div class="col isi">
                                         <img src="<?=$rowitem->foto_wilayah?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
@@ -268,7 +287,7 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
                                         <?=$rowitem->id_user_pengelola?>
                                     </div>
                                 </div>
-                                    
+
                             </div>
                         </div>
 
@@ -281,7 +300,7 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
                   </table>
                 <?php //} ?>
             </div>
-            
+
             </section>
             <!-- /.Left col -->
             </div>

@@ -6,7 +6,7 @@
 //}
 
 $sqlviewtk = 'SELECT * FROM t_terumbu_karang
-                LEFT JOIN t_jenis_terumbu_karang 
+                LEFT JOIN t_jenis_terumbu_karang
                 ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis';
 $stmt = $pdo->prepare($sqlviewtk);
 $stmt->execute();
@@ -54,13 +54,13 @@ $row = $stmt->fetchAll();
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -153,7 +153,7 @@ $row = $stmt->fetchAll();
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item">
                              <a href="kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -173,7 +173,7 @@ $row = $stmt->fetchAll();
                             </a>
                         </li>
                     <?php //} ?>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -190,9 +190,9 @@ $row = $stmt->fetchAll();
                             <h4><span class="align-middle font-weight-bold">Kelola Terumbu Karang</span></h4>
                         </div>
                         <div class="col">
-                           
+
                         <a class="btn btn-primary float-right" href="input_tk.php" role="button">Input Data Baru (+)</a>
-                   
+
                         </div>
                     </div>
                 </div>
@@ -203,10 +203,29 @@ $row = $stmt->fetchAll();
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+
+                      <?php
+                if(!empty($_GET['status'])){
+                  if($_GET['status'] == 'updatesuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Update data berhasil
+                      </div>';}
+                      else if($_GET['status'] == 'addsuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Data baru berhasil ditambahkan
+                      </div>';}
+                      else if($_GET['status'] == 'deletesuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Data berhasil dihapus
+                      </div>';
+                    }
+                  }
+                ?>
+
                 <?php //if($_SESSION['level_user'] == '1') { ?>
                     <table class="table table-striped">
                      <thead>
-                         
+
                             <tr>
                                 <th scope="col">ID Terumbu Karang</th>
                                 <th scope="col">ID Jenis</th>
@@ -215,11 +234,11 @@ $row = $stmt->fetchAll();
                                 <th scope="col">Foto</th>
                                 <th scope="col">Harga</th> -->
                                 <th scope="col">Aksi</th>
-                                
+
                             </tr>
                           </thead>
                     <tbody>
-                        <?php foreach ($row as $rowitem) {                            
+                        <?php foreach ($row as $rowitem) {
                         ?>
                           <tr>
                               <th scope="row"><?=$rowitem->id_terumbu_karang?></th>
@@ -243,10 +262,10 @@ $row = $stmt->fetchAll();
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Terumbu Karang</p>
                             </div>
-                            <div class="col-12 cell<?=$rowitem->id_terumbu_karang?> collapse contentall<?=$rowitem->id_terumbu_karang?>">                               
+                            <div class="col-12 cell<?=$rowitem->id_terumbu_karang?> collapse contentall<?=$rowitem->id_terumbu_karang?>">
                                 <div class="row mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">
-                                        Deskripsi 
+                                        Deskripsi
                                     </div>
                                     <div class="col isi">
                                         <?=$rowitem->deskripsi_terumbu_karang?>
@@ -254,7 +273,7 @@ $row = $stmt->fetchAll();
                                 </div>
                                 <div class="row  mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">
-                                        Foto 
+                                        Foto
                                     </div>
                                     <div class="col isi">
                                         <img src="<?=$rowitem->foto_terumbu_karang?>?<?php if ($status='nochange'){echo time();}?>" width="150px">
@@ -268,7 +287,7 @@ $row = $stmt->fetchAll();
                                         Rp. <?=$rowitem->harga_terumbu_karang?>
                                     </div>
                                 </div>
-                                    
+
                             </div>
                         </div>
 
@@ -279,7 +298,7 @@ $row = $stmt->fetchAll();
                     </tbody>
                   </table>
                 <?php //} ?>
-            
+
             </section>
             <!-- /.Left col -->
             </div>
