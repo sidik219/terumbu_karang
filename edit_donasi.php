@@ -263,7 +263,7 @@
           </div>
 
 
-                      <div class="col-lg-9 border rounded bg-white">
+                      <div class="col-lg-9 border rounded bg-white mb-2">
                              <div class="" style="width:100%;">
                 <div class="">
                     <h5 class="card-header mb-2 pl-0">Rincian Pembayaran</h5>
@@ -312,9 +312,9 @@
             </div>
                     </div>
             <br><br>
-                      <div class="col-lg-3  border rounded bg-white p-3">
+                      <div class="col-lg-3  border rounded bg-white p-3 mb-2  text-center">
                           <div class="form-group">
-                        <label for="file_bukti_donasi">Bukti Donasi</label>
+                        <label for="file_bukti_donasi">Bukti Donasi</label><hr class="m-0">
                         <div class='form-group' id='buktidonasi'>
                         <!-- <div>
                             <input type='file'  class='form-control' id='image_uploads'
@@ -356,10 +356,43 @@
                     </div>
                     </div>
 
+
+
                     <p align="center">
                     <!-- <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p> -->
                     </form>
                       </div>
+
+
+                                    <div class="col-12 border rounded bg-white p-0">
+                                      <h5 class="card-header mb-1 font-weight-bold">Terumbu Karang Pilihan</h5><br/>
+                                        <?php
+                                              $sqlviewisi = 'SELECT jumlah_terumbu, nama_terumbu_karang, foto_terumbu_karang FROM t_detail_donasi
+                                              LEFT JOIN t_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
+                                              LEFT JOIN t_terumbu_karang ON t_detail_donasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang
+                                              WHERE t_detail_donasi.id_donasi = :id_donasi';
+                                              $stmt = $pdo->prepare($sqlviewisi);
+                                              $stmt->execute(['id_donasi' => $rowitem->id_donasi]);
+                                              $rowisi = $stmt->fetchAll();
+                                           foreach ($rowisi as $isi){
+                                             ?>
+                                             <div class="row  mb-3 pl-3">
+                                               <div class="col">
+                                                <img class="" height="60px" src="<?=$isi->foto_terumbu_karang?>?<?php if ($status='nochange'){echo time();}?>">
+                                              </div>
+                                              <div class="col">
+                                                <span><?= $isi->nama_terumbu_karang?>
+                                              </div>
+                                              <div class="col">
+                                                x<?= $isi->jumlah_terumbu?></span><br/>
+                                              </div>
+
+                                             <hr class="mb-2"/>
+                                             </div>
+
+                                        <?php   }
+                                        ?>
+                                    </div>
 
 
 
