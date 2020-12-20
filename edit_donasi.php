@@ -228,7 +228,12 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                     <div class="container-fluid">
-                        <a href="kelola_donasi.php">< Kembali</a><br><br>
+                        <button class="btn btn-outline-primary" onclick="goBack()">< Kembali</button><br><br>
+                        <script>
+                          function goBack() {
+                            window.history.back();
+                          }
+                        </script>
                         <h4><span class="align-middle font-weight-bold">Kelola Donasi</span></h4>
                     </div>
                 <!-- /.container-fluid -->
@@ -444,6 +449,8 @@
                 $(this).ekkoLightbox();
             });
     </script>
+
+
 
 
 </body>

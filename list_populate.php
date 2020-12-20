@@ -24,6 +24,7 @@ if ($_POST['type'] == 'load_lokasi' && !empty($_POST["id_wilayah"])) {
     ?>
 
 <?php
+
 //Load Titik
 if ($_POST['type'] == 'load_titik' && !empty($_POST["id_lokasi"])) {
     $id_lokasi = $_POST["id_lokasi"];
@@ -44,4 +45,31 @@ if ($_POST['type'] == 'load_titik' && !empty($_POST["id_lokasi"])) {
         }
     }
     ?>
+
+
+<?php
+//Load Daftar Donasi berdasarkan id_lokasi
+if ($_POST['type'] == 'load_donasi' && !empty($_POST["id_lokasi"])) {
+    $id_lokasi = $_POST["id_lokasi"];
+    $daftardonasi = 'SELECT * FROM t_donasi
+                      WHERE id_lokasi = :id_lokasi AND t_donasi.id_status_donasi = 3
+                        ORDER BY id_donasi';
+        $stmt = $pdo->prepare($daftardonasi);
+        $stmt->execute(['id_lokasi' => $id_lokasi]);
+        $rowdonasi = $stmt->fetchAll();
+
+    ?>
+    <?php
+        foreach ($rowdonasi as $donasi) {
+            ?>
+    <div class="border rounded p-1 batch-donasi" id="donasi<?=$donasi->id_donasi?>">
+      ID <span class="id_donasi"><?=$donasi->id_donasi?></span> -
+      <span class="nama_donatur"><?=$donasi->nama_donatur?></span>
+      <button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus"></i></button>
+    </div>
+    <?php
+        }
+    }
+    ?>
+
 

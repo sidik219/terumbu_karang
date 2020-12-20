@@ -56,13 +56,13 @@
             </ul>
             <b>Dashboard Admin - TKJB</b>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -155,7 +155,7 @@
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                       
+
                         <li class="nav-item">
                              <a href="kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -175,7 +175,7 @@
                             </a>
                         </li>
                     <?php //} ?>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -187,7 +187,7 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                     <div class="container-fluid">
-                        <a href="kelola_titik.php">< Kembali</a><br><br>
+                        <a class="btn btn-outline-primary" href="kelola_titik.php">< Kembali</a><br><br>
                          <h3>Input Detail Titik</h3>
                     </div>
                 <!-- /.container-fluid -->
@@ -226,7 +226,7 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Luas Titik</label>
                         <input type="#" class="form-control" id="#" placeholder="m2">
-                    </div> 
+                    </div>
                     <div class="form-group">
                         <label for="rb_status_wisata">Kondisi</label><br>
                             <div class="form-check form-check-inline">
@@ -251,9 +251,9 @@
                                 <input type="radio" id="rb_kondisi_sangat_baik" name="rb_kondisi_titik" value="sangat_baik" class="form-check-input">
                                 <label class="form-check-label" for="rb_kondisi_titik" style="color: #A7A737">
                                     Sangat Baik (75-100%)
-                                </label> 
+                                </label>
                             </div>
-                    </div> 
+                    </div>
                         <br>
                           <button type="submit" class="btn btn-primary">Kirim</button>
                     </form>

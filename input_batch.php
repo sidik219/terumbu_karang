@@ -60,7 +60,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
               $stmt->execute(['id_donasi' => $id_donasi, 'id_batch' => $id_batch]);
 
 
-              //Update dan set id_batch ke donasi
+              //Update dan set id_batch ke donasi pilihan
               $sqldonasi = "UPDATE t_donasi
                         SET id_batch = :id_batch, update_terakhir = :update_terakhir, id_status_donasi = :id_status_donasi
                         WHERE id_donasi = :id_donasi";
@@ -70,10 +70,10 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
               $affectedrows = $stmt->rowCount();
               if ($affectedrows == '0') {
-              header("Location: kelola_batch.php?status=insertfailed.$pic");
+              header("Location: kelola_batch.php?status=insertfailed");
               } else {
                   //echo "HAHAHAAHA GREAT SUCCESSS !";
-                  header("Location: kelola_batch.php?status=addsuccess.$pic");
+                  header("Location: kelola_batch.php?status=addsuccess");
                   }
 
             }
@@ -249,7 +249,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
             <!-- Content Header (Page header) -->
             <div class="content-header">
                     <div class="container-fluid">
-                        <a href="kelola_batch.php">< Kembali</a><br><br>
+                        <a class="btn btn-outline-primary" href="kelola_batch.php">< Kembali</a><br><br>
                         <h4><span class="align-middle font-weight-bold">Input Data Batch</span></h4>
                     </div>
                 <!-- /.container-fluid -->
@@ -370,6 +370,25 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         success: function(data){
           $("#dd_id_titik").html(data);
           $("#dd_id_titik").removeClass("loader");
+          loadDonasi(id_lokasi)
+        }
+      });
+    }
+
+    function loadDonasi(id_lokasi){
+      $.ajax({
+        type: "POST",
+        url: "list_populate.php",
+        data:{
+            id_lokasi: id_lokasi,
+            type: 'load_donasi'
+        },
+        beforeSend: function() {
+          $("#daftardonasi").addClass("loader");
+        },
+        success: function(data){
+          $("#daftardonasi").html(data);
+          $("#daftardonasi").removeClass("loader");
         }
       });
     }

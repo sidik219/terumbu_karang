@@ -55,13 +55,13 @@
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -154,7 +154,7 @@
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                       
+
                         <li class="nav-item ">
                              <a href="kelola_perizinan.php" class="nav-link ">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -174,7 +174,7 @@
                             </a>
                         </li>
                     <?php //} ?>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -186,7 +186,7 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                     <div class="container-fluid">
-                        <a href="kelola_laporan.php">< Kembali</a><br><br>
+                        <a class="btn btn-outline-primary" href="kelola_laporan.php">< Kembali</a><br><br>
                         <h4><span class="align-middle font-weight-bold">Edit Data Laporan</h4></span>
                     </div>
                 <!-- /.container-fluid -->
@@ -198,14 +198,14 @@
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
-                    
-                  
+
+
                     <br>
                     <p align="center">
                          <button type="submit" class="btn btn-submit">Kirim</button></p>
                     </form>
             <br><br>
-                    
+
             </section>
         <?php //} ?>
             <!-- /.Left col -->

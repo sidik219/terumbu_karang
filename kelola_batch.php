@@ -3,6 +3,17 @@
 
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
+
+    $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
+                      t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch
+                      FROM t_batch
+                      LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
+                      LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
+                      LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch
+                      ORDER BY update_status_batch_terakhir';
+    $stmt = $pdo->prepare($sqlviewbatch);
+    $stmt->execute();
+    $rowbatch = $stmt->fetchAll();
 //}
 ?>
 
@@ -16,29 +27,10 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -56,13 +48,13 @@
             </ul>
 
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -155,7 +147,7 @@
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item">
                              <a href="kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -192,14 +184,14 @@
                             <h4><span class="align-middle font-weight-bold">Kelola Batch</span></h4>
                         </div>
                         <div class="col">
-                           
+
                         <a class="btn btn-primary float-right" href="input_batch.php" role="button">Input Data Baru (+)</a>
-                   
+
                         </div>
                     </div>
                 </div>
 
-                  
+
                 <!-- /.container-fluid -->
             </div>
             <!-- /.content-header -->
@@ -207,23 +199,45 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+                  <?php
+                if(!empty($_GET['status'])){
+                  if($_GET['status'] == 'updatesuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Update data berhasil
+                      </div>';}
+                      else if($_GET['status'] == 'addsuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Data baru berhasil ditambahkan
+                      </div>';}
+                      else if($_GET['status'] == 'deletesuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Data berhasil dihapus
+                      </div>';
+                    }
+                  }
+                ?>
             <?php //if($_SESSION['level_user'] == '1') { ?>
                 <table class="table table-striped">
                      <thead>
                             <tr>
                                 <th scope="col">ID Batch</th>
+                                <th scope="col">Lokasi</th>
                                 <th scope="col">ID Titik</th>
-                                <th scope="col">Tgl Penanaman</th>
+                                <th scope="col">Tanggal Penanaman</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                           </thead>
                     <tbody>
+                      <?php
+                          foreach ($rowbatch as $batch) {
+                          ?>
                           <tr>
-                              <th scope="row">99002</th>
-                              <td>-</td>
-                              <td>mm/dd/yyyy</td>
-                              <td>Penyemaian</td>
+                              <th scope="row"><?=$batch->id_batch?></th>
+                              <td>ID <?=$batch->id_lokasi?> - <?=$batch->nama_lokasi?></td>
+                              <td><?=$batch->id_titik?> <?=$batch->keterangan_titik?></td>
+                              <td><?=$batch->tanggal_penanaman?></td>
+                              <td><?=$batch->nama_status_batch?></td>
                               <td>
                                 <button type="button" class="btn btn-act">
                                 <a href="edit_batch.php" class="fas fa-edit"></a>
@@ -231,12 +245,55 @@
                                 <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
                               </td>
                           </tr>
+                          <tr>
+                                <td colspan="6">
+                                    <!--collapse start -->
+                            <div class="row  m-0">
+                            <div class="col-12 cell detailcollapser<?=$batch->id_batch?>"
+                                data-toggle="collapse"
+                                data-target=".cell<?=$batch->id_batch?>, .contentall<?=$batch->id_batch?>">
+                                <p
+                                    class="fielddetail<?=$batch->id_batch?>">
+                                    <i
+                                        class="icon fas fa-chevron-down"></i>
+                                    Rincian Batch</p>
+                            </div>
+                            <div class="col-12 cell<?=$batch->id_batch?> collapse contentall<?=$batch->id_batch?>">
+                            <div class="col-md-3 kolom font-weight-bold">
+                                        Daftar Donasi
+                                    </div>
+                                <?php
+                                  $sqlviewdetailbatch = 'SELECT * FROM t_detail_batch
+                                                        LEFT JOIN t_donasi ON t_donasi.id_batch = t_detail_batch.id_batch
+                                                        WHERE t_donasi.id_batch = :id_batch
+                                                        AND t_donasi.id_donasi = t_detail_batch.id_donasi';
+                                  $stmt = $pdo->prepare($sqlviewdetailbatch);
+                                  $stmt->execute(['id_batch' => $batch->id_batch]);
+                                  $rowdetailbatch = $stmt->fetchAll();
+
+                                  foreach($rowdetailbatch as $detailbatch){
+                                ?>
+                                <div class="row mb-2 ml-1">
+                                    <div class="col isi">
+                                        ID <?=$detailbatch->id_donasi?> - <?=$detailbatch->nama_donatur?> <a class="btn btn-sm btn-outline-primary" href="edit_donasi.php?id_donasi=<?=$detailbatch->id_donasi?>">Rincian></a>
+                                    </div>
+                                </div>
+
+                                  <?php } ?>
+
+                            </div>
+                        </div>
+
+                        <!--collapse end -->
+                                </td>
+                            </tr>
+                          <?php } ?>
                     </tbody>
                 </table>
             <?php //} ?>
-                 
 
-            
+
+
             </section>
             <!-- /.Left col -->
             <!-- /.row (main row) -->
@@ -269,40 +326,10 @@
     </script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="plugins/summernote/summernote-bs4.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard.js"></script>
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-    <!-- Leaflet Marker Cluster -->
-    <script src="dist/js/leaflet.markercluster-src.js"></script>
-    <!-- Leaflet panel layer JS-->
-    <script src="dist/js/leaflet-panel-layers.js"></script>
-    <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-    <script src="dist/js/leaflet.ajax.js"></script>
-    <!-- Leaflet Map -->
-    <script src="dist/js/leaflet-map.js"></script>
 
 </body>
 </html>

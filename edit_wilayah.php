@@ -4,11 +4,11 @@
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
 //}
-    
+
     $id_wilayah = $_GET['id_wilayah'];
     $defaultpic = "images/image_default.jpg";
 
-    
+
     $sql = 'SELECT * FROM t_wilayah WHERE id_wilayah = :id_wilayah';
 
     $stmt = $pdo->prepare($sql);
@@ -19,7 +19,7 @@
             if($_POST['submit'] == 'Simpan'){
                 $nama_wilayah        = $_POST['tbnama_wilayah'];
                 $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
-                $id_user_pengelola     = $_POST['tb_id_user_pengelola'];                
+                $id_user_pengelola     = $_POST['tb_id_user_pengelola'];
 
                 //Image upload
             if($_FILES["image_uploads"]["size"] == 0) {
@@ -39,21 +39,21 @@
                     unlink($rowitem->foto_wilayah);
                     move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowitem->foto_wilayah);
                     $pic = "&replace=";
-                }                
+                }
             }
-            
-            //---image upload end   
+
+            //---image upload end
 
                 $sqleditwilayah = "UPDATE t_wilayah
-                            SET nama_wilayah = :nama_wilayah, 
-                            deskripsi_wilayah = :deskripsi_wilayah, foto_wilayah = :foto_wilayah, 
+                            SET nama_wilayah = :nama_wilayah,
+                            deskripsi_wilayah = :deskripsi_wilayah, foto_wilayah = :foto_wilayah,
                             id_user_pengelola = :id_user_pengelola
                             WHERE id_wilayah = :id_wilayah";
 
                 $stmt = $pdo->prepare($sqleditwilayah);
-                $stmt->execute(['nama_wilayah' => $nama_wilayah, 
-                'deskripsi_wilayah' => $deskripsi_wilayah, 
-                'foto_wilayah' => $foto_wilayah, 'id_wilayah' => $id_wilayah, 
+                $stmt->execute(['nama_wilayah' => $nama_wilayah,
+                'deskripsi_wilayah' => $deskripsi_wilayah,
+                'foto_wilayah' => $foto_wilayah, 'id_wilayah' => $id_wilayah,
                 'id_user_pengelola' => $id_user_pengelola]);
 
                 $affectedrows = $stmt->rowCount();
@@ -62,7 +62,7 @@
                 } else {
                 header("Location: kelola_wilayah.php?status=updatesuccess".$pic);
                 }
-            }           
+            }
         }
 ?>
 
@@ -109,13 +109,13 @@
             </ul>
             <b>Kelola Wilayah</b>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -208,7 +208,7 @@
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item">
                              <a href= "kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -228,7 +228,7 @@
                             </a>
                         </li>
                     <?php //} ?>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -240,7 +240,7 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                     <div class="container-fluid">
-                        <a href= "kelola_wilayah.php">< Kembali</a><br><br>
+                        <a class="btn btn-outline-primary" href="kelola_user.php">< Kembali</a><br><br>
                          <h3>Edit Data Wilayah</h3>
                     </div>
                 <!-- /.container-fluid -->
@@ -252,7 +252,7 @@
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST" name="updateWilayah">
-                
+
                           <div class="form-group">
                                 <label for="nama_wilayah">Nama Wilayah</label>
                                 <input type="text" value="<?=$rowitem->nama_wilayah?>" class="form-control" name="tbnama_wilayah" id="#" placeholder="Nama Kota/Kabupaten">
@@ -267,7 +267,7 @@
                                                 <label for='image_uploads'>Upload Foto Wilayah</label>
                                                 <input type='file'  class='form-control' id='image_uploads'
                                                     name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
-                                            </div>                                            
+                                            </div>
                                         </div>
 
                                         <div class="form-group">
@@ -301,7 +301,7 @@
                         <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
             <br><br>
-                    
+
             </section>
         <?php //} ?>
             <!-- /.Left col -->

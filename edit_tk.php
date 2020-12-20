@@ -15,7 +15,7 @@
         $rowviewjenis = $stmt->fetchAll();
 
     $sqlviewtk = 'SELECT * FROM t_terumbu_karang
-                        LEFT JOIN t_jenis_terumbu_karang 
+                        LEFT JOIN t_jenis_terumbu_karang
                         ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
                         WHERE id_terumbu_karang = :id_terumbu_karang';
         $stmt = $pdo->prepare($sqlviewtk);
@@ -24,7 +24,7 @@
 
         if (isset($_POST['submit'])) {
             $id_jenis      = $_POST['dd_id_jenis'];
-            $nama_terumbu_karang        = $_POST['tb_nama_terumbu']; 
+            $nama_terumbu_karang        = $_POST['tb_nama_terumbu'];
             $deskripsi_terumbu_karang        = $_POST['tb_deskripsi_terumbu'];
             $randomstring = substr(md5(rand()), 0, 7);
             $harga_terumbu_karang = $_POST['num_harga_terumbu_karang'];
@@ -46,20 +46,20 @@
                     unlink($rowitem->foto_terumbu_karang);
                     move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowitem->foto_terumbu_karang);
                     $pic = "&replace=";
-                }                
+                }
             }
-            
-            //---image upload end  
+
+            //---image upload end
 
     $sqlterumbu_karang = "UPDATE t_terumbu_karang
-                            SET id_jenis = :id_jenis, nama_terumbu_karang = :nama_terumbu_karang, 
-                            deskripsi_terumbu_karang = :deskripsi_terumbu_karang, 
+                            SET id_jenis = :id_jenis, nama_terumbu_karang = :nama_terumbu_karang,
+                            deskripsi_terumbu_karang = :deskripsi_terumbu_karang,
                             foto_terumbu_karang = :foto_terumbu_karang, harga_terumbu_karang = :harga_terumbu_karang
                             WHERE id_terumbu_karang = :id_terumbu_karang";
 
     $stmt = $pdo->prepare($sqlterumbu_karang);
-    $stmt->execute(['id_terumbu_karang' => $id_terumbu_karang,'id_jenis' => $id_jenis,'nama_terumbu_karang' => $nama_terumbu_karang, 
-    'deskripsi_terumbu_karang' => $deskripsi_terumbu_karang, 
+    $stmt->execute(['id_terumbu_karang' => $id_terumbu_karang,'id_jenis' => $id_jenis,'nama_terumbu_karang' => $nama_terumbu_karang,
+    'deskripsi_terumbu_karang' => $deskripsi_terumbu_karang,
     'foto_terumbu_karang' => $foto_terumbu_karang, 'harga_terumbu_karang' => $harga_terumbu_karang]);
 
     $affectedrows = $stmt->rowCount();
@@ -116,13 +116,13 @@
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -215,7 +215,7 @@
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item">
                              <a href="kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -235,7 +235,7 @@
                             </a>
                         </li>
                     <?php //} ?>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -247,7 +247,7 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                     <div class="container-fluid">
-                        <a href="kelola_tk.php">< Kembali</a><br><br>
+                        <a class="btn btn-outline-primary" href="kelola_tk.php">< Kembali</a><br><br>
                         <h4><span class="align-middle font-weight-bold">Edit Data Terumbu Karang</span></h4>
                     </div>
                 <!-- /.container-fluid -->
@@ -262,7 +262,7 @@
                     <div class="form-group">
                         <label for="dd_id_jenis">ID Jenis</label>
                         <select id="dd_id_jenis" name="dd_id_jenis" class="form-control">
-                            <?php foreach ($rowviewjenis as $rowitems) {                            
+                            <?php foreach ($rowviewjenis as $rowitems) {
                             ?>
                             <option value="<?=$rowitems->id_jenis?>"  <?php if ($rowitem->id_jenis == $rowitems->id_jenis) {echo " selected";} ?>>
                             ID <?=$rowitems->id_jenis?> - <?=$rowitems->nama_jenis?></option>
@@ -312,13 +312,13 @@
                         <label for="num_harga_terumbu_karang">Harga Terumbu Karang</label>
                         <input type="number"  value="<?=$rowitem->harga_terumbu_karang?>"  id="num_harga_terumbu_karang" name="num_harga_terumbu_karang" class="form-control">
                     </div>
-                  
+
                     <br>
                     <p align="center">
                             <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
             <br><br>
-                    
+
             </section>
         <?php //} ?>
             <!-- /.Left col -->

@@ -10,7 +10,7 @@
         $stmt = $pdo->prepare($sqlviewlokasi);
         $stmt->execute();
         $row = $stmt->fetchAll();
-    
+
     if (isset($_POST['submit'])) {
         if($_POST['submit'] == 'Simpan'){
             $id_lokasi = $_POST['dd_id_lokasi'];
@@ -31,8 +31,8 @@
                 $file_proposal = $target_dir .'IZIN_'.$randomstring. $_FILES["doc_uploads"]['name'];
                 move_uploaded_file($_FILES["doc_uploads"]["tmp_name"], $file_proposal);
             }
-            
-            //---document upload end   
+
+            //---document upload end
 
             $sqllokasi = "INSERT INTO t_perizinan
                             (id_lokasi, judul_perizinan, deskripsi_perizinan, foto_lokasi, luas_lokasi, id_user_pengelola,
@@ -41,8 +41,8 @@
                             :id_user_pengelola, :kontak_lokasi, :nama_bank, :nama_rekening, :nomor_rekening)";
 
             $stmt = $pdo->prepare($sqllokasi);
-            $stmt->execute(['id_lokasi' => $id_lokasi, 'judul_perizinan' => $judul_perizinan, 
-            'deskripsi_perizinan' => $deskripsi_perizinan, 'foto_lokasi' => $foto_lokasi, 
+            $stmt->execute(['id_lokasi' => $id_lokasi, 'judul_perizinan' => $judul_perizinan,
+            'deskripsi_perizinan' => $deskripsi_perizinan, 'foto_lokasi' => $foto_lokasi,
             'luas_lokasi' => $luas_lokasi, 'id_user_pengelola' => $id_user_pengelola,
             'kontak_lokasi' => $kontak_lokasi,'nama_bank' => $nama_bank,
             'nama_rekening' => $nama_rekening,'nomor_rekening' => $nomor_rekening]);
@@ -55,7 +55,7 @@
                 header("Location: kelola_lokasi.php?status=addsuccess");
                 }
             }
-        }        
+        }
 ?>
 
 <!DOCTYPE html>
@@ -88,13 +88,13 @@
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -187,7 +187,7 @@
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                       
+
                         <li class="nav-item menu-open">
                              <a href="kelola_perizinan.php" class="nav-link active">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -207,7 +207,7 @@
                             </a>
                         </li>
                     <?php //} ?>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -219,7 +219,7 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                     <div class="container-fluid">
-                        <a href="kelola_perizinan.php">< Kembali</a><br><br>
+                        <a class="btn btn-outline-primary" href="kelola_perizinan.php">< Kembali</a><br><br>
                         <h4><span class="align-middle font-weight-bold">Input Data Perizinan</h4></span>
                     </div>
                 <!-- /.container-fluid -->
@@ -234,7 +234,7 @@
                     <div class="form-group">
                         <label for="dd_id_lokasi">ID Lokasi</label>
                         <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control">
-                            <?php foreach ($row as $rowitem) {                            
+                            <?php foreach ($row as $rowitem) {
                             ?>
                             <option value="<?=$rowitem->id_lokasi?>">ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
 
@@ -266,14 +266,14 @@
                         <input type="number" id="tb_id_user" name="tb_id_user" class="form-control">
                     </div>
                     <div class="form-group">
-                    
-                  
+
+
                     <br>
                     <p align="center">
                             <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
             <br><br>
-                    
+
             </section>
         <?php //} ?>
             <!-- /.Left col -->

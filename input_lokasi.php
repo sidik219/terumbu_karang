@@ -220,7 +220,7 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                     <div class="container-fluid">
-                        <a href="kelola_lokasi.php">< Kembali</a><br><br>
+                        <a class="btn btn-outline-primary" href="kelola_lokasi.php">< Kembali</a><br><br>
                         <h4><span class="align-middle font-weight-bold">Input Data Lokasi</span></h4>
                     </div>
                 <!-- /.container-fluid -->

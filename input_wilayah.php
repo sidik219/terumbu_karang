@@ -21,8 +21,8 @@ if (isset($_POST['submit'])) {
             $foto_wilayah = $target_dir .'WIL_'.$randomstring. '.jpg';
             move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wilayah);
         }
-        
-        //---image upload end   
+
+        //---image upload end
 
         $sqlwilayah = "INSERT INTO t_wilayah
                         (nama_wilayah, deskripsi_wilayah, foto_wilayah, id_user_pengelola)
@@ -39,7 +39,7 @@ if (isset($_POST['submit'])) {
             header("Location: kelola_wilayah.php?status=addsuccess");
             }
         }
-    }        
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -91,13 +91,13 @@ if (isset($_POST['submit'])) {
             </ul>
             <b>Kelola Wilayah</b>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -190,7 +190,7 @@ if (isset($_POST['submit'])) {
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                       
+
                         <li class="nav-item">
                              <a href="kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -210,7 +210,7 @@ if (isset($_POST['submit'])) {
                             </a>
                         </li>
                     <?php //} ?>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -222,7 +222,7 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                  <a href="kelola_wilayah.php">< Kembali</a><br><br>
+                  <a class="btn btn-outline-primary" href="kelola_wilayah.php">< Kembali</a><br><br>
                   <h3>Input Data Wilayah</h3>
                 </div>
                 <!-- /.container-fluid -->
@@ -234,7 +234,7 @@ if (isset($_POST['submit'])) {
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST" name="addWilayah">
-                
+
                           <div class="form-group">
                                 <label for="nama_wilayah">Nama Wilayah</label>
                                 <input type="text" class="form-control" name="tbnama_wilayah" id="#" placeholder="Nama Kota/Kabupaten">

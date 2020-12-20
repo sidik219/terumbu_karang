@@ -166,7 +166,7 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                     <div class="container-fluid">
-                        <a href="donasi_saya.php">< Kembali</a><br><br>
+                        <a class="btn btn-outline-primary" href="donasi_saya.php">< Kembali</a><br><br>
                         <h4><span class="align-middle font-weight-bold">Kirim Bukti Donasi</span></h4>
                     </div>
                 <!-- /.container-fluid -->
