@@ -2,10 +2,16 @@
 //session_start();
 
 $sqlviewlokasi = 'SELECT * FROM t_lokasi
-                        ORDER BY nama_lokasi';
+                        ORDER BY id_lokasi';
         $stmt = $pdo->prepare($sqlviewlokasi);
         $stmt->execute();
         $rowlokasi = $stmt->fetchAll();
+
+        $sqlviewtitik = 'SELECT * FROM t_titik
+                        ORDER BY id_titik';
+        $stmt = $pdo->prepare($sqlviewtitik);
+        $stmt->execute();
+        $rowtitik = $stmt->fetchAll();
 
         $sqlviewdonasi = 'SELECT * FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
@@ -14,6 +20,68 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         $stmt = $pdo->prepare($sqlviewdonasi);
         $stmt->execute();
         $rowdonasi = $stmt->fetchAll();
+
+
+
+        if (isset($_POST['submit'])) {
+        $id_lokasi        = $_POST['dd_id_lokasi'];
+        $id_titik        = $_POST['dd_id_titik'];
+        $tanggal_penanaman        = $_POST['date_penanaman'];
+
+        $update_status_batch_terakhir = date ('Y-m-d H:i:s', time());
+        $id_status_batch = 1;
+
+
+        $sqlinsertbatch = "INSERT INTO t_batch
+                        (id_lokasi, tanggal_penanaman, update_status_batch_terakhir, id_status_batch, id_titik)
+                        VALUES (:id_lokasi, :tanggal_penanaman, :update_status_batch_terakhir, :id_status_batch, :id_titik)";
+
+        $stmt = $pdo->prepare($sqlinsertbatch);
+        $stmt->execute(['id_lokasi' => $id_lokasi, 'tanggal_penanaman' => $tanggal_penanaman, 'update_status_batch_terakhir' => $update_status_batch_terakhir, 'id_status_batch' => $id_status_batch, 'id_titik' => $id_titik]);
+
+        $affectedrows = $stmt->rowCount();
+        if ($affectedrows == '0') {
+        //echo "HAHAHAAHA INSERT FAILED !";
+        } else {
+            //echo "HAHAHAAHA GREAT SUCCESSS !";
+            $last_batch_id = $pdo->lastInsertId();
+            }
+
+            foreach($_POST['id_donasi'] as $id_donasi_value){ //Insert ke t_detail_batch
+              $id_donasi = $id_donasi_value;
+              $id_batch = $last_batch_id;
+              $id_status_donasi = 4;
+
+              $sqlinsertdetailbatch = "INSERT INTO t_detail_batch
+                        (id_donasi, id_batch)
+                        VALUES (:id_donasi, :id_batch)";
+
+              $stmt = $pdo->prepare($sqlinsertdetailbatch);
+              $stmt->execute(['id_donasi' => $id_donasi, 'id_batch' => $id_batch]);
+
+
+              //Update dan set id_batch ke donasi
+              $sqldonasi = "UPDATE t_donasi
+                        SET id_batch = :id_batch, update_terakhir = :update_terakhir, id_status_donasi = :id_status_donasi
+                        WHERE id_donasi = :id_donasi";
+
+              $stmt = $pdo->prepare($sqldonasi);
+              $stmt->execute(['id_donasi' => $id_donasi, 'id_batch' => $id_batch, 'update_terakhir' => $update_status_batch_terakhir, 'id_status_donasi' => $id_status_donasi ]);
+
+              $affectedrows = $stmt->rowCount();
+              if ($affectedrows == '0') {
+              header("Location: kelola_batch.php?status=insertfailed.$pic");
+              } else {
+                  //echo "HAHAHAAHA GREAT SUCCESSS !";
+                  header("Location: kelola_batch.php?status=addsuccess.$pic");
+                  }
+
+            }
+
+
+
+        }
+
 
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
@@ -191,7 +259,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
             <!-- Main content -->
         <?php //if($_SESSION['level_user'] == '1') { ?>
             <section class="content">
-                <div class="container-fluid">
+                <div class="container-fluid bg-white border rounded p-3">
                     <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
                         <label for="dd_id_lokasi">Lokasi Penanaman</label>
@@ -207,13 +275,9 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
                     <div class="form-group">
                         <label for="dd_id_titik">Titik Penanaman (Opsional)</label>
-                        <select id="dd_id_titik" name="dd_id_titik" class="form-control" onChange="loadTitik(this.value);">
+                        <select id="dd_id_titik" name="dd_id_titik" class="form-control">
                           <option value="">Pilih Titik</option>
-                            <?php foreach ($rowlokasi as $rowitem) {
-                            ?>
-                            <option value="<?=$rowitem->id_lokasi?>">ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
 
-                            <?php } ?>
                         </select>
                     </div>
 
@@ -226,20 +290,29 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
                      <div class="form-group">
                         <label for="dd_id_donasi">Tambah Donasi ke Batch</label>
-                        <select multiple id="dd_id_donasi" name="dd_id_donasi" class="form-control">
-                            <?php foreach ($rowdonasi as $donasi) {
-                            ?>
-                            <option value="<?=$donasi->id_donasi?>">ID <?=$donasi->id_donasi?> - <?=$donasi->nama_donatur?></option>
+                            <div id="daftardonasi">
+                                <?php foreach ($rowdonasi as $donasi) {
+                                ?>
+                                <div class="border rounded p-1 batch-donasi" id="donasi<?=$donasi->id_donasi?>">
+                                    ID <span class="id_donasi"><?=$donasi->id_donasi?></span> -
+                                    <span class="nama_donatur"><?=$donasi->nama_donatur?></span>
+                                    <button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus"></i></button>
+                                </div>
 
-                            <?php } ?>
-                        </select>
+                                <?php } ?>
+                            </div>
+
+                            <label class="mt-4" for="dd_id_donasi">Donasi Ditambahkan</label>
+                            <div id="donasipilihan">
+
+                            </div>
                     </div>
 
 
 
                     <br>
                     <p align="center">
-                    <button type="submit" class="btn btn-submit">Kirim</button></p>
+                    <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
             <br><br>
 
@@ -300,7 +373,35 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         }
       });
     }
+
+
+
+    function tambahPilihan(e){
+        id_donasi = $(e).siblings('.id_donasi').text()
+        pilihanbaru = $(e).parent().clone()
+        pilihanbaru.removeClass('batch-donasi')
+        pilihanbaru.addClass('batch-pilihan')
+        pilihanbaru.children('button').attr('onclick', 'hapusPilihan(this)')
+        pilihanbaru.children('button').html('<i class="nav-icon fas fa-times-circle text-danger"></i>')
+        pilihanbaru.append(`<input type='hidden' name='id_donasi[]' value='${id_donasi}'>`)
+
+        pilihanbaru.appendTo('#donasipilihan')
+        $(e).parent().remove()
+    }
+
+    function hapusPilihan(e){
+      pilihanbaru = $(e).parent().clone()
+      pilihanbaru.addClass('batch-donasi')
+      pilihanbaru.removeClass('batch-pilihan')
+      pilihanbaru.children('button').attr('onclick', 'tambahPilihan(this)')
+      pilihanbaru.children('button').html('<i class="nav-icon fas fa-plus"></i>')
+
+      pilihanbaru.appendTo('#daftardonasi')
+      $(e).parent().remove()
+    }
     </script>
+
+
 
 </body>
 </html>
