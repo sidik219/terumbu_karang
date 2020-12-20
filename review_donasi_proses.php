@@ -18,7 +18,7 @@ if(isset($_SESSION['data_donasi'])){
   $tanggal_donasi = date ('Y-m-d H:i:s', time());
 
   $sqlinsertdonasi = "INSERT INTO t_donasi
-        (id_user, nominal, deskripsi_donasi, id_lokasi, status_donasi, pesan, nama_donatur, bank_donatur, nomor_rekening_donatur, tanggal_donasi, update_terakhir)
+        (id_user, nominal, deskripsi_donasi, id_lokasi, id_status_donasi, pesan, nama_donatur, bank_donatur, nomor_rekening_donatur, tanggal_donasi, update_terakhir)
         VALUES (:id_user, :nominal, :deskripsi_donasi, :id_lokasi, :id_status_donasi,
                 :pesan, :nama_donatur, :bank_donatur, :nomor_rekening_donatur, :tanggal_donasi, :update_terakhir)
     ";
