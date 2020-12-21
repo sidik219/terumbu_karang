@@ -7,7 +7,8 @@
 
 $sqlviewdonasi = 'SELECT * FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
-                  LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi';
+                  LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
+                  ORDER BY id_donasi DESC';
 $stmt = $pdo->prepare($sqlviewdonasi);
 $stmt->execute();
 $row = $stmt->fetchAll();

@@ -8,13 +8,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         $stmt->execute();
         $rowlokasi = $stmt->fetchAll();
 
-        $sqlviewdonasi = 'SELECT * FROM t_donasi
-                  LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
-                  LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
-                  WHERE t_donasi.id_status_donasi = 3 AND t_donasi.id_batch = NULL';
-        $stmt = $pdo->prepare($sqlviewdonasi);
-        $stmt->execute();
-        $rowdonasi = $stmt->fetchAll();
+
 
 
         $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
@@ -27,6 +21,14 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         $stmt = $pdo->prepare($sqlviewbatch);
         $stmt->execute(['id_batch' => $id_batch]);
         $rowbatch = $stmt->fetch();
+
+        $sqlviewdonasi = 'SELECT * FROM t_donasi
+                  LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
+                  WHERE t_donasi.id_status_donasi = 3 AND t_donasi.id_lokasi = :id_lokasi';
+        $stmt = $pdo->prepare($sqlviewdonasi);
+        $stmt->execute(['id_lokasi' => $rowbatch->id_lokasi]);
+        $rowdonasi = $stmt->fetchAll();
 
         $sqlviewtitik = 'SELECT * FROM t_titik WHERE id_lokasi = :id_lokasi
                         ORDER BY id_titik';
@@ -45,19 +47,24 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
 
         if (isset($_POST['submit'])) {  // SUBMIT QUERIES ------------------!
-        $id_lokasi        = $_POST['dd_id_lokasi'];
         $id_titik        = $_POST['dd_id_titik'];
         $tanggal_penanaman        = $_POST['date_penanaman'];
 
         $update_status_batch_terakhir = date ('Y-m-d H:i:s', time());
         $id_status_batch = 1;
 
-        $sqlinsertbatch = "INSERT INTO t_batch
-                        (id_lokasi, tanggal_penanaman, update_status_batch_terakhir, id_status_batch, id_titik)
-                        VALUES (:id_lokasi, :tanggal_penanaman, :update_status_batch_terakhir, :id_status_batch, :id_titik)";
+        $sqldeleteisibatch = "DELETE FROM t_detail_batch
+                        WHERE id_batch = :id_batch";
+
+        $stmt = $pdo->prepare($sqldeleteisibatch);
+        $stmt->execute(['id_batch' => $id_batch]);
+
+        $sqlinsertbatch = "UPDATE t_batch
+                        SET tanggal_penanaman = :tanggal_penanaman, update_status_batch_terakhir = :update_status_batch_terakhir, id_status_batch = :id_status_batch, id_titik = :id_titik
+                        WHERE id_batch = :id_batch";
 
         $stmt = $pdo->prepare($sqlinsertbatch);
-        $stmt->execute(['id_lokasi' => $id_lokasi, 'tanggal_penanaman' => $tanggal_penanaman, 'update_status_batch_terakhir' => $update_status_batch_terakhir, 'id_status_batch' => $id_status_batch, 'id_titik' => $id_titik]);
+        $stmt->execute(['tanggal_penanaman' => $tanggal_penanaman, 'update_status_batch_terakhir' => $update_status_batch_terakhir, 'id_status_batch' => $id_status_batch, 'id_titik' => $id_titik, 'id_batch' => $id_batch]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
@@ -69,8 +76,8 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
             foreach($_POST['id_donasi'] as $id_donasi_value){ //Insert ke t_detail_batch
               $id_donasi = $id_donasi_value;
-              $id_batch = $last_batch_id;
               $id_status_donasi = 4;
+              $id_batch = $_GET['id_batch'];
 
               $sqlinsertdetailbatch = "INSERT INTO t_detail_batch
                         (id_donasi, id_batch)
@@ -324,13 +331,14 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                             ID <span class="id_donasi"><?=$detailbatch->id_donasi?></span> -
                             <span class="nama_donatur"><?=$detailbatch->nama_donatur?></span> <a class="btn btn-sm btn-outline-primary" href="edit_donasi.php?id_donasi=<?=$detailbatch->id_donasi?>">Rincian></a>
                             <button type="button" class="btn donasitambah" onclick="hapusPilihan(this)"><i class="nav-icon fas fa-times-circle text-danger"></i></button>
+                            <input type='hidden' name='id_donasi[]' value='<?=$detailbatch->id_donasi?>'>
                           </div>
                           <?php
                               }?>
                             </div>
 
 
-                            <label class="mt-4" for="dd_id_donasi">Donasi dapat Ditambahkan</label>
+                            <label class="mt-4" for="dd_id_donasi">Donasi baru yang dapat Ditambahkan</label>
                             <div id="daftardonasi">
 
                             <?php
@@ -346,13 +354,6 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
                             </div>
 
-                     <div class="form-group">
-                        <label for="dd_id_donasi">Donasi Dihapus</label>
-                            <div id="daftarhapus">
-
-                            </div>
-
-                    </div>
 
 
 
@@ -445,12 +446,9 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         id_donasi = $(e).siblings('.id_donasi').text()
         id_batch = <?=$id_batch?>;
         pilihanbaru = $(e).parent().clone()
-        pilihanbaru.removeClass('batch-donasi')
-        pilihanbaru.addClass('batch-pilihan')
         pilihanbaru.children('button').attr('onclick', 'hapusPilihan(this)')
         pilihanbaru.children('button').html('<i class="nav-icon fas fa-times-circle text-danger"></i>')
         pilihanbaru.append(`<input type='hidden' name='id_donasi[]' value='${id_donasi}'>`)
-        pilihanbaru.append(`<input type='hidden' name='id_batch[]' value='${id_batch}'>`)
 
         pilihanbaru.appendTo('#donasipilihan')
         $(e).parent().remove()
@@ -461,7 +459,8 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
       pilihanbaru.addClass('batch-donasi')
       pilihanbaru.removeClass('batch-pilihan')
       pilihanbaru.children('button').attr('onclick', 'tambahPilihan(this)')
-      pilihanbaru.children('button').html('<i class="nav-icon fas fa-times-circle text-danger"></i>')
+      pilihanbaru.children('button').html('<i class="nav-icon fas fa-plus-circle"></i>')
+      pilihanbaru.children('input').remove()
 
       pilihanbaru.appendTo('#daftardonasi')
       $(e).parent().remove()
