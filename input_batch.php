@@ -274,8 +274,8 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                     </div>
 
                     <div class="form-group">
-                        <label for="dd_id_titik">Titik Penanaman (Opsional)</label>
-                        <select id="dd_id_titik" name="dd_id_titik" class="form-control">
+                        <label for="dd_id_titik">Titik Penanaman</label>
+                        <select id="dd_id_titik" name="dd_id_titik" class="form-control" required>
                           <option value="">Pilih Titik</option>
 
                         </select>
@@ -284,22 +284,14 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                     <div class="form-group">
                          <label for="date_penanaman">Perkiraan Tanggal Penanaman</label>
                          <div class="file-form">
-                         <input type="date" id="date_penanaman" name="date_penanaman" class="form-control" >
+                         <input type="date" id="date_penanaman" name="date_penanaman" class="form-control" required>
                          </div>
                      </div>
 
                      <div class="form-group">
                         <label for="dd_id_donasi">Tambah Donasi ke Batch</label>
                             <div id="daftardonasi">
-                                <?php foreach ($rowdonasi as $donasi) {
-                                ?>
-                                <div class="border rounded p-1 batch-donasi" id="donasi<?=$donasi->id_donasi?>">
-                                    ID <span class="id_donasi"><?=$donasi->id_donasi?></span> -
-                                    <span class="nama_donatur"><?=$donasi->nama_donatur?></span>
-                                    <button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus"></i></button>
-                                </div>
-
-                                <?php } ?>
+                                <span class="text-muted">Pilih lokasi dahulu</span>
                             </div>
 
                             <label class="mt-4" for="dd_id_donasi">Donasi Ditambahkan</label>
@@ -413,7 +405,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
       pilihanbaru.addClass('batch-donasi')
       pilihanbaru.removeClass('batch-pilihan')
       pilihanbaru.children('button').attr('onclick', 'tambahPilihan(this)')
-      pilihanbaru.children('button').html('<i class="nav-icon fas fa-plus"></i>')
+      pilihanbaru.children('button').html('<i class="nav-icon fas fa-plus-circle"></i>')
 
       pilihanbaru.appendTo('#daftardonasi')
       $(e).parent().remove()

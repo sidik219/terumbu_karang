@@ -368,6 +368,11 @@
                     </form>
                       </div>
 
+                      <div class="col-12 border rounded bg-white p-0 mb-2">
+                        <h5 class="card-header mb-1 font-weight-bold">Pesan/Ekspresi</h5>
+                              <span class="font-weight-bold mb-3 pl-3 pt-4 pb-4"><?=$rowitem->pesan?></span>
+                      </div>
+
 
                                     <div class="col-12 border rounded bg-white p-0">
                                       <h5 class="card-header mb-1 font-weight-bold">Terumbu Karang Pilihan</h5><br/>
@@ -398,9 +403,6 @@
                                         <?php   }
                                         ?>
                                     </div>
-
-
-
 
 
 
