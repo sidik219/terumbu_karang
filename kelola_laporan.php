@@ -302,7 +302,7 @@ $rowwilayah = $stmt->fetchAll();
                                     <th>Jumlah Titik</th>
                                     <th>Sebaran</th> -->
                                     <thead>
-                                    <tr>
+                                    <tr   class="bg-white border-top">
                                         <th scope="col">Nama Lokasi</th>
                                         <th scope="col">Jumlah Titik</th>
                                         <th scope="col">Luas Sebaran / Luas Total</th>
