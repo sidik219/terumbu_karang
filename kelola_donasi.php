@@ -254,7 +254,7 @@ $row = $stmt->fetchAll();
                                     Rincian Donasi</p>
                             </div>
                             <div class="col-12 cell<?=$rowitem->id_donasi?> collapse contentall<?=$rowitem->id_donasi?>">
-                            <div class="row mb-3">
+                            <div class="row mb-3  border-bottom">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Nama Donatur
                                     </div>
@@ -264,7 +264,7 @@ $row = $stmt->fetchAll();
                                         ?>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <div class="row mb-3 border-bottom">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Nomor Rekening Donatur
                                     </div>
@@ -274,7 +274,7 @@ $row = $stmt->fetchAll();
                                         ?>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <div class="row mb-2 border-bottom">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Bank Donatur
                                     </div>
@@ -284,7 +284,7 @@ $row = $stmt->fetchAll();
                                         ?>
                                     </div>
                                 </div>
-                              <div class="row">
+                              <div class="row mb-2 border-bottom">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Lokasi Penanaman
                                     </div>
@@ -292,7 +292,7 @@ $row = $stmt->fetchAll();
                                         <?="$rowitem->nama_lokasi (ID $rowitem->id_lokasi)";?>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <div class="row mb-3 border-bottom">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Pesan/Ekspresi
                                     </div>

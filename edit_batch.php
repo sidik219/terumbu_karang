@@ -372,7 +372,8 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                                   ?>
                           <div class="border rounded p-1 batch-donasi" id="donasi<?=$donasi->id_donasi?>">
                             ID <span class="id_donasi"><?=$donasi->id_donasi?></span> -
-                            <span class="nama_donatur"><?=$donasi->nama_donatur?></span> <a data-id='<?=$donasi->id_donasi?>' class="btn btn-sm btn-outline-primary  userinfo">Rincian></a>
+                            <span class="nama_donatur"><?=$donasi->nama_donatur?></span>
+                            <a data-id='<?=$donasi->id_donasi?>' class="btn btn-sm btn-outline-primary  userinfo">Rincian></a>
                             <button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus-circle"></i></button>
                           </div>
                           <?php

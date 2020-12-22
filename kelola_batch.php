@@ -273,9 +273,12 @@
 
                                   foreach($rowdetailbatch as $detailbatch){
                                 ?>
-                                <div class="row mb-2 ml-1">
+                                <div class="row mb-2 ml-1 border-bottom">
                                     <div class="col isi">
-                                        ID <?=$detailbatch->id_donasi?> - <?=$detailbatch->nama_donatur?> <a data-id='<?=$detailbatch->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo p-1">Rincian></a>
+                                        ID <?=$detailbatch->id_donasi?> - <?=$detailbatch->nama_donatur?>
+                                    </div>
+                                    <div class="col-lg-9 isi">
+                                        <a data-id='<?=$detailbatch->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo p-1">Rincian></a>
                                     </div>
                                 </div>
 
