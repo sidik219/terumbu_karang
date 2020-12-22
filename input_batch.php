@@ -24,7 +24,8 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
 
         if (isset($_POST['submit'])) {
-        $id_lokasi        = $_POST['dd_id_lokasi'];
+          if (isset($_POST['id_donasi'])){
+              $id_lokasi        = $_POST['dd_id_lokasi'];
         $id_titik        = $_POST['dd_id_titik'];
         $tanggal_penanaman        = $_POST['date_penanaman'];
 
@@ -77,7 +78,9 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                   }
 
             }
-
+          }else{
+          echo '<script>alert("Harap pilih donasi yang akan ditambahkan")</script>';
+        }
 
 
         }
