@@ -260,8 +260,6 @@ $rowwilayah = $stmt->fetchAll();
                     <thead>
                         <tr>
                             <th scope="col">Nama Wilayah</th>
-                            <th scope="col">Jumlah Titik</th>
-                            <th scope="col">Persentase Sebaran</th>
                         </tr>
                         </thead>
                 <tbody>
@@ -282,9 +280,7 @@ $rowwilayah = $stmt->fetchAll();
                       }
                 ?>
                         <tr>
-                            <th scope="row"><?=$rowitem->nama_wilayah?></th>
-                            <td><?=$rowitem->jumlah_titik?></td>
-                            <td><?=$rowitem->total_titik.' / '.$rowitem->total_lokasi.' m<sup>2</sup> - '.number_format($rowitem->persentase_sebaran, 1).'% ( '.$kondisi_wilayah.' )'?></td>
+                            <th scope="row" colspan="3"><?=$rowitem->nama_wilayah?></th>
                         </tr>
                         <tr>
                                 <td colspan="3">
@@ -305,6 +301,14 @@ $rowwilayah = $stmt->fetchAll();
                                     <!-- <th>Nama Lokasi</th>
                                     <th>Jumlah Titik</th>
                                     <th>Sebaran</th> -->
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Nama Lokasi</th>
+                                        <th scope="col">Jumlah Titik</th>
+                                        <th scope="col">Luas Sebaran / Luas Total</th>
+                                        <th scope="col">Persentase Sebaran</th>
+                                    </tr>
+                                    </thead>
                                 <?php
                                   $sql_lokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
                                     COUNT(DISTINCT id_titik) AS jumlah_titik,
@@ -347,15 +351,25 @@ $rowwilayah = $stmt->fetchAll();
 
 
                                     <tr>
-                                        <th><?=$lokasi->nama_lokasi?></th>
+                                        <td><?=$lokasi->nama_lokasi?></td>
                                         <td><?=$lokasi->jumlah_titik?></td>
-                                        <td><?=$lokasi->total_titik.' / '.$lokasi->total_lokasi.' m<sup>2</sup> - '.number_format($lokasi->persentase_sebaran, 1).'% ( '.$kondisi_lokasi.' )'?></td>
+                                        <td><?=$lokasi->total_titik.' / '.$lokasi->total_lokasi.' m<sup>2</sup>'?></td>
+                                        <td><?=number_format($lokasi->persentase_sebaran, 1).'% ( '.$kondisi_lokasi.' )'?></td>
                                     </tr>
 
 
                     <?php } ?>
-                                    <!-- <hr/> -->
-                                    <div class="row mb-4 ml-2">
+
+                                    <tr class="table-active border-top">
+                            <th scope="row">Total</th>
+                            <th><?=$rowitem->jumlah_titik?></th>
+                            <th><?=$rowitem->total_titik.' / '.$rowitem->total_lokasi.' m<sup>2</sup>'?></th>
+                            <th><?=number_format($rowitem->persentase_sebaran, 1).'% ( '.$kondisi_lokasi.' )'?></th>
+                        </tr>
+                        </table>
+
+                        <hr/>
+<div class="row mb-4 ml-1 ">
                                         <div class="col-sm">
                                             <span class="mr-4"><b>Kurang :</b> <?=$kurang_luas .' m<sup>2</sup>'?></span>
                                         </div>
@@ -369,11 +383,10 @@ $rowwilayah = $stmt->fetchAll();
                                             <span class="mr-4"><b>Sangat Baik :</b> <?=$sangat_baik_luas .' m<sup>2</sup>'?></span>
                                         </div>
                                     </div>
-                        </table>
-
 
                             </div>
                         </div>
+
 
                         <!--collapse end -->
                                 </td>
