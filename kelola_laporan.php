@@ -441,11 +441,11 @@ $rowwilayah = $stmt->fetchAll();
 
             var element = document.getElementById('clientPrintContent');
             var opt = {
-            margin:       0,
+            margin:       [1.5,2,2,2],
             filename:     'myfile.pdf',
             image:        { type: 'jpeg', quality: 0.95 },
             html2canvas:  { scale: 3 },
-            jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
+            jsPDF:        { unit: 'cm', format: 'a4', orientation: 'landscape' }
             };
 
             // New Promise-based usage:

@@ -40,7 +40,8 @@
     }
     /*end button input data baru*/
     
-    a.btn.btn-primary {
+    a.btn.btn-primary,
+    .btn-lg {
         border-radius: 10px;
         width: auto;
         background-color: #E24901;
