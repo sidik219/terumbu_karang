@@ -329,7 +329,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                                   ?>
                           <div class="border rounded p-1 batch-donasi" id="donasi<?=$detailbatch->id_donasi?>">
                             ID <span class="id_donasi"><?=$detailbatch->id_donasi?></span> -
-                            <span class="nama_donatur"><?=$detailbatch->nama_donatur?></span> <a class="btn btn-sm btn-outline-primary" href="edit_donasi.php?id_donasi=<?=$detailbatch->id_donasi?>">Rincian></a>
+                            <span class="nama_donatur"><?=$detailbatch->nama_donatur?></span> <a data-id='<?=$detailbatch->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo">Rincian></a>
                             <button type="button" class="btn donasitambah" onclick="hapusPilihan(this)"><i class="nav-icon fas fa-times-circle text-danger"></i></button>
                             <input type='hidden' name='id_donasi[]' value='<?=$detailbatch->id_donasi?>'>
                           </div>
@@ -346,7 +346,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                                   ?>
                           <div class="border rounded p-1 batch-donasi" id="donasi<?=$donasi->id_donasi?>">
                             ID <span class="id_donasi"><?=$donasi->id_donasi?></span> -
-                            <span class="nama_donatur"><?=$donasi->nama_donatur?></span> <a class="btn btn-sm btn-outline-primary" href="edit_donasi.php?id_donasi=<?=$donasi->id_donasi?>">Rincian></a>
+                            <span class="nama_donatur"><?=$donasi->nama_donatur?></span> <a data-id='<?=$donasi->id_donasi?>' class="btn btn-sm btn-outline-primary  userinfo">Rincian></a>
                             <button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus-circle"></i></button>
                           </div>
                           <?php
@@ -378,6 +378,32 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
     <footer class="main-footer">
         <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
     </footer>
+
+
+
+   <!-- Modal -->
+   <div class="modal fade" id="empModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+     <!-- Modal content-->
+     <div class="modal-content  bg-light">
+      <div class="modal-header">
+        <h4 class="modal-title">Rincian Donasi</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+       <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+     </div>
+    </div>
+   </div>
+   <br/>
+
+
+
+
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -465,6 +491,30 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
       pilihanbaru.appendTo('#daftardonasi')
       $(e).parent().remove()
     }
+
+
+   $(document).ready(function(){
+
+ $('.userinfo').click(function(){
+
+   var id_donasi = $(this).data('id');
+
+   // AJAX request
+   $.ajax({
+    url: 'list_populate.php',
+    type: 'post',
+    data: {id_donasi: id_donasi, type : 'load_rincian_donasi'},
+    success: function(response){
+      // Add response in Modal body
+      $('.modal-body').html(response);
+
+      // Display Modal
+      $('#empModal').modal('show');
+    }
+  });
+ });
+});
+
     </script>
 
 

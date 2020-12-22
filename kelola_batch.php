@@ -275,7 +275,7 @@
                                 ?>
                                 <div class="row mb-2 ml-1">
                                     <div class="col isi">
-                                        ID <?=$detailbatch->id_donasi?> - <?=$detailbatch->nama_donatur?> <a class="btn btn-sm btn-outline-primary" href="edit_donasi.php?id_donasi=<?=$detailbatch->id_donasi?>">Rincian></a>
+                                        ID <?=$detailbatch->id_donasi?> - <?=$detailbatch->nama_donatur?> <a data-id='<?=$detailbatch->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo p-1">Rincian></a>
                                     </div>
                                 </div>
 
@@ -308,6 +308,30 @@
         <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
     </footer>
 
+
+ <!-- Modal -->
+   <div class="modal fade" id="empModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+     <!-- Modal content-->
+     <div class="modal-content  bg-light">
+      <div class="modal-header">
+        <h4 class="modal-title">Rincian Donasi</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+       <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+     </div>
+    </div>
+   </div>
+
+
+
+
+
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
@@ -330,6 +354,31 @@
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
+
+    <script>
+       $(document).ready(function(){
+
+ $('.userinfo').click(function(){
+
+   var id_donasi = $(this).data('id');
+
+   // AJAX request
+   $.ajax({
+    url: 'list_populate.php',
+    type: 'post',
+    data: {id_donasi: id_donasi, type : 'load_rincian_donasi'},
+    success: function(response){
+      // Add response in Modal body
+      $('.modal-body').html(response);
+
+      // Display Modal
+      $('#empModal').modal('show');
+    }
+  });
+ });
+});
+
+    </script>
 
 </body>
 </html>
