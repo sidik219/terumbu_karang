@@ -64,7 +64,7 @@ if ($_POST['type'] == 'load_donasi' && !empty($_POST["id_lokasi"])) {
             ?>
     <div class="border rounded p-1 batch-donasi" id="donasi<?=$donasi->id_donasi?>">
       ID <span class="id_donasi"><?=$donasi->id_donasi?></span> -
-      <span class="nama_donatur"><?=$donasi->nama_donatur?></span> <a class="btn btn-sm btn-outline-primary" href="edit_donasi.php?id_donasi=<?=$donasi->id_donasi?>">Rincian></a>
+      <span class="nama_donatur"><?=$donasi->nama_donatur?></span> <a data-id='<?=$donasi->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo">Rincian></a>
       <button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus-circle"></i></button>
     </div>
     <?php
@@ -90,7 +90,7 @@ if ($_POST['type'] == 'load_donasi' && !empty($_POST["id_lokasi"])) {
             ?>
     <div class="border rounded p-1 batch-donasi" id="donasi<?=$donasi->id_donasi?>">
       ID <span class="id_donasi"><?=$donasi->id_donasi?></span> -
-      <span class="nama_donatur"><?=$donasi->nama_donatur?></span> <a class="btn btn-sm btn-outline-primary" href="edit_donasi.php?id_donasi=<?=$donasi->id_donasi?>">Rincian></a>
+      <span class="nama_donatur"><?=$donasi->nama_donatur?></span> <a data-id='<?=$donasi->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo">Rincian></a>
       <button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus-circle"></i></button>
     </div>
     <?php
@@ -169,7 +169,7 @@ if ($_POST['type'] == 'load_rincian_donasi' && !empty($_POST["id_donasi"])) {
                   ?>
 
                   <div class="form-check mb-2">
-                  <input class="form-check-input" type="radio" name="radio_status" id="radio_status<?=$status->id_status_donasi?>" value="<?=$status->id_status_donasi?>" <?php if($rowitem->id_status_donasi == $status->id_status_donasi) echo " checked"; ?>>
+                  <input class="form-check-input" disabled type="radio" name="radio_status" id="radio_status<?=$status->id_status_donasi?>" value="<?=$status->id_status_donasi?>" <?php if($rowitem->id_status_donasi == $status->id_status_donasi) echo " checked"; ?>>
                   <label class="form-check-label <?php if($rowitem->id_status_donasi == $status->id_status_donasi) echo " font-weight-bold"; ?>" for="radio_status<?=$status->id_status_donasi?>">
                     <?=$status->nama_status_donasi?>
                   </label>
@@ -177,7 +177,7 @@ if ($_POST['type'] == 'load_rincian_donasi' && !empty($_POST["id_donasi"])) {
 
                     <?php }?>
 
-                <button type="submit" name="submit" value="Simpan" class="btn btn-primary mt-2">Update Status</button></p>
+
 
           </div>
 

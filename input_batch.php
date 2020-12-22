@@ -263,7 +263,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                     <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
                         <label for="dd_id_lokasi">Lokasi Penanaman</label>
-                        <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" onChange="loadTitik(this.value);" required>
+                        <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" onchange="loadTitik(this.value);" required>
                             <option value="">Pilih Lokasi</option>
                             <?php foreach ($rowlokasi as $rowitem) {
                             ?>
@@ -324,6 +324,32 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
     </footer>
 
+<!-- Modal -->
+   <div class="modal fade" id="empModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+     <!-- Modal content-->
+     <div class="modal-content  bg-light">
+      <div class="modal-header">
+        <h4 class="modal-title">Rincian Donasi</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+       <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+     </div>
+    </div>
+   </div>
+   <br/>
+
+
+
+
+
+
+
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
@@ -348,6 +374,28 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
     <script src="dist/js/adminlte.js"></script>
 
     <script async>
+
+      $(document).ready(function(){
+
+ $('.userinfo').click(function(){
+
+   var id_donasi = $(this).data('id');
+
+   // AJAX request
+   $.ajax({
+    url: 'list_populate.php',
+    type: 'post',
+    data: {id_donasi: id_donasi, type : 'load_rincian_donasi'},
+    success: function(response){
+      // Add response in Modal body
+      $('.modal-body').html(response);
+
+      // Display Modal
+      $('#empModal').modal('show');
+    }
+  });
+ });
+});
     function loadTitik(id_lokasi){
       $.ajax({
         type: "POST",
@@ -365,6 +413,24 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
           loadDonasi(id_lokasi)
         }
       });
+      $('.userinfo').click(function(){
+
+   var id_donasi = $(this).data('id');
+
+   // AJAX request
+   $.ajax({
+    url: 'list_populate.php',
+    type: 'post',
+    data: {id_donasi: id_donasi, type : 'load_rincian_donasi'},
+    success: function(response){
+      // Add response in Modal body
+      $('.modal-body').html(response);
+
+      // Display Modal
+      $('#empModal').modal('show');
+    }
+  });
+ });
     }
 
     function loadDonasi(id_lokasi){
@@ -381,8 +447,27 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         success: function(data){
           $("#daftardonasi").html(data);
           $("#daftardonasi").removeClass("loader");
+          $('.userinfo').click(function(){
+
+   var id_donasi = $(this).data('id');
+
+   // AJAX request
+   $.ajax({
+    url: 'list_populate.php',
+    type: 'post',
+    data: {id_donasi: id_donasi, type : 'load_rincian_donasi'},
+    success: function(response){
+      // Add response in Modal body
+      $('.modal-body').html(response);
+
+      // Display Modal
+      $('#empModal').modal('show');
+    }
+  });
+ });
         }
       });
+
     }
 
 
@@ -398,6 +483,25 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
         pilihanbaru.appendTo('#donasipilihan')
         $(e).parent().remove()
+
+        $('.userinfo').click(function(){
+
+   var id_donasi = $(this).data('id');
+
+   // AJAX request
+   $.ajax({
+    url: 'list_populate.php',
+    type: 'post',
+    data: {id_donasi: id_donasi, type : 'load_rincian_donasi'},
+    success: function(response){
+      // Add response in Modal body
+      $('.modal-body').html(response);
+
+      // Display Modal
+      $('#empModal').modal('show');
+    }
+  });
+ });
     }
 
     function hapusPilihan(e){
@@ -409,7 +513,28 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
       pilihanbaru.appendTo('#daftardonasi')
       $(e).parent().remove()
+
+      $('.userinfo').click(function(){
+
+   var id_donasi = $(this).data('id');
+
+   // AJAX request
+   $.ajax({
+    url: 'list_populate.php',
+    type: 'post',
+    data: {id_donasi: id_donasi, type : 'load_rincian_donasi'},
+    success: function(response){
+      // Add response in Modal body
+      $('.modal-body').html(response);
+
+      // Display Modal
+      $('#empModal').modal('show');
     }
+  });
+ });
+    }
+
+
     </script>
 
 

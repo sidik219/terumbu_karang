@@ -53,6 +53,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         $update_status_batch_terakhir = date ('Y-m-d H:i:s', time());
         $id_status_batch = 1;
 
+          //Kosongkan entry batch dari t_detail_batch
         $sqldeleteisibatch = "DELETE FROM t_detail_batch
                         WHERE id_batch = :id_batch";
 
@@ -94,16 +95,41 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
               $stmt = $pdo->prepare($sqldonasi);
               $stmt->execute(['id_donasi' => $id_donasi, 'id_batch' => $id_batch, 'update_terakhir' => $update_status_batch_terakhir, 'id_status_donasi' => $id_status_donasi ]);
+            }
+
+            if(isset($_POST['id_donasi_dihapus'])){
+              foreach($_POST['id_donasi_dihapus'] as $id_donasi_value){ //Delete list hapus dari t_detail_batch
+              $id_donasi = $id_donasi_value;
+              $id_batch = NULL;
+              $id_status_donasi = 3;
+
+              $sqlinsertdetailbatch = "DELETE FROM t_detail_batch
+                        WHERE id_donasi = :id_donasi AND  id_batch = :id_batch";
+
+              $stmt = $pdo->prepare($sqlinsertdetailbatch);
+              $stmt->execute(['id_donasi' => $id_donasi, 'id_batch' => $id_batch]);
+
+
+              //Update dan set id_batch ke donasi pilihan
+              $sqldonasi = "UPDATE t_donasi
+                        SET id_batch = :id_batch, update_terakhir = :update_terakhir, id_status_donasi = :id_status_donasi
+                        WHERE id_donasi = :id_donasi";
+
+              $stmt = $pdo->prepare($sqldonasi);
+              $stmt->execute(['id_donasi' => $id_donasi, 'id_batch' => $id_batch, 'update_terakhir' => $update_status_batch_terakhir, 'id_status_donasi' => $id_status_donasi ]);
 
               $affectedrows = $stmt->rowCount();
               if ($affectedrows == '0') {
-              header("Location: kelola_batch.php?status=insertfailed");
+              header("Location: kelola_batch.php?status=updatefailed");
               } else {
                   //echo "HAHAHAAHA GREAT SUCCESSS !";
-                  header("Location: kelola_batch.php?status=addsuccess");
+                  header("Location: kelola_batch.php?status=updatesuccess");
                   }
 
-            }
+              }
+
+            }header("Location: kelola_batch.php?status=updatesuccess");
+
 
 
 
@@ -470,10 +496,10 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
     function tambahPilihan(e){
         id_donasi = $(e).siblings('.id_donasi').text()
-        id_batch = <?=$id_batch?>;
         pilihanbaru = $(e).parent().clone()
         pilihanbaru.children('button').attr('onclick', 'hapusPilihan(this)')
         pilihanbaru.children('button').html('<i class="nav-icon fas fa-times-circle text-danger"></i>')
+        pilihanbaru.children('input').remove()
         pilihanbaru.append(`<input type='hidden' name='id_donasi[]' value='${id_donasi}'>`)
 
         pilihanbaru.appendTo('#donasipilihan')
@@ -481,12 +507,15 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
     }
 
     function hapusPilihan(e){
+      id_donasi = $(e).siblings('.id_donasi').text()
       pilihanbaru = $(e).parent().clone()
       pilihanbaru.addClass('batch-donasi')
       pilihanbaru.removeClass('batch-pilihan')
       pilihanbaru.children('button').attr('onclick', 'tambahPilihan(this)')
-      pilihanbaru.children('button').html('<i class="nav-icon fas fa-plus-circle"></i>')
       pilihanbaru.children('input').remove()
+      pilihanbaru.children('button').html('<i class="nav-icon fas fa-plus-circle"></i>')
+      pilihanbaru.append(`<input type='hidden' name='id_donasi_dihapus[]' value='${id_donasi}'>`)
+
 
       pilihanbaru.appendTo('#daftardonasi')
       $(e).parent().remove()
