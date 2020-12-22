@@ -237,7 +237,9 @@
                               <td>ID <?=$batch->id_lokasi?> - <?=$batch->nama_lokasi?></td>
                               <td><?=$batch->id_titik?> <?=$batch->keterangan_titik?></td>
                               <td><?=$batch->tanggal_penanaman?></td>
-                              <td><?=$batch->nama_status_batch?></td>
+                              <td><?=$batch->nama_status_batch?><br>
+                                <small class="text-muted">(Update Terakhir: <?=date('d F Y', strtotime($batch->update_status_batch_terakhir))?>)</small>
+                              </td>
                               <td>
                                 <button type="button" class="btn btn-act">
                                 <a href="edit_batch.php?id_batch=<?=$batch->id_batch?>" class="fas fa-edit"></a>

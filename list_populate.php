@@ -164,18 +164,13 @@ if ($_POST['type'] == 'load_rincian_donasi' && !empty($_POST["id_donasi"])) {
                       <div class="col-12 mb-2 border rounded bg-white p-3">
                   <h5 class="font-weight-bold">Status Donasi</h5>
 
-                  <?php
-                    foreach($rowstatus as $status){
-                  ?>
+
 
                   <div class="form-check mb-2">
-                  <input class="form-check-input" disabled type="radio" name="radio_status" id="radio_status<?=$status->id_status_donasi?>" value="<?=$status->id_status_donasi?>" <?php if($rowitem->id_status_donasi == $status->id_status_donasi) echo " checked"; ?>>
-                  <label class="form-check-label <?php if($rowitem->id_status_donasi == $status->id_status_donasi) echo " font-weight-bold"; ?>" for="radio_status<?=$status->id_status_donasi?>">
-                    <?=$status->nama_status_donasi?>
+                  <label class="form-check-label <?php if($rowitem->id_status_donasi == $rowitem->id_status_donasi) echo " font-weight-bold"; ?>" for="radio_status<?=$rowitem->id_status_donasi?>">
+                    <?=$rowstatus[$rowitem->id_status_donasi-1]->nama_status_donasi?>
                   </label>
                 </div>
-
-                    <?php }?>
 
 
 
