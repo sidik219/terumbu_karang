@@ -21,6 +21,7 @@
     
     .brand-link {
         background-color: white;
+        font-family: LostFish;
     }
     
     .brand-text {
@@ -264,15 +265,29 @@
     
     .os-content {
         background-image: url('../images/sidebarbg.jpg');
+        /* background-repeat: no-repeat; */
+        background-position: center;
+        background-size: cover;
+    }
+    
+    .elevation-4 {
+        box-shadow: none!important;
+    }
+    
+    .navbar-white {
+        background-image: url('../images/topbarbg.jpg');
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
     }
     
-    .card-img-top {
-        object-fit: cover;
-        height: 180px;
-        width: 100%;
+    #navbarDropdownMenuLink {
+        text-shadow: 1px 1px 3px #e2f1ff;
+    }
+    
+    [class*=sidebar-dark-] .sidebar a {
+        color: white !important;
+        text-shadow: 1px 1px 3px #051524;
     }
     
     .card-pilihan {
@@ -295,9 +310,17 @@
         src: url(../webfonts/Montserrat-SemiBold.ttf);
     }
     
-    .table-striped>tbody>tr:nth-child(odd)>td,
-    .table-striped>tbody>tr:nth-child(odd)>th {
-        background-color: #ddeeff;
+    @font-face {
+        font-family: LostFish;
+        src: url(../webfonts/LostFish.ttf);
+    }
+    
+    .table-striped>tbody>tr {
+        /* background-color: #ddeeff; */
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        background-image: url('../images/topbarbg.jpg');
         /* color: white; */
     }
     
@@ -305,6 +328,20 @@
     .table-striped>tbody>tr:nth-child(even)>th {
         background-color: #ffffff;
         /* color: white; */
+    }
+    
+    .collapse tr {
+        /* background-color: #ddeeff; */
+        background-repeat: no-repeat;
+        background-position: left;
+        background-size: cover;
+        background-image: url('../images/subtablebg.jpg');
+        /* color: white; */
+    }
+    
+    .collapse tr:nth-child(even)>td,
+    .collapse tr:nth-child(odd)>th {
+        background-color: #ffffff;
     }
     
     .btn.btn-link-slide {
