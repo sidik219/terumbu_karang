@@ -271,7 +271,7 @@
     }
     
     .elevation-4 {
-        box-shadow: none!important;
+        box-shadow: 1px 1px 3px #757575!important;
     }
     
     .navbar-white {
@@ -287,7 +287,7 @@
     
     [class*=sidebar-dark-] .sidebar a {
         color: white !important;
-        text-shadow: 1px 1px 3px #051524;
+        text-shadow: 1px 1px 4px #030128;
     }
     
     .card-pilihan {
