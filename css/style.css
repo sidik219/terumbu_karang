@@ -282,6 +282,12 @@
         border-style: none;
     }
     
+    .nav-sidebar>.nav-item>.nav-link.active {
+        background-image: url('../images/sidebaractivebg.jpg') !important;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    
     .elevation-4 {
         box-shadow: 1px 1px 3px #757575!important;
     }
