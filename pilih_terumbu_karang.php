@@ -20,7 +20,7 @@ $row = $stmt->fetchAll();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Pilih Jneis Terumbu Karang - TKJB</title>
+    <title>Pilih Jenis Terumbu Karang - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
@@ -162,7 +162,7 @@ $row = $stmt->fetchAll();
                     <div class="col">
                             <a data-nama_tk="<?=$rowitem->id_terumbu_karang?>" data-harga_tk="<?=$rowitem->harga_terumbu_karang?>"
                             data-id_tk="<?=$rowitem->id_terumbu_karang?>"
-                            class="add-to-cart btn btn-warning shop-item-button"><i class="nav-icon fas fa-cart-plus"></i> Tambah ke Keranjang</a>
+                            class="add-to-cart btn btn-warning shop-item-button"><i class="nav-icon fas fa-cart-plus"></i> Tambahkan Keranjang</a>
                     </div>
                 </div>
 
@@ -213,7 +213,7 @@ $row = $stmt->fetchAll();
               <input type="text" maxlength="64" class="form-control success" id="pesan" placeholder="Isi pesan anda di sini...">
             </div>
             <button class="btn btn-warning btn-back" type="button">< Jenis Lainnya</button>
-            <button class="btn btn-primary btn-purchase" type="button">Selesai Pilih ></button>
+            <button class="btn btn-primary btn-purchase btn-blue" type="button">Selesai Pilih ></button>
         </section>
     </footer>
     <!-- jQuery -->

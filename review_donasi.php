@@ -113,7 +113,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '2') { ?>    
+                    <?php //if($_SESSION['level_user'] == '2') { ?>
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -144,7 +144,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
-                       
+
                     <?php //} ?>
                     </ul>
                 </nav>
@@ -162,7 +162,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
             <!-- Main content -->
             <section class="content">
                 <div class="container">
-                            <h4 class="mt-3 mb-3"><span class="font-weight-bold">Review Informasi Donasi</span></h4>
+                            <h4 class="pt-3 mb-3"><span class="font-weight-bold">Review Informasi Donasi</span></h4>
             <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
           <h4 class="d-flex justify-content-between align-items-center mb-3">

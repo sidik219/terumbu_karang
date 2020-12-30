@@ -166,7 +166,7 @@ $rowjenis = $stmt->fetchAll();
                                 <div class="card-body">
                                     <p class="card-title"><h5 class="font-weight-bold"><?=$rowitem->nama_jenis?></h5></p>
                                     <p class="card-text"><?=$rowitem->deskripsi_jenis?></p>
-                                    <a href="pilih_terumbu_karang.php?id_jenis=<?=$rowitem->id_jenis?>" class="btn btn-outline-primary">Pilih Jenis</a>
+                                    <a href="pilih_terumbu_karang.php?id_jenis=<?=$rowitem->id_jenis?>" class="btn btn-primary btn-blue">Pilih Jenis</a>
                                 </div>
                             </div>
                         </div>

@@ -2,54 +2,54 @@
         background-color: #F5F7FA;
         font-family: MontserratRegular;
     }
-    
+
     .content-wrapper {
         background-color: white;
     }
-    
+
     table {
         table-layout: fixed;
         overflow: hidden;
         font-family: 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
     }
-    
+
     .table td,
     .table th {
         border-top: none;
     }
-    
+
     .brand-link {
         background-color: white;
         font-family: LostFish;
     }
-    
+
     [class*=sidebar-dark] .brand-link {
         border: none;
         border-width: 0;
         border-style: none;
     }
-    
+
     .brand-text {
         color: #0E447E;
         font-size: 25px;
     }
-    
+
     .fa-bars {
         color: #0E447E;
     }
     /*button input data baru*/
-    
+
     .new-entry {
         background-color: #F5F7FA;
         height: 40px;
         margin-top: 40px;
     }
     /*end button input data baru*/
-    
+
     a.btn.btn-primary,
+    .btn-submit,
     .btn-lg {
         border-radius: 10px;
-        width: auto;
         background-image: url('../images/orangebtnbg.jpg');
         background-repeat: no-repeat;
         background-size: cover;
@@ -58,13 +58,13 @@
         padding: 6px 12px;
         box-shadow: 1px 1px 3px #adadad!important;
     }
-    
+
     .file-form {
         background-color: white;
         border: 1px solid #CED4DA;
         border-radius: 4px
     }
-    
+
     .btn.btn-submit {
         border-radius: 10px;
         width: 60%;
@@ -74,19 +74,19 @@
         padding: 6px 12px;
     }
     /*jumbotron dashboard user/home */
-    
+
     .jumbotron.jumbotron-fluid-profil {
         background-image: url(../dist/img/home-jumbotron.jpg);
         background-size: cover;
         height: 200px;
     }
     /*profile pic dashboar user/home */
-    
+
     .jumbotron.jumbotron-fluid-profil h4 {
         text-align: center;
         color: #F5F7FA;
     }
-    
+
     .profile-pic-div {
         height: 150px;
         width: 150px;
@@ -98,14 +98,14 @@
         margin-top: -110px;
         z-index: 2;
     }
-    
+
     #photo {
         height: 100%;
         width: 100%;
     }
     /*end profile pic dasbor user*/
     /*Container profile saya dashboard user*/
-    
+
     .container-profil-saya {
         height: auto;
         width: 100%;
@@ -116,26 +116,26 @@
         padding-left: 20px;
         padding-right: 20px;
     }
-    
+
     .container-profil-header {
         /*background-color: grey;*/
         height: 80px;
         border-bottom: 1px solid #aaa;
     }
-    
+
     .container-profil-flex {
         height: auto;
     }
-    
+
     .container-profil-kiri {
         margin-top: 10px;
     }
     /*End Container profile saya dashboard user*/
-    
+
     shop-item {
         margin: 30px;
     }
-    
+
     .shop-item-title {
         display: block;
         width: 100%;
@@ -143,41 +143,41 @@
         font-weight: bold;
         color: #333;
     }
-    
+
     .shop-item-image {
         /* height: auto; */
         object-fit: cover;
         max-height: 25%;
     }
-    
+
     .deskripsi_pilih_tk {
         -webkit-line-clamp: 2;
         height: 40px;
     }
-    
+
     .shop-item-details {
         display: flex;
         align-items: center;
         padding: 5px;
     }
-    
+
     .shop-item-price {
         flex-grow: 1;
         color: #333;
     }
-    
+
     .shop-items {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
     }
-    
+
     .cart-header {
         font-weight: bold;
         font-size: 1.25em;
         color: #333;
     }
-    
+
     .cart-column {
         /* display: flex; */
         word-wrap: break-word;
@@ -186,37 +186,37 @@
         padding-bottom: 10px;
         margin-top: 10px;
     }
-    
+
     .cart-row {
         display: flex;
     }
-    
+
     .cart-item {
         width: 45%;
     }
-    
+
     .cart-price {
         width: 20%;
         font-size: 1.2em;
         color: #333;
     }
-    
+
     .cart-quantity {
         width: 35%;
     }
-    
+
     .cart-item-title {
         color: #333;
         margin-left: .5em;
         font-size: 1.2em;
     }
-    
+
     .cart-item-image {
         width: 75px;
         height: auto;
         border-radius: 10px;
     }
-    
+
     .cart-quantity-input {
         height: 34px;
         width: 50px;
@@ -229,39 +229,39 @@
         font-size: 1.2em;
         margin-right: 25px;
     }
-    
+
     .cart-row {
         border-bottom: 1px solid rgb(116, 116, 116);
     }
-    
+
     .cart-row:last-child .cart-column {
         border: none;
     }
-    
+
     .cart-total {
         text-align: end;
         margin-top: 10px;
         margin-right: 10px;
     }
-    
+
     .cart-total-title {
         font-weight: bold;
         font-size: 1.5em;
         color: black;
         margin-right: 20px;
     }
-    
+
     .cart-total-price {
         color: #333;
         font-size: 1.1em;
     }
-    
+
     .btn-purchase {
         display: block;
         margin: 40px auto 80px auto;
         font-size: 1.25em;
     }
-    
+
     .scrollup {
         width: 40px;
         height: 40px;
@@ -271,7 +271,7 @@
         right: 20px;
         display: none;
     }
-    
+
     .os-content {
         background-image: url('../images/sidebarbg.jpg');
         /* background-repeat: no-repeat; */
@@ -281,63 +281,82 @@
         border-width: 0;
         border-style: none;
     }
-    
-    .nav-sidebar>.nav-item>.nav-link.active {
+
+    .nav-sidebar>.nav-item>.nav-link.active,
+    .btn-blue {
         background-image: url('../images/sidebaractivebg.jpg') !important;
         background-repeat: no-repeat;
         background-size: cover;
+        color: white;
     }
-    
+
+    .btn-warning {
+        background-image: url('../images/yellowbtnbg.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        border: none;
+        /* transition: none !important; */
+    }
+
+    .btn {
+        transition: 0.2s;
+    }
+
+    .btn:hover {
+        filter: contrast(150%);
+    }
+
     .elevation-4 {
         box-shadow: 1px 1px 3px #757575!important;
     }
-    
+
     .navbar-white {
         background-image: url('../images/sidebarbg.jpg');
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
     }
-    
+
     .navbar-light .navbar-nav .nav-link {
         color: white !important;
         text-shadow: 1px 1px 4px #030128;
     }
-    
+
     .fa-bars {
         text-shadow: none;
     }
-    
+
     [class*=sidebar-dark-] .sidebar a {
         color: white !important;
         text-shadow: 0px 0px 3px #000917;
     }
-    
+
     .card-pilihan {
         text-align: center;
         padding-top: 0.25em;
+        -webkit-transform: translate3d(0, 0, 0);
     }
-    
+
     @font-face {
         font-family: MontserratRegular;
         src: url(../webfonts/Montserrat-Regular.ttf);
     }
-    
+
     @font-face {
         font-family: MontserratLight;
         src: url(../webfonts/Montserrat-Light.ttf);
     }
-    
+
     @font-face {
         font-family: MontserratSemiBold;
         src: url(../webfonts/Montserrat-SemiBold.ttf);
     }
-    
+
     @font-face {
         font-family: LostFish;
         src: url(../webfonts/LostFish.ttf);
     }
-    
+
     .table-striped>tbody>tr {
         /* background-color: #ddeeff; */
         background-repeat: no-repeat;
@@ -346,13 +365,13 @@
         background-image: url('../images/topbarbg.jpg');
         /* color: white; */
     }
-    
+
     .table-striped>tbody>tr:nth-child(even)>td,
     .table-striped>tbody>tr:nth-child(even)>th {
         background-color: #ffffff;
         /* color: white; */
     }
-    
+
     .collapse tr {
         /* background-color: #ddeeff; */
         background-repeat: no-repeat;
@@ -361,12 +380,12 @@
         background-image: url('../images/subtablebg.jpg');
         /* color: white; */
     }
-    
+
     .collapse tr:nth-child(even)>td,
     .collapse tr:nth-child(odd)>th {
         background-color: #ffffff;
     }
-    
+
     .btn.btn-link-slide {
         border-radius: 10px;
         color: white;
@@ -377,7 +396,7 @@
         font-family: 'Roboto', sans-serif;
         letter-spacing: 0.6px;
     }
-    
+
     #img-cap {
         padding-top: 20px;
         display: block;
@@ -385,20 +404,20 @@
         margin-right: auto;
         width: 55%;
     }
-    
+
     .btn-card {
         background-color: #E24901;
         border: none;
     }
-    
+
     .dashboard-home {
         background-color: #F5F7FA;
     }
-    
+
     .batch-donasi {
         background-color: #e2ecfc;
     }
-    
+
     .batch-pilihan {
         background-color: #e5ffe9;
     }
