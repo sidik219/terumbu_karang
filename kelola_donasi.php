@@ -220,16 +220,14 @@ $row = $stmt->fetchAll();
                           </thead>
                     <tbody>
                         <?php
-                         //$index = 0;
                           foreach ($row as $rowitem) {
                             $truedate = strtotime($rowitem->update_terakhir);
+                            $donasidate = strtotime($rowitem->tanggal_donasi);
                           ?>
                           <tr>
                               <th scope="row"><?=$rowitem->id_donasi?></th>
-                              <!-- <td>10918004</td> -->
                               <td>Rp. <?=number_format($rowitem->nominal, 0)?></td>
-                              <!-- <td>-</td> -->
-                              <td><?=date('d F Y', strtotime($rowitem->tanggal_donasi))?></td>
+                              <td><?=strftime('%A, %d %B %Y', $donasidate);?></td>
                               <td><?=$rowitem->nama_status_donasi?> <br><small class="text-muted">Update Terakhir:
                                 <br><?=strftime('%A, %d %B %Y', $truedate);?></small></td>
                               <td>
