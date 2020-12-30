@@ -222,7 +222,7 @@ $row = $stmt->fetchAll();
                         <?php
                          //$index = 0;
                           foreach ($row as $rowitem) {
-                            //$deskripsi = json_decode($rowitem->deskripsi_donasi);
+                            $truedate = strtotime($rowitem->update_terakhir);
                           ?>
                           <tr>
                               <th scope="row"><?=$rowitem->id_donasi?></th>
@@ -230,7 +230,8 @@ $row = $stmt->fetchAll();
                               <td>Rp. <?=number_format($rowitem->nominal, 0)?></td>
                               <!-- <td>-</td> -->
                               <td><?=date('d F Y', strtotime($rowitem->tanggal_donasi))?></td>
-                              <td><?=$rowitem->nama_status_donasi?> <br><small class="text-muted">(Update Terakhir: <?=date('d F Y', strtotime($rowitem->update_terakhir))?>)</small></td>
+                              <td><?=$rowitem->nama_status_donasi?> <br><small class="text-muted">Update Terakhir:
+                                <br><?=strftime('%A, %d %B %Y', $truedate);?></small></td>
                               <td>
                                 <button type="button" class="btn btn-act">
                                 <a href="edit_donasi.php?id_donasi=<?=$rowitem->id_donasi?>" class="fas fa-edit"></a>

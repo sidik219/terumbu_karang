@@ -344,7 +344,7 @@ $rowwilayah = $stmt->fetchAll();
                                     <tr>
                                         <td><?=$lokasi->nama_lokasi?></td>
                                         <td><?=$lokasi->jumlah_titik?></td>
-                                        <td><?=$lokasi->total_titik.' / '.$lokasi->total_lokasi.' m<sup>2</sup>'?></td>
+                                        <td><?=number_format($lokasi->total_titik).' / '.number_format($lokasi->total_lokasi).' m<sup>2</sup>'?></td>
                                         <td><?=number_format($lokasi->persentase_sebaran, 1).'% ( '.$kondisi_lokasi.' )'?></td>
                                     </tr>
 
@@ -354,7 +354,7 @@ $rowwilayah = $stmt->fetchAll();
                                     <tr class="table-active border-top">
                             <th scope="row">Total</th>
                             <th><?=$rowitem->jumlah_titik?></th>
-                            <th><?=$rowitem->total_titik.' / '.$rowitem->total_lokasi.' m<sup>2</sup>'?></th>
+                            <th><?=number_format($rowitem->total_titik).' / '.number_format($rowitem->total_lokasi).' m<sup>2</sup>'?></th>
                             <th><?=number_format($rowitem->persentase_sebaran, 1).'% ( '.$kondisi_lokasi.' )'?></th>
                         </tr>
                         </table>
@@ -362,16 +362,16 @@ $rowwilayah = $stmt->fetchAll();
                         <hr/>
 <div class="row mb-4 ml-1 ">
                                         <div class="col-sm">
-                                            <span class="mr-4"><b>Kurang :</b> <?=$kurang_luas .' m<sup>2</sup>'?></span>
+                                            <span class="mr-4"><b>Kurang :</b> <?=number_format($kurang_luas) .' m<sup>2</sup>'?></span>
                                         </div>
                                         <div class="col-sm">
-                                            <span class="mr-4"><b>Cukup :</b> <?=$cukup_luas .' m<sup>2</sup>'?></span>
+                                            <span class="mr-4"><b>Cukup :</b> <?=number_format($cukup_luas) .' m<sup>2</sup>'?></span>
                                         </div>
                                         <div class="col-sm">
-                                            <span class="mr-4"><b>Baik :</b> <?=$baik_luas .' m<sup>2</sup>'?></span>
+                                            <span class="mr-4"><b>Baik :</b> <?=number_format($baik_luas) .' m<sup>2</sup>'?></span>
                                         </div>
                                         <div class="col-sm">
-                                            <span class="mr-4"><b>Sangat Baik :</b> <?=$sangat_baik_luas .' m<sup>2</sup>'?></span>
+                                            <span class="mr-4"><b>Sangat Baik :</b> <?=number_format($sangat_baik_luas) .' m<sup>2</sup>'?></span>
                                         </div>
                                     </div>
 

@@ -276,7 +276,7 @@ $row = $stmt->fetchAll();
                             <th scope="row"><?=$rowitem->id_lokasi?></th>
                             <td><?=$rowitem->id_wilayah?> - <?=$rowitem->nama_wilayah?></td>
                             <td><?=$rowitem->nama_lokasi?></td>
-                            <td><?=$rowitem->total_titik.' / '.$rowitem->total_lokasi.' m<sup>2</sup> - '.number_format($rowitem->persentase_sebaran, 1).'% ( '.$kondisi_wilayah.' )'?></td>
+                            <td><?=number_format($rowitem->total_titik).' / '.number_format($rowitem->total_lokasi).' m<sup>2</sup><br>'.number_format($rowitem->persentase_sebaran, 1).'% ( '.$kondisi_wilayah.' )'?></td>
                             <td class="text-right">
                                 <a href="edit_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 <a href="hapus.php?type=lokasi&id_lokasi=<?=$rowitem->id_lokasi?>" class="far fa-trash-alt btn btn-act"></a>
@@ -302,7 +302,7 @@ $row = $stmt->fetchAll();
                                         Estimasi Total Luas Titik
                                     </div>
                                     <div class="col isi">
-                                        <?=$rowitem->luas_lokasi. ' m<sup>2</sup>'?>
+                                        <?=number_format($rowitem->luas_lokasi). ' m<sup>2</sup>'?>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -310,7 +310,7 @@ $row = $stmt->fetchAll();
                                         Total Luas Titik Terdata
                                     </div>
                                     <div class="col isi">
-                                        <?=$rowitem->total_titik. ' m<sup>2</sup>'?>
+                                        <?=number_format($rowitem->total_titik). ' m<sup>2</sup>'?>
                                     </div>
                                 </div>
                                 <div class="row">

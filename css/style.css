@@ -307,8 +307,12 @@
     }
 
     .btn-act {
-        color: rgb(0, 68, 170);
+        color: rgb(0, 80, 199);
         margin-right: 10px;
+    }
+
+    .btn-act:hover {
+        filter: brightness(60%)
     }
 
     .fa-trash-alt {

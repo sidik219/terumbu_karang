@@ -231,14 +231,18 @@
                     <tbody>
                       <?php
                           foreach ($rowbatch as $batch) {
+
+                            $truedate = strtotime($batch->update_status_batch_terakhir);
                           ?>
                           <tr>
                               <th scope="row"><?=$batch->id_batch?></th>
                               <td>ID <?=$batch->id_lokasi?> - <?=$batch->nama_lokasi?></td>
                               <td><?=$batch->id_titik?> <?=$batch->keterangan_titik?></td>
                               <td><?=$batch->tanggal_penanaman?></td>
-                              <td><?=$batch->nama_status_batch?><br>
-                                <small class="text-muted">(Update Terakhir: <?=date('d F Y', strtotime($batch->update_status_batch_terakhir))?>)</small>
+                              <td><?=$batch->nama_status_batch?>
+                                <small class="text-muted">
+                                  <br>Update Terakhir:
+                                  <br><?=strftime('%A, %d %B %Y', $truedate);?></small>
                               </td>
                               <td>
                                 <button type="button" class="btn btn-act">

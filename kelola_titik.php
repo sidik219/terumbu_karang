@@ -252,7 +252,7 @@ $row = $stmt->fetchAll();
                               <th scope="row"><?=$rowitem->id_titik?></th>
                               <td>ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></td>
                               <td class="text-right">Lat: <?=$rowitem->latitude_titik?><br> Long: <?=$rowitem->longitude_titik?></td>
-                              <td class="text-right"><?=$rowitem->luas_titik?></td>
+                              <td class="text-right"><?=number_format($rowitem->luas_titik)?></td>
                               <td><?=$rowitem->kondisi_titik?></td>
                               <td>
                                 <a href="edit_titik.php?id_titik=<?=$rowitem->id_titik?>" class="fas fa-edit mr-3 btn btn-act"></a>
