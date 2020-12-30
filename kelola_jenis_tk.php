@@ -229,8 +229,8 @@ $row = $stmt->fetchAll();
                               <th scope="row"><?=$rowitem->id_jenis?></th>
                               <td><?=$rowitem->nama_jenis?></td>
                               <td>
-                              <a href="edit_jenis_tk.php?id_jenis=<?=$rowitem->id_jenis?>" class="fas fa-edit mr-3"></a>
-                                <a href="hapus.php?type=jenis&id_jenis=<?=$rowitem->id_jenis?>" class="far fa-trash-alt"></a>
+                              <a href="edit_jenis_tk.php?id_jenis=<?=$rowitem->id_jenis?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                                <a href="hapus.php?type=jenis&id_jenis=<?=$rowitem->id_jenis?>" class="far fa-trash-alt btn btn-act"></a>
                               </td>
                           </tr>
                           <tr>

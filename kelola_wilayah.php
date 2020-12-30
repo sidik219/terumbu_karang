@@ -245,8 +245,8 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
                               <th scope="row"><?=$rowitem->id_wilayah?></th>
                               <td><?=$rowitem->nama_wilayah?></td>
                               <td>
-                                <a href="edit_wilayah.php?id_wilayah=<?=$rowitem->id_wilayah?>" class="fas fa-edit mr-3"></a>
-                                <a href="hapus.php?type=wilayah&id_wilayah=<?=$rowitem->id_wilayah?>" class="far fa-trash-alt"></a>
+                                <a href="edit_wilayah.php?id_wilayah=<?=$rowitem->id_wilayah?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                                <a href="hapus.php?type=wilayah&id_wilayah=<?=$rowitem->id_wilayah?>" class="far fa-trash-alt btn btn-act"></a>
                                 </td>
                             </tr>
                             <tr>

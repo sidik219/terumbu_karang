@@ -255,8 +255,8 @@ $row = $stmt->fetchAll();
                               <td class="text-right"><?=$rowitem->luas_titik?></td>
                               <td><?=$rowitem->kondisi_titik?></td>
                               <td>
-                                <a href="edit_titik.php?id_titik=<?=$rowitem->id_titik?>" class="fas fa-edit mr-3"></a>
-                                <a href="hapus.php?type=titik&id_titik=<?=$rowitem->id_titik?>" class="far fa-trash-alt"></a>
+                                <a href="edit_titik.php?id_titik=<?=$rowitem->id_titik?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                                <a href="hapus.php?type=titik&id_titik=<?=$rowitem->id_titik?>" class="far fa-trash-alt btn btn-act"></a>
                               </td>
                           </tr>
                           <?php } ?>

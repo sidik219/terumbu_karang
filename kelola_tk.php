@@ -245,8 +245,8 @@ $row = $stmt->fetchAll();
                               <td>ID <?=$rowitem->id_jenis?> - <?=$rowitem->nama_jenis?></td>
                               <td><?=$rowitem->nama_terumbu_karang?></td>
                               <td>
-                              <a href="edit_tk.php?id_terumbu_karang=<?=$rowitem->id_terumbu_karang?>" class="fas fa-edit mr-3"></a>
-                                <a href="hapus.php?type=terumbu_karang&id_terumbu_karang=<?=$rowitem->id_terumbu_karang?>" class="far fa-trash-alt"></a>
+                              <a href="edit_tk.php?id_terumbu_karang=<?=$rowitem->id_terumbu_karang?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                                <a href="hapus.php?type=terumbu_karang&id_terumbu_karang=<?=$rowitem->id_terumbu_karang?>" class="far fa-trash-alt btn btn-act"></a>
                               </td>
                           </tr>
                           <tr>

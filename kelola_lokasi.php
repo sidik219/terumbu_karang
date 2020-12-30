@@ -278,8 +278,8 @@ $row = $stmt->fetchAll();
                             <td><?=$rowitem->nama_lokasi?></td>
                             <td><?=$rowitem->total_titik.' / '.$rowitem->total_lokasi.' m<sup>2</sup> - '.number_format($rowitem->persentase_sebaran, 1).'% ( '.$kondisi_wilayah.' )'?></td>
                             <td class="text-right">
-                                <a href="edit_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="fas fa-edit mr-3"></a>
-                                <a href="hapus.php?type=lokasi&id_lokasi=<?=$rowitem->id_lokasi?>" class="far fa-trash-alt"></a>
+                                <a href="edit_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                                <a href="hapus.php?type=lokasi&id_lokasi=<?=$rowitem->id_lokasi?>" class="far fa-trash-alt btn btn-act"></a>
                                 </td>
                             </tr>
 

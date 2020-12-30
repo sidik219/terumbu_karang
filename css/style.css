@@ -56,7 +56,6 @@
         background-color: #E24901;
         border: none;
         padding: 6px 12px;
-        box-shadow: 1px 1px 3px #adadad!important;
     }
 
     .file-form {
@@ -300,10 +299,20 @@
 
     .btn {
         transition: 0.2s;
+        box-shadow: 1px 1px 3px #adadad!important;
     }
 
     .btn:hover {
         filter: contrast(150%);
+    }
+
+    .btn-act {
+        color: rgb(0, 68, 170);
+        margin-right: 10px;
+    }
+
+    .fa-trash-alt {
+        color: rgb(179, 29, 3);
     }
 
     .elevation-4 {
@@ -323,7 +332,7 @@
     }
 
     .fa-bars {
-        text-shadow: none;
+        color: white;
     }
 
     [class*=sidebar-dark-] .sidebar a {
