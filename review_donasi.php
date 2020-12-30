@@ -168,7 +168,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
             <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
-            <span class="text-muted">Keranjang Anda</span>
+            <span class="text-muted"><i class="fas fa-shopping-cart"></i> Keranjang Anda</span>
             <span id="badge-jumlah" class="badge badge-secondary badge-pill"></span>
           </h4>
 
