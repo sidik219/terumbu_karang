@@ -1,3 +1,14 @@
+var formatter = new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
+
 if (document.readyState == 'loading') {
     document.addEventListener('DOMContentLoaded', ready)
 } else {
@@ -296,18 +307,19 @@ function removeCartItem(event) {
     for (i = 0; i < keranjang_old.keranjang.length; i++) {
         if (keranjang_old.keranjang[i] != null) {
             if (item_name == keranjang_old.keranjang[i].nama_tk) {
-                keranjang_old.nominal -= keranjang_old.keranjang[i].harga_tk
                 delete keranjang_old.keranjang[i]
             }
         }
     }
 
-    //filter for null
+    //filter null items
     var filtered_keranjang = keranjang_old.keranjang.filter(item => item !== null)
-    keranjang_old.keranjang = []
-    keranjang_old.keranjang = filtered_keranjang
         //empty array
-        //push filtered array
+    keranjang_old.keranjang = []
+        //insert filtered array
+    keranjang_old.keranjang = filtered_keranjang
+
+
 
     var keranjang_serialised = JSON.stringify(keranjang_old)
     sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
@@ -317,11 +329,30 @@ function removeCartItem(event) {
     updateCartTotal()
 }
 
+
+
+
+
+
 function quantityChanged(event) {
     var input = event.target
-    if (isNaN(input.value) || input.value <= 0) {
+    if (isNaN(input.value) || input.value <= 1) {
         input.value = 1
     }
+
+    var keranjang_old = JSON.parse(sessionStorage.getItem("keranjang_serialised"))
+    var item_name = $(input).parent().parent().find('.cart-item-title').text()
+
+    for (i = 0; i < keranjang_old.keranjang.length; i++) {
+        if (keranjang_old.keranjang[i] != null) {
+            if (item_name == keranjang_old.keranjang[i].nama_tk) {
+                keranjang_old.keranjang[i].jumlah_tk = input.value
+            }
+        }
+    }
+
+    var keranjang_serialised = JSON.stringify(keranjang_old)
+    sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
     updateCartTotal()
 }
 
@@ -360,9 +391,10 @@ function addItemToCart(title, price, imageSrc, itemID, ignore, jumlah_tk) {
             <img class="cart-item-image" src="${imageSrc}" width="100" height="100">
             <span class="cart-item-title">${title}</span>
         </div>
-        <span class="cart-price cart-column">${price}</span>
+        <span class="cart-price-display cart-column">${formatter.format(price.replace('Rp.', ''))}</span>
+        <span class="cart-price cart-column d-none">${price}</span>
         <div class="cart-quantity cart-column">
-            <input class="cart-quantity-input" type="number" max="999" value="${jumlah_tk}">
+            <input class="cart-quantity-input" min="1" step="1" type="number" max="999" value="${jumlah_tk}">
             <button class="btn btn-danger" type="button">X</button>
             <input type="hidden" class="cart-item-id" value=" ${itemID}">
             <input type="hidden" class="cart-item-ignore" value="${ignore}">
@@ -386,7 +418,12 @@ function updateCartTotal() {
         total = total + (price * quantity)
     }
     total = Math.round(total * 100) / 100
-    document.getElementsByClassName('cart-total-price')[0].innerText = 'Rp. ' + total
+    document.getElementsByClassName('cart-total-price')[0].innerText = formatter.format(total)
+
+    var keranjang_old = JSON.parse(sessionStorage.getItem("keranjang_serialised"))
+    keranjang_old.nominal = total
+    var keranjang_serialised = JSON.stringify(keranjang_old)
+    sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
 }
 
 $(document).ready(function() {
