@@ -73,6 +73,8 @@
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+        <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -140,13 +142,13 @@
                                 <p> Kelola Reservasi </p>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a href="kelola_wilayah.php" class="nav-link ">
+                        <li class="nav-item menu-open">
+                            <a href="kelola_wilayah.php" class="nav-link">
                                 <i class="nav-icon fas fa-globe-asia"></i>
                                 <p> Kelola Wilayah </p>
                             </a>
                         </li>
-                        <li class="nav-item menu-open">
+                        <li class="nav-item">
                             <a href="kelola_lokasi.php" class="nav-link active">
                                 <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
                                 <p> Kelola Lokasi </p>
@@ -176,7 +178,7 @@
                                   <p> Kelola Pemeliharaan </p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                         <li class="nav-item">
                              <a href="kelola_jenis_tk.php" class="nav-link">
                                    <i class="nav-icon fas fa-certificate"></i>
                                    <p> Kelola Jenis Terumbu </p>
@@ -317,7 +319,7 @@
                             <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
             <br><br>
-                    <a href="input_titik.php">Lanjut isi data titik ></a>
+
             </section>
         <?php //} ?>
             <!-- /.Left col -->

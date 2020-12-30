@@ -110,7 +110,11 @@ function purchaseClicked() {
         keranjang_deserialised["keranjang"] = keranjang
         var keranjang_serialised = JSON.stringify(keranjang_deserialised)
         sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
-        document.location.href = `review_donasi.php`;
+        if (total != 0) {
+            document.location.href = 'review_donasi.php';
+        } else {
+            alert('Harap Pilih Terumbu Karang Sebelum Checkout')
+        }
 
     } else {
         var keranjang_old = keranjang_deserialised.keranjang
@@ -169,7 +173,12 @@ function purchaseClicked() {
         keranjang_deserialised["keranjang"] = keranjang_old
         var keranjang_serialised = JSON.stringify(keranjang_deserialised)
         sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
-        document.location.href = 'review_donasi.php';
+        if (total != 0) {
+            document.location.href = 'review_donasi.php';
+        } else {
+            alert('Harap Pilih Terumbu Karang Sebelum Checkout')
+        }
+
     }
 
 }

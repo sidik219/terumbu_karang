@@ -193,8 +193,8 @@ $row = $stmt->fetchAll();
     </div>
     <!-- ./wrapper -->
 
- <footer class="main-footer">
-        <section class="container content-section">
+ <footer class="main-footer p-0 border-top-0">
+        <section class="container content-section p-3 shadow-lg pb-0">
             <h4 class="section-header font-weight-bold" id="keranjang">Keranjang Anda</h4>
             <div class="cart-row row">
                 <div class="col"><span class="cart-item cart-header cart-column">Nama</span></div>
