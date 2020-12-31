@@ -230,11 +230,11 @@ $row = $stmt->fetchAll();
     <script src="js\numberformat.js"></script>
 
     <script>
-      if(!sessionStorage.getItem("keranjang_serialised")){
-        setTimeout(function (){
-            location.reload()
-            }, 0)
-      }
+      //pre fill pesan text
+      var keranjang_deserialised = JSON.parse(sessionStorage.getItem('keranjang_serialised'))
+      var isipesan = keranjang_deserialised["pesan"]
+
+      document.getElementById('pesan').value = isipesan
 
     </script>
 
