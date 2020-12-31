@@ -73,6 +73,7 @@ function purchaseClicked() {
     } else {
         var isipesan = document.getElementById("pesan").value;
         keranjang_deserialised["pesan"] = isipesan
+        sessionStorage.removeItem('keranjang_serialised')
 
         var keranjang_serialised = JSON.stringify(keranjang_deserialised)
         sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
@@ -273,7 +274,7 @@ function addItemToCart(title, price, imageSrc, itemID, ignore, jumlah_tk) {
 
                 if (listHasId) {
                     const oldItem = keranjang_deserialised.keranjang.find(item => item.id_tk == itemID);
-                    oldItem.jumlah_tk = parseInt(oldItem.jumlah_tk) + parseInt(quantityElement.value)
+                    oldItem.jumlah_tk = parseInt(quantityElement.value)
                 } else {
                     var jumtk
                     if (quantity > 1) {
