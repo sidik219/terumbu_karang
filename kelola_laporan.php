@@ -248,11 +248,7 @@ $rowwilayah = $stmt->fetchAll();
 
                 <?php //if($_SESSION['level_user'] == '1') { ?>
                     <table class="table table-striped DataWilayah">
-                    <thead>
-                        <tr>
-                            <th scope="col">Nama Wilayah</th>
-                        </tr>
-                        </thead>
+
                 <tbody>
                 <?php
                     foreach ($rowwilayah as $rowitem) {
@@ -360,7 +356,7 @@ $rowwilayah = $stmt->fetchAll();
                         </table>
 
                         <hr/>
-<div class="row mb-4 ml-1 ">
+<div class="row mb-4 ml-1 break-after">
                                         <div class="col-sm">
                                             <span class="mr-4"><b>Kurang :</b> <?=number_format($kurang_luas) .' m<sup>2</sup>'?></span>
                                         </div>
@@ -432,14 +428,21 @@ $rowwilayah = $stmt->fetchAll();
         function savePDF(){
             $('#btn-unduh').css('left', '9999px')
             $('#clientPrintContent').css('background-color', 'white')
-            $('.collapse').toggle()
-            $('.main-sidebar').toggle()
+            $('.collapse').show()
+            $('.main-sidebar').show()
             $('#clientPrintContent, .main-header, .navbar navbar-expand, .navbar-white, .navbar-light').css('margin-left', 0)
+
+            var today = new Date();
+            var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+            var dateTime = date+'_'+time;
 
             var element = document.getElementById('clientPrintContent');
             var opt = {
             margin:       [1.5,2,2,2],
-            filename:     'myfile.pdf',
+            filename:     `Laporan_Wilayah_TKJB_${dateTime}.pdf`,
+            pagebreak: { mode: 'avoid-all', after: '.break-after' },
             image:        { type: 'jpeg', quality: 0.95 },
             html2canvas:  { scale: 3 },
             jsPDF:        { unit: 'cm', format: 'a4', orientation: 'landscape' }

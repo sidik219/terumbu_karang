@@ -100,8 +100,8 @@ function purchaseClicked() {
 
                     var jumtk
                     if (quantity > 1) {
-                        jumtk = parseInt(quantityElement.value / 2 - 1)
-                    } else jumtk = 1 / 2
+                        jumtk = parseInt(quantityElement.value)
+                    } else jumtk = 1
 
                     keranjang.push({
                         nama_tk: nama_tk,
@@ -151,8 +151,8 @@ function purchaseClicked() {
                     } else {
                         var jumtk
                         if (quantity > 1) {
-                            jumtk = parseInt(quantityElement.value / 2 - 1)
-                        } else jumtk = 1 / 2
+                            jumtk = parseInt(quantityElement.value)
+                        } else jumtk = 1
 
                         keranjang_old.push({
                             nama_tk: nama_tk,
@@ -213,8 +213,8 @@ function backClicked() {
                 // keranjang["jumlah_tk"] = quantityElement.value
                 var jumtk
                 if (quantity > 1) {
-                    jumtk = parseInt(quantityElement.value / 2 - 1)
-                } else jumtk = 1 / 2
+                    jumtk = parseInt(quantityElement.value)
+                } else jumtk = 1
                 keranjang.push({
                     nama_tk: nama_tk,
                     id_tk: itemID,
@@ -265,8 +265,8 @@ function backClicked() {
                 } else {
                     var jumtk
                     if (quantity > 1) {
-                        jumtk = parseInt(quantityElement.value / 2 - 1)
-                    } else jumtk = 1 / 2
+                        jumtk = parseInt(quantityElement.value)
+                    } else jumtk = 1
                     keranjang_old.push({
                         nama_tk: nama_tk,
                         id_tk: itemID,

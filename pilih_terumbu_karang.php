@@ -230,6 +230,12 @@ $row = $stmt->fetchAll();
     <script src="js\numberformat.js"></script>
 
     <script>
+      if(!sessionStorage.getItem("keranjang_serialised")){
+        setTimeout(function (){
+            location.reload()
+            }, 0)
+      }
+
     </script>
 
 </body>
