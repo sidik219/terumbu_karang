@@ -4,6 +4,100 @@
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
 //}
+
+$sqlviewlokasi = 'SELECT * FROM t_lokasi
+                        ORDER BY id_lokasi';
+        $stmt = $pdo->prepare($sqlviewlokasi);
+        $stmt->execute();
+        $rowlokasi = $stmt->fetchAll();
+
+
+
+
+    if (isset($_POST['submit'])) {
+      if (isset($_POST['id_batch'])){
+              $id_lokasi        = $_POST['dd_id_lokasi'];
+        $tanggal_pemeliharaan        = $_POST['date_pemeliharaan'];
+
+        $update_status_batch_terakhir = date ('Y-m-d H:i:s', time());
+        $id_status_pemeliharaan = 1;
+
+
+        $sqlinsertbatch = "INSERT INTO t_pemeliharaan
+                        (id_lokasi, tanggal_pemeliharaan, id_status_pemeliharaan)
+                        VALUES (:id_lokasi, :tanggal_pemeliharaan, :id_status_pemeliharaan)";
+
+        $stmt = $pdo->prepare($sqlinsertbatch);
+        $stmt->execute(['id_lokasi' => $id_lokasi, 'tanggal_pemeliharaan' => $tanggal_pemeliharaan, 'id_status_pemeliharaan' => $id_status_pemeliharaan]);
+
+        $affectedrows = $stmt->rowCount();
+        if ($affectedrows == '0') {
+        echo "HAHAHAAHA INSERT FAILED !";
+        } else {
+            //echo "HAHAHAAHA GREAT SUCCESSS !";
+            $last_pemeliharaan_id = $pdo->lastInsertId();
+            }
+
+            foreach($_POST['id_batch'] as $id_batch_value){ //Insert ke t_detail_pemeliharaan
+              $id_batch = $id_batch_value;
+              $id_pemeliharaan = $last_pemeliharaan_id;
+
+              $sqlinsertdetailpemeliharaan = "INSERT INTO t_detail_pemeliharaan
+                        (id_pemeliharaan, id_batch)
+                        VALUES (:id_pemeliharaan, :id_batch)";
+
+              $stmt = $pdo->prepare($sqlinsertdetailpemeliharaan);
+              $stmt->execute(['id_pemeliharaan' => $id_pemeliharaan, 'id_batch' => $id_batch]);
+
+
+              //Update dan set id_status_batch ke batch pilihan
+              $sqlbatch = "UPDATE t_batch
+                        SET update_status_batch_terakhir = :update_status_batch_terakhir, id_status_batch = :id_status_batch
+                        WHERE id_batch = :id_batch";
+
+              $stmt = $pdo->prepare($sqlbatch);
+              $stmt->execute(['id_batch' => $id_batch, 'update_status_batch_terakhir' => $update_status_batch_terakhir, 'id_status_batch' => 3 ]);
+
+              $affectedrows = $stmt->rowCount();
+              if ($affectedrows == '0') {
+              header("Location: kelola_batch.php?status=insertfailed");
+              } else {
+                  //echo "HAHAHAAHA GREAT SUCCESSS !";
+                  header("Location: kelola_batch.php?status=addsuccess");
+                  }
+
+            }
+
+            foreach($_POST['id_donasi'] as $id_donasi_value){ ////Update dan set id_status_donasi ke donasi dalam batch pilihan
+              $id_donasi = $id_donasi_value;
+              $id_status_donasi = 5;
+               $update_terakhir = date ('Y-m-d H:i:s', time());
+
+              $sqlbatch = "UPDATE t_donasi
+                        SET update_terakhir = :update_terakhir, id_status_donasi = :id_status_donasi
+                        WHERE id_donasi = :id_donasi";
+
+              $stmt = $pdo->prepare($sqlbatch);
+              $stmt->execute(['id_donasi' => $id_donasi, 'update_terakhir' => $update_terakhir, 'id_status_donasi' => $id_status_donasi ]);
+
+              $affectedrows = $stmt->rowCount();
+              if ($affectedrows == '0') {
+              header("Location: kelola_pemeliharaan.php?status=insertfailed");
+              } else {
+                  //echo "HAHAHAAHA GREAT SUCCESSS !";
+                  header("Location: kelola_pemeliharaan.php?status=addsuccess");
+                  }
+
+            }
+
+
+          }else{
+          echo '<script>alert("Harap pilih batch yang akan ditambahkan")</script>';
+        }
+
+        }//submit post end
+
+
 ?>
 
 <!DOCTYPE html>
@@ -16,29 +110,10 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -199,43 +274,37 @@
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
-                        <label for="dd_id_batch">ID Batch</label>
-                        <select id="dd_id_batch" name="dd_id_batch" class="form-control">
-                            <option value="">1</option>
-                            <option value="">2</option>
-                            <option value="">3</option>
+                        <label for="dd_id_lokasi">Lokasi Pemeliharaan</label>
+                        <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" onchange="loadBatch(this.value);" required>
+                            <option value="">Pilih Lokasi</option>
+                            <?php foreach ($rowlokasi as $rowitem) {
+                            ?>
+                            <option value="<?=$rowitem->id_lokasi?>">ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
+
+                            <?php } ?>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="rb_kondisi_pemeliharaan">Kondisi Pemeliharaan</label><br>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_kondisi_pemeliharaan_baik" name="rb_kondisi_pemeliharaan" value="baik" class="form-check-input">
-                            <label class="form-check-label" for="rb_kondisi_pemeliharaan_baik">Baik</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_kondisi_pemeliharaan_buruk" name="rb_kondisi_pemeliharaan" value="buruk" class="form-check-input">
-                            <label class="form-check-label" for="rb_kondisi_pemeliharaan_buruk">Buruk</label>
-                        </div>
+                         <label for="date_pemeliharaan">Rencana Tanggal Pemeliharaan</label>
+                         <input type="date" id="date_pemeliharaan" name="date_pemeliharaan" class="form-control" required>
+                     </div>
+
+                     <div class="form-group">
+                        <label for="dd_id_batch">Tambah Batch</label>
+                            <div id="daftarbatch">
+                                <span class="text-muted">Pilih lokasi dahulu</span>
+                            </div>
+
+                            <label class="mt-4" for="dd_id_batch">Batch Ditambahkan</label>
+                            <div id="batchpilihan">
+
+                            </div>
                     </div>
-                    <div class="form-group">
-                        <label for="rb_status_batch">Status Pemeliharaan</label><br>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_status_batch_penyemaian" name="rb_status_batch" value="penyemaian" class="form-check-input">
-                            <label class="form-check-label" for="rb_status_batch_penyemaian">Penyemaian</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_status_batch_penyebaran" name="rb_status_batch" value="penyebaran" class="form-check-input">
-                            <label class="form-check-label" for="rb_status_batch_penyebaran">Penyebaran</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_status_batch_monitoring" name="rb_status_batch" value="monitoring" class="form-check-input">
-                            <label class="form-check-label" for="rb_status_batch_monitoring">Monitoring</label>
-                        </div>
-                    </div>
+
 
                     <br>
                     <p align="center">
-                         <button type="submit" class="btn btn-submit">Kirim</button></p>
+                         <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
             <br><br>
 
@@ -250,6 +319,27 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+
+<!-- Modal -->
+   <div class="modal fade" id="empModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+     <!-- Modal content-->
+     <div class="modal-content  bg-light">
+      <div class="modal-header">
+        <h4 class="modal-title">Rincian Donasi</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+       <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+     </div>
+    </div>
+   </div>
+
+
     <br><br>
     <footer class="main-footer">
         <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
@@ -273,40 +363,124 @@
     </script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="plugins/summernote/summernote-bs4.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard.js"></script>
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-    <!-- Leaflet Marker Cluster -->
-    <script src="dist/js/leaflet.markercluster-src.js"></script>
-    <!-- Leaflet panel layer JS-->
-    <script src="dist/js/leaflet-panel-layers.js"></script>
-    <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-    <script src="dist/js/leaflet.ajax.js"></script>
-    <!-- Leaflet Map -->
-    <script src="dist/js/leaflet-map.js"></script>
+
+
+    <script>
+
+
+      function loadBatch(id_lokasi){
+      $.ajax({
+        type: "POST",
+        url: "list_populate.php",
+        data:{
+            id_lokasi: id_lokasi,
+            type: 'load_batch'
+        },
+        beforeSend: function() {
+          $("#daftarbatch").addClass("loader");
+        },
+        success: function(data){
+          $("#daftarbatch").html(data);
+          $("#daftarbatch").removeClass("loader");
+          $('.userinfo').click(function(){
+
+   var id_donasi = $(this).data('id');
+
+   // AJAX request
+   $.ajax({
+    url: 'list_populate.php',
+    type: 'post',
+    data: {id_donasi: id_donasi, type : 'load_rincian_donasi'},
+    success: function(response){
+      // Add response in Modal body
+      $('.modal-body').html(response);
+
+      // Display Modal
+      $('#empModal').modal('show');
+    }
+  });
+ });
+        }
+      });
+
+    }
+
+    function tambahPilihan(e){
+        id_donasi = $(e).siblings('.id_donasi').text()
+
+        pilihanbaru = $(e).parent().clone()
+        pilihanbaru.removeClass('batch-donasi')
+        pilihanbaru.addClass('batch-pilihan')
+        pilihanbaru.children('button').attr('onclick', 'hapusPilihan(this)')
+        pilihanbaru.children('button').html('Hapus <i class="nav-icon fas fa-times-circle text-danger"></i>')
+        pilihanbaru.append(`<input type='hidden' name='id_batch[]' value='${id_donasi}'>`)
+
+        $(e).parent().find('.id_donasi_append').each(function (getIdDonasi){
+          id_donasi_append = $(this).text()
+          pilihanbaru.append(`<input type='hidden' name='id_donasi[]' value='${id_donasi_append}'>`)
+        })
+
+
+        pilihanbaru.appendTo('#batchpilihan')
+        $(e).parent().remove()
+
+        $('.userinfo').click(function(){
+
+   var id_donasi = $(this).data('id');
+
+   // AJAX request
+   $.ajax({
+    url: 'list_populate.php',
+    type: 'post',
+    data: {id_donasi: id_donasi, type : 'load_rincian_donasi'},
+    success: function(response){
+      // Add response in Modal body
+      $('.modal-body').html(response);
+
+      // Display Modal
+      $('#empModal').modal('show');
+    }
+  });
+ });
+    }
+
+    function hapusPilihan(e){
+      pilihanbaru = $(e).parent().clone()
+      pilihanbaru.addClass('batch-donasi')
+      pilihanbaru.removeClass('batch-pilihan')
+      pilihanbaru.children('input').remove()
+      pilihanbaru.children('button').attr('onclick', 'tambahPilihan(this)')
+      pilihanbaru.children('button').html('Tambahkan <i class="nav-icon fas fa-plus-circle"></i>')
+
+      pilihanbaru.appendTo('#daftarbatch')
+      $(e).parent().remove()
+
+      $('.userinfo').click(function(){
+
+   var id_donasi = $(this).data('id');
+
+   // AJAX request
+   $.ajax({
+    url: 'list_populate.php',
+    type: 'post',
+    data: {id_donasi: id_donasi, type : 'load_rincian_donasi'},
+    success: function(response){
+      // Add response in Modal body
+      $('.modal-body').html(response);
+
+      // Display Modal
+      $('#empModal').modal('show');
+    }
+  });
+ });
+    }
+    </script>
+
+
 
 </body>
 </html>

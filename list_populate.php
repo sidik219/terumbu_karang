@@ -99,6 +99,81 @@ if ($_POST['type'] == 'load_donasi' && !empty($_POST["id_lokasi"])) {
     ?>
 
 
+<?php
+//Load Daftar Batch berdasarkan id_lokasi
+if ($_POST['type'] == 'load_batch' && !empty($_POST["id_lokasi"])) {
+    $id_lokasi = $_POST["id_lokasi"];
+    $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
+                      t_batch.update_status_batch_terakhir, t_batch.tanggal_pemeliharaan_terakhir, nama_lokasi, keterangan_titik, nama_status_batch
+                      FROM t_batch
+                      LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
+                      LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
+                      LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch
+                      WHERE t_batch.id_lokasi = :id_lokasi
+                      ORDER BY update_status_batch_terakhir';
+    $stmt = $pdo->prepare($sqlviewbatch);
+    $stmt->execute(['id_lokasi' => $_POST['id_lokasi']]);
+    $rowbatch = $stmt->fetchAll();
+
+    ?>
+    <?php
+        foreach ($rowbatch as $batch) {
+            ?>
+    <div class="border rounded p-1 batch-donasi mb-2" id="donasi<?=$batch->id_batch?>">
+      <span class="font-weight-bold">ID Batch : </span> <span class="id_donasi"><?=$batch->id_batch?></span>  <br>
+      <small class="font-weight-bold">Pemeliharaan Terakhir : </small> <small class="tanggal_pemeliharaan"><?php if($batch->tanggal_pemeliharaan_terakhir == null){echo 'Belum pernah pemeliharaan';}else{echo $batch->tanggal_pemeliharaan_terakhir;}?></small>
+      <!--collapse start -->
+                            <div class="row  m-0">
+                            <div class="col-12 cell detailcollapser<?=$batch->id_batch?>"
+                                data-toggle="collapse"
+                                data-target=".cell<?=$batch->id_batch?>, .contentall<?=$batch->id_batch?>">
+                                <p
+                                    class="fielddetail<?=$batch->id_batch?>">
+                                    <i
+                                        class="icon fas fa-chevron-down"></i>
+                                    Rincian Batch</p>
+                            </div>
+                            <div class="col-12 cell<?=$batch->id_batch?> collapse contentall<?=$batch->id_batch?>">
+                            <div class="col-md-3 kolom font-weight-bold">
+                                        Daftar Donasi
+                                    </div>
+                                <?php
+                                  $sqlviewdetailbatch = 'SELECT * FROM t_detail_batch
+                                                        LEFT JOIN t_donasi ON t_donasi.id_batch = t_detail_batch.id_batch
+                                                        WHERE t_donasi.id_batch = :id_batch
+                                                        AND t_donasi.id_donasi = t_detail_batch.id_donasi';
+                                  $stmt = $pdo->prepare($sqlviewdetailbatch);
+                                  $stmt->execute(['id_batch' => $batch->id_batch]);
+                                  $rowdetailbatch = $stmt->fetchAll();
+
+                                  foreach($rowdetailbatch as $detailbatch){
+                                ?>
+                                <div class="row mb-2 ml-1 border-bottom">
+                                    <div class="col isi">
+                                        ID <span class="id_donasi_append"><?=$detailbatch->id_donasi?></span> - <?=$detailbatch->nama_donatur?> <a data-id='<?=$detailbatch->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo p-1">Rincian></a>
+                                    </div>
+
+                                </div>
+
+                                  <?php } ?>
+
+                            </div>
+                        </div>
+
+                        <!--collapse end -->
+
+      <button type="button" class="btn btn-blue btn-primary donasitambah" onclick="tambahPilihan(this)">Tambahkan <i class="nav-icon fas fa-plus-circle"></i></button>
+    </div>
+    <?php
+        }
+    }
+    ?>
+
+
+
+<!-- BEGIN RINCIAN DONASI MODAL -->
+<!-- BEGIN RINCIAN DONASI MODAL -->
+<!-- BEGIN RINCIAN DONASI MODAL -->
 
 <?php
 //Load Data Donasi berdasarkan id_batch untuk tombol Rincian>
@@ -290,7 +365,12 @@ if ($_POST['type'] == 'load_rincian_donasi' && !empty($_POST["id_donasi"])) {
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-                                           <?php }?>
+<?php }?>
+<!-- END RINCIAN DONASI MODAL -->
+
+<!-- END RINCIAN DONASI MODAL -->
+
+<!-- END RINCIAN DONASI MODAL -->
 
 
 

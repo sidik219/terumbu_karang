@@ -82,8 +82,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
           echo '<script>alert("Harap pilih donasi yang akan ditambahkan")</script>';
         }
 
-
-        }
+        }//submit post end
 
 
 //if (isset($_SESSION['level_user']) == 0) {
@@ -512,6 +511,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
       pilihanbaru.addClass('batch-donasi')
       pilihanbaru.removeClass('batch-pilihan')
       pilihanbaru.children('button').attr('onclick', 'tambahPilihan(this)')
+      pilihanbaru.children('input').remove()
       pilihanbaru.children('button').html('<i class="nav-icon fas fa-plus-circle"></i>')
 
       pilihanbaru.appendTo('#daftardonasi')
