@@ -1,11 +1,11 @@
 <?php include 'build/config/connection.php'; ?>
 <script >
   //Map Leaflet
-  var mymap = L.map('mapid').setView([-6.9032739,107.5731167], 8);
+  var mymap = L.map('mapid').setView([-6.663185, 107.595404], 8.5);
 
   var layermap = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-      maxZoom: 18,
+      maxZoom: 13,
       id: 'mapbox/streets-v11',
       tileSize: 512,
       zoomOffset: -1,
@@ -102,7 +102,7 @@
     //Clustering marker pada bagian titik
     var marker_titik = L.markerClusterGroup();
 
-    <?php 
+    <?php
       $sql_map = "SELECT * FROM t_titik";
       $stmt = $pdo->prepare($sql_map);
       $stmt->execute();
@@ -115,19 +115,19 @@
           iconSize: [38, 45]
       });
 
-      var id_titik = <?=$value->id_titik?>;
+      // var id_titik = <?=$value->id_titik?>;
 
-      var marker = L.marker([<?=$value->longitude?>,<?=$value->latitude?>], {icon: myIcon<?=$value->id_titik?>})
-      .bindPopup(
-      "<b>Longitude: </b><?=$value->longitude?><br/>"+
-      "<b>Latitude: </b><?=$value->latitude?><br/>"+
-      "<b>Luas Titik: </b><?=$value->luas_titik?> m<sup>2</sup><br/>"+
-      "<b>Kondisi Titik: </b><?=$value->kondisi_titik?><p>"/*+
-      "<a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>"*/);
-      marker_titik.addLayer(marker);
+      // var marker = L.marker([<?=$value->latitude?>,<?=$value->longitude?>], {icon: myIcon<?=$value->id_titik?>})
+      // .bindPopup(
+      // "<b>Longitude: </b><?=$value->longitude?><br/>"+
+      // "<b>Latitude: </b><?=$value->latitude?><br/>"+
+      // "<b>Luas Titik: </b><?=$value->luas_titik?> m<sup>2</sup><br/>"+
+      // "<b>Kondisi Titik: </b><?=$value->kondisi_titik?><p>"+
+      // "<a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
+      // marker_titik.addLayer(marker);
 
     <?php } ?>
-    mymap.addLayer(marker_titik); 
+    mymap.addLayer(marker_titik);
     //End
   <?php //} ?>
   //End SESSION
@@ -144,14 +144,14 @@
         iconSize: [38, 45]
     });
 
-    <?php 
+    <?php
       $sql_map = "SELECT * FROM t_lokasi";
       $stmt = $pdo->prepare($sql_map);
       $stmt->execute();
       $sql_viewlokasi = $stmt->fetchAll();
       foreach ($sql_viewlokasi as $value) { ?>
 
-      var marker = L.marker([<?=$value->longitude?>,<?=$value->latitude?>], {icon: myIcon})
+      var marker = L.marker([<?=$value->latitude?>,<?=$value->longitude?>], {icon: myIcon})
       .bindPopup(
       "<b>Nama Lokasi: </b><?=$value->nama_lokasi?><br/>"+
       "<b>Luas Lokasi: </b><?=$value->luas_lokasi?> m<sup>2</sup><br/>"+

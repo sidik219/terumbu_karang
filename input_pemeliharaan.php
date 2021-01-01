@@ -262,7 +262,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
             <div class="content-header">
                     <div class="container-fluid">
                         <a class="btn btn-outline-primary" href="kelola_pemeliharaan.php">< Kembali</a><br><br>
-                        <h4><span class="align-middle font-weight-bold">Input Data Pemeliharaan</h4></span>
+                        <h4><span class="align-middle font-weight-bold">Input Rencana Pemeliharaan</h4></span>
                     </div>
                 <!-- /.container-fluid -->
             </div>

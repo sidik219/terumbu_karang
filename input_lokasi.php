@@ -306,13 +306,19 @@
                         <label for="num_nomor_rekening">Nomor Rekening</label>
                         <input type="number" id="num_nomor_rekening" name="num_nomor_rekening" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label for="tb_longitude">Longitude (Koordinat diperlukan agar lokasi tampil di peta)</label>
-                        <input type="text" id="tb_longitude" name="tb_longitude" class="form-control">
+                    <label for="tblongitude">Koordinat Lokasi (Diperlukan agar lokasi muncul di peta)</label>
+                    <div class="col-12 border rounded p-3 bg-light mb-2">
+                              <div class="form-group">
+                        <label for="tblongitude">Longitude</label>
+                        <input type="text" name="tb_longitude" class="form-control" id="tblongitude" required>
                     </div>
                     <div class="form-group">
-                        <label for="tb_latitude">Latitude</label>
-                        <input type="text" id="tb_latitude" name="tb_latitude" class="form-control">
+                        <label for="tblatitude">Latitude</label>
+                        <input type="text" name="tb_latitude" class="form-control" id="tblatitude" required>
+                    </div>
+                    <button class="btn btn-act mb-1" onclick="getCoordinates()"><i class="nav-icon fas fa-map-marked-alt"></i> Deteksi Lokasi Anda</button><br>
+                    <span class="" id="akurasi"></span><br>
+                    <span class="text-muted small"> (Perlu izin browser)</span>
                     </div>
                     <br>
                     <p align="center">
@@ -359,6 +365,35 @@
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
 
+    <script>
+function getCoordinates(){
+      event.preventDefault()
+      var options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0
+};
+
+function success(pos) {
+
+  var crd = pos.coords;
+
+  console.log('Your current position is:');
+  console.log(`Latitude : ${crd.latitude}`);
+  document.getElementById('tblatitude').value = crd.latitude
+  console.log(`Longitude: ${crd.longitude}`);
+  document.getElementById('tblongitude').value = crd.longitude
+  console.log();
+  document.getElementById('akurasi').innerHTML = `Akurasi: ${crd.accuracy} meter`
+}
+
+function error(err) {
+  console.warn(`ERROR(${err.code}): ${err.message}`);
+}
+
+navigator.geolocation.getCurrentPosition(success, error, options);
+    }
+    </script>
 
 </body>
 </html>

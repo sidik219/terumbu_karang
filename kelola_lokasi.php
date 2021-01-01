@@ -275,7 +275,8 @@ $row = $stmt->fetchAll();
                             <tr>
                             <th scope="row"><?=$rowitem->id_lokasi?></th>
                             <td><?=$rowitem->id_wilayah?> - <?=$rowitem->nama_wilayah?></td>
-                            <td><?=$rowitem->nama_lokasi?></td>
+                            <td><?=$rowitem->nama_lokasi?><br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$rowitem->latitude?>,<?=$rowitem->longitude?>&z=8"
+                                                                                                                                      class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a></td>
                             <td><?=number_format($rowitem->total_titik).' / '.number_format($rowitem->total_lokasi).' m<sup>2</sup><br>'.number_format($rowitem->persentase_sebaran, 1).'% ( '.$kondisi_wilayah.' )'?></td>
                             <td class="text-right">
                                 <a href="edit_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="fas fa-edit mr-3 btn btn-act"></a>

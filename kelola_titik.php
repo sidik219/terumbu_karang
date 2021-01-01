@@ -249,9 +249,10 @@ $row = $stmt->fetchAll();
                             <?php foreach ($row as $rowitem) {
                             ?>
                           <tr>
-                              <th scope="row"><?=$rowitem->id_titik?></th>
+                              <th scope="row"><?=$rowitem->id_titik?><br><?=$rowitem->keterangan_titik?></th>
                               <td>ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></td>
-                              <td class="text-right">Lat: <?=$rowitem->latitude_titik?><br> Long: <?=$rowitem->longitude_titik?></td>
+                              <td class="text-right">Lat: <?=$rowitem->latitude_titik?><br> Long: <?=$rowitem->longitude_titik?><br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$rowitem->latitude_titik?>,<?=$rowitem->longitude_titik?>&zoom=8"
+                                                                                                                                      class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a></td>
                               <td class="text-right"><?=number_format($rowitem->luas_titik)?></td>
                               <td><?=$rowitem->kondisi_titik?></td>
                               <td>

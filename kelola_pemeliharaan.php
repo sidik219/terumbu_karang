@@ -228,9 +228,7 @@ $stmt = $pdo->prepare($sqlviewpemeliharaan);
 
                             </td>
                               <td>
-                              <button type="button" class="btn btn-act">
-                                <a href="edit_pemeliharaan.php" class="fas fa-edit"></a>
-                            	</button>
+                                <a href="edit_pemeliharaan.php?id_pemeliharaan=<?=$pemeliharaan->id_pemeliharaan?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
                               </td>
                           </tr>
