@@ -296,7 +296,7 @@ $row = $stmt->fetchAll();
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Lokasi</p>
                             </div>
-                            <div class="col-12 cell<?=$rowitem->id_lokasi?> collapse contentall<?=$rowitem->id_lokasi?>">
+                            <div class="col-12 cell<?=$rowitem->id_lokasi?> collapse contentall<?=$rowitem->id_lokasi?> border rounded shadow-sm p-3">
                                 <div class="row">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Estimasi Total Luas Titik

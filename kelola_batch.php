@@ -264,7 +264,7 @@
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Batch</p>
                             </div>
-                            <div class="col-12 cell<?=$batch->id_batch?> collapse contentall<?=$batch->id_batch?>">
+                            <div class="col-12 cell<?=$batch->id_batch?> collapse contentall<?=$batch->id_batch?>   border rounded shadow-sm p-3">
                             <div class="col-md-3 kolom font-weight-bold">
                                         Daftar Donasi
                                     </div>

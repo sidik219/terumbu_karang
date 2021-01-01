@@ -262,7 +262,7 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Wilayah</p>
                             </div>
-                            <div class="col-12 cell<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?>">
+                            <div class="col-12 cell<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?> border rounded shadow-sm p-3">
                                 <div class="row mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Deskripsi Wilayah

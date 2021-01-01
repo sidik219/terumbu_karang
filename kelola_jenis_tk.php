@@ -246,7 +246,7 @@ $row = $stmt->fetchAll();
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Jenis</p>
                             </div>
-                            <div class="col-12 cell<?=$rowitem->id_jenis?> collapse contentall<?=$rowitem->id_jenis?>">
+                            <div class="col-12 cell<?=$rowitem->id_jenis?> collapse contentall<?=$rowitem->id_jenis?> border rounded shadow-sm p-3">
                                 <div class="row mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Deskripsi Jenis

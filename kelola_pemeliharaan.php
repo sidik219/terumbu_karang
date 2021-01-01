@@ -247,7 +247,7 @@ $stmt = $pdo->prepare($sqlviewpemeliharaan);
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Pemeliharaan</p>
                             </div>
-                            <div class="col-12 cell<?=$pemeliharaan->id_pemeliharaan?> collapse contentall<?=$pemeliharaan->id_pemeliharaan?>">
+                            <div class="col-12 cell<?=$pemeliharaan->id_pemeliharaan?> collapse contentall<?=$pemeliharaan->id_pemeliharaan?>  border rounded shadow-sm">
                             <div class="col-md-3 kolom font-weight-bold">
                                         Daftar Batch
                                     </div>

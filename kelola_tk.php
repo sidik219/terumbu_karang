@@ -262,7 +262,7 @@ $row = $stmt->fetchAll();
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Terumbu Karang</p>
                             </div>
-                            <div class="col-12 cell<?=$rowitem->id_terumbu_karang?> collapse contentall<?=$rowitem->id_terumbu_karang?>">
+                            <div class="col-12 cell<?=$rowitem->id_terumbu_karang?> collapse contentall<?=$rowitem->id_terumbu_karang?> border rounded shadow-sm p-3">
                                 <div class="row mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Deskripsi

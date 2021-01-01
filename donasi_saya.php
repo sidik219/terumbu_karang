@@ -198,7 +198,7 @@ $row = $stmt->fetchAll();
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Donasi</p>
                             </div>
-                            <div class="col-12 cell<?=$rowitem->id_donasi?> collapse contentall<?=$rowitem->id_donasi?>">
+                            <div class="col-12 cell<?=$rowitem->id_donasi?> collapse contentall<?=$rowitem->id_donasi?> border rounded shadow-sm p-3">
                               <div class="row">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Lokasi Penanaman
