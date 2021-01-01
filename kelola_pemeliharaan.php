@@ -4,6 +4,15 @@
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
 //}
+$sqlviewpemeliharaan = 'SELECT * FROM t_pemeliharaan
+                          LEFT JOIN t_lokasi ON t_pemeliharaan.id_lokasi = t_lokasi.id_lokasi
+                          LEFT JOIN t_status_pemeliharaan ON t_pemeliharaan.id_status_pemeliharaan = t_status_pemeliharaan.id_status_pemeliharaan';
+$stmt = $pdo->prepare($sqlviewpemeliharaan);
+    $stmt->execute();
+    $rowpemeliharaan = $stmt->fetchAll();
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -16,29 +25,10 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -55,13 +45,13 @@
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -70,7 +60,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
             <a href="dashboard_admin.php" class="brand-link">
-                <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
+                <img src="dist/img/KKPlogo.png"  class="brand-image img-circle">
                 <!-- BRAND TEXT (TOP) -->
                 <span class="brand-text font-weight-bold">TKJB</span>
             </a>
@@ -154,7 +144,7 @@
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item ">
                              <a href="kelola_perizinan.php" class="nav-link ">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -174,7 +164,7 @@
                             </a>
                         </li>
                     <?php //} ?>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -191,12 +181,12 @@
                             <h4><span class="align-middle font-weight-bold">Kelola Pemeliharaan</span></h4>
                         </div>
                         <div class="col">
-                           
+
                         <a class="btn btn-primary float-right" href="input_pemeliharaan.php" role="button">Input Data Baru (+)</a>
-                   
+
                         </div>
                     </div>
-        
+
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -209,17 +199,34 @@
                 <table class="table table-striped">
                      <thead>
                             <tr>
-                                <th scope="col">ID Batch</th>
-                                <th scope="col">Kondisi</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">ID Pemeliharaan</th>
+                                <th scope="col">ID Lokasi</th>
+                                <th scope="col">Tanggal Rencana Pemeliharaan</th>
+                                <th scope="col">Status Pemeliharaan</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                           </thead>
                     <tbody>
+                      <?php
+                      foreach($rowpemeliharaan as $pemeliharaan){
+
+                      ?>
                           <tr>
-                              <th scope="row">-</th>
-                              <td>-</td>
-                              <td>-</td>                       
+                              <th scope="row"><?=$pemeliharaan->id_pemeliharaan?></th>
+                              <td><?=$pemeliharaan->id_lokasi?> - <?=$pemeliharaan->nama_lokasi?></td>
+                              <td><?=$pemeliharaan->tanggal_pemeliharaan?></td>
+                              <td>
+                                <?php
+                                  if($pemeliharaan->id_status_pemeliharaan == 1){
+                                    echo '<span class="status-pemeliharaan badge badge-warning">'.$pemeliharaan->nama_status_pemeliharaan.'</span>';
+                                  }
+                                  else{
+                                    echo '<span class="status-pemeliharaan badge badge-success">'.$pemeliharaan->nama_status_pemeliharaan.'</span>';
+                                  }
+
+                                ?>
+
+                            </td>
                               <td>
                               <button type="button" class="btn btn-act">
                                 <a href="edit_pemeliharaan.php" class="fas fa-edit"></a>
@@ -227,8 +234,76 @@
                                 <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
                               </td>
                           </tr>
+                          <tr>
+                                <td colspan="5">
+                                    <!--collapse start -->
+                            <div class="row  m-0">
+                            <div class="col-12 cell detailcollapser<?=$pemeliharaan->id_pemeliharaan?>"
+                                data-toggle="collapse"
+                                data-target=".cell<?=$pemeliharaan->id_pemeliharaan?>, .contentall<?=$pemeliharaan->id_pemeliharaan?>">
+                                <p
+                                    class="fielddetail<?=$pemeliharaan->id_pemeliharaan?>">
+                                    <i
+                                        class="icon fas fa-chevron-down"></i>
+                                    Rincian Pemeliharaan</p>
+                            </div>
+                            <div class="col-12 cell<?=$pemeliharaan->id_pemeliharaan?> collapse contentall<?=$pemeliharaan->id_pemeliharaan?>">
+                            <div class="col-md-3 kolom font-weight-bold">
+                                        Daftar Batch
+                                    </div>
+
+                                <?php
+                                  $sqlviewdetailpemeliharaan = 'SELECT * FROM t_detail_pemeliharaan
+                                                        WHERE id_pemeliharaan = :id_pemeliharaan';
+                                  $stmt = $pdo->prepare($sqlviewdetailpemeliharaan);
+                                  $stmt->execute(['id_pemeliharaan' => $pemeliharaan->id_pemeliharaan]);
+                                  $rowdetailpemeliharaan = $stmt->fetchAll();
+
+                                  foreach($rowdetailpemeliharaan as $detailpemeliharaan){
+                                ?>
+                                <div class="row mb-2 ml-1">
+                                    <div class="col-12 isi mb-1">
+                                        <span class="badge badge-pill badge-info">ID Batch <?=$detailpemeliharaan->id_batch?></span>
+                                    </div>
+                                    <div class="col isi ml-2 bg-light rounded">
+                                      <div class="ml-2 kolom font-weight-bold">
+                                        <small class="font-weight-bold">Daftar Donasi</small>
+                                    </div>
+                                        <?php
+                                  $sqlviewdetailbatch = 'SELECT * FROM t_detail_batch
+                                                        LEFT JOIN t_donasi ON t_donasi.id_batch = t_detail_batch.id_batch
+                                                        WHERE t_donasi.id_batch = :id_batch
+                                                        AND t_donasi.id_donasi = t_detail_batch.id_donasi';
+                                  $stmt = $pdo->prepare($sqlviewdetailbatch);
+                                  $stmt->execute(['id_batch' => $detailpemeliharaan->id_batch]);
+                                  $rowdetailbatch = $stmt->fetchAll();
+
+                                  foreach($rowdetailbatch as $detailbatch){
+                                ?>
+                                <div class="row mb-3 ml-1 border-bottom small">
+                                    <div class="col isi">
+                                        ID <?=$detailbatch->id_donasi?> - <?=$detailbatch->nama_donatur?>
+                                    </div>
+                                    <div class="col-lg-9 isi">
+                                        <a data-id='<?=$detailbatch->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo p-1 small">Rincian></a>
+                                    </div>
+                                </div>
+
+                                  <?php } ?>
+                                    </div>
+                                </div>
+
+                                  <?php } ?>
+
+                            </div>
+                        </div>
+
+                        <!--collapse end -->
+                                </td>
+                            </tr>
+                      <?php } ?>
                     </tbody>
-                  </table>  
+                  </table>
             <?php //} ?>
             </section>
             <!-- /.Left col -->
@@ -253,6 +328,25 @@
     </div>
     <!-- ./wrapper -->
 
+    <!-- Modal -->
+   <div class="modal fade" id="empModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+     <!-- Modal content-->
+     <div class="modal-content  bg-light">
+      <div class="modal-header">
+        <h4 class="modal-title">Rincian Donasi</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+       <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+     </div>
+    </div>
+   </div>
+
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -263,40 +357,35 @@
     </script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="plugins/summernote/summernote-bs4.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard.js"></script>
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-    <!-- Leaflet Marker Cluster -->
-    <script src="dist/js/leaflet.markercluster-src.js"></script>
-    <!-- Leaflet panel layer JS-->
-    <script src="dist/js/leaflet-panel-layers.js"></script>
-    <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-    <script src="dist/js/leaflet.ajax.js"></script>
-    <!-- Leaflet Map -->
-    <script src="dist/js/leaflet-map.js"></script>
+
+    <script>
+       $(document).ready(function(){
+
+ $('.userinfo').click(function(){
+
+   var id_donasi = $(this).data('id');
+
+   // AJAX request
+   $.ajax({
+    url: 'list_populate.php',
+    type: 'post',
+    data: {id_donasi: id_donasi, type : 'load_rincian_donasi'},
+    success: function(response){
+      // Add response in Modal body
+      $('.modal-body').html(response);
+
+      // Display Modal
+      $('#empModal').modal('show');
+    }
+  });
+ });
+});
+
+    </script>
 
 </body>
 </html>
