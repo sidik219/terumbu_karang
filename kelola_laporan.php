@@ -5,16 +5,16 @@
     //header('location: login.php');
 //}
 
-$sqlviewwilayah = 'SELECT DISTINCT *, SUM(luas_titik) AS total_titik,
-                    COUNT(DISTINCT id_titik) AS jumlah_titik,
-                    SUM(DISTINCT luas_lokasi) AS total_lokasi,
-                    SUM(DISTINCT luas_titik) / SUM(DISTINCT luas_lokasi) * 100 AS persentase_sebaran
+$sqlviewwilayah = 'SELECT *, SUM(luas_titik) AS total_titik,
+                    COUNT(t_titik.id_titik) AS jumlah_titik,
+                    SUM(t_lokasi.luas_lokasi) / (SELECT COUNT(t_titik.id_titik) GROUP BY t_titik.id_titik) AS total_lokasi,
+                    (SUM(t_titik.luas_titik) / (SUM(t_lokasi.luas_lokasi) / (SELECT COUNT(t_titik.id_titik) GROUP BY t_titik.id_titik))) * 100 AS persentase_sebaran
 
-                    FROM `t_titik`, t_lokasi, t_wilayah
+                    FROM t_titik, t_lokasi, t_wilayah
 					          WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
-                    AND t_titik.id_wilayah = t_wilayah.id_wilayah
                     AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
-                    GROUP BY t_wilayah.id_wilayah';
+                    GROUP BY t_wilayah.id_wilayah
+ORDER BY t_lokasi.id_wilayah ASC';
 
 // 'SELECT *,
 //             SUM(luas_titik) AS luas_total, COUNT(id_titik) AS jumlah_titik,
@@ -252,19 +252,8 @@ $rowwilayah = $stmt->fetchAll();
                 <tbody>
                 <?php
                     foreach ($rowwilayah as $rowitem) {
-                      $ps = $rowitem->persentase_sebaran;
-                      if($ps >= 0 && $ps < 25){
-                        $kondisi_wilayah = 'Kurang';
-                      }
-                      else if($ps >= 25 && $ps < 50){
-                        $kondisi_wilayah = 'Cukup';
-                      }
-                      else if($ps >= 50 && $ps < 75){
-                        $kondisi_wilayah = 'Baik';
-                      }
-                      else{
-                        $kondisi_wilayah = 'Sangat Baik';
-                      }
+                        $total_luas_lokasi = 0;
+                        $total_persentase_sebaran = 0;
                 ?>
                         <tr>
                             <th scope="row" colspan="3"><?=$rowitem->nama_wilayah?></th>
@@ -298,13 +287,12 @@ $rowwilayah = $stmt->fetchAll();
                                     </thead>
                                 <?php
                                   $sql_lokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
-                                    COUNT(DISTINCT id_titik) AS jumlah_titik,
-                                    SUM(DISTINCT luas_lokasi) AS total_lokasi,
-                                    SUM(DISTINCT luas_titik) / SUM(DISTINCT luas_lokasi) * 100 AS persentase_sebaran
+                                    COUNT(id_titik) AS jumlah_titik,
+                                    SUM(luas_lokasi)  / COUNT(id_titik) AS total_lokasi,
+                                    (SUM(t_titik.luas_titik) / (SUM(t_lokasi.luas_lokasi) / COUNT(t_titik.id_titik)) ) * 100 AS persentase_sebaran
 
                                     FROM `t_titik`, t_lokasi, t_wilayah
                                     WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
-                                    AND t_titik.id_wilayah = t_wilayah.id_wilayah
                                     AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
                                     AND t_lokasi.id_wilayah = '.$rowitem->id_wilayah.'
                                     GROUP BY t_lokasi.id_lokasi
@@ -345,13 +333,35 @@ $rowwilayah = $stmt->fetchAll();
                                     </tr>
 
 
-                    <?php } ?>
+
+
+                    <?php
+                    $total_luas_lokasi += $lokasi->total_lokasi;
+                    $total_persentase_sebaran += $lokasi->persentase_sebaran ;
+
+                } //lokasi loop end
+
+                $ps = number_format($rowitem->total_titik / $total_luas_lokasi * 100, 1);
+                      if($ps >= 0 && $ps < 25){
+                        $kondisi_wilayah = 'Kurang';
+                      }
+                      else if($ps >= 25 && $ps < 50){
+                        $kondisi_wilayah = 'Cukup';
+                      }
+                      else if($ps >= 50 && $ps < 75){
+                        $kondisi_wilayah = 'Baik';
+                      }
+                      else{
+                        $kondisi_wilayah = 'Sangat Baik';
+                      }
+
+                ?>
 
                                     <tr class="table-active border-top">
                             <th scope="row">Total</th>
                             <th><?=$rowitem->jumlah_titik?></th>
-                            <th><?=number_format($rowitem->total_titik).' / '.number_format($rowitem->total_lokasi).' m<sup>2</sup>'?></th>
-                            <th><?=number_format($rowitem->persentase_sebaran, 1).'% ( '.$kondisi_lokasi.' )'?></th>
+                            <th><?=number_format($rowitem->total_titik).' / '.number_format($total_luas_lokasi).' m<sup>2</sup>'?></th>
+                            <th><?=$ps.'% ( '.$kondisi_wilayah.' )'?></th>
                         </tr>
                         </table>
 
