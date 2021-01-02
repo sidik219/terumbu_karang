@@ -294,7 +294,7 @@ $stmt = $pdo->prepare($sqlviewpemeliharaan);
 
                     </div>
                     <div class="form-group mb-5">
-                         <label for="date_pemeliharaan">Rencana Tanggal Pemeliharaan</label>
+                         <label for="date_pemeliharaan">Tanggal Pemeliharaan</label>
                          <input type="date" id="date_pemeliharaan" name="date_pemeliharaan" class="form-control" value="<?=$rowpemeliharaan[0]->tanggal_pemeliharaan?>" required>
                      </div>
 
@@ -324,9 +324,13 @@ $stmt = $pdo->prepare($sqlviewpemeliharaan);
                                     <div class="col-12 isi">
                                         <h4><span class="badge badge-info">ID Batch <?=$detailpemeliharaan->id_batch?></span></h4>
                                     </div>
-                                    <div class="col-12 isi mb-3">
+                                    <div class="col-12 isi mb-2">
                                         <span class="font-weight-bold">ID Titik Penanaman : </span><?=$detailpemeliharaan->id_titik?> <?=$detailpemeliharaan->keterangan_titik?> <a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$detailpemeliharaan->latitude?>,<?=$detailpemeliharaan->longitude?>&zoom=8"
                                                                                                                                       class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a>
+
+                                    </div>
+                                    <div class="col-12 isi mb-3">
+                                       <span class="font-weight-bold">Tanggal Penanaman: </span><span class=""><?=$detailpemeliharaan->tanggal_penanaman?></span>
                                     </div>
                                     <div class="col isi">
                                       <div class="mb-2 font-weight-bold">
@@ -344,12 +348,13 @@ $stmt = $pdo->prepare($sqlviewpemeliharaan);
                                   foreach($rowdetailbatch as $detailbatch){
                                 ?>
                                 <div class="row mb-3 small">
-                                    <div class="col isi">
+                                    <div class="col isi mb-2">
                                         <span class="badge badge-pill badge-primary mb-2">ID <?=$detailbatch->id_donasi?></span> - <span class="font-weight-bold"><?=$detailbatch->nama_donatur?></span>
+                                        <br>Label: <span class="font-weight-bold small text-muted"><?=$detailbatch->pesan?></span>
                                     </div>
                                     <div class="col-12">
                                       <?php
-                                              $sqlviewisi = 'SELECT jumlah_terumbu, nama_terumbu_karang, foto_terumbu_karang FROM t_detail_donasi
+                                              $sqlviewisi = 'SELECT * FROM t_detail_donasi
                                               LEFT JOIN t_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
                                               LEFT JOIN t_terumbu_karang ON t_detail_donasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang
                                               WHERE t_detail_donasi.id_donasi = :id_donasi';
@@ -358,15 +363,15 @@ $stmt = $pdo->prepare($sqlviewpemeliharaan);
                                               $rowisi = $stmt->fetchAll();
                                            foreach ($rowisi as $isi){
                                              ?>
-                                             <div class="row  mb-3 p-3 border rounded shadow-sm bg-white">
-                                               <!-- <div class="col">
-                                                <img class="" height="60px" src="<?=$isi->foto_terumbu_karang?>?<?php if ($status='nochange'){echo time();}?>">
-                                              </div> -->
-                                              <div class="col">
-                                                <span><?= $isi->nama_terumbu_karang?>
+                                             <div class="row  mb-3 p-3 border rounded shadow-sm bg-white"><!--DONASI CONTAINER START-->
+                                               <div class="col-sm mb-1 d-flex justify-content-center">
+                                                <img class="rounded" height="60px" src="<?=$isi->foto_terumbu_karang?>?">
                                               </div>
-                                              <div class="col">
-                                                x<?= $isi->jumlah_terumbu?></span><br/>
+                                              <div class="col-sm mb-1">
+                                                <span class="font-weight-bold">Jenis Terumbu Karang : </span><span ><?= $isi->nama_terumbu_karang?></span>
+                                              </div>
+                                              <div class="col-8">
+                                                <span class="font-weight-bold">Jumlah : </span><?= $isi->jumlah_terumbu?></span><br/>
                                               </div>
 
                                               <div class="col-12 mt-2">
@@ -375,7 +380,46 @@ $stmt = $pdo->prepare($sqlviewpemeliharaan);
                                                     <input type="text" id="tb_kondisi" name="tb_kondisi" class="form-control">
                                                 </div>
                                               </div>
-                                             </div>
+
+                                              <div class="col-12 mt-1">
+
+                                                <div class='form-group' id='fototk<?=$isi->id_detail_donasi?>'>
+                                                <div>
+                                                    <label for='image_uploads'>Foto Terumbu Karang</label><span class="small text-muted"> (opsional)</span>
+                                                    <input type='file'  class='form-control' id='image_uploads<?=$isi->id_detail_donasi?>'
+                                                        name='image_uploads[]' accept='.jpg, .jpeg, .png' onchange="readURL<?=$isi->id_detail_donasi?>(this)">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <img class="preview-images" id="preview<?=$isi->id_detail_donasi?>"  width="100px" src="#" alt="Preview Gambar"/>
+
+                                            </div>
+                                              </div>
+
+                                              <script>
+                                                function readURL<?=$isi->id_detail_donasi?>(input){
+                                                  {if (input.files && input.files[0]) {
+                                                            var reader = new FileReader();
+
+                                                            reader.onload = function (e) {
+                                                                $('#preview<?=$isi->id_detail_donasi?>')
+                                                                    .attr('src', e.target.result)
+                                                                    .width(200);
+                                                                    $('#preview<?=$isi->id_detail_donasi?>').show()
+                                                            };
+
+                                                            reader.readAsDataURL(input.files[0]);
+                                                        } };
+                                                }
+
+                                              </script>
+
+
+
+
+                                             </div><!-- Batch box thing end -->
+
+
 
                                         <?php   }
                                         ?>
@@ -406,7 +450,7 @@ $stmt = $pdo->prepare($sqlviewpemeliharaan);
 
                     <br>
                     <p align="center">
-                         <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
+                         <button disabled type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
             <br><br>
 
@@ -421,26 +465,6 @@ $stmt = $pdo->prepare($sqlviewpemeliharaan);
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-
-<!-- Modal -->
-   <div class="modal fade" id="empModal" role="dialog">
-    <div class="modal-dialog modal-lg">
-     <!-- Modal content-->
-     <div class="modal-content  bg-light">
-      <div class="modal-header">
-        <h4 class="modal-title">Rincian Donasi</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body">
-
-      </div>
-      <div class="modal-footer">
-       <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-      </div>
-     </div>
-    </div>
-   </div>
-
 
     <br><br>
     <footer class="main-footer">
@@ -470,117 +494,15 @@ $stmt = $pdo->prepare($sqlviewpemeliharaan);
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
 
-
     <script>
+        $(document).ready(function() {
+          $('.preview-images').hide()
+         });
 
-
-      function loadBatch(id_lokasi){
-      $.ajax({
-        type: "POST",
-        url: "list_populate.php",
-        data:{
-            id_lokasi: id_lokasi,
-            type: 'load_batch'
-        },
-        beforeSend: function() {
-          $("#daftarbatch").addClass("loader");
-        },
-        success: function(data){
-          $("#daftarbatch").html(data);
-          $("#daftarbatch").removeClass("loader");
-          $('.userinfo').click(function(){
-
-   var id_donasi = $(this).data('id');
-
-   // AJAX request
-   $.ajax({
-    url: 'list_populate.php',
-    type: 'post',
-    data: {id_donasi: id_donasi, type : 'load_rincian_donasi'},
-    success: function(response){
-      // Add response in Modal body
-      $('.modal-body').html(response);
-
-      // Display Modal
-      $('#empModal').modal('show');
-    }
-  });
- });
-        }
-      });
-
-    }
-
-    function tambahPilihan(e){
-        id_donasi = $(e).siblings('.id_donasi').text()
-
-        pilihanbaru = $(e).parent().clone()
-        pilihanbaru.removeClass('batch-donasi')
-        pilihanbaru.addClass('batch-pilihan')
-        pilihanbaru.children('button').attr('onclick', 'hapusPilihan(this)')
-        pilihanbaru.children('button').html('Hapus <i class="nav-icon fas fa-times-circle text-danger"></i>')
-        pilihanbaru.append(`<input type='hidden' name='id_batch[]' value='${id_donasi}'>`)
-
-        $(e).parent().find('.id_donasi_append').each(function (getIdDonasi){
-          id_donasi_append = $(this).text()
-          pilihanbaru.append(`<input type='hidden' name='id_donasi[]' value='${id_donasi_append}'>`)
-        })
-
-
-        pilihanbaru.appendTo('#batchpilihan')
-        $(e).parent().remove()
-
-        $('.userinfo').click(function(){
-
-   var id_donasi = $(this).data('id');
-
-   // AJAX request
-   $.ajax({
-    url: 'list_populate.php',
-    type: 'post',
-    data: {id_donasi: id_donasi, type : 'load_rincian_donasi'},
-    success: function(response){
-      // Add response in Modal body
-      $('.modal-body').html(response);
-
-      // Display Modal
-      $('#empModal').modal('show');
-    }
-  });
- });
-    }
-
-    function hapusPilihan(e){
-      pilihanbaru = $(e).parent().clone()
-      pilihanbaru.addClass('batch-donasi')
-      pilihanbaru.removeClass('batch-pilihan')
-      pilihanbaru.children('input').remove()
-      pilihanbaru.children('button').attr('onclick', 'tambahPilihan(this)')
-      pilihanbaru.children('button').html('Tambahkan <i class="nav-icon fas fa-plus-circle"></i>')
-
-      pilihanbaru.appendTo('#daftarbatch')
-      $(e).parent().remove()
-
-      $('.userinfo').click(function(){
-
-   var id_donasi = $(this).data('id');
-
-   // AJAX request
-   $.ajax({
-    url: 'list_populate.php',
-    type: 'post',
-    data: {id_donasi: id_donasi, type : 'load_rincian_donasi'},
-    success: function(response){
-      // Add response in Modal body
-      $('.modal-body').html(response);
-
-      // Display Modal
-      $('#empModal').modal('show');
-    }
-  });
- });
-    }
     </script>
+
+
+
 
 </body>
 </html>
