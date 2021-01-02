@@ -5,7 +5,7 @@
     //header('location: login.php');
 
     $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
-                      t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch
+                      t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, t_titik.latitude, t_titik.longitude
                       FROM t_batch
                       LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
                       LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
@@ -237,7 +237,8 @@
                           <tr>
                               <th scope="row"><?=$batch->id_batch?></th>
                               <td>ID <?=$batch->id_lokasi?> - <?=$batch->nama_lokasi?></td>
-                              <td><?=$batch->id_titik?> <?=$batch->keterangan_titik?></td>
+                              <td><?=$batch->id_titik?> <?=$batch->keterangan_titik?><br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$batch->latitude?>,<?=$batch->longitude?>&zoom=8"
+                                                                                                                                      class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a></td>
                               <td><?=$batch->tanggal_penanaman?></td>
                               <td><?=$batch->nama_status_batch?>
                                 <small class="text-muted">

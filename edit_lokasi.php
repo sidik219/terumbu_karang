@@ -328,12 +328,13 @@
                     <label for="tblongitude">Koordinat Lokasi (Diperlukan agar lokasi muncul di peta)</label>
                     <div class="col-12 border rounded p-3 bg-light mb-2">
                               <div class="form-group">
-                        <label for="tblongitude">Longitude</label>
-                        <input type="text" name="tb_longitude" class="form-control" id="tblongitude" required>
+                                <label for="tblatitude">Latitude</label>
+                        <input type="text" value="<?=$row->latitude?>" name="tb_latitude" class="form-control" id="tblatitude" required>
+
                     </div>
                     <div class="form-group">
-                        <label for="tblatitude">Latitude</label>
-                        <input type="text" name="tb_latitude" class="form-control" id="tblatitude" required>
+                        <label for="tblongitude">Longitude</label>
+                        <input type="text" value="<?=$row->longitude?>" name="tb_longitude" class="form-control" id="tblongitude" required>
                     </div>
                     <button class="btn btn-act mb-1" onclick="getCoordinates()"><i class="nav-icon fas fa-map-marked-alt"></i> Deteksi Lokasi Anda</button><br>
                     <span class="" id="akurasi"></span><br>
