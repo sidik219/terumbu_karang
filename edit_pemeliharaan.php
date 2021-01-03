@@ -282,15 +282,29 @@
                         <form action="" enctype="multipart/form-data" method="POST">
                         <div class="form-group">
                             <label>Lokasi Pemeliharaan : ID <?=$rowpemeliharaan[0]->id_lokasi?> <?=$rowpemeliharaan[0]->nama_lokasi?></label><br>
-                            <label>Status : <?php
-                                    if($rowpemeliharaan[0]->id_status_pemeliharaan == 1){
-                                        echo '<span class="status-pemeliharaan badge badge-warning">'.$rowpemeliharaan[0]->nama_status_pemeliharaan.'</span>';
-                                    }
-                                    else{
-                                        echo '<span class="status-pemeliharaan badge badge-success">'.$rowpemeliharaan[0]->nama_status_pemeliharaan.'</span>';
-                                    }
+                            <label>Status :
+                            <?php
+                                $sqlstatuspemeliharaan = 'SELECT * FROM t_status_pemeliharaan';
 
-                                    ?></label>
+                                $stmt = $pdo->prepare($sqlstatuspemeliharaan);
+                                $stmt->execute();
+                                $rowstatuspemeliharaan = $stmt->fetchAll();
+                                $i = 0;
+                                foreach ($rowstatuspemeliharaan as $statuspemeliharaan){
+                                    ?>
+                                    <div class="ml-2 form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="id_status_pemeliharaan" id="inlineRadio<?=$i?>" value="<?=$statuspemeliharaan->id_status_pemeliharaan?>">
+                                    <label class="form-check-label" for="inlineRadio<?=$i?>">
+                                        <span class="status-pemeliharaan badge <?php if($statuspemeliharaan->id_status_pemeliharaan == 1){echo 'badge-warning';}else{echo 'badge-success';}?> p-2"><?=$statuspemeliharaan->nama_status_pemeliharaan?></span>
+
+                                </label>
+                                    </div>
+                                <?php $i++; } ?>
+
+
+
+
+                                    </label>
 
                         </div>
                         <div class="form-group mb-5">
@@ -320,7 +334,7 @@
 
                                     foreach($rowdetailpemeliharaan as $detailpemeliharaan){
                                     ?>
-                                    <div class="row mb-2  bg-light rounded p-sm-4 pt-2">
+                                    <div class="row mb-2  bg-light rounded p-sm-4 pt-2 shadow-sm border">
 
                                              <div class="col-12 isi">
                                             <h4><span class="badge badge-info">ID Batch <?=$detailpemeliharaan->id_batch?></span></h4>
@@ -334,8 +348,8 @@
 
                                         </div>
                                         <div class="col isi">
-                                        <div class="mb-2 font-weight-bold">
-                                            <h5 class="font-weight-bold">Daftar Donasi</h5>
+                                        <div class="mb-2 font-weight-bold border-bottom">
+                                            <h5 class="font-weight-bold btn btn-act" onclick="$('.daftardonasi<?=$detailpemeliharaan->id_batch?>').slideToggle()"><i class="icon fas fa-chevron-down"></i> Daftar Donasi</h5>
                                         </div>
                                             <?php
                                     $sqlviewdetailbatch = 'SELECT * FROM t_detail_batch
@@ -348,7 +362,7 @@
 
                                     foreach($rowdetailbatch as $detailbatch){
                                     ?>
-                                    <div class="row mb-3">
+                                    <div class="row mb-4 daftardonasi<?=$detailpemeliharaan->id_batch?>">
                                         <div class="col-auto isi bg-white p-3 rounded border border-primary border-bottom-0">
                                             <span class="badge badge-pill badge-primary mb-2">ID Donasi <?=$detailbatch->id_donasi?></span> - <span class="font-weight-bold"><?=$detailbatch->nama_donatur?></span>
                                             <br>Label: <span class="font-weight-bold small text-muted"><?=$detailbatch->pesan?></span>
@@ -371,11 +385,11 @@
                                                     <span class="badge badge-pill badge-info small float-right"> ID Batch <?=$detailpemeliharaan->id_batch?></span><span class="badge badge-pill badge-primary small float-right  mr-1">ID Donasi <?=$detailbatch->id_donasi?> </span>
                                                 </div>
 
-                                                <div class="col-sm mb-1 d-flex justify-content-center">
+                                                <div class="col-sm mb-1">
                                                     <img class="rounded" height="60px" src="<?=$isi->foto_terumbu_karang?>?">
                                                 </div>
                                                 <div class="col-sm mb-1">
-                                                    <span class="font-weight-bold">Jenis Terumbu Karang</span><br><span ><?= $isi->nama_terumbu_karang?></span>
+                                                    <span class="font-weight-bold">Jenis</span><br><span ><?= $isi->nama_terumbu_karang?></span>
                                                 </div>
                                                 <div class="col-8">
                                                     <span class="font-weight-bold">Jumlah</span><br><span><?= $isi->jumlah_terumbu?></span><br/>
@@ -518,6 +532,8 @@
         <script>
             $(document).ready(function() {
             $('.preview-images').hide()
+
+            $('.daftardonasi<?=$detailpemeliharaan->id_batch?>').hide()
             });
 
         </script>

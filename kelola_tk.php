@@ -257,7 +257,7 @@ $row = $stmt->fetchAll();
                                 data-toggle="collapse"
                                 data-target=".cell<?=$rowitem->id_terumbu_karang?>, .contentall<?=$rowitem->id_terumbu_karang?>">
                                 <p
-                                    class="fielddetail<?=$rowitem->id_terumbu_karang?>">
+                                    class="fielddetail<?=$rowitem->id_terumbu_karang?> btn btn-act">
                                     <i
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Terumbu Karang</p>

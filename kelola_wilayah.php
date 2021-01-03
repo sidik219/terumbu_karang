@@ -257,7 +257,7 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
                                 data-toggle="collapse"
                                 data-target=".cell<?=$rowitem->id_wilayah?>, .contentall<?=$rowitem->id_wilayah?>">
                                 <p
-                                    class="fielddetail<?=$rowitem->id_wilayah?>">
+                                    class="fielddetail<?=$rowitem->id_wilayah?> btn btn-act">
                                     <i
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Wilayah</p>

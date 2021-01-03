@@ -241,7 +241,7 @@ $row = $stmt->fetchAll();
                                 data-toggle="collapse"
                                 data-target=".cell<?=$rowitem->id_jenis?>, .contentall<?=$rowitem->id_jenis?>">
                                 <p
-                                    class="fielddetail<?=$rowitem->id_jenis?>">
+                                    class="fielddetail<?=$rowitem->id_jenis?>  btn btn-act">
                                     <i
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Jenis</p>

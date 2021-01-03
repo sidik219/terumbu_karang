@@ -260,7 +260,7 @@
                                 data-toggle="collapse"
                                 data-target=".cell<?=$batch->id_batch?>, .contentall<?=$batch->id_batch?>">
                                 <p
-                                    class="fielddetail<?=$batch->id_batch?>">
+                                    class="fielddetail<?=$batch->id_batch?>  btn btn-act">
                                     <i
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Batch</p>

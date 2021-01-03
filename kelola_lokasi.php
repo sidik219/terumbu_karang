@@ -20,7 +20,6 @@ $sqlviewlokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
 
                                   FROM `t_titik`, t_lokasi, t_wilayah
                                   WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
-                                  AND t_titik.id_wilayah = t_wilayah.id_wilayah
                                   AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
                                   GROUP BY t_lokasi.id_lokasi';
 
@@ -292,7 +291,7 @@ $row = $stmt->fetchAll();
                                 data-toggle="collapse"
                                 data-target=".cell<?=$rowitem->id_lokasi?>, .contentall<?=$rowitem->id_lokasi?>">
                                 <p
-                                    class="fielddetail<?=$rowitem->id_lokasi?>">
+                                    class="fielddetail<?=$rowitem->id_lokasi?> btn btn-act">
                                     <i
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Lokasi</p>

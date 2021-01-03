@@ -240,7 +240,7 @@ $stmt = $pdo->prepare($sqlviewpemeliharaan);
                                 data-toggle="collapse"
                                 data-target=".cell<?=$pemeliharaan->id_pemeliharaan?>, .contentall<?=$pemeliharaan->id_pemeliharaan?>">
                                 <p
-                                    class="fielddetail<?=$pemeliharaan->id_pemeliharaan?>">
+                                    class="fielddetail<?=$pemeliharaan->id_pemeliharaan?>  btn btn-act">
                                     <i
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Pemeliharaan</p>

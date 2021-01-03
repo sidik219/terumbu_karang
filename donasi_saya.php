@@ -193,7 +193,7 @@ $row = $stmt->fetchAll();
                                 data-toggle="collapse"
                                 data-target=".cell<?=$rowitem->id_donasi?>, .contentall<?=$rowitem->id_donasi?>">
                                 <p
-                                    class="fielddetail<?=$rowitem->id_donasi?>">
+                                    class="fielddetail<?=$rowitem->id_donasi?> btn btn-act">
                                     <i
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Donasi</p>
