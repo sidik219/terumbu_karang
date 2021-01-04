@@ -5,6 +5,12 @@
         //header('location: login.php');
     //}
 
+    if(!$_GET['id_pemeliharaan']){
+      header("Location: kelola_pemeliharaan.php?status=accessdenied");
+    }else{
+      $id_pemeliharaan = $_GET['id_pemeliharaan'];
+    }
+
     $id_pemeliharaan = $_GET['id_pemeliharaan'];
 
     $sqlviewlokasi = 'SELECT * FROM t_lokasi
@@ -24,87 +30,96 @@
 
 
         if (isset($_POST['submit'])) {
-        if (isset($_POST['id_batch'])){
-                $id_lokasi        = $_POST['dd_id_lokasi'];
-            $tanggal_pemeliharaan        = $_POST['date_pemeliharaan'];
+              if (isset($_POST['id_batch'])){
+                  $id_status_pemeliharaan        = $_POST['id_status_pemeliharaan'];
+                  $tanggal_pemeliharaan   = $_POST['date_pemeliharaan'];
+                  $i = 0;
 
-            $update_status_batch_terakhir = date ('Y-m-d H:i:s', time());
-            $id_status_pemeliharaan = 1;
+                  //UPDATE DATA PEMELIHARAAN
+                  $sqlupdatepemelihraan = "UPDATE t_pemeliharaan
+                                  SET tanggal_pemeliharaan = :tanggal_pemeliharaan, id_status_pemeliharaan = :id_status_pemeliharaan
+                                  WHERE id_pemeliharaan = :id_pemeliharaan";
 
+                  $stmt = $pdo->prepare($sqlupdatepemelihraan);
+                  $stmt->execute(['tanggal_pemeliharaan' => $tanggal_pemeliharaan, 'id_status_pemeliharaan' => $id_status_pemeliharaan, 'id_pemeliharaan' => $id_pemeliharaan]);
 
-            $sqlinsertbatch = "INSERT INTO t_pemeliharaan
-                            (id_lokasi, tanggal_pemeliharaan, id_status_pemeliharaan)
-                            VALUES (:id_lokasi, :tanggal_pemeliharaan, :id_status_pemeliharaan)";
-
-            $stmt = $pdo->prepare($sqlinsertbatch);
-            $stmt->execute(['id_lokasi' => $id_lokasi, 'tanggal_pemeliharaan' => $tanggal_pemeliharaan, 'id_status_pemeliharaan' => $id_status_pemeliharaan]);
-
-            $affectedrows = $stmt->rowCount();
-            if ($affectedrows == '0') {
-            echo "HAHAHAAHA INSERT FAILED !";
-            } else {
-                //echo "HAHAHAAHA GREAT SUCCESSS !";
-                $last_pemeliharaan_id = $pdo->lastInsertId();
-                }
-
-                foreach($_POST['id_batch'] as $id_batch_value){ //Insert ke t_detail_pemeliharaan
-                $id_batch = $id_batch_value;
-                $id_pemeliharaan = $last_pemeliharaan_id;
-
-                $sqlinsertdetailpemeliharaan = "INSERT INTO t_detail_pemeliharaan
-                            (id_pemeliharaan, id_batch)
-                            VALUES (:id_pemeliharaan, :id_batch)";
-
-                $stmt = $pdo->prepare($sqlinsertdetailpemeliharaan);
-                $stmt->execute(['id_pemeliharaan' => $id_pemeliharaan, 'id_batch' => $id_batch]);
+                  $affectedrows = $stmt->rowCount();
+                  if ($affectedrows == '0') {
+                  echo "HAHAHAAHA UPDATE FAILED !";
+                  } else {
+                      //echo "HAHAHAAHA GREAT SUCCESSS !";
+                  }// END UPDATE DATA PEMELIHARAAN
 
 
-                //Update dan set id_status_batch ke batch pilihan
-                $sqlbatch = "UPDATE t_batch
-                            SET update_status_batch_terakhir = :update_status_batch_terakhir, id_status_batch = :id_status_batch
-                            WHERE id_batch = :id_batch";
 
-                $stmt = $pdo->prepare($sqlbatch);
-                $stmt->execute(['id_batch' => $id_batch, 'update_status_batch_terakhir' => $update_status_batch_terakhir, 'id_status_batch' => 3 ]);
+                  //UPDATE DATA TIAP BATCH
+                  foreach($_POST['id_batch'] as $id_batch_value){
+                    $id_batch = $id_batch_value;
 
-                $affectedrows = $stmt->rowCount();
-                if ($affectedrows == '0') {
-                header("Location: kelola_batch.php?status=insertfailed");
-                } else {
-                    //echo "HAHAHAAHA GREAT SUCCESSS !";
-                    header("Location: kelola_batch.php?status=addsuccess");
+                    if($id_status_pemeliharaan == 1){
+                      $tanggal_pemeliharaan_terakhir = null;
+                    }
+                    else{
+                      $tanggal_pemeliharaan_terakhir = $tanggal_pemeliharaan;
                     }
 
-                }
 
-                foreach($_POST['id_donasi'] as $id_donasi_value){ ////Update dan set id_status_donasi ke donasi dalam batch pilihan
-                $id_donasi = $id_donasi_value;
-                $id_status_donasi = 5;
-                $update_terakhir = date ('Y-m-d H:i:s', time());
+                    $sqlinsertdetailpemeliharaan = "UPDATE t_batch
+                                                    SET tanggal_pemeliharaan_terakhir = :tanggal_pemeliharaan_terakhir
+                                                    WHERE id_batch = :id_batch";
 
-                $sqlbatch = "UPDATE t_donasi
-                            SET update_terakhir = :update_terakhir, id_status_donasi = :id_status_donasi
-                            WHERE id_donasi = :id_donasi";
-
-                $stmt = $pdo->prepare($sqlbatch);
-                $stmt->execute(['id_donasi' => $id_donasi, 'update_terakhir' => $update_terakhir, 'id_status_donasi' => $id_status_donasi ]);
-
-                $affectedrows = $stmt->rowCount();
-                if ($affectedrows == '0') {
-                header("Location: kelola_pemeliharaan.php?status=insertfailed");
-                } else {
-                    //echo "HAHAHAAHA GREAT SUCCESSS !";
-                    header("Location: kelola_pemeliharaan.php?status=addsuccess");
-                    }
-
-                }
+                    $stmt = $pdo->prepare($sqlinsertdetailpemeliharaan);
+                    $stmt->execute(['tanggal_pemeliharaan_terakhir' => $tanggal_pemeliharaan_terakhir, 'id_batch' => $id_batch]);
+                    } //END UPDATE DATA TIAP BATCH
 
 
-            }else{
-            echo '<script>alert("Harap pilih batch yang akan ditambahkan")</script>';
+
+
+                    //UPDATE DATA DETAIL DONASI
+                    foreach($_POST['id_detail_donasi'] as $id_detail_donasi_value){
+                    $id_detail_donasi = $id_detail_donasi_value;
+                    $randomstring = substr(md5(rand()), 0, 7);
+
+                    $kondisi_terumbu = $_POST['kondisi'][$i];
+                    $punya_foto_lama = ($_POST['oldpic'][$i] != '');
+
+
+                    //Image upload
+                            if($punya_foto_lama){
+                              if($_FILES["image_uploads"]["size"][$i] == 0) {//tidak ada pilihan
+                                $foto_pemeliharaan = $_POST['oldpic'][$i];
+                              }else{ //ada pilihan
+                                $target_dir  = "images/foto_pemeliharaan/";
+                                $foto_pemeliharaan = $target_dir .'PMLH_'.$randomstring. '.jpg';
+                                move_uploaded_file($_FILES["image_uploads"]["tmp_name"][$i], $foto_pemeliharaan);
+                              }
+
+                            }else{ //tidak punya foto lama
+                              if($_FILES["image_uploads"]["size"][$i] == 0) {//tidak ada pilihan
+                                $foto_pemeliharaan = '';
+                              }else{ //ada pilihan
+                                $target_dir  = "images/foto_pemeliharaan/";
+                                $foto_pemeliharaan = $target_dir .'PMLH_'.$randomstring. '.jpg';
+                                move_uploaded_file($_FILES["image_uploads"]["tmp_name"][$i], $foto_pemeliharaan);
+                              }
+                            }//---image upload end
+
+
+                    $sqldetaildonasi = "UPDATE t_detail_donasi
+                                SET kondisi_terumbu = :kondisi_terumbu, foto_pemeliharaan = :foto_pemeliharaan
+                                WHERE id_detail_donasi = :id_detail_donasi";
+
+                    $stmt = $pdo->prepare($sqldetaildonasi);
+                    $stmt->execute(['kondisi_terumbu' => $kondisi_terumbu, 'foto_pemeliharaan' => $foto_pemeliharaan, 'id_detail_donasi' => $id_detail_donasi ]);
+
+                    $affectedrows = $stmt->rowCount();
+
+                  $i++;//index increment
+
+                } // END UPDATE DATA DETAIL DONASI
             }
 
-            }//submit post end
+          }//submit post end
     ?>
 
     <!DOCTYPE html>
@@ -279,6 +294,7 @@
             <?php //if($_SESSION['level_user'] == '1') { ?>
                 <section class="content">
                     <div class="container-fluid">
+                        <!-- <form action="edit_post_test.php" enctype="multipart/form-data" method="POST"> -->
                         <form action="" enctype="multipart/form-data" method="POST">
                         <div class="form-group">
                             <label>Lokasi Pemeliharaan : ID <?=$rowpemeliharaan[0]->id_lokasi?> <?=$rowpemeliharaan[0]->nama_lokasi?></label><br>
@@ -293,7 +309,7 @@
                                 foreach ($rowstatuspemeliharaan as $statuspemeliharaan){
                                     ?>
                                     <div class="ml-2 form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="id_status_pemeliharaan" id="inlineRadio<?=$i?>" value="<?=$statuspemeliharaan->id_status_pemeliharaan?>">
+                                    <input <?php if($statuspemeliharaan->id_status_pemeliharaan == $rowpemeliharaan[0]->id_status_pemeliharaan){echo 'checked';}?> class="form-check-input" type="radio" name="id_status_pemeliharaan" id="inlineRadio<?=$i?>" value="<?=$statuspemeliharaan->id_status_pemeliharaan?>">
                                     <label class="form-check-label" for="inlineRadio<?=$i?>">
                                         <span class="status-pemeliharaan badge <?php if($statuspemeliharaan->id_status_pemeliharaan == 1){echo 'badge-warning';}else{echo 'badge-success';}?> p-2"><?=$statuspemeliharaan->nama_status_pemeliharaan?></span>
 
@@ -335,6 +351,7 @@
                                     foreach($rowdetailpemeliharaan as $detailpemeliharaan){
                                     ?>
                                     <div class="row mb-2  bg-light rounded p-sm-4 pt-2 shadow-sm border">
+                                      <input type="hidden" value="<?=$detailpemeliharaan->id_batch?>" name="id_batch[]">
 
                                              <div class="col-12 isi">
                                             <h4><span class="badge badge-info">ID Batch <?=$detailpemeliharaan->id_batch?></span></h4>
@@ -349,7 +366,7 @@
                                         </div>
                                         <div class="col isi">
                                         <div class="mb-2 font-weight-bold border-bottom">
-                                            <h5 class="font-weight-bold btn btn-act" onclick="$('.daftardonasi<?=$detailpemeliharaan->id_batch?>').slideToggle()"><i class="icon fas fa-chevron-down"></i> Daftar Donasi</h5>
+                                            <h5 class="font-weight-bold btn btn-act" onclick="$('.daftardonasi<?=$detailpemeliharaan->id_batch?>').fadeToggle()"><i class="icon fas fa-chevron-down"></i> Daftar Donasi</h5>
                                         </div>
                                             <?php
                                     $sqlviewdetailbatch = 'SELECT * FROM t_detail_batch
@@ -398,7 +415,7 @@
                                                 <div class="col-12 mt-2">
                                                     <div class="form-group">
                                                         <label for="tb_nama_jenis">Kondisi / Keterangan</label>
-                                                        <input type="text" id="tb_kondisi" name="tb_kondisi" class="form-control">
+                                                        <input type="text" id="tb_kondisi" name="kondisi[]" class="form-control" placeholder="Deskripsi singkat..." value="<?=$isi->kondisi_terumbu ?>" required>
                                                     </div>
                                                 </div>
 
@@ -418,6 +435,8 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <img class="preview-images rounded" id="preview<?=$isi->id_detail_donasi?>"  width="100px" src="#" alt="Preview Gambar"/>
+                                                        <img id="oldpic<?=$isi->id_detail_donasi?>" src="<?=$isi->foto_pemeliharaan?>" width="100px">
+                                                        <input type="hidden" name="oldpic[]" class="form-control" value="<?=$isi->foto_pemeliharaan?>">
 
                                                     </div>
                                                 </div>
@@ -435,12 +454,12 @@
                                                     function readURL<?=$isi->id_detail_donasi?>(input){
                                                     {if (input.files && input.files[0]) {
                                                                 var reader = new FileReader();
-
+                                                                document.getElementById('oldpic<?=$isi->id_detail_donasi?>').style.display = 'none';
                                                                 reader.onload = function (e) {
                                                                     $('#preview<?=$isi->id_detail_donasi?>')
                                                                         .attr('src', e.target.result)
                                                                         .width(200);
-                                                                        $('#preview<?=$isi->id_detail_donasi?>').show()
+                                                                        $('#preview<?=$isi->id_detail_donasi?>').fadeIn()
                                                                 };
 
                                                                 reader.readAsDataURL(input.files[0]);
@@ -485,7 +504,7 @@
 
                         <br>
                         <p align="center">
-                            <button disabled type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
+                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                         </form>
                 <br><br>
 

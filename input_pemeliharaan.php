@@ -425,8 +425,13 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         })
 
 
-        pilihanbaru.appendTo('#batchpilihan')
-        $(e).parent().remove()
+
+        $(e).parent().fadeOut(function() {
+          $(e).parent().remove()
+          $(pilihanbaru).appendTo('#batchpilihan').fadeIn().hide()
+          $(pilihanbaru).fadeIn()
+      });
+
 
         $('.userinfo').click(function(){
 
@@ -456,8 +461,12 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
       pilihanbaru.children('button').attr('onclick', 'tambahPilihan(this)')
       pilihanbaru.children('button').html('Tambahkan <i class="nav-icon fas fa-plus-circle"></i>')
 
-      pilihanbaru.appendTo('#daftarbatch')
-      $(e).parent().remove()
+
+      $(e).parent().fadeOut(function() {
+          $(e).parent().remove()
+          $(pilihanbaru).appendTo('#daftarbatch').fadeIn().hide()
+          $(pilihanbaru).fadeIn()
+      });
 
       $('.userinfo').click(function(){
 

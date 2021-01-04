@@ -201,7 +201,7 @@ $stmt = $pdo->prepare($sqlviewpemeliharaan);
                             <tr>
                                 <th scope="col">ID Pemeliharaan</th>
                                 <th scope="col">ID Lokasi</th>
-                                <th scope="col">Tanggal Rencana Pemeliharaan</th>
+                                <th scope="col">Tanggal Pemeliharaan</th>
                                 <th scope="col">Status Pemeliharaan</th>
                                 <th scope="col">Aksi</th>
                             </tr>

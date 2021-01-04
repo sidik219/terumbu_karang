@@ -347,30 +347,14 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                          </div>
                      </div>
 
-                     <label class="mt-4" for="dd_id_donasi">Donasi dalam Batch</label>
-                            <div id="donasipilihan">
 
-                            <?php
-                              foreach ($rowdetailbatch as $detailbatch) {
-                                  ?>
-                          <div class="border rounded p-1 batch-donasi" id="donasi<?=$detailbatch->id_donasi?>">
-                            ID <span class="id_donasi"><?=$detailbatch->id_donasi?></span> -
-                            <span class="nama_donatur"><?=$detailbatch->nama_donatur?></span> <a data-id='<?=$detailbatch->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo">Rincian></a>
-                            <button type="button" class="btn donasitambah" onclick="hapusPilihan(this)"><i class="nav-icon fas fa-times-circle text-danger"></i></button>
-                            <input type='hidden' name='id_donasi[]' value='<?=$detailbatch->id_donasi?>'>
-                          </div>
-                          <?php
-                              }?>
-                            </div>
-
-
-                            <label class="mt-4" for="dd_id_donasi">Donasi baru yang dapat Ditambahkan</label>
+                      <label class="mt-4" for="dd_id_donasi">Donasi baru yang dapat Ditambahkan</label>
                             <div id="daftardonasi">
 
                             <?php
                               foreach ($rowdonasi as $donasi) {
                                   ?>
-                          <div class="border rounded p-1 batch-donasi" id="donasi<?=$donasi->id_donasi?>">
+                          <div class="border rounded p-1 batch-donasi mb-2 shadow-sm" id="donasi<?=$donasi->id_donasi?>">
                             ID <span class="id_donasi"><?=$donasi->id_donasi?></span> -
                             <span class="nama_donatur"><?=$donasi->nama_donatur?></span>
                             <a data-id='<?=$donasi->id_donasi?>' class="btn btn-sm btn-outline-primary  userinfo">Rincian></a>
@@ -379,6 +363,22 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                           <?php
                               }?>
 
+                            </div>
+
+                     <label class="mt-4" for="dd_id_donasi">Donasi dalam Batch</label>
+                            <div id="donasipilihan">
+
+                            <?php
+                              foreach ($rowdetailbatch as $detailbatch) {
+                                  ?>
+                          <div class="border rounded p-1 batch-donasi mb-2 shadow-sm" id="donasi<?=$detailbatch->id_donasi?>">
+                            ID <span class="id_donasi"><?=$detailbatch->id_donasi?></span> -
+                            <span class="nama_donatur"><?=$detailbatch->nama_donatur?></span> <a data-id='<?=$detailbatch->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo">Rincian></a>
+                            <button type="button" class="btn donasitambah" onclick="hapusPilihan(this)"><i class="nav-icon fas fa-times-circle text-danger"></i></button>
+                            <input type='hidden' name='id_donasi[]' value='<?=$detailbatch->id_donasi?>'>
+                          </div>
+                          <?php
+                              }?>
                             </div>
 
 
@@ -503,8 +503,12 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         pilihanbaru.children('input').remove()
         pilihanbaru.append(`<input type='hidden' name='id_donasi[]' value='${id_donasi}'>`)
 
-        pilihanbaru.appendTo('#donasipilihan')
-        $(e).parent().remove()
+
+        $(e).parent().fadeOut(function() {
+          $(e).parent().remove()
+          $(pilihanbaru).appendTo('#donasipilihan').fadeIn().hide()
+          $(pilihanbaru).fadeIn()
+      });
     }
 
     function hapusPilihan(e){
@@ -518,8 +522,12 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
       pilihanbaru.append(`<input type='hidden' name='id_donasi_dihapus[]' value='${id_donasi}'>`)
 
 
-      pilihanbaru.appendTo('#daftardonasi')
-      $(e).parent().remove()
+
+      $(e).parent().fadeOut(function() {
+          $(e).parent().remove()
+          $(pilihanbaru).appendTo('#daftardonasi').fadeIn().hide()
+          $(pilihanbaru).fadeIn()
+      });
     }
 
 

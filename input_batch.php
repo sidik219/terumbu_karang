@@ -291,12 +291,12 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                      </div>
 
                      <div class="form-group">
-                        <label for="dd_id_donasi">Tambah Donasi ke Batch</label>
+                        <label for="dd_id_donasi">Donasi dapat ditambahkan ke Batch</label>
                             <div id="daftardonasi">
                                 <span class="text-muted">Pilih lokasi dahulu</span>
                             </div>
 
-                            <label class="mt-4" for="dd_id_donasi">Donasi Ditambahkan</label>
+                            <label class="mt-4" for="dd_id_donasi">Donasi dalam Batch</label>
                             <div id="donasipilihan">
 
                             </div>
@@ -483,8 +483,12 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         pilihanbaru.children('button').html('<i class="nav-icon fas fa-times-circle text-danger"></i>')
         pilihanbaru.append(`<input type='hidden' name='id_donasi[]' value='${id_donasi}'>`)
 
-        pilihanbaru.appendTo('#donasipilihan')
-        $(e).parent().remove()
+
+        $(e).parent().fadeOut(function() {
+          $(e).parent().remove()
+          $(pilihanbaru).appendTo('#donasipilihan').hide()
+          $(pilihanbaru).fadeIn()
+      });
 
         $('.userinfo').click(function(){
 
@@ -514,8 +518,12 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
       pilihanbaru.children('input').remove()
       pilihanbaru.children('button').html('<i class="nav-icon fas fa-plus-circle"></i>')
 
-      pilihanbaru.appendTo('#daftardonasi')
-      $(e).parent().remove()
+
+      $(e).parent().fadeOut(function() {
+          $(e).parent().remove()
+          $(pilihanbaru).appendTo('#daftardonasi').fadeIn().hide()
+          $(pilihanbaru).fadeIn()
+      });
 
       $('.userinfo').click(function(){
 

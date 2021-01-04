@@ -88,7 +88,7 @@ if ($_POST['type'] == 'load_donasi' && !empty($_POST["id_lokasi"])) {
     <?php
         foreach ($rowdonasi as $donasi) {
             ?>
-    <div class="border rounded p-1 batch-donasi" id="donasi<?=$donasi->id_donasi?>">
+    <div class="border rounded p-1 batch-donasi  mb-2 shadow-sm" id="donasi<?=$donasi->id_donasi?>">
       ID <span class="id_donasi"><?=$donasi->id_donasi?></span> -
       <span class="nama_donatur"><?=$donasi->nama_donatur?></span> <a data-id='<?=$donasi->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo">Rincian></a>
       <button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus-circle"></i></button>
@@ -119,7 +119,7 @@ if ($_POST['type'] == 'load_batch' && !empty($_POST["id_lokasi"])) {
     <?php
         foreach ($rowbatch as $batch) {
             ?>
-    <div class="border rounded p-1 batch-donasi mb-2" id="donasi<?=$batch->id_batch?>">
+    <div class="border rounded p-1 batch-donasi mb-2 shadow-sm" id="donasi<?=$batch->id_batch?>">
       <span class="font-weight-bold">ID Batch : </span> <span class="id_donasi"><?=$batch->id_batch?></span>  <br>
       <small class="font-weight-bold">Pemeliharaan Terakhir : </small> <small class="tanggal_pemeliharaan"><?php if($batch->tanggal_pemeliharaan_terakhir == null){echo 'Belum pernah pemeliharaan';}else{echo $batch->tanggal_pemeliharaan_terakhir;}?></small>
       <!--collapse start -->
@@ -128,7 +128,7 @@ if ($_POST['type'] == 'load_batch' && !empty($_POST["id_lokasi"])) {
                                 data-toggle="collapse"
                                 data-target=".cell<?=$batch->id_batch?>, .contentall<?=$batch->id_batch?>">
                                 <p
-                                    class="fielddetail<?=$batch->id_batch?>">
+                                    class="fielddetail<?=$batch->id_batch?> btn btn-act">
                                     <i
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Batch</p>
