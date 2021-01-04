@@ -196,6 +196,23 @@ $stmt = $pdo->prepare($sqlviewpemeliharaan);
             <section class="content">
                 <div class="container-fluid">
             <?php //if($_SESSION['level_user'] == '1') { ?>
+               <?php
+                if(!empty($_GET['status'])){
+                  if($_GET['status'] == 'updatesuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Update data berhasil
+                      </div>';}
+                      else if($_GET['status'] == 'addsuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Data baru berhasil ditambahkan
+                      </div>';}
+                      else if($_GET['status'] == 'deletesuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Data berhasil dihapus
+                      </div>';
+                    }
+                  }
+                ?>
                 <table class="table table-striped">
                      <thead>
                             <tr>

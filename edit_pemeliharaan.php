@@ -118,6 +118,9 @@
 
                 } // END UPDATE DATA DETAIL DONASI
             }
+                  //echo "HAHAHAAHA GREAT SUCCESSS !";
+                  header("Location: kelola_pemeliharaan.php?status=updatesuccess");
+
 
           }//submit post end
     ?>
