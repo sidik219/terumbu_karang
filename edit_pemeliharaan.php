@@ -11,8 +11,6 @@
       $id_pemeliharaan = $_GET['id_pemeliharaan'];
     }
 
-    $id_pemeliharaan = $_GET['id_pemeliharaan'];
-
     $sqlviewlokasi = 'SELECT * FROM t_lokasi
                             ORDER BY id_lokasi';
             $stmt = $pdo->prepare($sqlviewlokasi);
@@ -72,6 +70,12 @@
                     $stmt->execute(['tanggal_pemeliharaan_terakhir' => $tanggal_pemeliharaan_terakhir, 'id_batch' => $id_batch]);
                     } //END UPDATE DATA TIAP BATCH
 
+                    $sqlhapushistorydonasi = 'DELETE FROM t_history_pemeliharaan
+                                              WHERE id_pemeliharaan = :id_pemeliharaan';
+
+                    $stmt = $pdo->prepare($sqlhapushistorydonasi);
+                    $stmt->execute(['id_pemeliharaan' => $id_pemeliharaan ]);
+
 
 
 
@@ -103,13 +107,6 @@
                                 move_uploaded_file($_FILES["image_uploads"]["tmp_name"][$i], $foto_pemeliharaan);
                               }
                             }//---image upload end
-
-
-                    $sqlhapushistorydonasi - 'DELETE FROM t_history_pemeliharaan
-                                              WHERE id_pemeliharaan = :id_pemeliharaan';
-
-                    $stmt = $pdo->prepare($sqlhapushistorydonasi);
-                    $stmt->execute(['id_pemeliharaan' => $id_pemeliharaan ]);
 
 
                     $sqlhistorydonasi = "INSERT INTO t_history_pemeliharaan
@@ -408,7 +405,7 @@
 
                                                 $stmt = $pdo->prepare($sqlviewhistoryitems);
                                                 $stmt->execute(['id_detail_donasi' => $isi->id_detail_donasi, 'id_pemeliharaan' =>$id_pemeliharaan]);
-                                                $rowhistory = $stmt->fetch();
+                                                $rowhistory = $stmt->fetchAll();
 
 
                                                 ?>
@@ -432,7 +429,7 @@
                                                 <div class="col-12 mt-2">
                                                     <div class="form-group">
                                                         <label for="tb_nama_jenis">Kondisi / Keterangan</label>
-                                                        <input type="text" id="tb_kondisi" name="kondisi[]" class="form-control" placeholder="Deskripsi singkat..." value="<?php echo empty($rowhistory->kondisi_terumbu) ? '' : $rowhistory->kondisi_terumbu; ?>" required>
+                                                        <input type="text" id="tb_kondisi" name="kondisi[]" class="form-control" placeholder="Deskripsi singkat..." value="<?php echo empty($rowhistory[0]->kondisi_terumbu) ? '' : $rowhistory[0]->kondisi_terumbu; ?>" required>
                                                     </div>
                                                 </div>
 
@@ -452,8 +449,8 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <img class="preview-images rounded" id="preview<?=$isi->id_detail_donasi?>"  width="100px" src="#" alt="Preview Gambar"/>
-                                                        <img id="oldpic<?=$isi->id_detail_donasi?>" src="<?php echo empty($rowhistory->foto_pemeliharaan) ? '' : $rowhistory->foto_pemeliharaan?>" width="100px">
-                                                        <input type="hidden" name="oldpic[]" class="form-control" value="<?=$rowhistory->foto_pemeliharaan?>">
+                                                        <img id="oldpic<?=$isi->id_detail_donasi?>" src="<?php echo empty($rowhistory[0]->foto_pemeliharaan) ? '' : $rowhistory[0]->foto_pemeliharaan?>" width="100px">
+                                                        <input type="hidden" name="oldpic[]" class="form-control" value="<?php echo empty($rowhistory[0]->foto_pemeliharaan) ? '' : $rowhistory[0]->foto_pemeliharaan ?>">
 
                                                     </div>
                                                 </div>
