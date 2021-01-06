@@ -395,6 +395,11 @@
         /* color: white; */
     }
     
+    .subdetail {
+        background-repeat: no-repeat;
+        background-image: url('../images/subtablebg.jpg');
+    }
+    
     .collapse tr:nth-child(even)>td,
     .collapse tr:nth-child(odd)>th {
         background-color: #ffffff;
