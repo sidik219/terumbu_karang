@@ -161,37 +161,48 @@ $row = $stmt->fetchAll();
                             <div class="blue-container border rounded shadow-sm mb-4 p-4">
                                 <div class="row"><!-- First row -->
 
-                                  <div class="col-12">
+                                  <div class="col-12 mb-2">
                                       <span class="badge badge-pill badge-primary mr-2"> ID Donasi <?=$rowitem->id_donasi?> </span>
                                       <?php echo empty($rowitem->id_batch) ? '' : '<span class="badge badge-pill badge-info mr-2"> ID Batch '.$rowitem->id_batch.'</span>';?> </span>
 
                                   </div>
 
                                     <div class="col-md mb-2">
-                                      <span class="font-weight-bold">Nominal</span>
-                                      <br>
-                                      <span class="mb-3">Rp. <?=number_format($rowitem->nominal, 0)?></span>
-                                      <br>
-                                      <span class="font-weight-bold">Tanggal Donasi</span>
-                                      <br>
-                                      <?=strftime('%A, %d %B %Y', $donasidate);?>
+                                      <div class="mb-2">
+                                          <span class="font-weight-bold"><i class="nav-icon fas fas fa-money-bill-wave"></i> Nominal</span>
+                                          <br>
+                                          <span class="mb-3">Rp. <?=number_format($rowitem->nominal, 0)?></span>
+                                      </div>
+                                      <div class="mb-2">
+                                          <span class="font-weight-bold"><i class="nav-icon fas fas fa-calendar-alt"></i> Tanggal Donasi</span>
+                                          <br>
+                                          <?=strftime('%A, %d %B %Y', $donasidate);?>
+                                      </div>
+
+
                                   </div>
 
                                   <div class="col-md mb-3">
-                                      <span class="font-weight-bold">Lokasi Penanaman</span><br>
+                                      <span class="font-weight-bold"><i class="nav-icon fas fas fa-map-marker-alt"></i> Lokasi Penanaman</span><br>
                                       <img height='75px' class="rounded" src=<?=$rowitem->foto_lokasi;?>><br>
                                       <span class=""><?="$rowitem->nama_lokasi (ID $rowitem->id_lokasi)";?></span>
+                                      <?=$rowitem->nama_lokasi?><br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$rowitem->latitude?>,<?=$rowitem->longitude?>&z=8"
+                                                                                                                                      class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a>
                                   </div>
 
 
                                     <div class="col-md mb-2">
-                                      <span class="font-weight-bold">Status</span>
-                                      <br><?=$rowitem->nama_status_donasi?>
-                                      <br><small class="text-muted"><b>Update Terakhir</b>
-                                      <br><?=strftime('%A, %d %B %Y', $truedate);?></small>
-                                      <br>
-                                       <span class="font-weight-bold">Pesan/Ekspresi</span>
-                                      <br><?=$rowitem->pesan?>
+                                      <div class="mb-2">
+                                          <span class="font-weight-bold"><i class="nav-icon fas fas fa-comment-dots"></i> Pesan/Ekspresi</span>
+                                          <br><?=$rowitem->pesan?><br>
+                                      </div>
+                                      <div class="mb-2">
+                                          <span class="font-weight-bold"><i class="nav-icon fas fas fa-list-alt"></i> Status</span>
+                                          <br><?=$rowitem->nama_status_donasi?>
+                                          <br><small class="text-muted"><b>Update Terakhir</b>
+                                          <br><?=strftime('%A, %d %B %Y', $truedate);?></small>
+                                      </div>
+
 
 
                                   </div>
@@ -231,9 +242,9 @@ $row = $stmt->fetchAll();
 
 
                                                 ?>
-                                                <div class="row  mb-2 p-3 border rounded shadow-sm bg-white border-info"><!--DONASI CONTAINER START-->
+                                                <div class="row  mb-2 p-3 border rounded shadow-sm bg-light border"><!--DONASI CONTAINER START-->
 
-                                                <div class="col-sm mb-1">
+                                                <div class="col-sm-12 col-md-auto mb-1">
                                                     <img class="rounded" height="40px" src="<?=$isi->foto_terumbu_karang?>?">
                                                 </div>
                                                 <div class="col-sm mb-1">
@@ -247,55 +258,60 @@ $row = $stmt->fetchAll();
 
                                                 ?>
 
-                                                <div class="col-12 mt-2">
-
-                                                </div>
 
                                                 <div class="daftarhistory col-12 mt-1">
-                                                  <div class='form-group' id='fototk<?=$isi->id_detail_donasi?>'>
+                                                  <div class='' id='fototk<?=$isi->id_detail_donasi?>'>
                                                         <div>
-                                                            <label for='image_uploads<?=$isi->id_detail_donasi?>'>History Perawatan Terumbu Karang</label><span class="small text-muted"></span> <br>
+                                                            <label for='image_uploads<?=$isi->id_detail_donasi?>'><i class="nav-icon fas fas fa-history"></i> History Pemeliharaan</label><span class="small text-muted"></span> <br>
                                                         </div>
                                                     </div>
                                                   <?php
                                                    $sqlviewhistoryitemdetail = 'SELECT * FROM t_history_pemeliharaan
-                                                                              WHERE id_detail_donasi = :id_detail_donasi';
+                                                                              WHERE id_detail_donasi = :id_detail_donasi
+                                                                              ORDER BY tanggal_pemeliharaan DESC';
 
                                                         $stmt = $pdo->prepare($sqlviewhistoryitemdetail);
                                                         $stmt->execute(['id_detail_donasi' => $isi->id_detail_donasi]);
                                                         $rowhistory = $stmt->fetchAll();
+
+                                                        if (empty($rowhistory)) {
+                                                            echo '<span class="text-small text-muted">Belum tahap pemeliharaan</span>';
+                                                        }
                                                     foreach ($rowhistory as $history){
 
 
                                                   ?>
 
-                                                      <span><?php echo empty($history) ? '<span class="text-small text-muted">Belum tahap pemeliharaan</span>' : '' ?></span>
-                                                    <div class="form-group border shadow-sm p-3">
+
+                                                    <div class="form-group border shadow-sm p-3 mb-2 bg-white">
                                                       <div class="row">
-                                                        <div class="col-12 mb-1">
-                                                          <span class="badge badge-pill badge-success mr-2"> ID Pemeliharaan <?=$rowitem->id_batch?></span>
+                                                          <div class="col">
+                                                        <div class="col-12 mb-2">
+                                                          <span class="badge badge-pill badge-success mr-2"> ID Pemeliharaan <?=$history->id_pemeliharaan?></span>
+                                                        </div>
+                                                        <div class="col mb-2">
+                                                          <span class="font-weight-bold"><i class="nav-icon fas fas fa-calendar"></i> Tanggal Pemeliharaan </span>
+                                                          <br> <span><?=$history->tanggal_pemeliharaan?></span>
                                                         </div>
                                                         <div class="col">
-                                                          <span class="font-weight-bold">Tanggal Pemeliharaan </span> <span><?=$history->tanggal_pemeliharaan?></span>
-                                                        </div>
+                                                            <span class="font-weight-bold"><i class="nav-icon fas fas fa-heartbeat"></i> Kondisi / Keterangan</span>
+                                                          <br> <?php echo empty($history->kondisi_terumbu) ? '<span class="text-small text-muted">Belum ada laporan</span>' : $history->kondisi_terumbu; ?>
+                                                          </div>
                                                       </div>
 
-                                                      <div class="row">
-                                                            <div class="col">
-                                                                  <div class="form-group">
-                                                                    <label for="tb_nama_jenis">Kondisi / Keterangan</label>
-                                                                    <br>
-                                                                  <?php echo empty($history->kondisi_terumbu) ? '<span class="text-small text-muted">Belum ada laporan</span>' : $history->kondisi_terumbu; ?>
-                                                                </div>
-                                                          </div>
-                                                          <div class="col">
-                                                                  <img class="preview-images rounded" id="preview<?=$isi->id_detail_donasi?>"  width="200px" src="#" alt="Preview Gambar"/>
-                                                                  <img class="rounded" id="oldpic<?=$isi->id_detail_donasi?>" src="<?php echo empty($history->foto_pemeliharaan) ? '' : $history->foto_pemeliharaan?>" width="200px">
+                                                      <div class="col">
+                                                                  <img class="preview-images rounded" id="preview<?=$isi->id_detail_donasi?>"  width="100px" src="#" alt="Preview Gambar"/>
+                                                                  <img class="rounded" id="oldpic<?=$isi->id_detail_donasi?>" src="<?php echo empty($history->foto_pemeliharaan) ? '' : $history->foto_pemeliharaan?>" width="130px">
                                                                   <input type="hidden" name="oldpic[]" class="form-control" value="<?php echo empty($history->foto_pemeliharaan) ? '' : $history->foto_pemeliharaan ?>">
                                                                   <br>
 
                                                           </div>
                                                       </div>
+
+
+
+
+
 
 
                                                     </div>
