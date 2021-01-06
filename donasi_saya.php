@@ -152,126 +152,180 @@ $row = $stmt->fetchAll();
 
                 <?php //if($_SESSION['level_user'] == '2') { ?>
                     <div>
-                        <table class="table table-striped">
-                     <thead>
-                            <tr>
-                                <th scope="col">ID Donasi</th>
-                                <!-- <th scope="col">ID User</th> -->
-                                <th scope="col">Nominal</th>
-                                <!-- <th scope="col">Bukti Donasi</th> -->
-                                <th scope="col">Tanggal Donasi</th>
-                                <th scope="col">Status Donasi</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                          </thead>
-                    <tbody>
+
                         <?php
                           foreach ($row as $rowitem) {
                             $truedate = strtotime($rowitem->update_terakhir);
                             $donasidate = strtotime($rowitem->tanggal_donasi);
                           ?>
-                          <tr>
-                              <th scope="row"><?=$rowitem->id_donasi?></th>
-                              <td>Rp. <?=number_format($rowitem->nominal, 0)?></td>
-                              <td><?=strftime('%A, %d %B %Y', $donasidate);?></td>
-                              <td><?=$rowitem->nama_status_donasi?> <br><small class="text-muted">Update Terakhir:
-                                <br><?=strftime('%A, %d %B %Y', $truedate);?></small></td>
-                              <td>
-                                <button type="button" class="btn btn-act">
-                                <a href="edit_donasi_saya.php?id_donasi=<?=$rowitem->id_donasi?>" class="fas fa-edit"></a>
-                            	</button>
-                                <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
-                              </td>
+                            <div class="blue-container border rounded shadow-sm mb-4 p-4">
+                                <div class="row"><!-- First row -->
 
-                          </tr>
+                                  <div class="col-12">
+                                      <span class="badge badge-pill badge-primary mr-2"> ID Donasi <?=$rowitem->id_donasi?> </span>
+                                      <?php echo empty($rowitem->id_batch) ? '' : '<span class="badge badge-pill badge-info mr-2"> ID Batch '.$rowitem->id_batch.'</span>';?> </span>
 
-                          <tr>
-                                <td colspan="5">
-                                    <!--collapse start -->
-                            <div class="row  m-0">
-                            <div class="col-12 cell detailcollapser<?=$rowitem->id_donasi?>"
-                                data-toggle="collapse"
-                                data-target=".cell<?=$rowitem->id_donasi?>, .contentall<?=$rowitem->id_donasi?>">
-                                <p
-                                    class="fielddetail<?=$rowitem->id_donasi?> btn btn-act">
-                                    <i
-                                        class="icon fas fa-chevron-down"></i>
-                                    Rincian Donasi</p>
-                            </div>
-                            <div class="col-12 cell<?=$rowitem->id_donasi?> collapse contentall<?=$rowitem->id_donasi?> border rounded shadow-sm p-3">
-                              <div class="row">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Lokasi Penanaman
-                                    </div>
-                                    <div class="col isi">
-                                        <?="$rowitem->nama_lokasi (ID $rowitem->id_lokasi)";?>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Pesan/Ekspresi
-                                    </div>
-                                    <div class="col isi">
-                                        <?php
-                                            echo $rowitem->pesan;
-                                        ?>
-                                    </div>
-                                </div>
+                                  </div>
+
+                                    <div class="col-md mb-2">
+                                      <span class="font-weight-bold">Nominal</span>
+                                      <br>
+                                      <span class="mb-3">Rp. <?=number_format($rowitem->nominal, 0)?></span>
+                                      <br>
+                                      <span class="font-weight-bold">Tanggal Donasi</span>
+                                      <br>
+                                      <?=strftime('%A, %d %B %Y', $donasidate);?>
+                                  </div>
+
+                                  <div class="col-md mb-3">
+                                      <span class="font-weight-bold">Lokasi Penanaman</span><br>
+                                      <img height='75px' class="rounded" src=<?=$rowitem->foto_lokasi;?>><br>
+                                      <span class=""><?="$rowitem->nama_lokasi (ID $rowitem->id_lokasi)";?></span>
+                                  </div>
 
 
-                                <div class="row mb-3">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Pilihan
-                                    </div>
-                                    <div class="col isi">
-                                        <?php
-                                              $sqlviewisi = 'SELECT jumlah_terumbu, nama_terumbu_karang, foto_terumbu_karang FROM t_detail_donasi
-                                              LEFT JOIN t_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
-                                              LEFT JOIN t_terumbu_karang ON t_detail_donasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang
-                                              WHERE t_detail_donasi.id_donasi = :id_donasi';
-                                              $stmt = $pdo->prepare($sqlviewisi);
-                                              $stmt->execute(['id_donasi' => $rowitem->id_donasi]);
-                                              $rowisi = $stmt->fetchAll();
-                                           foreach ($rowisi as $isi){
-                                             ?>
-                                             <div class="row  mb-3">
-                                               <div class="col">
-                                                <img class="" height="60px" src="<?=$isi->foto_terumbu_karang?>?<?php if ($status='nochange'){echo time();}?>">
-                                              </div>
-                                              <div class="col">
-                                                <span><?= $isi->nama_terumbu_karang?>
-                                              </div>
-                                              <div class="col">
-                                                x<?= $isi->jumlah_terumbu?></span><br/>
-                                              </div>
+                                    <div class="col-md mb-2">
+                                      <span class="font-weight-bold">Status</span>
+                                      <br><?=$rowitem->nama_status_donasi?>
+                                      <br><small class="text-muted"><b>Update Terakhir</b>
+                                      <br><?=strftime('%A, %d %B %Y', $truedate);?></small>
+                                      <br>
+                                       <span class="font-weight-bold">Pesan/Ekspresi</span>
+                                      <br><?=$rowitem->pesan?>
 
-                                             <hr class="mb-2"/>
-                                             </div>
 
-                                        <?php   }
-                                        ?>
-                                    </div>
-                                </div>
+                                  </div>
 
-                                <!-- <div class="row  mb-3">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Foto Wilayah
-                                    </div>
-                                    <div class="col isi">
-                                        <img src="<?=$rowitem->foto_wilayah?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
-                                    </div>
-                                </div> -->
+                            </div><!-- First Row -->
 
-                            </div>
-                        </div>
 
-                        <!--collapse end -->
-                                </td>
-                            </tr>
+                            <div class="row"><!-- Second row -->
+
+
+
+
+                            </div><!-- Second Row -->
+
+                          <p class=" btn btn-blue btn-primary" onclick="toggleDetail()">
+                            <i class="icon fas fa-chevron-down"></i>
+                            Daftar Terumbu Karang
+                          </p>
+
+                            <div class="detail-toggle" id="main-toggle">
+                              <?php
+                                                $id_donasi = $rowitem->id_donasi;
+                                                $sqlviewisi = 'SELECT * FROM t_detail_donasi
+                                                LEFT JOIN t_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
+                                                LEFT JOIN t_terumbu_karang ON t_detail_donasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang
+                                                WHERE t_detail_donasi.id_donasi = :id_donasi';
+                                                $stmt = $pdo->prepare($sqlviewisi);
+                                                $stmt->execute(['id_donasi' => $id_donasi]);
+                                                $rowisi = $stmt->fetchAll();
+                                            foreach ($rowisi as $isi){
+                                              $sqlviewhistoryitems = 'SELECT * FROM t_history_pemeliharaan
+                                                                      WHERE t_history_pemeliharaan.id_detail_donasi = :id_detail_donasi';
+
+                                                $stmt = $pdo->prepare($sqlviewhistoryitems);
+                                                $stmt->execute(['id_detail_donasi' => $isi->id_detail_donasi]);
+                                                $rowhistory = $stmt->fetchAll();
+
+
+                                                ?>
+                                                <div class="row  mb-2 p-3 border rounded shadow-sm bg-white border-info"><!--DONASI CONTAINER START-->
+
+                                                <div class="col-sm mb-1">
+                                                    <img class="rounded" height="40px" src="<?=$isi->foto_terumbu_karang?>?">
+                                                </div>
+                                                <div class="col-sm mb-1">
+                                                    <span class="font-weight-bold">Jenis</span><br><span ><?= $isi->nama_terumbu_karang?></span>
+                                                </div>
+                                                <div class="col-8">
+                                                    <span class="font-weight-bold">Jumlah</span><br><span><?= $isi->jumlah_terumbu?></span><br/>
+                                                </div>
+
+                                                <?php
+
+                                                ?>
+
+                                                <div class="col-12 mt-2">
+
+                                                </div>
+
+                                                <div class="daftarhistory col-12 mt-1">
+                                                  <div class='form-group' id='fototk<?=$isi->id_detail_donasi?>'>
+                                                        <div>
+                                                            <label for='image_uploads<?=$isi->id_detail_donasi?>'>History Perawatan Terumbu Karang</label><span class="small text-muted"></span> <br>
+                                                        </div>
+                                                    </div>
+                                                  <?php
+                                                   $sqlviewhistoryitemdetail = 'SELECT * FROM t_history_pemeliharaan
+                                                                              WHERE id_detail_donasi = :id_detail_donasi';
+
+                                                        $stmt = $pdo->prepare($sqlviewhistoryitemdetail);
+                                                        $stmt->execute(['id_detail_donasi' => $isi->id_detail_donasi]);
+                                                        $rowhistory = $stmt->fetchAll();
+                                                    foreach ($rowhistory as $history){
+
+
+                                                  ?>
+
+                                                      <span><?php echo empty($history) ? '<span class="text-small text-muted">Belum tahap pemeliharaan</span>' : '' ?></span>
+                                                    <div class="form-group border shadow-sm p-3">
+                                                      <div class="row">
+                                                        <div class="col-12 mb-1">
+                                                          <span class="badge badge-pill badge-success mr-2"> ID Pemeliharaan <?=$rowitem->id_batch?></span>
+                                                        </div>
+                                                        <div class="col">
+                                                          <span class="font-weight-bold">Tanggal Pemeliharaan </span> <span><?=$history->tanggal_pemeliharaan?></span>
+                                                        </div>
+                                                      </div>
+
+                                                      <div class="row">
+                                                            <div class="col">
+                                                                  <div class="form-group">
+                                                                    <label for="tb_nama_jenis">Kondisi / Keterangan</label>
+                                                                    <br>
+                                                                  <?php echo empty($history->kondisi_terumbu) ? '<span class="text-small text-muted">Belum ada laporan</span>' : $history->kondisi_terumbu; ?>
+                                                                </div>
+                                                          </div>
+                                                          <div class="col">
+                                                                  <img class="preview-images rounded" id="preview<?=$isi->id_detail_donasi?>"  width="200px" src="#" alt="Preview Gambar"/>
+                                                                  <img class="rounded" id="oldpic<?=$isi->id_detail_donasi?>" src="<?php echo empty($history->foto_pemeliharaan) ? '' : $history->foto_pemeliharaan?>" width="200px">
+                                                                  <input type="hidden" name="oldpic[]" class="form-control" value="<?php echo empty($history->foto_pemeliharaan) ? '' : $history->foto_pemeliharaan ?>">
+                                                                  <br>
+
+                                                          </div>
+                                                      </div>
+
+
+                                                    </div>
+
+                                                    <?php } ?>
+
+                                                </div>  <!-- Daftarhisory End -->
+
+
+
+
+
+
+                                                </div><!-- Batch box thing end -->
+
+
+
+                                            <?php   }
+                                            ?>
+                                        </div>
+
+
+
+                          </div> <!-- Main div -->
+
+
+
                             <?php //$index++;
                             } ?>
-                    </tbody>
-                  </table>
+
                     </div>
                 <?php //} ?>
                 </div>
@@ -313,8 +367,20 @@ $row = $stmt->fetchAll();
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard.js"></script>
+
+    <script>
+      $(document).ready(function() {
+            $('.preview-images').hide()
+
+            $('.detail-toggle').hide()
+            });
+
+
+      function toggleDetail(e){
+        var e = event.target
+        $(e).siblings('.detail-toggle').fadeToggle()
+      }
+    </script>
 
 </body>
 </html>

@@ -371,7 +371,7 @@
                                         </div>
                                         <div class="col isi">
                                         <div class="mb-2 font-weight-bold border-bottom">
-                                            <h5 class="font-weight-bold btn btn-act" onclick="$('.daftardonasi<?=$detailpemeliharaan->id_batch?>').fadeToggle()"><i class="icon fas fa-chevron-down"></i> Daftar Donasi</h5>
+                                            <h5 class="font-weight-bold btn btn-act" onclick="toggleDaftarDonasi()"><i class="icon fas fa-chevron-down"></i> Daftar Donasi</h5>
                                         </div>
                                             <?php
                                     $sqlviewdetailbatch = 'SELECT * FROM t_detail_batch
@@ -384,7 +384,7 @@
 
                                     foreach($rowdetailbatch as $detailbatch){
                                     ?>
-                                    <div class="row mb-4 daftardonasi<?=$detailpemeliharaan->id_batch?>">
+                                    <div class="row mb-4 daftardonasi">
                                         <div class="col-auto isi bg-white p-3 rounded border border-primary border-bottom-0">
                                             <span class="badge badge-pill badge-primary mb-2">ID Donasi <?=$detailbatch->id_donasi?></span> - <span class="font-weight-bold"><?=$detailbatch->nama_donatur?></span>
                                             <br>Label: <span class="font-weight-bold small text-muted"><?=$detailbatch->pesan?></span>
@@ -566,8 +566,14 @@
             $(document).ready(function() {
             $('.preview-images').hide()
 
-            $('.daftardonasi<?=$detailpemeliharaan->id_batch?>').hide()
+            $('.daftardonasi').hide()
             });
+
+
+            function toggleDaftarDonasi(e){
+              e = event.target
+              $(e).parent().parent().find('.daftardonasi').fadeToggle()
+            }
 
         </script>
 
