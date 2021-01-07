@@ -11,8 +11,6 @@
       $id_pemeliharaan = $_GET['id_pemeliharaan'];
     }
 
-    $id_pemeliharaan = $_GET['id_pemeliharaan'];
-
     $sqlviewlokasi = 'SELECT * FROM t_lokasi
                             ORDER BY id_lokasi';
             $stmt = $pdo->prepare($sqlviewlokasi);
@@ -72,6 +70,12 @@
                     $stmt->execute(['tanggal_pemeliharaan_terakhir' => $tanggal_pemeliharaan_terakhir, 'id_batch' => $id_batch]);
                     } //END UPDATE DATA TIAP BATCH
 
+                    $sqlhapushistorydonasi = 'DELETE FROM t_history_pemeliharaan
+                                              WHERE id_pemeliharaan = :id_pemeliharaan';
+
+                    $stmt = $pdo->prepare($sqlhapushistorydonasi);
+                    $stmt->execute(['id_pemeliharaan' => $id_pemeliharaan ]);
+
 
 
 
@@ -105,14 +109,12 @@
                             }//---image upload end
 
 
-                    $sqldetaildonasi = "UPDATE t_detail_donasi
-                                SET kondisi_terumbu = :kondisi_terumbu, foto_pemeliharaan = :foto_pemeliharaan
-                                WHERE id_detail_donasi = :id_detail_donasi";
+                    $sqlhistorydonasi = "INSERT INTO t_history_pemeliharaan
+                                (id_detail_donasi, kondisi_terumbu , foto_pemeliharaan , tanggal_pemeliharaan, id_pemeliharaan )
+                                VALUES (:id_detail_donasi, :kondisi_terumbu, :foto_pemeliharaan, :tanggal_pemeliharaan, :id_pemeliharaan) ";
 
-                    $stmt = $pdo->prepare($sqldetaildonasi);
-                    $stmt->execute(['kondisi_terumbu' => $kondisi_terumbu, 'foto_pemeliharaan' => $foto_pemeliharaan, 'id_detail_donasi' => $id_detail_donasi ]);
-
-                    $affectedrows = $stmt->rowCount();
+                    $stmt = $pdo->prepare($sqlhistorydonasi);
+                    $stmt->execute(['kondisi_terumbu' => $kondisi_terumbu, 'foto_pemeliharaan' => $foto_pemeliharaan, 'id_detail_donasi' => $id_detail_donasi, 'tanggal_pemeliharaan' => $tanggal_pemeliharaan, 'id_pemeliharaan' => $id_pemeliharaan ]);
 
                   $i++;//index increment
 
@@ -369,7 +371,7 @@
                                         </div>
                                         <div class="col isi">
                                         <div class="mb-2 font-weight-bold border-bottom">
-                                            <h5 class="font-weight-bold btn btn-act" onclick="$('.daftardonasi<?=$detailpemeliharaan->id_batch?>').fadeToggle()"><i class="icon fas fa-chevron-down"></i> Daftar Donasi</h5>
+                                            <h5 class="font-weight-bold btn btn-act" onclick="toggleDaftarDonasi()"><i class="icon fas fa-chevron-down"></i> Daftar Donasi</h5>
                                         </div>
                                             <?php
                                     $sqlviewdetailbatch = 'SELECT * FROM t_detail_batch
@@ -382,7 +384,7 @@
 
                                     foreach($rowdetailbatch as $detailbatch){
                                     ?>
-                                    <div class="row mb-4 daftardonasi<?=$detailpemeliharaan->id_batch?>">
+                                    <div class="row mb-4 daftardonasi">
                                         <div class="col-auto isi bg-white p-3 rounded border border-primary border-bottom-0">
                                             <span class="badge badge-pill badge-primary mb-2">ID Donasi <?=$detailbatch->id_donasi?></span> - <span class="font-weight-bold"><?=$detailbatch->nama_donatur?></span>
                                             <br>Label: <span class="font-weight-bold small text-muted"><?=$detailbatch->pesan?></span>
@@ -397,6 +399,15 @@
                                                 $stmt->execute(['id_donasi' => $detailbatch->id_donasi]);
                                                 $rowisi = $stmt->fetchAll();
                                             foreach ($rowisi as $isi){
+                                              $sqlviewhistoryitems = 'SELECT * FROM t_history_pemeliharaan
+                                                                      WHERE t_history_pemeliharaan.id_pemeliharaan = :id_pemeliharaan
+                                                                      AND t_history_pemeliharaan.id_detail_donasi = :id_detail_donasi';
+
+                                                $stmt = $pdo->prepare($sqlviewhistoryitems);
+                                                $stmt->execute(['id_detail_donasi' => $isi->id_detail_donasi, 'id_pemeliharaan' =>$id_pemeliharaan]);
+                                                $rowhistory = $stmt->fetchAll();
+
+
                                                 ?>
                                                 <div class="row  mb-3 p-3 border rounded shadow-sm bg-white border-info"><!--DONASI CONTAINER START-->
                                                 <input type="hidden" value="<?=$isi->id_detail_donasi?>" name="id_detail_donasi[]">
@@ -418,7 +429,7 @@
                                                 <div class="col-12 mt-2">
                                                     <div class="form-group">
                                                         <label for="tb_nama_jenis">Kondisi / Keterangan</label>
-                                                        <input type="text" id="tb_kondisi" name="kondisi[]" class="form-control" placeholder="Deskripsi singkat..." value="<?=$isi->kondisi_terumbu ?>" required>
+                                                        <input type="text" id="tb_kondisi" name="kondisi[]" class="form-control" placeholder="Deskripsi singkat..." value="<?php echo empty($rowhistory[0]->kondisi_terumbu) ? '' : $rowhistory[0]->kondisi_terumbu; ?>" required>
                                                     </div>
                                                 </div>
 
@@ -430,7 +441,7 @@
 
                                                             <label class="btn btn-sm btn-primary btn-blue" for='image_uploads<?=$isi->id_detail_donasi?>'>
                                                             <i class="fas fa-camera"></i> Upload Foto</label>
-                                                            <br><span id="file-input-label<?=$isi->id_detail_donasi?>" class="small text-muted"> Belum ada pilihan</span>
+                                                            <br><span id="file-input-label<?=$isi->id_detail_donasi?>" class="small text-muted"><?php echo empty($isi->foto_pemeliharaan) ? 'Belum ada pilihan' : ''?></span>
 
                                                             <input type='file'  class='form-control d-none' id='image_uploads<?=$isi->id_detail_donasi?>'
                                                                 name='image_uploads[]' accept='.jpg, .jpeg, .png' onchange="readURL<?=$isi->id_detail_donasi?>(this)">
@@ -438,8 +449,8 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <img class="preview-images rounded" id="preview<?=$isi->id_detail_donasi?>"  width="100px" src="#" alt="Preview Gambar"/>
-                                                        <img id="oldpic<?=$isi->id_detail_donasi?>" src="<?=$isi->foto_pemeliharaan?>" width="100px">
-                                                        <input type="hidden" name="oldpic[]" class="form-control" value="<?=$isi->foto_pemeliharaan?>">
+                                                        <img id="oldpic<?=$isi->id_detail_donasi?>" src="<?php echo empty($rowhistory[0]->foto_pemeliharaan) ? '' : $rowhistory[0]->foto_pemeliharaan?>" width="100px">
+                                                        <input type="hidden" name="oldpic[]" class="form-control" value="<?php echo empty($rowhistory[0]->foto_pemeliharaan) ? '' : $rowhistory[0]->foto_pemeliharaan ?>">
 
                                                     </div>
                                                 </div>
@@ -555,8 +566,14 @@
             $(document).ready(function() {
             $('.preview-images').hide()
 
-            $('.daftardonasi<?=$detailpemeliharaan->id_batch?>').hide()
+            $('.daftardonasi').hide()
             });
+
+
+            function toggleDaftarDonasi(e){
+              e = event.target
+              $(e).parent().parent().find('.daftardonasi').fadeToggle()
+            }
 
         </script>
 

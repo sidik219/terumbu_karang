@@ -6,7 +6,8 @@
 //}
 $sqlviewpemeliharaan = 'SELECT * FROM t_pemeliharaan
                           LEFT JOIN t_lokasi ON t_pemeliharaan.id_lokasi = t_lokasi.id_lokasi
-                          LEFT JOIN t_status_pemeliharaan ON t_pemeliharaan.id_status_pemeliharaan = t_status_pemeliharaan.id_status_pemeliharaan';
+                          LEFT JOIN t_status_pemeliharaan ON t_pemeliharaan.id_status_pemeliharaan = t_status_pemeliharaan.id_status_pemeliharaan
+                          ORDER BY t_pemeliharaan.id_status_pemeliharaan';
 $stmt = $pdo->prepare($sqlviewpemeliharaan);
     $stmt->execute();
     $rowpemeliharaan = $stmt->fetchAll();
