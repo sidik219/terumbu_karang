@@ -179,7 +179,7 @@ $row = $stmt->fetchAll();
                               <td>
                                 <button type="button" class="btn btn-act">
                                 <a href="edit_donasi_saya.php?id_donasi=<?=$rowitem->id_donasi?>" class="fas fa-edit"></a>
-                            	</button>
+                                </button>
                                 <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
                               </td>
 

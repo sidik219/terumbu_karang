@@ -2,14 +2,25 @@
 session_start();
 
 //if (isset($_SESSION['level_user']) == 0) {
-//header('location: login.php');
+    //header('location: login.php');
 //}
+
+  // else{
+  //     $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
+  // }
+
+$sqlwisata = 'SELECT * FROM t_wisata
+            LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi';
+
+$stmt = $pdo->prepare($sqlwisata);
+$stmt->execute();
+$rowwisata = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Pilih Lokasi Penanaman - TKJB</title>
+    <title>Pilih Jenis - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
@@ -32,13 +43,6 @@ session_start();
         <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
         <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -80,8 +84,7 @@ session_start();
             <div class="sidebar">
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
-                   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <!-- Untuk User -->
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <?php //if($_SESSION['level_user'] == '2') { ?>
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
@@ -89,14 +92,14 @@ session_start();
                                 <p> Home </p>
                            </a>
                         </li>
-                        <li class="nav-item  menu-open">
-                           <a href="donasi_saya.php" class="nav-link active">
+                        <li class="nav-item">
+                           <a href="donasi_saya.php" class="nav-link">
                                 <i class="nav-icon fas fa-hand-holding-usd"></i>
                                 <p> Donasi Saya </p>
                            </a>
                         </li>
-                        <li class="nav-item">
-                           <a href="reservasi_saya.php" class="nav-link">
+                        <li class="nav-item menu-open">
+                           <a href="reservasi_saya.php" class="nav-link active">
                                 <i class="nav-icon fas fa-suitcase"></i>
                                 <p> Reservasi Saya  </p>
                            </a>
@@ -127,12 +130,7 @@ session_start();
             <div class="content-header">
                 <div class="container-fluid">
                 <div class="row">
-                        <div class="col">
-                        <!-- Untuk User -->
-                        <?php //if($_SESSION['level_user'] == '2') { ?>
-                            <h4><span class="align-middle font-weight-bold">Pilih Lokasi Penanaman</span></h4>
-                        <?php //} ?>
-                        </div>
+
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -141,27 +139,28 @@ session_start();
 
             <!-- Main content -->
             <section class="content">
+            <?php //if($_SESSION['level_user'] == '2') { ?>
                 <div class="container-fluid">
-                <!-- Untuk User -->
-                <?php //if($_SESSION['level_user'] == '2') { ?>
-                    <div>
-                        <div>
-                            <label>Keterangan Icon:</label>
+                    <h3>Pilih Lokasi Wisata</h3>
+                    <div class="row">
+                    <?php
+                    foreach ($rowwisata as $rowitem) { ?>
+                        <div class="col-md-4">
+                            <div class="card card-pilihan mb-4 shadow-sm">
+                            <a href="detail_lokasi_wisata.php?id_lokasi=<?=$rowitem->id_lokasi?>">
+                                <img class="card-img-top" width="100%" src="<?=$rowitem->foto_wisata?>">
+                            </a>
+                                <div class="card-body">
+                                    <p class="card-title"><h5 class="font-weight-bold"><?=$rowitem->nama_lokasi?></h5></p>
+                                    <p class="card-text"><?=$rowitem->deskripsi_wisata?></p>
+                                    <a href="detail_lokasi_wisata.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="btn btn-outline-primary">Pilih Lokasi</a>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <img src="images/foto_lokasi/icon_lokasi/icon_lokasi.png" style="width: 35px;">:
-                            <label>Lokasi Pantai, </label>
-                            <img src="images/kumpulan_icon/cluster.png" style="width: 35px;">:
-                            <label>Pengelompokan Jarak Terdekat, </label>
-                            <img src="images/kumpulan_icon/geo_wilayah1.png" style="width: 35px;">:
-                            <label>Wilayah yang ada terumbu karang, </label>
-                            <img src="images/kumpulan_icon/geo_wilayah2.png" style="width: 35px;">:
-                            <label>Wilayah yang tidak ada terumbu karang, </label>
-                        </div>
-                        <div id="mapid" style="height: 640px; width: 100%; margin-top: 20px;"></div>
+                    <?php } ?>
                     </div>
-                <?php //} ?>
                 </div>
+            <?php //} ?>
             </section>
             <!-- /.Left col -->
             </div>
@@ -219,22 +218,10 @@ session_start();
     <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-    <!-- Leaflet Marker Cluster -->
-    <script src="dist/js/leaflet.markercluster-src.js"></script>
-    <!-- Leaflet panel layer JS-->
-    <script src="dist/js/leaflet-panel-layers.js"></script>
-    <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-    <script src="dist/js/leaflet.ajax.js"></script>
-    <!-- Leaflet Map -->
-    <?php include 'dist/js/leaflet_map.php';?>
 
     <script>
-      if(sessionStorage.getItem('keranjang_serialised')){
-        sessionStorage.removeItem('keranjang_serialised')
-      }
-    </script>
 
+
+    </script>
 </body>
 </html>

@@ -4,6 +4,13 @@ session_start();
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
 //}
+
+$sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
+                  LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user';
+$stmt = $pdo->prepare($sqlviewreservasi);
+$stmt->execute();
+$row = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -32,13 +39,6 @@ session_start();
         <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
         <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -125,7 +125,17 @@ session_start();
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <h4><span class="align-middle font-weight-bold">Reservasi Wisata Saya</span></h4>
+                        </div>
 
+                        <div class="col">
+
+                        <a class="btn btn-primary float-right" href="pilih_lokasi_wisata.php" role="button">Reservasi Wisata Sekarang (+)</a>
+
+                        </div>
+                    </div>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -134,9 +144,45 @@ session_start();
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                   
-            </div>
-            
+                     <div>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID Reservasi</th>
+                                    <th scope="col">Nama User</th>
+                                    <th scope="col">Nama Lokasi</th>
+                                    <th scope="col">Tgl Reservasi</th>
+                                    <th scope="col">Jml Peserta</th>
+                                    <th scope="col">Total (Rp.)</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                  foreach ($row as $rowitem) { 
+                                  ?>
+                                  <tr>
+                                      <th scope="row"><?=$rowitem->id_reservasi?></th>
+                                      <td><?=$rowitem->nama_user?></td>
+                                      <td><?=$rowitem->nama_lokasi?></td>
+                                      <td><?=$rowitem->tgl_reservasi?></td> 
+                                      <td><?=$rowitem->jumlah_peserta?></td>
+                                      <td>Rp. <?=$rowitem->total?></td>
+                                      <td><?=$rowitem->status_reservasi?></td>
+                                      <td>
+                                        <button type="button" class="btn btn-act">
+                                        <a href="edit_reservasi_saya.php" class="fas fa-edit"></a>
+                                        </button>
+                                        <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
+                                      </td>
+                                  </tr>
+                                <?php //$index++;
+                                } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </section>
             <!-- /.Left col -->
             </div>
@@ -194,16 +240,6 @@ session_start();
     <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-    <!-- Leaflet Marker Cluster -->
-    <script src="dist/js/leaflet.markercluster-src.js"></script>
-    <!-- Leaflet panel layer JS-->
-    <script src="dist/js/leaflet-panel-layers.js"></script>
-    <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-    <script src="dist/js/leaflet.ajax.js"></script>
-    <!-- Leaflet Map -->
-    <script src="dist/js/leaflet-map.js"></script>
 
 </body>
 </html>

@@ -1,4 +1,4 @@
-<?php include 'build/config/connection.php';
+Wilayah yang ada terumbu karang<?php include 'build/config/connection.php';
 //session_start();
 
 //if (isset($_SESSION['level_user']) == 0) {
@@ -221,9 +221,9 @@
                                 <img src="images/kumpulan_icon/cluster.png" style="width: 3%;">:
                                 <label>Pengelompokan Jarak Terdekat, </label>
                                 <img src="images/kumpulan_icon/geo_wilayah1.png" style="width: 3%;">:
-                                <label>Geo Wilayah, </label>
+                                <label>Wilayah yang ada terumbu karang, </label>
                                 <img src="images/kumpulan_icon/geo_wilayah2.png" style="width: 3%;">:
-                                <label>Geo Wilayah, </label>
+                                <label>Wilayah yang tidak ada terumbu karang, </label>
                             </div>
                             <div>
                                 <img src="images/foto_kondisi_titik/Sangat Baik.png" style="width: 3%;">:
