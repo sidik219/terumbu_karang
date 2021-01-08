@@ -40,7 +40,7 @@ if ($_POST['type'] == 'load_titik' && !empty($_POST["id_lokasi"])) {
     <?php
         foreach ($rowtitik as $titik) {
             ?>
-    <option value="<?php echo $titik->id_titik; ?>">ID <?php echo $titik->id_titik.'  ' .$titik->keterangan_titik ?></option>
+    <option value="<?php echo $titik->id_titik; ?>">ID <?php echo $titik->id_titik.'  ' .$titik->keterangan_titik .' - '. $titik->luas_titik .' m&#178;'?></option>
     <?php
         }
     }

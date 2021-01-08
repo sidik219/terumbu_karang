@@ -4,6 +4,102 @@
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
 //}
+  $id_perizinan = $_GET['id_perizinan'];
+
+    $sqlviewlokasi = 'SELECT * FROM t_lokasi
+                        ORDER BY nama_lokasi';
+        $stmt = $pdo->prepare($sqlviewlokasi);
+        $stmt->execute();
+        $row = $stmt->fetchAll();
+
+        $sqlviewperizinan = 'SELECT * FROM t_perizinan
+                            WHERE id_perizinan = :id_perizinan';
+        $stmt = $pdo->prepare($sqlviewperizinan);
+        $stmt->execute(['id_perizinan' => $id_perizinan]);
+        $rowperizinan = $stmt->fetch();
+
+    if (isset($_POST['submit'])) {
+        if($_POST['submit'] == 'Simpan'){
+            $id_lokasi = $_POST['dd_id_lokasi'];
+            $judul_perizinan        = $_POST['tb_judul_perizinan'];
+            $deskripsi_perizinan        = $_POST['tb_deskripsi_perizinan'];
+            $biaya_pergantian     = $_POST['biaya_pergantian_number'];
+            $id_user     = $_POST['tb_id_user'];
+            $id_titik[] = array_values(array_unique($_POST['dd_id_titik']));
+            $id_status_perizinan     = 1;
+            $i = 0;
+
+            $randomstring = substr(md5(rand()), 0, 7);
+
+
+            $sqlinsertperizinan = "INSERT INTO t_perizinan
+                            (id_lokasi, judul_perizinan, deskripsi_perizinan, biaya_pergantian, id_user,
+                            id_status_perizinan)
+                            VALUES (:id_lokasi, :judul_perizinan, :deskripsi_perizinan, :biaya_pergantian, :id_user,
+                            :id_status_perizinan)";
+
+            $stmt = $pdo->prepare($sqlinsertperizinan);
+            $stmt->execute(['id_lokasi' => $id_lokasi, 'judul_perizinan' => $judul_perizinan,
+            'deskripsi_perizinan' => $deskripsi_perizinan, 'biaya_pergantian' => $biaya_pergantian,
+            'id_user' => $id_user,
+            'id_status_perizinan' => $id_status_perizinan]);
+
+            $last_id_perizinan = $pdo->lastInsertId();
+
+
+
+
+            foreach($_FILES['doc_uploads']['name'] as $document){
+              $nama_dokumen_perizinan = $_POST['tb_nama_dokumen_perizinan'][$i];
+              //document upload
+            if($_FILES["doc_uploads"]["size"] == 0) {
+                $file_dokumen_perizinan = "";
+            }
+            else if (isset($_FILES['doc_uploads'])) {
+                $target_dir  = "documents/Perizinan/";
+                $target_file = $_FILES["doc_uploads"]['name'][$i];
+                $file_dokumen_perizinan = $target_dir .'IZIN_'.$target_file.$randomstring.'.'. pathinfo($target_file,PATHINFO_EXTENSION);
+                move_uploaded_file($_FILES["doc_uploads"]["tmp_name"][$i], $file_dokumen_perizinan);
+            }
+
+            //---document upload end
+              $sqlinsertdocperizinan = "INSERT INTO t_dokumen_perizinan
+                            (id_perizinan	,file_dokumen_perizinan, nama_dokumen_perizinan)
+                            VALUES (:id_perizinan	, :file_dokumen_perizinan, :nama_dokumen_perizinan)";
+
+            $stmt = $pdo->prepare($sqlinsertdocperizinan);
+            $stmt->execute(['id_perizinan' => $last_id_perizinan	, 'file_dokumen_perizinan' => $file_dokumen_perizinan, 'nama_dokumen_perizinan' => $nama_dokumen_perizinan]);
+            $i++;
+            }
+
+
+
+            $i = 0;
+            foreach ($id_titik[0] as $titik){
+              $id_titik_value = $titik;
+
+              $sqlinserttitikperizinan = "INSERT INTO t_detail_perizinan
+                            (id_perizinan, id_titik)
+                            VALUES (:id_perizinan, :id_titik)";
+
+            $stmt = $pdo->prepare($sqlinserttitikperizinan);
+            $stmt->execute(['id_perizinan' => $last_id_perizinan	, 'id_titik' => $id_titik_value]);
+            $i++;
+            }
+
+
+
+
+
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+            echo "HAHAHAAHA INSERT FAILED !";
+            } else {
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                header("Location: kelola_perizinan.php?status=addsuccess");
+                }
+            }
+        }
 ?>
 
 <!DOCTYPE html>
@@ -16,29 +112,10 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -198,54 +275,176 @@
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
-                    <div class="form-group">
+                    <!-- <form action="edit_post_test.php" enctype="multipart/form-data" method="POST"> -->
+
                     <div class="form-group">
                         <label for="tb_judul_perizinan">Judul Perizinan</label>
-                        <input type="text" id="tb_judul_perizinan" name="tb_judul_perizinan" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="tb_id_user">ID User</label>
-                        <input type="text" id="tb_id_user" name="tb_id_user" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="dd_id_lokasi">ID Lokasi</label>
-                        <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control">
-                            <option value="">10</option>
-                            <option value="">11</option>
-                            <option value="">12</option>
-                        </select>
+                        <input type="text" id="tb_judul_perizinan" value="<?=$rowperizinan->judul_perizinan?>" name="tb_judul_perizinan" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="tb_deskripsi_perizinan">Deskripsi Perizinan</label>
-                        <input type="text" id="tb_deskripsi_perizinan" name="tb_deskripsi_perizinan" class="form-control">
+                        <input type="text" id="tb_deskripsi_perizinan" value="<?=$rowperizinan->deskripsi_perizinan?>" name="tb_deskripsi_perizinan" class="form-control" required>
                     </div>
+
+
+
                     <div class="form-group">
-                        <label for="file_proposal">File Proposal (.docx / .pdf)</label>
-                        <div class="file-form">
-                        <input type="file" id="file_proposal" name="file_proposal" class="form-control">
+                        <label for="dd_id_lokasi">ID Lokasi</label>
+                        <select disabled id="dd_id_lokasi" name="dd_id_lokasi" class="form-control mb-2">
+                        <option value="">Pilih Lokasi</option>
+                            <?php foreach ($row as $rowitem) {
+                            ?>
+                            <option <?php echo ($rowitem->id_lokasi == $rowperizinan->id_lokasi) ? 'selected' : '' ?> value="<?=$rowitem->id_lokasi?>">ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
+
+                            <?php } ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="titik-container-pilihan">
+                        <label for="dd_id_titik">Titik Pilihan Sebelumnya</label>
+
+                        <?php
+                           $sqlviewdetailperizinan = 'SELECT * FROM t_detail_perizinan
+                                                      LEFT JOIN t_titik ON t_titik.id_titik = t_detail_perizinan.id_titik
+                            WHERE id_perizinan = :id_perizinan';
+                            $stmt = $pdo->prepare($sqlviewdetailperizinan);
+                            $stmt->execute(['id_perizinan' => $id_perizinan]);
+                            $rowdetailperizinan = $stmt->fetchAll();
+                          foreach($rowdetailperizinan as $detailperizinan){
+
+                        ?>
+                        <div class="row" id="rowtitik_old">
+                          <div class="col">
+                              <select id="dd_id_titik_old" name="dd_id_titik[]" class="form-control" required>
+                              <option selected value="<?=$detailperizinan->id_titik?>">ID <?=$detailperizinan->id_titik?> <?=$detailperizinan->keterangan_titik?></option>
+                              </select>
+                          </div>
+                          <div class="col-1">
+                              <span onclick="deleteOldTitikInput(this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
+                          </div>
+                        </div>
+
+                        <?php } ?>
+
+
+                    </div>
+
+
+
+                    <div class="form-group" id="titik-container">
+                        <label for="dd_id_titik">Titik Tambahan</label>
+
+
+                        <div class="row" id="rowtitik">
+                          <div class="col">
+                              <select id="dd_id_titik" name="dd_id_titik[]" class="form-control">
+                              <option value="">Pilih Titik</option>
+                              <?php
+                              $daftartitik = 'SELECT * FROM t_titik
+                                WHERE id_lokasi = :id_lokasi
+                                  ORDER BY id_titik';
+                                $stmt = $pdo->prepare($daftartitik);
+                                $stmt->execute(['id_lokasi' => $rowitem->id_lokasi]);
+                                $rowtitik = $stmt->fetchAll();
+
+                            ?>
+                            <?php
+                                foreach ($rowtitik as $titik) {
+                                    ?>
+                            <option value="<?php echo $titik->id_titik; ?>">ID <?php echo $titik->id_titik.'  ' .$titik->keterangan_titik .' - '. $titik->luas_titik .' m&#178;'?></option>
+                            <?php
+                                }
+                                ?>
+                              </select>
+                          </div>
+                          <div class="col-1">
+                              <span onclick="deleteTitikInput(this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
+                          </div>
+                        </div>
+
+
+
+
+                    </div>
+                              <p class="text-center"><span onclick="addTitikInput()" class="btn btn-blue btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah Titik</span></p>
+
+
+                    <div class='form-group mb-5' id='doc-uploads-old'>
+                      <label for='doc_uploads'>Dokumen Proposal Sebelumnya</label>
+                          <?php
+                                            $sqlviewdocperizinan = 'SELECT * FROM t_dokumen_perizinan
+                                            WHERE id_perizinan = :id_perizinan
+                                            ORDER BY id_perizinan DESC';
+                                            $stmt = $pdo->prepare($sqlviewdocperizinan);
+                                            $stmt->execute(['id_perizinan' => $id_perizinan]);
+                                            $rowdocperizinan = $stmt->fetchAll();
+
+                                            foreach($rowdocperizinan as $docperizinan){
+                                            ?>
+                                                <div class="row olddocrow">
+                                                  <div class="col border-bottom p-3"><?=$docperizinan->nama_dokumen_perizinan?></div>
+                                                  <div class="col-1 border-bottom p-3">
+                                                    <input type="hidden" value="<?=$docperizinan->file_dokumen_perizinan?>" id="biaya_pergantian_number" name="biaya_pergantian_number" value="">
+                                                </div>
+                                                <div class="col border-bottom p-3"><a class="btn btn-blue btn-primary btn-small p-1" href='<?=$docperizinan->file_dokumen_perizinan?>'><i class="fas fa-download"></i> Unduh File</a>
+
+                                              </div>
+                                                </div>
+
+
+
+                                           <?php } ?>
+                    </div>
+
+
+
+
+                    <div class='form-group' id='doc-uploads'>
+                      <label for='doc_uploads'>Upload Dokumen Proposal Tambahan</label>
+                        <div class="row border rounded shadow-sm mb-4 bg-light p-3" id="rowdocs">
+                          <div class="col">
+                              <input type='file'  class='form-control mb-2' id='doc_uploads'
+                                name='doc_uploads[]' accept='.doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .csv' required>
+                          </div>
+                          <div class="col-auto">
+                            <span onclick="deleteDocInput(this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
+                          </div>
+                          <div class="form-group col-12">
+                        <label for="tb_id_user">Nama Dokumen</label>
+                        <input type="text" id="tb_nama_dokumen_perizinan" name="tb_nama_dokumen_perizinan[]" class="form-control" required>
+                    </div>
                         </div>
                     </div>
+
+                    <p class="text-center"><span onclick="addDocInput()" class="btn btn-blue btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah File Proposal</span></p>
+
+
+
+
                     <div class="form-group">
                         <label for="num_biaya_pergantian">Biaya Pergantian</label>
-                        <input type="number" id="num_biaya_pergantian" name="num_biaya_pergantian" class="form-control">
+                        <input type="hidden" value="<?=$rowperizinan->biaya_pergantian?>" id="biaya_pergantian_number" name="biaya_pergantian_number" value="">
+                        <div class="row">
+                          <div class="col-auto text-center p-2">
+                            Rp.
+                          </div>
+                          <div class="col">
+                            <input onkeyup="formatNumber(this)" value="<?=number_format($rowperizinan->biaya_pergantian)?>" type="text" id="num_biaya_pergantian" name="num_biaya_pergantian" class="form-control number-input" required>
+                          </div>
+                        </div>
+
                     </div>
                     <div class="form-group">
-                        <label for="rb_status_donasi">Status Perizinan</label><br>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_status_perizinan_pending" name="rb_status_perizinan" value="pending" class="form-check-input">
-                            <label class="form-check-label" for="rb_status_perizinan_pending">Pending</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_status_perizinan_diterima" name="rb_status_perizinan" value="diterima" class="form-check-input">
-                            <label class="form-check-label" for="rb_status_perizinan_diterima">Diterima</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_status_perizinan_tidak_diterima" name="rb_status_perizinan" value="tidak_diterima" class="form-check-input">
-                            <label class="form-check-label" for="rb_status_perizinan_tidak_diterima">Tidak Diterima</label>
-                        </div>
-                    <br><br><br>
+                    <div class="form-group">
+                        <label for="tb_id_user">ID User Pemohon</label>
+                        <input type="number" value="<?=$rowperizinan->id_user?>" id="tb_id_user" name="tb_id_user" class="form-control">
+                    </div>
+                    <div class="form-group">
+
+
+                    <br>
                     <p align="center">
-                         <button type="submit" class="btn btn-submit">Kirim</button></p>
+                            <button disabled type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
             <br><br>
 
@@ -275,48 +474,83 @@
 
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
-    <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="plugins/summernote/summernote-bs4.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard.js"></script>
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-    <!-- Leaflet Marker Cluster -->
-    <script src="dist/js/leaflet.markercluster-src.js"></script>
-    <!-- Leaflet panel layer JS-->
-    <script src="dist/js/leaflet-panel-layers.js"></script>
-    <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-    <script src="dist/js/leaflet.ajax.js"></script>
-    <!-- Leaflet Map -->
-    <script src="dist/js/leaflet-map.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      function addDocInput(){
+        var new_input_field = $('#rowdocs').clone().addClass('deleteable')
+        $(new_input_field).appendTo("#doc-uploads").hide().fadeIn();
+      }
+
+
+
+
+      function deleteDocInput(e){
+        var parent_row = $(e).parent().parent()
+        if(parent_row.is('.deleteable')){
+          parent_row.fadeOut(function(){
+            parent_row.remove()
+          })
+        }
+      }
+
+
+
+
+      function addTitikInput(){
+        var new_input_field = $('#rowtitik').clone().addClass('deleteable')
+        $(new_input_field).appendTo("#titik-container").hide().fadeIn();
+      }
+
+
+
+
+      function deleteTitikInput(e){
+        var parent_row = $(e).parent().parent()
+        if(parent_row.is('.deleteable')){
+          parent_row.fadeOut(function(){
+            parent_row.remove()
+          })
+        }
+      }
+
+      function deleteOldTitikInput(e){
+        var parent_row = $(e).parent().parent()
+        if(parent_row.is('#rowtitik_old')){
+          parent_row.fadeOut(function(){
+            parent_row.remove()
+          })
+        }
+      }
+
+
+
+
+
+
+    var formatter = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
+
+function formatNumber(e){
+  var formattedNumber = parseInt(e.value.replace(/\,/g,''))
+  $('#biaya_pergantian_number').val(formattedNumber)
+  $('#num_biaya_pergantian').val(formatter.format(formattedNumber))
+}
+
+
+
+    </script>
 
 </body>
 </html>

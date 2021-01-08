@@ -4,6 +4,16 @@
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
 //}
+
+$sqlviewperizinan = 'SELECT * FROM t_perizinan
+                      LEFT JOIN t_lokasi ON t_perizinan.id_lokasi = t_lokasi.id_lokasi
+                      LEFT JOIN t_status_perizinan ON t_perizinan.id_status_perizinan = t_status_perizinan.id_status_perizinan
+                ORDER BY id_perizinan DESC';
+$stmt = $pdo->prepare($sqlviewperizinan);
+$stmt->execute();
+$rowperizinan = $stmt->fetchAll();
+
+
 ?>
 
 
@@ -17,29 +27,10 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -56,13 +47,13 @@
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -155,7 +146,7 @@
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item menu-open">
                              <a href="kelola_perizinan.php" class="nav-link active">
                                     <i class="nav-icon fas fa-scroll"></i>
@@ -175,7 +166,7 @@
                             </a>
                         </li>
                     <?php //} ?>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -192,12 +183,12 @@
                             <h4><span class="align-middle font-weight-bold">Kelola Perizinan</span></h4>
                         </div>
                         <div class="col">
-                           
+
                         <a class="btn btn-primary float-right" href="input_perizinan.php" role="button">Input Data Baru (+)</a>
-                   
+
                         </div>
                     </div>
-        
+
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -207,6 +198,23 @@
             <section class="content">
                 <div class="container-fluid">
             <?php //if($_SESSION['level_user'] == '1') { ?>
+              <?php
+                if(!empty($_GET['status'])){
+                  if($_GET['status'] == 'updatesuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Update data berhasil
+                      </div>';}
+                      else if($_GET['status'] == 'addsuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Data baru berhasil ditambahkan
+                      </div>';}
+                      else if($_GET['status'] == 'deletesuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Data berhasil dihapus
+                      </div>';
+                    }
+                  }
+                ?>
                 <table class="table table-striped">
                      <thead>
                             <tr>
@@ -214,32 +222,124 @@
                                 <th scope="col">Judul Perizinan</th>
                                 <th scope="col">ID User</th>
                                 <th scope="col">ID Lokasi</th>
-                                <th scope="col">Deskripsi</th>
-                                <th scope="col">File Proposal</th>
                                 <th scope="col">Biaya Pergantian</th>
                                 <th scope="col">Status Perizinan</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                           </thead>
                     <tbody>
+                          <?php
+                          foreach ($rowperizinan as $perizinan) {
+                          ?>
                           <tr>
-                              <th scope="row">1212</th>
-                              <td>Pertamina</td>
-                              <td>123123</td>
-                              <td>Krw</td>
-                              <td>Bochor</td>
-                              <td>.docx</td>
-                              <td>Rp.2</td>
-                              <td>Pending</td>
+                              <th scope="row"><?=$perizinan->id_perizinan?></th>
+                              <td><?=$perizinan->judul_perizinan?></td>
+                              <td><?=$perizinan->id_user?></td>
+                              <td><?=$perizinan->id_lokasi?> - <?=$perizinan->nama_lokasi?></td>
+                              <td>Rp. <?=number_format($perizinan->biaya_pergantian)?></td>
                               <td>
-                              <button type="button" class="btn btn-act">
-                                <a href="edit_perizinan.php" class="fas fa-edit"></a>
-                            	</button>
-                                <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
+                              <?php
+                                  if($perizinan->id_status_perizinan == 1){
+                                    echo '<span class="status-pemeliharaan badge badge-warning">'.$perizinan->nama_status_perizinan.'</span>';
+                                  }
+                                  else if ($perizinan->id_status_perizinan == 2){
+                                    echo '<span class="status-pemeliharaan badge badge-success">'.$perizinan->nama_status_perizinan.'</span>';
+                                  }
+                                  else if ($perizinan->id_status_perizinan == 3){
+                                    echo '<span class="status-pemeliharaan badge badge-danger">'.$perizinan->nama_status_perizinan.'</span>';
+                                  }
+                                ?>
+                              <td>
+                              <a href="edit_perizinan.php?id_perizinan=<?=$perizinan->id_perizinan?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                                <a href="hapus.php?type=perizinan&id_perizinan=<?=$perizinan->id_perizinan?>" class="far fa-trash-alt btn btn-act"></a>
                               </td>
                           </tr>
+                          <tr>
+                                <td colspan="7">
+                                    <!--collapse start -->
+                            <div class="row  m-0">
+                            <div class="col-12 cell detailcollapser<?=$perizinan->id_perizinan?>"
+                                data-toggle="collapse"
+                                data-target=".cell<?=$perizinan->id_perizinan?>, .contentall<?=$perizinan->id_perizinan?>">
+                                <p
+                                    class="fielddetail<?=$perizinan->id_perizinan?>  btn btn-act">
+                                    <i
+                                        class="icon fas fa-chevron-down"></i>
+                                    Rincian Perizinan</p>
+                            </div>
+                            <div class="col-12 cell<?=$perizinan->id_perizinan?> collapse contentall<?=$perizinan->id_perizinan?> border rounded shadow-sm p-3 bg-light">
+                                <div class="row mb-2 border p-2 bg-white rounded shadow-sm">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Deskripsi Perizinan
+                                    </div>
+                                    <div class="col isi">
+                                        <?=$perizinan->deskripsi_perizinan?>
+                                    </div>
+                                </div>
+                                <div class="row  mb-2 border p-2 bg-white rounded shadow-sm">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Daftar Titik
+                                    </div>
+                                    <div class="col isi">
+                                      <?php
+                                            $sqlviewtitikperizinan = 'SELECT * FROM t_detail_perizinan
+                                            LEFT JOIN t_titik ON t_detail_perizinan.id_titik = t_titik.id_titik
+                                            WHERE id_perizinan = :id_perizinan
+                                            ORDER BY id_perizinan DESC';
+                                            $stmt = $pdo->prepare($sqlviewtitikperizinan);
+                                            $stmt->execute(['id_perizinan' => $perizinan->id_perizinan]);
+                                            $rowtitikperizinan = $stmt->fetchAll();
+                                            $luas_total = 0;
+
+                                            foreach($rowtitikperizinan as $titikperizinan){
+                                              $luas_total += $titikperizinan->luas_titik;
+                                            ?>
+                                              <div class="row">
+                                                <div class="col border-bottom p-1"><b>ID <?=$titikperizinan->id_titik?></b> <?=$titikperizinan->keterangan_titik?> <br>Luas : <?=$titikperizinan->luas_titik?> m<sup>2</sup></div>
+                                                <div class="col border-bottom p-1"><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$titikperizinan->latitude?>,<?=$titikperizinan->longitude?>&zoom=8"
+                                                                                                                                      class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a> </div>
+                                              </div>
+
+                                           <?php } ?>
+                                              <span class="font-weight-bold mt-2 border-top ">Luas Total : <?=$luas_total?>  m<sup>2</sup></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-2 border p-2 bg-white rounded shadow-sm">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        Dokumen Proposal
+                                    </div>
+                                    <div class="col isi">
+                                        <?php
+                                            $sqlviewdocperizinan = 'SELECT * FROM t_dokumen_perizinan
+                                            WHERE id_perizinan = :id_perizinan
+                                            ORDER BY id_perizinan DESC';
+                                            $stmt = $pdo->prepare($sqlviewdocperizinan);
+                                            $stmt->execute(['id_perizinan' => $perizinan->id_perizinan]);
+                                            $rowdocperizinan = $stmt->fetchAll();
+
+                                            foreach($rowdocperizinan as $docperizinan){
+                                            ?>
+                                              <div class="row">
+                                                <div class="col border-bottom p-3"><?=$docperizinan->nama_dokumen_perizinan?></div>
+                                                <div class="col border-bottom p-3"><a class="btn btn-blue btn-primary btn-small p-1" href='<?=$docperizinan->file_dokumen_perizinan?>'><i class="fas fa-download"></i> Unduh File</a> </div>
+                                              </div>
+
+                                           <?php } ?>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <!--collapse end -->
+                                </td>
+                            </tr>
+                          <?php } ?>
+
                     </tbody>
-                  </table>  
+                  </table>
             <?php //} ?>
             </section>
             <!-- /.Left col -->
@@ -266,48 +366,12 @@
 
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="plugins/summernote/summernote-bs4.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard.js"></script>
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-    <!-- Leaflet Marker Cluster -->
-    <script src="dist/js/leaflet.markercluster-src.js"></script>
-    <!-- Leaflet panel layer JS-->
-    <script src="dist/js/leaflet-panel-layers.js"></script>
-    <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-    <script src="dist/js/leaflet.ajax.js"></script>
-    <!-- Leaflet Map -->
-    <script src="dist/js/leaflet-map.js"></script>
 
 </body>
 </html>

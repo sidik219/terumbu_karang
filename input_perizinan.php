@@ -18,6 +18,7 @@
             $deskripsi_perizinan        = $_POST['tb_deskripsi_perizinan'];
             $biaya_pergantian     = $_POST['biaya_pergantian_number'];
             $id_user     = $_POST['tb_id_user'];
+            $id_titik[] = array_values(array_unique($_POST['dd_id_titik']));
             $id_status_perizinan     = 1;
             $i = 0;
 
@@ -41,9 +42,10 @@
 
 
 
-            foreach($_FILES['doc_uploads'] as $document){
+            foreach($_FILES['doc_uploads']['name'] as $document){
+              $nama_dokumen_perizinan = $_POST['tb_nama_dokumen_perizinan'][$i];
               //document upload
-            if($_FILES["doc_uploads"]["size"][$i] == 0) {
+            if($_FILES["doc_uploads"]["size"] == 0) {
                 $file_dokumen_perizinan = "";
             }
             else if (isset($_FILES['doc_uploads'])) {
@@ -54,15 +56,31 @@
             }
 
             //---document upload end
-              $sqlinsertperizinan = "INSERT INTO t_dokumen_perizinan
-                            (id_perizinan	, file_dokumen_perizinan)
-                            VALUES (:id_perizinan	, :file_dokumen_perizinan)";
+              $sqlinsertdocperizinan = "INSERT INTO t_dokumen_perizinan
+                            (id_perizinan	,file_dokumen_perizinan, nama_dokumen_perizinan)
+                            VALUES (:id_perizinan	, :file_dokumen_perizinan, :nama_dokumen_perizinan)";
 
-            $stmt = $pdo->prepare($sqlinsertperizinan);
-            $stmt->execute(['id_perizinan	' => $id_perizinan	, 'file_dokumen_perizinan' => $file_dokumen_perizinan]);
+            $stmt = $pdo->prepare($sqlinsertdocperizinan);
+            $stmt->execute(['id_perizinan' => $last_id_perizinan	, 'file_dokumen_perizinan' => $file_dokumen_perizinan, 'nama_dokumen_perizinan' => $nama_dokumen_perizinan]);
+            $i++;
             }
 
+
+
+            $i = 0;
+            foreach ($id_titik[0] as $titik){
+              $id_titik_value = $titik;
+
+              $sqlinserttitikperizinan = "INSERT INTO t_detail_perizinan
+                            (id_perizinan, id_titik)
+                            VALUES (:id_perizinan, :id_titik)";
+
+            $stmt = $pdo->prepare($sqlinserttitikperizinan);
+            $stmt->execute(['id_perizinan' => $last_id_perizinan	, 'id_titik' => $id_titik_value]);
             $i++;
+            }
+
+
 
 
 
@@ -250,6 +268,7 @@
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
+                    <!-- <form action="edit_post_test.php" enctype="multipart/form-data" method="POST"> -->
                     <div class="form-group">
                         <label for="dd_id_lokasi">ID Lokasi</label>
                         <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control mb-2" onchange="loadTitik(this.value);">
@@ -288,14 +307,18 @@
 
                     <div class='form-group' id='doc-uploads'>
                       <label for='doc_uploads'>Upload Dokumen Proposal</label>
-                        <div class="row" id="rowdocs">
+                        <div class="row border rounded shadow-sm mb-4 bg-light p-3" id="rowdocs">
                           <div class="col">
                               <input type='file'  class='form-control mb-2' id='doc_uploads'
-                                name='doc_uploads[]' accept='.doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .csv'>
+                                name='doc_uploads[]' accept='.doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .csv' required>
                           </div>
-                          <div class="col-1">
+                          <div class="col-auto">
                             <span onclick="deleteDocInput(this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
                           </div>
+                          <div class="form-group col-12">
+                        <label for="tb_id_user">Nama Dokumen</label>
+                        <input type="text" id="tb_nama_dokumen_perizinan" name="tb_nama_dokumen_perizinan[]" class="form-control" required>
+                    </div>
                         </div>
                     </div>
 
@@ -367,6 +390,9 @@
         $(new_input_field).appendTo("#doc-uploads").hide().fadeIn();
       }
 
+
+
+
       function deleteDocInput(e){
         var parent_row = $(e).parent().parent()
         if(parent_row.is('.deleteable')){
@@ -376,10 +402,15 @@
         }
       }
 
+
+
       function addTitikInput(){
         var new_input_field = $('#rowtitik').clone().addClass('deleteable')
         $(new_input_field).appendTo("#titik-container").hide().fadeIn();
       }
+
+
+
 
       function deleteTitikInput(e){
         var parent_row = $(e).parent().parent()
@@ -389,6 +420,8 @@
           })
         }
       }
+
+
 
         function loadTitik(id_lokasi){
       $.ajax({

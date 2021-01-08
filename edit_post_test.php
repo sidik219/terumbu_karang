@@ -6,18 +6,18 @@
   <title>Document</title>
 </head>
 <body>
-<?php
-  foreach($_POST['id_detail_donasi'] as $twat){
-    echo $twat.'<br>';
-  }
-?>
-<hr/>
+
 
 <?php
 print "<pre>";
 print_r($_REQUEST);
 print_r($_FILES);
+$id_titik[] = array_unique($_POST['dd_id_titik']);
+
+print_r(array_filter($id_titik));
 print "</pre>";
+
+
 ?>
 
 </body>
