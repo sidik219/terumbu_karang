@@ -311,7 +311,7 @@
                     </div>
                     <div class="form-group">
                         <label for="num_kontak_lokasi">Kontak Lokasi</label>
-                        <input type="number" value="<?=$row->kontak_lokasi?>"  id="num_kontak_lokasi" name="num_kontak_lokasi" class="form-control">
+                        <input type="number" value="<?=$row->kontak_lokasi?>"  id="num_kontak_lokasi" name="num_kontak_lokasi" class="form-control number-input">
                     </div>
                     <div class="form-group">
                         <label for="tb_nama_bank">Nama Bank</label>
@@ -323,18 +323,18 @@
                     </div>
                     <div class="form-group">
                         <label for="num_nomor_rekening">Nomor Rekening</label>
-                        <input type="number" value="<?=$row->nomor_rekening?>"  id="num_nomor_rekening" name="num_nomor_rekening" class="form-control">
+                        <input type="number" value="<?=$row->nomor_rekening?>"  id="num_nomor_rekening" name="num_nomor_rekening" class="form-control number-input">
                     </div>
                     <label for="tblongitude">Koordinat Lokasi (Diperlukan agar lokasi muncul di peta)</label>
                     <div class="col-12 border rounded p-3 bg-light mb-2">
                               <div class="form-group">
                                 <label for="tblatitude">Latitude</label>
-                        <input type="text" value="<?=$row->latitude?>" name="tb_latitude" class="form-control" id="tblatitude" required>
+                        <input type="text" value="<?=$row->latitude?>" name="tb_latitude" class="form-control number-input" id="tblatitude" required>
 
                     </div>
                     <div class="form-group">
                         <label for="tblongitude">Longitude</label>
-                        <input type="text" value="<?=$row->longitude?>" name="tb_longitude" class="form-control" id="tblongitude" required>
+                        <input type="text" value="<?=$row->longitude?>" name="tb_longitude" class="form-control number-input" id="tblongitude" required>
                     </div>
                     <button class="btn btn-act mb-1" onclick="getCoordinates()"><i class="nav-icon fas fa-map-marked-alt"></i> Deteksi Lokasi Anda</button><br>
                     <span class="" id="akurasi"></span><br>

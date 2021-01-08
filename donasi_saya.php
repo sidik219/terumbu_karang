@@ -192,7 +192,7 @@ $row = $stmt->fetchAll();
                                           <span class="font-weight-bold"><i class="nav-icon text-warning fas fas fa-list-alt"></i> Status</span>
                                           <br><?=$rowitem->nama_status_donasi?>
 
-                                            <?php echo ($rowitem->id_status_donasi == 1) ? '<a href="edit_donasi_saya.php?id_donasi='.$rowitem->id_donasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Donasi</a>' : ''; ?>
+                                            <?php echo ($rowitem->id_status_donasi <= 2) ? '<a href="edit_donasi_saya.php?id_donasi='.$rowitem->id_donasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Donasi</a>' : ''; ?>
 
                                           <br><small class="text-muted"><b>Update Terakhir</b>
                                           <br><?=strftime('%A, %d %B %Y', $truedate);?></small>

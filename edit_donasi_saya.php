@@ -52,10 +52,10 @@
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
-        header("Location: donasi_saya.php?status=nochange.$pic");
+        header("Location: donasi_saya.php?status=nochange");
         } else {
             //echo "HAHAHAAHA GREAT SUCCESSS !";
-            header("Location: donasi_saya.php?status=updatesuccess.$pic");
+            header("Location: donasi_saya.php?status=updatesuccess");
             }
         }
 ?>
@@ -255,13 +255,13 @@
                             ?>
                         </small>
                         <script>
-                          const actualBtn = document.getElementById('image_uploads');
+                            const actualBtn = document.getElementById('image_uploads');
 
-                                                    const fileChosen = document.getElementById('file-input-label');
+                            const fileChosen = document.getElementById('file-input-label');
 
-                                                    actualBtn.addEventListener('change', function(){
-                                                    fileChosen.innerHTML = '<b>File dipilih :</b> '+this.files[0].name
-                                                    })
+                            actualBtn.addEventListener('change', function(){
+                            fileChosen.innerHTML = '<b>File dipilih :</b> '+this.files[0].name
+                            })
                             window.onload = function() {
                             document.getElementById('preview').style.display = 'none';
                             };

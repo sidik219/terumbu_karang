@@ -132,7 +132,7 @@ $row = $stmt->fetchAll();
 
 
         <h4 class="font-weight-bold">Pilih Terumbu Karang</h4>
-        <button class="btn btn-warning btn-back" type="button">< Jenis Lainnya</button>
+        <button class="btn btn-warning btn-back" type="button"><i class="fas fa-angle-left"></i> Jenis Lainnya</button>
         <div class="row shop-items">
             <div class="card-columns">
         <?php
@@ -207,8 +207,8 @@ $row = $stmt->fetchAll();
               (Opsional. Pesan akan disertakan dalam label khusus pada terumbu karang )</label>
               <input type="text" maxlength="64" class="form-control success" id="pesan" placeholder="Isi pesan anda di sini...">
             </div>
-            <button class="btn btn-warning btn-back" type="button">< Jenis Lainnya</button>
-            <button class="btn btn-primary btn-purchase btn-blue" type="button">Selesai Pilih ></button>
+            <button class="btn btn-warning btn-back" type="button"><i class="fas fa-angle-left"></i> Jenis Lainnya</button>
+            <button class="btn btn-primary btn-purchase btn-blue" type="button">Selesai Pilih <i class="fas fa-angle-double-right"></i></button>
         </section>
     </footer>
     <!-- jQuery -->

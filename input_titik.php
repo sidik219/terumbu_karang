@@ -250,11 +250,11 @@
                     <div class="col-12 border rounded p-3 bg-light mb-2">
                               <div class="form-group">
                                 <label for="tblatitude">Latitude</label>
-                        <input type="text" name="tblatitude" class="form-control" id="tblatitude" required>
+                        <input type="text" name="tblatitude" class="form-control number-input" id="tblatitude" required>
                     </div>
                     <div class="form-group">
                         <label for="tblongitude">Longitude</label>
-                        <input type="text" name="tblongitude" class="form-control" id="tblongitude" required>
+                        <input type="text" name="tblongitude" class="form-control number-input" id="tblongitude" required>
                     </div>
                     <button class="btn btn-act mb-1" onclick="getCoordinates()"><i class="nav-icon fas fa-map-marked-alt"></i> Deteksi Lokasi Anda</button><br>
                     <span class="" id="akurasi"></span><br>
@@ -263,7 +263,7 @@
 
                     <div class="form-group">
                         <label for="exampleInputEmail1">Luas Titik (m<sup>2</sup>)</label>
-                        <input type="number" name="tbluas_titik" class="form-control" id="#" required>
+                        <input type="number" name="tbluas_titik" class="form-control number-input" id="#" required>
                     </div>
                     <div class="form-group">
                         <label for="rb_status_wisata">Kondisi</label><br>

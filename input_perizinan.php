@@ -16,43 +16,62 @@
             $id_lokasi = $_POST['dd_id_lokasi'];
             $judul_perizinan        = $_POST['tb_judul_perizinan'];
             $deskripsi_perizinan        = $_POST['tb_deskripsi_perizinan'];
-            $biaya_pergantian     = $_POST['num_biaya_pergantian'];
+            $biaya_pergantian     = $_POST['biaya_pergantian_number'];
             $id_user     = $_POST['tb_id_user'];
-            $status_perizinan     ="Pending";
+            $id_status_perizinan     = 1;
+            $i = 0;
 
             $randomstring = substr(md5(rand()), 0, 7);
 
-            //document upload
-            if($_FILES["doc_uploads"]["size"] == 0) {
-                $file_proposal = "images/image_default.jpg";
+
+            $sqlinsertperizinan = "INSERT INTO t_perizinan
+                            (id_lokasi, judul_perizinan, deskripsi_perizinan, biaya_pergantian, id_user,
+                            id_status_perizinan)
+                            VALUES (:id_lokasi, :judul_perizinan, :deskripsi_perizinan, :biaya_pergantian, :id_user,
+                            :id_status_perizinan)";
+
+            $stmt = $pdo->prepare($sqlinsertperizinan);
+            $stmt->execute(['id_lokasi' => $id_lokasi, 'judul_perizinan' => $judul_perizinan,
+            'deskripsi_perizinan' => $deskripsi_perizinan, 'biaya_pergantian' => $biaya_pergantian,
+            'id_user' => $id_user,
+            'id_status_perizinan' => $id_status_perizinan]);
+
+            $last_id_perizinan = $pdo->lastInsertId();
+
+
+
+
+            foreach($_FILES['doc_uploads'] as $document){
+              //document upload
+            if($_FILES["doc_uploads"]["size"][$i] == 0) {
+                $file_dokumen_perizinan = "";
             }
             else if (isset($_FILES['doc_uploads'])) {
                 $target_dir  = "documents/Perizinan/";
-                $file_proposal = $target_dir .'IZIN_'.$randomstring. $_FILES["doc_uploads"]['name'];
-                move_uploaded_file($_FILES["doc_uploads"]["tmp_name"], $file_proposal);
+                $target_file = $_FILES["doc_uploads"]['name'][$i];
+                $file_dokumen_perizinan = $target_dir .'IZIN_'.$target_file.$randomstring.'.'. pathinfo($target_file,PATHINFO_EXTENSION);
+                move_uploaded_file($_FILES["doc_uploads"]["tmp_name"][$i], $file_dokumen_perizinan);
             }
 
             //---document upload end
+              $sqlinsertperizinan = "INSERT INTO t_dokumen_perizinan
+                            (id_perizinan	, file_dokumen_perizinan)
+                            VALUES (:id_perizinan	, :file_dokumen_perizinan)";
 
-            $sqllokasi = "INSERT INTO t_perizinan
-                            (id_lokasi, judul_perizinan, deskripsi_perizinan, foto_lokasi, luas_lokasi, id_user_pengelola,
-                            kontak_lokasi, nama_bank, nama_rekening, nomor_rekening)
-                            VALUES (:id_lokasi, :judul_perizinan, :deskripsi_perizinan, :foto_lokasi, :luas_lokasi,
-                            :id_user_pengelola, :kontak_lokasi, :nama_bank, :nama_rekening, :nomor_rekening)";
+            $stmt = $pdo->prepare($sqlinsertperizinan);
+            $stmt->execute(['id_perizinan	' => $id_perizinan	, 'file_dokumen_perizinan' => $file_dokumen_perizinan]);
+            }
 
-            $stmt = $pdo->prepare($sqllokasi);
-            $stmt->execute(['id_lokasi' => $id_lokasi, 'judul_perizinan' => $judul_perizinan,
-            'deskripsi_perizinan' => $deskripsi_perizinan, 'foto_lokasi' => $foto_lokasi,
-            'luas_lokasi' => $luas_lokasi, 'id_user_pengelola' => $id_user_pengelola,
-            'kontak_lokasi' => $kontak_lokasi,'nama_bank' => $nama_bank,
-            'nama_rekening' => $nama_rekening,'nomor_rekening' => $nomor_rekening]);
+            $i++;
+
+
 
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
-            //echo "HAHAHAAHA INSERT FAILED !";
+            echo "HAHAHAAHA INSERT FAILED !";
             } else {
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: kelola_lokasi.php?status=addsuccess");
+                header("Location: kelola_perizinan.php?status=addsuccess");
                 }
             }
         }
@@ -233,7 +252,8 @@
                     <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
                         <label for="dd_id_lokasi">ID Lokasi</label>
-                        <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control">
+                        <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control mb-2" onchange="loadTitik(this.value);">
+                        <option value="">Pilih Lokasi</option>
                             <?php foreach ($row as $rowitem) {
                             ?>
                             <option value="<?=$rowitem->id_lokasi?>">ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
@@ -241,24 +261,58 @@
                             <?php } ?>
                         </select>
                     </div>
+                    <div class="form-group" id="titik-container">
+                        <label for="dd_id_titik">Titik Bersangkutan</label>
+                        <div class="row" id="rowtitik">
+                          <div class="col">
+                              <select id="dd_id_titik" name="dd_id_titik[]" class="form-control" required>
+                              <option value="">Pilih Titik</option>
+                              </select>
+                          </div>
+                          <div class="col-1">
+                              <span onclick="deleteTitikInput(this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
+                          </div>
+                        </div>
+
+                    </div>
+                              <p class="text-center"><span onclick="addTitikInput()" class="btn btn-blue btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah Titik</span></p>
+
                     <div class="form-group">
                         <label for="tb_judul_perizinan">Judul Perizinan</label>
-                        <input type="text" id="tb_judul_perizinan" name="tb_judul_perizinan" class="form-control">
+                        <input type="text" id="tb_judul_perizinan" name="tb_judul_perizinan" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label for="tb_deskripsi_perizinan">Deskripsi Perizinan</label>
-                        <input type="text" id="tb_deskripsi_perizinan" name="tb_deskripsi_perizinan" class="form-control">
+                        <input type="text" id="tb_deskripsi_perizinan" name="tb_deskripsi_perizinan" class="form-control" required>
                     </div>
-                    <div class='form-group' id='docizin'>
-                        <div>
-                            <label for='doc_uploads'>Upload Dokumen Proposal</label>
-                            <input type='file'  class='form-control' id='doc_uploads'
-                                name='doc_uploads' accept='.doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx'>
+
+                    <div class='form-group' id='doc-uploads'>
+                      <label for='doc_uploads'>Upload Dokumen Proposal</label>
+                        <div class="row" id="rowdocs">
+                          <div class="col">
+                              <input type='file'  class='form-control mb-2' id='doc_uploads'
+                                name='doc_uploads[]' accept='.doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .csv'>
+                          </div>
+                          <div class="col-1">
+                            <span onclick="deleteDocInput(this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
+                          </div>
                         </div>
                     </div>
+
+                    <p class="text-center"><span onclick="addDocInput()" class="btn btn-blue btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah File Proposal</span></p>
+
                     <div class="form-group">
                         <label for="num_biaya_pergantian">Biaya Pergantian</label>
-                        <input type="number" id="num_biaya_pergantian" name="num_biaya_pergantian" class="form-control">
+                        <input type="hidden" id="biaya_pergantian_number" name="biaya_pergantian_number" value="">
+                        <div class="row">
+                          <div class="col-auto text-center p-2">
+                            Rp.
+                          </div>
+                          <div class="col">
+                            <input onkeyup="formatNumber(this)" type="text" id="num_biaya_pergantian" name="num_biaya_pergantian" class="form-control number-input" required>
+                          </div>
+                        </div>
+
                     </div>
                     <div class="form-group">
                     <div class="form-group">
@@ -300,18 +354,98 @@
 
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      function addDocInput(){
+        var new_input_field = $('#rowdocs').clone().addClass('deleteable')
+        $(new_input_field).appendTo("#doc-uploads").hide().fadeIn();
+      }
+
+      function deleteDocInput(e){
+        var parent_row = $(e).parent().parent()
+        if(parent_row.is('.deleteable')){
+          parent_row.fadeOut(function(){
+            parent_row.remove()
+          })
+        }
+      }
+
+      function addTitikInput(){
+        var new_input_field = $('#rowtitik').clone().addClass('deleteable')
+        $(new_input_field).appendTo("#titik-container").hide().fadeIn();
+      }
+
+      function deleteTitikInput(e){
+        var parent_row = $(e).parent().parent()
+        if(parent_row.is('.deleteable')){
+          parent_row.fadeOut(function(){
+            parent_row.remove()
+          })
+        }
+      }
+
+        function loadTitik(id_lokasi){
+      $.ajax({
+        type: "POST",
+        url: "list_populate.php",
+        data:{
+            id_lokasi: id_lokasi,
+            type: 'load_titik'
+        },
+        beforeSend: function() {
+          $("#dd_id_titik").addClass("loader");
+        },
+        success: function(data){
+          $("#dd_id_titik").html(data);
+          $("#dd_id_titik").removeClass("loader");
+          loadDonasi(id_lokasi)
+        }
+      });
+      $('.userinfo').click(function(){
+
+   var id_donasi = $(this).data('id');
+
+   // AJAX request
+   $.ajax({
+    url: 'list_populate.php',
+    type: 'post',
+    data: {id_donasi: id_donasi, type : 'load_rincian_donasi'},
+    success: function(response){
+      // Add response in Modal body
+      $('.modal-body').html(response);
+
+      // Display Modal
+      $('#empModal').modal('show');
+    }
+  });
+ });
+    }
+
+
+    var formatter = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
+
+function formatNumber(e){
+  var formattedNumber = parseInt(e.value.replace(/\,/g,''))
+  $('#biaya_pergantian_number').val(formattedNumber)
+  $('#num_biaya_pergantian').val(formatter.format(formattedNumber))
+}
+
+
+
+    </script>
 
 </body>
 </html>
