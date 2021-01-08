@@ -158,101 +158,6 @@ $row = $stmt->fetchAll();
                             $truedate = strtotime($rowitem->update_terakhir);
                             $donasidate = strtotime($rowitem->tanggal_donasi);
                           ?>
-                          
-                          <tr>
-                              <th scope="row"><?=$rowitem->id_donasi?></th>
-                              <td>Rp. <?=number_format($rowitem->nominal, 0)?></td>
-                              <td><?=strftime('%A, %d %B %Y', $donasidate);?></td>
-                              <td><?=$rowitem->nama_status_donasi?> <br><small class="text-muted">Update Terakhir:
-                                <br><?=strftime('%A, %d %B %Y', $truedate);?></small></td>
-                              <td>
-                                <button type="button" class="btn btn-act">
-                                <a href="edit_donasi_saya.php?id_donasi=<?=$rowitem->id_donasi?>" class="fas fa-edit"></a>
-                                </button>
-                                <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
-                              </td>
-                          </tr>
-
-                          <tr>
-                                <td colspan="5">
-                                    <!--collapse start -->
-                            <div class="row  m-0">
-                            <div class="col-12 cell detailcollapser<?=$rowitem->id_donasi?>"
-                                data-toggle="collapse"
-                                data-target=".cell<?=$rowitem->id_donasi?>, .contentall<?=$rowitem->id_donasi?>">
-                                <p
-                                    class="fielddetail<?=$rowitem->id_donasi?> btn btn-act">
-                                    <i
-                                        class="icon fas fa-chevron-down"></i>
-                                    Rincian Donasi</p>
-                            </div>
-                            <div class="col-12 cell<?=$rowitem->id_donasi?> collapse contentall<?=$rowitem->id_donasi?> border rounded shadow-sm p-3">
-                              <div class="row">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Lokasi Penanaman
-                                    </div>
-                                    <div class="col isi">
-                                        <?="$rowitem->nama_lokasi (ID $rowitem->id_lokasi)";?>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Pesan/Ekspresi
-                                    </div>
-                                    <div class="col isi">
-                                        <?php
-                                            echo $rowitem->pesan;
-                                        ?>
-                                    </div>
-                                </div>
-
-
-                                <div class="row mb-3">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Pilihan
-                                    </div>
-                                    <div class="col isi">
-                                        <?php
-                                              $sqlviewisi = 'SELECT jumlah_terumbu, nama_terumbu_karang, foto_terumbu_karang FROM t_detail_donasi
-                                              LEFT JOIN t_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
-                                              LEFT JOIN t_terumbu_karang ON t_detail_donasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang
-                                              WHERE t_detail_donasi.id_donasi = :id_donasi';
-                                              $stmt = $pdo->prepare($sqlviewisi);
-                                              $stmt->execute(['id_donasi' => $rowitem->id_donasi]);
-                                              $rowisi = $stmt->fetchAll();
-                                           foreach ($rowisi as $isi){
-                                             ?>
-                                             <div class="row  mb-3">
-                                               <div class="col">
-                                                <img class="" height="60px" src="<?=$isi->foto_terumbu_karang?>?<?php if ($status='nochange'){echo time();}?>">
-                                              </div>
-                                              <div class="col">
-                                                <span><?= $isi->nama_terumbu_karang?>
-                                              </div>
-                                              <div class="col">
-                                                x<?= $isi->jumlah_terumbu?></span><br/>
-                                              </div>
-
-                                             <hr class="mb-2"/>
-                                             </div>
-
-                                        <?php   }
-                                        ?>
-                                    </div>
-                                </div>
-
-                                <!-- <div class="row  mb-3">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Foto Wilayah
-                                    </div>
-                                    <div class="col isi">
-                                        <img src="<?=$rowitem->foto_wilayah?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
-                                    </div>
-                                </div> -->
-
-                            </div>
-                        </div>
-
                             <div class="blue-container border rounded shadow-sm mb-4 p-4">
                                 <div class="row"><!-- First row -->
 
@@ -286,8 +191,12 @@ $row = $stmt->fetchAll();
                                       <div class="mb-3">
                                           <span class="font-weight-bold"><i class="nav-icon text-warning fas fas fa-list-alt"></i> Status</span>
                                           <br><?=$rowitem->nama_status_donasi?>
+
+                                            <?php echo ($rowitem->id_status_donasi == 1) ? '<a href="edit_donasi_saya.php?id_donasi='.$rowitem->id_donasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Donasi</a>' : ''; ?>
+
                                           <br><small class="text-muted"><b>Update Terakhir</b>
                                           <br><?=strftime('%A, %d %B %Y', $truedate);?></small>
+
                                       </div>
                                   </div>
 
@@ -423,6 +332,8 @@ $row = $stmt->fetchAll();
 
                           </div> <!-- Main div -->
 
+
+
                             <?php //$index++;
                             } ?>
 
@@ -440,6 +351,25 @@ $row = $stmt->fetchAll();
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+
+    <!-- Modal -->
+   <div class="modal fade" id="buktiModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+     <!-- Modal content-->
+     <div class="modal-content  bg-light">
+      <div class="modal-header">
+        <h4 class="modal-title">Form Bukti Donasi</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+       <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+     </div>
+    </div>
+   </div>
 
     <footer class="main-footer">
         <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
@@ -473,6 +403,8 @@ $row = $stmt->fetchAll();
             $('.preview-images').hide()
 
             $('.detail-toggle').hide()
+
+
             });
 
 

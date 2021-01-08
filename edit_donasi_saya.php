@@ -183,7 +183,7 @@
                       <div class="col-lg-9 border rounded bg-white mb-2">
                         <div class="" style="width:100%;">
                 <div class="">
-                    <h4 class="card-header mb-2 pl-0">Metode Pembayaran</h4>
+                    <h4 class="card-header mb-2 pl-0">Rekening Pengelola Lokasi</h4>
             <span class="">Pilihan untuk lokasi</span>  <span class="text-info font-weight-bolder"><?=$rowitem->nama_lokasi?> : </span>
             <div class="d-block my-3">
               <div class="custom-control custom-radio">
@@ -195,15 +195,23 @@
 
             <div class="row">
                 <div class="col">
-                     <span class="font-weight-bold">Nama Rekening Pengelola
+                     <span class="font-weight-bold"><i class="fas fa-user-tie"></i> Nama Rekening Pengelola
                 </div>
                 <div class="col-lg-8 mb-2">
                      <span class=""><?=$rowitem->nama_rekening?></span>
                 </div>
             </div>
+            <div class="row mb-2">
+                <div class="col">
+                    <span class="font-weight-bold"><i class="text-warning fas fa-university"></i> Bank Pengelola  </span>
+                </div>
+                <div class="col-lg-8  mb-2">
+                    <span class=""><?=$rowitem->nama_bank?></span>
+                </div>
+            </div>
             <div class="row">
                 <div class="col">
-                    <span class="font-weight-bold">Nomor Rekening Pengelola  </span>
+                    <span class="font-weight-bold"><i class="text-info fas fa-hashtag"></i> Nomor Rekening Pengelola  </span>
                 </div>
                 <div class="col-lg-8  mb-2">
                     <span class=""><?=$rowitem->nomor_rekening?></span>
@@ -211,15 +219,7 @@
             </div>
             <div class="row mb-2">
                 <div class="col">
-                    <span class="font-weight-bold">Bank Pengelola  </span>
-                </div>
-                <div class="col-lg-8  mb-2">
-                    <span class=""><?=$rowitem->nama_bank?></span>
-                </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col">
-                    <span class="font-weight-bold">Nominal  </span>
+                    <span class="font-weight-bold"><i class="text-success fas fa-money-bill-wave"></i> Nominal  </span>
                 </div>
                 <div class="col-lg-8  mb-2">
                     <span class="font-weight-bold">Rp. <?=number_format($rowitem->nominal, 0)?></span>
@@ -234,9 +234,11 @@
                         <div class="form-group">
                         <label for="file_bukti_donasi">Bukti Donasi</label>
                         <div class='form-group' id='buktidonasi'>
+                          <label class="btn btn btn-primary btn-blue" for='image_uploads'>
+                                                            <i class="fas fa-camera"></i> Upload File</label>
                         <div>
-                            <input type='file'  class='form-control' id='image_uploads'
-                                name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
+                            <input type='file'  class='form-control d-none' id='image_uploads'
+                                name='image_uploads' accept='.jpg, .jpeg, .png, .pdf' onchange="readURL(this);">
                         </div>
                     </div>
                     <div class="form-group">
@@ -245,7 +247,7 @@
                         <br>
                         <small class="text-muted">
                             <?php if($rowitem->bukti_donasi == NULL){
-                                echo "Bukti transfer belum diupload";
+                                echo "Bukti transfer belum diupload<br>Format .jpg .jpeg .png";
                             }else{
                                 echo "Klik gambar untuk memperbesar";
                             }
@@ -253,6 +255,13 @@
                             ?>
                         </small>
                         <script>
+                          const actualBtn = document.getElementById('image_uploads');
+
+                                                    const fileChosen = document.getElementById('file-input-label');
+
+                                                    actualBtn.addEventListener('change', function(){
+                                                    fileChosen.innerHTML = '<b>File dipilih :</b> '+this.files[0].name
+                                                    })
                             window.onload = function() {
                             document.getElementById('preview').style.display = 'none';
                             };
@@ -281,12 +290,12 @@
                       </div>
 
                       <div class="col-12 border rounded bg-white p-0 mb-2">
-                        <h5 class="card-header mb-1 font-weight-bold">Pesan/Ekspresi</h5>
+                        <h5 class="card-header mb-1 font-weight-bold"><i class="text-info fas fa-comment-dots"></i> Pesan/Ekspresi</h5>
                               <span class="font-weight-bold mb-3 pl-3 pt-4 pb-4"><?=$rowitem->pesan?></span>
                       </div>
 
                       <div class="col-12 border rounded bg-white p-0">
-                                      <h5 class="card-header mb-1 font-weight-bold">Terumbu Karang Pilihan</h5><br/>
+                                      <h5 class="card-header mb-1 font-weight-bold"><i class="text-danger fas fa-disease"></i> Terumbu Karang Pilihan</h5><br/>
                                         <?php
                                               $sqlviewisi = 'SELECT jumlah_terumbu, nama_terumbu_karang, foto_terumbu_karang FROM t_detail_donasi
                                               LEFT JOIN t_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
@@ -299,7 +308,7 @@
                                              ?>
                                              <div class="row  mb-3 pl-3">
                                                <div class="col">
-                                                <img class="" height="60px" src="<?=$isi->foto_terumbu_karang?>?<?php if ($status='nochange'){echo time();}?>">
+                                                <img class="rounded" height="60px" src="<?=$isi->foto_terumbu_karang?>">
                                               </div>
                                               <div class="col">
                                                 <span><?= $isi->nama_terumbu_karang?>
