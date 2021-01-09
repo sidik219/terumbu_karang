@@ -12,9 +12,6 @@
 print "<pre>";
 print_r($_REQUEST);
 print_r($_FILES);
-$id_titik[] = array_unique($_POST['dd_id_titik']);
-
-print_r(array_filter($id_titik));
 print "</pre>";
 
 

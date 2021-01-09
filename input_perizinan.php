@@ -20,6 +20,8 @@
             $id_user     = $_POST['tb_id_user'];
             $id_titik[] = array_values(array_unique($_POST['dd_id_titik']));
             $id_status_perizinan     = 1;
+            $tanggal_perizinan = date ('Y-m-d H:i:s', time());
+
             $i = 0;
 
             $randomstring = substr(md5(rand()), 0, 7);
@@ -27,15 +29,15 @@
 
             $sqlinsertperizinan = "INSERT INTO t_perizinan
                             (id_lokasi, judul_perizinan, deskripsi_perizinan, biaya_pergantian, id_user,
-                            id_status_perizinan)
+                            id_status_perizinan, tanggal_perizinan)
                             VALUES (:id_lokasi, :judul_perizinan, :deskripsi_perizinan, :biaya_pergantian, :id_user,
-                            :id_status_perizinan)";
+                            :id_status_perizinan, :tanggal_perizinan)";
 
             $stmt = $pdo->prepare($sqlinsertperizinan);
             $stmt->execute(['id_lokasi' => $id_lokasi, 'judul_perizinan' => $judul_perizinan,
             'deskripsi_perizinan' => $deskripsi_perizinan, 'biaya_pergantian' => $biaya_pergantian,
             'id_user' => $id_user,
-            'id_status_perizinan' => $id_status_perizinan]);
+            'id_status_perizinan' => $id_status_perizinan, 'tanggal_perizinan' => $tanggal_perizinan]);
 
             $last_id_perizinan = $pdo->lastInsertId();
 

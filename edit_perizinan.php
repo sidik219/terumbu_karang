@@ -13,6 +13,7 @@
         $row = $stmt->fetchAll();
 
         $sqlviewperizinan = 'SELECT * FROM t_perizinan
+                              LEFT JOIN t_status_perizinan ON t_perizinan.id_status_perizinan = t_status_perizinan.id_status_perizinan
                             WHERE id_perizinan = :id_perizinan';
         $stmt = $pdo->prepare($sqlviewperizinan);
         $stmt->execute(['id_perizinan' => $id_perizinan]);
@@ -20,72 +21,99 @@
 
     if (isset($_POST['submit'])) {
         if($_POST['submit'] == 'Simpan'){
-            $id_lokasi = $_POST['dd_id_lokasi'];
             $judul_perizinan        = $_POST['tb_judul_perizinan'];
             $deskripsi_perizinan        = $_POST['tb_deskripsi_perizinan'];
             $biaya_pergantian     = $_POST['biaya_pergantian_number'];
-            $id_user     = $_POST['tb_id_user'];
-            $id_titik[] = array_values(array_unique($_POST['dd_id_titik']));
-            $id_status_perizinan     = 1;
+            $id_titik = array_values(array_unique($_POST['dd_id_titik']));
+            $id_status_perizinan     = $_POST['id_status_perizinan'];
             $i = 0;
 
             $randomstring = substr(md5(rand()), 0, 7);
 
 
-            $sqlinsertperizinan = "INSERT INTO t_perizinan
-                            (id_lokasi, judul_perizinan, deskripsi_perizinan, biaya_pergantian, id_user,
-                            id_status_perizinan)
-                            VALUES (:id_lokasi, :judul_perizinan, :deskripsi_perizinan, :biaya_pergantian, :id_user,
-                            :id_status_perizinan)";
+            $sqlupdateperizinan = "UPDATE t_perizinan
+                            SET judul_perizinan = :judul_perizinan, deskripsi_perizinan = :deskripsi_perizinan, biaya_pergantian = :biaya_pergantian, id_status_perizinan = :id_status_perizinan
+                            WHERE id_perizinan = :id_perizinan";
 
-            $stmt = $pdo->prepare($sqlinsertperizinan);
-            $stmt->execute(['id_lokasi' => $id_lokasi, 'judul_perizinan' => $judul_perizinan,
-            'deskripsi_perizinan' => $deskripsi_perizinan, 'biaya_pergantian' => $biaya_pergantian,
-            'id_user' => $id_user,
-            'id_status_perizinan' => $id_status_perizinan]);
-
-            $last_id_perizinan = $pdo->lastInsertId();
+            $stmt = $pdo->prepare($sqlupdateperizinan);
+            $stmt->execute(['judul_perizinan' => $judul_perizinan,
+            'deskripsi_perizinan' => $deskripsi_perizinan, 'biaya_pergantian' => $biaya_pergantian, 'id_status_perizinan' => $id_status_perizinan, 'id_perizinan' => $id_perizinan]);
 
 
 
+            if(!empty($_POST['id_dokumen_old_dihapus'])){
+              foreach($_POST['id_dokumen_old_dihapus'] as $perizinan_dihapus){
+              $id_dokumen_perizinan = $perizinan_dihapus;
 
-            foreach($_FILES['doc_uploads']['name'] as $document){
-              $nama_dokumen_perizinan = $_POST['tb_nama_dokumen_perizinan'][$i];
-              //document upload
-            if($_FILES["doc_uploads"]["size"] == 0) {
-                $file_dokumen_perizinan = "";
+              $sqldeletedocperizinan = "DELETE FROM t_dokumen_perizinan
+                            WHERE id_dokumen_perizinan = :id_dokumen_perizinan";
+
+            $stmt = $pdo->prepare($sqldeletedocperizinan);
+            $stmt->execute(['id_dokumen_perizinan' => $id_dokumen_perizinan]);
             }
-            else if (isset($_FILES['doc_uploads'])) {
-                $target_dir  = "documents/Perizinan/";
-                $target_file = $_FILES["doc_uploads"]['name'][$i];
-                $file_dokumen_perizinan = $target_dir .'IZIN_'.$target_file.$randomstring.'.'. pathinfo($target_file,PATHINFO_EXTENSION);
-                move_uploaded_file($_FILES["doc_uploads"]["tmp_name"][$i], $file_dokumen_perizinan);
             }
 
-            //---document upload end
-              $sqlinsertdocperizinan = "INSERT INTO t_dokumen_perizinan
-                            (id_perizinan	,file_dokumen_perizinan, nama_dokumen_perizinan)
-                            VALUES (:id_perizinan	, :file_dokumen_perizinan, :nama_dokumen_perizinan)";
 
-            $stmt = $pdo->prepare($sqlinsertdocperizinan);
-            $stmt->execute(['id_perizinan' => $last_id_perizinan	, 'file_dokumen_perizinan' => $file_dokumen_perizinan, 'nama_dokumen_perizinan' => $nama_dokumen_perizinan]);
-            $i++;
+
+
+            if(!empty($_POST['id_detail_old_dihapus'])){
+              foreach($_POST['id_detail_old_dihapus'] as $detail_dihapus){
+              $id_detail_perizinan = $detail_dihapus;
+
+              $sqldeletedetperizinan = "DELETE FROM t_detail_perizinan
+                            WHERE id_detail_perizinan = :id_detail_perizinan";
+
+            $stmt = $pdo->prepare($sqldeletedetperizinan);
+            $stmt->execute(['id_detail_perizinan' => $id_detail_perizinan]);
             }
+            }
+
+
+
+
+            if($_FILES['doc_uploads']['size'][0] != 0){
+                  foreach($_FILES['doc_uploads']['name'] as $document){
+                  $nama_dokumen_perizinan = $_POST['tb_nama_dokumen_perizinan'][$i];
+                  //document upload
+                if($_FILES["doc_uploads"]["size"] == 0) {
+                    $file_dokumen_perizinan = "";
+                }
+                else if (isset($_FILES['doc_uploads'])) {
+                    $target_dir  = "documents/Perizinan/";
+                    $target_file = $_FILES["doc_uploads"]['name'][$i];
+                    $file_dokumen_perizinan = $target_dir .'IZIN_'.$target_file.$randomstring.'.'. pathinfo($target_file,PATHINFO_EXTENSION);
+                    move_uploaded_file($_FILES["doc_uploads"]["tmp_name"][$i], $file_dokumen_perizinan);
+                }
+
+                //---document upload end
+                  $sqlinsertdocperizinan = "INSERT INTO t_dokumen_perizinan
+                                (id_perizinan	,file_dokumen_perizinan, nama_dokumen_perizinan)
+                                VALUES (:id_perizinan	, :file_dokumen_perizinan, :nama_dokumen_perizinan)";
+
+                $stmt = $pdo->prepare($sqlinsertdocperizinan);
+                $stmt->execute(['id_perizinan' => $id_perizinan	, 'file_dokumen_perizinan' => $file_dokumen_perizinan, 'nama_dokumen_perizinan' => $nama_dokumen_perizinan]);
+                $i++;
+                }
+            }
+
 
 
 
             $i = 0;
-            foreach ($id_titik[0] as $titik){
-              $id_titik_value = $titik;
+            if(!empty($id_titik[0])){
+                foreach ($id_titik as $titik){
+                $id_titik_value = $titik;
 
-              $sqlinserttitikperizinan = "INSERT INTO t_detail_perizinan
-                            (id_perizinan, id_titik)
-                            VALUES (:id_perizinan, :id_titik)";
+                $sqlinserttitikperizinan = "INSERT INTO t_detail_perizinan
+                              (id_perizinan, id_titik)
+                              VALUES (:id_perizinan, :id_titik)";
 
-            $stmt = $pdo->prepare($sqlinserttitikperizinan);
-            $stmt->execute(['id_perizinan' => $last_id_perizinan	, 'id_titik' => $id_titik_value]);
-            $i++;
+              $stmt = $pdo->prepare($sqlinserttitikperizinan);
+              $stmt->execute(['id_perizinan' => $id_perizinan	, 'id_titik' => $id_titik_value]);
+              $i++;
+              }
             }
+
 
 
 
@@ -94,9 +122,10 @@
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
             echo "HAHAHAAHA INSERT FAILED !";
+            header("Location: kelola_perizinan.php?status=nochange");
             } else {
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: kelola_perizinan.php?status=addsuccess");
+                header("Location: kelola_perizinan.php?status=updatesuccess");
                 }
             }
         }
@@ -214,7 +243,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="kelola_pemeliharaan.php" class="nav-link">
+                            <a href="kelola_perizinan.php" class="nav-link">
                                   <i class="nav-icon fas fa-heart"></i>
                                   <p> Kelola Pemeliharaan </p>
                             </a>
@@ -288,7 +317,37 @@
 
 
 
-                    <div class="form-group">
+
+                    <label>Status :
+                            <?php
+                                $sqlstatusperizinan = 'SELECT * FROM t_status_perizinan';
+
+                                $stmt = $pdo->prepare($sqlstatusperizinan);
+                                $stmt->execute();
+                                $rowstatusperizinan = $stmt->fetchAll();
+                                $i = 0;
+                                foreach ($rowstatusperizinan as $statusperizinan){
+                                    ?>
+                                    <div class="ml-2 form-check form-check-inline">
+                                    <input <?php if($statusperizinan->id_status_perizinan == $rowperizinan->id_status_perizinan){echo 'checked';}?> class="form-check-input" type="radio" name="id_status_perizinan" id="inlineRadio<?=$i?>" value="<?=$statusperizinan->id_status_perizinan?>">
+                                    <label class="form-check-label" for="inlineRadio<?=$i?>">
+                                        <span class="status-perizinan badge <?php if($statusperizinan->id_status_perizinan == 1){echo 'badge-warning';}elseif($statusperizinan->id_status_perizinan == 2){echo 'badge-success';}
+                                        elseif($statusperizinan->id_status_perizinan == 3){echo 'badge-danger';}?> p-2"><?=$statusperizinan->nama_status_perizinan?></span>
+
+                                </label>
+                                    </div>
+                                <?php $i++; } ?>
+
+
+
+
+                                    </label>
+
+
+
+
+
+                    <div class="form-group"  id="hapus-div">
                         <label for="dd_id_lokasi">ID Lokasi</label>
                         <select disabled id="dd_id_lokasi" name="dd_id_lokasi" class="form-control mb-2">
                         <option value="">Pilih Lokasi</option>
@@ -315,13 +374,14 @@
                         ?>
                         <div class="row" id="rowtitik_old">
                           <div class="col">
-                              <select id="dd_id_titik_old" name="dd_id_titik[]" class="form-control" required>
-                              <option selected value="<?=$detailperizinan->id_titik?>">ID <?=$detailperizinan->id_titik?> <?=$detailperizinan->keterangan_titik?></option>
+                              <select name="dd_id_titik_old[]" class="form-control" required>
+                              <option class="old_titik" selected value="<?=$detailperizinan->id_titik?>">ID <?=$detailperizinan->id_titik?> <?=$detailperizinan->keterangan_titik?></option>
+                              <input type="hidden" class="id_detail_perizinan_dihapus" value="<?=$detailperizinan->id_detail_perizinan?>">
                               </select>
                           </div>
-                          <div class="col-1">
-                              <span onclick="deleteOldTitikInput(this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
-                          </div>
+                                <div class="col-1">
+                                    <span onclick="deleteOldTitikInput(this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
+                                </div>
                         </div>
 
                         <?php } ?>
@@ -384,7 +444,10 @@
                                                 <div class="row olddocrow">
                                                   <div class="col border-bottom p-3"><?=$docperizinan->nama_dokumen_perizinan?></div>
                                                   <div class="col-1 border-bottom p-3">
-                                                    <input type="hidden" value="<?=$docperizinan->file_dokumen_perizinan?>" id="biaya_pergantian_number" name="biaya_pergantian_number" value="">
+                                                    <input type="hidden" value="<?=$docperizinan->id_dokumen_perizinan?>" class="id_dokumen_perizinan_old">
+                                                </div>
+                                                <div class="col-1 p-3 border-bottom">
+                                                    <span onclick="deleteOldDoc(this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
                                                 </div>
                                                 <div class="col border-bottom p-3"><a class="btn btn-blue btn-primary btn-small p-1" href='<?=$docperizinan->file_dokumen_perizinan?>'><i class="fas fa-download"></i> Unduh File</a>
 
@@ -404,16 +467,16 @@
                         <div class="row border rounded shadow-sm mb-4 bg-light p-3" id="rowdocs">
                           <div class="col">
                               <input type='file'  class='form-control mb-2' id='doc_uploads'
-                                name='doc_uploads[]' accept='.doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .csv' required>
+                                name='doc_uploads[]' accept='.doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .csv'>
                           </div>
                           <div class="col-auto">
                             <span onclick="deleteDocInput(this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
                           </div>
                           <div class="form-group col-12">
                         <label for="tb_id_user">Nama Dokumen</label>
-                        <input type="text" id="tb_nama_dokumen_perizinan" name="tb_nama_dokumen_perizinan[]" class="form-control" required>
-                    </div>
+                        <input type="text" id="tb_nama_dokumen_perizinan" name="tb_nama_dokumen_perizinan[]" class="form-control">
                         </div>
+                      </div>
                     </div>
 
                     <p class="text-center"><span onclick="addDocInput()" class="btn btn-blue btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah File Proposal</span></p>
@@ -423,7 +486,7 @@
 
                     <div class="form-group">
                         <label for="num_biaya_pergantian">Biaya Pergantian</label>
-                        <input type="hidden" value="<?=$rowperizinan->biaya_pergantian?>" id="biaya_pergantian_number" name="biaya_pergantian_number" value="">
+                        <input type="hidden" value="<?=$rowperizinan->biaya_pergantian?>" id="biaya_pergantian_number" name="biaya_pergantian_number">
                         <div class="row">
                           <div class="col-auto text-center p-2">
                             Rp.
@@ -434,17 +497,17 @@
                         </div>
 
                     </div>
-                    <div class="form-group">
+
                     <div class="form-group">
                         <label for="tb_id_user">ID User Pemohon</label>
                         <input type="number" value="<?=$rowperizinan->id_user?>" id="tb_id_user" name="tb_id_user" class="form-control">
                     </div>
-                    <div class="form-group">
+
 
 
                     <br>
                     <p align="center">
-                            <button disabled type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
+                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
             <br><br>
 
@@ -500,6 +563,18 @@
       }
 
 
+      function deleteOldDoc(e){
+        var parent_row = $(e).parent().parent()
+        var id_dokumen_old = parent_row.find('.id_dokumen_perizinan_old').val()
+
+        $(`<input type="text" value="${id_dokumen_old}" class="id_doc_old_hidden" name="id_dokumen_old_dihapus[]">`).appendTo('#hapus-div')
+        parent_row.fadeOut(function(){
+          parent_row.remove()
+        })
+
+      }
+
+
 
 
       function addTitikInput(){
@@ -521,11 +596,16 @@
 
       function deleteOldTitikInput(e){
         var parent_row = $(e).parent().parent()
-        if(parent_row.is('#rowtitik_old')){
-          parent_row.fadeOut(function(){
-            parent_row.remove()
-          })
-        }
+        var id_detail_p_hapus = parent_row.find('.id_detail_perizinan_dihapus').val()
+        var input_id_detail = document.createElement('input')
+        input_id_detail.type = 'text'
+        input_id_detail.value = id_detail_p_hapus
+        input_id_detail.name = 'id_detail_hapus[]'
+        document.getElementById('hapus-div').appendChild(input_id_detail)
+
+        parent_row.fadeOut(function(){
+          parent_row.remove()
+        })
       }
 
 
