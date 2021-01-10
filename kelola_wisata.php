@@ -4,6 +4,13 @@
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
 //}
+
+$sqlviewwisata = 'SELECT * FROM t_wisata
+                  LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi';
+$stmt = $pdo->prepare($sqlviewwisata);
+$stmt->execute();
+$row = $stmt->fetchAll();
+
 ?>
 
 <!DOCTYPE html>
@@ -211,37 +218,71 @@
                             <th scope="col">ID Wisata</th>
                             <th scope="col">ID Lokasi</th>
                             <th scope="col">Judul Wisata</th>
-                            <th scope="col">Deskripsi</th>
-                            <th scope="col">Biaya</th>
-                            <th scope="col">Foto</th>
                             <th scope="col">Status</th>
                             <th scope="col">Aksi</th>
                             </tr>
                           </thead>
                           <tbody>
+                          <?php foreach ($row as $rowitem) { ?>
                             <tr>
-                              <th scope="row">TNK07</th>
-                              <td>L001</td>
-                              <td>Snorkling Tangkolak</td>
-                              <td>Asyik Sekali</td>
-                              <td>Rp.750.000</td>
-                              <td>-</td>
-                              <td>Aktif</td>
+                              <th scope="row"><?=$rowitem->id_wisata?></th>
+                              <td><?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></td>
+                              <td><?=$rowitem->judul_wisata?></td>
+                              <td><?=$rowitem->status_aktif?></td>
                               <td>
-                              <button type="button" class="btn btn-act">
-                                <a href="edit_wisata.php" class="fas fa-edit"></a>
-                                </button>
-                              <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
+                                <a href="edit_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                                <a href="hapus.php?type=wisata&id_wisata=<?=$rowitem->id_wisata?>" class="far fa-trash-alt btn btn-act"></a>
                               </td>
-                          </tr>
+                            </tr>
+
+                            <tr>
+                                <td colspan="5">
+                                <!--collapse start -->
+                                <div class="row  m-0">
+                                    <div class="col-12 cell detailcollapser<?=$rowitem->id_wisata?>"
+                                        data-toggle="collapse"
+                                        data-target=".cell<?=$rowitem->id_wisata?>, .contentall<?=$rowitem->id_wisata?>">
+                                        <p class="fielddetail<?=$rowitem->id_wisata?> btn btn-act">
+                                            <i class="icon fas fa-chevron-down"></i>
+                                            Rincian Wisata</p>
+                                    </div>
+                                    <div class="col-12 cell<?=$rowitem->id_wisata?> collapse contentall<?=$rowitem->id_wisata?> border rounded shadow-sm p-3">
+
+                                    <div class="row  mb-3">
+                                        <div class="col-md-3 kolom font-weight-bold">
+                                            Deskripsi Wisata
+                                        </div>
+                                        <div class="col isi">
+                                            <?=$rowitem->deskripsi_wisata?>
+                                        </div>
+                                    </div>
+
+                                    <div class="row  mb-3">
+                                        <div class="col-md-3 kolom font-weight-bold">
+                                            Biaya Wisata
+                                        </div>
+                                        <div class="col isi">
+                                            Rp.<?=$rowitem->biaya_wisata?>
+                                        </div>
+                                    </div>
+
+                                    <div class="row  mb-3">
+                                        <div class="col-md-3 kolom font-weight-bold">
+                                            Foto Wilayah
+                                        </div>
+                                        <div class="col isi">
+                                            <img src="<?=$rowitem->foto_wisata?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!--collapse end -->
+                                </td>
+                            </tr>
+                          <?php } ?>
                           </tbody>
                   </table>
-                <?php //} ?>
-
-            <!-- BUTTON SUBMIT -->
-            <div class="new-entry">
-                
-            </div>
+                <?php //} ?>    
             
             </section>
             <!-- /.Left col -->

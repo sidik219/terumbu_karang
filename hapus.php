@@ -47,5 +47,13 @@ elseif ($type == 'terumbu_karang'){
             $stmt->execute(['id_terumbu_karang' => $_GET['id_terumbu_karang']]);
             header('Location: kelola_tk.php?status=deletesuccess');
 }
+elseif ($type == 'wisata'){
+    $sql = 'DELETE FROM t_wisata
+            WHERE id_wisata = :id_wisata';
+            
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_wisata' => $_GET['id_wisata']]);
+            header('Location: kelola_wisata.php?status=deletesuccess');
+}
 
 

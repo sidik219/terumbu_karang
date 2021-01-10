@@ -4,6 +4,50 @@
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
 //}
+
+$sqlviewlokasi = 'SELECT * FROM t_lokasi
+                        ORDER BY nama_lokasi';
+        $stmt = $pdo->prepare($sqlviewlokasi);
+        $stmt->execute();
+        $rowlokasi = $stmt->fetchAll();
+
+if (isset($_POST['submit'])) {
+    $id_lokasi          = $_POST['dd_id_lokasi'];
+    $judul_wisata       = $_POST['tb_judul_wisata'];
+    $deskripsi_wisata   = $_POST['tb_deskripsi_wisata'];
+    $biaya_wisata       = $_POST['num_biaya_wisata'];
+    $status_aktif       = $_POST['rb_status_wisata'];
+    $randomstring = substr(md5(rand()), 0, 7);
+    
+    //Image upload
+    if($_FILES["image_uploads"]["size"] == 0) {
+        $foto_wisata = "images/image_default.jpg";
+    }
+    else if (isset($_FILES['image_uploads'])) {
+        $target_dir  = "images/foto_wisata/";
+        $foto_wisata = $target_dir .'WIL_'.$randomstring. '.jpg';
+        move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wisata);
+    }
+
+    //---image upload end
+
+    $sqlwisata = "INSERT INTO t_wisata
+                        (id_lokasi, judul_wisata, deskripsi_wisata, biaya_wisata, foto_wisata, status_aktif)
+                        VALUES (:id_lokasi, :judul_wisata, :deskripsi_wisata, :biaya_wisata, 
+                        :foto_wisata, :status_aktif)";
+
+    $stmt = $pdo->prepare($sqlwisata);
+    $stmt->execute(['id_lokasi' => $id_lokasi, 'judul_wisata' => $judul_wisata, 'deskripsi_wisata' => $deskripsi_wisata,
+    'biaya_wisata' => $biaya_wisata, 'foto_wisata' => $foto_wisata, 'status_aktif' => $status_aktif]);
+
+    $affectedrows = $stmt->rowCount();
+        if ($affectedrows == '0') {
+            //echo "HAHAHAAHA INSERT FAILED !";
+        } else {
+            //echo "HAHAHAAHA GREAT SUCCESSS !";
+            header("Location: kelola_wisata.php?status=addsuccess");
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -199,6 +243,17 @@
             <section class="content">
                 <div class="container-fluid">
                      <form action="" enctype="multipart/form-data" method="POST">
+
+                     <div class="form-group">
+                        <label for="dd_id_lokasi">ID Lokasi</label>
+                        <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" required>
+                                <option value="">Pilih Lokasi</option>
+                            <?php foreach ($rowlokasi as $rowitem) {  ?>
+                                <option value="<?=$rowitem->id_lokasi?>">ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+
                      <div class="form-group">
                         <label for="tb_judul_wisata">Judul Wisata</label>
                         <input type="text" id="tb_judul_wisata" name="tb_judul_wisata" class="form-control">
@@ -211,25 +266,57 @@
                         <label for="num_biaya_wisata">Biaya Wisata</label>
                         <input type="number" id="num_biaya_wisata" name="num_biaya_wisata" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label for="file_foto_wisata">Foto Wisata</label>
-                        <div class="file-form">
-                        <input type="file" id="file_foto_wisata" name="file_foto_wisata" class="form-control">
+
+                    <div class='form-group' id='fotowilayah'>
+                        <div>
+                            <label for='image_uploads'>Upload Foto Wisata</label>
+                            <input type='file'  class='form-control' id='image_uploads'
+                                name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <img id="preview"  width="100px" src="#" alt="Preview Gambar"/>
+
+                        <script>
+                            window.onload = function() {
+                            document.getElementById('preview').style.display = 'none';
+                            };
+                            function readURL(input) {
+                                if (input.files && input.files[0]) {
+                                    var reader = new FileReader();
+
+                                    reader.onload = function (e) {
+                                        $('#preview')
+                                            .attr('src', e.target.result)
+                                            .width(200);
+                                            document.getElementById('preview').style.display = 'block';
+                                    };
+
+                                    reader.readAsDataURL(input.files[0]);
+                                }
+                            }
+                        </script>
+                    </div>
+
                     <div class="form-group">
                         <label for="rb_status_wisata">Status</label><br>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_status_aktif" name="rb_status_wisata" value="aktif" class="form-check-input">
-                            <label class="form-check-label" for="rb_status_aktif">Aktif</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_status_tidak_aktif" name="rb_status_wisata" value="tidak_aktif" class="form-check-input">
-                            <label class="form-check-label" for="rb_status_tidak_aktif">Tidak Aktif</label>
-                        </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" id="rb_status_aktif" name="rb_status_wisata" value="aktif" class="form-check-input">
+                                <label class="form-check-label" for="rb_status_aktif" style="color: green">
+                                    Aktif
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input checked type="radio" id="rb_status_tidak_aktif" name="rb_status_wisata" value="tidak_aktif " class="form-check-input">
+                                <label class="form-check-label" for="rb_status_tidak_aktif" style="color: gray">
+                                    Tidak Aktif
+                                </label>
+                            </div>
                     </div>
+
                     <p align="center">
-                    <button type="submit" class="btn btn-submit">Kirim</button></p>
+                    <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
                     <br><br>
 
