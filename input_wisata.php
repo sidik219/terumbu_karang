@@ -242,26 +242,26 @@ if (isset($_POST['submit'])) {
         <?php //if($_SESSION['level_user'] == '1') { ?>
             <section class="content">
                 <div class="container-fluid">
-                     <form action="" enctype="multipart/form-data" method="POST">
+                    <form action="" enctype="multipart/form-data" method="POST">
 
-                     <div class="form-group">
-                        <label for="dd_id_lokasi">ID Lokasi</label>
-                        <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" required>
-                                <option value="">Pilih Lokasi</option>
-                            <?php foreach ($rowlokasi as $rowitem) {  ?>
-                                <option value="<?=$rowitem->id_lokasi?>">ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
-                            <?php } ?>
-                        </select>
+                    <div class="form-group">
+                    <label for="dd_id_lokasi">ID Lokasi</label>
+                    <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" required>
+                            <option value="">Pilih Lokasi</option>
+                        <?php foreach ($rowlokasi as $rowitem) {  ?>
+                            <option value="<?=$rowitem->id_lokasi?>">ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
+                        <?php } ?>
+                    </select>
                     </div>
 
-                     <div class="form-group">
-                        <label for="tb_judul_wisata">Judul Wisata</label>
-                        <input type="text" id="tb_judul_wisata" name="tb_judul_wisata" class="form-control">
-                     </div>
-                     <div class="form-group">
-                        <label for="tb_deskripsi_wisata">Deskripsi Wisata</label>
-                        <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" class="form-control">
-                     </div>
+                    <div class="form-group">
+                    <label for="tb_judul_wisata">Judul Wisata</label>
+                    <input type="text" id="tb_judul_wisata" name="tb_judul_wisata" class="form-control">
+                    </div>
+                    <div class="form-group">
+                    <label for="tb_deskripsi_wisata">Deskripsi Wisata</label>
+                    <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" class="form-control">
+                    </div>
                     <div class="form-group">
                         <label for="num_biaya_wisata">Biaya Wisata</label>
                         <input type="number" id="num_biaya_wisata" name="num_biaya_wisata" class="form-control">
@@ -302,13 +302,13 @@ if (isset($_POST['submit'])) {
                     <div class="form-group">
                         <label for="rb_status_wisata">Status</label><br>
                             <div class="form-check form-check-inline">
-                                <input type="radio" id="rb_status_aktif" name="rb_status_wisata" value="aktif" class="form-check-input">
+                                <input type="radio" id="rb_status_aktif" name="rb_status_wisata" value="Aktif" class="form-check-input">
                                 <label class="form-check-label" for="rb_status_aktif" style="color: green">
                                     Aktif
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input checked type="radio" id="rb_status_tidak_aktif" name="rb_status_wisata" value="tidak_aktif " class="form-check-input">
+                                <input checked type="radio" id="rb_status_tidak_aktif" name="rb_status_wisata" value="Tidak Aktif " class="form-check-input">
                                 <label class="form-check-label" for="rb_status_tidak_aktif" style="color: gray">
                                     Tidak Aktif
                                 </label>

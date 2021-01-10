@@ -262,13 +262,13 @@ $row = $stmt->fetchAll();
                                             Biaya Wisata
                                         </div>
                                         <div class="col isi">
-                                            Rp.<?=$rowitem->biaya_wisata?>
+                                            Rp. <?=number_format($rowitem->biaya_wisata, 0)?>
                                         </div>
                                     </div>
 
                                     <div class="row  mb-3">
                                         <div class="col-md-3 kolom font-weight-bold">
-                                            Foto Wilayah
+                                            Foto Wisata
                                         </div>
                                         <div class="col isi">
                                             <img src="<?=$rowitem->foto_wisata?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
