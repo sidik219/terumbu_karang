@@ -7,7 +7,8 @@ session_start();
 
 $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
                   LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
-                  LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user';
+                  LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                  LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata';
 $stmt = $pdo->prepare($sqlviewreservasi);
 $stmt->execute();
 $row = $stmt->fetchAll();
@@ -155,6 +156,7 @@ $row = $stmt->fetchAll();
                                     <th scope="col">Jml Peserta</th>
                                     <th scope="col">Total (Rp.)</th>
                                     <th scope="col">Status</th>
+                                    <th scope="col">Keterangan</th>
                                     <th scope="col">Aksi</th>
                                 </tr>
                             </thead>
@@ -169,7 +171,8 @@ $row = $stmt->fetchAll();
                                       <td><?=$rowitem->tgl_reservasi?></td> 
                                       <td><?=$rowitem->jumlah_peserta?></td>
                                       <td>Rp. <?=$rowitem->total?></td>
-                                      <td><?=$rowitem->status_reservasi?></td>
+                                      <td><?=$rowitem->nama_status_reservasi_wisata?></td>
+                                      <td><?=$rowitem->keterangan?></td>
                                       <td>
                                         <button type="button" class="btn btn-act">
                                         <a href="edit_reservasi_saya.php" class="fas fa-edit"></a>

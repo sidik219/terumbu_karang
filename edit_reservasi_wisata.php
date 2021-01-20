@@ -4,6 +4,40 @@
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
 //}
+    
+    $id_reservasi = $_GET['id_reservasi'];
+    $status_reservasi_wisata = "Menunggu Konfirmasi Pembayaran";
+    
+    $sql = 'SELECT * FROM t_reservasi_wisata, t_user, t_lokasi
+    WHERE id_reservasi = :id_reservasi
+    AND t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_reservasi' => $id_reservasi]);
+    $rowitem = $stmt->fetch();
+    
+    $sqlstatus = 'SELECT * FROM tb_status_reservasi_wisata';
+    $stmt = $pdo->prepare($sqlstatus);
+    $stmt->execute();
+    $rowstatus = $stmt->fetchAll();
+    
+    if (isset($_POST['submit'])) {
+        $id_status_reservasi_wisata = $_POST['radio_status'];
+        $sqlreservasi = "UPDATE t_reservasi_wisata
+                        SET id_status_reservasi_wisata = :id_status_reservasi_wisata
+                        WHERE id_reservasi = :id_reservasi";
+
+        $stmt = $pdo->prepare($sqlreservasi);
+        $stmt->execute(['id_reservasi' => $id_reservasi, 'id_status_reservasi_wisata' => $id_status_reservasi_wisata]);
+
+        $affectedrows = $stmt->rowCount();
+        if ($affectedrows == '0') {
+            header("Location: kelola_reservasi_wisata.php?status=nochange");
+        } else {
+            //echo "HAHAHAAHA GREAT SUCCESSS !";
+            header("Location: kelola_reservasi_wisata.php?status=updatesuccess");
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -194,52 +228,206 @@
             <!-- /.content-header -->
 
             <!-- Main content -->
-        <?php //if($_SESSION['level_user'] == '1') { ?>
             <section class="content">
                 <div class="container-fluid">
-                    <form action="" enctype="multipart/form-data" method="POST">
-                    <div class="form-group">
-                        <label for="dd_id_lokasi_wisata">ID Lokasi</label>
-                        <select id="dd_id_lokasi_wisata" name="dd_id_lokasi_wisata" class="form-control">
-                            <option value="">41051 - Pantai Tangkolak</option>
-                            <option value="">45211 - Pulau Biawak</option>
-                        </select>
-                    </div>
-                     <div class="form-group">
-                         <label for="date_reservasi_wisata">Tanggal Reservasi</label>
-                         <div class="file-form">
-                         <input type="date" id="date_reservasi_wisata" name="date_reservasi_wisata" class="form-control" >
-                         </div>
-                     </div>
-                     <div class="form-group">
-                        <label for="num_jumlah_peserta">Jumlah Peserta</label>
-                        <input type="number" id="num_jumlah_peserta" name="num_jumlah_peserta" class="form-control">
-                     </div>
-                     <div class="form-group">
-                        <label for="num_total_reservasi">Total (Rp.)</label>
-                        <input type="number" id="num_total_reservasi" name="num_total_reservasi" class="form-control">
-                     </div>
-                     <div class="form-group">
-                        <label for="rb_status_reservasi">Status</label><br>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_status_reservasi_selesai" name="rb_status_reservasi" value="diterima" class="form-check-input">
-                            <label class="form-check-label" for="rb_status_reservasi_selesai">Selesai</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_status_reservasi_pending" name="rb_status_reservasi" value="belum_diterima" class="form-check-input">
-                            <label class="form-check-label" for="rb_status_reservasi_pending">Pending</label>
-                        </div>
-                    </div>
-                     <br>
-                     <p align="center">
-                    <button type="submit" class="btn btn-submit">Kirim</button></p>
-                    </form>
-                    </form>
-                    <br><br>
+                    <?php //if($_SESSION['level_user'] == '1') { ?>
+                        <!--
+                        <form action="" enctype="multipart/form-data" method="POST">
+                            <div class="form-group">
+                                <label for="dd_id_lokasi_wisata">ID Lokasi</label>
+                                <select id="dd_id_lokasi_wisata" name="dd_id_lokasi_wisata" class="form-control">
+                                    <option value="">41051 - Pantai Tangkolak</option>
+                                    <option value="">45211 - Pulau Biawak</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="date_reservasi_wisata">Tanggal Reservasi</label>
+                                <div class="file-form">
+                                <input type="date" id="date_reservasi_wisata" name="date_reservasi_wisata" class="form-control" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="num_jumlah_peserta">Jumlah Peserta</label>
+                                <input type="number" id="num_jumlah_peserta" name="num_jumlah_peserta" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="num_total_reservasi">Total (Rp.)</label>
+                                <input type="number" id="num_total_reservasi" name="num_total_reservasi" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="rb_status_reservasi">Status</label><br>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" id="rb_status_reservasi_selesai" name="rb_status_reservasi" value="diterima" class="form-check-input">
+                                    <label class="form-check-label" for="rb_status_reservasi_selesai">Selesai</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input type="radio" id="rb_status_reservasi_pending" name="rb_status_reservasi" value="belum_diterima" class="form-check-input">
+                                    <label class="form-check-label" for="rb_status_reservasi_pending">Pending</label>
+                                </div>
+                            </div>
+                            <br>
+                            <p align="center">
+                            <button type="submit" class="btn btn-submit">Kirim</button></p>
+                        </form> -->
 
 
+                <form action="" enctype="multipart/form-data" method="POST">
+                    <div class="row">
+                        <div class="col-12 mb-2 border rounded bg-white p-3">
+                        <h5 class="font-weight-bold">Status Reservasi Wisata</h5>
+
+                        <?php foreach($rowstatus as $status){ ?>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="radio_status" id="radio_status<?=$status->id_status_reservasi_wisata?>" value="<?=$status->id_status_reservasi_wisata?>" <?php if($rowitem->id_status_reservasi_wisata == $status->id_status_reservasi_wisata) echo " checked"; ?>>
+                                <label class="form-check-label <?php if($rowitem->id_status_reservasi_wisata == $status->id_status_reservasi_wisata) echo " font-weight-bold"; ?>" for="radio_status<?=$status->id_status_reservasi_wisata?>">
+                                    <?=$status->nama_status_reservasi_wisata?>
+                                </label>
+                            </div>
+                        <?php } ?>
+
+                            <button type="submit" name="submit" value="Simpan" class="btn btn-primary mt-2">Update Status</button></p>
+                        </div>
+
+
+                        <div class="col-lg-9 border rounded bg-white mb-2">
+                            <div class="" style="width:100%;">
+                                <div class="">
+                                    <h5 class="card-header mb-2 pl-0">Rincian Pembayaran</h5>
+                                    <span class="">Lokasi : </span>  <span class="text-info font-weight-bolder"><?=$rowitem->nama_lokasi?></span>
+                                    <div class="d-block my-3">
+                                        <div class="custom-control custom-radio">
+                                            <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+                                            <label class="custom-control-label  mb-2" for="credit">Bank Transfer (Konfirmasi Manual)</label>
+                                        </div>
+                                        <hr class="mb-2"/>
+
+                                        <div class="row">
+                                            <div class="col">
+                                                <span class="font-weight-bold">ID User
+                                            </div>
+                                            <div class="col-lg-8 mb-2">
+                                                <span class=""><?=$rowitem->id_reservasi?></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col">
+                                                <span class="font-weight-bold">Nama User  </span>
+                                            </div>
+                                            <div class="col-lg-8  mb-2">
+                                                <span class=""><?=$rowitem->nama_user?></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col">
+                                                <span class="font-weight-bold">Tanggal Reservasi  </span>
+                                            </div>
+                                            <div class="col-lg-8  mb-2">
+                                                <span class=""><?=$rowitem->tgl_reservasi?></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col">
+                                                <span class="font-weight-bold">Jumlah Peserta  </span>
+                                            </div>
+                                            <div class="col-lg-8  mb-2">
+                                                <span class="font-weight-bold"><?=$rowitem->jumlah_peserta?></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col">
+                                                <span class="font-weight-bold">Total  </span>
+                                            </div>
+                                            <div class="col-lg-8  mb-2">
+                                                <span class="font-weight-bold">Rp. <?=number_format($rowitem->total, 0)?></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col">
+                                                <span class="font-weight-bold">Keterangan  </span>
+                                            </div>
+                                            <div class="col-lg-8  mb-2">
+                                                <span class="font-weight-bold"><?=$rowitem->keterangan?></span>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br><br>
+
+                        <div class="col-lg-3  border rounded bg-white p-3 mb-2  text-center">
+                            <div class="form-group">
+                                <label for="file_bukti_reservasi_wisata">Bukti Reservasi Wisata</label><hr class="m-0">
+                            <div class='form-group' id='buktireservasi'>
+                            <!-- <div>
+                                <input type='file'  class='form-control' id='image_uploads'
+                                    name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
+                            </div> -->
+                        </div>
+
+                        <div class="form-group">
+                            <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
+                                <a href="<?=$rowitem->bukti_reservasi?>" data-toggle="lightbox"><img class="img-fluid" id="oldpic" src="<?=$rowitem->bukti_reservasi?>" width="50%" <?php if($rowitem->bukti_reservasi == NULL) echo " style='display:none;'"; ?>></a>
+                            <br>
+
+                            <small class="text-muted">
+                                <?php if($rowitem->bukti_reservasi == NULL){
+                                    echo "Bukti transfer belum diupload";
+                                }else{
+                                    echo "Klik gambar untuk memperbesar";
+                                }
+
+                                ?>
+                            </small>
+                            
+                            <script>
+                                window.onload = function() {
+                                document.getElementById('preview').style.display = 'none';
+                                };
+                                function readURL(input) {
+                                    if (input.files && input.files[0]) {
+                                        var reader = new FileReader();
+                                        document.getElementById('oldpic').style.display = 'none';
+                                        reader.onload = function (e) {
+                                            $('#preview')
+                                                .attr('src', e.target.result)
+                                                .width(200);
+                                                document.getElementById('preview').style.display = 'block';
+                                        };
+
+                                        reader.readAsDataURL(input.files[0]);
+                                    }
+                                }
+                            </script>
+                        </div>
+                    </div>
+
+
+
+                    <p align="center">
+                    <!-- <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p> -->
+                    </form>
+
+
+                    <?php //} ?>
+                </div>
             </section>
-        <?php //} ?>
+        
+
+
+
+
+
+
+
+
+
             <!-- /.Left col -->
             </div>
             <!-- /.row (main row) -->

@@ -4,6 +4,15 @@
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
 //}
+
+$sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
+                  LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                  LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                  ORDER BY id_reservasi DESC';
+$stmt = $pdo->prepare($sqlviewreservasi);
+$stmt->execute();
+$row = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -192,9 +201,9 @@
                             <h4><span class="align-middle font-weight-bold">Kelola Reservasi Wisata</span></h4>
                         </div>
                         <div class="col">
-                           
+                        <!--   
                         <a class="btn btn-primary float-right" href="input_reservasi_wisata.php" role="button">Input Data Baru (+)</a>
-                   
+                        -->
                         </div>
                     </div>
                 </div>
@@ -213,38 +222,81 @@
                             <th scope="col">ID User</th>
                             <th scope="col">ID Lokasi</th>
                             <th scope="col">Tgl Reservasi</th>
-                            <th scope="col">Jml Peserta</th>
-                            <th scope="col">Total (Rp.)</th>
                             <th scope="col">Status</th>
-                            <th scope="col">Keterangan</th>
                             <th scope="col">Aksi</th>
                             </tr>
                           </thead>
                           <tbody>
+                          <?php foreach ($row as $rowitem) { 
+                                $reservasidate = strtotime($rowitem->tgl_reservasi);
+                            ?>
                             <tr>
-                              <th scope="row">200201</th>
-                              <td>omtelolet</td>
-                              <td>L001</td>
-                              <td>10/10/20</td>
-                              <td>6 orang</td>
-                              <td>Rp.4.500.000</td>
-                              <td>Pending</td>
-                              <td>-</td>
+                              <th scope="row"><?=$rowitem->id_reservasi?></th>
+                              <td><?=$rowitem->id_user?> - <?=$rowitem->nama_user?></td>
+                              <td><?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></td>
+                              <td><?=strftime('%A, %d %B %Y', $reservasidate);?></td>
+                              <td><?=$rowitem->nama_status_reservasi_wisata?></td>
                               <td>
-                               <button type="button" class="btn btn-act">
-                                <a href="edit_reservasi_wisata.php" class="fas fa-edit"></a>
+                                <button type="button" class="btn btn-act">
+                                    <a href="edit_reservasi_wisata.php?id_reservasi=<?=$rowitem->id_reservasi?>" class="fas fa-edit"></a>
                                 </button>
-                              <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
+                                <button type="button" class="btn btn-act">
+                                    <i class="far fa-trash-alt"></i>
+                                </button>
                               </td>
                           </tr>
+                          <tr>
+                            <td colspan="6">
+                                <!--collapse start -->
+                                <div class="row  m-0">
+                                
+                                    <div class="col-12 cell detailcollapser<?=$rowitem->id_reservasi?>"
+                                        data-toggle="collapse"
+                                        data-target=".cell<?=$rowitem->id_reservasi?>, .contentall<?=$rowitem->id_reservasi?>">
+                                        <p
+                                            class="fielddetail<?=$rowitem->id_reservasi?> btn btn-act">
+                                            <i
+                                                class="icon fas fa-chevron-down"></i>
+                                            Rincian Reservasi</p>
+                                    </div>
+                                    <div class="col-12 cell<?=$rowitem->id_reservasi?> collapse contentall<?=$rowitem->id_reservasi?>    border rounded shadow-sm p-3">
+                                        
+                                        <div class="row mb-3  border-bottom">
+                                            <div class="col-md-3 kolom font-weight-bold">
+                                                Jumlah Peserta
+                                            </div>
+                                            <div class="col isi">
+                                                <?=$rowitem->jumlah_peserta?>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3  border-bottom">
+                                            <div class="col-md-3 kolom font-weight-bold">
+                                                Total (Rp.)
+                                            </div>
+                                            <div class="col isi">
+                                                Rp. <?=number_format($rowitem->total, 0)?>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3  border-bottom">
+                                            <div class="col-md-3 kolom font-weight-bold">
+                                                Keterangan
+                                            </div>
+                                            <div class="col isi">
+                                                <?=$rowitem->keterangan?>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!--collapse end -->
+                            </td>
+                          </tr>
+                          <?php } ?>
                           </tbody>
                   </table>
                 <?php //} ?>
 
             <!-- BUTTON SUBMIT -->
-            <div class="new-entry">
-               
-            </div>
             
             </section>
             <!-- /.Left col -->

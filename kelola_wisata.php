@@ -6,7 +6,8 @@
 //}
 
 $sqlviewwisata = 'SELECT * FROM t_wisata
-                  LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi';
+                  LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
+                  ORDER BY id_wisata DESC';
 $stmt = $pdo->prepare($sqlviewwisata);
 $stmt->execute();
 $row = $stmt->fetchAll();
