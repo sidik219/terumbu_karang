@@ -1,80 +1,83 @@
-<?php
-    include 'build/config/connection.php';
-    session_start();
+<?php include 'build/config/connection.php';
+//session_start();
 
-    //if (isset($_SESSION['level_user']) == 0) {
-      //header('location: login.php');
-    //}
+//if (isset($_SESSION['level_user']) == 0) {
+    //header('location: login.php');
+//}
 
-    $sqlviewlokasi = 'SELECT * FROM t_lokasi
-                WHERE id_lokasi = :id_lokasi
-                    ';
-    $stmt = $pdo->prepare($sqlviewlokasi);
-    $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
-    $rowlokasi = $stmt->fetch();
+    $id_reservasi = $_GET['id_reservasi'];
+    //$status_reservasi_wisata = "Menunggu Konfirmasi Pembayaran";
+    
+    $sql = 'SELECT * FROM t_reservasi_wisata, t_user, t_lokasi
+    WHERE id_reservasi = :id_reservasi
+    AND t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi';
 
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_reservasi' => $id_reservasi]);
+    $rowitem = $stmt->fetch();
+    /*
+    $sqlstatus = 'SELECT * FROM tb_status_reservasi_wisata';
+    $stmt = $pdo->prepare($sqlstatus);
+    $stmt->execute();
+    $rowstatus = $stmt->fetchAll();
+    
     if (isset($_POST['submit'])) {
-        if($_POST['submit'] == 'Simpan'){
-          $_SESSION['data_reservasi'] = $_POST['tb_deskripsi_reservasi'];
-          header("Location:review_reservasi_proses.php?status=addsuccess");
+        $id_status_reservasi_wisata = $_POST['radio_status'];
+        $sqlreservasi = "UPDATE t_reservasi_wisata
+                        SET id_status_reservasi_wisata = :id_status_reservasi_wisata
+                        WHERE id_reservasi = :id_reservasi";
 
-      // $id_user = $_POST['tb_id_user'];
-      // $nominal = $_POST['tb_nominal'];
-      // $deskripsi_donasi = $_POST['tb_deskripsi_donasi'];
-      // $id_lokasi = $_POST['tb_id_lokasi'];
-      // $status_donasi = "Menunggu Konfirmasi Pembayaran";
+        $stmt = $pdo->prepare($sqlreservasi);
+        $stmt->execute(['id_reservasi' => $id_reservasi, 'id_status_reservasi_wisata' => $id_status_reservasi_wisata]);
 
-
-
-      // $sqlinsertdonasi = "INSERT INTO t_donasi
-      //     (id_user, nominal, deskripsi_donasi, id_lokasi, status_donasi)
-      //     VALUES (:id_user, :nominal, :deskripsi_donasi, :id_lokasi, :status_donasi)
-      // ";
-
-      // $stmt = $pdo->prepare($sqlinsertdonasi);
-      // $stmt->execute(['id_user' => $id_user, 'nominal' => $nominal , 'deskripsi_donasi' => $deskripsi_donasi,
-      // 'id_lokasi' => $id_lokasi , 'status_donasi' => $status_donasi]);
-
-      // $affectedrows = $stmt->rowCount();
-      // if ($affectedrows == '0') {
-      // //echo "HAHAHAAHA INSERT FAILED !";
-      // } else {
-      //     //echo "HAHAHAAHA GREAT SUCCESSS !";
-      //     header("Location:donasi_saya.php?status=addsuccess");
-      // }
-    }
-  }
-
-
-
+        $affectedrows = $stmt->rowCount();
+        if ($affectedrows == '0') {
+            header("Location: kelola_reservasi_wisata.php?status=nochange");
+        } else {
+            //echo "HAHAHAAHA GREAT SUCCESSS !";
+            header("Location: kelola_reservasi_wisata.php?status=updatesuccess");
+        }
+    }*/
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Review Informasi Reservasi Wisata - TKJB</title>
+    <title>Kelola Donasi - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+    <!-- Leaflet CSS -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <!--Leaflet panel layer CSS-->
+        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
+    <!-- Leaflet Marker Cluster CSS -->
+        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
+        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
-<script>/*
-if (sessionStorage.getItem('keranjang_serialised') == undefined){
-  document.location.href = 'pilih_lokasi_wisata.php';
-}
-  var keranjang = JSON.parse(sessionStorage.getItem('keranjang_serialised'))*/
-</script>
-
-
     <div class="wrapper">
 
         <!-- NAVBAR -->
@@ -100,7 +103,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
         <!-- TOP SIDEBAR -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
-            <a href="dashboard_user.php" class="brand-link">
+            <a href="dashboard_admin.php" class="brand-link">
                 <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
                 <!-- BRAND TEXT (TOP) -->
                 <span class="brand-text font-weight-bold">TKJB</span>
@@ -111,39 +114,99 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
             <div class="sidebar">
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '2') { ?>    
-                        <li class="nav-item  ">
-                           <a href="dashboard_user.php" class="nav-link ">
+                   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <?php //if($_SESSION['level_user'] == '1') { ?>
+                        <li class="nav-item ">
+                           <a href="dashboard_admin.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p> Home </p>
                            </a>
                         </li>
-                        <li class="nav-item">
-                           <a href="donasi_saya.php" class="nav-link">
+                        <li class="nav-item ">
+                            <a href="kelola_donasi.php" class="nav-link ">
                                 <i class="nav-icon fas fa-hand-holding-usd"></i>
-                                <p> Donasi Saya </p>
-                           </a>
+                                <p> Kelola Donasi </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="kelola_wisata.php" class="nav-link">
+                                <i class="nav-icon fas fa-suitcase"></i>
+                                <p> Kelola Wisata </p>
+                            </a>
                         </li>
                         <li class="nav-item menu-open">
-                           <a href="reservasi_saya.php" class="nav-link active">
-                                <i class="nav-icon fas fa-suitcase"></i>
-                                <p> Reservasi Saya  </p>
-                           </a>
+                            <a href="kelola_reservasi_wisata.php" class="nav-link active">
+                                <i class="nav-icon fas fa-th-list"></i>
+                                <p> Kelola Reservasi </p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a href="kelola_wilayah.php" class="nav-link ">
+                                <i class="nav-icon fas fa-globe-asia"></i>
+                                <p> Kelola Wilayah </p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a href="kelola_lokasi.php" class="nav-link ">
+                                <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
+                                <p> Kelola Lokasi </p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a href="kelola_titik.php" class="nav-link ">
+                                 <i class="nav-icon fas fa-crosshairs"></i>
+                                 <p> Kelola Titik </p>
+                            </a>
                         </li>
                         <li class="nav-item">
-                           <a href="#" class="nav-link">
-                                <i class="nav-icon fas fas fa-disease"></i>
-                                <p> Terumbu Karang  </p>
-                           </a>
+                            <a href="kelola_detail_titik.php" class="nav-link">
+                                 <i class="nav-icon fas fa-podcast"></i>
+                                 <p> Kelola Detail Titik </p>
+                            </a>
                         </li>
                         <li class="nav-item">
-                           <a href="profil_saya.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Profil Saya  </p>
-                           </a>
+                            <a href="kelola_batch.php" class="nav-link">
+                                  <i class="nav-icon fas fa-boxes"></i>
+                                  <p> Kelola Batch </p>
+                            </a>
                         </li>
-                       
+                        <li class="nav-item">
+                            <a href="kelola_pemeliharaan.php" class="nav-link">
+                                  <i class="nav-icon fas fa-heart"></i>
+                                  <p> Kelola Pemeliharaan </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                             <a href="kelola_jenis_tk.php" class="nav-link">
+                                   <i class="nav-icon fas fa-certificate"></i>
+                                   <p> Kelola Jenis Terumbu </p>
+                             </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="kelola_tk.php" class="nav-link">
+                                  <i class="nav-icon fas fa-disease"></i>
+                                  <p> Kelola Terumbu Karang </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                             <a href="kelola_perizinan.php" class="nav-link">
+                                    <i class="nav-icon fas fa-scroll"></i>
+                                    <p> Kelola Perizinan </p>
+                             </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="kelola_laporan.php" class="nav-link">
+                                    <i class="nav-icon fas fa-book"></i>
+                                    <p> Kelola Laporan </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="kelola_user.php" class="nav-link">
+                                    <i class="nav-icon fas fa-user"></i>
+                                    <p> Kelola User </p>
+                            </a>
+                        </li>
                     <?php //} ?>
                     </ul>
                 </nav>
@@ -155,129 +218,124 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-
+            <div class="content-header">
+                <div class="container-fluid">
+                    <!-- <a class="btn btn-outline-primary" href="kelola_reservasi_wisata.php">< Kembali</a><br><br> -->
+                    <h4><span class="align-middle font-weight-bold">Edit Data Reservasi</span></h4>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
             <!-- /.content-header -->
-        <?php //if($_SESSION['level_user'] == '2') { ?>
+
             <!-- Main content -->
             <section class="content">
-                <div class="container">
-                            <h4 class="mt-3 mb-3"><span class="font-weight-bold">Review Informasi Reservasi Wisata</span></h4>
-            <div class="row">
-        <div class="col-md-4 order-md-2 mb-4">
-          <h4 class="d-flex justify-content-between align-items-center mb-3">
-            <span class="text-muted">Reservasi Wisata Anda</span>
-            <span id="badge-jumlah" class="badge badge-secondary badge-pill"></span>
-          </h4>
+                <div class="container-fluid">
+                    <?php //if($_SESSION['level_user'] == '1') { ?>
 
-          <ul class="list-group mb-3" id="keranjangancestor">
-            <!-- listcontentrow cetak di sini -->
-          </ul>
+                    <form action="" enctype="multipart/form-data" method="POST">
+                        <div class="row">
+                            <div class="col-lg-12 border rounded bg-white mb-2">
+                                <div class="" style="width:100%;">
+                                    <div class="">
+                                        <h5 class="card-header mb-2 pl-0">Rincian Pembayaran</h5>
+                                        <span class="">Lokasi : </span>  <span class="text-info font-weight-bolder"><?=$rowitem->nama_lokasi?></span>
+                                        <div class="d-block my-3">
+                                            <div class="custom-control custom-radio">
+                                                <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+                                                <label class="custom-control-label  mb-2" for="credit">Bank Transfer (Konfirmasi Manual)</label>
+                                            </div>
+                                            <hr class="mb-2"/>
+
+                                            <div class="row">
+                                                <div class="col">
+                                                    <span class="font-weight-bold">ID User
+                                                </div>
+                                                <div class="col-lg-8 mb-2">
+                                                    <span class=""><?=$rowitem->id_reservasi?></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col">
+                                                    <span class="font-weight-bold">Nama User  </span>
+                                                </div>
+                                                <div class="col-lg-8  mb-2">
+                                                    <span class=""><?=$rowitem->nama_user?></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <div class="col">
+                                                    <span class="font-weight-bold">Tanggal Reservasi  </span>
+                                                </div>
+                                                <div class="col-lg-8  mb-2">
+                                                    <span class=""><?=$rowitem->tgl_reservasi?></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <div class="col">
+                                                    <span class="font-weight-bold">Jumlah Peserta  </span>
+                                                </div>
+                                                <div class="col-lg-8  mb-2">
+                                                    <span class="font-weight-bold"><?=$rowitem->jumlah_peserta?></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <div class="col">
+                                                    <span class="font-weight-bold">Total  </span>
+                                                </div>
+                                                <div class="col-lg-8  mb-2">
+                                                    <span class="font-weight-bold">Rp. <?=number_format($rowitem->total, 0)?></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <div class="col">
+                                                    <span class="font-weight-bold">Status Reservasi Wisata  </span>
+                                                </div>
+                                                <div class="col-lg-8  mb-2">
+                                                    <input type="text" id="status_reservasi_wisata" name="status_reservasi_wisata" value="" class="form-control" >
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br> 
+                        </div>
+                        <p align="center">
+                        <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
+                    </form>
+
+                    <?php //} ?>
+                </div>
+            </section>
+        
 
 
+
+
+
+
+
+
+
+            <!-- /.Left col -->
+            </div>
+            <!-- /.row (main row) -->
         </div>
-        <div class="col-md-8 order-md-1 card">
-            <h4 class="mb-3 card-header pl-0">Data Rekening</h4>
-            <form action="" method="POST">
-            <div class="mb-3">
-              <label for="nama_donatur">Nama Pemilik Rekening</label>
-              <input type="text" class="form-control data_donatur" id="nama_donatur" name="nama_donatur" required>
-            </div>
-            <div class="mb-3">
-              <label for="no_rekening_donatur">Nomor Rekening</label>
-              <input type="number" class="form-control data_donatur" id="no_rekening_donatur" required>
-            </div>
-            <div class="mb-3">
-              <label for="nama_bank_donatur">Nama Bank</label>
-              <input type="text" class="form-control data_donatur" id="nama_bank_donatur" required>
-            </div>
-
-
-            <!-- Hidden fields for POST data -->
-
-            <input type="number" class="d-none" value="1" id="tb_id_user" name="tb_id_user">
-            <input type="number" class="d-none" value="" id="tb_nominal" name="tb_nominal">
-            <input type="hidden" value="" id="tb_deskripsi_reservasi" name="tb_deskripsi_reservasi">
-            <input type="number" class="d-none" value="" id="tb_id_lokasi" name="tb_id_lokasi">
-
-            <script>
-                var tbnama_donatur = document.getElementById('nama_donatur')
-                var tbno_rekening_donatur = document.getElementById('no_rekening_donatur')
-                var tbnama_bank_donatur = document.getElementById('nama_bank_donatur')
-                var tbdata_donatur = document.getElementsByClassName('data_donatur')
-
-                for (i = 0; i < tbdata_donatur.length; i++){
-                    tbdata_donatur[i].addEventListener('load', updateData);
-                    tbdata_donatur[i].addEventListener('change', updateData);
-                    tbdata_donatur[i].addEventListener('keyup', updateData);
-                }
-
-
-                function updateData(){
-                    keranjang["nama_donatur"] = tbnama_donatur.value
-                    keranjang["no_rekening_donatur"] = tbno_rekening_donatur.value
-                    keranjang["nama_bank_donatur"] = tbnama_bank_donatur.value
-                    keranjang["id_user"] = 1;
-                    document.getElementById('tb_deskripsi_reservasi').value = JSON.stringify(keranjang)
-                }
-
-                document.getElementById('tb_id_lokasi').value = keranjang.id_lokasi
-                document.getElementById('tb_nominal').value = keranjang.nominal
-
-                //console.log(document.getElementById('tb_deskripsi_donasi').value)
-            </script>
-
-            <div class="" style="width:100%;">
-                <div class="">
-                    <h4 class="card-header mb-2 pl-0">Metode Pembayaran</h4>
-            <span class="">Pilihan untuk lokasi wisata</span>  <span class="text-info font-weight-bolder"><?=$rowlokasi->nama_lokasi?> : </span>
-            <div class="d-block my-3">
-              <div class="custom-control custom-radio">
-                <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
-                <label class="custom-control-label  mb-2" for="credit">Bank Transfer (Konfirmasi Manual)</label>
-                <p class="text-muted">Harap upload bukti transfer di halaman "Reservasi Saya" setelah menekan tombol Buat Wisata.</p>
-              </div>
-<hr class="mb-2"/>
-
-            <div class="row">
-                <div class="col">
-                     <span class="font-weight-bold">Nama Rekening Pengelola
-                </div>
-                <div class="col-lg-8 mb-2">
-                     <span class=""><?=$rowlokasi->nama_rekening?></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <span class="font-weight-bold">Nomor Rekening Pengelola  </span>
-                </div>
-                <div class="col-lg-8  mb-2">
-                    <span class=""><?=$rowlokasi->nomor_rekening?></span>
-                </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col">
-                    <span class="font-weight-bold">Bank Pengelola  </span>
-                </div>
-                <div class="col-lg-8  mb-2">
-                    <span class=""><?=$rowlokasi->nama_bank?></span>
-                </div>
-            </div>
-                </div>
-            </div>
-
-            <button  name="submit" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4" type="submit">Buat Wisata</button>
-          </form>
-        </div>
-      </div>
         <!-- /.container-fluid -->
         </section>
-      <?php //} ?>
         <!-- /.content -->
     </div>
+    <!-- /.content-wrapper -->
+    <br><br>
     <footer class="main-footer">
         <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
     </footer>
-    <!-- /.content-wrapper -->
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -297,82 +355,40 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
     </script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="plugins/moment/moment.min.js"></script>
+    <script src="plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
-     <script src="js\numberformat.js"></script>
-
-    <script>
-      var keranjangancestor = document.getElementById("keranjangancestor")
-      var listcontentrow = document.createElement('li')
-      listcontentrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed")
-      // for (i = 0; i < keranjang.keranjang.length; i++){
-      //   var listcontentrow = document.createElement('li')
-      //   listcontentrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed")
-      //   var listcontent =
-      //   `<div>
-      //       <h6 class="my-0">${keranjang.keranjang[i].nama_tk}</h6>
-      //     </div>
-      //     <span class="text-muted">x${keranjang.keranjang[i].jumlah_tk}</span>`
-      //   listcontentrow.innerHTML = listcontent
-      //   keranjangancestor.prepend(listcontentrow)
-      // }
-
-
-      var jumlahitem = 0;
-      for (item in keranjang.keranjang){
-
-        var listcontentrow = document.createElement('li')
-        listcontentrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed")
-        var listcontent =
-        `<div>
-          <img src="${keranjang.keranjang[item].image}" height="30px">
-        </div>
-          <div>
-            <h6 class="my-0">${keranjang.keranjang[item].nama_tk}</h6>
-          </div>
-          <div>
-          <span class="font-weight-bold">x${keranjang.keranjang[item].jumlah_peserta}</span>
-          </div>
-          `
-        listcontentrow.innerHTML = listcontent
-        keranjangancestor.prepend(listcontentrow)
-
-        jumlahitem += parseInt(keranjang.keranjang[item].jumlah_peserta)
-      }
-
-        var listpesanrow = document.createElement('li')
-        listpesanrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed", "text-break")
-        var listpesan =
-        `<div class="row">
-        <div class="col-12">
-            <h6 class="my-0">Pesan/Ekspresi</h6>
-          </div>
-          <div class="col">
-          <span><i>${keranjang.pesan}</i></span>
-          </div>
-        </div>`
-        listpesanrow.innerHTML = listpesan
-        keranjangancestor.append(listpesanrow)
-
-
-      var listtotalrow = document.createElement('li')
-        listtotalrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed")
-      var listtotal =
-        `<div>
-            <h6 class="my-0 font-weight-bold">Total</h6>
-          </div>
-          <span class="font-weight-bold">${formatter.format(keranjang.nominal)}</span>`
-        listtotalrow.innerHTML = listtotal
-        keranjangancestor.append(listtotalrow)
-
-      var badgejumlah = document.getElementById("badge-jumlah")
-      badgejumlah.innerText = jumlahitem
-
-
-    </script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <!-- Leaflet Marker Cluster -->
+    <script src="dist/js/leaflet.markercluster-src.js"></script>
+    <!-- Leaflet panel layer JS-->
+    <script src="dist/js/leaflet-panel-layers.js"></script>
+    <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
+    <script src="dist/js/leaflet.ajax.js"></script>
+    <!-- Leaflet Map -->
+    <script src="dist/js/leaflet-map.js"></script>
 
 </body>
 </html>

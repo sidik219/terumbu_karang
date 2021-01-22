@@ -9,18 +9,15 @@ session_start();
   //     $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
   // }
 
-if($_GET['id_lokasi']){
-      $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
-  }
-else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
-      header("Location: pilih_lokasi_wisata.php");
-  }
+    $id_wisata = $_GET['id_wisata'];
 
-$sqlviewtk = 'SELECT * FROM t_wisata
-                LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi';
-$stmt = $pdo->prepare($sqlviewtk);
-$stmt->execute(['id_lokasi' => $_GET['id_lokasi']]);
-$row = $stmt->fetchAll();
+    $sqllokasi = 'SELECT * FROM t_wisata
+                    LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
+                    WHERE id_wisata = :id_wisata';
+
+    $stmt = $pdo->prepare($sqllokasi);
+    $stmt->execute(['id_wisata' => $id_wisata]);
+    $row = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -151,36 +148,34 @@ $row = $stmt->fetchAll();
                 <div class="container-fluid"> 
                     <?php
                      //$index = 0;
-                      foreach ($row as $rowitem) {
-                        //$deskripsi = json_decode($rowitem->deskripsi_donasi);
-                    ?>
-                    <div class="card-donasi">
-                        <div class="card-donasi__img">
-                            <img src="<?=$rowitem->foto_wisata?>">
-                        </div>
-
-                        <div class="card-donasi__info">
-                            <div class="card-donasi__tk">
-                                <span><b>Nama Lokasi</b></span>
+                        foreach ($row as $rowitem) { ?>
+                        <div class="card-donasi">
+                            <div class="card-donasi__img">
+                                <img src="<?=$rowitem->foto_wisata?>">
                             </div>
-                            <h5 class="card-donasi__title"><?=$rowitem->nama_lokasi?></h5><hr>
 
-                            <p class="card-donasi__text">
-                                <b>Alamat:</b> <?=$rowitem->deskripsi_lokasi?><hr>
-                            </p>
-                            <p class="card-donasi__text">
-                                <b>Daftar Wisata:</b> <?=$rowitem->judul_wisata?><hr>
-                            </p>
-                            <p class="card-donasi__text">
-                                <b>Harga:</b> Rp. <?=$rowitem->biaya_wisata?><hr>
-                            </p>
-                            <p class="card-donasi__text">
-                                <b>Deskripsi:</b> <?=$rowitem->deskripsi_wisata?><hr>
-                            </p>
+                            <div class="card-donasi__info">
+                                <div class="card-donasi__tk">
+                                    <span><b>Nama Lokasi</b></span>
+                                </div>
+                                <h5 class="card-donasi__title"><?=$rowitem->nama_lokasi?></h5><hr class="card-donasi__jarak">
 
-                            <a class="btn btn-primary btn-lg btn-block mb-4" href="reservasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" class="card-donasi__cta" style="color: white;">Wisata Sekarang</a>
-                        </div>
-                    </div> 
+                                <p class="card-donasi__text">
+                                    <b>Alamat:</b> <?=$rowitem->deskripsi_lokasi?><hr class="card-donasi__jarak">
+                                </p>
+                                <p class="card-donasi__text">
+                                    <b>Daftar Wisata:</b> <?=$rowitem->judul_wisata?><hr class="card-donasi__jarak">
+                                </p>
+                                <p class="card-donasi__text">
+                                    <b>Harga:</b> Rp. <?=$rowitem->biaya_wisata?><hr class="card-donasi__jarak">
+                                </p>
+                                <p class="card-donasi__text">
+                                    <b>Deskripsi:</b> <?=$rowitem->deskripsi_wisata?><hr class="card-donasi__jarak">
+                                </p>
+
+                                <a class="btn btn-primary btn-lg btn-block mb-4 card-donasi__cta" href="reservasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" style="color: white;">Wisata Sekarang</a>
+                            </div>
+                        </div> 
                     <?php  } ?>
                 </div>
             <?php //} ?>

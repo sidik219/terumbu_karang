@@ -9,12 +9,12 @@ session_start();
   //     $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
   // }
 
-$sqlwisata = 'SELECT * FROM t_wisata
-            LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi';
+    $sqlwisata = 'SELECT * FROM t_wisata
+                LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi';
 
-$stmt = $pdo->prepare($sqlwisata);
-$stmt->execute();
-$rowwisata = $stmt->fetchAll();
+    $stmt = $pdo->prepare($sqlwisata);
+    $stmt->execute();
+    $rowwisata = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -45,6 +45,8 @@ $rowwisata = $stmt->fetchAll();
         <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <!-- Local CSS -->
+    <link rel="stylesheet" type="text/css" href="css/style-card.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -150,10 +152,10 @@ $rowwisata = $stmt->fetchAll();
                             <a href="detail_lokasi_wisata.php?id_lokasi=<?=$rowitem->id_lokasi?>">
                                 <img class="card-img-top" width="100%" src="<?=$rowitem->foto_wisata?>">
                             </a>
-                                <div class="card-body">
+                                <div class="card-body card-body-costom">
                                     <p class="card-title"><h5 class="font-weight-bold"><?=$rowitem->nama_lokasi?></h5></p>
                                     <p class="card-text"><?=$rowitem->deskripsi_wisata?></p>
-                                    <a href="detail_lokasi_wisata.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="btn btn-outline-primary">Pilih Lokasi</a>
+                                    <a class="btn btn-primary btn-lg btn-block mb-4" href="detail_lokasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" class="card-donasi__cta" style="color: white;">Pilih Lokasi</a>
                                 </div>
                             </div>
                         </div>
