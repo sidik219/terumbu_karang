@@ -227,7 +227,8 @@ $row = $stmt->fetchAll();
                             </tr>
                           </thead>
                           <tbody>
-                          <?php foreach ($row as $rowitem) { 
+                          <?php foreach ($row as $rowitem) {
+                                $truedate = strtotime($rowitem->update_terakhir);
                                 $reservasidate = strtotime($rowitem->tgl_reservasi);
                             ?>
                             <tr>
@@ -235,7 +236,8 @@ $row = $stmt->fetchAll();
                               <td><?=$rowitem->id_user?> - <?=$rowitem->nama_user?></td>
                               <td><?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></td>
                               <td><?=strftime('%A, %d %B %Y', $reservasidate);?></td>
-                              <td><?=$rowitem->nama_status_reservasi_wisata?></td>
+                              <td><?=$rowitem->nama_status_reservasi_wisata?><br><small class="text-muted">Update Terakhir:
+                                <br><?=strftime('%A, %d %B %Y', $truedate);?></small></td>
                               <td>
                                 <button type="button" class="btn btn-act">
                                     <a href="edit_reservasi_wisata.php?id_reservasi=<?=$rowitem->id_reservasi?>" class="fas fa-edit"></a>

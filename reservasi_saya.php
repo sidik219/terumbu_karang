@@ -194,7 +194,7 @@ session_start();
                                             <span class="font-weight-bold"><i class="nav-icon text-warning fas fas fa-list-alt"></i> Status Reservasi</span>
                                             <br><?=$rowitem->nama_status_reservasi_wisata?>
 
-                                                <?php echo ($rowitem->id_status_reservasi_wisata <= 2) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_status_reservasi_wisata.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : ''; ?>
+                                                <?php echo ($rowitem->id_status_reservasi_wisata <= 2) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : ''; ?>
 
                                             <br><small class="text-muted"><b>Update Terakhir</b>
                                             <br><?=strftime('%A, %d %B %Y', $truedate);?></small>
