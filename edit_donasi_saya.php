@@ -27,7 +27,7 @@
             }
             else if (isset($_FILES['image_uploads'])) {
                 if (($rowitem->bukti_donasi == $defaultpic) || (!$rowitem->bukti_donasi)){
-                    $target_dir  = "images/bukti_donasi/";
+                    $target_dir  = "images/bukti_reservasi/";
                     $bukti_donasi = $target_dir .'BKTDNS_'.$randomstring. '.jpg';
                     move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $bukti_donasi);
                     $pic = "&new=";
@@ -116,7 +116,7 @@
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '2') { ?>
+                   <?php //if($_SESSION['level_user'] == '2') { ?>
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -137,22 +137,17 @@
                         </li>
                         <li class="nav-item">
                            <a href="profil_saya.php" class="nav-link">
+                                <i class="nav-icon fas fas fa-disease"></i>
+                                <p> Terumbu Karang  </p>
+                           </a>
+                        </li>
+                        <li class="nav-item">
+                           <a href="profil_saya.php" class="nav-link">
                                 <i class="nav-icon fas fas fa-user"></i>
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
-                        <li class="nav-item">
-                           <a href="map.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Map  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="review_donasi.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Review Donasi  </p>
-                           </a>
-                        </li>
+
                     <?php //} ?>
                     </ul>
                 </nav>
@@ -243,6 +238,7 @@
                     </div>
                     <div class="form-group">
                         <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
+                        <img id="oldpic" src="<?=$rowitem->bukti_reservasi?>" width="100px">
                         <a href="<?=$rowitem->bukti_donasi?>" data-toggle="lightbox"><img class="img-fluid" id="oldpic" src="<?=$rowitem->bukti_donasi?>" width="50%" <?php if($rowitem->bukti_donasi == NULL) echo " style='display:none;'"; ?>></a>
                         <br>
                         <small class="text-muted">

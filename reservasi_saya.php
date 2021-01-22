@@ -5,13 +5,13 @@ session_start();
     //header('location: login.php');
 //}
 
-$sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
-                  LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
-                  LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
-                  LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata';
-$stmt = $pdo->prepare($sqlviewreservasi);
-$stmt->execute();
-$row = $stmt->fetchAll();
+    $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
+                    LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                    LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                    LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata';
+    $stmt = $pdo->prepare($sqlviewreservasi);
+    $stmt->execute();
+    $row = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -145,45 +145,75 @@ $row = $stmt->fetchAll();
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                     <div>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">ID Reservasi</th>
-                                    <th scope="col">Nama User</th>
-                                    <th scope="col">Nama Lokasi</th>
-                                    <th scope="col">Tgl Reservasi</th>
-                                    <th scope="col">Jml Peserta</th>
-                                    <th scope="col">Total (Rp.)</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Keterangan</th>
-                                    <th scope="col">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php 
-                                  foreach ($row as $rowitem) { 
-                                  ?>
-                                  <tr>
-                                      <th scope="row"><?=$rowitem->id_reservasi?></th>
-                                      <td><?=$rowitem->nama_user?></td>
-                                      <td><?=$rowitem->nama_lokasi?></td>
-                                      <td><?=$rowitem->tgl_reservasi?></td> 
-                                      <td><?=$rowitem->jumlah_peserta?></td>
-                                      <td>Rp. <?=$rowitem->total?></td>
-                                      <td><?=$rowitem->nama_status_reservasi_wisata?></td>
-                                      <td><?=$rowitem->keterangan?></td>
-                                      <td>
-                                        <button type="button" class="btn btn-act">
-                                        <a href="edit_reservasi_saya.php" class="fas fa-edit"></a>
-                                        </button>
-                                        <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
-                                      </td>
-                                  </tr>
-                                <?php //$index++;
-                                } ?>
-                            </tbody>
-                        </table>
+                <?php
+                    if(!empty($_GET['status'])) {
+                        if($_GET['status'] == 'updatesuccess') {
+                            echo '<div class="alert alert-success" role="alert">
+                                    Update bukti pembayaran reservasi wisata berhasil!
+                                    </div>'; }
+                        else if($_GET['status'] == 'addsuccess') {
+                            echo '<div class="alert alert-success" role="alert">
+                                    Reservasi wisata berhasil dibuat! Harap upload bukti pembayaran agar reservasi wisata diproses pengelola
+                                    </div>'; }
+                    }
+                ?>
+                    <div>
+                        <?php foreach ($row as $rowitem) {
+                            $truedate = strtotime($rowitem->update_terakhir);
+                            $reservasidate = strtotime($rowitem->tgl_reservasi);
+                        ?>
+                        <div class="blue-container border rounded shadow-sm mb-4 p-4">
+                                <!-- First row -->
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <span class="badge badge-pill badge-primary mr-2"> ID Reservasi <?=$rowitem->id_reservasi?> </span>
+                                            <?php echo empty($rowitem->id_user) ? '' : '<span class="badge badge-pill badge-info mr-2"> ID User '.$rowitem->id_user.' - '.$rowitem->nama_user.'</span>';?>
+                                        </span>
+                                    </div>
+
+                                    <div class="col-md mb-3">
+                                        <div class="mb-2">
+                                            <span class="font-weight-bold"><i class="nav-icon text-success fas fas fa-money-bill-wave"></i> Total</span>
+                                            <br>
+                                            <span class="mb-3">Rp. <?=number_format($rowitem->total, 0)?></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <span class="font-weight-bold"><i class="nav-icon text-secondary fas fas fa-calendar-alt"></i> Tanggal Reservasi</span>
+                                            <br>
+                                            <?=strftime('%A, %d %B %Y', $reservasidate);?>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md mb-3">
+                                        <div class="mb-2">
+                                            <span class="font-weight-bold"><i class="nav-icon text-info fas fas fa-users"></i> Jumlah Peserta</span>
+                                            <br><?=$rowitem->jumlah_peserta?><br>
+                                        </div>
+                                        <div class="mb-3">
+                                            <span class="font-weight-bold"><i class="nav-icon text-warning fas fas fa-list-alt"></i> Status Reservasi</span>
+                                            <br><?=$rowitem->nama_status_reservasi_wisata?>
+
+                                                <?php echo ($rowitem->id_status_reservasi_wisata <= 2) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_status_reservasi_wisata.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : ''; ?>
+
+                                            <br><small class="text-muted"><b>Update Terakhir</b>
+                                            <br><?=strftime('%A, %d %B %Y', $truedate);?></small>
+                                        </div>                                                             
+                                    </div>
+
+                                    <div class="col-md mb-3">
+                                        <div class="mb-2">
+                                            <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-map-marker-alt"></i> Lokasi Reservasi Wisata</span><br>
+                                            <span class=""><?="$rowitem->nama_lokasi (ID $rowitem->id_lokasi)";?></span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <span class="font-weight-bold"><i class="nav-icon text-info fas fas fa-comment-dots"></i> Keterangan</span>
+                                            <br><?=$rowitem->keterangan?><br>
+                                        </div>
+                                    </div>
+                            </div><!-- First Row -->
+                        </div>
+                        <?php } ?>
                     </div>
                 </div>
             </section>
