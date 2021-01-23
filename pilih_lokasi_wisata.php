@@ -159,6 +159,14 @@ session_start();
                                 </div>
                             </div>
                         </div>
+                        <!-- Hidden Input :V -->
+                        <div class="row">
+                            <div class="col-lg-8 mb-2">
+                                <input type="hidden" id="" name="" value="<?=$rowitem->nama_rekening?>">
+                                <input type="hidden" id="" name="" value="<?=$rowitem->nomor_rekening?>">
+                                <input type="hidden" id="" name="" value="<?=$rowitem->nama_bank?>">
+                            </div>
+                        </div>
                     <?php } ?>
                     </div>
                 </div>

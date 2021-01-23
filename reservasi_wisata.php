@@ -17,24 +17,22 @@ session_start();
 
     if (isset($_POST['submit'])) {
         $id_lokasi          = $_POST['id_lokasi'];
+        $id_wisata          = $_POST['id_wisata'];
         $tgl_reservasi      = $_POST['tgl_reservasi'];
         $jumlah_peserta     = $_POST['jumlah_peserta'];
     
-        $sqlreservasi = "INSERT INTO t_reservasi_wisata
-                            (id_user, id_lokasi, tgl_reservasi, jumlah_peserta, total, foto_wisata, keterangan)
-                            VALUES (:id_user, :id_lokasi, :tgl_reservasi, :jumlah_peserta, :total, 
-                            :foto_wisata, :keterangan)";
+        $sqlreservasi = "INSERT INTO t_reservasi_wisata (id_lokasi, id_wisata, tgl_reservasi, jumlah_peserta)
+                            VALUES (:id_lokasi, :id_wisata, :tgl_reservasi, :jumlah_peserta)";
     
         $stmt = $pdo->prepare($sqlreservasi);
-        $stmt->execute(['id_user' => $id_user, 'id_lokasi' => $id_lokasi, 'tgl_reservasi' => $tgl_reservasi, 'jumlah_peserta' => $jumlah_peserta,
-        'total' => $total, 'foto_wisata' => $foto_wisata, 'keterangan' => $keterangan]);
+        $stmt->execute(['id_lokasi' => $id_lokasi, 'id_wisata' => $id_wisata, 'tgl_reservasi' => $tgl_reservasi, 'jumlah_peserta' => $jumlah_peserta]);
     
         $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
                 //echo "HAHAHAAHA INSERT FAILED !";
             } else {
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
-                //header("Location: review_wisata.php?status=updatesuccess");
+                header("Location: review_wisata.php?status=review_reservasi");
             }
         }
     
@@ -172,6 +170,8 @@ session_start();
                                 <div class="form-group">
                                     <label for="nama_lokasi">Nama Lokasi</label>
                                     <?php foreach($row as $rowitem) { ?>
+                                    <input type="hidden" id="id_wisata" name="id_wisata" value="<?=$rowitem->id_wisata?>" class="form-control">
+                                    <input type="hidden" id="harga" name="harga" value="<?=$rowitem->biaya_wisata?>" class="form-control">
                                     <input type="hidden" id="id_lokasi" name="id_lokasi" value="<?=$rowitem->id_lokasi?>" class="form-control">
                                     <input type="text" id="nama_lokasi" name="nama_lokasi" value="<?=$rowitem->nama_lokasi?>" class="form-control">
                                     <?php } ?>
@@ -183,14 +183,14 @@ session_start();
                                 <div class="form-group">
                                     <label for="jumlah_peserta">Jumlah Peserta</label>
                                     <div class="file-form">
-                                    <input type="text" id="jumlah_peserta" name="jumlah_peserta" class="form-control" >
+                                    <input type="number" id="jumlah_peserta" name="jumlah_peserta" class="form-control" >
                                     </div>
                                 </div>
                                 <br>
                                 <p align="center">
                                 <button  name="submit" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4" type="submit">
                                     Buat Reservasi
-                                </button></p> 
+                                </button></p>
                             </form>
                             
                         </div>

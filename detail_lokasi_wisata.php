@@ -175,7 +175,7 @@ session_start();
 
                                 <a class="btn btn-primary btn-lg btn-block mb-4 card-donasi__cta" href="reservasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" style="color: white;">Wisata Sekarang</a>
                             </div>
-                        </div> 
+                        </div>
                     <?php  } ?>
                 </div>
             <?php //} ?>
