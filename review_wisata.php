@@ -27,15 +27,18 @@
         $jumlah_peserta     = $_POST['jumlah_peserta'];
         $total              = $_POST['total'];
 
+        $tanggal_sekarang = date ('Y-m-d H:i:s', time());
+
         $sqlreservasi = "UPDATE t_reservasi_wisata
                             SET id_user = :id_user, id_lokasi = :id_lokasi, tgl_reservasi = :tgl_reservasi, 
                                 jumlah_peserta = :jumlah_peserta, total = :total, 
-                                id_status_reservasi_wisata = :id_status_reservasi_wisata, keterangan = :keterangan
+                                id_status_reservasi_wisata = :id_status_reservasi_wisata, keterangan = :keterangan, update_terakhir = :update_terakhir
                             ORDER BY id_reservasi DESC LIMIT 1";
 
         $stmt = $pdo->prepare($sqlreservasi);
         $stmt->execute(['id_user' => $id_user, 'id_lokasi' => $id_lokasi, 'tgl_reservasi' => $tgl_reservasi,
-        'jumlah_peserta' => $jumlah_peserta, 'total' => $total, 'id_status_reservasi_wisata' => $id_status_reservasi_wisata, 'keterangan' => $keterangan]);
+        'jumlah_peserta' => $jumlah_peserta, 'total' => $total, 'id_status_reservasi_wisata' => $id_status_reservasi_wisata, 
+        'keterangan' => $keterangan, 'update_terakhir' => $tanggal_sekarang]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
@@ -160,7 +163,7 @@
             if(!empty($_GET['status'])) {
                 if($_GET['status'] == 'review_reservasi') {
                     echo '<div class="alert alert-success" role="alert">
-                            Cek kembali reservasi wisata anda, supaya tidak terjadi kesalahan dalam penginputan data
+                            Cek kembali reservasi wisata anda, supaya tidak terjadi kesalahan dalam menginputan data
                             </div>'; }
             }
         ?>
@@ -177,7 +180,7 @@
             <div class="card" style="width: 20.5rem;">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item" style="opacity: 0.5;">Donasi 20%</li>
-                    <input type="text" id="total" name="total" value="" class="list-group-item" readonly>
+                    <input type="text" id="total" name="total" value="Total: Rp " class="list-group-item" readonly>
                 </ul>
             </div>
           </ul>
