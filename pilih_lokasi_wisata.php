@@ -154,7 +154,7 @@ session_start();
                             </a>
                                 <div class="card-body card-body-costom">
                                     <p class="card-title"><h5 class="font-weight-bold"><?=$rowitem->nama_lokasi?></h5></p>
-                                    <p class="card-text"><?=$rowitem->deskripsi_wisata?></p>
+                                    <p class="card-text"><?=$rowitem->judul_wisata?></p>
                                     <a class="btn btn-primary btn-lg btn-block mb-4" href="detail_lokasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" class="card-donasi__cta" style="color: white;">Pilih Lokasi</a>
                                 </div>
                             </div>

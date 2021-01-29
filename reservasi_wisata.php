@@ -6,6 +6,9 @@ session_start();
 //}
 
     $id_wisata = $_GET['id_wisata'];
+    $id_user = 1;
+    $id_status_reservasi_wisata = 1;
+    $keterangan = '-';
 
     $sqllokasi = 'SELECT * FROM t_wisata
                     LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
@@ -14,56 +17,55 @@ session_start();
     $stmt = $pdo->prepare($sqllokasi);
     $stmt->execute(['id_wisata' => $id_wisata]);
     $row = $stmt->fetchAll();
-
+    
     if (isset($_POST['submit'])) {
         $id_lokasi          = $_POST['id_lokasi'];
         $id_wisata          = $_POST['id_wisata'];
         $tgl_reservasi      = $_POST['tgl_reservasi'];
         $jumlah_peserta     = $_POST['jumlah_peserta'];
+        $total              = $_POST['total'];
+
+        $tanggal_sekarang = date ('Y-m-d H:i:s', time());
     
-        $sqlreservasi = "INSERT INTO t_reservasi_wisata (id_lokasi, id_wisata, tgl_reservasi, jumlah_peserta)
-                            VALUES (:id_lokasi, :id_wisata, :tgl_reservasi, :jumlah_peserta)";
+        $sqlreservasi = "INSERT INTO t_reservasi_wisata (id_user, id_lokasi, id_wisata, 
+                                        tgl_reservasi, jumlah_peserta, total, 
+                                        id_status_reservasi_wisata, keterangan, update_terakhir)
+                            VALUES (:id_user, :id_lokasi, :id_wisata, 
+                                        :tgl_reservasi, :jumlah_peserta, :total,
+                                        :id_status_reservasi_wisata, :keterangan, :update_terakhir)";
     
         $stmt = $pdo->prepare($sqlreservasi);
-        $stmt->execute(['id_lokasi' => $id_lokasi, 'id_wisata' => $id_wisata, 'tgl_reservasi' => $tgl_reservasi, 'jumlah_peserta' => $jumlah_peserta]);
+        $stmt->execute(['id_user' => $id_user, 'id_lokasi' => $id_lokasi,
+                        'id_wisata' => $id_wisata, 'tgl_reservasi' => $tgl_reservasi, 
+                        'jumlah_peserta' => $jumlah_peserta, 'total' => $total, 
+                        'id_status_reservasi_wisata' => $id_status_reservasi_wisata, 'keterangan' => $keterangan,
+                        'update_terakhir' => $tanggal_sekarang]);
     
         $affectedrows = $stmt->rowCount();
-            if ($affectedrows == '0') {
-                //echo "HAHAHAAHA INSERT FAILED !";
-            } else {
-                //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: review_wisata.php?status=review_reservasi");
-            }
+        if ($affectedrows == '0') {
+            //echo "HAHAHAAHA INSERT FAILED !";
+        } else {
+            //echo "HAHAHAAHA GREAT SUCCESSS !";
+            header("Location: reservasi_saya.php?status=addsuccess");
         }
+    }
     
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Pilih Jenis - TKJB</title>
+    <title>Review Informasi Donasi - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -106,7 +108,7 @@ session_start();
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '2') { ?>
+                <?php //if($_SESSION['level_user'] == '2') { ?>
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -148,69 +150,135 @@ session_start();
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row">
 
-                    </div>
-                </div>
-                <!-- /.container-fluid -->
-            </div>
             <!-- /.content-header -->
-
+        <?php //if($_SESSION['level_user'] == '2') { ?>
             <!-- Main content -->
             <section class="content">
-            <?php //if($_SESSION['level_user'] == '2') { ?>
-                <div class="container-fluid">
-                    <h3 style="text-align: center;">FORM RESERVASI</h3><p>
-                    <div class="row">
-                        <div class="col-md-12">
+                <div class="container">
+                  <br>
+                  <a class="btn btn-sm btn-outline-primary" href="#" onclick="history.back()"><i class="fas fa-angle-left"></i>   Kembali Pilih</a><br>
+                            <h4 class="pt-3 mb-3"><span class="font-weight-bold">Review Informasi Reservasi Wisata</span></h4>
+            <div class="row">
+        
+        <?php
+            if(!empty($_GET['status'])) {
+                if($_GET['status'] == 'review_reservasi') {
+                    echo '<div class="alert alert-success" role="alert">
+                            Cek kembali reservasi wisata anda, supaya tidak terjadi kesalahan dalam menginputan data
+                            </div>'; }
+            }
+        ?>
+        
+        <div class="col-md-4 order-md-2 mb-4">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted"><i class="fas fa-dollar-sign"></i> Total Reservasi Wisata Anda</span>
+            <span id="badge-jumlah" class="badge badge-secondary badge-pill"></span>
+          </h4>
 
-                            <form action="" enctype="multipart/form-data" method="POST">
-                                <div class="form-group">
-                                    <label for="nama_lokasi">Nama Lokasi</label>
-                                    <?php foreach($row as $rowitem) { ?>
-                                    <input type="hidden" id="id_wisata" name="id_wisata" value="<?=$rowitem->id_wisata?>" class="form-control">
-                                    <input type="hidden" id="harga" name="harga" value="<?=$rowitem->biaya_wisata?>" class="form-control">
-                                    <input type="hidden" id="id_lokasi" name="id_lokasi" value="<?=$rowitem->id_lokasi?>" class="form-control">
-                                    <input type="text" id="nama_lokasi" name="nama_lokasi" value="<?=$rowitem->nama_lokasi?>" class="form-control">
-                                    <?php } ?>
-                                </div>
-                                <div class="form-group">
-                                    <label for="tgl_reservasi">Tanggal Reservasi</label>
-                                    <input type="date" id="tgl_reservasi" name="tgl_reservasi" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="jumlah_peserta">Jumlah Peserta</label>
-                                    <div class="file-form">
-                                    <input type="number" id="jumlah_peserta" name="jumlah_peserta" class="form-control" >
-                                    </div>
-                                </div>
-                                <br>
-                                <p align="center">
-                                <button  name="submit" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4" type="submit">
-                                    Buat Reservasi
-                                </button></p>
-                            </form>
-                            
-                        </div>
+        <form action="" method="POST">
+        <?php foreach ($row as $rowitem) { ?>
+          <ul class="list-group mb-3" id="keranjangancestor">
+            <div class="card" style="width: 20.5rem;">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Paket Wisata :</li>
+                    <input type="text" id="deskripsi_wisata" name="deskripsi_wisata" value="<?=$rowitem->judul_wisata?> : " style="opacity: 0.5;" class="list-group-item" readonly>
+                    <input type="text" id="subtotal" name="subtotal" value="Subtotal : Rp " style="opacity: 0.5;" class="list-group-item" readonly>
+
+                    <select class="custom-select" id="donasi_saya" onchange="myFunction()">
+                        <option value ="1" selected>Pilih Donasi:</option>
+                        <option value="0.2">Donasi 10%</option>
+                        <option value="0.3">Donasi 20%</option>
+                        <option value="0.4">Donasi 30%</option>
+                    </select>
+
+                    <li class="list-group-item">Total : </li>
+                    <input type="text" id="total" name="total" value="" class="list-group-item" readonly>
+                </ul>
+            </div>
+          </ul>
+        </div>
+
+        <div class="col-md-8 order-md-1 card">
+            <h4 class="mb-3 card-header pl-0">Data Reservasi Wisata</h4>
+            
+                <div class="form-group">
+                    <label for="id_user"></label>
+                    <input type="hidden" id="id_wisata" name="id_wisata" value="<?=$rowitem->id_wisata?>" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_lokasi">ID Lokasi</label>
+                    <input type="hidden" id="id_lokasi" name="id_lokasi" value="<?=$rowitem->id_lokasi?>" class="form-control">
+                    <input type="text" id="nama_lokasi" name="nama_lokasi" value="<?=$rowitem->nama_lokasi?>" class="form-control" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="tgl_reservasi">Tanggal Reservasi</label>
+                    <input type="date" id="tgl_reservasi" name="tgl_reservasi" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="jumlah_peserta">Jumlah Peserta</label>
+                    <input type="number" id="jumlah_peserta" name="jumlah_peserta" min="1" onchange="myFunction()" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="jumlah_peserta"></label>
+                    <input type="hidden" id="biaya_wisata" name="biaya_wisata" value="<?=$rowitem->biaya_wisata?>" class="form-control" readonly>
+                </div>
+                
+                <div class="" style="width:100%;">
+                    <div class="">
+                        <h4 class="card-header mb-2 pl-0">Metode Pembayaran</h4>
+                        <span class="">Pilihan untuk lokasi :</span>  <span class="text-info font-weight-bolder"> <?=$rowitem->nama_lokasi?></span>
+                    <div class="d-block my-3">
+                    <div class="custom-control custom-radio">
+                        <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+                        <label class="custom-control-label  mb-2" for="credit">Bank Transfer (Konfirmasi Manual)</label>
+                        <p class="text-muted">Harap upload bukti transfer agar reservasi wisata segera diproses pengelola lokasi.</p>
+                    </div>
+                <hr class="mb-2"/>
+
+                <div class="row">
+                    <div class="col">
+                        <span class="font-weight-bold">Nama Rekening Pengelola
+                    </div>
+                    <div class="col-lg-8 mb-2">
+                        <span class=""><?=$rowitem->nama_rekening?></span>
                     </div>
                 </div>
-            <?php //} ?>
-            </section>
-            <!-- /.Left col -->
-            </div>
-            <!-- /.row (main row) -->
+                <div class="row">
+                    <div class="col">
+                        <span class="font-weight-bold">Nomor Rekening Pengelola  </span>
+                    </div>
+                    <div class="col-lg-8  mb-2">
+                        <span class=""><?=$rowitem->nomor_rekening?></span>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col">
+                        <span class="font-weight-bold">Bank Pengelola  </span>
+                    </div>
+                    <div class="col-lg-8  mb-2">
+                        <span class=""><?=$rowitem->nama_bank?></span>
+                    </div>
+                </div>
+
+                <button name="submit" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4" type="submit">Buat Reservasi Wisata</button>
+            <?php } ?>
+          </form>
         </div>
+      </div>
         <!-- /.container-fluid -->
         </section>
+      <?php //} ?>
         <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
-
     <footer class="main-footer">
         <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
     </footer>
+    <!-- /.content-wrapper -->
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -230,30 +298,49 @@ session_start();
     </script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="plugins/summernote/summernote-bs4.min.js"></script>
-    <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
+    <script src="js\numberformat.js"></script>
+
+    <!--(づ｡◕‿‿◕｡)づ pika pika pikachu (づ｡◕‿‿◕｡)づ-->
+    <script>
+        function myFunction() {
+            var jumlah_peserta  = document.getElementById("jumlah_peserta").value;
+            var biaya_wisata    = document.getElementById("biaya_wisata").value; 
+            var donasi_saya     = document.getElementById("donasi_saya").value; 
+            
+            var deskripsi   = jumlah_peserta;
+            var reservasi   = jumlah_peserta * biaya_wisata; //5 x 750.000 = 3.7500.000
+            var donasi      = donasi_saya * biaya_wisata; //0.4 x 750.000 = 300.000
+            
+            if(donasi_saya == 1)
+            {   
+                //3.750.000 tidak pakai donasi
+                var hasil   = reservasi;
+            } else {
+                //3.750.000 + 300.000 = 4.050.000 pakai donasi
+                var hasil   = reservasi + donasi ;
+            }
+            
+            //Reservasi Wisata subtotal
+            var	reverse1     = reservasi.toString().split('').reverse().join(''),
+                ribuan1      = reverse1.match(/\d{1,3}/g);
+                subtotal     = ribuan1.join('.').split('').reverse().join('');
+
+            //Reservasi Wisata total
+            var	reverse2     = hasil.toString().split('').reverse().join(''),
+                ribuan2      = reverse2.match(/\d{1,3}/g);
+                total        = ribuan2.join('.').split('').reverse().join('');
+            
+            document.getElementById("deskripsi_wisata").value = "<?=$rowitem->judul_wisata?> : " + deskripsi;
+            document.getElementById("subtotal").value = "Subtotal : Rp " + subtotal;
+            document.getElementById("total").value = "Rp " +  total;
+            
+        }
+    </script>
 
 </body>
 </html>

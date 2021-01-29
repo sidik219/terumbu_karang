@@ -167,13 +167,13 @@ session_start();
                                     <b>Daftar Wisata:</b> <?=$rowitem->judul_wisata?><hr class="card-donasi__jarak">
                                 </p>
                                 <p class="card-donasi__text">
-                                    <b>Harga:</b> Rp. <?=$rowitem->biaya_wisata?><hr class="card-donasi__jarak">
+                                    <b>Harga:</b> Rp. <?=number_format($rowitem->biaya_wisata, 0)?><hr class="card-donasi__jarak">
                                 </p>
                                 <p class="card-donasi__text">
                                     <b>Deskripsi:</b> <?=$rowitem->deskripsi_wisata?><hr class="card-donasi__jarak">
                                 </p>
 
-                                <a class="btn btn-primary btn-lg btn-block mb-4 card-donasi__cta" href="reservasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" style="color: white;">Wisata Sekarang</a>
+                                <a class="btn btn-primary btn-lg btn-block mb-4 card-donasi__cta" href="reservasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>_&status=review_reservasi" style="color: white;">Wisata Sekarang</a>
                             </div>
                         </div>
                     <?php  } ?>
