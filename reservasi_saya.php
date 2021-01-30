@@ -8,7 +8,8 @@ session_start();
     $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
                     LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                     LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
-                    LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata';
+                    LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                    ORDER BY id_reservasi DESC';
     $stmt = $pdo->prepare($sqlviewreservasi);
     $stmt->execute();
     $row = $stmt->fetchAll();
