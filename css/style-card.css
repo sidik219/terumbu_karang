@@ -153,3 +153,13 @@ body{
     }
 
 }
+
+.card-reservasi{
+    font-weight: bold; 
+    color: white; 
+    background-image: url('../images/sidebarbg.jpg');
+}
+
+.reservasi-input{
+    opacity: 0.5;
+}

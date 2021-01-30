@@ -68,6 +68,8 @@ session_start();
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <!-- Local CSS -->
+    <link rel="stylesheet" type="text/css" href="css/style-card.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -171,32 +173,47 @@ session_start();
         ?>
         
         <div class="col-md-4 order-md-2 mb-4">
-          <h4 class="d-flex justify-content-between align-items-center mb-3">
-            <span class="text-muted"><i class="fas fa-dollar-sign"></i> Total Reservasi Wisata Anda</span>
-            <span id="badge-jumlah" class="badge badge-secondary badge-pill"></span>
-          </h4>
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted"><i class="fas fa-dollar-sign"></i> Total Reservasi Wisata Anda</span>
+                <span id="badge-jumlah" class="badge badge-secondary badge-pill"></span>
+            </h4>
 
         <form action="" method="POST">
         <?php foreach ($row as $rowitem) { ?>
-          <ul class="list-group mb-3" id="keranjangancestor">
-            <div class="card" style="width: 20.5rem;">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Paket Wisata :</li>
-                    <input type="text" id="deskripsi_wisata" name="deskripsi_wisata" value="<?=$rowitem->judul_wisata?> : " style="opacity: 0.5;" class="list-group-item" readonly>
-                    <input type="text" id="subtotal" name="subtotal" value="Subtotal : Rp " style="opacity: 0.5;" class="list-group-item" readonly>
+            <ul class="list-group mb-3" id="keranjangancestor">
+                <!-- Paket Wisata -->
+                <div class="card" style="width: 20.5rem; margin-bottom: 20px;">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item card-reservasi">Paket Wisata :</li>
+                        <input type="text" id="deskripsi_wisata" name="deskripsi_wisata" value="<?=$rowitem->judul_wisata?> : " class="list-group-item reservasi-input" readonly>
+                        <input type="text" id="subtotal" name="subtotal" value="Subtotal : Rp " class="list-group-item reservasi-input" readonly>
 
-                    <select class="custom-select" id="donasi_saya" onchange="myFunction()">
-                        <option value ="1" selected>Pilih Donasi:</option>
-                        <option value="0.2">Donasi 10%</option>
-                        <option value="0.3">Donasi 20%</option>
-                        <option value="0.4">Donasi 30%</option>
-                    </select>
+                        
+                    </ul>
+                </div>
 
-                    <li class="list-group-item">Total : </li>
-                    <input type="text" id="total" name="total" value="" class="list-group-item" readonly>
-                </ul>
-            </div>
-          </ul>
+                <!-- Paket Donasi -->
+                <div class="card" style="width: 20.5rem;">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item card-reservasi">Paket Donasi : </li>
+                        <select class="custom-select" id="donasi_saya" onchange="myFunction()">
+                            <option value="1" selected disabled>Pilih Donasi:</option>
+                            <option value="1">Tidak Donasi</option>
+                            <option value="0.2">Donasi 20%</option>
+                            <option value="0.3">Donasi 30%</option>
+                            <option value="0.4">Donasi 40%</option>
+                        </select>
+                    </ul>
+                </div>
+
+                <!-- Total -->
+                <div class="card" style="width: 20.5rem;">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item card-reservasi">Total : </li>
+                        <input type="text" id="total" name="total" value="" class="list-group-item reservasi-input" readonly>
+                    </ul>
+                </div>
+            </ul>
         </div>
 
         <div class="col-md-8 order-md-1 card">
@@ -220,7 +237,7 @@ session_start();
 
                 <div class="form-group">
                     <label for="jumlah_peserta">Jumlah Peserta</label>
-                    <input type="number" id="jumlah_peserta" name="jumlah_peserta" min="1" onchange="myFunction()" class="form-control">
+                    <input type="number" id="jumlah_peserta" name="jumlah_peserta" value="1" min="1" onchange="myFunction()" class="form-control">
                 </div>
 
                 <div class="form-group">
@@ -313,7 +330,7 @@ session_start();
             var donasi_saya     = document.getElementById("donasi_saya").value; 
             
             var deskripsi   = jumlah_peserta;
-            var reservasi   = jumlah_peserta * biaya_wisata; //5 x 750.000 = 3.7500.000
+            var reservasi   = jumlah_peserta * biaya_wisata; //5 x 750.000 = 3.750.000
             var donasi      = donasi_saya * biaya_wisata; //0.4 x 750.000 = 300.000
             
             if(donasi_saya == 1)
@@ -326,18 +343,18 @@ session_start();
             }
             
             //Reservasi Wisata subtotal
-            var	reverse1     = reservasi.toString().split('').reverse().join(''),
-                ribuan1      = reverse1.match(/\d{1,3}/g);
-                subtotal     = ribuan1.join('.').split('').reverse().join('');
+            //var	reverse1     = reservasi.toString().split('').reverse().join(''),
+                //ribuan1      = reverse1.match(/\d{1,3}/g);
+                //subtotal     = ribuan1.join('.').split('').reverse().join('');
 
             //Reservasi Wisata total
-            var	reverse2     = hasil.toString().split('').reverse().join(''),
-                ribuan2      = reverse2.match(/\d{1,3}/g);
-                total        = ribuan2.join('.').split('').reverse().join('');
+            //var	reverse2     = hasil.toString().split('').reverse().join(''),
+                //ribuan2      = reverse2.match(/\d{1,3}/g);
+                //total        = ribuan2.join('.').split('').reverse().join('');
             
             document.getElementById("deskripsi_wisata").value = "<?=$rowitem->judul_wisata?> : " + deskripsi;
-            document.getElementById("subtotal").value = "Subtotal : Rp " + subtotal;
-            document.getElementById("total").value = "Rp " +  total;
+            document.getElementById("subtotal").value = "Subtotal : Rp " + reservasi; //subtotal dari jumlah_peserta * biaya_wisata
+            document.getElementById("total").value = hasil; //total dari reservasi * donasi
             
         }
     </script>
