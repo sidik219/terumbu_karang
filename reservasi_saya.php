@@ -9,6 +9,7 @@ session_start();
                     LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                     LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                     LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                    LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
                     ORDER BY id_reservasi DESC';
     $stmt = $pdo->prepare($sqlviewreservasi);
     $stmt->execute();
@@ -169,6 +170,7 @@ session_start();
                                     <div class="col-12 mb-3">
                                         <span class="badge badge-pill badge-primary mr-2"> ID Reservasi <?=$rowitem->id_reservasi?> </span>
                                             <?php echo empty($rowitem->id_user) ? '' : '<span class="badge badge-pill badge-info mr-2"> ID User '.$rowitem->id_user.' - '.$rowitem->nama_user.'</span>';?>
+                                            <?php echo empty($rowitem->id_wisata) ? '' : '<span class="badge badge-pill badge-success mr-2"> ID Wisata '.$rowitem->id_wisata.' - '.$rowitem->judul_wisata.'</span>';?>
                                         </span>
                                     </div>
 
