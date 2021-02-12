@@ -104,12 +104,6 @@ session_start();
                            </a>
                         </li>
                         <li class="nav-item">
-                           <a href="#" class="nav-link">
-                                <i class="nav-icon fas fas fa-disease"></i>
-                                <p> Terumbu Karang  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
                            <a href="profil_saya.php" class="nav-link">
                                 <i class="nav-icon fas fas fa-user"></i>
                                 <p> Profil Saya  </p>
@@ -169,8 +163,8 @@ session_start();
                                 <div class="row">
                                     <div class="col-12 mb-3">
                                         <span class="badge badge-pill badge-primary mr-2"> ID Reservasi <?=$rowitem->id_reservasi?> </span>
-                                            <?php echo empty($rowitem->id_user) ? '' : '<span class="badge badge-pill badge-info mr-2"> ID User '.$rowitem->id_user.' - '.$rowitem->nama_user.'</span>';?>
-                                            <?php echo empty($rowitem->id_wisata) ? '' : '<span class="badge badge-pill badge-success mr-2"> ID Wisata '.$rowitem->id_wisata.' - '.$rowitem->judul_wisata.'</span>';?>
+                                            <?php echo empty($rowitem->id_user) ? '' : '<span class="badge badge-pill badge-info mr-2"> Nama User - '.$rowitem->nama_user.'</span>';?>
+                                            <?php echo empty($rowitem->id_wisata) ? '' : '<span class="badge badge-pill badge-success mr-2"> Wisata  - '.$rowitem->judul_wisata.'</span>';?>
                                         </span>
                                     </div>
 
