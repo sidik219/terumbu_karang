@@ -23,21 +23,22 @@ session_start();
         $id_wisata          = $_POST['id_wisata'];
         $tgl_reservasi      = $_POST['tgl_reservasi'];
         $jumlah_peserta     = $_POST['jumlah_peserta'];
+        $jumlah_donasi      = $_POST['jumlah_donasi'];
         $total              = $_POST['total'];
 
         $tanggal_sekarang = date ('Y-m-d H:i:s', time());
     
         $sqlreservasi = "INSERT INTO t_reservasi_wisata (id_user, id_lokasi, id_wisata, 
-                                        tgl_reservasi, jumlah_peserta, total, 
+                                        tgl_reservasi, jumlah_peserta, jumlah_donasi, total, 
                                         id_status_reservasi_wisata, keterangan, update_terakhir)
                             VALUES (:id_user, :id_lokasi, :id_wisata, 
-                                        :tgl_reservasi, :jumlah_peserta, :total,
+                                        :tgl_reservasi, :jumlah_peserta, :jumlah_donasi, :total,
                                         :id_status_reservasi_wisata, :keterangan, :update_terakhir)";
     
         $stmt = $pdo->prepare($sqlreservasi);
         $stmt->execute(['id_user' => $id_user, 'id_lokasi' => $id_lokasi,
                         'id_wisata' => $id_wisata, 'tgl_reservasi' => $tgl_reservasi, 
-                        'jumlah_peserta' => $jumlah_peserta, 'total' => $total, 
+                        'jumlah_peserta' => $jumlah_peserta, 'jumlah_donasi' => $jumlah_donasi, 'total' => $total, 
                         'id_status_reservasi_wisata' => $id_status_reservasi_wisata, 'keterangan' => $keterangan,
                         'update_terakhir' => $tanggal_sekarang]);
     
@@ -181,8 +182,6 @@ session_start();
                         <li class="list-group-item card-reservasi">Paket Wisata :</li>
                         <input type="text" id="deskripsi_wisata" name="deskripsi_wisata" value="<?=$rowitem->judul_wisata?> : " class="list-group-item reservasi-input" readonly>
                         <input type="text" id="subtotal" name="subtotal" value="Subtotal : Rp " class="list-group-item reservasi-input" readonly>
-
-                        
                     </ul>
                 </div>
 
@@ -197,6 +196,7 @@ session_start();
                             <option value="0.3">Donasi 30%</option>
                             <option value="0.4">Donasi 40%</option>
                         </select>
+                        <input type="hidden" id="jumlah_donasi" name="jumlah_donasi" value="" class="list-group-item reservasi-input" readonly>
                     </ul>
                 </div>
 
@@ -348,6 +348,7 @@ session_start();
             
             document.getElementById("deskripsi_wisata").value = "<?=$rowitem->judul_wisata?> : " + deskripsi;
             document.getElementById("subtotal").value = "Subtotal : Rp " + reservasi; //subtotal dari jumlah_peserta * biaya_wisata
+            document.getElementById("jumlah_donasi").value = donasi; //jumlah donasi dari donasi_saya * biaya_wisata
             document.getElementById("total").value = hasil; //total dari reservasi * donasi
             
         }

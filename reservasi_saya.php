@@ -175,9 +175,18 @@ session_start();
                                             <span class="mb-3">Rp. <?=number_format($rowitem->total, 0)?></span>
                                         </div>
                                         <div class="mb-3">
+                                            <span class="font-weight-bold"><i class="nav-icon text-success fas fas fa-donate"></i> Jumlah Donasi</span>
+                                            <br>
+                                            <span class="mb-3">Rp. <?=number_format($rowitem->jumlah_donasi, 0)?></span>
+                                        </div>
+                                        <div class="mb-3">
                                             <span class="font-weight-bold"><i class="nav-icon text-secondary fas fas fa-calendar-alt"></i> Tanggal Reservasi</span>
                                             <br>
                                             <?=strftime('%A, %d %B %Y', $reservasidate);?>
+                                        </div>
+                                        <div class="mb-3">
+                                            <span class="font-weight-bold"><i class="nav-icon text-info fas fas fa-comment-dots"></i> Keterangan</span>
+                                            <br><?=$rowitem->keterangan?><br>
                                         </div>
                                     </div>
 
@@ -207,17 +216,26 @@ session_start();
                                     <div class="col-md mb-3">
                                         <div class="mb-2">
                                             <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-map-marker-alt"></i> Lokasi Reservasi Wisata</span><br>
+                                            <img height='75px' class="rounded" src=<?=$rowitem->foto_lokasi;?>><br><br>
                                             <span class=""><?="$rowitem->nama_lokasi (ID $rowitem->id_lokasi)";?></span>
                                             <br>
                                             <a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$rowitem->latitude?>,<?=$rowitem->longitude?>&z=8"
                                                 class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a>
                                         </div>
-                                        <div class="mb-2">
-                                            <span class="font-weight-bold"><i class="nav-icon text-info fas fas fa-comment-dots"></i> Keterangan</span>
-                                            <br><?=$rowitem->keterangan?><br>
-                                        </div>
                                     </div>
-                            </div><!-- First Row -->
+                                </div>
+                                <!-- First Row -->
+
+                                <p class=" btn btn-blue btn-primary" onclick="toggleDetail()">
+                                    <i class="icon fas fa-chevron-down"></i>
+                                    Bukti Pembayaran Reservasi Wisata
+                                </p>
+
+                                <div class="detail-toggle" id="main-toggle">
+                                    <a href="<?=$rowitem->foto_wisata?>" data-toggle="lightbox">
+                                        <img src="<?=$rowitem->foto_wisata?>?<?php if ($status='nochange'){echo time();}?>" width="200px">
+                                    </a>
+                                </div>
                         </div>
                         <?php } ?>
                     </div>
@@ -279,6 +297,26 @@ session_start();
     <script src="dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
+    <!-- Hiden/Show Button Bukti Pembayaran -->
+    <script>
+        $(document).ready(function() {
+            $('.preview-images').hide()
+            $('.detail-toggle').hide()
+        });
+
+        function toggleDetail(e){
+            var e = event.target
+            $(e).siblings('.detail-toggle').fadeToggle()
+        }
+    </script>
+    <!-- Menampilkan Bukti Pembayaran -->
+    <script src="js/ekko-lightbox.min.js"></script>
+    <script>
+        $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+            event.preventDefault();
+            $(this).ekkoLightbox();
+        });
+    </script>
 
 </body>
 </html>
