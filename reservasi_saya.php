@@ -4,6 +4,7 @@ session_start();
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
 //}
+    $defaultpic = "images/image_default.jpg";
 
     $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
                     LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
@@ -232,8 +233,27 @@ session_start();
                                 </p>
 
                                 <div class="detail-toggle" id="main-toggle">
-                                    <a href="<?=$rowitem->foto_wisata?>" data-toggle="lightbox">
-                                        <img src="<?=$rowitem->foto_wisata?>?<?php if ($status='nochange'){echo time();}?>" width="200px">
+                                    <a href="<?=$rowitem->bukti_reservasi?>" data-toggle="lightbox">
+                                    <img id="oldpic" src="<?=$rowitem->bukti_reservasi?>" width="100px">
+                                    <script>
+                                        window.onload = function() {
+                                        document.getElementById('preview').style.display = 'none';
+                                        };
+                                        function readURL(input) {
+                                            if (input.files && input.files[0]) {
+                                                var reader = new FileReader();
+                                                document.getElementById('oldpic').style.display = 'none';
+                                                reader.onload = function (e) {
+                                                    $('#preview')
+                                                        .attr('src', e.target.result)
+                                                        .width(200);
+                                                        document.getElementById('preview').style.display = 'block';
+                                                };
+
+                                                reader.readAsDataURL(input.files[0]);
+                                            }
+                                        }
+                                    </script>
                                     </a>
                                 </div>
                         </div>
