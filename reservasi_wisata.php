@@ -330,6 +330,7 @@ session_start();
             if(donasi_saya == 1)
             {   
                 //3.750.000 tidak pakai donasi
+                var donasi = 0;
                 var hasil   = reservasi;
             } else {
                 //3.750.000 + 300.000 = 4.050.000 pakai donasi
