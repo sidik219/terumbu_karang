@@ -191,7 +191,13 @@ session_start();
                                             <span class="font-weight-bold"><i class="nav-icon text-warning fas fas fa-list-alt"></i> Status Reservasi</span>
                                             <br><?=$rowitem->nama_status_reservasi_wisata?>
 
-                                                <?php echo ($rowitem->id_status_reservasi_wisata <= 2) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : ''; ?>
+                                                <?php
+                                                    if ($rowitem->id_status_reservasi_wisata == 2) {
+                                                        echo ($rowitem->id_status_reservasi_wisata <= 2) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo" style="display: none;"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : '';
+                                                    } else {
+                                                        echo ($rowitem->id_status_reservasi_wisata <= 2) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : ''; 
+                                                    }
+                                                ?>
 
                                             <br><small class="text-muted"><b>Update Terakhir</b>
                                             <br><?=strftime('%A, %d %B %Y', $truedate);?></small>
@@ -202,6 +208,9 @@ session_start();
                                         <div class="mb-2">
                                             <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-map-marker-alt"></i> Lokasi Reservasi Wisata</span><br>
                                             <span class=""><?="$rowitem->nama_lokasi (ID $rowitem->id_lokasi)";?></span>
+                                            <br>
+                                            <a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$rowitem->latitude?>,<?=$rowitem->longitude?>&z=8"
+                                                class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a>
                                         </div>
                                         <div class="mb-2">
                                             <span class="font-weight-bold"><i class="nav-icon text-info fas fas fa-comment-dots"></i> Keterangan</span>

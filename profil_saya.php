@@ -4,6 +4,12 @@ session_start();
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
 //}
+
+    $sqlviewuser = 'SELECT * FROM t_user';
+
+    $stmt = $pdo->prepare($sqlviewuser);
+    $stmt->execute();
+    $row = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -121,6 +127,7 @@ session_start();
                 <div class="container-fluid">
                 <?php //if($_SESSION['level_user'] == '2') { ?>
                     <!-- Data profil saya -->
+                    <?php foreach ($row as $rowitem) { ?>
                     <div class="container-profil-saya">
                         <div class="container-profil-header">
                         <h4><span class="align-middle font-weight-bold">Profil Saya</span></h4> 
@@ -131,49 +138,52 @@ session_start();
                               <form action="" enctype="multipart/form-data" method="POST">
                                 <div class="form-group">
                                     <label for="tb_nama_user">Nama User</label>
-                                    <input type="text" id="tb_nama_user" name="tb_nama_user" class="form-control">
+                                    <input type="text" id="tb_nama_user" name="tb_nama_user" value="<?=$rowitem->nama_user?>" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="rb_jenis_kelamin">Jenis Kelamin</label><br>
                                     <div class="form-check form-check-inline">
-                                        <input type="radio" id="rb_jenis_kelamin_pria" name="rb_jenis_kelamin" value="pria" class="form-check-input">
+                                        <input type="radio" id="rb_jenis_kelamin_pria" name="rb_jenis_kelamin" value="<?=$rowitem->jk?>" class="form-check-input">
                                         <label class="form-check-label" for="rb_jenis_kelamin_pria">Pria</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input type="radio" id="rb_jenis_kelamin_wanita" name="rb_jenis_kelamin" value="wanita" class="form-check-input">
+                                        <input type="radio" id="rb_jenis_kelamin_wanita" name="rb_jenis_kelamin" value="<?=$rowitem->jk?>" class="form-check-input">
                                         <label class="form-check-label" for="rb_jenis_kelamin_wanita">Wanita</label>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="tb_email">Email</label>
-                                    <input type="text" id="tb_email" name="tb_email" class="form-control">
+                                    <input type="text" id="tb_email" name="tb_email" value="<?=$rowitem->email?>" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="num_nomer_hp">No. HP</label>
-                                    <input type="number" id="num_nomer_hp" name="num_nomer_hp" class="form-control">
+                                    <input type="number" id="num_nomer_hp" name="num_nomer_hp" value="<?=$rowitem->no_hp?>" min="0" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="tb_alamat_user">Alamat</label>
-                                    <input type="text" id="tb_email" name="tb_alamat_user" class="form-control">
+                                    <input type="text" id="tb_email" name="tb_alamat_user" value="<?=$rowitem->alamat?>" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="num_ktp_user">No. KTP</label>
-                                    <input type="number" id="num_ktp_user" name="num_ktp_user" class="form-control">
+                                    <input type="number" id="num_ktp_user" name="num_ktp_user" value="<?=$rowitem->no_ktp?>" min="0" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="file_fc_ktp">Fotokopi KTP</label>
                                     <div class="file-form">
                                     <input type="file" id="file_fc_ktp" name="file_fc_ktp" class="form-control">
                                     </div>
+                                    <div>
+                                        <img src="<?=$rowitem->fotokopi_ktp?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="tb_tempat_lahir">Tempat Lahir</label>
-                                    <input type="text" id="tb_tempat_lahir" name="tb_tempat_lahir" class="form-control">
+                                    <input type="text" id="tb_tempat_lahir" name="tb_tempat_lahir" value="<?=$rowitem->tempat_lahir?>" class="form-control">
                                 </div>
                                 <div class="form-group">
                                      <label for="date_tanggal_lahir">Tanggal Lahir</label>
                                      <div class="file-form">
-                                     <input type="date" id="date_tanggal_lahir" name="date_tanggal_lahir" class="form-control" >
+                                     <input type="date" id="date_tanggal_lahir" name="date_tanggal_lahir" value="<?=$rowitem->tanggal_lahir?>" class="form-control" >
                                      </div>
                                  </div>
                                  <div class="form-group">
@@ -181,14 +191,17 @@ session_start();
                                     <div class="file-form">
                                     <input type="file" id="file_foto_user" name="file_foto_user" class="form-control">
                                     </div>
+                                    <div>
+                                        <img src="<?=$rowitem->foto_user?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="tb_username">Username</label>
-                                    <input type="text" id="tb_username" name="tb_username" class="form-control">
+                                    <input type="text" id="tb_username" name="tb_username" value="<?=$rowitem->username?>" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="pwd">Password</label>
-                                    <input type="password" id="pwd" name="pwd" class="form-control">
+                                    <input type="text" id="pwd" name="pwd" value="<?=$rowitem->password?>" class="form-control">
                                 </div><br>
                                 <p align="center">
                          <button type="submit" class="btn btn-submit">Simpan Perubahan</button></p>
@@ -197,7 +210,7 @@ session_start();
  
                         </div>
                         
-
+                    <?php } ?>
                     </div>
                     <!-- end of data profil saya -->
                 <?php //} ?>

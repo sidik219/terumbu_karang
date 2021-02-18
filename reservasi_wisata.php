@@ -226,7 +226,7 @@ session_start();
 
                 <div class="form-group">
                     <label for="tgl_reservasi">Tanggal Reservasi</label>
-                    <input type="date" id="tgl_reservasi" name="tgl_reservasi" class="form-control">
+                    <input type="date" id="tgl_reservasi" name="tgl_reservasi" class="form-control" required>
                 </div>
 
                 <div class="form-group">
