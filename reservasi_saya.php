@@ -203,15 +203,20 @@ session_start();
 
                                                 <?php
                                                     if ($rowitem->id_status_reservasi_wisata == 2) {
-                                                        echo ($rowitem->id_status_reservasi_wisata <= 2) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo" style="display: none;"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : '';
+                                                        //Pembayaran Telah di Konfirmasi
+                                                        echo ($rowitem->id_status_reservasi_wisata <= 3) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo" style="display: none;"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : '';
+                                                    } else if ($rowitem->id_status_reservasi_wisata == 3) {
+                                                        //Pembayaran Tidak Sesuai
+                                                        echo ($rowitem->id_status_reservasi_wisata <= 3) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : ''; 
                                                     } else {
-                                                        echo ($rowitem->id_status_reservasi_wisata <= 2) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : ''; 
+                                                        //Menunggu Konfirmasi Pembayaran
+                                                        echo ($rowitem->id_status_reservasi_wisata <= 3) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : ''; 
                                                     }
                                                 ?>
 
                                             <br><small class="text-muted"><b>Update Terakhir</b>
                                             <br><?=strftime('%A, %d %B %Y', $truedate);?></small>
-                                        </div>                                                             
+                                        </div>
                                     </div>
 
                                     <div class="col-md mb-3">
@@ -223,39 +228,45 @@ session_start();
                                             <a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$rowitem->latitude?>,<?=$rowitem->longitude?>&z=8"
                                                 class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a>
                                         </div>
+                                        <div class="mb-3">
+                                            <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-phone"></i> No HP Pengelola</span>
+                                            <br><?=$rowitem->kontak_lokasi?><br>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- First Row -->
+                                
+                                <?php if ($rowitem->id_status_reservasi_wisata == 2) { ?>
+                                    <p class=" btn btn-blue btn-primary" onclick="toggleDetail()">
+                                        <i class="icon fas fa-chevron-down"></i>
+                                        Bukti Pembayaran Reservasi Wisata
+                                    </p>
 
-                                <p class=" btn btn-blue btn-primary" onclick="toggleDetail()">
-                                    <i class="icon fas fa-chevron-down"></i>
-                                    Bukti Pembayaran Reservasi Wisata
-                                </p>
+                                    <div class="detail-toggle" id="main-toggle">
+                                        <a href="<?=$rowitem->bukti_reservasi?>" data-toggle="lightbox">
+                                        <img id="oldpic" src="<?=$rowitem->bukti_reservasi?>" width="100px">
+                                        <script>
+                                            window.onload = function() {
+                                            document.getElementById('preview').style.display = 'none';
+                                            };
+                                            function readURL(input) {
+                                                if (input.files && input.files[0]) {
+                                                    var reader = new FileReader();
+                                                    document.getElementById('oldpic').style.display = 'none';
+                                                    reader.onload = function (e) {
+                                                        $('#preview')
+                                                            .attr('src', e.target.result)
+                                                            .width(200);
+                                                            document.getElementById('preview').style.display = 'block';
+                                                    };
 
-                                <div class="detail-toggle" id="main-toggle">
-                                    <a href="<?=$rowitem->bukti_reservasi?>" data-toggle="lightbox">
-                                    <img id="oldpic" src="<?=$rowitem->bukti_reservasi?>" width="100px">
-                                    <script>
-                                        window.onload = function() {
-                                        document.getElementById('preview').style.display = 'none';
-                                        };
-                                        function readURL(input) {
-                                            if (input.files && input.files[0]) {
-                                                var reader = new FileReader();
-                                                document.getElementById('oldpic').style.display = 'none';
-                                                reader.onload = function (e) {
-                                                    $('#preview')
-                                                        .attr('src', e.target.result)
-                                                        .width(200);
-                                                        document.getElementById('preview').style.display = 'block';
-                                                };
-
-                                                reader.readAsDataURL(input.files[0]);
+                                                    reader.readAsDataURL(input.files[0]);
+                                                }
                                             }
-                                        }
-                                    </script>
-                                    </a>
-                                </div>
+                                        </script>
+                                        </a>
+                                    </div>
+                                <?php } ?>
                         </div>
                         <?php } ?>
                     </div>

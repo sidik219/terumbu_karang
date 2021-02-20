@@ -22,13 +22,16 @@
     $rowstatus = $stmt->fetchAll();
     
     if (isset($_POST['submit'])) {
-        $id_status_reservasi_wisata = $_POST['radio_status'];
+        $keterangan                  = $_POST['keterangan'];
+        $id_status_reservasi_wisata  = $_POST['radio_status'];
         $sqlreservasi = "UPDATE t_reservasi_wisata
-                        SET id_status_reservasi_wisata = :id_status_reservasi_wisata
+                        SET keterangan = :keterangan,
+                            id_status_reservasi_wisata = :id_status_reservasi_wisata
                         WHERE id_reservasi = :id_reservasi";
 
         $stmt = $pdo->prepare($sqlreservasi);
-        $stmt->execute(['id_reservasi' => $id_reservasi, 'id_status_reservasi_wisata' => $id_status_reservasi_wisata]);
+        $stmt->execute(['id_reservasi' => $id_reservasi, 'keterangan' => $keterangan, 
+                        'id_status_reservasi_wisata' => $id_status_reservasi_wisata]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
@@ -351,7 +354,16 @@
                                                 <span class="font-weight-bold">Keterangan  </span>
                                             </div>
                                             <div class="col-lg-8  mb-2">
-                                                <span class="font-weight-bold"><?=$rowitem->keterangan?></span>
+                                                <input type="text" name="keterangan" value="<?=$rowitem->keterangan?>" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col">
+                                                <span class="font-weight-bold">No HP  </span>
+                                            </div>
+                                            <div class="col-lg-8  mb-2">
+                                                <span class="font-weight-bold"><?=$rowitem->no_hp?></span>
                                             </div>
                                         </div>
                                         

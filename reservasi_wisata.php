@@ -196,9 +196,20 @@ session_start();
                             <option value="0.3">Donasi 30%</option>
                             <option value="0.4">Donasi 40%</option>
                         </select>
+                        <h6>
+                            Keterangan:
+                        </h6>
                         <input type="hidden" id="jumlah_donasi" name="jumlah_donasi" value="" class="list-group-item reservasi-input" readonly>
                     </ul>
                 </div>
+
+                <!-- Pesan / Ekspresi 
+                <div class="card" style="width: 20.5rem;">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item card-reservasi">Pesan / Ekspresi : </li>
+                        <input type="text" id="jumlah_donasi" name="jumlah_donasi" value="" class="list-group-item reservasi-input">
+                    </ul>
+                </div>-->
 
                 <!-- Total -->
                 <div class="card" style="width: 20.5rem;">
@@ -207,6 +218,11 @@ session_start();
                         <input type="text" id="total" name="total" value="" class="list-group-item reservasi-input" readonly>
                     </ul>
                 </div>
+
+                <!-- Link Untuk Ke Halaman Donasi Terumbu Karang -->
+                <a class="btn btn-primary btn-lg btn-block mb-4" href="pilih_jenis_tk.php?id_lokasi=<?=$rowitem->id_lokasi?>" style="color: white; width: 20.5rem;">
+                    Ayo Donasi Terumbu Karang
+                </a>
             </ul>
         </div>
 
