@@ -284,7 +284,7 @@
                     </div>
                     <div class="form-group" id="titik-container">
                         <label for="dd_id_titik">Titik Bersangkutan</label>
-                        <div class="row" id="rowtitik">
+                        <div class="row mb-3" id="rowtitik">
                           <div class="col">
                               <select id="dd_id_titik" name="dd_id_titik[]" class="form-control" required>
                               <option value="">Pilih Titik</option>

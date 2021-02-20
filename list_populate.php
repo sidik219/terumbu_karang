@@ -48,6 +48,32 @@ if ($_POST['type'] == 'load_titik' && !empty($_POST["id_lokasi"])) {
 
 
 <?php
+//Load TK
+if ($_POST['type'] == 'load_tk' && !empty($_POST["id_jenis"])) {
+    $id_jenis = $_POST["id_jenis"];
+    $daftartk = 'SELECT * FROM t_terumbu_karang
+                      WHERE id_jenis = :id_jenis
+                        ORDER BY id_terumbu_karang';
+        $stmt = $pdo->prepare($daftartk);
+        $stmt->execute(['id_jenis' => $id_jenis]);
+        $rowtk = $stmt->fetchAll();
+
+    ?>
+    <option value="">-Pilih Sub-jenis-</option>
+    <?php
+        foreach ($rowtk as $tk) {
+            ?>
+    <option value="<?php echo $tk->id_terumbu_karang; ?>">ID <?php echo $tk->id_terumbu_karang.'  ' .$tk->nama_terumbu_karang?></option>
+    <?php
+        }
+    }
+    ?>
+
+
+
+
+
+<?php
 //Load Daftar Donasi berdasarkan id_lokasi
 if ($_POST['type'] == 'load_donasi' && !empty($_POST["id_lokasi"])) {
     $id_lokasi = $_POST["id_lokasi"];

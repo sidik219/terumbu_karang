@@ -372,7 +372,7 @@
                           foreach($rowdetailperizinan as $detailperizinan){
 
                         ?>
-                        <div class="row" id="rowtitik_old">
+                        <div class="row mb-3" id="rowtitik_old">
                           <div class="col">
                               <select name="dd_id_titik_old[]" class="form-control" required>
                               <option class="old_titik" selected value="<?=$detailperizinan->id_titik?>">ID <?=$detailperizinan->id_titik?> <?=$detailperizinan->keterangan_titik?></option>
@@ -395,7 +395,7 @@
                         <label for="dd_id_titik">Titik Tambahan</label>
 
 
-                        <div class="row" id="rowtitik">
+                        <div class="row mb-3" id="rowtitik">
                           <div class="col">
                               <select id="dd_id_titik" name="dd_id_titik[]" class="form-control">
                               <option value="">Pilih Titik</option>
