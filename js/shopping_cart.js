@@ -59,9 +59,9 @@ function ready() {
     }
 
 
-    window.addEventListener('beforeunload', function(event) {
-        backClicked()
-    });
+    // window.addEventListener('beforeunload', function(event) {
+    //     backClicked()
+    // });
 
 }
 
@@ -330,25 +330,3 @@ function updateCartTotal() {
     var keranjang_serialised = JSON.stringify(keranjang_old)
     sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
 }
-
-$(document).ready(function() {
-
-    $(window).scroll(function() {
-        if ($(this).scrollTop() > 50) {
-            $('.scrollup').fadeIn();
-        } else {
-            $('.scrollup').fadeOut();
-        }
-    });
-
-    $('.scrollup').click(function() {
-        // $("html, body").animate({
-        //     scrollTop: 0
-        // }, 600);
-        // return false;
-        $([document.documentElement, document.body]).animate({
-            scrollTop: $("#keranjang").offset().top
-        }, 1000);
-    });
-
-});

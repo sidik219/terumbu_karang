@@ -207,12 +207,7 @@ $row = $stmt->fetchAll();
     </footer>
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
+
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- overlayScrollbars -->
@@ -229,6 +224,26 @@ $row = $stmt->fetchAll();
       var isipesan = keranjang_deserialised["pesan"]
 
       document.getElementById('pesan').value = isipesan
+
+
+
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 50) {
+            $('.scrollup').fadeIn();
+        } else {
+            $('.scrollup').fadeOut();
+        }
+    });
+
+    $('.scrollup').click(function() {
+        // $("html, body").animate({
+        //     scrollTop: 0
+        // }, 600);
+        // return false;
+        $([document.documentElement, document.body]).animate({
+            scrollTop: $("#keranjang").offset().top
+        }, 1000);
+    });
 
     </script>
 
