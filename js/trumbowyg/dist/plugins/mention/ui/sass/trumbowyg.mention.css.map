@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA;;;;;;;;;GASG;AAEH,AACI,2BADuB,CACvB,MAAM,CAAC;EACH,QAAQ,EAAE,QAAQ;EAClB,WAAW,EAAE,MAAM;CAatB;;AAhBL,AAKQ,2BALmB,CACvB,MAAM,AAID,MAAM,CAAC;EACJ,OAAO,EAAE,EAAE;EACX,QAAQ,EAAE,QAAQ;EAClB,GAAG,EAAE,CAAC;EACN,KAAK,EAAE,CAAC;EACR,KAAK,EAAE,GAAG;EACV,MAAM,EAAE,IAAI;EACZ,eAAe,EAAE,IAAI;EACrB,gBAAgB,EAAE,+EAA+E;EACjG,cAAc,EAAE,IAAI;CACvB",
+    "sources": [
+        "trumbowyg.mention.scss"
+    ],
+    "names": [],
+    "file": "trumbowyg.mention.css"
+}

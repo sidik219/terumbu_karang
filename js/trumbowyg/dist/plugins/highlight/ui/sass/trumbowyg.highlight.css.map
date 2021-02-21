@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA;;;;;;;;;GASG;AAEH,AAAA,+BAA+B,CAAC;EAC9B,MAAM,EAAE,SAAS;CAYlB;;AAbD,AAGE,+BAH6B,CAG7B,iCAAiC,CAAC;EAChC,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,iBAAiB;EACzB,SAAS,EAAE,IAAI;EACf,OAAO,EAAE,GAAG;CAKb;;AAZH,AASI,+BAT2B,CAG7B,iCAAiC,AAM9B,KAAK,CAAC;EACL,MAAM,EAAE,KAAK;CACd",
+    "sources": [
+        "trumbowyg.highlight.scss"
+    ],
+    "names": [],
+    "file": "trumbowyg.highlight.css"
+}
