@@ -1,3 +1,22 @@
+<?php include 'build/config/connection.php';
+session_start();
+
+//if (isset($_SESSION['level_user']) == 0) {
+    //header('location: login.php');
+//}
+
+  // else{
+  //     $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
+  // }
+
+    $sqlwisata = 'SELECT * FROM t_wisata
+                LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi';
+
+    $stmt = $pdo->prepare($sqlwisata);
+    $stmt->execute();
+    $rowwisata = $stmt->fetchAll();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,6 +40,12 @@
     
     <!-- Font Awesome CSS -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Local CSS -->
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <!-- Local CSS -->
+    <link rel="stylesheet" type="text/css" href="css/style-card.css">
     
     
 </head>
@@ -72,11 +97,54 @@
 </nav> 
 <!-- END OF NAVBAR -->
 
-  <div class="container">
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-  </div>
+    <div class="coralmaps-about-container">
+        <div id="about" class="container" style="margin-top:50px;">
+            
+        <div class="starter-template">
+            <h1 class="mb-5">PILIH LOKASI RESERVASI WISATA</h1><br>
+        </div>
+
+        <section class="content" style="margin-top:-50px;">
+                <div class="container-fluid">
+                <!-- Untuk User -->
+                    <?php //if($_SESSION['level_user'] == '2') { ?>
+                        <div class="container-fluid">
+                            <div class="row">
+                            <?php
+                            foreach ($rowwisata as $rowitem) { 
+                                if ($rowitem->status_aktif == "Aktif") { ?>
+
+                                <div class="col-md-4">
+                                    <div class="card card-pilihan mb-4 shadow-sm">
+                                    <a href="detail_lokasi_wisata.php?id_lokasi=<?=$rowitem->id_lokasi?>">
+                                        <img class="card-img-top" width="100%" src="<?=$rowitem->foto_wisata?>">
+                                    </a>
+                                        <div class="card-body card-body-costom">
+                                            <p class="card-title"><h5 class="font-weight-bold"><?=$rowitem->nama_lokasi?></h5></p>
+                                            <p class="card-text"><?=$rowitem->judul_wisata?></p>
+                                            <a class="btn btn-primary btn-lg btn-block mb-4" href="detail_lokasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" class="card-donasi__cta" style="color: white;">Pilih Lokasi</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Hidden Input :V -->
+                                <div class="row">
+                                    <div class="col-lg-8 mb-2">
+                                        <input type="hidden" id="" name="" value="<?=$rowitem->nama_rekening?>">
+                                        <input type="hidden" id="" name="" value="<?=$rowitem->nomor_rekening?>">
+                                        <input type="hidden" id="" name="" value="<?=$rowitem->nama_bank?>">
+                                    </div>
+                                </div>
+
+                                <?php } ?>
+                            <?php } ?>
+                            </div>
+                        </div>
+                    <?php //} ?>
+                </div>
+        </section>
+
+        </div>
+    </div>
 
     <section id="footer">
         <div class="container">

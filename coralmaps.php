@@ -93,7 +93,7 @@ session_start();
 <!-- END OF NAVBAR -->
 
  
-  <div class="coralmaps-about-container">
+    <div class="coralmaps-about-container">
         <div id="about" class="container" style="margin-top:50px;">
             
         <div class="starter-template">
@@ -125,7 +125,7 @@ session_start();
         </section>
 
         </div>
-  </div>
+    </div>
 
     <section id="footer">
         <div class="container">
