@@ -140,7 +140,9 @@ session_start();
                     <h3>Pilih Lokasi Wisata</h3>
                     <div class="row">
                     <?php
-                    foreach ($rowwisata as $rowitem) { ?>
+                    foreach ($rowwisata as $rowitem) { 
+                        if ($rowitem->status_aktif == "Aktif") { ?>
+
                         <div class="col-md-4">
                             <div class="card card-pilihan mb-4 shadow-sm">
                             <a href="detail_lokasi_wisata.php?id_lokasi=<?=$rowitem->id_lokasi?>">
@@ -161,6 +163,8 @@ session_start();
                                 <input type="hidden" id="" name="" value="<?=$rowitem->nama_bank?>">
                             </div>
                         </div>
+
+                        <?php } ?>
                     <?php } ?>
                     </div>
                 </div>
