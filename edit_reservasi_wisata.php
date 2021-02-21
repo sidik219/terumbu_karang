@@ -8,9 +8,10 @@
     $id_reservasi = $_GET['id_reservasi'];
     $status_reservasi_wisata = "Menunggu Konfirmasi Pembayaran";
     
-    $sql = 'SELECT * FROM t_reservasi_wisata, t_user, t_lokasi
+    $sql = 'SELECT * FROM t_reservasi_wisata, t_user, t_lokasi, t_wisata
     WHERE id_reservasi = :id_reservasi
-    AND t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi';
+    AND t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+    AND t_reservasi_wisata.id_wisata = t_wisata.id_wisata';
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['id_reservasi' => $id_reservasi]);
@@ -333,10 +334,28 @@
 
                                         <div class="row mb-2">
                                             <div class="col">
+                                                <span class="font-weight-bold">Wisata  </span>
+                                            </div>
+                                            <div class="col-lg-8  mb-2">
+                                                <span class="font-weight-bold"><?=$rowitem->judul_wisata?></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col">
                                                 <span class="font-weight-bold">Jumlah Peserta  </span>
                                             </div>
                                             <div class="col-lg-8  mb-2">
                                                 <span class="font-weight-bold"><?=$rowitem->jumlah_peserta?></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col">
+                                                <span class="font-weight-bold">Jumlah Donasi  </span>
+                                            </div>
+                                            <div class="col-lg-8  mb-2">
+                                                <span class="font-weight-bold">Rp. <?=number_format($rowitem->jumlah_donasi, 0)?></span>
                                             </div>
                                         </div>
 

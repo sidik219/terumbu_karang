@@ -9,6 +9,7 @@ $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
                   LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                   LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                  LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
                   ORDER BY id_reservasi DESC';
 $stmt = $pdo->prepare($sqlviewreservasi);
 $stmt->execute();
@@ -265,10 +266,26 @@ $row = $stmt->fetchAll();
                                         
                                         <div class="row mb-3  border-bottom">
                                             <div class="col-md-3 kolom font-weight-bold">
+                                                Wisata
+                                            </div>
+                                            <div class="col isi">
+                                                <?=$rowitem->judul_wisata?>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3  border-bottom">
+                                            <div class="col-md-3 kolom font-weight-bold">
                                                 Jumlah Peserta
                                             </div>
                                             <div class="col isi">
                                                 <?=$rowitem->jumlah_peserta?>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3  border-bottom">
+                                            <div class="col-md-3 kolom font-weight-bold">
+                                                Jumlah Donasi
+                                            </div>
+                                            <div class="col isi">
+                                                Rp. <?=number_format($rowitem->jumlah_donasi, 0)?>
                                             </div>
                                         </div>
                                         <div class="row mb-3  border-bottom">
@@ -285,6 +302,14 @@ $row = $stmt->fetchAll();
                                             </div>
                                             <div class="col isi">
                                                 <?=$rowitem->keterangan?>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3  border-bottom">
+                                            <div class="col-md-3 kolom font-weight-bold">
+                                                No HP
+                                            </div>
+                                            <div class="col isi">
+                                                <?=$rowitem->no_hp?>
                                             </div>
                                         </div>
 

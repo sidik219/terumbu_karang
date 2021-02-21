@@ -7,6 +7,7 @@
 
 $sqlviewwisata = 'SELECT * FROM t_wisata
                   LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN tb_paket_donasi ON t_wisata.id_paket_donasi = tb_paket_donasi.id_paket_donasi
                   ORDER BY id_wisata DESC';
 $stmt = $pdo->prepare($sqlviewwisata);
 $stmt->execute();
@@ -264,6 +265,15 @@ $row = $stmt->fetchAll();
                                         </div>
                                         <div class="col isi">
                                             Rp. <?=number_format($rowitem->biaya_wisata, 0)?>
+                                        </div>
+                                    </div>
+
+                                    <div class="row  mb-3">
+                                        <div class="col-md-3 kolom font-weight-bold">
+                                            Persentase paket donasi
+                                        </div>
+                                        <div class="col isi">
+                                            <?=number_format($rowitem->persentase_paket_donasi, 1)?> %
                                         </div>
                                     </div>
 

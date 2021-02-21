@@ -152,7 +152,7 @@ session_start();
                                             </div>     
                                         </div>
                                     </div>
-                                    
+                                    <!--
                                     <div class="col-md-12 col-lg-4">
                                         <div class="card m-3 dashboard-home">
                                             <img class="card-img-top mb-3" src="dist/img/coral-status.jpg" alt="Card image cap" id="img-cap">
@@ -160,7 +160,7 @@ session_start();
                                             <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='#';">Terumbu Karang</button> 
                                             </div>     
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-12 col-lg-4">
                                         <div class="card m-3 dashboard-home">
                                             <img class="card-img-top mb-3" src="dist/img/user.jpg" alt="Card image cap" id="img-cap">

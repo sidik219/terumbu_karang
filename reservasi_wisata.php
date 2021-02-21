@@ -12,11 +12,18 @@ session_start();
 
     $sqllokasi = 'SELECT * FROM t_wisata
                     LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
+                    LEFT JOIN tb_paket_donasi ON t_wisata.id_paket_donasi = tb_paket_donasi.id_paket_donasi
                     WHERE id_wisata = :id_wisata';
 
     $stmt = $pdo->prepare($sqllokasi);
     $stmt->execute(['id_wisata' => $id_wisata]);
     $row = $stmt->fetchAll();
+
+    $sqlviewpersentase = 'SELECT * FROM tb_paket_donasi
+                        ORDER BY persentase_paket_donasi';
+    $stmt = $pdo->prepare($sqlviewpersentase);
+    $stmt->execute();
+    $rowpersentase = $stmt->fetchAll();
     
     if (isset($_POST['submit'])) {
         $id_lokasi          = $_POST['id_lokasi'];
@@ -192,13 +199,15 @@ session_start();
                         <select class="custom-select" id="donasi_saya" onchange="myFunction()">
                             <option value="1" selected disabled>Pilih Donasi:</option>
                             <option value="1">Tidak Donasi</option>
-                            <option value="0.2">Donasi 20%</option>
-                            <option value="0.3">Donasi 30%</option>
-                            <option value="0.4">Donasi 40%</option>
+                            <?php foreach ($rowpersentase as $rowpaket) { ?>
+                            <option value="<?=$rowpaket->persentase_paket_donasi?>"><?=$rowpaket->persentase_paket_donasi?>%</option>
+                            <?php } ?>
                         </select>
-                        <h6>
-                            Keterangan:
-                        </h6>
+                        <span class="keterangan-paket-donasi">
+                            *Harap Transfer sesuai dengan nominal tunai <br>
+                            *Paket Donasi = <?=$rowitem->persentase_paket_donasi?> Harga Wisata di Lokasi 
+                            <b style="color: #17a2b8;"><?=$rowitem->nama_lokasi?></b>
+                        </span>
                         <input type="hidden" id="jumlah_donasi" name="jumlah_donasi" value="" class="list-group-item reservasi-input" readonly>
                     </ul>
                 </div>
@@ -247,7 +256,7 @@ session_start();
 
                 <div class="form-group">
                     <label for="jumlah_peserta">Jumlah Peserta</label>
-                    <input type="number" id="jumlah_peserta" name="jumlah_peserta" value="1" min="1" onchange="myFunction()" class="form-control">
+                    <input type="number" id="jumlah_peserta" name="jumlah_peserta" value="1" min="1" onchange="myFunction()" class="form-control" required>
                 </div>
 
                 <div class="form-group">

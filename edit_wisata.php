@@ -14,8 +14,15 @@
         $stmt->execute();
         $rowlokasi = $stmt->fetchAll();
 
+        $sqlviewpersentase = 'SELECT * FROM tb_paket_donasi
+                    ORDER BY persentase_paket_donasi';
+        $stmt = $pdo->prepare($sqlviewpersentase);
+        $stmt->execute();
+        $rowpersentase = $stmt->fetchAll();
+
         $sqleditwisata = 'SELECT * FROM t_wisata
         LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
+        LEFT JOIN tb_paket_donasi ON t_wisata.id_paket_donasi = tb_paket_donasi.id_paket_donasi
         WHERE id_wisata = :id_wisata';
         $stmt = $pdo->prepare($sqleditwisata);
         $stmt->execute(['id_wisata' => $id_wisata]);
@@ -26,6 +33,7 @@
             $judul_wisata       = $_POST['tb_judul_wisata'];
             $deskripsi_wisata   = $_POST['tb_deskripsi_wisata'];
             $biaya_wisata       = $_POST['num_biaya_wisata'];
+            $id_paket_donasi    = $_POST['id_paket_donasi'];
             $status_aktif       = $_POST['rb_status_wisata'];
 
             //Image upload
@@ -52,12 +60,19 @@
 
             $sqlwisata = "UPDATE t_wisata
                             SET id_lokasi = :id_lokasi, judul_wisata = :judul_wisata, deskripsi_wisata = :deskripsi_wisata,
-                            biaya_wisata = :biaya_wisata, foto_wisata = :foto_wisata, status_aktif = :status_aktif
-                            WHERE id_wisata = :id_wisata";
+                            biaya_wisata = :biaya_wisata, id_paket_donasi = :id_paket_donasi, foto_wisata = :foto_wisata, 
+                            status_aktif = :status_aktif WHERE id_wisata = :id_wisata";
 
             $stmt = $pdo->prepare($sqlwisata);
-            $stmt->execute(['id_lokasi' => $id_lokasi, 'judul_wisata' => $judul_wisata, 'deskripsi_wisata' => $deskripsi_wisata,
-            'biaya_wisata' => $biaya_wisata, 'foto_wisata' => $foto_wisata, 'status_aktif' => $status_aktif, 'id_wisata' => $id_wisata]);
+            $stmt->execute(['id_lokasi' => $id_lokasi, 
+                            'judul_wisata' => $judul_wisata,
+                            'deskripsi_wisata' => $deskripsi_wisata,
+                            'biaya_wisata' => $biaya_wisata,
+                            'id_paket_donasi' => $id_paket_donasi,
+                            'foto_wisata' => $foto_wisata,
+                            'status_aktif' => $status_aktif,
+                            'id_wisata' => $id_wisata
+                            ]);
 
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
@@ -276,16 +291,28 @@
 
                     <?php foreach ($row as $rowitem) { ?>
                     <div class="form-group">
-                    <label for="tb_judul_wisata">Judul Wisata</label>
-                    <input type="text" id="tb_judul_wisata" name="tb_judul_wisata" value="<?=$rowitem->judul_wisata?>" class="form-control">
+                        <label for="tb_judul_wisata">Judul Wisata</label>
+                        <input type="text" id="tb_judul_wisata" name="tb_judul_wisata" value="<?=$rowitem->judul_wisata?>" class="form-control">
                     </div>
+
                     <div class="form-group">
-                    <label for="tb_deskripsi_wisata">Deskripsi Wisata</label>
-                    <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" value="<?=$rowitem->deskripsi_wisata?>" class="form-control">
+                        <label for="tb_deskripsi_wisata">Deskripsi Wisata</label>
+                        <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" value="<?=$rowitem->deskripsi_wisata?>" class="form-control">
                     </div>
+
                     <div class="form-group">
                         <label for="num_biaya_wisata">Biaya Wisata</label>
                         <input type="number" id="num_biaya_wisata" name="num_biaya_wisata" value="<?=$rowitem->biaya_wisata?>" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                    <label for="id_paket_donasi">Persentase paket donasi</label>
+                    <select id="id_paket_donasi" name="id_paket_donasi" class="form-control" required>
+                            <option value="" selected disabled>Pilih Persentase</option>
+                        <?php foreach ($rowpersentase as $rowpaket) {  ?>
+                            <option value="<?=$rowpaket->id_paket_donasi?>"><?=$rowpaket->persentase_paket_donasi?>%</option>
+                        <?php } ?>
+                    </select>
                     </div>
 
                     <div class='form-group' id='fotowilayah'>

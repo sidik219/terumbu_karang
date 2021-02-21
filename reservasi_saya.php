@@ -229,7 +229,7 @@ session_start();
                                                 class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a>
                                         </div>
                                         <div class="mb-3">
-                                            <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-phone"></i> No HP Pengelola</span>
+                                            <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-phone"></i> No HP Pengelola Lokasi</span>
                                             <br><?=$rowitem->kontak_lokasi?><br>
                                         </div>
                                     </div>

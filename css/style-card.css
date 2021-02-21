@@ -163,3 +163,10 @@ body{
 .reservasi-input{
     opacity: 0.5;
 }
+
+.keterangan-paket-donasi{
+    font-size: 15px;
+    margin-left: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
