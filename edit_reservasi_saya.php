@@ -241,7 +241,9 @@
 
                                         <div class="row">
                                             <div class="col">
-                                                <span class="font-weight-bold">ID User
+                                                <span class="font-weight-bold">
+                                                <i class="text-danger fas fa-id-card-alt"></i> ID User
+                                                </span>
                                             </div>
                                             <div class="col-lg-8 mb-2">
                                                 <span class=""><?=$rowitem->id_reservasi?></span>
@@ -250,7 +252,9 @@
 
                                         <div class="row">
                                             <div class="col">
-                                                <span class="font-weight-bold">Nama User  </span>
+                                                <span class="font-weight-bold">
+                                                    <i class="text-primary fas fa-user"></i> Nama User
+                                                </span>
                                             </div>
                                             <div class="col-lg-8  mb-2">
                                                 <span class=""><?=$rowitem->nama_user?></span>
@@ -259,7 +263,9 @@
 
                                         <div class="row mb-2">
                                             <div class="col">
-                                                <span class="font-weight-bold">Tanggal Reservasi  </span>
+                                                <span class="font-weight-bold">
+                                                    <i class="text-secondary fas fa-calendar-alt"></i> Tanggal Reservasi
+                                                </span>
                                             </div>
                                             <div class="col-lg-8  mb-2">
                                                 <span class=""><?=$rowitem->tgl_reservasi?></span>
@@ -268,7 +274,9 @@
 
                                         <div class="row mb-2">
                                             <div class="col">
-                                                <span class="font-weight-bold">Jumlah Peserta  </span>
+                                                <span class="font-weight-bold">
+                                                    <i class="text-info fas fa-users"></i> Jumlah Peserta
+                                                </span>
                                             </div>
                                             <div class="col-lg-8  mb-2">
                                                 <span class="font-weight-bold"><?=$rowitem->jumlah_peserta?></span>
@@ -277,7 +285,9 @@
 
                                         <div class="row mb-2">
                                             <div class="col">
-                                                <span class="font-weight-bold">Total  </span>
+                                                <span class="font-weight-bold">
+                                                    <i class="text-success fas fa-money-bill-wave"></i> Total
+                                                </span>
                                             </div>
                                             <div class="col-lg-8  mb-2">
                                                 <span class="font-weight-bold">Rp. <?=number_format($rowitem->total, 0)?></span>
@@ -286,10 +296,40 @@
 
                                         <div class="row mb-2">
                                             <div class="col">
-                                                <span class="font-weight-bold">Keterangan  </span>
+                                                <span class="font-weight-bold">
+                                                <i class="text-info fas fa-comment-dots"></i> Keterangan
+                                                </span>
                                             </div>
                                             <div class="col-lg-8  mb-2">
                                                 <span class="font-weight-bold"><?=$rowitem->keterangan?></span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Info Pengelola -->
+                                        <hr class="mb-2"/>
+                                        
+                                        <div class="row">
+                                            <div class="col">
+                                                <span class="font-weight-bold"><i class="fas fa-user-tie"></i> Nama Rekening Pengelola
+                                            </div>
+                                            <div class="col-lg-8 mb-2">
+                                                <span class=""><?=$rowitem->nama_rekening?></span>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col">
+                                                <span class="font-weight-bold"><i class="text-warning fas fa-university"></i> Bank Pengelola  </span>
+                                            </div>
+                                            <div class="col-lg-8  mb-2">
+                                                <span class=""><?=$rowitem->nama_bank?></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <span class="font-weight-bold"><i class="text-info fas fa-hashtag"></i> Nomor Rekening Pengelola  </span>
+                                            </div>
+                                            <div class="col-lg-8  mb-2">
+                                                <span class=""><?=$rowitem->nomor_rekening?></span>
                                             </div>
                                         </div>
                                         
@@ -359,20 +399,10 @@
                     <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
 
-
                     <?php //} ?>
                 </div>
             </section>
         
-
-
-
-
-
-
-
-
-
             <!-- /.Left col -->
             </div>
             <!-- /.row (main row) -->
