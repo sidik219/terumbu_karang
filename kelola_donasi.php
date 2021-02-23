@@ -196,6 +196,12 @@ $row = $stmt->fetchAll();
             <section class="content">
                 <div class="container-fluid">
 
+                <div class="col">
+
+                        <a class="btn btn-primary float-right" href="kelola_batch.php" role="button">Kelola Batch Penanaman<i class="nav-icon fas fa-boxes ml-1"></i></a>
+
+                        </div>
+
                 <?php
                 if(!empty($_GET['status'])){
                   if($_GET['status'] == 'updatesuccess'){
