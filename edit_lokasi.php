@@ -341,57 +341,7 @@
                     <span class="text-muted small"> (Perlu izin browser)</span>
                     </div>
 
-                    <div class="terumbu-karang mt-3 form-group">
-                      <label for="num_nomor_rekening">Terumbu yang Dapat Ditanam</label>
-                      <div class="col border rounded p-2 bg-light">
-                            <div class="row">
-                              <div class="col-sm">
-                                <label>Jenis</label>
-                                <select id="dd_id_wilayah" name="dd_id_jenis" class="form-control" onchange="loadTk(this.value);">
-                                <option value="">-Pilih Jenis-</option>
-                            <?php
-                            $sqlviewjenis = 'SELECT * FROM t_jenis_terumbu_karang';
-                            $stmt = $pdo->prepare($sqlviewjenis);
-                            $stmt->execute();
-                            $rowjenis = $stmt->fetchAll();
-                            foreach ($rowjenis as $jenis) {
-                            ?>
-                            <option value="<?=$jenis->id_jenis?>">
-                            ID <?=$jenis->id_jenis?> - <?=$jenis->nama_jenis?></option>
 
-                            <?php } ?>
-                        </select>
-                              </div>
-                              <div class="col-sm">
-                                <label>Sub-jenis</label>
-                                <select id="dd_id_jenis" name="dd_id_tk" class="form-control">
-                                  <option value="">-Pilih Sub-jenis-</option>
-
-                              </select>
-                              </div>
-                              <div class="col">
-
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col">
-                               <label for="num_biaya_pergantian">Harga Patokan</label>
-                        <input type="hidden" id="biaya_pergantian_number" name="biaya_pergantian_number" value="">
-                        <div class="row">
-                          <div class="col-auto text-center p-2">
-                            Rp.
-                          </div>
-                          <div class="col">
-                            <input onkeyup="formatNumber(this)" type="text" id="num_biaya_pergantian" min="1" name="num_biaya_pergantian" class="form-control number-input" required>
-                          </div>
-                              </div>
-                              <div class="col">
-                                <span onclick="addDocInput()" class="btn btn-blue btn-sm btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambahkan</span>
-                              </div>
-                            </div>
-                      </div>
-
-                    </div>
 
                     <br>
                     <p align="center">
@@ -439,24 +389,7 @@
     <script src="dist/js/adminlte.js"></script>
 
         <script>
-function loadTk(id_jenis){
-      $.ajax({
-        type: "POST",
-        url: "list_populate.php",
-        data:{
-            id_jenis: id_jenis,
-            type: 'load_tk'
-        },
-        beforeSend: function() {
-          $("#dd_id_jenis").addClass("loader");
-        },
-        success: function(data){
-          $("#dd_id_jenis").html(data);
-          $("#dd_id_jenis").removeClass("loader");
-        }
-      });
 
-    }
 
 
 
@@ -488,20 +421,7 @@ function error(err) {
 navigator.geolocation.getCurrentPosition(success, error, options);
     }
 
-    var formatter = new Intl.NumberFormat('en-US', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
 
-    // These options are needed to round to whole numbers if that's what you want.
-    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
-});
-
-function formatNumber(e){
-  var formattedNumber = parseInt(e.value.replace(/\,/g,''))
-  $('#biaya_pergantian_number').val(formattedNumber)
-  $('#num_biaya_pergantian').val(formatter.format(formattedNumber))
-}
     </script>
 
 </body>
