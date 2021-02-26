@@ -11,56 +11,73 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         $stmt->execute();
         $rowlokasi = $stmt->fetchAll();
 
-$sqlviewpersentase = 'SELECT * FROM tb_paket_donasi
-                    ORDER BY persentase_paket_donasi';
-        $stmt = $pdo->prepare($sqlviewpersentase);
-        $stmt->execute();
-        $rowpersentase = $stmt->fetchAll();
-
 if (isset($_POST['submit'])) {
-    $id_lokasi          = $_POST['dd_id_lokasi'];
-    $judul_wisata       = $_POST['tb_judul_wisata'];
-    $deskripsi_wisata   = $_POST['tb_deskripsi_wisata'];
-    $biaya_wisata       = $_POST['num_biaya_wisata'];
-    $id_paket_donasi    = $_POST['id_paket_donasi'];
-    $status_aktif       = $_POST['rb_status_wisata'];
-    $randomstring       = substr(md5(rand()), 0, 7);
+    if (isset($_POST['persentase_paket_donasi'])) {
+        $id_lokasi                  = $_POST['dd_id_lokasi'];
+        $judul_wisata               = $_POST['tb_judul_wisata'];
+        $deskripsi_wisata           = $_POST['tb_deskripsi_wisata'];
+        $biaya_wisata               = $_POST['num_biaya_wisata'];
+        $status_aktif               = $_POST['rb_status_wisata'];
+        $randomstring               = substr(md5(rand()), 0, 7);
     
-    //Image upload
-    if($_FILES["image_uploads"]["size"] == 0) {
-        $foto_wisata = "images/image_default.jpg";
-    }
-    else if (isset($_FILES['image_uploads'])) {
-        $target_dir  = "images/foto_wisata/";
-        $foto_wisata = $target_dir .'WIL_'.$randomstring. '.jpg';
-        move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wisata);
-    }
+        //Image upload
+        if($_FILES["image_uploads"]["size"] == 0) {
+            $foto_wisata = "images/image_default.jpg";
+        }
+        else if (isset($_FILES['image_uploads'])) {
+            $target_dir  = "images/foto_wisata/";
+            $foto_wisata = $target_dir .'WIL_'.$randomstring. '.jpg';
+            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wisata);
+        }
 
-    //---image upload end
+        //---image upload end
 
-    //Insert t_wisata
-    $sqlwisata = "INSERT INTO t_wisata
-                        (id_lokasi, judul_wisata, deskripsi_wisata, biaya_wisata, id_paket_donasi, foto_wisata, status_aktif)
-                        VALUES (:id_lokasi, :judul_wisata, :deskripsi_wisata, :biaya_wisata, :id_paket_donasi, :foto_wisata, :status_aktif)";
+        //Insert t_wisata
+        $sqlwisata = "INSERT INTO t_wisata
+                            (id_lokasi, judul_wisata, deskripsi_wisata, biaya_wisata, foto_wisata, status_aktif)
+                            VALUES (:id_lokasi, :judul_wisata, :deskripsi_wisata, :biaya_wisata, :foto_wisata, :status_aktif)";
 
-    $stmt = $pdo->prepare($sqlwisata);
-    $stmt->execute(['id_lokasi' => $id_lokasi, 
-                    'judul_wisata' => $judul_wisata, 
-                    'deskripsi_wisata' => $deskripsi_wisata, 
-                    'biaya_wisata' => $biaya_wisata,
-                    'id_paket_donasi' => $id_paket_donasi,
-                    'foto_wisata' => $foto_wisata, 
-                    'status_aktif' => $status_aktif
-                    ]);
+        $stmt = $pdo->prepare($sqlwisata);
+        $stmt->execute(['id_lokasi'         => $id_lokasi, 
+                        'judul_wisata'      => $judul_wisata, 
+                        'deskripsi_wisata'  => $deskripsi_wisata, 
+                        'biaya_wisata'      => $biaya_wisata,
+                        'foto_wisata'       => $foto_wisata, 
+                        'status_aktif'      => $status_aktif
+                        ]);
 
-    $affectedrows = $stmt->rowCount();
+        $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
             //echo "HAHAHAAHA INSERT FAILED !";
         } else {
             //echo "HAHAHAAHA GREAT SUCCESSS !";
-            header("Location: kelola_wisata.php?status=addsuccess");
+            $last_wisata_id = $pdo->lastInsertId();
         }
+        
+        foreach ($_POST['persentase_paket_donasi'] as $persentase_paket_donasi) {
+            $persentase_paket_donasi       = $persentase_paket_donasi;
+            $id_wisata                     = $last_wisata_id;
+            
+            $sqlinsertpaketdonasi = "INSERT INTO tb_paket_donasi (persentase_paket_donasi, id_wisata) 
+                                        VALUES (:persentase_paket_donasi, :id_wisata)";
+
+            $stmt = $pdo->prepare($sqlinsertpaketdonasi);
+            $stmt->execute(['persentase_paket_donasi' => $persentase_paket_donasi,
+                            'id_wisata'               => $id_wisata
+                            ]);
+
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+                header("Location: kelola_wisata.php?status=insertfailed");
+            } else {
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                header("Location: kelola_wisata.php?status=addsuccess");
+            }
+        } //End Foreach
+    } else {
+        echo '<script>alert("Harap pilih paket donasi yang akan ditambahkan")</script>';
     }
+}
 ?>
 
 <!DOCTYPE html>
@@ -97,7 +114,7 @@ if (isset($_POST['submit'])) {
         <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
         <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css"> 
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -282,14 +299,18 @@ if (isset($_POST['submit'])) {
                         <input type="number" id="num_biaya_wisata" name="num_biaya_wisata" class="form-control" required>
                     </div>
 
-                    <div class="form-group">
-                    <label for="id_paket_donasi">Persentase paket donasi</label>
-                    <select id="id_paket_donasi" name="id_paket_donasi" class="form-control" required>
-                            <option value="" selected disabled>Pilih Persentase</option>
-                        <?php foreach ($rowpersentase as $rowpaket) {  ?>
-                            <option value="<?=$rowpaket->id_paket_donasi?>"><?=$rowpaket->persentase_paket_donasi?>%</option>
-                        <?php } ?>
-                    </select>
+                    <div class="form-group field_wrapper">
+                        <label for="persentase_paket_donasi">Paket donasi</label><br>
+                        <div class="form-group fieldGroup">
+                            <div class="input-group">
+                                <input type="text" name="persentase_paket_donasi[]" class="form-control" placeholder="Paket Donasi"/> 
+                                <div class="input-group-addon"> 
+                                    <a href="javascript:void(0)" class="btn btn-success addMore">
+                                        <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Paket
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class='form-group' id='fotowilayah'>
@@ -344,6 +365,18 @@ if (isset($_POST['submit'])) {
                     <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
                     <br><br>
+
+                    <!-- copy of input fields group -->
+                    <div class="form-group fieldGroupCopy" style="display: none;">
+                        <div class="input-group">
+                            <input type="text" name="persentase_paket_donasi[]" class="form-control" placeholder="Paket Donasi"/> 
+                            <div class="input-group-addon"> 
+                                <a href="javascript:void(0)" class="btn btn-danger remove">
+                                    <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Paket
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
 
             </section>
@@ -414,6 +447,30 @@ if (isset($_POST['submit'])) {
     <script src="dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
     <script src="dist/js/leaflet-map.js"></script>
+    
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+        //group add limit
+        var maxGroup = 3;
+        
+        //add more fields group
+        $(".addMore").click(function(){
+            if($('body').find('.fieldGroup').length < maxGroup){
+                var fieldHTML = '<div class="form-group fieldGroup">'+$(".fieldGroupCopy").html()+'</div>';
+                $('body').find('.fieldGroup:last').after(fieldHTML);
+            }else{
+                alert('Maksimal '+maxGroup+' group yang boleh dibuat.');
+            }
+        });
+        
+        //remove fields group
+        $("body").on("click",".remove",function(){ 
+            $(this).parents(".fieldGroup").remove();
+        });
+    });
+    </script>
 </div>
 
 </body>

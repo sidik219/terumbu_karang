@@ -12,7 +12,6 @@ session_start();
 
     $sqllokasi = 'SELECT * FROM t_wisata
                     LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
-                    LEFT JOIN tb_paket_donasi ON t_wisata.id_paket_donasi = tb_paket_donasi.id_paket_donasi
                     WHERE id_wisata = :id_wisata';
 
     $stmt = $pdo->prepare($sqllokasi);

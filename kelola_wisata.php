@@ -7,7 +7,6 @@
 
 $sqlviewwisata = 'SELECT * FROM t_wisata
                   LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
-                  LEFT JOIN tb_paket_donasi ON t_wisata.id_paket_donasi = tb_paket_donasi.id_paket_donasi
                   ORDER BY id_wisata DESC';
 $stmt = $pdo->prepare($sqlviewwisata);
 $stmt->execute();
@@ -270,11 +269,26 @@ $row = $stmt->fetchAll();
 
                                     <div class="row  mb-3">
                                         <div class="col-md-3 kolom font-weight-bold">
-                                            Persentase paket donasi
+                                            Paket donasi
                                         </div>
+
+                                        <?php
+                                        $sqlviewpaket = 'SELECT * FROM tb_paket_donasi
+                                                            LEFT JOIN t_wisata ON tb_paket_donasi.id_wisata = t_wisata.id_wisata
+                                                            WHERE t_wisata.id_wisata = :id_wisata 
+                                                            AND t_wisata.id_wisata = tb_paket_donasi.id_wisata';
+
+                                        $stmt = $pdo->prepare($sqlviewpaket);
+                                        $stmt->execute(['id_wisata' => $rowitem->$id_wisata]);
+                                        $rowpersentase = $stmt->fetchAll();
+
+                                        foreach ($rowpersentase as $rowpaket) {
+                                        ?>
                                         <div class="col isi">
-                                            <?=number_format($rowitem->persentase_paket_donasi, 1)?> %
+                                            <?=number_format($rowpaket->persentase_paket_donasi, 1)?>%
                                         </div>
+                                        <?php } ?>
+                                        
                                     </div>
 
                                     <div class="row  mb-3">
