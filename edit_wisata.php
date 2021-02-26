@@ -28,6 +28,7 @@
                 $deskripsi_wisata   = $_POST['tb_deskripsi_wisata'];
                 $biaya_wisata       = $_POST['num_biaya_wisata'];
                 $status_aktif       = $_POST['rb_status_wisata'];
+                $deskripsi_panjang_wisata   = $_POST['deskripsi_panjang_wisata'];
 
                 //Image upload
                 if($_FILES["image_uploads"]["size"] == 0) {
@@ -53,17 +54,18 @@
 
                 $sqlwisata = "UPDATE t_wisata
                                 SET id_lokasi = :id_lokasi, judul_wisata = :judul_wisata, deskripsi_wisata = :deskripsi_wisata,
-                                biaya_wisata = :biaya_wisata, foto_wisata = :foto_wisata, 
+                                deskripsi_panjang_wisata = :deskripsi_panjang_wisata, biaya_wisata = :biaya_wisata, foto_wisata = :foto_wisata,
                                 status_aktif = :status_aktif WHERE id_wisata = :id_wisata";
 
                 $stmt = $pdo->prepare($sqlwisata);
-                $stmt->execute(['id_lokasi' => $id_lokasi, 
+                $stmt->execute(['id_lokasi' => $id_lokasi,
                                 'judul_wisata' => $judul_wisata,
                                 'deskripsi_wisata' => $deskripsi_wisata,
                                 'biaya_wisata' => $biaya_wisata,
                                 'foto_wisata' => $foto_wisata,
                                 'status_aktif' => $status_aktif,
-                                'id_wisata' => $id_wisata
+                                'id_wisata' => $id_wisata,
+                                'deskripsi_panjang_wisata' => $deskripsi_panjang_wisata
                                 ]);
 
                 $affectedrows = $stmt->rowCount();
@@ -77,16 +79,16 @@
                 foreach ($_POST['persentase_paket_donasi'] as $persentase_paket_donasi) {
                     $persentase_paket_donasi       = $persentase_paket_donasi;
                     $id_wisata                     = $last_wisata_id;
-                    
+
                     $sqlupdatepaketdonasi = "UPDATE tb_paket_donasi
                                                 SET persentase_paket_donasi = :persentase_paket_donasi, id_wisata = :id_wisata
                                                 WHERE id_paket_donasi = :id_paket_donasi";
-        
+
                     $stmt = $pdo->prepare($sqlupdatepaketdonasi);
                     $stmt->execute(['persentase_paket_donasi' => $persentase_paket_donasi,
                                     'id_wisata'               => $id_wisata
                                     ]);
-        
+
                     $affectedrows = $stmt->rowCount();
                     if ($affectedrows == '0') {
                         header("Location: kelola_wisata.php?status=insertfailed");
@@ -108,35 +110,18 @@
     <title>Kelola Wisata - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Google Font: Source Sans Pro -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="js/trumbowyg/dist/ui/trumbowyg.min.css">
+    <script src="js/trumbowyg/dist/trumbowyg.min.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -313,8 +298,16 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="tb_deskripsi_wisata">Deskripsi Wisata</label>
+                        <label for="tb_deskripsi_wisata">Deskripsi Singkat Wisata</label>
                         <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" value="<?=$rowitem->deskripsi_wisata?>" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="isi_artikel">Deskripsi Lengkap Wisata:</label>
+                        <textarea id="deskripsi_lengkap_wisata" name="deskripsi_panjang_wisata" required><?=$rowitem->deskripsi_panjang_wisata?></textarea>
+                    <script>
+                            $('#deskripsi_lengkap_wisata').trumbowyg();
+                    </script>
                     </div>
 
                     <div class="form-group">
@@ -330,7 +323,7 @@
                                 <?php
                                 $sqlviewpaket = 'SELECT * FROM tb_paket_donasi
                                                     LEFT JOIN t_wisata ON tb_paket_donasi.id_wisata = t_wisata.id_wisata
-                                                    WHERE t_wisata.id_wisata = :id_wisata 
+                                                    WHERE t_wisata.id_wisata = :id_wisata
                                                     AND t_wisata.id_wisata = tb_paket_donasi.id_wisata';
 
                                 $stmt = $pdo->prepare($sqlviewpaket);
@@ -339,7 +332,7 @@
 
                                 foreach ($rowpersentase as $rowpaket) {
                                 ?>
-                                <input type="text" name="persentase_paket_donasi[]" value="<?=$rowpaket->persentase_paket_donasi?>" class="form-control" placeholder="Paket Donasi"/> 
+                                <input type="text" name="persentase_paket_donasi[]" value="<?=$rowpaket->persentase_paket_donasi?>" class="form-control" placeholder="Paket Donasi"/>
                                 <?php } ?>
                             </div>
                         </div>

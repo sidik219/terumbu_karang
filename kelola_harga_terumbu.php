@@ -265,6 +265,8 @@ $id_lokasi = $_GET['id_lokasi'];
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
+    <link rel="stylesheet" href="js/trumbowyg/dist/ui/trumbowyg.min.css">
+    <script src="js/trumbowyg/dist/trumbowyg.min.js"></script>
 
     <script>
       function loadTk(id_jenis){
@@ -466,3 +468,5 @@ function formatNumber(e){
 
 </body>
 </html>
+
+

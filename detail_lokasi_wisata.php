@@ -23,29 +23,15 @@ session_start();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Pilih Jenis - TKJB</title>
+    <title>Rincian Wisata - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Google Font: Source Sans Pro -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Local CSS -->
@@ -128,8 +114,8 @@ session_start();
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <div class="row"> 
-                        <a class="btn btn-primary float-right" href="pilih_lokasi_wisata.php" role="button">< Wisata Lainnya</a> 
+                    <div class="row">
+                        <a class="btn btn-primary float-right" href="pilih_lokasi_wisata.php" role="button">< Wisata Lainnya</a>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -139,11 +125,11 @@ session_start();
             <!-- Main content -->
             <section class="content">
             <?php //if($_SESSION['level_user'] == '2') { ?>
-                <div class="container-fluid"> 
+                <div class="container-fluid">
                     <?php
                      //$index = 0;
                         foreach ($row as $rowitem) { ?>
-                        <div class="card-donasi">
+                        <div class="card-donasi mb-0">
                             <div class="card-donasi__img">
                                 <img src="<?=$rowitem->foto_wisata?>">
                             </div>
@@ -170,6 +156,12 @@ session_start();
                                 <a class="btn btn-primary btn-lg btn-block mb-4 card-donasi__cta" href="reservasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>_&status=review_reservasi" style="color: white;">Wisata Sekarang</a>
                             </div>
                         </div>
+                        <div class="row mt-0">
+                          <div class="col p-3"><b class="text-lg">Rincian Wisata:</b><br>
+                          <?=$rowitem->deskripsi_panjang_wisata?></div>
+                        </div>
+
+
                     <?php  } ?>
                 </div>
             <?php //} ?>
@@ -199,37 +191,12 @@ session_start();
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
-    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="plugins/summernote/summernote-bs4.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard.js"></script>
 
 </body>
 </html>

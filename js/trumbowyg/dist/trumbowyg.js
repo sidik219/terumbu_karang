@@ -102,6 +102,7 @@ Object.defineProperty(jQuery.trumbowyg, 'defaultOptions', {
             ['formatting'],
             ['strong', 'em', 'del'],
             ['superscript', 'subscript'],
+	    ['fontsize'],
             ['link'],
             ['insertImage'],
             ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],

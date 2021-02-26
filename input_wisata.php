@@ -18,8 +18,9 @@ if (isset($_POST['submit'])) {
         $deskripsi_wisata           = $_POST['tb_deskripsi_wisata'];
         $biaya_wisata               = $_POST['num_biaya_wisata'];
         $status_aktif               = $_POST['rb_status_wisata'];
+        $deskripsi_panjang_wisata   = $_POST['deskripsi_panjang_wisata'];
         $randomstring               = substr(md5(rand()), 0, 7);
-    
+
         //Image upload
         if($_FILES["image_uploads"]["size"] == 0) {
             $foto_wisata = "images/image_default.jpg";
@@ -34,16 +35,17 @@ if (isset($_POST['submit'])) {
 
         //Insert t_wisata
         $sqlwisata = "INSERT INTO t_wisata
-                            (id_lokasi, judul_wisata, deskripsi_wisata, biaya_wisata, foto_wisata, status_aktif)
-                            VALUES (:id_lokasi, :judul_wisata, :deskripsi_wisata, :biaya_wisata, :foto_wisata, :status_aktif)";
+                            (id_lokasi, judul_wisata, deskripsi_wisata, deskripsi_panjang_wisata, biaya_wisata, foto_wisata, status_aktif)
+                            VALUES (:id_lokasi, :judul_wisata, :deskripsi_wisata, :deskripsi_panjang_wisata, :biaya_wisata, :foto_wisata, :status_aktif)";
 
         $stmt = $pdo->prepare($sqlwisata);
-        $stmt->execute(['id_lokasi'         => $id_lokasi, 
-                        'judul_wisata'      => $judul_wisata, 
-                        'deskripsi_wisata'  => $deskripsi_wisata, 
+        $stmt->execute(['id_lokasi'         => $id_lokasi,
+                        'judul_wisata'      => $judul_wisata,
+                        'deskripsi_wisata'  => $deskripsi_wisata,
                         'biaya_wisata'      => $biaya_wisata,
-                        'foto_wisata'       => $foto_wisata, 
-                        'status_aktif'      => $status_aktif
+                        'foto_wisata'       => $foto_wisata,
+                        'status_aktif'      => $status_aktif,
+                        'deskripsi_panjang_wisata' => $deskripsi_panjang_wisata
                         ]);
 
         $affectedrows = $stmt->rowCount();
@@ -53,12 +55,12 @@ if (isset($_POST['submit'])) {
             //echo "HAHAHAAHA GREAT SUCCESSS !";
             $last_wisata_id = $pdo->lastInsertId();
         }
-        
+
         foreach ($_POST['persentase_paket_donasi'] as $persentase_paket_donasi) {
             $persentase_paket_donasi       = $persentase_paket_donasi;
             $id_wisata                     = $last_wisata_id;
-            
-            $sqlinsertpaketdonasi = "INSERT INTO tb_paket_donasi (persentase_paket_donasi, id_wisata) 
+
+            $sqlinsertpaketdonasi = "INSERT INTO tb_paket_donasi (persentase_paket_donasi, id_wisata)
                                         VALUES (:persentase_paket_donasi, :id_wisata)";
 
             $stmt = $pdo->prepare($sqlinsertpaketdonasi);
@@ -86,35 +88,19 @@ if (isset($_POST['submit'])) {
     <title>Kelola Wisata - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Google Font: Source Sans Pro -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-    <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
-    <link rel="stylesheet" type="text/css" href="css/style.css"> 
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="js/trumbowyg/dist/ui/trumbowyg.min.css">
+    <script src="js/trumbowyg/dist/trumbowyg.js"></script>
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -290,9 +276,20 @@ if (isset($_POST['submit'])) {
                     </div>
 
                     <div class="form-group">
-                        <label for="tb_deskripsi_wisata">Deskripsi Wisata</label>
+                        <label for="tb_deskripsi_wisata">Deskripsi Singkat Wisata</label>
                         <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" class="form-control" required>
                     </div>
+
+
+                    <div class="form-group">
+                        <label for="isi_artikel">Deskripsi Lengkap Wisata:</label>
+                        <textarea id="deskripsi_lengkap_wisata" name="deskripsi_panjang_wisata" required></textarea>
+                    <script>
+                            $('#deskripsi_lengkap_wisata').trumbowyg();
+                    </script>
+                    </div>
+
+
 
                     <div class="form-group">
                         <label for="num_biaya_wisata">Biaya Wisata</label>
@@ -303,8 +300,8 @@ if (isset($_POST['submit'])) {
                         <label for="persentase_paket_donasi">Paket donasi</label><br>
                         <div class="form-group fieldGroup">
                             <div class="input-group">
-                                <input type="text" name="persentase_paket_donasi[]" class="form-control" placeholder="Paket Donasi"/> 
-                                <div class="input-group-addon"> 
+                                <input type="text" name="persentase_paket_donasi[]" class="form-control" placeholder="Paket Donasi"/>
+                                <div class="input-group-addon">
                                     <a href="javascript:void(0)" class="btn btn-success addMore">
                                         <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Paket
                                     </a>
@@ -369,8 +366,8 @@ if (isset($_POST['submit'])) {
                     <!-- copy of input fields group -->
                     <div class="form-group fieldGroupCopy" style="display: none;">
                         <div class="input-group">
-                            <input type="text" name="persentase_paket_donasi[]" class="form-control" placeholder="Paket Donasi"/> 
-                            <div class="input-group-addon"> 
+                            <input type="text" name="persentase_paket_donasi[]" class="form-control" placeholder="Paket Donasi"/>
+                            <div class="input-group-addon">
                                 <a href="javascript:void(0)" class="btn btn-danger remove">
                                     <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Paket
                                 </a>
@@ -404,57 +401,20 @@ if (isset($_POST['submit'])) {
     <!-- ./wrapper -->
 <div>
     <!-- jQuery -->
-    <script src="plugins/jquery/jquery.min.js"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="plugins/summernote/summernote-bs4.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard.js"></script>
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-    <!-- Leaflet Marker Cluster -->
-    <script src="dist/js/leaflet.markercluster-src.js"></script>
-    <!-- Leaflet panel layer JS-->
-    <script src="dist/js/leaflet-panel-layers.js"></script>
-    <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-    <script src="dist/js/leaflet.ajax.js"></script>
-    <!-- Leaflet Map -->
-    <script src="dist/js/leaflet-map.js"></script>
-    
+
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <script>
         $(document).ready(function(){
         //group add limit
         var maxGroup = 3;
-        
+
         //add more fields group
         $(".addMore").click(function(){
             if($('body').find('.fieldGroup').length < maxGroup){
@@ -464,14 +424,15 @@ if (isset($_POST['submit'])) {
                 alert('Maksimal '+maxGroup+' group yang boleh dibuat.');
             }
         });
-        
+
         //remove fields group
-        $("body").on("click",".remove",function(){ 
+        $("body").on("click",".remove",function(){
             $(this).parents(".fieldGroup").remove();
         });
     });
     </script>
 </div>
-
+<!-- Import Trumbowyg font size JS at the end of <body>... -->
+<script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
 </body>
 </html>
