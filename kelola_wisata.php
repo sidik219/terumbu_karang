@@ -282,10 +282,11 @@ $row = $stmt->fetchAll();
                                         $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
                                         $rowpersentase = $stmt->fetchAll();
 
-                                        foreach ($rowpersentase as $rowpaket) {
-                                        ?>
+                                        foreach ($rowpersentase as $rowpaket) { ?>
                                         <div class="col isi">
-                                            <?=number_format($rowpaket->persentase_paket_donasi, 1)?>%
+                                            <span class="badge badge-pill badge-success mr-2">
+                                                <?=number_format($rowpaket->persentase_paket_donasi, 0)?>%
+                                            </span>
                                         </div>
                                         <?php } ?>
                                         

@@ -17,12 +17,6 @@ session_start();
     $stmt = $pdo->prepare($sqllokasi);
     $stmt->execute(['id_wisata' => $id_wisata]);
     $row = $stmt->fetchAll();
-
-    $sqlviewpersentase = 'SELECT * FROM tb_paket_donasi
-                        ORDER BY persentase_paket_donasi';
-    $stmt = $pdo->prepare($sqlviewpersentase);
-    $stmt->execute();
-    $rowpersentase = $stmt->fetchAll();
     
     if (isset($_POST['submit'])) {
         $id_lokasi          = $_POST['id_lokasi'];
@@ -198,13 +192,40 @@ session_start();
                         <select class="custom-select" id="donasi_saya" onchange="myFunction()">
                             <option value="1" selected disabled>Pilih Donasi:</option>
                             <option value="1">Tidak Donasi</option>
-                            <?php foreach ($rowpersentase as $rowpaket) { ?>
+
+                            <?php 
+                            $sqlviewpaket = 'SELECT * FROM tb_paket_donasi
+                                                LEFT JOIN t_wisata ON tb_paket_donasi.id_wisata = t_wisata.id_wisata
+                                                WHERE t_wisata.id_wisata = :id_wisata 
+                                                AND t_wisata.id_wisata = tb_paket_donasi.id_wisata';
+                        
+                            $stmt = $pdo->prepare($sqlviewpaket);
+                            $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
+                            $rowpersentase = $stmt->fetchAll();
+
+                            foreach ($rowpersentase as $rowpaket) { ?>
                             <option value="<?=$rowpaket->persentase_paket_donasi?>"><?=$rowpaket->persentase_paket_donasi?>%</option>
                             <?php } ?>
+
                         </select>
                         <span class="keterangan-paket-donasi">
-                            *Harap Transfer sesuai dengan nominal tunai <br>
-                            *Paket Donasi = <?=$rowitem->persentase_paket_donasi?> Harga Wisata di Lokasi 
+                            *Harap Transfer sesuai dengan nominal tunai <br> *Paket Donasi = 
+                            <?php 
+                            $sqlviewpaket = 'SELECT * FROM tb_paket_donasi
+                                                LEFT JOIN t_wisata ON tb_paket_donasi.id_wisata = t_wisata.id_wisata
+                                                WHERE t_wisata.id_wisata = :id_wisata 
+                                                AND t_wisata.id_wisata = tb_paket_donasi.id_wisata';
+                        
+                            $stmt = $pdo->prepare($sqlviewpaket);
+                            $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
+                            $rowpersentase = $stmt->fetchAll();
+
+                            foreach ($rowpersentase as $rowpaket) { ?>
+                            <span class="badge badge-pill badge-success mr-2">
+                                <?=$rowpaket->persentase_paket_donasi?>%
+                            </span>
+                            <?php } ?>
+                            Harga Wisata di Lokasi 
                             <b style="color: #17a2b8;"><?=$rowitem->nama_lokasi?></b>
                         </span>
                         <input type="hidden" id="jumlah_donasi" name="jumlah_donasi" value="" class="list-group-item reservasi-input" readonly>
@@ -349,7 +370,7 @@ session_start();
             
             var deskripsi   = jumlah_peserta;
             var reservasi   = jumlah_peserta * biaya_wisata; //5 x 750.000 = 3.750.000
-            var donasi      = donasi_saya * biaya_wisata; //0.4 x 750.000 = 300.000
+            var donasi      = donasi_saya * (biaya_wisata / 100); //0.4 x 750.000 = 300.000
             
             if(donasi_saya == 1)
             {   
