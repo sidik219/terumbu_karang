@@ -279,7 +279,7 @@ $row = $stmt->fetchAll();
                                                             AND t_wisata.id_wisata = tb_paket_donasi.id_wisata';
 
                                         $stmt = $pdo->prepare($sqlviewpaket);
-                                        $stmt->execute(['id_wisata' => $rowitem->$id_wisata]);
+                                        $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
                                         $rowpersentase = $stmt->fetchAll();
 
                                         foreach ($rowpersentase as $rowpaket) {
