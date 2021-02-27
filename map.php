@@ -136,9 +136,9 @@ session_start();
                             <img src="images/kumpulan_icon/cluster.png" style="width: 35px;">:
                             <label>Pengelompokan Pantai Berdekatan </label>
                             <img src="images/kumpulan_icon/geo_wilayah1.png" style="width: 35px;">:
-                            <label>Wilayah yang ada terumbu karang </label>
+                            <label>Wilayah dengan terumbu karang </label>
                             <img src="images/kumpulan_icon/geo_wilayah2.png" style="width: 35px;">:
-                            <label>Wilayah yang tidak ada terumbu karang </label>
+                            <label>Wilayah tanpa terumbu karang </label>
                         </div>
                         <div id="mapid" style="height: 640px; width: 100%; margin-top: 20px;"></div>
                     </div>
