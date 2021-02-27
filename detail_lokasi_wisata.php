@@ -131,36 +131,46 @@ session_start();
                     <?php
                      //$index = 0;
                         foreach ($row as $rowitem) { ?>
-                        <div class="card-donasi mb-0">
-                            <div class="card-donasi__img">
-                                <img src="<?=$rowitem->foto_wisata?>">
+
+                          <div class="row card-donasi p-2 m-0">
+                            <div class="col-6 text-center">
+                              <img class="w-50" src="<?=$rowitem->foto_wisata?>">
                             </div>
+                            <div class="col">
+                              <div class="row p-2"><span><b>Nama Lokasi</b></span>
+                              <div class="col-12 p-0 border-bottom"><span class="text-xl text-warning"><?=$rowitem->nama_lokasi?></span></div></div>
 
-                            <div class="card-donasi__info">
-                                <div class="card-donasi__tk">
-                                    <span><b>Nama Lokasi</b></span>
-                                </div>
-                                <h5 class="card-donasi__title"><?=$rowitem->nama_lokasi?></h5><hr class="card-donasi__jarak">
+                              <div class="row p-2 border-bottom"><p class="">
+                                    <b>Alamat:</b> <?=$rowitem->deskripsi_lokasi?>
+                                </p></div>
+                              <div class="row p-2 border-bottom"><p class="">
+                                    <b>Daftar Wisata:</b> <?=$rowitem->judul_wisata?>
+                                </p></div>
+                              <div class="row p-2 border-bottom"><p class="">
+                                    <b>Harga:</b> Rp. <?=number_format($rowitem->biaya_wisata, 0)?>
+                                </p></div>
+                              <div class="row p-2 border-bottom"><p class="">
+                                    <b>Deskripsi:</b> <?=$rowitem->deskripsi_wisata?>
+                                </p></div>
+                              <div class="row"><a class="btn btn-primary btn-lg btn-block mb-1"
+                                href="reservasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>_&status=review_reservasi" style="color: white;">Wisata Sekarang</a></div>
 
-                                <p class="card-donasi__text">
-                                    <b>Alamat:</b> <?=$rowitem->deskripsi_lokasi?><hr class="card-donasi__jarak">
-                                </p>
-                                <p class="card-donasi__text">
-                                    <b>Daftar Wisata:</b> <?=$rowitem->judul_wisata?><hr class="card-donasi__jarak">
-                                </p>
-                                <p class="card-donasi__text">
-                                    <b>Harga:</b> Rp. <?=number_format($rowitem->biaya_wisata, 0)?><hr class="card-donasi__jarak">
-                                </p>
-                                <p class="card-donasi__text">
-                                    <b>Deskripsi:</b> <?=$rowitem->deskripsi_wisata?><hr class="card-donasi__jarak">
-                                </p>
-
-                                <a class="btn btn-primary btn-lg btn-block mb-4 card-donasi__cta" href="reservasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>_&status=review_reservasi" style="color: white;">Wisata Sekarang</a>
                             </div>
-                        </div>
+                          </div>
+
+
+
                         <div class="row mt-0">
                           <div class="col p-3 shadow rounded"><b class="text-lg"><i class="text-primary nav-icon fas fa-info-circle"></i> Tentang Paket Wisata ini</b><br>
-                          <?=$rowitem->deskripsi_panjang_wisata?></div>
+                          <?php
+                            if($rowitem->deskripsi_panjang_wisata == NULL){
+                              echo "<span class='text-muted mt-3'>Informasi tidak tersedia</span>";
+                            }
+                            else{
+                               echo $rowitem->deskripsi_panjang_wisata;
+                            }
+                          ?>
+                          </div>
                         </div>
 
 
