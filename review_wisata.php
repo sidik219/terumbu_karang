@@ -5,7 +5,7 @@
     //if (isset($_SESSION['level_user']) == 0) {
       //header('location: login.php');
     //}
-    
+
     $id_user = 1;
     $id_status_reservasi_wisata = 1;
     $keterangan = '-';
@@ -16,7 +16,7 @@
                     LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                     LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
                     ORDER BY id_reservasi DESC LIMIT 1';
-    
+
     $stmt = $pdo->prepare($sqlviewreservasi);
     $stmt->execute();
     $row = $stmt->fetchAll();
@@ -30,14 +30,14 @@
         $tanggal_sekarang = date ('Y-m-d H:i:s', time());
 
         $sqlreservasi = "UPDATE t_reservasi_wisata
-                            SET id_user = :id_user, id_lokasi = :id_lokasi, tgl_reservasi = :tgl_reservasi, 
-                                jumlah_peserta = :jumlah_peserta, total = :total, 
+                            SET id_user = :id_user, id_lokasi = :id_lokasi, tgl_reservasi = :tgl_reservasi,
+                                jumlah_peserta = :jumlah_peserta, total = :total,
                                 id_status_reservasi_wisata = :id_status_reservasi_wisata, keterangan = :keterangan, update_terakhir = :update_terakhir
                             ORDER BY id_reservasi DESC LIMIT 1";
 
         $stmt = $pdo->prepare($sqlreservasi);
         $stmt->execute(['id_user' => $id_user, 'id_lokasi' => $id_lokasi, 'tgl_reservasi' => $tgl_reservasi,
-        'jumlah_peserta' => $jumlah_peserta, 'total' => $total, 'id_status_reservasi_wisata' => $id_status_reservasi_wisata, 
+        'jumlah_peserta' => $jumlah_peserta, 'total' => $total, 'id_status_reservasi_wisata' => $id_status_reservasi_wisata,
         'keterangan' => $keterangan, 'update_terakhir' => $tanggal_sekarang]);
 
         $affectedrows = $stmt->rowCount();
@@ -56,8 +56,6 @@
     <title>Review Informasi Donasi - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Google Font: Source Sans Pro -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
@@ -66,6 +64,8 @@
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <!-- Favicon -->
+    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -158,7 +158,7 @@
                   <a class="btn btn-sm btn-outline-primary" href="#" onclick="history.back()"><i class="fas fa-angle-left"></i>   Kembali Pilih</a><br>
                             <h4 class="pt-3 mb-3"><span class="font-weight-bold">Review Informasi Reservasi Wisata</span></h4>
             <div class="row">
-        
+
         <?php
             if(!empty($_GET['status'])) {
                 if($_GET['status'] == 'review_reservasi') {
@@ -167,7 +167,7 @@
                             </div>'; }
             }
         ?>
-        
+
         <div class="col-md-4 order-md-2 mb-4">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
             <span class="text-muted"><i class="fas fa-dollar-sign"></i> Total Reservasi Wisata Anda</span>
@@ -188,12 +188,12 @@
 
         <div class="col-md-8 order-md-1 card">
             <h4 class="mb-3 card-header pl-0">Data Reservasi Wisata</h4>
-            
+
                 <div class="form-group">
                     <label for="id_user"></label>
                     <input type="hidden" id="id_reservasi" name="id_reservasi" value="<?=$rowitem->id_reservasi?>" class="form-control">
                 </div>
-                
+
                 <div class="form-group">
                     <label for="id_lokasi">ID Lokasi</label>
                     <input type="hidden" id="id_lokasi" name="id_lokasi" value="<?=$rowitem->id_lokasi?>" class="form-control">
@@ -214,7 +214,7 @@
                     <label for="jumlah_peserta"></label>
                     <input type="hidden" id="biaya_wisata" name="biaya_wisata" value="<?=$rowitem->biaya_wisata?>" class="form-control" readonly>
                 </div>
-                
+
                 <div class="" style="width:100%;">
                     <div class="">
                         <h4 class="card-header mb-2 pl-0">Metode Pembayaran</h4>
@@ -277,19 +277,12 @@
 
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
+
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard.js"></script>
     <script src="js\numberformat.js"></script>
     <script>
         function myFunction() {
@@ -301,7 +294,7 @@
             var	reverse = subtotal.toString().split('').reverse().join(''),
                 ribuan  = reverse.match(/\d{1,3}/g);
                 total	= ribuan.join('.').split('').reverse().join('');
-            
+
             document.getElementById("total").value = "Total: Rp " + total;
         }
     </script>

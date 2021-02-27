@@ -23,28 +23,16 @@ session_start();
     <title>Reservasi Saya - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Google Font: Source Sans Pro -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <!-- Favicon -->
+    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -59,13 +47,13 @@ session_start();
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -85,7 +73,7 @@ session_start();
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '2') { ?>    
+                    <?php //if($_SESSION['level_user'] == '2') { ?>
                         <li class="nav-item ">
                            <a href="dashboard_user.php" class="nav-link  ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -111,7 +99,7 @@ session_start();
                            </a>
                         </li>
                     <?php //} ?>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -207,10 +195,10 @@ session_start();
                                                         echo ($rowitem->id_status_reservasi_wisata <= 3) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo" style="display: none;"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : '';
                                                     } else if ($rowitem->id_status_reservasi_wisata == 3) {
                                                         //Pembayaran Tidak Sesuai
-                                                        echo ($rowitem->id_status_reservasi_wisata <= 3) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : ''; 
+                                                        echo ($rowitem->id_status_reservasi_wisata <= 3) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : '';
                                                     } else {
                                                         //Menunggu Konfirmasi Pembayaran
-                                                        echo ($rowitem->id_status_reservasi_wisata <= 3) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : ''; 
+                                                        echo ($rowitem->id_status_reservasi_wisata <= 3) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : '';
                                                     }
                                                 ?>
 
@@ -235,7 +223,7 @@ session_start();
                                     </div>
                                 </div>
                                 <!-- First Row -->
-                                
+
                                 <?php if ($rowitem->id_status_reservasi_wisata == 2) { ?>
                                     <p class=" btn btn-blue btn-primary" onclick="toggleDetail()">
                                         <i class="icon fas fa-chevron-down"></i>
@@ -296,38 +284,12 @@ session_start();
 
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="plugins/summernote/summernote-bs4.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard.js"></script>
     <!-- Hiden/Show Button Bukti Pembayaran -->
     <script>
         $(document).ready(function() {

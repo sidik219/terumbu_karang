@@ -78,6 +78,8 @@ if (isset($_POST['register'])) {
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <!-- Favicon -->
+    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
 
 
 </head>

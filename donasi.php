@@ -18,11 +18,14 @@
 
     <!-- Custom CSS -->
     <link href="css/konten.css" rel="stylesheet">
-    
+
     <!-- Font Awesome CSS -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    
-    
+
+    <!-- Favicon -->
+    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
+
+
 </head>
 
 
@@ -64,12 +67,12 @@
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="#">Edit Profil</a>
-                    <a class="dropdown-item" href="#">Logout</a>              
+                    <a class="dropdown-item" href="#">Logout</a>
                 </li>  -->
-            </ul> 
+            </ul>
         </div>
         <!-- END OF MENU NAVBAR -->
-    </nav> 
+    </nav>
     <!-- END OF NAVBAR -->
 
     <section id="benefit">
@@ -80,12 +83,12 @@
             <div class="row">
                 <div class="col-md-12 col-lg-6 p-5 text-center">
                     <img src="dist/img/nelayan.jpg" class="img-fluid" alt="team">
-                </div>                
+                </div>
                 <div class="col-md-12 col-lg-6 p-5 text-light">
                     <h2>Bagi Masyarakat Pesisir</h2>
                     <p>
                     Terumbu karang yang anda donasikan bermanfaat untuk perbaikan dan perluasan titik
-                    terumbu karang di tempat tinggal mereka. 
+                    terumbu karang di tempat tinggal mereka.
                     <br>
                     <ol>
                         Manfaat yang didapat antara lain:
@@ -99,7 +102,7 @@
 
         </div>
     </section>
-        <!-- END OF ROW WITH ICON -->   
+        <!-- END OF ROW WITH ICON -->
     </div>
     <!-- END OF BODY CONTAINER -->
 
@@ -132,7 +135,7 @@
         <div id="about" class="container donate-now">
             <!-- 1st PARAGRAPH -->
             <div class="starter-template">
-                <a href="coralmaps.php" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                <a href="coralmaps.php" class="btn btn-link-slide" role="button" aria-pressed="true">
                 Donasi Sekarang
                 </a>
             </div>
@@ -147,16 +150,16 @@
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                     <div class="cpt text-light text-center">
-                        <p>© 2020-Terumbu Karang Jawa Barat.</p>                    
+                        <p>© 2020-Terumbu Karang Jawa Barat.</p>
                     </div>
                 </div>
-             
+
             </div>
         </div>
     </section>
 
-    
-   
+
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Optional JavaScript -->
@@ -168,10 +171,10 @@
     <script>$('body').scrollspy({ target: '#navbarsExampleDefault', offset: 108 })</script>
     <!-- Smooth Scroll -->
     <script src="js/smooth-scroll.js"></script>
-   
+
     <!-- Number Counter -->
     <script src="js/nsc.js"></script>
-   
+
 
 </body>
 </html>

@@ -26,7 +26,7 @@ session_start();
 
     <!-- Custom CSS -->
     <link href="css/konten.css" rel="stylesheet">
-    
+
     <!-- Font Awesome CSS -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -41,8 +41,11 @@ session_start();
         <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    
-    
+
+    <!-- Favicon -->
+    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
+
+
 </head>
 
 
@@ -84,18 +87,18 @@ session_start();
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="#">Edit Profil</a>
-                    <a class="dropdown-item" href="#">Logout</a>              
+                    <a class="dropdown-item" href="#">Logout</a>
                 </li>  -->
-            </ul> 
+            </ul>
         </div>
         <!-- END OF MENU NAVBAR -->
-</nav> 
+</nav>
 <!-- END OF NAVBAR -->
 
- 
+
     <div class="coralmaps-about-container">
         <div id="about" class="container" style="margin-top:50px;">
-            
+
         <div class="starter-template">
                 <h1 class="mb-5">PILIH LOKASI</h1><br>
         </div>
@@ -135,16 +138,16 @@ session_start();
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                     <div class="cpt text-light text-center">
-                        <p>© 2020-Terumbu Karang Jawa Barat.</p>                    
+                        <p>© 2020-Terumbu Karang Jawa Barat.</p>
                     </div>
                 </div>
-             
+
             </div>
         </div>
     </section>
 
-    
-   
+
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Optional JavaScript -->
@@ -156,7 +159,7 @@ session_start();
     <script>$('body').scrollspy({ target: '#navbarsExampleDefault', offset: 108 })</script>
     <!-- Smooth Scroll -->
     <script src="js/smooth-scroll.js"></script>
-   
+
     <!-- Number Counter -->
     <script src="js/nsc.js"></script>
      <!-- Leaflet JS -->
@@ -169,7 +172,7 @@ session_start();
     <script src="dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
     <?php include 'dist/js/leaflet_map.php'; ?>
-   
+
 
 </body>
 </html>

@@ -12,8 +12,6 @@ session_start();
     <title>Homepage - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Google Font: Source Sans Pro -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
@@ -41,6 +39,8 @@ session_start();
         <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <!-- Favicon -->
+    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -55,13 +55,13 @@ session_start();
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -107,7 +107,7 @@ session_start();
                            </a>
                         </li>
                     <?php //} ?>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -126,10 +126,10 @@ session_start();
                     <!-- profil pic holder -->
                     <div class="row justify-content-center">
                          <div class ="profile-pic-div" >
-                            <img src="dist/img/profil-example.jpg" id="photo">   
+                            <img src="dist/img/profil-example.jpg" id="photo">
                          </div>
                     </div>
-                  
+
                     <!-- card menu -->
                     <section id="menu">
                     <div class="container">
@@ -141,15 +141,15 @@ session_start();
                                             <img class="card-img-top mb-3" src="dist/img/konservasi.jpg" alt="Card image cap" id="img-cap">
                                             <div class="card-block">
                                                 <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='donasi_saya.php';">Donasi</button>
-                                            </div>     
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 col-lg-4">
                                         <div class="card m-3 dashboard-home">
                                             <img class="card-img-top mb-3" src="dist/img/briefcase.jpg" alt="Card image cap" id="img-cap">
                                             <div class="card-block">
-                                            <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='reservasi_saya.php';">Reservasi</button> 
-                                            </div>     
+                                            <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='reservasi_saya.php';">Reservasi</button>
+                                            </div>
                                         </div>
                                     </div>
                                     <!--
@@ -157,8 +157,8 @@ session_start();
                                         <div class="card m-3 dashboard-home">
                                             <img class="card-img-top mb-3" src="dist/img/coral-status.jpg" alt="Card image cap" id="img-cap">
                                             <div class="card-block">
-                                            <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='#';">Terumbu Karang</button> 
-                                            </div>     
+                                            <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='#';">Terumbu Karang</button>
+                                            </div>
                                         </div>
                                     </div> -->
                                     <div class="col-md-12 col-lg-4">
@@ -166,15 +166,15 @@ session_start();
                                             <img class="card-img-top mb-3" src="dist/img/user.jpg" alt="Card image cap" id="img-cap">
                                             <div class="card-block">
                                             <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='profil_saya.php';">Profil</button>
-                                            </div>     
+                                            </div>
                                         </div>
                                     </div>
                                 <?php //} ?>
-                                    
-                                    
-                                    
-                                   
-                            </div>  
+
+
+
+
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -187,9 +187,9 @@ session_start();
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-               
+
                 </div>
-            
+
             </section>
             <!-- /.Left col -->
             </div>

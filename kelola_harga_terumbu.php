@@ -23,8 +23,6 @@ $id_lokasi = $_GET['id_lokasi'];
     <title>Kelola Harga Terumbu - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Google Font: Source Sans Pro -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
@@ -34,6 +32,8 @@ $id_lokasi = $_GET['id_lokasi'];
 
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <!-- Favicon -->
+    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -265,8 +265,6 @@ $id_lokasi = $_GET['id_lokasi'];
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    <link rel="stylesheet" href="js/trumbowyg/dist/ui/trumbowyg.min.css">
-    <script src="js/trumbowyg/dist/trumbowyg.min.js"></script>
 
     <script>
       function loadTk(id_jenis){

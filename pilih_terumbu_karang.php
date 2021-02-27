@@ -9,11 +9,18 @@ if(!$_GET['id_jenis']){
     header("Location: pilih_jenis_tk.php");
 }
 
-$sqlviewtk = 'SELECT * FROM t_terumbu_karang
+// $sqlviewtk = 'SELECT * FROM t_terumbu_karang
+//                 LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
+//                 WHERE t_terumbu_karang.id_jenis = :id_jenis';
+
+$sqlviewtk = 'SELECT * FROM t_detail_lokasi
+                LEFT JOIN t_terumbu_karang ON t_terumbu_karang.id_terumbu_karang = t_detail_lokasi.id_terumbu_karang
                 LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
-                WHERE t_terumbu_karang.id_jenis = :id_jenis';
+                WHERE t_terumbu_karang.id_jenis = :id_jenis
+                AND id_lokasi = :id_lokasi';
+
 $stmt = $pdo->prepare($sqlviewtk);
-$stmt->execute(['id_jenis' => $_GET['id_jenis']]);
+$stmt->execute(['id_jenis' => $_GET['id_jenis'], 'id_lokasi' => $_SESSION['id_lokasi']]);
 $row = $stmt->fetchAll();
 
 ?>
@@ -23,8 +30,6 @@ $row = $stmt->fetchAll();
     <title>Pilih Jenis Terumbu Karang - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Google Font: Source Sans Pro -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
@@ -33,6 +38,9 @@ $row = $stmt->fetchAll();
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
 
 </head>
  <script src="js\numberformat.js"></script>
@@ -141,20 +149,20 @@ $row = $stmt->fetchAll();
                 <h5 class="shop-item-title mb-0 card-title"><?=$rowitem->nama_terumbu_karang?></h5>
                 <p class="card-text text-muted deskripsi_pilih_tk"><?php echo strlen($rowitem->deskripsi_terumbu_karang) > 50 ? substr($rowitem->deskripsi_terumbu_karang,0,40)."..." :$rowitem->deskripsi_terumbu_karang;?></p>
                 <span class="font-weight-bold" id="harga<?=$rowitem->id_terumbu_karang?>"><script>
-                                                    var hargaformat = formatter.format(<?=$rowitem->harga_terumbu_karang?>);
+                                                    var hargaformat = formatter.format(<?=$rowitem->harga_patokan_lokasi?>);
                                                     var hargap =  document.createElement('p')
                                                     hargap.classList.add("mb-0", "mt-0")
                                                     hargap.textContent = hargaformat
                                                     document.getElementById("harga<?=$rowitem->id_terumbu_karang?>").appendChild(hargap)
                                             </script></span>
-                <span class="shop-item-price d-none">Rp. <?=$rowitem->harga_terumbu_karang?></span>
+                <span class="shop-item-price d-none">Rp. <?=$rowitem->harga_patokan_lokasi?></span>
                 <input type="hidden" class="shop-item-id" value="<?=$rowitem->id_terumbu_karang?>">
                 <div class="row">
                     <!-- <div class="col-2">
                         <input type="number" min="1" id="tbqty" style="width: 100%; height:100%;">
                     </div> -->
                     <div class="col">
-                            <a data-nama_tk="<?=$rowitem->id_terumbu_karang?>" data-harga_tk="<?=$rowitem->harga_terumbu_karang?>"
+                            <a data-nama_tk="<?=$rowitem->id_terumbu_karang?>" data-harga_tk="<?=$rowitem->harga_patokan_lokasi?>"
                             data-id_tk="<?=$rowitem->id_terumbu_karang?>"
                             class="add-to-cart btn btn-warning shop-item-button"><i class="nav-icon fas fa-cart-plus"></i> Tambahkan Keranjang</a>
                     </div>

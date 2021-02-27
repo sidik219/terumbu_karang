@@ -17,7 +17,7 @@ session_start();
     $stmt = $pdo->prepare($sqllokasi);
     $stmt->execute(['id_wisata' => $id_wisata]);
     $row = $stmt->fetchAll();
-    
+
     if (isset($_POST['submit'])) {
         $id_lokasi          = $_POST['id_lokasi'];
         $id_wisata          = $_POST['id_wisata'];
@@ -27,21 +27,21 @@ session_start();
         $total              = $_POST['total'];
 
         $tanggal_sekarang = date ('Y-m-d H:i:s', time());
-    
-        $sqlreservasi = "INSERT INTO t_reservasi_wisata (id_user, id_lokasi, id_wisata, 
-                                        tgl_reservasi, jumlah_peserta, jumlah_donasi, total, 
+
+        $sqlreservasi = "INSERT INTO t_reservasi_wisata (id_user, id_lokasi, id_wisata,
+                                        tgl_reservasi, jumlah_peserta, jumlah_donasi, total,
                                         id_status_reservasi_wisata, keterangan, update_terakhir)
-                            VALUES (:id_user, :id_lokasi, :id_wisata, 
+                            VALUES (:id_user, :id_lokasi, :id_wisata,
                                         :tgl_reservasi, :jumlah_peserta, :jumlah_donasi, :total,
                                         :id_status_reservasi_wisata, :keterangan, :update_terakhir)";
-    
+
         $stmt = $pdo->prepare($sqlreservasi);
         $stmt->execute(['id_user' => $id_user, 'id_lokasi' => $id_lokasi,
-                        'id_wisata' => $id_wisata, 'tgl_reservasi' => $tgl_reservasi, 
-                        'jumlah_peserta' => $jumlah_peserta, 'jumlah_donasi' => $jumlah_donasi, 'total' => $total, 
+                        'id_wisata' => $id_wisata, 'tgl_reservasi' => $tgl_reservasi,
+                        'jumlah_peserta' => $jumlah_peserta, 'jumlah_donasi' => $jumlah_donasi, 'total' => $total,
                         'id_status_reservasi_wisata' => $id_status_reservasi_wisata, 'keterangan' => $keterangan,
                         'update_terakhir' => $tanggal_sekarang]);
-    
+
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
             //echo "HAHAHAAHA INSERT FAILED !";
@@ -50,7 +50,7 @@ session_start();
             header("Location: reservasi_saya.php?status=addsuccess");
         }
     }
-    
+
 ?>
 
 <!DOCTYPE html>
@@ -59,8 +59,6 @@ session_start();
     <title>Review Informasi Donasi - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Google Font: Source Sans Pro -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
@@ -71,6 +69,8 @@ session_start();
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style-card.css">
+    <!-- Favicon -->
+    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -157,7 +157,7 @@ session_start();
                   <a class="btn btn-sm btn-outline-primary" href="#" onclick="history.back()"><i class="fas fa-angle-left"></i>   Kembali Pilih</a><br>
                             <h4 class="pt-3 mb-3"><span class="font-weight-bold">Review Informasi Reservasi Wisata</span></h4>
             <div class="row">
-        
+
         <?php
             if(!empty($_GET['status'])) {
                 if($_GET['status'] == 'review_reservasi') {
@@ -166,7 +166,7 @@ session_start();
                             </div>'; }
             }
         ?>
-        
+
         <div class="col-md-4 order-md-2 mb-4">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
                 <span class="text-muted"><i class="fas fa-dollar-sign"></i> Total Reservasi Wisata Anda</span>
@@ -193,12 +193,12 @@ session_start();
                             <option value="1" selected disabled>Pilih Donasi:</option>
                             <option value="1">Tidak Donasi</option>
 
-                            <?php 
+                            <?php
                             $sqlviewpaket = 'SELECT * FROM tb_paket_donasi
                                                 LEFT JOIN t_wisata ON tb_paket_donasi.id_wisata = t_wisata.id_wisata
-                                                WHERE t_wisata.id_wisata = :id_wisata 
+                                                WHERE t_wisata.id_wisata = :id_wisata
                                                 AND t_wisata.id_wisata = tb_paket_donasi.id_wisata';
-                        
+
                             $stmt = $pdo->prepare($sqlviewpaket);
                             $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
                             $rowpersentase = $stmt->fetchAll();
@@ -209,13 +209,13 @@ session_start();
 
                         </select>
                         <span class="keterangan-paket-donasi">
-                            *Harap Transfer sesuai dengan nominal tunai <br> *Paket Donasi = 
-                            <?php 
+                            *Harap Transfer sesuai dengan nominal tunai <br> *Paket Donasi =
+                            <?php
                             $sqlviewpaket = 'SELECT * FROM tb_paket_donasi
                                                 LEFT JOIN t_wisata ON tb_paket_donasi.id_wisata = t_wisata.id_wisata
-                                                WHERE t_wisata.id_wisata = :id_wisata 
+                                                WHERE t_wisata.id_wisata = :id_wisata
                                                 AND t_wisata.id_wisata = tb_paket_donasi.id_wisata';
-                        
+
                             $stmt = $pdo->prepare($sqlviewpaket);
                             $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
                             $rowpersentase = $stmt->fetchAll();
@@ -225,14 +225,14 @@ session_start();
                                 <?=$rowpaket->persentase_paket_donasi?>%
                             </span>
                             <?php } ?>
-                            Harga Wisata di Lokasi 
+                            Harga Wisata di Lokasi
                             <b style="color: #17a2b8;"><?=$rowitem->nama_lokasi?></b>
                         </span>
                         <input type="hidden" id="jumlah_donasi" name="jumlah_donasi" value="" class="list-group-item reservasi-input" readonly>
                     </ul>
                 </div>
 
-                <!-- Pesan / Ekspresi 
+                <!-- Pesan / Ekspresi
                 <div class="card" style="width: 20.5rem;">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item card-reservasi">Pesan / Ekspresi : </li>
@@ -257,12 +257,12 @@ session_start();
 
         <div class="col-md-8 order-md-1 card">
             <h4 class="mb-3 card-header pl-0">Data Reservasi Wisata</h4>
-            
+
                 <div class="form-group">
                     <label for="id_user"></label>
                     <input type="hidden" id="id_wisata" name="id_wisata" value="<?=$rowitem->id_wisata?>" class="form-control">
                 </div>
-                
+
                 <div class="form-group">
                     <label for="id_lokasi">ID Lokasi</label>
                     <input type="hidden" id="id_lokasi" name="id_lokasi" value="<?=$rowitem->id_lokasi?>" class="form-control">
@@ -283,7 +283,7 @@ session_start();
                     <label for="jumlah_peserta"></label>
                     <input type="hidden" id="biaya_wisata" name="biaya_wisata" value="<?=$rowitem->biaya_wisata?>" class="form-control" readonly>
                 </div>
-                
+
                 <div class="" style="width:100%;">
                     <div class="">
                         <h4 class="card-header mb-2 pl-0">Metode Pembayaran</h4>
@@ -346,12 +346,6 @@ session_start();
 
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
@@ -365,15 +359,15 @@ session_start();
     <script>
         function myFunction() {
             var jumlah_peserta  = document.getElementById("jumlah_peserta").value;
-            var biaya_wisata    = document.getElementById("biaya_wisata").value; 
-            var donasi_saya     = document.getElementById("donasi_saya").value; 
-            
+            var biaya_wisata    = document.getElementById("biaya_wisata").value;
+            var donasi_saya     = document.getElementById("donasi_saya").value;
+
             var deskripsi   = jumlah_peserta;
             var reservasi   = jumlah_peserta * biaya_wisata; //5 x 750.000 = 3.750.000
             var donasi      = donasi_saya * (biaya_wisata / 100); //0.4 x 750.000 = 300.000
-            
+
             if(donasi_saya == 1)
-            {   
+            {
                 //3.750.000 tidak pakai donasi
                 var donasi = 0;
                 var hasil   = reservasi;
@@ -381,7 +375,7 @@ session_start();
                 //3.750.000 + 300.000 = 4.050.000 pakai donasi
                 var hasil   = reservasi + donasi ;
             }
-            
+
             //Reservasi Wisata subtotal
             //var	reverse1     = reservasi.toString().split('').reverse().join(''),
                 //ribuan1      = reverse1.match(/\d{1,3}/g);
@@ -391,12 +385,12 @@ session_start();
             //var	reverse2     = hasil.toString().split('').reverse().join(''),
                 //ribuan2      = reverse2.match(/\d{1,3}/g);
                 //total        = ribuan2.join('.').split('').reverse().join('');
-            
+
             document.getElementById("deskripsi_wisata").value = "<?=$rowitem->judul_wisata?> : " + deskripsi;
             document.getElementById("subtotal").value = "Subtotal : Rp " + reservasi; //subtotal dari jumlah_peserta * biaya_wisata
             document.getElementById("jumlah_donasi").value = donasi; //jumlah donasi dari donasi_saya * biaya_wisata
             document.getElementById("total").value = hasil; //total dari reservasi * donasi
-            
+
         }
     </script>
 

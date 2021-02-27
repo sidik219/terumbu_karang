@@ -100,6 +100,8 @@ if (isset($_POST['submit'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="js/trumbowyg/dist/ui/trumbowyg.min.css">
     <script src="js/trumbowyg/dist/trumbowyg.js"></script>
+    <!-- Favicon -->
+    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
 
 </head>
 

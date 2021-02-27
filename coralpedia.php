@@ -18,11 +18,14 @@
 
     <!-- Custom CSS -->
     <link href="css/konten.css" rel="stylesheet">
-    
+
     <!-- Font Awesome CSS -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    
-    
+
+    <!-- Favicon -->
+    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
+
+
 </head>
 
 
@@ -64,12 +67,12 @@
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="#">Edit Profil</a>
-                    <a class="dropdown-item" href="#">Logout</a>              
+                    <a class="dropdown-item" href="#">Logout</a>
                 </li>  -->
-            </ul> 
+            </ul>
         </div>
         <!-- END OF MENU NAVBAR -->
-    </nav> 
+    </nav>
     <!-- END OF NAVBAR -->
 
 
@@ -90,10 +93,10 @@
                     </div>
                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                         <div class="card-body">
-                        <p>Terumbu karang merupakan batuan sedimen kapur yang terbentuk dari kalsium karbonat yang dihasilkan oleh biota laut penghasil kalsium karbonat yang kemudian melalui proses sedimentasi. 
+                        <p>Terumbu karang merupakan batuan sedimen kapur yang terbentuk dari kalsium karbonat yang dihasilkan oleh biota laut penghasil kalsium karbonat yang kemudian melalui proses sedimentasi.
                         Sedimentasi yang terjadi pada terumbu dapat berasal dari karang maupun dari alga.</p>
                         <br>
-                        <p>Di dalam dan sekitar terumbu karang, hidup beraneka ragam biota yang umumnya merupakan hewan avertebrata. Hewan–hewan tersebut adalah seperti crustacea, siput dan kerang-kerangan, bulu babi, 
+                        <p>Di dalam dan sekitar terumbu karang, hidup beraneka ragam biota yang umumnya merupakan hewan avertebrata. Hewan–hewan tersebut adalah seperti crustacea, siput dan kerang-kerangan, bulu babi,
                         anemon laut, teripang, bintang laut dan leli laut, ikan–ikan kecil, ular laut, penyu laut, ganggang dan juga alga.</p>
                         </div>
                         </div>
@@ -112,7 +115,7 @@
                             <li>Terumbu karang bermanfaat sebagai habitat dan sumber makanan bagi berbagai jenis makhluk hidup di laut. Di sini banyak berbagai jenis makhluk hidup yang tinggal, mencari makan, berlindung, dan berkembang biak.</li><br>
                             <li>Terumbu karang merupakan sumber keanekaragaman hayati yang tinggi. Dengan tingginya keanekaragaman hayati yang ada di dalamnya, terumbu karang ini menjadi sumber keanekaragaman genetik dan spesies yang ditemukan memiliki ketahanan hidup yang lebih tinggi.</li><br>
                             <li>Terumbu karang dapat bermanfaat sebagai pelindung bagi ekosistem yang ada disekitarnya, misalnya pada ekosistem fungsi hutan bakau, dan juga melindungi pantai dan daerah pesisir dari ombak besar. Terumbu karang dapat memperkecil energi ombak yang menuju ke daratan yang dapat menyebabkan abrasi pantai dan kerusakan sekitarnya.</li><br>
-                            <li>Masyarakat sekitarnya dapat memanfaatkan biota yang hidup di terumbu karang, seperti rumput laut, udang, dan ikan untuk dijadikan sumber makanan yang nantinya dapat dijual sehingga menjadi sumber pendapatan bagi masyarakat.</li>    
+                            <li>Masyarakat sekitarnya dapat memanfaatkan biota yang hidup di terumbu karang, seperti rumput laut, udang, dan ikan untuk dijadikan sumber makanan yang nantinya dapat dijual sehingga menjadi sumber pendapatan bagi masyarakat.</li>
                             <li>Karena keindahan yang dihasilkan oleh ekosistem terumbu karang, ekosistem ini dapat dijadikan objek wisata yang menarik sehingga dapat meningkatkan pendapatan masyarakat yang tinggal di sekitarnya.</li>
                         </ol>
                         </div>
@@ -170,17 +173,17 @@
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                     <div class="cpt text-light text-center">
-                        <p>© 2020-Terumbu Karang Jawa Barat.</p>                    
+                        <p>© 2020-Terumbu Karang Jawa Barat.</p>
                     </div>
                 </div>
-             
+
             </div>
         </div>
     </section>
 
-    
-    
-   
+
+
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Optional JavaScript -->
@@ -192,10 +195,10 @@
     <script>$('body').scrollspy({ target: '#navbarsExampleDefault', offset: 108 })</script>
     <!-- Smooth Scroll -->
     <script src="js/smooth-scroll.js"></script>
-   
+
     <!-- Number Counter -->
     <script src="js/nsc.js"></script>
-   
+
 
 </body>
 </html>coralpedia.php

@@ -12,8 +12,6 @@ Wilayah yang ada terumbu karang<?php include 'build/config/connection.php';
     <title>Home - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Google Font: Source Sans Pro -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
@@ -41,6 +39,9 @@ Wilayah yang ada terumbu karang<?php include 'build/config/connection.php';
         <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -55,13 +56,13 @@ Wilayah yang ada terumbu karang<?php include 'build/config/connection.php';
                 </li>
             </ul>
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">  
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>              
-                </li>  
+                            <a class="dropdown-item" href="logout.php">Logout</a>
+                </li>
             </ul>
         </nav>
         <!-- END OF NAVBAR -->
@@ -173,7 +174,7 @@ Wilayah yang ada terumbu karang<?php include 'build/config/connection.php';
                             </a>
                         </li>
                     <?php //} ?>
-                    </ul>      
+                    </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
             </div>
@@ -200,7 +201,7 @@ Wilayah yang ada terumbu karang<?php include 'build/config/connection.php';
                     <!-- profil pic holder -->
                     <div class="row justify-content-center">
                          <div class ="profile-pic-div" >
-                            <img src="dist/img/profil-example.jpg" id="photo">   
+                            <img src="dist/img/profil-example.jpg" id="photo">
                          </div>
                     </div>
                 </div>

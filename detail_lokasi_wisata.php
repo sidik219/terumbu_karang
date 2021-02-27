@@ -36,6 +36,8 @@ session_start();
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style-card.css">
+    <!-- Favicon -->
+    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
