@@ -132,13 +132,13 @@ session_start();
                         </div>
                         <div>
                             <img src="images/foto_lokasi/icon_lokasi/icon_lokasi.png" style="width: 35px;">:
-                            <label>Lokasi Pantai, </label>
+                            <label>Lokasi Pantai </label>
                             <img src="images/kumpulan_icon/cluster.png" style="width: 35px;">:
-                            <label>Pengelompokan Jarak Terdekat, </label>
+                            <label>Pengelompokan Pantai Berdekatan </label>
                             <img src="images/kumpulan_icon/geo_wilayah1.png" style="width: 35px;">:
-                            <label>Wilayah yang ada terumbu karang, </label>
+                            <label>Wilayah yang ada terumbu karang </label>
                             <img src="images/kumpulan_icon/geo_wilayah2.png" style="width: 35px;">:
-                            <label>Wilayah yang tidak ada terumbu karang, </label>
+                            <label>Wilayah yang tidak ada terumbu karang </label>
                         </div>
                         <div id="mapid" style="height: 640px; width: 100%; margin-top: 20px;"></div>
                     </div>

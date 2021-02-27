@@ -193,6 +193,14 @@
             </div>
             <div class="row mb-2">
                 <div class="col">
+                    <span class="font-weight-bold"><i class="text-primary fas fa-phone"></i> Kontak Pengelola  </span>
+                </div>
+                <div class="col-lg-8  mb-2">
+                    <span class=""><?=$rowitem->kontak_lokasi?></span>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col">
                     <span class="font-weight-bold"><i class="text-warning fas fa-university"></i> Bank Pengelola  </span>
                 </div>
                 <div class="col-lg-8  mb-2">
@@ -233,7 +241,7 @@
                     </div>
                     <div class="form-group">
                         <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
-                        <img id="oldpic" src="<?=$rowitem->bukti_reservasi?>" width="100px">
+                        <!-- <img id="oldpic" src="<?=$rowitem->bukti_donasi?>" width="100px"> -->
                         <a href="<?=$rowitem->bukti_donasi?>" data-toggle="lightbox"><img class="img-fluid" id="oldpic" src="<?=$rowitem->bukti_donasi?>" width="50%" <?php if($rowitem->bukti_donasi == NULL) echo " style='display:none;'"; ?>></a>
                         <br>
                         <small class="text-muted">

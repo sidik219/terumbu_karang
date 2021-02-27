@@ -145,19 +145,70 @@
     });
 
     <?php
-      $sql_map = "SELECT * FROM t_lokasi";
+
+      $sql_map = 'SELECT *, SUM(luas_titik) AS total_titik,
+                                  COUNT(DISTINCT id_titik) AS jumlah_titik,
+                                  SUM(DISTINCT luas_lokasi) AS total_lokasi,
+                                  SUM(DISTINCT luas_titik) / SUM(DISTINCT luas_lokasi) * 100 AS persentase_sebaran,
+                                  COUNT(id_titik) AS jumlah_titik, COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang,
+                                  COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup,
+                                  COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
+                                  COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
+
+                                  FROM `t_titik`, t_lokasi, t_wilayah
+                                  WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
+                                  AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                                  GROUP BY t_lokasi.id_lokasi';
+
       $stmt = $pdo->prepare($sql_map);
       $stmt->execute();
       $sql_viewlokasi = $stmt->fetchAll();
-      foreach ($sql_viewlokasi as $value) { ?>
+
+      foreach ($sql_viewlokasi as $value) {
+        $ps = $value->persentase_sebaran;
+                      if($ps >= 0 && $ps < 25){
+                        $kondisi_wilayah = 'Kurang';
+                        $warna_teks = 'text-danger';
+                      }
+                      else if($ps >= 25 && $ps < 50){
+                        $kondisi_wilayah = 'Cukup';
+                        $warna_teks = 'text-warning';
+                      }
+                      else if($ps >= 50 && $ps < 75){
+                        $kondisi_wilayah = 'Baik';
+                        $warna_teks = 'text-success';
+                      }
+                      else{
+                        $kondisi_wilayah = 'Sangat Baik';
+                        $warna_teks = 'text-primary';
+                      }
+
+        ?>
 
       var marker = L.marker([<?=$value->latitude?>,<?=$value->longitude?>], {icon: myIcon})
       .bindPopup(
       "<b>Nama Lokasi: </b><?=$value->nama_lokasi?><br/>"+
-      "<b>Luas Lokasi: </b><?=$value->luas_lokasi?> m<sup>2</sup><br/>"+
-      "<b>Foto Lokasi: <br/></b><img src='<?=$value->foto_lokasi?>' class='card-img-top mb-2'><br/>"+
-      "<a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
+      "<b>Persentase Sebaran: </b><?=number_format($value->persentase_sebaran, 1)?>%<br/>"+
+      "<b>Kondisi Terumbu Karang: </b><b class='<?=$warna_teks?>'><?=$kondisi_wilayah?></b><br/>"+
+      "<b>Foto Lokasi: <br/></b><img src='<?=$value->foto_lokasi?>' class='card-img-top rounded mb-2'><br/>"+
+      "<div class='col text-center'><a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary text-center' style='color:white;'>Pilih Lokasi</a></div>");
       marker_lokasi.addLayer(marker);
+
+
+
+      // $sql_map = "SELECT * FROM t_lokasi";
+      // $stmt = $pdo->prepare($sql_map);
+      // $stmt->execute();
+      // $sql_viewlokasi = $stmt->fetchAll();
+      // foreach ($sql_viewlokasi as $value) { ?>
+
+      // var marker = L.marker([<?=$value->latitude?>,<?=$value->longitude?>], {icon: myIcon})
+      // .bindPopup(
+      // "<b>Nama Lokasi: </b><?=$value->nama_lokasi?><br/>"+
+      // "<b>Luas Lokasi: </b><?=$value->luas_lokasi?> m<sup>2</sup><br/>"+
+      // "<b>Foto Lokasi: <br/></b><img src='<?=$value->foto_lokasi?>' class='card-img-top mb-2'><br/>"+
+      // "<a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
+      // marker_lokasi.addLayer(marker);
 
     <?php } ?>
     mymap.addLayer(marker_lokasi);

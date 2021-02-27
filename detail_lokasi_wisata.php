@@ -159,7 +159,7 @@ session_start();
                             </div>
                         </div>
                         <div class="row mt-0">
-                          <div class="col p-3"><b class="text-lg">Rincian Wisata:</b><br>
+                          <div class="col p-3 shadow rounded"><b class="text-lg"><i class="text-primary nav-icon fas fa-info-circle"></i> Tentang Paket Wisata ini</b><br>
                           <?=$rowitem->deskripsi_panjang_wisata?></div>
                         </div>
 
