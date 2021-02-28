@@ -69,8 +69,8 @@ TODO
 test.html
 ad.js
 /.cache/
-/images/foto_jenis_tk
-/images/foto_terumbu_karang
-/images/foto_wilayah
-/images/foto_lokasi
+#/images/foto_jenis_tk
+#/images/foto_terumbu_karang
+#/images/foto_wilayah
+#/images/foto_lokasi
 *.ttf
