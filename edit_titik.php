@@ -37,17 +37,18 @@
             $latitude        = $_POST['tblatitude'];
             $kondisi_titik        = $_POST['rb_kondisi_titik'];
             $keterangan_titik = $_POST['tb_keterangan_titik'];
+            $id_zona_titik = $_POST['id_zona_titik'];
 
             $sqltitik = "UPDATE t_titik
-                            SET id_wilayah = :id_wilayah, id_lokasi = :id_lokasi,
+                            SET id_lokasi = :id_lokasi,
                             luas_titik = :luas_titik, longitude = :longitude,
-                            latitude = :latitude, kondisi_titik = :kondisi_titik, keterangan_titik = :keterangan_titik
+                            latitude = :latitude, kondisi_titik = :kondisi_titik, keterangan_titik = :keterangan_titik, id_zona_titik = :id_zona_titik
                             WHERE id_titik = :id_titik";
 
             $stmt = $pdo->prepare($sqltitik);
-            $stmt->execute(['id_titik' => $id_titik, 'id_wilayah' => $id_wilayah, 'id_lokasi' => $id_lokasi,
+            $stmt->execute(['id_titik' => $id_titik, 'id_lokasi' => $id_lokasi,
             'luas_titik' => $luas_titik, 'longitude' => $longitude,
-            'latitude' => $latitude, 'kondisi_titik' => $kondisi_titik, 'keterangan_titik' => $keterangan_titik]);
+            'latitude' => $latitude, 'kondisi_titik' => $kondisi_titik, 'keterangan_titik' => $keterangan_titik,'id_zona_titik' => $id_zona_titik]);
 
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
@@ -238,6 +239,24 @@
                       <div class="form-group">
                         <label for="tb_keterangan_titik">Keterangan/Nama Titik</label>
                         <input type="text" value="<?=$row->keterangan_titik?>" name="tb_keterangan_titik" class="form-control" id="tb_keterangan_titik">
+                    </div>
+                    <div class="form-group">
+                        <label for="rb_status_wisata">Zona Titik</label><br>
+                        <?php
+                          $sqlviewzonatitik = 'SELECT * FROM t_zona_titik';
+                          $stmt = $pdo->prepare($sqlviewzonatitik);
+                          $stmt->execute();
+                          $rowzona = $stmt->fetchAll();
+                          foreach($rowzona as $zona){
+
+                        ?>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" id="idzona<?=$zona->id_zona_titik?>" name="id_zona_titik" value="<?=$zona->id_zona_titik?>" class="form-check-input" <?php if($zona->id_zona_titik == $row->id_zona_titik) echo 'checked required'?>>
+                                <label class="form-check-label" for="idzona<?=$zona->id_zona_titik?>">
+                                    <?=$zona->nama_zona_titik?>
+                                </label>
+                            </div>
+                          <?php } ?>
                     </div>
                         <label for="dd_id_wilayah">ID Wilayah</label>
                         <select id="dd_id_wilayah" name="dd_id_wilayah" class="form-control" onChange="loadLokasi(this.value);" required>

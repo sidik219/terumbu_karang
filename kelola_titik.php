@@ -8,7 +8,8 @@
 $sqlviewtitik = 'SELECT *, t_titik.latitude AS latitude_titik,
                           t_titik.longitude AS longitude_titik
             FROM t_titik
-            LEFT JOIN t_lokasi ON t_titik.id_lokasi = t_lokasi.id_lokasi';
+            LEFT JOIN t_lokasi ON t_titik.id_lokasi = t_lokasi.id_lokasi
+            LEFT JOIN t_zona_titik ON t_titik.id_zona_titik = t_zona_titik.id_zona_titik';
 $stmt = $pdo->prepare($sqlviewtitik);
 $stmt->execute();
 $row = $stmt->fetchAll();
@@ -224,7 +225,7 @@ $row = $stmt->fetchAll();
                             <th scope="col">ID Lokasi</th>
                             <th class="text-right" scope="col">Koordinat</th>
                             <th class="text-right" scope="col">Luas Titik (m<sup>2</sup>)</th>
-                            <th scope="col">Kondisi</th>
+                            <th scope="col">Zona</th>
                             <th scope="col">Aksi</th>
                             </tr>
                           </thead>
@@ -237,7 +238,7 @@ $row = $stmt->fetchAll();
                               <td class="text-right">Lat: <?=$rowitem->latitude_titik?><br> Long: <?=$rowitem->longitude_titik?><br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$rowitem->latitude_titik?>,<?=$rowitem->longitude_titik?>&zoom=8"
                                                                                                                                       class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a></td>
                               <td class="text-right"><?=number_format($rowitem->luas_titik)?></td>
-                              <td><?=$rowitem->kondisi_titik?></td>
+                              <td><?=$rowitem->nama_zona_titik?></td>
                               <td>
                                 <a href="edit_titik.php?id_titik=<?=$rowitem->id_titik?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 <a href="hapus.php?type=titik&id_titik=<?=$rowitem->id_titik?>" class="far fa-trash-alt btn btn-act"></a>

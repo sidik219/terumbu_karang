@@ -74,13 +74,24 @@
             $i = 0;
             foreach ($id_titik[0] as $titik){
               $id_titik_value = $titik;
-
+              $id_zona_titik = 4;
+              //Daftar titik yg dipakai
               $sqlinserttitikperizinan = "INSERT INTO t_detail_perizinan
                             (id_perizinan, id_titik)
                             VALUES (:id_perizinan, :id_titik)";
 
             $stmt = $pdo->prepare($sqlinserttitikperizinan);
             $stmt->execute(['id_perizinan' => $last_id_perizinan	, 'id_titik' => $id_titik_value]);
+
+            //update status titik di t_titik
+
+              $sqlupdatetitikperizinan = "UPDATE t_titik
+                                        SET id_zona_titik = :id_zona_titik
+                                        WHERE id_titik = :id_titik";
+
+            $stmt = $pdo->prepare($sqlupdatetitikperizinan);
+            $stmt->execute(['id_zona_titik' => $id_zona_titik	, 'id_titik' => $id_titik_value]);
+
             $i++;
             }
 

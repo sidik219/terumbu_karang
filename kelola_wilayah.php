@@ -23,6 +23,11 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+        <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+        <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Favicon -->
@@ -310,8 +315,10 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
 <div>
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
+
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
