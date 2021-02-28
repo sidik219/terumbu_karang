@@ -474,21 +474,6 @@ $rowwilayah = $stmt->fetchAll();
         }
 
 
-
-        function savePDF(){
-
-        $.ajax({
-        type:'POST',
-        url:'proses_form.php',
-        data:{type:'generate_csv_laporan_wilayah', periode:'2021'},
-        success: function(){
-            alert('Data berhasil ditambahkan')
-        }
-
-    })
-
-        }
-
     </script>
 
 </body>

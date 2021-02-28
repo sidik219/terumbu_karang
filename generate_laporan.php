@@ -50,7 +50,7 @@ foreach ($rowwilayah as $rowitem) {
                         $total_persentase_sebaran = 0;
 
                         fputcsv($fp, array($rowitem->nama_wilayah));
-                            fputcsv($fp, array('Nama Lokasi', 'Jumlah Titik', 'Luas Sebaran', 'Luas Total', 'Persentase Sebaran', 'Kondisi Lokasi'));
+                            fputcsv($fp, array('Nama Lokasi', 'Jumlah Titik', 'Luas Sebaran (m2)', 'Luas Total (m2)', 'Persentase Sebaran', 'Kondisi Lokasi'));
 
 
                                   $sql_lokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
@@ -115,7 +115,7 @@ foreach ($rowwilayah as $rowitem) {
 
                       fputcsv($fp,array("Total",$rowitem->jumlah_titik,$rowitem->total_titik,$total_luas_lokasi,$ps,$kondisi_wilayah));
                       fputcsv($fp,array(" "));
-                      fputcsv($fp,array("Kurang","Cukup","Baik","Sangat Baik"));
+                      fputcsv($fp,array("Kondisi Kurang","Cukup","Baik","Sangat Baik"));
                       fputcsv($fp,array($kurang_luas,$cukup_luas,$baik_luas,$sangat_baik_luas));
                       fputcsv($fp,array(" "));
                       fputcsv($fp,array(" "));

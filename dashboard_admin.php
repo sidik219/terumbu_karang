@@ -1,5 +1,5 @@
-Wilayah yang ada terumbu karang<?php include 'build/config/connection.php';
-//session_start();
+<?php include 'build/config/connection.php';
+session_start();
 
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');
@@ -187,7 +187,7 @@ Wilayah yang ada terumbu karang<?php include 'build/config/connection.php';
             <div class="content-header">
                 <div class="container-fluid">
                    <div class="jumbotron jumbotron-fluid-profil">
-                        <h4>Selamat Datang, <?php //echo $_SESSION['username']; ?> !</h4>
+                        <h4>Selamat Datang, <?php echo $_SESSION['username']; ?> !</h4>
                     </div>
                     <div class="row">
                         <div class="col">
