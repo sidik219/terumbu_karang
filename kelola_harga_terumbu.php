@@ -179,7 +179,7 @@ $id_lokasi = $_GET['id_lokasi'];
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-
+                      <a href="map.php"><button class="btn btn-warning btn-back mb-2" type="button"><i class="fas fa-angle-left"></i> Kembali</button></a>
                 <h4><span class="align-middle font-weight-bold">Kelola Harga Terumbu</span></h4>
                 </div>
                 <!-- /.container-fluid -->
@@ -190,8 +190,9 @@ $id_lokasi = $_GET['id_lokasi'];
             <section class="content">
                 <div class="container-fluid">
                 <?php //if($_SESSION['level_user'] == '1') { ?>
-                    <div class="terumbu-karang mt-3 form-group">
-                      <label for="num_nomor_rekening">Terumbu karang yang dapat dipilih donatur</label>
+                    <div class="terumbu-karang form-group">
+
+                      <label class="text-muted">Terumbu karang yang dapat dipilih donatur</label>
                       <div class="col text-center">
                                 <span onclick="addDocInput()" data-toggle="modal" data-target=".tambah-modal" class="btn btn-blue btn btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah Terumbu</span>
                               </div>
@@ -218,7 +219,7 @@ $id_lokasi = $_GET['id_lokasi'];
                                 <a href="#" onclick='loadPatokanTerumbu(this.dataset.id_detail_lokasi)'
                                 data-nama_jenis='<?=$rowitem->nama_terumbu_karang?>' data-id_tk='<?=$rowitem->id_terumbu_karang?>'
                                 data-harga_patokan='<?=$rowitem->harga_patokan_lokasi?>' data-id_detail_lokasi='<?=$rowitem->id_detail_lokasi?>' class="fas fa-edit mr-3 btn btn-act"></a>
-                                <a href="#" class="far fa-trash-alt btn btn-act"></a>
+                                <a href="hapus.php?type=detail_lokasi&id_detail_lokasi=<?=$rowitem->id_detail_lokasi?>&id_lokasi=<?=$id_lokasi?>" class="far fa-trash-alt btn btn-act"></a>
                                 </td>
                             </tr>
                            <?php } ?>

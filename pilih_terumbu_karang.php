@@ -141,9 +141,9 @@ $row = $stmt->fetchAll();
             foreach ($row as $rowitem) {
         ?>
 
-            <div class="card  card-pilihan mb-4 shadow-sm shop-item">
+            <div class="card  card-pilihan rounded mb-4 shadow-sm shop-item">
                 <a href="#">
-                    <img class="card-img-top shop-item-image" height="150px" width="150px" src="<?=$rowitem->foto_terumbu_karang?>"
+                    <img class="card-img-top rounded shop-item-image" height="150px" width="150px" src="<?=$rowitem->foto_terumbu_karang?>"
                 ></a>
                 <div class="card-body pt-2">
                 <h5 class="shop-item-title mb-0 card-title"><?=$rowitem->nama_terumbu_karang?></h5>

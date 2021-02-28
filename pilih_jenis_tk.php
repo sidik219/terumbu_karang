@@ -137,13 +137,14 @@ $rowjenis = $stmt->fetchAll();
             <?php //if($_SESSION['level_user'] == '2') { ?>
                 <div class="container-fluid">
                     <h3>Pilih Jenis Terumbu Karang</h3>
+                    <a href="map.php"><button class="btn btn-warning btn-back" type="button"><i class="fas fa-angle-left"></i> Ganti Lokasi Penanaman</button></a>
                     <div class="row">
                     <?php
                     foreach ($rowjenis as $rowitem) { ?>
                         <div class="col-md-4">
-                            <div class="card card-pilihan mb-4 shadow-sm">
-                            <a href="pilih_terumbu_karan.php?id_jenis=<?=$rowitem->id_jenis?>">
-                                <img class="card-img-top" width="100%" src="<?=$rowitem->foto_jenis?>">
+                            <div class="card rounded card-pilihan mb-4 shadow-sm">
+                            <a href="pilih_terumbu_karang.php?id_jenis=<?=$rowitem->id_jenis?>">
+                                <img class="card-img-top rounded" width="100%" src="<?=$rowitem->foto_jenis?>">
                             </a>
                                 <div class="card-body">
                                     <p class="card-title"><h5 class="font-weight-bold"><?=$rowitem->nama_jenis?></h5></p>

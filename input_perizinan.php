@@ -21,6 +21,8 @@
             $id_titik[] = array_values(array_unique($_POST['dd_id_titik']));
             $id_status_perizinan     = 1;
             $tanggal_perizinan = date ('Y-m-d H:i:s', time());
+            $nama_pemohon        = $_POST['tb_nama_pemohon'];
+            $perusahaan_pemohon        = $_POST['tb_perusahaan_pemohon'];
 
             $i = 0;
 
@@ -29,15 +31,15 @@
 
             $sqlinsertperizinan = "INSERT INTO t_perizinan
                             (id_lokasi, judul_perizinan, deskripsi_perizinan, biaya_pergantian, id_user,
-                            id_status_perizinan, tanggal_perizinan)
+                            id_status_perizinan, tanggal_perizinan, nama_pemohon, perusahaan_pemohon)
                             VALUES (:id_lokasi, :judul_perizinan, :deskripsi_perizinan, :biaya_pergantian, :id_user,
-                            :id_status_perizinan, :tanggal_perizinan)";
+                            :id_status_perizinan, :tanggal_perizinan, :nama_pemohon, :perusahaan_pemohon)";
 
             $stmt = $pdo->prepare($sqlinsertperizinan);
             $stmt->execute(['id_lokasi' => $id_lokasi, 'judul_perizinan' => $judul_perizinan,
             'deskripsi_perizinan' => $deskripsi_perizinan, 'biaya_pergantian' => $biaya_pergantian,
             'id_user' => $id_user,
-            'id_status_perizinan' => $id_status_perizinan, 'tanggal_perizinan' => $tanggal_perizinan]);
+            'id_status_perizinan' => $id_status_perizinan, 'tanggal_perizinan' => $tanggal_perizinan, 'nama_pemohon' => $nama_pemohon, 'perusahaan_pemohon' => $perusahaan_pemohon]);
 
             $last_id_perizinan = $pdo->lastInsertId();
 
@@ -272,6 +274,22 @@
                     <form action="" enctype="multipart/form-data" method="POST">
                     <!-- <form action="edit_post_test.php" enctype="multipart/form-data" method="POST"> -->
                     <div class="form-group">
+                        <label for="tb_judul_perizinan">Judul Perizinan</label>
+                        <input type="text" id="tb_judul_perizinan" name="tb_judul_perizinan" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tb_deskripsi_perizinan">Deskripsi Perizinan</label>
+                        <input type="text" id="tb_deskripsi_perizinan" name="tb_deskripsi_perizinan" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tb_nama_perizinan">Nama Pemohon</label>
+                        <input type="text" id="tb_nama_perizinan" name="tb_nama_pemohon" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tb_perusahaan_perizinan">Perusahaan Pemohon</label>
+                        <input type="text" id="tb_perusahaan_perizinan" name="tb_perusahaan_pemohon" class="form-control" required>
+                    </div>
+                    <div class="form-group">
                         <label for="dd_id_lokasi">ID Lokasi</label>
                         <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control mb-2" onchange="loadTitik(this.value);">
                         <option value="">Pilih Lokasi</option>
@@ -298,14 +316,6 @@
                     </div>
                               <p class="text-center"><span onclick="addTitikInput()" class="btn btn-blue btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah Titik</span></p>
 
-                    <div class="form-group">
-                        <label for="tb_judul_perizinan">Judul Perizinan</label>
-                        <input type="text" id="tb_judul_perizinan" name="tb_judul_perizinan" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="tb_deskripsi_perizinan">Deskripsi Perizinan</label>
-                        <input type="text" id="tb_deskripsi_perizinan" name="tb_deskripsi_perizinan" class="form-control" required>
-                    </div>
 
                     <div class='form-group' id='doc-uploads'>
                       <label for='doc_uploads'>Upload Dokumen Proposal</label>
@@ -341,8 +351,8 @@
                     </div>
                     <div class="form-group">
                     <div class="form-group">
-                        <label for="tb_id_user">ID User Pemohon</label>
-                        <input type="number" id="tb_id_user" name="tb_id_user" class="form-control">
+                        <!-- <label for="tb_id_user">ID User Pemohon</label> -->
+                        <input type="hidden" id="tb_id_user" name="tb_id_user" class="form-control" value="1">
                     </div>
                     <div class="form-group">
 

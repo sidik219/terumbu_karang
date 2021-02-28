@@ -26,18 +26,20 @@
             $biaya_pergantian     = $_POST['biaya_pergantian_number'];
             $id_titik = array_values(array_unique($_POST['dd_id_titik']));
             $id_status_perizinan     = $_POST['id_status_perizinan'];
+            $nama_pemohon        = $_POST['tb_nama_pemohon'];
+            $perusahaan_pemohon        = $_POST['tb_perusahaan_pemohon'];
             $i = 0;
 
             $randomstring = substr(md5(rand()), 0, 7);
 
 
             $sqlupdateperizinan = "UPDATE t_perizinan
-                            SET judul_perizinan = :judul_perizinan, deskripsi_perizinan = :deskripsi_perizinan, biaya_pergantian = :biaya_pergantian, id_status_perizinan = :id_status_perizinan
+                            SET judul_perizinan = :judul_perizinan, deskripsi_perizinan = :deskripsi_perizinan, biaya_pergantian = :biaya_pergantian, id_status_perizinan = :id_status_perizinan, nama_pemohon = :nama_pemohon, perusahaan_pemohon = :perusahaan_pemohon
                             WHERE id_perizinan = :id_perizinan";
 
             $stmt = $pdo->prepare($sqlupdateperizinan);
             $stmt->execute(['judul_perizinan' => $judul_perizinan,
-            'deskripsi_perizinan' => $deskripsi_perizinan, 'biaya_pergantian' => $biaya_pergantian, 'id_status_perizinan' => $id_status_perizinan, 'id_perizinan' => $id_perizinan]);
+            'deskripsi_perizinan' => $deskripsi_perizinan, 'biaya_pergantian' => $biaya_pergantian, 'id_status_perizinan' => $id_status_perizinan, 'id_perizinan' => $id_perizinan, 'nama_pemohon' => $nama_pemohon, 'perusahaan_pemohon' => $perusahaan_pemohon]);
 
 
 
@@ -314,6 +316,14 @@
                         <label for="tb_deskripsi_perizinan">Deskripsi Perizinan</label>
                         <input type="text" id="tb_deskripsi_perizinan" value="<?=$rowperizinan->deskripsi_perizinan?>" name="tb_deskripsi_perizinan" class="form-control" required>
                     </div>
+                    <div class="form-group">
+                        <label for="tb_nama_perizinan">Nama Pemohon</label>
+                        <input type="text" id="tb_nama_perizinan" name="tb_nama_pemohon" class="form-control" value="<?=$rowperizinan->nama_pemohon?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tb_perusahaan_perizinan">Perusahaan Pemohon</label>
+                        <input type="text" id="tb_perusahaan_perizinan" name="tb_perusahaan_pemohon" class="form-control" value="<?=$rowperizinan->perusahaan_pemohon?>" required>
+                    </div>
 
 
 
@@ -499,8 +509,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="tb_id_user">ID User Pemohon</label>
-                        <input type="number" value="<?=$rowperizinan->id_user?>" id="tb_id_user" name="tb_id_user" class="form-control">
+                        <!-- <label for="tb_id_user">ID User Pemohon</label> -->
+                        <input type="hidden" value="<?=$rowperizinan->id_user?>" id="tb_id_user" name="tb_id_user" class="form-control">
                     </div>
 
 

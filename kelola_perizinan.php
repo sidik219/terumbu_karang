@@ -220,7 +220,7 @@ $rowperizinan = $stmt->fetchAll();
                             <tr>
                                 <th scope="col">ID Perizinan</th>
                                 <th scope="col">Judul Perizinan</th>
-                                <th scope="col">ID User</th>
+                                <th scope="col">Pemohon</th>
                                 <th scope="col">ID Lokasi</th>
                                 <th scope="col">Biaya Pergantian</th>
                                 <th scope="col">Status Perizinan</th>
@@ -234,7 +234,7 @@ $rowperizinan = $stmt->fetchAll();
                           <tr>
                               <th scope="row"><?=$perizinan->id_perizinan?></th>
                               <td><?=$perizinan->judul_perizinan?></td>
-                              <td><?=$perizinan->id_user?></td>
+                              <td><?=$perizinan->perusahaan_pemohon?></td>
                               <td><?=$perizinan->id_lokasi?> - <?=$perizinan->nama_lokasi?></td>
                               <td>Rp. <?=number_format($perizinan->biaya_pergantian)?></td>
                               <td>

@@ -172,10 +172,7 @@ $row = $stmt->fetchAll();
                                           <br>
                                           <?=strftime('%A, %d %B %Y', $donasidate);?>
                                       </div>
-                                      <div class="mb-3">
-                                            <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-phone"></i> Kontak Pengelola Lokasi</span>
-                                            <br><?=$rowitem->kontak_lokasi?><br>
-                                        </div>
+
 
 
                                   </div>
@@ -204,7 +201,13 @@ $row = $stmt->fetchAll();
                                       <span class=""><?="$rowitem->nama_lokasi (ID $rowitem->id_lokasi)";?></span>
                                       <br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$rowitem->latitude?>,<?=$rowitem->longitude?>&z=8"
                                                                                                                                       class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a>
-                                  </div>
+                                  <div class="mt-2">
+                                            <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-phone"></i> Kontak Pengelola Lokasi</span>
+                                            <br><?=$rowitem->kontak_lokasi?><br>
+                                        </div>
+
+                                                                                                                                    </div>
+
 
 
                             </div><!-- First Row -->
