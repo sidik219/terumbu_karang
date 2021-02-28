@@ -8,12 +8,20 @@ session_start();
   // else{
   //     $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
   // }
+  
+    if($_GET['id_lokasi']){
+        $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
+    }
+    else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
+        header("Location: map.php?aksi=wisata");
+    }
 
     $sqlwisata = 'SELECT * FROM t_wisata
-                LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi';
+                LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
+                WHERE t_wisata.id_lokasi = :id_lokasi';
 
     $stmt = $pdo->prepare($sqlwisata);
-    $stmt->execute();
+    $stmt->execute(['id_lokasi' => $_GET['id_lokasi']]);
     $rowwisata = $stmt->fetchAll();
 ?>
 
@@ -125,7 +133,9 @@ session_start();
             <section class="content">
             <?php //if($_SESSION['level_user'] == '2') { ?>
                 <div class="container-fluid">
-                    <h3>Pilih Lokasi Wisata</h3>
+                    <h3>Lokasi Wisata</h3>
+                    <a href="map.php?aksi=wisata"><button class="btn btn-warning btn-back" type="button">
+                        <i class="fas fa-angle-left"></i> Ganti Lokasi Wisata</button></a>
                     <div class="row">
                     <?php
                     foreach ($rowwisata as $rowitem) {

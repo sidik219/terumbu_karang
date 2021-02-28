@@ -117,7 +117,7 @@ session_start();
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row">
-                        <a class="btn btn-primary float-right" href="pilih_lokasi_wisata.php" role="button">< Wisata Lainnya</a>
+                        <a class="btn btn-warning btn-back" href="#" onclick="history.back()"><i class="fas fa-angle-left"></i>Wisata Lainnya</a>
                     </div>
                 </div>
                 <!-- /.container-fluid -->

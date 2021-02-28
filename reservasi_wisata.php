@@ -154,7 +154,7 @@ session_start();
             <section class="content">
                 <div class="container">
                   <br>
-                  <a class="btn btn-sm btn-outline-primary" href="#" onclick="history.back()"><i class="fas fa-angle-left"></i>   Kembali Pilih</a><br>
+                  <a class="btn btn-warning btn-back" href="#" onclick="history.back()"><i class="fas fa-angle-left"></i>   Kembali Pilih</a><br>
                             <h4 class="pt-3 mb-3"><span class="font-weight-bold">Review Informasi Reservasi Wisata</span></h4>
             <div class="row">
 

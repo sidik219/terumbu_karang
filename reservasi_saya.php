@@ -118,7 +118,7 @@ session_start();
 
                         <div class="col">
 
-                        <a class="btn btn-primary float-right" href="pilih_lokasi_wisata.php" role="button">Reservasi Wisata Sekarang (+)</a>
+                        <a class="btn btn-primary float-right" href="map.php?aksi=wisata" role="button">Reservasi Wisata Sekarang (+)</a>
 
                         </div>
                     </div>

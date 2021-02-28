@@ -4,6 +4,12 @@ session_start();
 //if (isset($_SESSION['level_user']) == 0) {
 //header('location: login.php');
 //}
+//Reservasi Wisata
+if (isset($_GET['aksi'])) {
+    $wisata = $_GET['aksi'];
+  } else {
+    $wisata = null;
+  }
 ?>
 
 <!DOCTYPE html>
@@ -77,18 +83,22 @@ session_start();
                                 <p> Home </p>
                            </a>
                         </li>
-                        <li class="nav-item  menu-open">
+
+                        <?php if($wisata == null) { ?>
+                        <li class="nav-item menu-open">
                            <a href="donasi_saya.php" class="nav-link active">
                                 <i class="nav-icon fas fa-hand-holding-usd"></i>
                                 <p> Donasi Saya </p>
                            </a>
                         </li>
-                        <li class="nav-item">
-                           <a href="reservasi_saya.php" class="nav-link">
+                        <?php } else {?>
+                        <li class="nav-item menu-open">
+                           <a href="reservasi_saya.php" class="nav-link active">
                                 <i class="nav-icon fas fa-suitcase"></i>
                                 <p> Reservasi Saya  </p>
                            </a>
                         </li>
+                        <?php } ?>
                         <li class="nav-item">
                            <a href="profil_saya.php" class="nav-link">
                                 <i class="nav-icon fas fas fa-user"></i>
@@ -112,7 +122,11 @@ session_start();
                         <div class="col">
                         <!-- Untuk User -->
                         <?php //if($_SESSION['level_user'] == '2') { ?>
+                            <?php if($wisata == null) { ?>
                             <h4><span class="align-middle font-weight-bold">Pilih Lokasi Penanaman</span></h4>
+                            <?php } else {?>
+                            <h4><span class="align-middle font-weight-bold">Pilih Lokasi Wisata</span></h4>
+                            <?php } ?>
                         <?php //} ?>
                         </div>
                     </div>

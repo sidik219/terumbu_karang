@@ -9,48 +9,55 @@
         $defaultpic = "images/image_default.jpg";
 
         $sqlviewlokasi = 'SELECT * FROM t_lokasi
-                        ORDER BY nama_lokasi';
+                            ORDER BY nama_lokasi';
         $stmt = $pdo->prepare($sqlviewlokasi);
         $stmt->execute();
         $rowlokasi = $stmt->fetchAll();
 
         $sqleditwisata = 'SELECT * FROM t_wisata
-        LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
-        WHERE id_wisata = :id_wisata';
+                            LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
+                            WHERE id_wisata = :id_wisata';
         $stmt = $pdo->prepare($sqleditwisata);
         $stmt->execute(['id_wisata' => $id_wisata]);
-        $row = $stmt->fetchAll();
+        $rowwisata = $stmt->fetchAll();
 
         if (isset($_POST['submit'])) {
             if (isset($_POST['persentase_paket_donasi'])) {
-                $id_lokasi          = $_POST['dd_id_lokasi'];
-                $judul_wisata       = $_POST['tb_judul_wisata'];
-                $deskripsi_wisata   = $_POST['tb_deskripsi_wisata'];
-                $biaya_wisata       = $_POST['num_biaya_wisata'];
-                $status_aktif       = $_POST['rb_status_wisata'];
+                $id_lokasi                  = $_POST['dd_id_lokasi'];
+                $judul_wisata               = $_POST['tb_judul_wisata'];
+                $deskripsi_wisata           = $_POST['tb_deskripsi_wisata'];
+                $biaya_wisata               = $_POST['num_biaya_wisata'];
+                $status_aktif               = $_POST['rb_status_wisata'];
                 $deskripsi_panjang_wisata   = $_POST['deskripsi_panjang_wisata'];
+
+                $randomstring = substr(md5(rand()), 0, 7);
 
                 //Image upload
                 if($_FILES["image_uploads"]["size"] == 0) {
-                    $foto_wisata = $rowitem->foto_wisata;
+                    $foto_wisata = $rowwisata->foto_wisata;
                     $pic = "&none=";
                 }
                 else if (isset($_FILES['image_uploads'])) {
-                    if (($rowitem->foto_wisata == $defaultpic) || (!$rowitem->foto_wisata)){
-                        $randomstring = substr(md5(rand()), 0, 7);
+                    if (($rowwisata->foto_wisata == $defaultpic) || (!$rowwisata->foto_wisata)){
                         $target_dir  = "images/foto_wisata/";
                         $foto_wisata = $target_dir .'WIL_'.$randomstring. '.jpg';
                         move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wisata);
                         $pic = "&new=";
                     }
-                    else if (isset($rowitem->foto_wisata)){
-                        $foto_wisata = $rowitem->foto_wisata;
-                        unlink($rowitem->foto_wisata);
-                        move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowitem->foto_wisata);
+                    else if (isset($rowwisata->foto_wisata)){
+                        $foto_wisata = $rowwisata->foto_wisata;
+                        unlink($rowwisata->foto_wisata);
+                        move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowwisata->foto_wisata);
                         $pic = "&replace=";
                     }
                 }
                 //---image upload end
+
+                $sqldeleteisipaket = "DELETE FROM tb_paket_donasi
+                                        WHERE id_wisata = :id_wisata";
+
+                $stmt = $pdo->prepare($sqldeleteisipaket);
+                $stmt->execute(['id_wisata' => $id_wisata]);
 
                 $sqlwisata = "UPDATE t_wisata
                                 SET id_lokasi = :id_lokasi, judul_wisata = :judul_wisata, deskripsi_wisata = :deskripsi_wisata,
@@ -77,14 +84,13 @@
                 }
 
                 foreach ($_POST['persentase_paket_donasi'] as $persentase_paket_donasi) {
-                    $persentase_paket_donasi       = $persentase_paket_donasi;
-                    $id_wisata                     = $last_wisata_id;
+                    $persentase_paket_donasi    = $persentase_paket_donasi;
+                    $id_wisata                  = $_GET['id_wisata'];
 
-                    $sqlupdatepaketdonasi = "UPDATE tb_paket_donasi
-                                                SET persentase_paket_donasi = :persentase_paket_donasi, id_wisata = :id_wisata
-                                                WHERE id_paket_donasi = :id_paket_donasi";
+                    $sqlinsertpaketdonasi = "INSERT INTO tb_paket_donasi (persentase_paket_donasi, id_wisata)
+                                        VALUES (:persentase_paket_donasi, :id_wisata)";
 
-                    $stmt = $pdo->prepare($sqlupdatepaketdonasi);
+                    $stmt = $pdo->prepare($sqlinsertpaketdonasi);
                     $stmt->execute(['persentase_paket_donasi' => $persentase_paket_donasi,
                                     'id_wisata'               => $id_wisata
                                     ]);
@@ -294,7 +300,7 @@
                     </select>
                     </div>
 
-                    <?php foreach ($row as $rowitem) { ?>
+                    <?php foreach ($rowwisata as $rowitem) { ?>
                     <div class="form-group">
                         <label for="tb_judul_wisata">Judul Wisata</label>
                         <input type="text" id="tb_judul_wisata" name="tb_judul_wisata" value="<?=$rowitem->judul_wisata?>" class="form-control">

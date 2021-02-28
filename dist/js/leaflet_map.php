@@ -145,6 +145,12 @@
     });
 
     <?php
+      //Reservasi Wisata
+      if (isset($_GET['aksi'])) {
+        $wisata = $_GET['aksi'];
+      } else {
+        $wisata = null;
+      }
 
       $sql_map = 'SELECT *, SUM(luas_titik) AS total_titik,
                                   COUNT(DISTINCT id_titik) AS jumlah_titik,
@@ -185,14 +191,20 @@
 
         ?>
 
-      var marker = L.marker([<?=$value->latitude?>,<?=$value->longitude?>], {icon: myIcon})
-      .bindPopup(
-      "<b>Nama Lokasi: </b><?=$value->nama_lokasi?><br/>"+
-      "<b>Persentase Sebaran: </b><?=number_format($value->persentase_sebaran, 1)?>%<br/>"+
-      "<b>Kondisi Terumbu Karang: </b><b class='<?=$warna_teks?>'><?=$kondisi_wilayah?></b><br/>"+
-      "<b>Foto Lokasi: <br/></b><img src='<?=$value->foto_lokasi?>' class='card-img-top rounded mb-2'><br/>"+
-      "<div class='col text-center'><a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary text-center' style='color:white;'>Pilih Lokasi</a></div>");
-      marker_lokasi.addLayer(marker);
+        var marker = L.marker([<?=$value->latitude?>,<?=$value->longitude?>], {icon: myIcon})
+        .bindPopup(
+        "<b>Nama Lokasi: </b><?=$value->nama_lokasi?><br/>"+
+        "<b>Persentase Sebaran: </b><?=number_format($value->persentase_sebaran, 1)?>%<br/>"+
+        "<b>Kondisi Terumbu Karang: </b><b class='<?=$warna_teks?>'><?=$kondisi_wilayah?></b><br/>"+
+        "<b>Foto Lokasi: <br/></b><img src='<?=$value->foto_lokasi?>' class='card-img-top rounded mb-2'><br/>"+
+        "<?php if($wisata == null) { ?>"+
+        "<div class='col text-center'><a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary text-center' style='color:white;'>Pilih Lokasi</a></div>"+
+        "<?php } else {?>"+
+        "<div class='col text-center'><a href='pilih_lokasi_wisata.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary text-center' style='color:white;'>Pilih Lokasi</a></div>"+
+        "<?php } ?>"
+        );
+        marker_lokasi.addLayer(marker);
+      
 
 
 
