@@ -212,7 +212,11 @@ $rowwilayah = $stmt->fetchAll();
                         </div>
                         <div id="btn-unduh" class="col">
 
-                        <a class="btn btn-primary float-right" onclick="savePDF()" href="#" role="button"><i class="fas fa-file-pdf"></i> Unduh Laporan</a>
+                        <!-- <a class="btn btn-primary float-right" onclick="saveCSVs()" href="#" role="button"><i class="fas fa-file-excel"></i> Unduh Laporan (CSV)</a> -->
+
+                        <a class="btn btn-primary float-right" target="_blank" href="generate_laporan.php?type=generate_csv_laporan_wilayah"><i class="fas fa-file-excel"></i> Unduh Laporan (CSV)</a>
+
+                        <a class="btn btn-primary float-right  mr-2" onclick="savePDF()" href="#" role="button"><i class="fas fa-file-pdf"></i> Unduh Laporan (PDF)</a>
 
                         </div>
                     </div>
@@ -466,6 +470,22 @@ $rowwilayah = $stmt->fetchAll();
             location.reload()
             }, 3000)
 
+
+        }
+
+
+
+        function savePDF(){
+
+        $.ajax({
+        type:'POST',
+        url:'proses_form.php',
+        data:{type:'generate_csv_laporan_wilayah', periode:'2021'},
+        success: function(){
+            alert('Data berhasil ditambahkan')
+        }
+
+    })
 
         }
 

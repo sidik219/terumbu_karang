@@ -28,12 +28,12 @@
             $id_zona_titik = $_POST['id_zona_titik'];
 
             $sqltitik = "INSERT INTO t_titik
-                            (id_wilayah, id_lokasi, luas_titik, longitude, latitude, kondisi_titik, keterangan_titik, id_zona_titik)
-                            VALUES (:id_wilayah, :id_lokasi, :luas_titik, :longitude,
+                            (id_lokasi, luas_titik, longitude, latitude, kondisi_titik, keterangan_titik, id_zona_titik)
+                            VALUES (:id_lokasi, :luas_titik, :longitude,
                             :latitude, :kondisi_titik, :keterangan_titik, :id_zona_titik)";
 
             $stmt = $pdo->prepare($sqltitik);
-            $stmt->execute(['id_wilayah' => $id_wilayah, 'id_lokasi' => $id_lokasi,
+            $stmt->execute(['id_lokasi' => $id_lokasi,
             'luas_titik' => $luas_titik, 'longitude' => $longitude,
             'latitude' => $latitude, 'kondisi_titik' => $kondisi_titik, 'keterangan_titik' => $keterangan_titik, 'id_zona_titik' => $id_zona_titik]);
 

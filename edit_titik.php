@@ -55,7 +55,7 @@
             header("Location: kelola_titik.php?status=nochange");
             } else {
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: kelola_titik.php?status=addsuccess");
+                header("Location: kelola_titik.php?status=updatesuccess");
             }
         }
 
