@@ -19,7 +19,7 @@
                             WHERE id_wisata = :id_wisata';
         $stmt = $pdo->prepare($sqleditwisata);
         $stmt->execute(['id_wisata' => $id_wisata]);
-        $rowwisata = $stmt->fetchAll();
+        $rowwisata = $stmt->fetch();
 
         if (isset($_POST['submit'])) {
             if (isset($_POST['persentase_paket_donasi'])) {
@@ -295,25 +295,25 @@
                     <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" required>
                             <option value="">Pilih Lokasi</option>
                         <?php foreach ($rowlokasi as $rowitem) {  ?>
-                            <option value="<?=$rowitem->id_lokasi?>">ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
+                            <option <?php if($rowitem->id_lokasi == $rowwisata->id_lokasi) echo 'selected'; ?> value="<?=$rowitem->id_lokasi?>">ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
                         <?php } ?>
                     </select>
                     </div>
 
-                    <?php foreach ($rowwisata as $rowitem) { ?>
+
                     <div class="form-group">
                         <label for="tb_judul_wisata">Judul Wisata</label>
-                        <input type="text" id="tb_judul_wisata" name="tb_judul_wisata" value="<?=$rowitem->judul_wisata?>" class="form-control">
+                        <input type="text" id="tb_judul_wisata" name="tb_judul_wisata" value="<?=$rowwisata->judul_wisata?>" class="form-control">
                     </div>
 
                     <div class="form-group">
                         <label for="tb_deskripsi_wisata">Deskripsi Singkat Wisata</label>
-                        <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" value="<?=$rowitem->deskripsi_wisata?>" class="form-control">
+                        <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" value="<?=$rowwisata->deskripsi_wisata?>" class="form-control">
                     </div>
 
                     <div class="form-group">
                         <label for="isi_artikel">Deskripsi Lengkap Wisata:</label>
-                        <textarea id="deskripsi_lengkap_wisata" name="deskripsi_panjang_wisata" required><?=$rowitem->deskripsi_panjang_wisata?></textarea>
+                        <textarea id="deskripsi_lengkap_wisata" name="deskripsi_panjang_wisata" required><?=$rowwisata->deskripsi_panjang_wisata?></textarea>
                     <script>
                             $('#deskripsi_lengkap_wisata').trumbowyg();
                     </script>
@@ -321,7 +321,7 @@
 
                     <div class="form-group">
                         <label for="num_biaya_wisata">Biaya Wisata</label>
-                        <input type="number" id="num_biaya_wisata" name="num_biaya_wisata" value="<?=$rowitem->biaya_wisata?>" class="form-control">
+                        <input type="number" id="num_biaya_wisata" name="num_biaya_wisata" value="<?=$rowwisata->biaya_wisata?>" class="form-control">
                     </div>
 
                     <div class="form-group field_wrapper">
@@ -336,7 +336,7 @@
                                                     AND t_wisata.id_wisata = tb_paket_donasi.id_wisata';
 
                                 $stmt = $pdo->prepare($sqlviewpaket);
-                                $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
+                                $stmt->execute(['id_wisata' => $rowwisata->id_wisata]);
                                 $rowpersentase = $stmt->fetchAll();
 
                                 foreach ($rowpersentase as $rowpaket) {
@@ -357,7 +357,7 @@
 
                     <div class="form-group">
                         <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
-                        <img id="oldpic" src="<?=$rowitem->foto_wisata?>" width="100px">
+                        <img id="oldpic" src="<?=$rowwisata->foto_wisata?>" width="100px">
                         <script>
                             window.onload = function() {
                             document.getElementById('preview').style.display = 'none';
@@ -382,19 +382,19 @@
                     <div class="form-group">
                         <label for="rb_status_wisata">Status</label><br>
                             <div class="form-check form-check-inline">
-                                <input type="radio" id="rb_status_aktif" name="rb_status_wisata" value="Aktif" class="form-check-input">
+                                <input type="radio" id="rb_status_aktif" name="rb_status_wisata" value="Aktif" class="form-check-input" <?php if($rowwisata->status_aktif == 'Aktif') echo ' checked'; ?>>
                                 <label class="form-check-label" for="rb_status_aktif" style="color: green">
                                     Aktif
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input checked type="radio" id="rb_status_tidak_aktif" name="rb_status_wisata" value="Tidak Aktif " class="form-check-input">
+                                <input type="radio" id="rb_status_tidak_aktif" name="rb_status_wisata" value="Tidak Aktif" class="form-check-input" <?php if($rowwisata->status_aktif == 'Tidak Aktif') echo ' checked'; ?>>
                                 <label class="form-check-label" for="rb_status_tidak_aktif" style="color: gray">
                                     Tidak Aktif
                                 </label>
                             </div>
                     </div>
-                    <?php } ?>
+
                     <br>
                     <p align="center">
                     <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
