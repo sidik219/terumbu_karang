@@ -8,7 +8,7 @@ session_start();
   // else{
   //     $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
   // }
-  
+
     if($_GET['id_lokasi']){
         $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
     }
@@ -28,7 +28,7 @@ session_start();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Pilih Jenis - TKJB</title>
+    <title>Pilih Wisata - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -133,7 +133,7 @@ session_start();
             <section class="content">
             <?php //if($_SESSION['level_user'] == '2') { ?>
                 <div class="container-fluid">
-                    <h3>Lokasi Wisata</h3>
+                    <h3>Pilihan Wisata</h3>
                     <a href="map.php?aksi=wisata"><button class="btn btn-warning btn-back" type="button">
                         <i class="fas fa-angle-left"></i> Ganti Lokasi Wisata</button></a>
                     <div class="row">
@@ -143,24 +143,17 @@ session_start();
 
                         <div class="col-md-4">
                             <div class="card card-pilihan mb-4 shadow-sm">
-                            <a href="detail_lokasi_wisata.php?id_lokasi=<?=$rowitem->id_lokasi?>">
-                                <img class="card-img-top" width="100%" src="<?=$rowitem->foto_wisata?>">
+                            <a href="detail_lokasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>">
+                                <img class="card-img-top" height="100%" src="<?=$rowitem->foto_wisata?>">
                             </a>
                                 <div class="card-body card-body-costom">
                                     <p class="card-title"><h5 class="font-weight-bold"><?=$rowitem->nama_lokasi?></h5></p>
                                     <p class="card-text"><?=$rowitem->judul_wisata?></p>
-                                    <a class="btn btn-primary btn-lg btn-block mb-4" href="detail_lokasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" class="card-donasi__cta" style="color: white;">Pilih Lokasi</a>
+                                    <a class="btn btn-primary btn-lg btn-block mb-4" href="detail_lokasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" class="card-donasi__cta" style="color: white;">Pilih Wisata</a>
                                 </div>
                             </div>
                         </div>
-                        <!-- Hidden Input :V -->
-                        <div class="row">
-                            <div class="col-lg-8 mb-2">
-                                <input type="hidden" id="" name="" value="<?=$rowitem->nama_rekening?>">
-                                <input type="hidden" id="" name="" value="<?=$rowitem->nomor_rekening?>">
-                                <input type="hidden" id="" name="" value="<?=$rowitem->nama_bank?>">
-                            </div>
-                        </div>
+
 
                         <?php } ?>
                     <?php } ?>

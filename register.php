@@ -167,32 +167,32 @@ if (isset($_POST['register'])) {
                         <label for="tb_alamat_user">Alamat</label>
                         <input type="text" id="tb_email" name="tb_alamat_user" class="form-control">
                     </div>
-                    <!-- <div class="form-group">
+                    <div class="form-group d-none">
                         <label for="num_ktp_user">No. KTP</label>
                         <input type="number" id="num_ktp_user" name="num_ktp_user" class="form-control">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group d-none">
                         <label for="image_uploads1">Fotokopi KTP</label>
                         <div class="file-form">
                         <input type="file" id="image_uploads1" name="image_uploads1" class="form-control">
                         </div>
-                    </div> -->
-                    <!-- <div class="form-group">
+                    </div>
+                    <div class="form-group d-none">
                         <label for="tb_tempat_lahir">Tempat Lahir</label>
                         <input type="text" id="tb_tempat_lahir" name="tb_tempat_lahir" class="form-control">
-                    </div> -->
+                    </div>
                     <div class="form-group">
                          <label for="date_tanggal_lahir">Tanggal Lahir</label>
                          <div class="file-form">
                          <input type="date" id="date_tanggal_lahir" name="date_tanggal_lahir" class="form-control" >
                          </div>
                      </div>
-                     <!-- <div class="form-group">
+                     <div class="form-group d-none">
                         <label for="image_uploads2">Foto Diri</label>
                         <div class="file-form">
                         <input type="file" id="image_uploads2" name="image_uploads2" class="form-control">
                         </div>
-                    </div> -->
+                    </div>
                     <div class="form-group">
                         <label for="tb_username">Username</label>
                         <input type="text" id="tb_username" name="tb_username" class="form-control">

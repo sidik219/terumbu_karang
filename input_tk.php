@@ -17,6 +17,7 @@
             $deskripsi_terumbu_karang        = $_POST['tb_deskripsi_terumbu'];
             $randomstring = substr(md5(rand()), 0, 7);
             $harga_terumbu_karang = $_POST['num_harga_terumbu_karang'];
+            $deskripsi_panjang_tk = $_POST['deskripsi_panjang_tk'];
 
             //Image upload
         if($_FILES["image_uploads"]["size"] == 0) {
@@ -31,14 +32,14 @@
         //---image upload end
 
     $sqlterumbu_karang = "INSERT INTO t_terumbu_karang
-                            (id_jenis, nama_terumbu_karang, deskripsi_terumbu_karang, foto_terumbu_karang, harga_terumbu_karang	)
+                            (id_jenis, nama_terumbu_karang, deskripsi_terumbu_karang, foto_terumbu_karang, harga_terumbu_karang, deskripsi_panjang_tk)
                             VALUES (:id_jenis, :nama_terumbu_karang,
-                            :deskripsi_terumbu_karang, :foto_terumbu_karang, :harga_terumbu_karang)";
+                            :deskripsi_terumbu_karang, :foto_terumbu_karang, :harga_terumbu_karang, :deskripsi_panjang_tk)";
 
     $stmt = $pdo->prepare($sqlterumbu_karang);
     $stmt->execute(['id_jenis' => $id_jenis,'nama_terumbu_karang' => $nama_terumbu_karang,
     'deskripsi_terumbu_karang' => $deskripsi_terumbu_karang,
-    'foto_terumbu_karang' => $foto_terumbu_karang, 'harga_terumbu_karang' => $harga_terumbu_karang]);
+    'foto_terumbu_karang' => $foto_terumbu_karang, 'harga_terumbu_karang' => $harga_terumbu_karang, 'deskripsi_panjang_tk' => $deskripsi_panjang_tk]);
 
     $affectedrows = $stmt->rowCount();
     if ($affectedrows == '0') {
@@ -62,6 +63,9 @@
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="js/trumbowyg/dist/ui/trumbowyg.min.css">
+    <script src="js/trumbowyg/dist/trumbowyg.js"></script>
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Favicon -->
@@ -241,6 +245,15 @@
                         <label for="tb_deskripsi_terumbu">Deskripsi Terumbu Karang</label>
                         <input type="text" id="tb_deskripsi_terumbu" name="tb_deskripsi_terumbu" class="form-control">
                     </div>
+
+                    <div class="form-group">
+                        <label for="isi_artikel">Deskripsi Lengkap Terumbu Karang</label>
+                        <textarea id="deskripsi_lengkap_tk" name="deskripsi_panjang_tk"></textarea>
+                    <script>
+                            $('#deskripsi_lengkap_tk').trumbowyg();
+                    </script>
+                    </div>
+
                     <div class='form-group' id='fototk'>
                         <div>
                             <label for='image_uploads'>Upload Foto Terumbu Karang</label>
@@ -314,6 +327,8 @@
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
+    <!-- Import Trumbowyg font size JS at the end of <body>... -->
+<script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
 
 </body>
 </html>

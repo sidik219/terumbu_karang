@@ -28,6 +28,7 @@
             $deskripsi_terumbu_karang        = $_POST['tb_deskripsi_terumbu'];
             $randomstring = substr(md5(rand()), 0, 7);
             $harga_terumbu_karang = $_POST['num_harga_terumbu_karang'];
+            $deskripsi_panjang_tk = $_POST['deskripsi_panjang_tk'];
 
             //Image upload
             if($_FILES["image_uploads"]["size"] == 0) {
@@ -54,20 +55,20 @@
     $sqlterumbu_karang = "UPDATE t_terumbu_karang
                             SET id_jenis = :id_jenis, nama_terumbu_karang = :nama_terumbu_karang,
                             deskripsi_terumbu_karang = :deskripsi_terumbu_karang,
-                            foto_terumbu_karang = :foto_terumbu_karang, harga_terumbu_karang = :harga_terumbu_karang
+                            foto_terumbu_karang = :foto_terumbu_karang, harga_terumbu_karang = :harga_terumbu_karang, deskripsi_panjang_tk = :deskripsi_panjang_tk
                             WHERE id_terumbu_karang = :id_terumbu_karang";
 
     $stmt = $pdo->prepare($sqlterumbu_karang);
     $stmt->execute(['id_terumbu_karang' => $id_terumbu_karang,'id_jenis' => $id_jenis,'nama_terumbu_karang' => $nama_terumbu_karang,
     'deskripsi_terumbu_karang' => $deskripsi_terumbu_karang,
-    'foto_terumbu_karang' => $foto_terumbu_karang, 'harga_terumbu_karang' => $harga_terumbu_karang]);
+    'foto_terumbu_karang' => $foto_terumbu_karang, 'harga_terumbu_karang' => $harga_terumbu_karang, 'deskripsi_panjang_tk' => $deskripsi_panjang_tk]);
 
     $affectedrows = $stmt->rowCount();
     if ($affectedrows == '0') {
     header("Location: kelola_tk.php?status=nochange");
     } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
-        header("Location: kelola_tk.php?status=addsuccess");
+        header("Location: kelola_tk.php?status=updatesuccess");
         }
     }
 
@@ -85,6 +86,9 @@
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="js/trumbowyg/dist/ui/trumbowyg.min.css">
+    <script src="js/trumbowyg/dist/trumbowyg.js"></script>
 
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -267,6 +271,15 @@
                         <label for="tb_deskripsi_terumbu">Deskripsi Terumbu Karang</label>
                         <input type="text"  value="<?=$rowitem->deskripsi_terumbu_karang?>"  id="tb_deskripsi_terumbu" name="tb_deskripsi_terumbu" class="form-control">
                     </div>
+
+                    <div class="form-group">
+                        <label for="isi_artikel">Deskripsi Lengkap Terumbu Karang</label>
+                        <textarea id="deskripsi_lengkap_tk" name="deskripsi_panjang_tk"><?=$rowitem->deskripsi_panjang_tk?></textarea>
+                    <script>
+                            $('#deskripsi_lengkap_tk').trumbowyg();
+                    </script>
+                    </div>
+
                     <div class='form-group' id='fototk'>
                         <div>
                             <label for='image_uploads'>Upload Foto Terumbu Karang</label>
