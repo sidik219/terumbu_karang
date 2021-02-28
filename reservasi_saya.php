@@ -205,6 +205,13 @@ session_start();
                                             <br><small class="text-muted"><b>Update Terakhir</b>
                                             <br><?=strftime('%A, %d %B %Y', $truedate);?></small>
                                         </div>
+                                        <div class="mb-3">
+                                            <?php if ($rowitem->id_status_reservasi_wisata == 2) { ?>
+                                                <!-- Invoice Reservasi Wisata -->
+                                                <a href="invoice_wisata.php?id_reservasi=<?=$rowitem->id_reservasi?>" class="btn btn-sm btn-primary userinfo">
+                                                    <i class="fas fa-file-invoice"></i> Download Inovice Reservasi Wisata</a>
+                                            <?php } ?>
+                                        </div>
                                     </div>
 
                                     <div class="col-md mb-3">
@@ -255,6 +262,7 @@ session_start();
                                         </a>
                                     </div>
                                 <?php } ?>
+
                         </div>
                         <?php } ?>
                     </div>
