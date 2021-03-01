@@ -73,4 +73,4 @@ ad.js
 #/images/foto_terumbu_karang
 #/images/foto_wilayah
 #/images/foto_lokasi
-*.ttf
+#*.ttf
