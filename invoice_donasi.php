@@ -7,21 +7,20 @@ class myPDF extends FPDF{
         global $pdo;
         $this->Image('images/KKPlogo.png', 10, 3, -2500);
         $this->SetFont('Arial', 'B', 14);
-        $this->cell(276, 5, 'INVOICE RESERVASI WISATA', 0, 0, 'C');
+        $this->cell(276, 5, 'INVOICE DONASI TERUMBU KARANG', 0, 0, 'C');
         $this->Ln();
         $this->SetFont('Times', '', 12);
 
-        $id_reservasi = $_GET['id_reservasi'];
+        $id_donasi = $_GET['id_donasi'];
 
-        $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
-                    LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
-                    LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
-                    LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-                    LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
-                    WHERE id_reservasi = :id_reservasi
-                    ORDER BY id_reservasi DESC';
+        $sqlviewreservasi = 'SELECT * FROM t_donasi
+                        LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
+                        LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
+                        LEFT JOIN t_user ON t_donasi.id_user = t_user.id_user
+                        WHERE id_donasi = :id_donasi
+                        ORDER BY id_donasi DESC';
         $stmt = $pdo->prepare($sqlviewreservasi);
-        $stmt->execute(['id_reservasi' => $id_reservasi]);
+        $stmt->execute(['id_donasi' => $id_donasi]);
         $row = $stmt->fetchAll();
 
         foreach ($row as $rowitem) {
@@ -53,50 +52,45 @@ class myPDF extends FPDF{
     Function viewTable($pdo){
         $this->SetFont('Times', '', 13);
 
-        $id_reservasi = $_GET['id_reservasi'];
+        $id_donasi = $_GET['id_donasi'];
 
-        $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
-                    LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
-                    LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
-                    LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-                    LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
-                    WHERE id_reservasi = :id_reservasi
-                    ORDER BY id_reservasi DESC';
+        $sqlviewreservasi = 'SELECT * FROM t_donasi
+                        LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
+                        LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
+                        LEFT JOIN t_user ON t_donasi.id_user = t_user.id_user
+                        WHERE id_donasi = :id_donasi
+                        ORDER BY id_donasi DESC';
         $stmt = $pdo->prepare($sqlviewreservasi);
-        $stmt->execute(['id_reservasi' => $id_reservasi]);
+        $stmt->execute(['id_donasi' => $id_donasi]);
         $row = $stmt->fetchAll();
 
-        
         foreach ($row as $rowitem) {
-            $reservasidate = strtotime($rowitem->tgl_reservasi);
+            $donasidate = strtotime($rowitem->tanggal_donasi);
             //User
-            $this->Cell(55, 5, 'ID Reservasi', 0, 0);
-            $this->Cell(117, 5, ': '.$rowitem->id_reservasi, 0, 0);
-            $this->Cell(52, 5, 'Tanggal Reservasi', 0, 0);
-            $this->Cell(52, 5, ': '.strftime("%A, %d %B %Y", $reservasidate), 1, 1);
+            $this->Cell(55, 5, 'ID Donasi', 0, 0);
+            $this->Cell(107, 5, ': '.$rowitem->id_donasi, 0, 0);
+            $this->Cell(52, 5, 'Tanggal Donasi', 0, 0);
+            $this->SetTextColor(255, 255, 255);
+            $this->SetFillColor(4, 119, 194);
+            $this->Cell(62, 5, ': '.strftime("%A, %d %B %Y", $donasidate), 0, 1, 'C', 1);
+            $this->SetTextColor(0, 0, 0);
+
+            $this->Cell(55, 5, 'ID Batch', 0, 0);
+            $this->Cell(107, 5, ': '.$rowitem->id_batch, 0, 0);
+            $this->Cell(52, 5, 'Lokasi Penanaman', 0, 0);
+            $this->Cell(62, 5, ': '.$rowitem->nama_lokasi, 0, 1);
 
             $this->Cell(55, 5, 'Nama User', 0, 0);
-            $this->Cell(117, 5, ': '.$rowitem->nama_user, 0, 0);
-            $this->Cell(52, 5, 'Lokasi Reservasi Wisata', 0, 0);
-            $this->Cell(52, 5, ': '.$rowitem->nama_lokasi, 0, 1);
-
-            $this->Cell(55, 5, 'Wisata', 0, 0);
-            $this->Cell(117, 5, ': '.$rowitem->judul_wisata, 0, 1);
+            $this->Cell(117, 5, ': '.$rowitem->nama_user, 0, 1);
 
             $this->Line(10, 30, 286, 30); //Line atas
 
-            $this->Ln(10);
-            $this->Cell(55, 5, 'Jumlah Peserta', 0, 0);
-            $this->Cell(117, 5, ': '.$rowitem->jumlah_peserta, 0, 1);
-            $this->Cell(55, 5, 'Jumlah Donasi', 0, 0);
-            $this->Cell(117, 5, ': Rp. '.number_format($rowitem->jumlah_donasi, 0), 0, 1);
+            $this->Cell(55, 5, 'Nominal', 0, 0);
+            $this->Cell(117, 5, ': Rp. '.number_format($rowitem->nominal, 0), 0, 1);
+            $this->Cell(55, 5, 'Status', 0, 0);
+            $this->Cell(117, 5, ': '.$rowitem->nama_status_donasi, 0, 1);
 
-            $this->Cell(55, 5, 'Total', 0, 0);
-            $this->Cell(117, 5, ': Rp. '.number_format($rowitem->total, 0), 0, 1);
-            $this->Cell(55, 5, 'Status Reservasi', 0, 0);
-            $this->Cell(117, 5, ': '.$rowitem->nama_status_reservasi_wisata, 0, 1);
-
-            $this->Line(10, 55, 286, 55); //Line Tengah
+            $this->Line(10, 65, 286, 65); //Line Tengah
 
             $this->Ln(10);
             $this->Cell(55, 5, 'Nama Rekening Pengelola', 0, 0);
@@ -106,17 +100,17 @@ class myPDF extends FPDF{
             $this->Cell(55, 5, 'Nomor Rekening Pengelola ', 0, 0);
             $this->Cell(117, 5, ': '.$rowitem->nomor_rekening, 0, 1);
 
-            $this->Line(10, 85, 286, 85); //Line Bawah
+            $this->Line(10, 90, 286, 90); //Line Bawah
 
             $this->Ln(10);
-            $this->Cell(55, 5, 'Keterangan', 0, 0);
-            $this->Cell(117, 5, ': '.$rowitem->keterangan, 0, 1);
+            $this->Cell(55, 5, 'Pesan/Ekspresi', 0, 0);
+            $this->Cell(117, 5, ': '.$rowitem->pesan, 0, 1);
             $this->Cell(55, 5, 'No HP Pengelola Lokasi', 0, 0);
             $this->Cell(117, 5, ': '.$rowitem->kontak_lokasi, 0, 1);
 
             $this->Line(234, 170, 286, 170); //Line TTD
 
-            $this->Ln(50);
+            $this->Ln(70);
             $this->Cell(224, 5, '', 0, 0);
             $this->Cell(52, 5, $rowitem->nama_rekening, 0, 1, 'C');
             $this->Cell(224, 5, '', 0, 0);
@@ -132,23 +126,21 @@ $pdf->AddPage('L', 'A4', 0);
 //$pdf->headerTable();
 $pdf->viewTable($pdo);
 
-$id_reservasi = $_GET['id_reservasi'];
+$id_donasi = $_GET['id_donasi'];
 
-$sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
-            LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
-            LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
-            LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-            LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
-            WHERE id_reservasi = :id_reservasi
-            ORDER BY id_reservasi DESC';
+$sqlviewreservasi = 'SELECT * FROM t_donasi
+                LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
+                LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
+                LEFT JOIN t_user ON t_donasi.id_user = t_user.id_user
+                WHERE id_donasi = :id_donasi
+                ORDER BY id_donasi DESC';
 $stmt = $pdo->prepare($sqlviewreservasi);
-$stmt->execute(['id_reservasi' => $id_reservasi]);
+$stmt->execute(['id_donasi' => $id_donasi]);
 $row = $stmt->fetchAll();
 
-
 foreach ($row as $rowitem) {
-    $reservasidate = strtotime($rowitem->tgl_reservasi);
-    $fileName = 'Invoice - ' .$rowitem->judul_wisata.' - '.$rowitem->nama_user.' - '.strftime('%A, %d %B %Y', $reservasidate). '.pdf';
+    $donasidate = strtotime($rowitem->tanggal_donasi);
+    $fileName = 'Invoice - Donasi Terumbu Karang, ' .$rowitem->nama_user.' - '.strftime('%A, %d %B %Y', $donasidate). '.pdf';
 }
 $pdf->Output($fileName, 'D');
 ?>
