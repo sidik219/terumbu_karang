@@ -11,6 +11,13 @@
         $stmt->execute();
         $row = $stmt->fetchAll();
 
+        $sqlviewpengelola = 'SELECT * FROM t_user
+                    WHERE level_user = 3
+                    ORDER BY nama_user';
+        $stmt = $pdo->prepare($sqlviewpengelola);
+        $stmt->execute();
+        $rowpengelola = $stmt->fetchAll();
+
     if (isset($_POST['submit'])) {
         if($_POST['submit'] == 'Simpan'){
             $id_wilayah = $_POST['dd_id_wilayah'];
@@ -248,6 +255,18 @@
                         <label for="tb_nama_lokasi">Nama Lokasi</label>
                         <input type="text" id="tb_nama_lokasi" name="tb_nama_lokasi" class="form-control">
                     </div>
+
+                     <div class="form-group">
+                        <label for="dd_id_wilayah">User Pengelola Lokasi</label>
+                        <select id="dd_id_wilayah" name="tb_id_pengelola" class="form-control" required>
+                            <?php foreach ($rowpengelola as $rowitem) {
+                            ?>
+                            <option value="<?=$rowitem->id_user?>">ID <?=$rowitem->id_user?> - <?=$rowitem->nama_user?> - <?=$rowitem->organisasi_user?></option>
+
+                            <?php } ?>
+                        </select>
+                    </div>
+
                     <div class="form-group">
                         <label for="num_luas_lokasi">Estimasi Luas Titik Total (m<sup>2</sup>)</label>
                         <input type="number" id="num_luas_lokasi" name="num_luas_lokasi" class="form-control">
@@ -286,10 +305,7 @@
                         <label for="tb_deskripsi_lokasi">Deskripsi</label>
                         <input type="text" id="tb_deskripsi_lokasi" name="tb_deskripsi_lokasi" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label for="tb_id_pengelola">ID User Pengelola</label>
-                        <input type="text" id="tb_id_pengelola" name="tb_id_pengelola" class="form-control">
-                    </div>
+
                     <div class="form-group">
                         <label for="num_kontak_lokasi">Kontak Lokasi</label>
                         <input type="number" id="num_kontak_lokasi" name="num_kontak_lokasi" class="form-control number-input">

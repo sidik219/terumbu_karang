@@ -20,6 +20,13 @@
         $stmt->execute();
         $row2 = $stmt->fetchAll();
 
+        $sqlviewpengelola = 'SELECT * FROM t_user
+                    WHERE level_user = 3
+                    ORDER BY nama_user';
+        $stmt = $pdo->prepare($sqlviewpengelola);
+        $stmt->execute();
+        $rowpengelola = $stmt->fetchAll();
+
     if (isset($_POST['submit'])) {
         if($_POST['submit'] == 'Simpan'){
             $id_wilayah = $_POST['dd_id_wilayah'];
@@ -307,8 +314,14 @@
                         <input type="text" value="<?=$row->deskripsi_lokasi?>"  id="tb_deskripsi_lokasi" name="tb_deskripsi_lokasi" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="tb_id_pengelola">ID User Pengelola</label>
-                        <input type="text" value="<?=$row->id_user_pengelola?>"  id="tb_id_pengelola" name="tb_id_pengelola" class="form-control">
+                        <label for="dd_id_wilayah">User Pengelola Lokasi</label>
+                        <select id="dd_id_wilayah" name="tb_id_pengelola" class="form-control" required>
+                            <?php foreach ($rowpengelola as $rowitem) {
+                            ?>
+                            <option <?php if($row->id_user_pengelola == $rowitem->id_user) echo ' selected ' ?> value="<?=$rowitem->id_user?>">ID <?=$rowitem->id_user?> - <?=$rowitem->nama_user?> - <?=$rowitem->organisasi_user?></option>
+
+                            <?php } ?>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="num_kontak_lokasi">Kontak Lokasi</label>

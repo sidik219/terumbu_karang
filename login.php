@@ -18,7 +18,7 @@ if (isset($_POST['login'])) {
                 $_SESSION['level_user']     = $row->level_user;
                 header('Location: dashboard_admin.php?pesan=login_berhasil');
 
-            } elseif ($row->level_user == "2") {
+            } elseif ($row->level_user == "0" || ($row->level_user >= "2")) {
                 $_SESSION['id_user']        = $row->id_user;
                 $_SESSION['username']        = $row->username;
                 $_SESSION['level_user']     = $row->level_user;
@@ -76,6 +76,12 @@ if (isset($_POST['login'])) {
                   echo '<div class="alert alert-success" role="alert">
                           Pendaftaran berhasil! Silahkan Log In.
                       </div>';}
+                  else{
+                    {
+                  echo '<div class="alert alert-warning" role="alert">
+                          Username atau password salah.
+                      </div>';}
+                  }
                   }
                 ?>
 

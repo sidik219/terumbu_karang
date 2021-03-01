@@ -13,6 +13,8 @@ if (isset($_POST['register'])) {
     $aktivasi_user  = 1;
     $randomstring = substr(md5(rand()), 0, 7);
     $level_user = $_POST['rb_level_user'];
+    $organisasi_user = $_POST['tb_organisasi_user'];
+
 
     //Fotokopi KTP upload
     if (isset($_FILES['image_uploads1'])) {
@@ -36,11 +38,11 @@ if (isset($_POST['register'])) {
     }
     //---Foto user upload end
 
-    $sql = 'INSERT INTO t_user (nama_user, jk, email, no_hp, alamat, no_ktp, fotokopi_ktp, tanggal_lahir, foto_user, level_user, aktivasi_user, username, password )
-        VALUES (:nama_user, :jk, :email, :no_hp, :alamat, :no_ktp, :fotokopi_ktp, :tanggal_lahir, :foto_user, :level_user, :aktivasi_user, :username, :password)';
+    $sql = 'INSERT INTO t_user (nama_user, organisasi_user, jk, email, no_hp, alamat, no_ktp, fotokopi_ktp, tanggal_lahir, foto_user, level_user, aktivasi_user, username, password )
+        VALUES (:nama_user, :organisasi_user, :jk, :email, :no_hp, :alamat, :no_ktp, :fotokopi_ktp, :tanggal_lahir, :foto_user, :level_user, :aktivasi_user, :username, :password)';
 
     $stmt = $pdo->prepare($sql);
-    $stmt->execute(['nama_user' => $nama_user, 'jk' => $jk, 'email' => $email, 'no_hp' => $no_hp, 'alamat' => $alamat, 'no_ktp' => $no_ktp, 'fotokopi_ktp' => $fotokopi_ktp, 'tanggal_lahir' => $tanggal_lahir, 'foto_user' => $foto_user, 'level_user' => $level_user, 'aktivasi_user' => $aktivasi_user, 'username' => $username, 'password' => $password]);
+    $stmt->execute(['nama_user' => $nama_user, 'organisasi_user' => $organisasi_user, 'jk' => $jk, 'email' => $email, 'no_hp' => $no_hp, 'alamat' => $alamat, 'no_ktp' => $no_ktp, 'fotokopi_ktp' => $fotokopi_ktp, 'tanggal_lahir' => $tanggal_lahir, 'foto_user' => $foto_user, 'level_user' => $level_user, 'aktivasi_user' => $aktivasi_user, 'username' => $username, 'password' => $password]);
 
     $affectedrows = $stmt->rowCount();
     if ($affectedrows == '0') {
@@ -145,6 +147,10 @@ if (isset($_POST['register'])) {
                         <input type="text" id="tb_nama_user" name="tb_nama_user" class="form-control">
                     </div>
                     <div class="form-group">
+                        <label for="tb_organisasi">Organisasi</label>
+                        <input type="text" id="tb_organisasi" name="tb_organisasi_user" class="form-control" required>
+                    </div>
+                    <div class="form-group">
                         <label for="rb_jenis_kelamin">Jenis Kelamin</label><br>
                         <div class="form-check form-check-inline">
                             <input type="radio" id="rb_jenis_kelamin_pria" name="rb_jenis_kelamin" value="pria" class="form-check-input">
@@ -196,7 +202,7 @@ if (isset($_POST['register'])) {
                     <div class="form-group">
                         <label class="font-weight-bold" for="rb_jenis_kelamin">Cakupan Pengelolaan</label><br>
                         <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_wilayah" name="rb_level_user" value="2" class="form-check-input">
+                            <input type="radio" id="rb_wilayah" name="rb_level_user" value="2" class="form-check-input" required>
                             <label class="form-check-label" for="rb_wilayah">Wilayah (Dinas/Kabupaten)</label>
                         </div><br>
                         <div class="form-check form-check-inline">

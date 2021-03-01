@@ -8,6 +8,13 @@
     $id_wilayah = $_GET['id_wilayah'];
     $defaultpic = "images/image_default.jpg";
 
+    $sqlviewwilayah = 'SELECT * FROM t_user
+                    WHERE level_user = 2
+                    ORDER BY nama_user';
+        $stmt = $pdo->prepare($sqlviewwilayah);
+        $stmt->execute();
+        $row = $stmt->fetchAll();
+
 
     $sql = 'SELECT * FROM t_wilayah WHERE id_wilayah = :id_wilayah';
 
@@ -281,10 +288,19 @@
                                                 }
                                             </script>
                                         </div>
-                          <div class="form-group">
-                                <label for="nama_wilayah">ID User Pengelola</label>
-                                <input type="#" value="<?=$rowitem->id_user_pengelola?>" class="form-control" name="tb_id_user_pengelola" id="#" placeholder="Nomor ID User">
-                          </div>
+
+                                         <div class="form-group">
+                        <label for="dd_id_wilayah">User Pengelola Wilayah</label>
+                        <select id="dd_id_wilayah" name="tb_id_user_pengelola" class="form-control" required>
+                            <?php foreach ($row as $rowuser) {
+                            ?>
+                            <option <?php if($rowuser->id_user == $rowitem->id_user_pengelola) echo ' selected ' ?> value="<?=$rowuser->id_user?>">ID <?=$rowuser->id_user?> - <?=$rowuser->nama_user?> - <?=$rowuser->organisasi_user?></option>
+
+                            <?php } ?>
+                        </select>
+                    </div>
+
+
                          <p align="center">
                         <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>

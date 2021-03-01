@@ -5,6 +5,13 @@
     //header('location: login.php');
 //}
 
+$sqlviewwilayah = 'SELECT * FROM t_user
+                    WHERE level_user = 2
+                    ORDER BY nama_user';
+        $stmt = $pdo->prepare($sqlviewwilayah);
+        $stmt->execute();
+        $row = $stmt->fetchAll();
+
 if (isset($_POST['submit'])) {
     if($_POST['submit'] == 'Simpan'){
         $nama_wilayah        = $_POST['tbnama_wilayah'];
@@ -70,7 +77,6 @@ if (isset($_POST['submit'])) {
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <b>Kelola Wilayah</b>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
@@ -256,10 +262,19 @@ if (isset($_POST['submit'])) {
                                                 }
                                             </script>
                                         </div>
+
                           <div class="form-group">
-                                <label for="nama_wilayah">ID User Pengelola</label>
-                                <input type="#" class="form-control" name="tb_id_user_pengelola" id="#" placeholder="Nomor ID User">
-                          </div>
+                        <label for="dd_id_wilayah">User Pengelola Wilayah</label>
+                        <select id="dd_id_wilayah" name="tb_id_user_pengelola" class="form-control" required>
+                            <?php foreach ($row as $rowitem) {
+                            ?>
+                            <option value="<?=$rowitem->id_user?>">ID <?=$rowitem->id_user?> - <?=$rowitem->nama_user?> - <?=$rowitem->organisasi_user?></option>
+
+                            <?php } ?>
+                        </select>
+                    </div>
+
+
                           <p align="center">
                             <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
