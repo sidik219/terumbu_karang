@@ -1,9 +1,9 @@
 <?php include 'build/config/connection.php';
-//session_start();
+session_start();
 
-//if (isset($_SESSION['level_user']) == 0) {
-    //header('location: login.php');
-//}
+if (isset($_SESSION['level_user']) == 0) {
+    header('location: login.php');
+}
 
     $id_reservasi = $_GET['id_reservasi'];
     $defaultpic = "images/image_default.jpg";
@@ -116,7 +116,7 @@
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                   <?php //if($_SESSION['level_user'] == '2') { ?>
+                   <?php if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item ">
                            <a href="dashboard_user.php" class="nav-link  ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -141,7 +141,7 @@
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
-                    <?php //} ?>
+                    <?php } ?>
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -164,7 +164,7 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <?php //if($_SESSION['level_user'] == '1') { ?>
+                    <?php if($_SESSION['level_user'] == '1') { ?>
                         <!--
                         <form action="" enctype="multipart/form-data" method="POST">
                             <div class="form-group">
@@ -380,7 +380,7 @@
                     <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>
 
-                    <?php //} ?>
+                    <?php } ?>
                 </div>
             </section>
 

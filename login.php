@@ -16,13 +16,13 @@ if (isset($_POST['login'])) {
                 $_SESSION['id_user']        = $row->id_user;
                 $_SESSION['username']        = $row->username;
                 $_SESSION['level_user']     = $row->level_user;
-                header('Location: dashboard_admin.php?pesan=login_berhasil');
+                header('Location: dashboard_user.php?pesan=login_berhasil');
 
-            } elseif ($row->level_user == "0" || ($row->level_user >= "2")) {
+            } elseif ($row->level_user == "2" || ($row->level_user >= "3")) {
                 $_SESSION['id_user']        = $row->id_user;
                 $_SESSION['username']        = $row->username;
                 $_SESSION['level_user']     = $row->level_user;
-                header('Location: dashboard_user.php?pesan=login_berhasil');
+                header('Location: dashboard_admin.php?pesan=login_berhasil');
 
             } else {
                 header('location: login.php?pesan=gagal_login_session');

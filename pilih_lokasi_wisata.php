@@ -1,9 +1,9 @@
 <?php include 'build/config/connection.php';
 session_start();
 
-//if (isset($_SESSION['level_user']) == 0) {
-    //header('location: login.php');
-//}
+if (isset($_SESSION['level_user']) == 0) {
+    header('location: login.php');
+}
 
   // else{
   //     $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
@@ -83,7 +83,7 @@ session_start();
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '2') { ?>
+                    <?php if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -108,7 +108,7 @@ session_start();
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
-                    <?php //} ?>
+                    <?php } ?>
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -131,7 +131,7 @@ session_start();
 
             <!-- Main content -->
             <section class="content">
-            <?php //if($_SESSION['level_user'] == '2') { ?>
+            <?php if($_SESSION['level_user'] == '1') { ?>
                 <div class="container-fluid">
                     <h3>Pilihan Wisata</h3>
                     <a href="map.php?aksi=wisata"><button class="btn btn-warning btn-back" type="button">
@@ -159,7 +159,7 @@ session_start();
                     <?php } ?>
                     </div>
                 </div>
-            <?php //} ?>
+            <?php } ?>
             </section>
             <!-- /.Left col -->
             </div>

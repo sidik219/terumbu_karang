@@ -1,9 +1,9 @@
 <?php include 'build/config/connection.php';
-//session_start();
+session_start();
 
-//if (isset($_SESSION['level_user']) == 0) {
-   //header('location: login.php');
-//}
+if (isset($_SESSION['level_user']) == 0) {
+   header('location: login.php');
+}
 
 $sqlviewtitik = 'SELECT *, t_titik.latitude AS latitude_titik,
                           t_titik.longitude AS longitude_titik
@@ -74,87 +74,51 @@ $row = $stmt->fetchAll();
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '1') { ?>
-                        <li class="nav-item ">
-                           <a href="dashboard_admin.php" class="nav-link ">
+                    <!-- SESSION lvl Untuk Wilayah -->
+                    <?php if($_SESSION['level_user'] == '2') { ?>
+                        <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                           <a href="dashboard_admin.php" class="nav-link">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p> Home </p>
                            </a>
                         </li>
-                        <li class="nav-item ">
-                            <a href="kelola_donasi.php" class="nav-link ">
-                                <i class="nav-icon fas fa-hand-holding-usd"></i>
-                                <p> Kelola Donasi </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="kelola_wisata.php" class="nav-link">
-                                <i class="nav-icon fas fa-suitcase"></i>
-                                <p> Kelola Wisata </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="kelola_reservasi_wisata.php" class="nav-link">
-                                <i class="nav-icon fas fa-th-list"></i>
-                                <p> Kelola Reservasi </p>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a href="kelola_wilayah.php" class="nav-link ">
+                        <li class="nav-item"> <!-- Wilayah -->
+                            <a href="kelola_wilayah.php" class="nav-link">
                                 <i class="nav-icon fas fa-globe-asia"></i>
                                 <p> Kelola Wilayah </p>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a href="kelola_lokasi.php" class="nav-link ">
+                        <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                            <a href="kelola_lokasi.php" class="nav-link">
                                 <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
                                 <p> Kelola Lokasi </p>
                             </a>
                         </li>
-                        <li class="nav-item menu-open">
+                        <li class="nav-item menu-open"> <!-- Wilayah & Lokasi -->
                             <a href="kelola_titik.php" class="nav-link active">
                                  <i class="nav-icon fas fa-crosshairs"></i>
                                  <p> Kelola Titik </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="kelola_detail_titik.php" class="nav-link">
-                                 <i class="nav-icon fas fa-podcast"></i>
-                                 <p> Kelola Detail Titik </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="kelola_batch.php" class="nav-link">
-                                  <i class="nav-icon fas fa-boxes"></i>
-                                  <p> Kelola Batch </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="kelola_pemeliharaan.php" class="nav-link">
-                                  <i class="nav-icon fas fa-heart"></i>
-                                  <p> Kelola Pemeliharaan </p>
-                            </a>
-                        </li>
-                         <li class="nav-item">
+                        <li class="nav-item"> <!-- Wilayah -->
                              <a href="kelola_jenis_tk.php" class="nav-link">
                                    <i class="nav-icon fas fa-certificate"></i>
                                    <p> Kelola Jenis Terumbu </p>
                              </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item"> <!-- Wilayah -->
                             <a href="kelola_tk.php" class="nav-link">
                                   <i class="nav-icon fas fa-disease"></i>
                                   <p> Kelola Terumbu Karang </p>
                             </a>
                         </li>
-
-                        <li class="nav-item">
+                        <li class="nav-item"> <!-- Wilayah -->
                              <a href="kelola_perizinan.php" class="nav-link">
                                     <i class="nav-icon fas fa-scroll"></i>
                                     <p> Kelola Perizinan </p>
                              </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item"> <!-- Wilayah -->
                             <a href="kelola_laporan.php" class="nav-link">
                                     <i class="nav-icon fas fa-book"></i>
                                     <p> Kelola Laporan </p>
@@ -166,7 +130,65 @@ $row = $stmt->fetchAll();
                                     <p> Kelola User </p>
                             </a>
                         </li>
-                    <?php //} ?>
+                    <?php } ?>
+
+                    <!-- SESSION lvl Untuk Lokasi -->
+                    <?php if($_SESSION['level_user'] == '3') { ?>
+                        <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                           <a href="dashboard_admin.php" class="nav-link">
+                                <i class="nav-icon fas fa-home"></i>
+                                <p> Home </p>
+                           </a>
+                        </li>
+                        <li class="nav-item"> <!-- Lokasi -->
+                            <a href="kelola_donasi.php" class="nav-link">
+                                <i class="nav-icon fas fa-hand-holding-usd"></i>
+                                <p> Kelola Donasi </p>
+                            </a>
+                        </li>
+                        <li class="nav-item"> <!-- Lokasi -->
+                            <a href="kelola_wisata.php" class="nav-link">
+                                <i class="nav-icon fas fa-suitcase"></i>
+                                <p> Kelola Wisata </p>
+                            </a>
+                        </li>
+                        <li class="nav-item"> <!-- Lokasi -->
+                            <a href="kelola_reservasi_wisata.php" class="nav-link">
+                                <i class="nav-icon fas fa-th-list"></i>
+                                <p> Kelola Reservasi </p>
+                            </a>
+                        </li>
+                        <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                            <a href="kelola_lokasi.php" class="nav-link">
+                                <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
+                                <p> Kelola Lokasi </p>
+                            </a>
+                        </li>
+                        <li class="nav-item menu-open"> <!-- Wilayah & Lokasi -->
+                            <a href="kelola_titik.php" class="nav-link active">
+                                 <i class="nav-icon fas fa-crosshairs"></i>
+                                 <p> Kelola Titik </p>
+                            </a>
+                        </li>
+                        <li class="nav-item"> <!-- Lokasi -->
+                            <a href="kelola_batch.php" class="nav-link">
+                                  <i class="nav-icon fas fa-boxes"></i>
+                                  <p> Kelola Batch </p>
+                            </a>
+                        </li>
+                        <li class="nav-item"> <!-- Lokasi -->
+                            <a href="kelola_pemeliharaan.php" class="nav-link">
+                                  <i class="nav-icon fas fa-heart"></i>
+                                  <p> Kelola Pemeliharaan </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="kelola_user.php" class="nav-link">
+                                    <i class="nav-icon fas fa-user"></i>
+                                    <p> Kelola User </p>
+                            </a>
+                        </li>
+                    <?php } ?>
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -204,9 +226,9 @@ $row = $stmt->fetchAll();
                             <h4><span class="align-middle font-weight-bold">Kelola Titik</span></h4>
                         </div>
                         <div class="col">
-
+                        <?php if($_SESSION['level_user'] == '3') { ?>
                         <a class="btn btn-primary float-right" href="input_titik.php" role="button">Input Data Baru (+)</a>
-
+                        <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -217,7 +239,7 @@ $row = $stmt->fetchAll();
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                <?php //if($_SESSION['level_user'] == '1') { ?>
+                <?php if($_SESSION['level_user'] == '2' || $_SESSION['level_user'] == '3') { ?>
                     <table class="table table-striped">
                      <thead>
                             <tr>
@@ -226,7 +248,9 @@ $row = $stmt->fetchAll();
                             <th class="text-right" scope="col">Koordinat</th>
                             <th class="text-right" scope="col">Luas Titik (m<sup>2</sup>)</th>
                             <th scope="col">Zona</th>
+                            <?php if($_SESSION['level_user'] == '3') { ?>
                             <th scope="col">Aksi</th>
+                            <?php } ?>
                             </tr>
                           </thead>
                     <tbody>
@@ -239,15 +263,17 @@ $row = $stmt->fetchAll();
                                                                                                                                       class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a></td>
                               <td class="text-right"><?=number_format($rowitem->luas_titik)?></td>
                               <td><?=$rowitem->nama_zona_titik?></td>
+                              <?php if($_SESSION['level_user'] == '3') { ?>
                               <td>
                                 <a href="edit_titik.php?id_titik=<?=$rowitem->id_titik?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 <a href="hapus.php?type=titik&id_titik=<?=$rowitem->id_titik?>" class="far fa-trash-alt btn btn-act"></a>
                               </td>
+                              <?php } ?>
                           </tr>
                           <?php } ?>
                     </tbody>
                   </table>
-                <?php //} ?>
+                <?php } ?>
             </section>
             <!-- /.Left col -->
             </div>

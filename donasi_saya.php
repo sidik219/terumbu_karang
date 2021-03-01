@@ -1,9 +1,9 @@
 <?php include 'build/config/connection.php';
 session_start();
 
-//if (isset($_SESSION['level_user']) == 0) {
-    //header('location: login.php');
-//}
+if (isset($_SESSION['level_user']) == 0) {
+    header('location: login.php');
+}
 
 $sqlviewdonasi = 'SELECT * FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
@@ -71,7 +71,7 @@ $row = $stmt->fetchAll();
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '2') { ?>
+                    <?php if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -97,7 +97,7 @@ $row = $stmt->fetchAll();
                            </a>
                         </li>
 
-                    <?php //} ?>
+                    <?php } ?>
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -144,7 +144,7 @@ $row = $stmt->fetchAll();
 
                 ?>
 
-                <?php //if($_SESSION['level_user'] == '2') { ?>
+                <?php if($_SESSION['level_user'] == '1') { ?>
                     <div>
 
                         <?php
@@ -347,7 +347,7 @@ $row = $stmt->fetchAll();
                             } ?>
 
                     </div>
-                <?php //} ?>
+                <?php } ?>
                 </div>
 
             </section>

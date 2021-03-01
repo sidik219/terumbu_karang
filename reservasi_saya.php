@@ -1,9 +1,9 @@
 <?php include 'build/config/connection.php';
 session_start();
 
-//if (isset($_SESSION['level_user']) == 0) {
-    //header('location: login.php');
-//}
+if (isset($_SESSION['level_user']) == 0) {
+    header('location: login.php');
+}
     $defaultpic = "images/image_default.jpg";
 
     $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
@@ -73,7 +73,7 @@ session_start();
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '2') { ?>
+                    <?php if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item ">
                            <a href="dashboard_user.php" class="nav-link  ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -98,7 +98,7 @@ session_start();
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
-                    <?php //} ?>
+                    <?php } ?>
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -142,6 +142,8 @@ session_start();
                                     </div>'; }
                     }
                 ?>
+
+                <?php if($_SESSION['level_user'] == '1') { ?>
                     <div>
                         <?php foreach ($row as $rowitem) {
                             $truedate = strtotime($rowitem->update_terakhir);
@@ -266,6 +268,7 @@ session_start();
                         </div>
                         <?php } ?>
                     </div>
+                <?php } ?>
                 </div>
             </section>
             <!-- /.Left col -->

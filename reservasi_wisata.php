@@ -1,9 +1,9 @@
 <?php include 'build/config/connection.php';
 session_start();
 
-//if (isset($_SESSION['level_user']) == 0) {
-    //header('location: login.php');
-//}
+if (isset($_SESSION['level_user']) == 0) {
+    header('location: login.php');
+}
 
     $id_wisata = $_GET['id_wisata'];
     $id_user = 1;
@@ -111,7 +111,7 @@ session_start();
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <?php //if($_SESSION['level_user'] == '2') { ?>
+                <?php if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -136,7 +136,7 @@ session_start();
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
-                    <?php //} ?>
+                    <?php } ?>
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -149,7 +149,7 @@ session_start();
             <!-- Content Header (Page header) -->
 
             <!-- /.content-header -->
-        <?php //if($_SESSION['level_user'] == '2') { ?>
+        <?php if($_SESSION['level_user'] == '1') { ?>
             <!-- Main content -->
             <section class="content">
                 <div class="container">
@@ -328,7 +328,7 @@ session_start();
       </div>
         <!-- /.container-fluid -->
         </section>
-      <?php //} ?>
+      <?php } ?>
         <!-- /.content -->
     </div>
     <footer class="main-footer">

@@ -1,9 +1,9 @@
 <?php include 'build/config/connection.php';
 session_start();
 
-//if (isset($_SESSION['level_user']) == 0) {
-    //header('location: login.php');
-//}
+if (isset($_SESSION['level_user']) == 0) {
+    header('location: login.php');
+}
 ?>
 
 <!DOCTYPE html>
@@ -81,7 +81,7 @@ session_start();
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '2') { ?>
+                    <?php if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item  menu-open">
                            <a href="dashboard_user.php" class="nav-link active ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -106,7 +106,7 @@ session_start();
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
-                    <?php //} ?>
+                    <?php } ?>
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -135,7 +135,7 @@ session_start();
                     <div class="container">
                         <div class="card-group text-center p-5">
                             <div class="row">
-                                <?php //if($_SESSION['level_user'] == '2') { ?>
+                                <?php if($_SESSION['level_user'] == '1') { ?>
                                     <div class="col-md-12 col-lg-4">
                                         <div class="card m-3 dashboard-home">
                                             <img class="card-img-top mb-3" src="dist/img/konservasi.jpg" alt="Card image cap" id="img-cap">
@@ -169,7 +169,7 @@ session_start();
                                             </div>
                                         </div>
                                     </div>
-                                <?php //} ?>
+                                <?php } ?>
 
 
 

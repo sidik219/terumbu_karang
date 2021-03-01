@@ -2,9 +2,9 @@
     include 'build/config/connection.php';
     session_start();
 
-    //if (isset($_SESSION['level_user']) == 0) {
-      //header('location: login.php');
-    //}
+    if (isset($_SESSION['level_user']) == 0) {
+      header('location: login.php');
+    }
 
     $sqlviewlokasi = 'SELECT * FROM t_lokasi
                 WHERE id_lokasi = :id_lokasi
@@ -113,7 +113,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '2') { ?>
+                    <?php if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -139,7 +139,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
                            </a>
                         </li>
 
-                    <?php //} ?>
+                    <?php } ?>
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -152,7 +152,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
             <!-- Content Header (Page header) -->
 
             <!-- /.content-header -->
-        <?php //if($_SESSION['level_user'] == '2') { ?>
+        <?php if($_SESSION['level_user'] == '1') { ?>
             <!-- Main content -->
             <section class="content">
                 <div class="container">
@@ -268,7 +268,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
       </div>
         <!-- /.container-fluid -->
         </section>
-      <?php //} ?>
+      <?php } ?>
         <!-- /.content -->
     </div>
     <footer class="main-footer">

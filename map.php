@@ -1,9 +1,10 @@
 <?php include 'build/config/connection.php';
 session_start();
 
-//if (isset($_SESSION['level_user']) == 0) {
-//header('location: login.php');
-//}
+if (isset($_SESSION['level_user']) == 0) {
+    header('location: login.php');
+}
+
 //Reservasi Wisata
 if (isset($_GET['aksi'])) {
     $wisata = $_GET['aksi'];
@@ -76,7 +77,7 @@ if (isset($_GET['aksi'])) {
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <!-- Untuk User -->
-                    <?php //if($_SESSION['level_user'] == '2') { ?>
+                    <?php if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -105,7 +106,7 @@ if (isset($_GET['aksi'])) {
                                 <p> Profil Saya  </p>
                            </a>
                         </li>
-                    <?php //} ?>
+                    <?php } ?>
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -121,13 +122,13 @@ if (isset($_GET['aksi'])) {
                 <div class="row">
                         <div class="col">
                         <!-- Untuk User -->
-                        <?php //if($_SESSION['level_user'] == '2') { ?>
+                        <?php if($_SESSION['level_user'] == '1') { ?>
                             <?php if($wisata == null) { ?>
                             <h4><span class="align-middle font-weight-bold">Pilih Lokasi Penanaman</span></h4>
                             <?php } else {?>
                             <h4><span class="align-middle font-weight-bold">Pilih Lokasi Wisata</span></h4>
                             <?php } ?>
-                        <?php //} ?>
+                        <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -139,7 +140,7 @@ if (isset($_GET['aksi'])) {
             <section class="content">
                 <div class="container-fluid">
                 <!-- Untuk User -->
-                <?php //if($_SESSION['level_user'] == '2') { ?>
+                <?php if($_SESSION['level_user'] == '1') { ?>
                     <div>
                         <div>
                             <label>Keterangan Icon:</label>
@@ -156,7 +157,7 @@ if (isset($_GET['aksi'])) {
                         </div>
                         <div id="mapid" style="height: 640px; width: 100%; margin-top: 20px;"></div>
                     </div>
-                <?php //} ?>
+                <?php } ?>
                 </div>
             </section>
             <!-- /.Left col -->

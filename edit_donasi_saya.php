@@ -1,9 +1,9 @@
 <?php include 'build/config/connection.php';
-//session_start();
+session_start();
 
-//if (isset($_SESSION['level_user']) == 0) {
-    //header('location: login.php');
-//}
+if (isset($_SESSION['level_user']) == 0) {
+    header('location: login.php');
+}
 
     $id_donasi = $_GET['id_donasi'];
     $defaultpic = "images/image_default.jpg";
@@ -117,7 +117,7 @@
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                   <?php //if($_SESSION['level_user'] == '2') { ?>
+                   <?php if($_SESSION['level_user'] == '1') { ?>
                         <li class="nav-item  ">
                            <a href="dashboard_user.php" class="nav-link ">
                                 <i class="nav-icon fas fa-home"></i>
@@ -143,7 +143,7 @@
                            </a>
                         </li>
 
-                    <?php //} ?>
+                    <?php } ?>
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -164,7 +164,7 @@
             <!-- /.content-header -->
 
             <!-- Main content -->
-        <?php //if($_SESSION['level_user'] == '1') { ?>
+        <?php if($_SESSION['level_user'] == '1') { ?>
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
@@ -329,7 +329,7 @@
 
 
             </section>
-        <?php //} ?>
+        <?php } ?>
             <!-- /.Left col -->
             </div>
             <!-- /.row (main row) -->

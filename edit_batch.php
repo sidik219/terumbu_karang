@@ -1,5 +1,10 @@
 <?php include 'build/config/connection.php';
-//session_start();
+session_start();
+
+if (isset($_SESSION['level_user']) == 0) {
+    header('location: login.php');
+}
+
 $id_batch = $_GET['id_batch'];
 
 $sqlviewlokasi = 'SELECT * FROM t_lokasi
@@ -135,10 +140,6 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
         }
 
-
-//if (isset($_SESSION['level_user']) == 0) {
-    //header('location: login.php');
-//}
 ?>
 
 <!DOCTYPE html>
@@ -198,90 +199,54 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php //if($_SESSION['level_user'] == '1') { ?>
-                        <li class="nav-item ">
-                           <a href="dashboard_admin.php" class="nav-link ">
+                    <!-- SESSION lvl Untuk Lokasi -->
+                    <?php if($_SESSION['level_user'] == '3') { ?>
+                        <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                           <a href="dashboard_admin.php" class="nav-link">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p> Home </p>
                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="kelola_donasi.php" class="nav-link ">
+                        <li class="nav-item"> <!-- Lokasi -->
+                            <a href="kelola_donasi.php" class="nav-link">
                                 <i class="nav-icon fas fa-hand-holding-usd"></i>
                                 <p> Kelola Donasi </p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item"> <!-- Lokasi -->
                             <a href="kelola_wisata.php" class="nav-link">
                                 <i class="nav-icon fas fa-suitcase"></i>
                                 <p> Kelola Wisata </p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item"> <!-- Lokasi -->
                             <a href="kelola_reservasi_wisata.php" class="nav-link">
                                 <i class="nav-icon fas fa-th-list"></i>
                                 <p> Kelola Reservasi </p>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a href="kelola_wilayah.php" class="nav-link ">
-                                <i class="nav-icon fas fa-globe-asia"></i>
-                                <p> Kelola Wilayah </p>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a href="kelola_lokasi.php" class="nav-link ">
+                        <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                            <a href="kelola_lokasi.php" class="nav-link">
                                 <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
                                 <p> Kelola Lokasi </p>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a href="kelola_titik.php" class="nav-link ">
+                        <li class="nav-item"> <!-- Lokasi -->
+                            <a href="kelola_titik.php" class="nav-link">
                                  <i class="nav-icon fas fa-crosshairs"></i>
                                  <p> Kelola Titik </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="kelola_detail_titik.php" class="nav-link">
-                                 <i class="nav-icon fas fa-podcast"></i>
-                                 <p> Kelola Detail Titik </p>
-                            </a>
-                        </li>
-                        <li class="nav-item menu-open">
+                        <li class="nav-item menu-open"> <!-- Lokasi -->
                             <a href="kelola_batch.php" class="nav-link active">
                                   <i class="nav-icon fas fa-boxes"></i>
                                   <p> Kelola Batch </p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item"> <!-- Lokasi -->
                             <a href="kelola_pemeliharaan.php" class="nav-link">
                                   <i class="nav-icon fas fa-heart"></i>
                                   <p> Kelola Pemeliharaan </p>
-                            </a>
-                        </li>
-                        <li class="nav-item  ">
-                             <a href="kelola_jenis_tk.php" class="nav-link">
-                                   <i class="nav-icon fas fa-certificate"></i>
-                                   <p> Kelola Jenis Terumbu </p>
-                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="kelola_tk.php" class="nav-link">
-                                  <i class="nav-icon fas fa-disease"></i>
-                                  <p> Kelola Terumbu Karang </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                             <a href="kelola_perizinan.php" class="nav-link">
-                                    <i class="nav-icon fas fa-scroll"></i>
-                                    <p> Kelola Perizinan </p>
-                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="kelola_laporan.php" class="nav-link">
-                                    <i class="nav-icon fas fa-book"></i>
-                                    <p> Kelola Laporan </p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -290,7 +255,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                                     <p> Kelola User </p>
                             </a>
                         </li>
-                    <?php //} ?>
+                    <?php } ?>
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -311,7 +276,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
             <!-- /.content-header -->
 
             <!-- Main content -->
-        <?php //if($_SESSION['level_user'] == '1') { ?>
+        <?php if($_SESSION['level_user'] == '3') { ?>
             <section class="content">
                 <div class="container-fluid bg-white border rounded p-3">
                     <form action="" enctype="multipart/form-data" method="POST">
@@ -392,7 +357,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
             <br><br>
 
             </section>
-        <?php //} ?>
+        <?php } ?>
             <!-- /.Left col -->
             </div>
             <!-- /.row (main row) -->
