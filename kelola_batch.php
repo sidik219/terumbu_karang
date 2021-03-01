@@ -10,7 +10,7 @@
                       LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
                       LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
                       LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch
-                      ORDER BY update_status_batch_terakhir';
+                      ORDER BY update_status_batch_terakhir DESC';
     $stmt = $pdo->prepare($sqlviewbatch);
     $stmt->execute();
     $rowbatch = $stmt->fetchAll();

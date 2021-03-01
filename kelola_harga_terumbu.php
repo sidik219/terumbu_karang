@@ -9,7 +9,8 @@ $id_lokasi = $_GET['id_lokasi'];
 
     $sqlviewdetaillokasi = 'SELECT * FROM t_detail_lokasi
                             LEFT JOIN t_terumbu_karang ON t_detail_lokasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang
-                            LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis';
+                            LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
+                            WHERE t_detail_lokasi.id_lokasi = :id_lokasi';
     $stmt = $pdo->prepare($sqlviewdetaillokasi);
     $stmt->execute(['id_lokasi' => $id_lokasi]);
     $rowdetail = $stmt->fetchAll();
@@ -179,7 +180,7 @@ $id_lokasi = $_GET['id_lokasi'];
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                      <a href="map.php"><button class="btn btn-warning btn-back mb-2" type="button"><i class="fas fa-angle-left"></i> Kembali</button></a>
+                      <a href="kelola_lokasi.php"><button class="btn btn-warning btn-back mb-2" type="button"><i class="fas fa-angle-left"></i> Kembali</button></a>
                 <h4><span class="align-middle font-weight-bold">Kelola Harga Terumbu</span></h4>
                 </div>
                 <!-- /.container-fluid -->
@@ -214,7 +215,7 @@ $id_lokasi = $_GET['id_lokasi'];
                             <th scope="row"><?=$rowitem->id_terumbu_karang?></th>
                             <td><?=$rowitem->nama_jenis?></td>
                             <td><?=$rowitem->nama_terumbu_karang?></td>
-                            <td>Rp. <?=$rowitem->harga_patokan_lokasi?></td>
+                            <td>Rp. <?=number_format($rowitem->harga_patokan_lokasi)?></td>
                             <td class="">
                                 <a href="#" onclick='loadPatokanTerumbu(this.dataset.id_detail_lokasi)'
                                 data-nama_jenis='<?=$rowitem->nama_terumbu_karang?>' data-id_tk='<?=$rowitem->id_terumbu_karang?>'
