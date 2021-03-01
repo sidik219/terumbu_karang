@@ -193,7 +193,15 @@ $row = $stmt->fetchAll();
                                           <br><?=strftime('%A, %d %B %Y', $truedate);?></small>
 
                                       </div>
+                                        <div class="mb-3">
+                                            <?php if ($rowitem->id_status_donasi == 5) { ?>
+                                                <!-- Invoice Reservasi Wisata -->
+                                                <a href="invoice_donasi.php?id_donasi=<?=$rowitem->id_donasi?>" class="btn btn-sm btn-primary userinfo">
+                                                    <i class="fas fa-file-invoice"></i> Download Inovice Donasi Terumbu Karang</a>
+                                            <?php } ?>
+                                        </div>
                                   </div>
+                                
 
                                 <div class="col-md mb-3">
                                       <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-map-marker-alt"></i> Lokasi Penanaman</span><br>

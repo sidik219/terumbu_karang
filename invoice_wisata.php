@@ -25,7 +25,7 @@ class myPDF extends FPDF{
         $row = $stmt->fetchAll();
 
         foreach ($row as $rowitem) {
-        $this->Cell(276, 10, $rowitem->nama_lokasi, 0, 0, 'C');
+        $this->Cell(276, 10, $rowitem->deskripsi_lokasi, 0, 0, 'C');
         }
         $this->Ln(20);
     }
@@ -66,19 +66,21 @@ class myPDF extends FPDF{
         $stmt->execute(['id_reservasi' => $id_reservasi]);
         $row = $stmt->fetchAll();
 
-        
         foreach ($row as $rowitem) {
             $reservasidate = strtotime($rowitem->tgl_reservasi);
             //User
             $this->Cell(55, 5, 'ID Reservasi', 0, 0);
-            $this->Cell(117, 5, ': '.$rowitem->id_reservasi, 0, 0);
-            $this->Cell(52, 5, 'Tanggal Reservasi', 0, 0);
-            $this->Cell(52, 5, ': '.strftime("%A, %d %B %Y", $reservasidate), 1, 1);
+            $this->Cell(107, 5, ': '.$rowitem->id_reservasi, 0, 0);
+            $this->Cell(52, 5, 'Tanggal Reservasi', 0, 0,);
+            $this->SetTextColor(255, 255, 255);
+            $this->SetFillColor(4, 119, 194);
+            $this->Cell(62, 5, ': '.strftime("%A, %d %B %Y", $reservasidate), 0, 1, 'C', 1);
+            $this->SetTextColor(0, 0, 0);
 
             $this->Cell(55, 5, 'Nama User', 0, 0);
-            $this->Cell(117, 5, ': '.$rowitem->nama_user, 0, 0);
+            $this->Cell(107, 5, ': '.$rowitem->nama_user, 0, 0);
             $this->Cell(52, 5, 'Lokasi Reservasi Wisata', 0, 0);
-            $this->Cell(52, 5, ': '.$rowitem->nama_lokasi, 0, 1);
+            $this->Cell(62, 5, ': '.$rowitem->nama_lokasi, 0, 1);
 
             $this->Cell(55, 5, 'Wisata', 0, 0);
             $this->Cell(117, 5, ': '.$rowitem->judul_wisata, 0, 1);
@@ -148,7 +150,7 @@ $row = $stmt->fetchAll();
 
 foreach ($row as $rowitem) {
     $reservasidate = strtotime($rowitem->tgl_reservasi);
-    $fileName = 'Invoice - ' .$rowitem->judul_wisata.' - '.$rowitem->nama_user.' - '.strftime('%A, %d %B %Y', $reservasidate). '.pdf';
+    $fileName = 'Invoice - Reservasi Wisata, ' .$rowitem->judul_wisata.' - '.$rowitem->nama_user.' - '.strftime('%A, %d %B %Y', $reservasidate). '.pdf';
 }
 $pdf->Output($fileName, 'D');
 ?>
