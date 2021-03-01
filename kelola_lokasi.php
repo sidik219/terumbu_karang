@@ -18,7 +18,7 @@ $sqlviewlokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
                                   COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
                                   COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
 
-                                  FROM `t_titik`, t_lokasi, t_wilayah, t_user
+                                  FROM `t_titik`, t_lokasi, t_wilayah
                                   WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
                                   AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
                                   GROUP BY t_lokasi.id_lokasi';
