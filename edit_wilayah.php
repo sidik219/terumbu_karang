@@ -96,7 +96,6 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-            <b>Kelola Wilayah</b>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
@@ -229,7 +228,7 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                     <div class="container-fluid">
-                        <a class="btn btn-outline-primary" href="kelola_user.php">< Kembali</a><br><br>
+                        <a class="btn btn-outline-primary" href="kelola_wilayah.php">< Kembali</a><br><br>
                          <h3>Edit Data Wilayah</h3>
                     </div>
                 <!-- /.container-fluid -->

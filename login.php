@@ -69,7 +69,15 @@ if (isset($_POST['login'])) {
 
     					<span class="login100-form-title p-b-33">
                             TKJB
-    					</span>
+              </span>
+              <?php
+                if(!empty($_GET['pesan'])){
+                  if($_GET['pesan'] == 'registrasi_berhasil'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Pendaftaran berhasil! Silahkan Log In.
+                      </div>';}
+                  }
+                ?>
 
     					<div class="wrap-input100 validate-input">
     						<input class="input100" type="text" name="tbusername" placeholder="Username">
@@ -87,7 +95,8 @@ if (isset($_POST['login'])) {
     						<button type="submit" name="login" class="login100-form-btn">
     							Login
     						</button>
-    					</div>
+              </div>
+
 
                         <br>
     					<div class="text-center">
@@ -96,7 +105,13 @@ if (isset($_POST['login'])) {
     						</span>
 
     						<a href="register.php" class="txt2 hov1">
-    							Daftar
+    							Daftar Donatur
+                </a><br><br>
+                <span class="txt1">
+    							Calon pengelola ?
+    						</span>
+                <a href="register_pengelola.php" class="txt2 hov1">
+    							Daftar Pengelola
     						</a>
     					</div>
     				</form>
