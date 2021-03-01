@@ -9,6 +9,7 @@ if (isset($_GET['status'])){
     $status = $_GET['status'];
 }
 $sqlviewwilayah = 'SELECT * FROM t_wilayah
+                    LEFT JOIN t_user ON t_wilayah.id_user_pengelola = t_user.id_user
                     ORDER BY nama_wilayah';
     $stmt = $pdo->prepare($sqlviewwilayah);
     $stmt->execute();
@@ -252,6 +253,14 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
                                     Rincian Wilayah</p>
                             </div>
                             <div class="col-12 cell<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?> border rounded shadow-sm p-3">
+                            <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        User Pengelola
+                                    </div>
+                                    <div class="col isi">
+                                        ID <?=$rowitem->id_user_pengelola?> - <?=$rowitem->nama_user?> - <?=$rowitem->organisasi_user?>
+                                    </div>
+                                </div>
                                 <div class="row mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Deskripsi Wilayah
@@ -268,14 +277,7 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
                                         <img src="<?=$rowitem->foto_wilayah?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        ID Pengelola
-                                    </div>
-                                    <div class="col isi">
-                                        <?=$rowitem->id_user_pengelola?>
-                                    </div>
-                                </div>
+
 
                             </div>
                         </div>

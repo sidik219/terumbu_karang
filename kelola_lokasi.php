@@ -18,7 +18,7 @@ $sqlviewlokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
                                   COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
                                   COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
 
-                                  FROM `t_titik`, t_lokasi, t_wilayah
+                                  FROM `t_titik`, t_lokasi, t_wilayah, t_user
                                   WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
                                   AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
                                   GROUP BY t_lokasi.id_lokasi';
@@ -258,6 +258,13 @@ $row = $stmt->fetchAll();
                       else{
                         $kondisi_wilayah = 'Sangat Baik';
                       }
+
+                        $sqlplokasi = 'SELECT * FROM t_lokasi
+                        LEFT JOIN t_user ON t_lokasi.id_user_pengelola = t_user.id_user
+                        WHERE id_lokasi = :id_lokasi';
+                        $stmt = $pdo->prepare($sqlplokasi);
+                        $stmt->execute(['id_lokasi' => $rowitem->id_lokasi]);
+                        $rowpengelola = $stmt->fetch();
                         ?>
                             <tr>
                             <th scope="row"><?=$rowitem->id_lokasi?></th>
@@ -286,6 +293,14 @@ $row = $stmt->fetchAll();
                                     Rincian Lokasi</p>
                             </div>
                             <div class="col-12 cell<?=$rowitem->id_lokasi?> collapse contentall<?=$rowitem->id_lokasi?> border rounded shadow-sm p-3">
+                            <div class="row">
+                                    <div class="col-md-3 kolom font-weight-bold">
+                                        User Pengelola
+                                    </div>
+                                    <div class="col isi">
+                                        ID <?=$rowpengelola->id_user_pengelola?> - <?=$rowpengelola->nama_user?> - <?=$rowpengelola->organisasi_user?>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Estimasi Total Luas Titik
@@ -359,14 +374,7 @@ $row = $stmt->fetchAll();
                                         <img src="<?=$rowitem->foto_lokasi?>?<?php if ($status='nochange'){echo time();}?>" width="150px">
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        ID Pengelola
-                                    </div>
-                                    <div class="col isi">
-                                        <?=$rowitem->id_user_pengelola?>
-                                    </div>
-                                </div>
+
                                 <div class="row">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Kontak Lokasi
