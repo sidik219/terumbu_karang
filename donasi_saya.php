@@ -1,5 +1,6 @@
 <?php include 'build/config/connection.php';
 session_start();
+ob_start();
 
 if (isset($_SESSION['level_user']) == 0) {
     header('location: login.php');
@@ -194,7 +195,7 @@ $row = $stmt->fetchAll();
 
                                       </div>
                                         <div class="mb-3">
-                                            <?php if ($rowitem->id_status_donasi == 5) { ?>
+                                            <?php if ($rowitem->id_status_donasi == 3) { ?>
                                                 <!-- Invoice Reservasi Wisata -->
                                                 <a href="invoice_donasi.php?id_donasi=<?=$rowitem->id_donasi?>" class="btn btn-sm btn-primary userinfo">
                                                     <i class="fas fa-file-invoice"></i> Download Inovice Donasi Terumbu Karang</a>

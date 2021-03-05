@@ -1,5 +1,6 @@
 <?php include 'build/config/connection.php';
 session_start();
+ob_start();
 
 if (isset($_SESSION['level_user']) == 0) {
     header('location: login.php');
@@ -204,7 +205,7 @@ if (isset($_SESSION['level_user']) == 0) {
     <footer class="main-footer">
         <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
     </footer>
-
+    
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->

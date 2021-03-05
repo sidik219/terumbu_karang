@@ -5,7 +5,10 @@ include 'build/config/connection.php';
 class myPDF extends FPDF{
     function header(){
         global $pdo;
-        $this->Image('images/KKPlogo.png', 10, 3, -2500);
+        $this->Image('images/KKPlogo.png', 10, 3, -2500); //Logo, Kiri-Atas,Kanan-Bawah
+        //$this->Image('images/bg-invoice.png', 5, 30, 287, -550); //Bg-Invoice, Kiri-Atas,Kanan-Bawah
+        $this->Image('images/bg-invoice-line.png', 8, 34, 158, -2400); //Line-Invoice-kiri, Kiri-Atas,Kanan-Bawah
+        $this->Image('images/bg-invoice-line.png', 168, 34, 121, -2400); //Line-Invoice-kanan, Kiri-Atas,Kanan-Bawah
         $this->SetFont('Arial', 'B', 14);
         $this->cell(276, 5, 'INVOICE RESERVASI WISATA', 0, 0, 'C');
         $this->Ln();
@@ -74,7 +77,7 @@ class myPDF extends FPDF{
             $this->Cell(52, 5, 'Tanggal Reservasi', 0, 0,);
             $this->SetTextColor(255, 255, 255);
             $this->SetFillColor(4, 119, 194);
-            $this->Cell(62, 5, ': '.strftime("%A, %d %B %Y", $reservasidate), 0, 1, 'C', 1);
+            $this->Cell(49, 5, ': '.strftime("%A, %d %B %Y", $reservasidate), 0, 1, 'C', 1);
             $this->SetTextColor(0, 0, 0);
 
             $this->Cell(55, 5, 'Nama User', 0, 0);
@@ -116,6 +119,7 @@ class myPDF extends FPDF{
             $this->Cell(55, 5, 'No HP Pengelola Lokasi', 0, 0);
             $this->Cell(117, 5, ': '.$rowitem->kontak_lokasi, 0, 1);
 
+            //$this->SetTextColor(0, 0, 0);
             $this->Line(234, 170, 286, 170); //Line TTD
 
             $this->Ln(50);
@@ -134,6 +138,7 @@ $pdf->AddPage('L', 'A4', 0);
 //$pdf->headerTable();
 $pdf->viewTable($pdo);
 
+//Output Invoice Reservasi Wisata
 $id_reservasi = $_GET['id_reservasi'];
 
 $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata

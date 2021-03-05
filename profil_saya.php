@@ -1,5 +1,6 @@
 <?php include 'build/config/connection.php';
 session_start();
+ob_start();
 
 if (isset($_SESSION['level_user']) == 0) {
     header('location: login.php');
