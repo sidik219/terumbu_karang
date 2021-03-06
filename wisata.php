@@ -70,24 +70,7 @@ session_start();
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ml-auto ">
-                <li class="nav-item ">
-                    <a class="nav-link" href="index.php">Beranda </a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link" href="donasi.php">Donasi</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="wisata.php">Wisata <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="coralmaps.php">Coralmaps</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="coralpedia.php">Coralpedia</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="login.php">Login</a>
-                </li>
+                <?php print_sidebar(basename(__FILE__), $_SESSION['level_user'])?> <!-- Print sidebar -->
                 <!-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">

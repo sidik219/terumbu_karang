@@ -1,9 +1,7 @@
 <?php include 'build/config/connection.php';
 session_start();
-
-if (isset($_SESSION['level_user']) == 0) {
-    header('location: login.php');
-}
+$url_sekarang = basename(__FILE__);
+include 'hak_akses.php';
 
     if (isset($_POST['submit'])) {
         $nama_jenis        = $_POST['tb_nama_jenis'];
@@ -96,63 +94,7 @@ if (isset($_SESSION['level_user']) == 0) {
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <!-- SESSION lvl Untuk Wilayah -->
-                    <?php if($_SESSION['level_user'] == '2') { ?>
-                        <li class="nav-item"> <!-- Wilayah & Lokasi -->
-                           <a href="dashboard_admin.php" class="nav-link">
-                                <i class="nav-icon fas fa-home"></i>
-                                <p> Home </p>
-                           </a>
-                        </li>
-                        <li class="nav-item"> <!-- Wilayah -->
-                            <a href="kelola_wilayah.php" class="nav-link">
-                                <i class="nav-icon fas fa-globe-asia"></i>
-                                <p> Kelola Wilayah </p>
-                            </a>
-                        </li>
-                        <li class="nav-item"> <!-- Wilayah & Lokasi -->
-                            <a href="kelola_lokasi.php" class="nav-link">
-                                <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
-                                <p> Kelola Lokasi </p>
-                            </a>
-                        </li>
-                        <li class="nav-item"> <!-- Wilayah & Lokasi -->
-                            <a href="kelola_titik.php" class="nav-link">
-                                 <i class="nav-icon fas fa-crosshairs"></i>
-                                 <p> Kelola Titik </p>
-                            </a>
-                        </li>
-                        <li class="nav-item menu-open"> <!-- Wilayah -->
-                             <a href="kelola_jenis_tk.php" class="nav-link active">
-                                   <i class="nav-icon fas fa-certificate"></i>
-                                   <p> Kelola Jenis Terumbu </p>
-                             </a>
-                        </li>
-                        <li class="nav-item"> <!-- Wilayah -->
-                            <a href="kelola_tk.php" class="nav-link">
-                                  <i class="nav-icon fas fa-disease"></i>
-                                  <p> Kelola Terumbu Karang </p>
-                            </a>
-                        </li>
-                        <li class="nav-item"> <!-- Wilayah -->
-                             <a href="kelola_perizinan.php" class="nav-link">
-                                    <i class="nav-icon fas fa-scroll"></i>
-                                    <p> Kelola Perizinan </p>
-                             </a>
-                        </li>
-                        <li class="nav-item"> <!-- Wilayah -->
-                            <a href="kelola_laporan.php" class="nav-link">
-                                    <i class="nav-icon fas fa-book"></i>
-                                    <p> Kelola Laporan </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="kelola_user.php" class="nav-link">
-                                    <i class="nav-icon fas fa-user"></i>
-                                    <p> Kelola User </p>
-                            </a>
-                        </li>
-                    <?php } ?>
+                    <?php print_sidebar(basename(__FILE__), $_SESSION['level_user'])?> <!-- Print sidebar -->
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->

@@ -1,9 +1,7 @@
 <?php include 'build/config/connection.php';
 session_start();
-
-if (isset($_SESSION['level_user']) == 0) {
-   header('location: login.php');
-}
+$url_sekarang = basename(__FILE__);
+include 'hak_akses.php';
 
 $sqlviewtitik = 'SELECT *, t_titik.latitude AS latitude_titik,
                           t_titik.longitude AS longitude_titik

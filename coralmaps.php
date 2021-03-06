@@ -1,5 +1,7 @@
 <?php include 'build/config/connection.php';
 session_start();
+$url_sekarang = basename(__FILE__);
+include 'hak_akses.php';
 
 //if (isset($_SESSION['level_user']) == 0) {
     //header('location: login.php');

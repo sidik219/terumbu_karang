@@ -1,10 +1,8 @@
 <?php include 'build/config/connection.php';
 session_start();
-ob_start();
+$url_sekarang = basename(__FILE__);
+include 'hak_akses.php';
 
-if (isset($_SESSION['level_user']) == 0) {
-    header('location: login.php');
-}
 
 $sqlviewdonasi = 'SELECT * FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
@@ -23,6 +21,9 @@ $row = $stmt->fetchAll();
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
+
+    <!-- jQuery -->
+    <script src="plugins/jquery/jquery.min.js"></script>
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
@@ -72,33 +73,7 @@ $row = $stmt->fetchAll();
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php if($_SESSION['level_user'] == '1') { ?>
-                        <li class="nav-item  ">
-                           <a href="dashboard_user.php" class="nav-link ">
-                                <i class="nav-icon fas fa-home"></i>
-                                <p> Home </p>
-                           </a>
-                        </li>
-                        <li class="nav-item menu-open">
-                           <a href="donasi_saya.php" class="nav-link active">
-                                <i class="nav-icon fas fa-hand-holding-usd"></i>
-                                <p> Donasi Saya </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="reservasi_saya.php" class="nav-link">
-                                <i class="nav-icon fas fa-suitcase"></i>
-                                <p> Reservasi Saya  </p>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a href="profil_saya.php" class="nav-link">
-                                <i class="nav-icon fas fas fa-user"></i>
-                                <p> Profil Saya  </p>
-                           </a>
-                        </li>
-
-                    <?php } ?>
+                    <?php print_sidebar(basename(__FILE__), $_SESSION['level_user'])?> <!-- Print sidebar -->
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -202,7 +177,7 @@ $row = $stmt->fetchAll();
                                             <?php } ?>
                                         </div>
                                   </div>
-                                
+
 
                                 <div class="col-md mb-3">
                                       <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-map-marker-alt"></i> Lokasi Penanaman</span><br>
