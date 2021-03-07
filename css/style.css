@@ -320,7 +320,16 @@
     }
     
     .elevation-4 {
-        box-shadow: 1px 1px 3px #757575!important;
+        box-shadow: none!important;
+        border: none!important;
+    }
+    
+    .main-bar {
+        border: none !important;
+    }
+    
+    [class*=sidebar-dark-] {
+        background-color: rgba(0, 0, 0, 0) !important;
     }
     
     .navbar-white {

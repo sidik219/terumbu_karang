@@ -58,7 +58,7 @@ else{
                         <p> Home</p>
                     </a>
                 </li>
-                <li class="nav-item menu-open"> <!-- Wilayah -->
+                <li class="nav-item"> <!-- Wilayah -->
                               <a href="kelola_wilayah.php" class="nav-link '.('kelola_wilayah.php' == $url_sekarang ? ' active ' : '').' ">
                                   <i class="nav-icon fas fa-globe-asia"></i>
                                   <p> Kelola Wilayah </p>
