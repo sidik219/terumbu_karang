@@ -84,8 +84,8 @@ else{
                   </li>
                   <li class="nav-item"> <!-- Wilayah -->
                       <a href="kelola_tk.php" class="nav-link '.('kelola_tk.php' == $url_sekarang ? ' active ' : '').' ">
-                            <i class="nav-icon fas fa-disease"></i>
-                            <p> Kelola Terumbu Karang </p>
+                            <i class="fas fa-disease nav-icon"></i>
+                            <p>Kelola Sub-Jenis Terumbu </p>
                       </a>
                   </li>
                   <li class="nav-item"> <!-- Wilayah -->
@@ -105,7 +105,8 @@ else{
                             <i class="nav-icon fas fa-user"></i>
                             <p> Kelola User </p>
                     </a>
-                </li>';
+                </li>
+                ';
 
                 echo $sidebar;
     }

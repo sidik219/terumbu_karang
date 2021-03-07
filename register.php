@@ -120,7 +120,7 @@ if (isset($_POST['register'])) {
                     <a class="nav-link" href="login.php">Login <span class="sr-only">(current)</span></a>
                 </li>
                 <!-- <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Akun Saya</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="#">Edit Profil</a>
                     <a class="dropdown-item" href="#">Logout</a>
@@ -194,7 +194,7 @@ if (isset($_POST['register'])) {
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="tb_username">Username</label>
+                        <label for="tb_username">Akun Saya</label>
                         <input type="text" id="tb_username" name="tb_username" class="form-control">
                     </div>
                     <div class="form-group">

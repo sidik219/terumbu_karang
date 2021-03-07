@@ -7,27 +7,15 @@ include 'hak_akses.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Home - TKJB</title>
+    <title>Dashboard Pengelola - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
         <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-        <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-        <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-        <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-        <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
     <!-- Leaflet CSS -->
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
     <!--Leaflet panel layer CSS-->
@@ -37,7 +25,6 @@ include 'hak_akses.php';
         <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
-
     <!-- Favicon -->
     <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
 </head>
@@ -56,7 +43,7 @@ include 'hak_akses.php';
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Akun Saya</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
                             <a class="dropdown-item" href="logout.php">Logout</a>
@@ -91,36 +78,36 @@ include 'hak_akses.php';
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            <div class="content-header">
+            <!-- <div class="content-header">
                 <div class="container-fluid">
                    <div class="jumbotron jumbotron-fluid-profil">
                         <h4>Selamat Datang, <?php echo $_SESSION['username']; ?> !</h4>
                     </div>
                     <div class="row">
-                        <div class="col">
+                        <div class="col"> -->
                             <!-- Untuk Admin -->
                             <?php //if($_SESSION['level_user'] == '1') { ?>
-                                <h4><span class="align-middle font-weight-bold">Lokasi Penanaman</span></h4>
+                                <!-- <h4><span class="align-middle font-weight-bold">Lokasi Penanaman</span></h4>
                             <?php //} ?>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- end jumbotro profil -->
                     <!-- profil pic holder -->
-                    <div class="row justify-content-center">
+                    <!-- <div class="row justify-content-center">
                          <div class ="profile-pic-div" >
                             <img src="dist/img/profil-example.jpg" id="photo">
                          </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- /.container-fluid -->
-            </div>
+            <!-- </div> -->
             <!-- /.content-header -->
 
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
                     <!-- Untuk Admin -->
-                    <?php if($_SESSION['level_user'] == '2' || $_SESSION['level_user'] == '3') { ?>
+                    <!-- <?php if($_SESSION['level_user'] == '2' || $_SESSION['level_user'] == '3') { ?>
                         <div>
                             <div>
                                 <label>Keterangan Icon:</label>
@@ -145,7 +132,128 @@ include 'hak_akses.php';
                             </div>
                             <div id="mapid" style="height: 560px; width: 100%; margin-top: 20px;"></div>
                         </div>
-                    <?php } ?>
+                    <?php } ?> -->
+
+
+                        <h4 class="mt-3"><span class="mt-2 align-middle font-weight-bold">Dashboard Pengelola</span></h4>
+
+                    <h5 class="mt-4"><span class="align-middle font-weight-bold"><i class="fas fa-hand-holding-usd"></i> Donasi</span></h5>
+
+                    <div class="row">
+                      <div class="col">
+                        <div class="alert dash-primary m-1 border-0" role="alert">
+                          <div class="row">
+                            <div class="col-sm-8">Donasi Baru <span class="badge text-sm badge-pill badge-success">2</span></div>
+                            <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=1" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
+                          </div>
+                      </div>
+
+                      <div class="alert dash-success m-1 border-0" role="alert">
+                          <div class="row">
+                            <div class="col-sm-8">Donasi Perlu Verifikasi <span class="badge text-sm badge-pill badge-info">2</span></div>
+                            <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=2" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
+                          </div>
+                      </div>
+
+
+                      </div>
+                      <div class="col">
+                        <div class="alert dash-warning m-1 border-0" role="alert">
+                          <div class="row">
+                            <div class="col-sm-8">Donasi belum Ditanam / Tanpa Batch <span class="badge text-sm badge-pill badge-warning">2</span></div>
+                            <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=3" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
+                          </div>
+                      </div>
+
+                      <div class="alert dash-danger m-1 border-0" role="alert">
+                          <div class="row">
+                            <div class="col-sm-8">Donasi Bermasalah <span class="badge text-sm badge-pill badge-danger">2</span></div>
+                            <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=4" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
+                          </div>
+                      </div>
+                      </div>
+                    </div>
+
+
+
+
+                  <h5 class="mt-5"><span class="align-middle font-weight-bold"><i class="fas fa-boxes"></i> Batch</span></h5>
+
+                    <div class="row">
+                      <div class="col">
+                        <div class="alert dash-primary m-1 border-0" role="alert">
+                          <div class="row">
+                            <div class="col-sm-8">Batch Belum Ditanam <span class="badge text-sm badge-pill badge-success">2</span></div>
+                            <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=1" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
+                          </div>
+                      </div>
+                      </div>
+
+
+                      <div class="col">
+                        <div class="alert dash-warning m-1 border-0" role="alert">
+                          <div class="row">
+                            <div class="col-sm-8">Batch Belum Pemeliharaan <span class="badge text-sm badge-pill badge-warning">2</span></div>
+                            <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=3" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
+                          </div>
+                      </div>
+                    </div>
+                    </div>
+
+
+
+                    <h5 class="mt-5"><span class="align-middle font-weight-bold"><i class="nav-icon fas fa-heart"></i> Pemeliharaan</span></h5>
+
+                    <div class="row">
+                      <div class="col">
+                        <div class="alert dash-primary m-1 border-0" role="alert">
+                          <div class="row">
+                            <div class="col-sm-8">Batch Perlu Pemeliharaan <span class="badge text-sm badge-pill badge-success">2</span></div>
+                            <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=1" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
+                          </div>
+                      </div>
+                      </div>
+
+
+                      <div class="col">
+                        <div class="alert dash-warning m-1 border-0" role="alert">
+                          <div class="row">
+                            <div class="col-sm-8">Batch Perlu Cabut Label <span class="badge text-sm badge-pill badge-warning">2</span></div>
+                            <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=3" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
+                          </div>
+                      </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <!-- /.container-fluid -->
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
                 </div>
             </section>
             <!-- /.Left col -->
@@ -173,38 +281,12 @@ include 'hak_akses.php';
 <div>
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="plugins/moment/moment.min.js"></script>
-    <script src="plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="plugins/summernote/summernote-bs4.min.js"></script>
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard.js"></script>
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <!-- Leaflet Marker Cluster -->

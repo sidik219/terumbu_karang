@@ -49,7 +49,7 @@
     a.btn.btn-primary,
     .btn-submit,
     .btn-lg {
-        border-radius: 10px;
+        border-radius: 40px;
         background-image: url('../images/orangebtnbg.jpg');
         background-repeat: no-repeat;
         background-size: cover;
@@ -61,11 +61,11 @@
     .file-form {
         background-color: white;
         border: 1px solid #CED4DA;
-        border-radius: 4px
+        border-radius: 40px
     }
     
     .btn.btn-submit {
-        border-radius: 10px;
+        border-radius: 40px;
         width: 60%;
         color: white;
         background-color: #E24901;
@@ -213,7 +213,7 @@
     .cart-item-image {
         width: 75px;
         height: auto;
-        border-radius: 10px;
+        border-radius: 7px;
     }
     
     .cart-quantity-input {
@@ -287,6 +287,7 @@
         background-repeat: no-repeat;
         background-size: cover;
         color: white;
+        border-radius: 40px;
     }
     
     .btn-warning {
@@ -294,6 +295,7 @@
         background-repeat: no-repeat;
         background-size: cover;
         border: none;
+        border-radius: 40px;
         /* transition: none !important; */
     }
     
@@ -309,6 +311,7 @@
     .btn-act {
         color: rgb(0, 80, 199);
         margin-right: 10px;
+        border-radius: 40px;
     }
     
     .btn-act:hover {
@@ -415,7 +418,7 @@
     }
     
     .btn.btn-link-slide {
-        border-radius: 10px;
+        border-radius: 40px;
         color: white;
         background-color: #E24901;
         border: none;
@@ -452,4 +455,20 @@
     
     .number-input {
         font-family: 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    
+    .dash-primary {
+        background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+    }
+    
+    .dash-warning {
+        background-image: linear-gradient(to right, #fffaf3 0%, #fff4b4 100%);
+    }
+    
+    .dash-success {
+        background-image: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);
+    }
+    
+    .dash-danger {
+        background-image: linear-gradient(-20deg, #ffdee3 0%, #ffe5d4 100%);
     }

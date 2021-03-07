@@ -6,7 +6,7 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
     function registrasi(){
                 if ($isLoggedIn) {
             header("Location: dashboard.php");
-            } 
+            }
             else {
                 if (isset($_POST['submit'])) {
                 $nama_user    = $_POST['tbnama_user'];
@@ -16,7 +16,7 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
                 $username     = $_POST['tbusername'];
                 $no_ktp     = $_POST['tbno_ktp'];
                 $password     = password_hash($_POST['tbpassword'], PASSWORD_DEFAULT);
-                $tanggal_lahir = $_POST['tanggal_lahir'];            
+                $tanggal_lahir = $_POST['tanggal_lahir'];
                 $alamat       = $_POST['txtalamat'];
                 $level_user = 1;
                 $aktivasi_user = 1;
@@ -88,10 +88,10 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
                     $_SESSION['id_user']        = $row->id_user;
                     $_SESSION['level_user']     = $row->level_user;
 
-                    header('Location: dashboard.php');                   
+                    header('Location: dashboard.php');
                 } else {
                     $msg = "<div class='alert alert-warning' role='alert'>
-                        <strong>Username atau Password salah.</strong>
+                        <strong>Akun Saya atau Password salah.</strong>
                         </div>";
                     }
                 }
@@ -100,19 +100,19 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
     }
 
     function viewMap(){
-        
+
     }
 
     function addDonasi(){
-        
+
     }
 
     function viewDonasi(){
-        
+
     }
 
     function editDonasi(){
-        
+
     }
 
     function addWilayah(){
@@ -125,73 +125,73 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
         //     header('Location: dashboard.php');
         // }
         // else{
-        
+
     }
 
     function viewWilayah(){
-        
+
     }
-    
+
 
     function editWilayah(){
-        
+
     }
 
-    function deleteWilayah(){        
-                
+    function deleteWilayah(){
+
     }
 
 
     function addLokasi(){
- 
+
     }
 
     function viewLokasi(){
-        
+
     }
 
     function editLokasi(){
-         
+
     }
 
     function deleteLokasi(){
-       
+
     }
 
-    
+
     function addTitik(){
-        
+
     }
 
     function viewTitik(){
-       
+
     }
 
     function editTitik(){
-        
+
     }
 
     function deleteTitik(){
-       
+
     }
-    
+
     function addBatch(){
-        
+
     }
 
     function viewBatch(){
-        
+
     }
 
     function editBatch(){
-        
+
     }
 
     function deleteBatch(){
-        
+
     }
 
-    
+
     function addJenis(){
 
     }
@@ -201,16 +201,16 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
 
     function editJenis(){
 
-    }        
+    }
 
     function deleteJenis(){
-        
+
     }
 
 
-    
+
     function addTerumbu(){
-       
+
     }
 
     function viewTerumbu(){
@@ -222,11 +222,11 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
     }
 
     function editTerumbu(){
-        
+
     }
-    
+
     function deleteTerumbu(){
-        
+
     }
 
 
@@ -245,14 +245,14 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
         }
         else{
         if (isset($_POST['submit'])) {
-            $judul_perizinan        = $_POST['tbjudul_perizinan']; 
+            $judul_perizinan        = $_POST['tbjudul_perizinan'];
             $id_user        = $_POST['id_user'];
             $id_lokasi        = $_POST['id_lokasi'];
             $biaya_pergantian        = $_POST['tbbiaya_pergantian'];
             $status_perizinan        = 1;
             $deskripsi_perizinan        = $_POST['tbdeskripsi_perizinan'];
             $randomstring = substr(md5(rand()), 0, 7);
-            
+
             //Image upload
             if (isset($_FILES['image_uploads'])) {
             $target_dir  = "images/foto_perizinan/";
@@ -262,7 +262,7 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
             else if($_FILES["file"]["error"] == 4) {
                 $file_proposal = "images/fizdefault.png";
             }
-            //---image upload end   
+            //---image upload end
 
             $sqlperizinan = "INSERT INTO t_perizinan
                             (judul_perizinan, id_user, id_lokasi, deskripsi_perizinan, file_proposal, biaya_pergantian, status_perizinan)
@@ -294,14 +294,14 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
     function editPerizinan(){
         if (isset($_POST['submit'])) {
             if ($_POST['submit'] == 'Simpan') {
-                $judul_perizinan        = $_POST['tbnjudul_perizinan']; 
+                $judul_perizinan        = $_POST['tbnjudul_perizinan'];
                 $id_user        = $_POST['id_user'];
                 $id_lokasi        = $_POST['id_lokasi'];
                 $biaya_pergantian        = $_POST['tbbiaya_pergantian'];
                 $status_perizinan        = $_POST['optstatus_perizinan'];;
                 $deskripsi_perizinan        = $_POST['tbdeskripsi_perizinan'];
                 $randomstring = substr(md5(rand()), 0, 7);
-                
+
                 //Image upload
                 if (isset($_FILES['image_uploads'])) {
                 $target_dir  = "images/foto_perizinan/";
@@ -311,11 +311,11 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
                 else if($_FILES["file"]["error"] == 4) {
                     $file_proposal = "images/fizdefault.png";
                 }
-                //---image upload end  
+                //---image upload end
 
                 $sqleditperizinan = "UPDATE t_perizinan
-                            SET judul_perizinan = :judul_perizinan, id_user = :id_user, 
-                            deskripsi_perizinan = :deskripsi_perizinan, 
+                            SET judul_perizinan = :judul_perizinan, id_user = :id_user,
+                            deskripsi_perizinan = :deskripsi_perizinan,
                             file_proposal = :file_proposal, biaya_pergantian = :biaya_pergantian, status_perizinan = :status_perizinan
                             WHERE id_perizinan = :id_perizinan";
 
@@ -330,53 +330,53 @@ $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
                 } else {
                 header("Location: edit_perizinan.php?id_perizinan=$id_perizinan&status=updatesuccess");
                 }
-            }       
+            }
         }
     }
 
     function deletePerizinan(){
         $sql = 'DELETE FROM t_perizinan
             WHERE id_perizinan = :id_perizinan';
-            
+
             $stmt = $pdo->prepare($sql);
             $stmt->execute(['id_perizinan' => $_POST['id_perizinan']]);
             header('Location: kelola_perizinan.php?status=deletesuccess');
     }
 
     function addInformasi(){
-        
+
     }
 
     function viewInformasi(){
-        
+
     }
 
     function editInformasi(){
-        
+
     }
 
     function deleteInformasi(){
-        
+
     }
 
     function viewLaporan(){
-        
+
     }
 
     function filterLaporan(){
-        
+
     }
 
     function viewUser(){
-        
+
     }
 
     function editUser(){
-        
+
     }
 
     function deleteUser(){
-        
+
     }
 
     function hello(){

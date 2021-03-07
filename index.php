@@ -18,11 +18,11 @@
 
     <!-- Custom CSS -->
     <link href="css/konten.css" rel="stylesheet">
-    
+
     <!-- Font Awesome CSS -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    
-    
+
+
 </head>
 
 
@@ -61,19 +61,19 @@
                     <a class="nav-link" href="login.php">Login</a>
                 </li>
                 <!-- <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Akun Saya</a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="#">Edit Profil</a>
-                    <a class="dropdown-item" href="#">Logout</a>              
+                    <a class="dropdown-item" href="#">Logout</a>
                 </li>  -->
-            </ul> 
+            </ul>
         </div>
         <!-- END OF MENU NAVBAR -->
-</nav> 
+</nav>
 <!-- END OF NAVBAR -->
 
 <!-- CAROUSEL SLIDE -->
-    
+
     <div id="carouselFull" class="carousel slide" data-ride="carousel">
        <ol class="carousel-indicators">
            <li data-target="#carouselIndicators" data-slide-to="0" class="active"></li>
@@ -88,7 +88,7 @@
                    <h3>BANTU PULIHKAN RUMAH MEREKA</h3><br>
                    <p>Terumbu Karang merupakan rumah bagi ribuan ikan hias. Kerusakan yang
                     disebabkan manusia berdampak buruk pada kehidupan mereka.</p><br>
-                    <a href="donasi.php" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                    <a href="donasi.php" class="btn btn-link-slide" role="button" aria-pressed="true">
                       Donasi Sekarang
                     </a>
                </div>
@@ -100,7 +100,7 @@
                     PELESTARIAN</h3><br>
                    <p>Terimakasih telah ikut melestarikan biota laut Jawa Barat. Jangan lupa
                     untuk menikmati keindahannya dengan berwisata.</p><br>
-                    <a href="wisata.php" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                    <a href="wisata.php" class="btn btn-link-slide" role="button" aria-pressed="true">
                         Wisata Sekarang
                       </a>
                </div>
@@ -109,9 +109,9 @@
                <img class="d-block" src="dist/img/home-slide3-darken.jpg" alt="Third slide">
                <div class="carousel-caption d-md-block">
                    <h3>AMATI KONDISINYA </h3><br>
-                   <p>Beberapa titik terumbu karang berada dalam kondisi rusak parah dan 
+                   <p>Beberapa titik terumbu karang berada dalam kondisi rusak parah dan
                     membutuhkan bantuan kita.</p><br>
-                    <a href="coralmaps.php" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                    <a href="coralmaps.php" class="btn btn-link-slide" role="button" aria-pressed="true">
                         Coralmaps
                       </a>
                </div>
@@ -122,7 +122,7 @@
                 <h3>TAK KENAL MAKA
                     TAK SAYANG</h3><br>
                 <p>Mari kenali beragam jenis terumbu karang cantik yang terdapat di Jawa Barat.</p><br>
-                    <a href="coralpedia.php" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                    <a href="coralpedia.php" class="btn btn-link-slide" role="button" aria-pressed="true">
                        Coralpedia
                       </a>
             </div>
@@ -139,9 +139,9 @@
    </div>
 
    <!-- END CAROUSEL SLIDE -->
-    
+
     <!-- BODY CONTAINER -->
-    
+
     <div class="home-about-container">
         <div id="about" class="container">
             <!-- 1st PARAGRAPH -->
@@ -197,10 +197,10 @@
                     <p>
                     Simak menariknya sistem donasi yang kami hadirkan
                     </p><br>
-                     <a href="donasi.php" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                     <a href="donasi.php" class="btn btn-link-slide" role="button" aria-pressed="true">
                        Info Donasi
                      </a>
-                    </center>  
+                    </center>
                 </div>
             </div>
         </div>
@@ -215,7 +215,7 @@
                 <p style="text-align: center;">Temukan spot favoritmu untuk
                     melihat indahnya terumbu
                     karang Jawa Barat !</p><br><br>
-                    <a href="wisata.php" class="btn btn-link-slide" role="button" aria-pressed="true">        
+                    <a href="wisata.php" class="btn btn-link-slide" role="button" aria-pressed="true">
                         Info Wisata
                       </a>
             </div>
@@ -230,10 +230,10 @@
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                     <div class="cpt text-light text-center">
-                        <p>© 2020-Terumbu Karang Jawa Barat.</p>                    
+                        <p>© 2020-Terumbu Karang Jawa Barat.</p>
                     </div>
                 </div>
-             
+
             </div>
         </div>
     </section>
@@ -241,7 +241,7 @@
     <div id="bttp" class="btt">
         <a href="#"><i class="fa fa-arrow-circle-up"></i></a>
     </div>
- 
+
 
 
 
@@ -250,15 +250,15 @@
             <div class="starter-template">
                 <h1 class="mb-5">TERUMBU KARANG</h1>
                 <p>
-                    Terumbu karang merupakan salah satu komponen utama sumber daya alam laut dan pesisir, 
+                    Terumbu karang merupakan salah satu komponen utama sumber daya alam laut dan pesisir,
                     disamping hutan bakau (mangrove) dan padang lamun. Berbagai manfaat yang dihasilkan terumbu karang antara lain :</p><br><br>
             </div>
         </div>
     </div>
      -->
-    
-    
-   
+
+
+
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Optional JavaScript -->
@@ -271,7 +271,7 @@
     <!-- Smooth Scroll -->
     <script src="js/smooth-scroll.js"></script>
     <!-- Video Full Width -->
-    <script src="js/jquery.vide.js"></script> 
+    <script src="js/jquery.vide.js"></script>
     <script>
         var scroll = new SmoothScroll('a[href*="#"]');
     </script>
@@ -305,7 +305,7 @@
       });
      }
 
-     // Written by @labnol 
+     // Written by @labnol
     </script>
     <script>
         myID = document.getElementById("bttp");

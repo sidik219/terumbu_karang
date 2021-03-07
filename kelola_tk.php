@@ -13,7 +13,7 @@ $row = $stmt->fetchAll();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Terumbu Karang - TKJB</title>
+    <title>Kelola Sub-Jenis Terumbu Karang - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -42,7 +42,7 @@ $row = $stmt->fetchAll();
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Akun Saya</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
                             <a class="dropdown-item" href="logout.php">Logout</a>
@@ -81,7 +81,7 @@ $row = $stmt->fetchAll();
                 <div class="container-fluid">
                 <div class="row">
                         <div class="col">
-                            <h4><span class="align-middle font-weight-bold">Kelola Terumbu Karang</span></h4>
+                            <h4><span class="align-middle font-weight-bold">Kelola Sub-jenis Terumbu Karang</span></h4>
                         </div>
                         <div class="col">
 

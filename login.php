@@ -79,14 +79,14 @@ if (isset($_POST['login'])) {
                   else{
                     {
                   echo '<div class="alert alert-warning" role="alert">
-                          Username atau password salah.
+                          Akun Saya atau password salah.
                       </div>';}
                   }
                   }
                 ?>
 
     					<div class="wrap-input100 validate-input">
-    						<input class="input100" type="text" name="tbusername" placeholder="Username">
+    						<input class="input100" type="text" name="tbusername" placeholder="Akun Saya">
     						<span class="focus-input100-1"></span>
     						<span class="focus-input100-2"></span>
     					</div>
