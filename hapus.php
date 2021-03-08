@@ -1,5 +1,5 @@
 <?php
-include 'build\config\connection.php';
+include 'build/config/connection.php';
 session_start();
 
 $type = $_GET['type'];

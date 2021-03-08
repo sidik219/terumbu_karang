@@ -134,23 +134,22 @@ include 'hak_akses.php';
                         </div>
                     <?php } ?> -->
 
+                    <div class="content-header"><h4 class=""><span class="mt-2 align-middle font-weight-bold">Dashboard Pengelola</span></h4></div>
 
-                        <h4 class="mt-3"><span class="mt-2 align-middle font-weight-bold">Dashboard Pengelola</span></h4>
+                    <h5 class=""><span class="align-middle font-weight-bold"><i class="fas text-success fa-hand-holding-usd"></i> Donasi</span></h5>
 
-                    <h5 class="mt-4"><span class="align-middle font-weight-bold"><i class="fas fa-hand-holding-usd"></i> Donasi</span></h5>
-
-                    <div class="row">
-                      <div class="col">
+                    <div class="row rounded shadow-sm p-2">
+                      <div class="col-sm">
                         <div class="alert dash-primary m-1 border-0" role="alert">
                           <div class="row">
-                            <div class="col-sm-8">Donasi Baru <span class="badge text-sm badge-pill badge-success">2</span></div>
+                            <div class="col-7">Donasi Baru <span class="badge text-sm badge-pill badge-success">2</span></div>
                             <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=1" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>
 
                       <div class="alert dash-success m-1 border-0" role="alert">
                           <div class="row">
-                            <div class="col-sm-8">Donasi Perlu Verifikasi <span class="badge text-sm badge-pill badge-info">2</span></div>
+                            <div class="col-7">Donasi Perlu Verifikasi <span class="badge text-sm badge-pill badge-info">2</span></div>
                             <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=2" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>
@@ -160,14 +159,14 @@ include 'hak_akses.php';
                       <div class="col">
                         <div class="alert dash-warning m-1 border-0" role="alert">
                           <div class="row">
-                            <div class="col-sm-8">Donasi belum Ditanam / Tanpa Batch <span class="badge text-sm badge-pill badge-warning">2</span></div>
+                            <div class="col-7">Donasi belum Ditanam / Tanpa Batch <span class="badge text-sm badge-pill badge-warning">2</span></div>
                             <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=3" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>
 
                       <div class="alert dash-danger m-1 border-0" role="alert">
                           <div class="row">
-                            <div class="col-sm-8">Donasi Bermasalah <span class="badge text-sm badge-pill badge-danger">2</span></div>
+                            <div class="col-7">Donasi Bermasalah <span class="badge text-sm badge-pill badge-danger">2</span></div>
                             <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=4" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>
@@ -177,52 +176,53 @@ include 'hak_akses.php';
 
 
 
-                  <h5 class="mt-5"><span class="align-middle font-weight-bold"><i class="fas fa-boxes"></i> Batch</span></h5>
+                  <h5 class="mt-4"><span class="align-middle font-weight-bold"><i class="fas text-warning fa-boxes"></i> Batch</span></h5>
 
-                    <div class="row">
-                      <div class="col">
+                    <div class="row rounded shadow-sm p-2">
+                      <div class="col-sm">
                         <div class="alert dash-primary m-1 border-0" role="alert">
                           <div class="row">
-                            <div class="col-sm-8">Batch Belum Ditanam <span class="badge text-sm badge-pill badge-success">2</span></div>
+                            <div class="col-7">Batch Belum Ditanam <span class="badge text-sm badge-pill badge-success">2</span></div>
                             <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=1" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>
-                      </div>
 
 
-                      <div class="col">
+
+
                         <div class="alert dash-warning m-1 border-0" role="alert">
                           <div class="row">
-                            <div class="col-sm-8">Batch Belum Pemeliharaan <span class="badge text-sm badge-pill badge-warning">2</span></div>
+                            <div class="col-7">Batch Belum Pemeliharaan <span class="badge text-sm badge-pill badge-warning">2</span></div>
                             <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=3" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>
                     </div>
-                    </div>
+                  </div>
 
 
 
-                    <h5 class="mt-5"><span class="align-middle font-weight-bold"><i class="nav-icon fas fa-heart"></i> Pemeliharaan</span></h5>
+                    <h5 class="mt-4"><span class="align-middle font-weight-bold"><i class="nav-icon text-danger fas fa-heart"></i> Pemeliharaan</span></h5>
 
-                    <div class="row">
-                      <div class="col">
+                    <div class="row rounded shadow-sm p-2">
+                      <div class="col-sm">
                         <div class="alert dash-primary m-1 border-0" role="alert">
                           <div class="row">
-                            <div class="col-sm-8">Batch Perlu Pemeliharaan <span class="badge text-sm badge-pill badge-success">2</span></div>
+                            <div class="col-7">Batch Perlu Pemeliharaan <span class="badge text-sm badge-pill badge-success">2</span></div>
                             <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=1" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>
-                      </div>
 
 
-                      <div class="col">
+
+
                         <div class="alert dash-warning m-1 border-0" role="alert">
                           <div class="row">
-                            <div class="col-sm-8">Batch Perlu Cabut Label <span class="badge text-sm badge-pill badge-warning">2</span></div>
+                            <div class="col-7">Batch Perlu Cabut Label <span class="badge text-sm badge-pill badge-warning">2</span></div>
                             <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=3" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>
                     </div>
+                  </div>
 
 
 

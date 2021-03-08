@@ -1,4 +1,4 @@
-<?php include 'build\config\connection.php';
+<?php include 'build/config/connection.php';
 session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';

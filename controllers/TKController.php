@@ -1,5 +1,5 @@
 <?php
-include '..\build\config\connection.php';
+include '..\build/config/connection.php';
 session_start();
 $isLoggedIn = isset($_SESSION['id_user']) && !empty($_SESSION['id_user']);
 
