@@ -1,6 +1,32 @@
 <?php
 include 'build/config/connection.php';
 
+function ageCalculator($dob){
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $ag = $birthdate->diff($today)->y;
+        $mn = $birthdate->diff($today)->m;
+        $dy = $birthdate->diff($today)->d;
+        if ($ag == 0)
+        {
+            return "$mn Bulan  $dy Hari";
+        }
+        else
+        {
+            return "$ag Tahun $mn Bulan $dy Hari";
+        }
+    }
+
+    function alertPemeliharaan($dob){
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $mn = $birthdate->diff($today)->m;
+        if ($mn >= 3)
+        {
+            return '<i class="fas fa-exclamation-circle text-danger"></i> Perlu Pemeliharaan Kembali';
+        }
+    }
+
 
 //Load lokasi
 if ($_POST['type'] == 'load_lokasi' && !empty($_POST["id_wilayah"])) {
@@ -147,7 +173,12 @@ if ($_POST['type'] == 'load_batch' && !empty($_POST["id_lokasi"])) {
             ?>
     <div class="border rounded p-1 batch-donasi mb-2 shadow-sm" id="donasi<?=$batch->id_batch?>">
       <span class="font-weight-bold">ID Batch : </span> <span class="id_donasi"><?=$batch->id_batch?></span>  <br>
-      <small class="font-weight-bold">Pemeliharaan Terakhir : </small> <small class="tanggal_pemeliharaan"><?php if($batch->tanggal_pemeliharaan_terakhir == null){echo 'Belum pernah pemeliharaan';}else{echo $batch->tanggal_pemeliharaan_terakhir;}?></small>
+      <b>Usia : </b>
+      <?=ageCalculator($batch->tanggal_penanaman)?>
+      <br><small class="font-weight-bold">Pemeliharaan Terakhir : </small> <small class="tanggal_pemeliharaan"><?php if($batch->tanggal_pemeliharaan_terakhir == null){echo 'Belum pernah pemeliharaan';}else{echo $batch->tanggal_pemeliharaan_terakhir.
+        ' ('.ageCalculator($batch->tanggal_pemeliharaan_terakhir).' yang lalu)<br><span class="font-weight-bold text-danger">'.alertPemeliharaan($batch->tanggal_pemeliharaan_terakhir).'</span>';}?>
+          </small>
+
       <!--collapse start -->
                             <div class="row  m-0">
                             <div class="col-12 cell detailcollapser<?=$batch->id_batch?>"

@@ -10,6 +10,22 @@ $sqlviewdonasi = 'SELECT * FROM t_donasi
 $stmt = $pdo->prepare($sqlviewdonasi);
 $stmt->execute();
 $row = $stmt->fetchAll();
+
+function ageCalculator($dob){
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $ag = $birthdate->diff($today)->y;
+        $mn = $birthdate->diff($today)->m;
+        $dy = $birthdate->diff($today)->d;
+        if ($ag == 0)
+        {
+            return "$mn Bulan  $dy Hari";
+        }
+        else
+        {
+            return "$ag Tahun $mn Bulan $dy Hari";
+        }
+    }
 ?>
 
 
@@ -140,7 +156,10 @@ $row = $stmt->fetchAll();
                               <td>Rp. <?=number_format($rowitem->nominal, 0)?></td>
                               <td><?=strftime('%A, %d %B %Y', $donasidate);?></td>
                               <td><?=$rowitem->nama_status_donasi?> <br><small class="text-muted">Update Terakhir:
-                                <br><?=strftime('%A, %d %B %Y', $truedate);?></small></td>
+                                <br><?=strftime('%A, %d %B %Y', $truedate);?>
+                                <br>(<?=ageCalculator($rowitem->update_terakhir).' yang lalu'?>)
+
+                              </small></td>
                               <td>
                                 <button type="button" class="btn btn-act">
                                 <a href="edit_donasi.php?id_donasi=<?=$rowitem->id_donasi?>" class="fas fa-edit"></a>

@@ -11,11 +11,16 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         $stmt->execute();
         $rowlokasi = $stmt->fetchAll();
 
+         $sqlstatus = 'SELECT * FROM t_status_batch';
+    $stmt = $pdo->prepare($sqlstatus);
+    $stmt->execute();
+    $rowstatus = $stmt->fetchAll();
+
 
 
 
         $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
-                      t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch
+                      t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, t_batch.id_status_batch
                       FROM t_batch
                       LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
                       LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
@@ -54,7 +59,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         $tanggal_penanaman        = $_POST['date_penanaman'];
 
         $update_status_batch_terakhir = date ('Y-m-d H:i:s', time());
-        $id_status_batch = 1;
+        $id_status_batch = $_POST['radio_status'];
 
           //Kosongkan entry batch dari t_detail_batch
         $sqldeleteisibatch = "DELETE FROM t_detail_batch
@@ -197,63 +202,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <!-- SESSION lvl Untuk Lokasi -->
-                    <?php if($_SESSION['level_user'] == '3') { ?>
-                        <li class="nav-item"> <!-- Wilayah & Lokasi -->
-                           <a href="dashboard_admin.php" class="nav-link">
-                                <i class="nav-icon fas fa-home"></i>
-                                <p> Home </p>
-                           </a>
-                        </li>
-                        <li class="nav-item"> <!-- Lokasi -->
-                            <a href="kelola_donasi.php" class="nav-link">
-                                <i class="nav-icon fas fa-hand-holding-usd"></i>
-                                <p> Kelola Donasi </p>
-                            </a>
-                        </li>
-                        <li class="nav-item"> <!-- Lokasi -->
-                            <a href="kelola_wisata.php" class="nav-link">
-                                <i class="nav-icon fas fa-suitcase"></i>
-                                <p> Kelola Wisata </p>
-                            </a>
-                        </li>
-                        <li class="nav-item"> <!-- Lokasi -->
-                            <a href="kelola_reservasi_wisata.php" class="nav-link">
-                                <i class="nav-icon fas fa-th-list"></i>
-                                <p> Kelola Reservasi </p>
-                            </a>
-                        </li>
-                        <li class="nav-item"> <!-- Wilayah & Lokasi -->
-                            <a href="kelola_lokasi.php" class="nav-link">
-                                <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
-                                <p> Kelola Lokasi </p>
-                            </a>
-                        </li>
-                        <li class="nav-item"> <!-- Lokasi -->
-                            <a href="kelola_titik.php" class="nav-link">
-                                 <i class="nav-icon fas fa-crosshairs"></i>
-                                 <p> Kelola Titik </p>
-                            </a>
-                        </li>
-                        <li class="nav-item menu-open"> <!-- Lokasi -->
-                            <a href="kelola_batch.php" class="nav-link active">
-                                  <i class="nav-icon fas fa-boxes"></i>
-                                  <p> Kelola Batch </p>
-                            </a>
-                        </li>
-                        <li class="nav-item"> <!-- Lokasi -->
-                            <a href="kelola_pemeliharaan.php" class="nav-link">
-                                  <i class="nav-icon fas fa-heart"></i>
-                                  <p> Kelola Pemeliharaan </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="kelola_user.php" class="nav-link">
-                                    <i class="nav-icon fas fa-user"></i>
-                                    <p> Kelola User </p>
-                            </a>
-                        </li>
-                    <?php } ?>
+                      <?php print_sidebar(basename(__FILE__), $_SESSION['level_user'])?> <!-- Print sidebar -->
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -276,8 +225,29 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
             <!-- Main content -->
         <?php if($_SESSION['level_user'] == '3') { ?>
             <section class="content">
-                <div class="container-fluid bg-white border rounded p-3">
+                <div class="container-fluid bg-white p-3">
                     <form action="" enctype="multipart/form-data" method="POST">
+
+                     <div class="col-12 mb-2 border rounded bg-white p-3">
+                  <h5 class="font-weight-bold">Status Batch</h5>
+
+                  <?php
+                    foreach($rowstatus as $status){
+                  ?>
+
+                  <div class="form-check mb-2">
+                  <input class="form-check-input" type="radio" name="radio_status" id="radio_status<?=$status->id_status_batch?>" value="<?=$status->id_status_batch?>" <?php if($rowbatch->id_status_batch == $status->id_status_batch) echo " checked"; ?>>
+                  <label class="form-check-label <?php if($rowbatch->id_status_batch == $status->id_status_batch) echo " font-weight-bold"; ?>" for="radio_status<?=$status->id_status_batch?>">
+                    <?=$status->nama_status_batch?>
+                  </label>
+                </div>
+
+                    <?php }?>
+
+                <button type="submit" name="submit" value="Simpan" class="btn btn-primary btn-blue mt-2">Update Status</button></p>
+
+          </div>
+
                     <div class="form-group">
                         <label for="dd_id_lokasi">Lokasi Penanaman</label>
                         <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control-plaintext" onChange="loadTitik(this.value);" readonly disabled required>

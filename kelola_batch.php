@@ -3,7 +3,7 @@ session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
     $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
-                      t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, t_titik.latitude, t_titik.longitude
+                      t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, t_titik.latitude, t_titik.longitude, t_status_batch.id_status_batch, tanggal_pemeliharaan_terakhir
                       FROM t_batch
                       LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
                       LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
@@ -12,6 +12,32 @@ include 'hak_akses.php';
     $stmt = $pdo->prepare($sqlviewbatch);
     $stmt->execute();
     $rowbatch = $stmt->fetchAll();
+
+    function ageCalculator($dob){
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $ag = $birthdate->diff($today)->y;
+        $mn = $birthdate->diff($today)->m;
+        $dy = $birthdate->diff($today)->d;
+        if ($ag == 0)
+        {
+            return "$mn Bulan  $dy Hari";
+        }
+        else
+        {
+            return "$ag Tahun $mn Bulan $dy Hari";
+        }
+    }
+
+    function alertPemeliharaan($dob){
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $mn = $birthdate->diff($today)->m;
+        if ($mn >= 3)
+        {
+            return '<i class="fas fa-exclamation-circle text-danger"></i> Perlu Pemeliharaan Kembali';
+        }
+    }
 
 ?>
 
@@ -145,11 +171,31 @@ include 'hak_akses.php';
                               <td>ID <?=$batch->id_lokasi?> - <?=$batch->nama_lokasi?></td>
                               <td><?=$batch->id_titik?> <?=$batch->keterangan_titik?><br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$batch->latitude?>,<?=$batch->longitude?>&zoom=8"
                                                                                                                                       class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a></td>
-                              <td><?=$batch->tanggal_penanaman?></td>
+                              <td><?=$batch->tanggal_penanaman?>
+                                  <?php
+                                          if($batch->id_status_batch > 1){
+
+                                              echo '<br><small class="text-muted">Usia Bibit:
+                                                    <br><b>'.ageCalculator($batch->tanggal_penanaman)
+                                                    .'</b></small>';
+                                          }
+                                  ?>
+                              </td>
                               <td><?=$batch->nama_status_batch?>
-                                <small class="text-muted">
+                                <?php if($batch->id_status_batch <= 2){
+                                  echo '<small class="text-muted">
                                   <br>Update Terakhir:
-                                  <br><?=strftime('%A, %d %B %Y', $truedate);?></small>
+                                  <br>'.strftime('%A, %d %B %Y', $truedate).'
+                                  <br>('.ageCalculator($batch->update_status_batch_terakhir).' yang lalu)
+                                  </small>';
+                                }else{
+                                  echo '<small class="text-muted">Pemeliharaan Terakhir: <br>'. $batch->tanggal_pemeliharaan_terakhir.'<br>('.ageCalculator($batch->tanggal_pemeliharaan_terakhir).' yang lalu) <br> <span class="text-danger font-weight-bold">'.
+                                            alertPemeliharaan($batch->tanggal_pemeliharaan_terakhir).'</span></small>';
+                                }
+                                ?>
+
+
+
                               </td>
                               <td>
                                 <button type="button" class="btn btn-act">

@@ -1,0 +1,110 @@
+RewriteEngine on
+
+    #COMMENT | Please read this comment carefully BEFORE uncommenting Rewritebase
+    #COMMENT | if your site domain homepage looks like this http://www.example.com/index.php do not uncomment
+    #COMMENT | if your site domain url looks like this http://www.example.com/something/index.php uncomment
+    #RewriteBase /add somethings name here/
+
+    Options -Indexes
+
+    IndexIgnore *
+
+    Options +FollowSymLinks
+
+    DirectoryIndex index.php index.html
+
+    #COMMENT | This denys other sites from IFraming your site. It prevents clickjacking.
+    Header always append X-Frame-Options DENY
+
+    #COMMENT | This will enforce SSL on all pages. You must have a SSL certificate installed first.
+    #RewriteCond %{SERVER_PORT} 80
+    #RewriteRule ^(.*)$ https://example.com/$1 [R,L]
+
+    #COMMENT | REMOVE PATCH and PUT before uploading/updating/upgrading your site
+    RewriteCond %{REQUEST_METHOD} ^(DELETE|HEAD|OPTIONS|PATCH|PROPFIND|PUT|TRACE|TRACK)
+    RewriteRule .* - [F]
+
+    #COMMENT | Block most proxies
+    #RewriteCond %{HTTP:VIA} !^$ [OR]
+    #RewriteCond %{HTTP:FORWARDED} !^$ [OR]
+    #RewriteCond %{HTTP:USERAGENT_VIA} !^$ [OR]
+    #RewriteCond %{HTTP:X_FORWARDED_FOR} !^$ [OR]
+    #RewriteCond %{HTTP:PROXY_CONNECTION} !^$ [OR]
+    #RewriteCond %{HTTP:XPROXY_CONNECTION} !^$ [OR]
+    #RewriteCond %{HTTP:HTTP_PC_REMOTE_ADDR} !^$ [OR]
+    #RewriteCond %{HTTP:HTTP_CLIENT_IP} !^$
+    #RewriteRule ^(.*)$ - [F]
+
+    Order Deny,Allow
+    Deny from all
+
+    #COMMENT | Allows only browsers updated within the last couple years
+    SetEnvIfNoCase User-Agent .*ozilla/5.* good_bot
+
+    #COMMENT | Allows cPanel and cPanel Autossl
+    SetEnvIfNoCase User-Agent .*hec.* good_bot
+    SetEnvIfNoCase User-Agent .*omod.* good_bot
+    SetEnvIfNoCase User-Agent .*pane.* good_bot
+    SetEnvIfNoCase User-Agent .*utoss.* good_bot
+
+    #COMMENT | Allows Softaculous
+    SetEnvIfNoCase User-Agent .*oftaculou.* good_bot
+
+    #COMMENT | Allows youtube
+    SetEnvIfNoCase User-Agent .*outub.* good_bot
+    SetEnvIfNoCase User-Agent .*ou-tub.* good_bot
+
+    #COMMENT | Allows google/adsense/analytics bot
+    SetEnvIfNoCase User-Agent .*oogle.* good_bot
+    SetEnvIfNoCase User-Agent .*ens.* good_bot
+    SetEnvIfNoCase User-Agent .*nalytic.* good_bot
+
+    #COMMENT | Allows bing bot
+    SetEnvIfNoCase User-Agent bing good_bot
+    SetEnvIfNoCase User-Agent bing.* good_bot
+    SetEnvIfNoCase User-Agent .*bing.* good_bot
+
+    #COMMENT | Allows yahoo and slurp bots
+    SetEnvIfNoCase User-Agent .*aho.* good_bot
+    SetEnvIfNoCase User-Agent slur.* good_bot
+    SetEnvIfNoCase User-Agent .*slur.* good_bot
+
+    #COMMENT | Allows facebook bot
+    SetEnvIfNoCase User-Agent .*aceboo.* good_bot
+
+    #COMMENT | Allows pinterest bot
+    SetEnvIfNoCase User-Agent .*interes.* good_bot
+
+    #COMMENT | Allows linkedin bot
+    SetEnvIfNoCase User-Agent .*inkedi.* good_bot
+    SetEnvIfNoCase User-Agent .*inked-i.* good_bot
+
+    #COMMENT | Allows myspace bot
+    SetEnvIfNoCase User-Agent .*yspac.* good_bot
+
+    #COMMENT | Allows snapchat bot
+    SetEnvIfNoCase User-Agent .*nap.* good_bot
+
+    #COMMENT | Allows instragram bot
+    SetEnvIfNoCase User-Agent .*nsta.* good_bot
+
+    Allow from env=good_bot
+
+# BEGIN cPanel-generated php ini directives, do not edit
+# Manual editing of this file may result in unexpected behavior.
+# To make changes to this file, use the cPanel MultiPHP INI Editor (Home >> Software >> MultiPHP INI Editor)
+# For more information, read our documentation (https://go.cpanel.net/EA4ModifyINI)
+<IfModule php7_module>
+
+</IfModule>
+<IfModule lsapi_module>
+
+</IfModule>
+# END cPanel-generated php ini directives, do not edit
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php74” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php74___lsphp .php .php7 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit

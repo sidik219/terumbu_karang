@@ -10,7 +10,21 @@ $stmt = $pdo->prepare($sqlviewpemeliharaan);
     $stmt->execute();
     $rowpemeliharaan = $stmt->fetchAll();
 
-
+function ageCalculator($dob){
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $ag = $birthdate->diff($today)->y;
+        $mn = $birthdate->diff($today)->m;
+        $dy = $birthdate->diff($today)->d;
+        if ($ag == 0)
+        {
+            return "$mn Bulan  $dy Hari";
+        }
+        else
+        {
+            return "$ag Tahun $mn Bulan $dy Hari";
+        }
+    }
 
 ?>
 
@@ -138,7 +152,12 @@ $stmt = $pdo->prepare($sqlviewpemeliharaan);
                           <tr>
                               <th scope="row"><?=$pemeliharaan->id_pemeliharaan?></th>
                               <td><?=$pemeliharaan->id_lokasi?> - <?=$pemeliharaan->nama_lokasi?></td>
-                              <td><?=$pemeliharaan->tanggal_pemeliharaan?></td>
+                              <td><?=$pemeliharaan->tanggal_pemeliharaan?>
+                                <br><small class="text-muted">
+                                    <?=ageCalculator($pemeliharaan->tanggal_pemeliharaan).' yang lalu'?>
+                                  </small>
+
+                            </td>
                               <td>
                                 <?php
                                   if($pemeliharaan->id_status_pemeliharaan == 1){

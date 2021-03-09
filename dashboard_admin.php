@@ -2,6 +2,34 @@
 session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
+
+$sqlviewdonasi = 'SELECT (SELECT COUNT(t_donasi.id_status_donasi)
+                  FROM t_donasi
+                  WHERE t_donasi.id_status_donasi = 1) AS donasi_baru,
+                  (SELECT COUNT(t_donasi.id_status_donasi)
+                                  FROM t_donasi
+                  WHERE t_donasi.id_status_donasi = 2) AS donasi_verifikasi,
+                  (SELECT COUNT(t_donasi.id_status_donasi)
+                                  FROM t_donasi
+                  WHERE t_donasi.id_batch IS NULL AND t_donasi.id_status_donasi = 3 ) AS donasi_tanpa_batch,
+                  (SELECT COUNT(t_donasi.id_status_donasi)
+                                  FROM t_donasi
+                  WHERE t_donasi.id_status_donasi = 6) AS donasi_bermasalah';
+$stmt = $pdo->prepare($sqlviewdonasi);
+$stmt->execute();
+$rowdonasi = $stmt->fetch();
+
+
+$sqlviewbatch = 'SELECT (SELECT COUNT(id_status_batch)
+                  FROM t_batch
+                  WHERE id_status_batch = 1) AS batch_penyemaian,
+                  (SELECT COUNT(id_status_batch)
+                                  FROM t_batch
+                  WHERE id_status_batch = 2) AS batch_siap_tanam';
+
+$stmt = $pdo->prepare($sqlviewbatch);
+$stmt->execute();
+$rowbatch = $stmt->fetch();
 ?>
 
 <!DOCTYPE html>
@@ -142,14 +170,14 @@ include 'hak_akses.php';
                       <div class="col-sm">
                         <div class="alert dash-primary m-1 border-0" role="alert">
                           <div class="row">
-                            <div class="col-7">Donasi Baru <span class="badge text-sm badge-pill badge-success">2</span></div>
+                            <div class="col-7">Donasi Baru <span class="badge text-sm badge-pill badge-success"><?= $rowdonasi->donasi_baru ?></span></div>
                             <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=1" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>
 
                       <div class="alert dash-success m-1 border-0" role="alert">
                           <div class="row">
-                            <div class="col-7">Donasi Perlu Verifikasi <span class="badge text-sm badge-pill badge-info">2</span></div>
+                            <div class="col-7">Donasi Perlu Verifikasi <span class="badge text-sm badge-pill badge-info"><?= $rowdonasi->donasi_verifikasi ?></span></div>
                             <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=2" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>
@@ -159,15 +187,15 @@ include 'hak_akses.php';
                       <div class="col">
                         <div class="alert dash-warning m-1 border-0" role="alert">
                           <div class="row">
-                            <div class="col-7">Donasi belum Ditanam / Tanpa Batch <span class="badge text-sm badge-pill badge-warning">2</span></div>
-                            <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=3" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
+                            <div class="col-7">Donasi Belum Masuk Batch <span class="badge text-sm badge-pill badge-warning"><?= $rowdonasi->donasi_tanpa_batch ?></span></div>
+                            <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=isnull" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>
 
                       <div class="alert dash-danger m-1 border-0" role="alert">
                           <div class="row">
-                            <div class="col-7">Donasi Bermasalah <span class="badge text-sm badge-pill badge-danger">2</span></div>
-                            <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=4" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
+                            <div class="col-7">Donasi Bermasalah <span class="badge text-sm badge-pill badge-danger"><?= $rowdonasi->donasi_bermasalah?></span></div>
+                            <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=6" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>
                       </div>
@@ -182,22 +210,22 @@ include 'hak_akses.php';
                       <div class="col-sm">
                         <div class="alert dash-primary m-1 border-0" role="alert">
                           <div class="row">
-                            <div class="col-7">Batch Belum Ditanam <span class="badge text-sm badge-pill badge-success">2</span></div>
+                            <div class="col-7">Batch Siap Ditanam <span class="badge text-sm badge-pill badge-success"><?= $rowbatch->batch_siap_tanam?></span></div>
                             <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=1" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>
+                      </div>
 
 
-
-
-                        <div class="alert dash-warning m-1 border-0" role="alert">
+                      <div class="col">
+                        <div class="alert dash-success m-1 border-0" role="alert">
                           <div class="row">
-                            <div class="col-7">Batch Belum Pemeliharaan <span class="badge text-sm badge-pill badge-warning">2</span></div>
+                            <div class="col-7">Batch Dalam Tahap Penyemaian <span class="badge text-sm badge-pill badge-info"><?= $rowbatch->batch_penyemaian?></span></div>
                             <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=3" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>
                     </div>
-                  </div>
+                    </div>
 
 
 
@@ -211,10 +239,10 @@ include 'hak_akses.php';
                             <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=1" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>
+                      </div>
 
 
-
-
+                      <div class="col">
                         <div class="alert dash-warning m-1 border-0" role="alert">
                           <div class="row">
                             <div class="col-7">Batch Perlu Cabut Label <span class="badge text-sm badge-pill badge-warning">2</span></div>
@@ -222,7 +250,6 @@ include 'hak_akses.php';
                           </div>
                       </div>
                     </div>
-                  </div>
 
 
 

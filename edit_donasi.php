@@ -63,6 +63,40 @@ include 'hak_akses.php';
             header("Location: kelola_donasi.php?status=updatesuccess");
             }
         }
+
+        if(isset($_POST['submit_terima'])){
+          $sqldonasi = "UPDATE t_donasi
+                        SET id_status_donasi = :id_status_donasi, update_terakhir = :update_terakhir
+                        WHERE id_donasi = :id_donasi";
+
+        $stmt = $pdo->prepare($sqldonasi);
+        $stmt->execute(['id_donasi' => $id_donasi, 'id_status_donasi' => 3, 'update_terakhir' => $tanggal_update_status]);
+
+        $affectedrows = $stmt->rowCount();
+        if ($affectedrows == '0') {
+        header("Location: kelola_donasi.php?status=nochange");
+        } else {
+            //echo "HAHAHAAHA GREAT SUCCESSS !";
+            header("Location: kelola_donasi.php?status=updatesuccess");
+            }
+        }
+
+        if(isset($_POST['submit_tolak'])){
+          $sqldonasi = "UPDATE t_donasi
+                        SET id_status_donasi = :id_status_donasi, update_terakhir = :update_terakhir
+                        WHERE id_donasi = :id_donasi";
+
+        $stmt = $pdo->prepare($sqldonasi);
+        $stmt->execute(['id_donasi' => $id_donasi, 'id_status_donasi' => 6, 'update_terakhir' => $tanggal_update_status]);
+
+        $affectedrows = $stmt->rowCount();
+        if ($affectedrows == '0') {
+        header("Location: kelola_donasi.php?status=nochange");
+        } else {
+            //echo "HAHAHAAHA GREAT SUCCESSS !";
+            header("Location: kelola_donasi.php?status=updatesuccess");
+            }
+        }
 ?>
 
 <!DOCTYPE html>
@@ -170,7 +204,7 @@ include 'hak_akses.php';
 
                     <?php }?>
 
-                <button type="submit" name="submit" value="Simpan" class="btn btn-primary mt-2">Update Status</button></p>
+                <button type="submit" name="submit" value="Simpan" class="btn btn-primary btn-blue mt-2">Update Status</button></p>
 
           </div>
 
@@ -274,7 +308,18 @@ include 'hak_akses.php';
                             }
                         </script>
                     </div>
-                    </div>
+
+                    <?php if(($rowitem->id_status_donasi == 2) || (($rowitem->id_status_donasi) == 6)) {?>
+                      <form name="submit_terima" method="POST">
+                        <button type="submit" name="submit_terima" value="terima" class="btn btn-success rounded-pill mt-2"><i class="fas fa-check-circle"></i> Terima</button></p>
+                      </form>
+
+                      <form name="submit_tolak" method="POST">
+                              <button type="submit" name="submit_tolak" value="tolak" class="btn btn-danger rounded-pill mt-2"><i class="fas fa-times-circle"></i> Tolak</button></p>
+                      </form>
+                    <?php }?>
+
+                </div>
 
 
 
