@@ -146,9 +146,7 @@ $row = $stmt->fetchAll();
                             <th scope="col">ID Wilayah</th>
                             <th scope="col">Nama Lokasi</th>
                             <th scope="col">Persentase Sebaran</th>
-                            <?php if($_SESSION['level_user'] == '2') { ?>
                             <th class="text-right" scope="col">Aksi</th>
-                            <?php } ?>
                             </tr>
                         </thead>
                     <tbody>
@@ -182,11 +180,11 @@ $row = $stmt->fetchAll();
                             <td><?=number_format($rowitem->total_titik).' / '.number_format($rowitem->total_lokasi).' m<sup>2</sup><br>'.number_format($rowitem->persentase_sebaran, 1).'% ( '.$kondisi_wilayah.' )'?></td>
                             <td class="text-right">
                                 <?php if($_SESSION['level_user'] == '2') { ?>
-                                <a href="kelola_harga_terumbu.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="btn btn-act"><i class="fas fa-money-bill-alt"></i></a>
                                 <a href="edit_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 <a href="hapus.php?type=lokasi&id_lokasi=<?=$rowitem->id_lokasi?>" class="far fa-trash-alt btn btn-act"></a>
-                                </td>
                                 <?php } ?>
+                                <a href="kelola_harga_terumbu.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="btn btn-act text-dark mt-3"><i class="fas fa-money-bill-alt text-success"></i> Kelola Harga & Stok</a>
+                                </td>
                             </tr>
 
                             <tr>

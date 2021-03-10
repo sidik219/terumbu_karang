@@ -4,6 +4,7 @@ $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
     $id_reservasi = $_GET['id_reservasi'];
+    $update_terakhir = date ('Y-m-d H:i:s', time());
     $status_reservasi_wisata = "Menunggu Konfirmasi Pembayaran";
 
     $sql = 'SELECT * FROM t_reservasi_wisata, t_user, t_lokasi, t_wisata
@@ -40,6 +41,41 @@ include 'hak_akses.php';
             header("Location: kelola_reservasi_wisata.php?status=updatesuccess");
         }
     }
+
+
+    if(isset($_POST['submit_terima'])){
+          $sqldonasi = "UPDATE t_reservasi_wisata
+                        SET id_status_reservasi_wisata = :id_status_reservasi_wisata, update_terakhir = :update_terakhir
+                        WHERE id_reservasi = :id_reservasi";
+
+        $stmt = $pdo->prepare($sqldonasi);
+        $stmt->execute(['id_reservasi' => $id_reservasi, 'id_status_reservasi_wisata' => 2, 'update_terakhir' => $update_terakhir]);
+
+        $affectedrows = $stmt->rowCount();
+        if ($affectedrows == '0') {
+        header("Location: kelola_reservasi_wisata.php?status=nochange");
+        } else {
+            //echo "HAHAHAAHA GREAT SUCCESSS !";
+            header("Location: kelola_reservasi_wisata.php?status=updatesuccess");
+            }
+        }
+
+        if(isset($_POST['submit_tolak'])){
+          $sqldonasi = "UPDATE t_reservasi_wisata
+                        SET id_status_reservasi_wisata = :id_status_reservasi_wisata, update_terakhir = :update_terakhir
+                        WHERE id_reservasi = :id_reservasi";
+
+        $stmt = $pdo->prepare($sqldonasi);
+        $stmt->execute(['id_reservasi' => $id_reservasi, 'id_status_reservasi_wisata' => 3, 'update_terakhir' => $update_terakhir]);
+
+        $affectedrows = $stmt->rowCount();
+        if ($affectedrows == '0') {
+        header("Location: kelola_reservasi_wisata.php?status=nochange");
+        } else {
+            //echo "HAHAHAAHA GREAT SUCCESSS !";
+            header("Location: kelola_reservasi_wisata.php?status=updatesuccess");
+            }
+        }
 ?>
 
 <!DOCTYPE html>
@@ -324,6 +360,20 @@ include 'hak_akses.php';
                                 }
                             </script>
                         </div>
+                        <?php if(!$rowitem->bukti_reservasi == NULL){
+
+
+
+                          if(($rowitem->id_status_reservasi_wisata == 1) || (($rowitem->id_status_reservasi_wisata) == 3)) {?>
+                      <form name="submit_terima" method="POST">
+                        <button type="submit" name="submit_terima" value="terima" class="btn btn-success rounded-pill mt-2"><i class="fas fa-check-circle"></i> Terima</button></p>
+                      </form>
+
+                      <form name="submit_tolak" method="POST">
+                              <button type="submit" name="submit_tolak" value="tolak" class="btn btn-danger rounded-pill mt-2"><i class="fas fa-times-circle"></i> Tolak</button></p>
+                      </form>
+                    <?php }
+                    } ?>
                     </div>
 
 

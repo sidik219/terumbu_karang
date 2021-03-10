@@ -13,6 +13,16 @@ $id_lokasi = $_GET['id_lokasi'];
     $rowdetail = $stmt->fetchAll();
 
 
+    function alertStokTerumbu($stok){
+      if($stok == 0){
+        echo '<span class="text-danger"><i class="fas fa-exclamation-circle text-danger"></i> Stok Habis</span>';
+      }
+      elseif($stok < 10){
+        echo '<span class="text-warning"><i class="fas fa-exclamation-circle text-warning"></i> Stok Rendah</span>';
+      }
+    }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -111,16 +121,23 @@ $id_lokasi = $_GET['id_lokasi'];
                             <th scope="col">Jenis</th>
                             <th scope="col">Sub-jenis</th>
                             <th scope="col">Harga</th>
+                            <th scope="col">Stok</th>
                             <th class="" scope="col">Aksi</th>
                             </tr>
                         </thead>
                     <tbody id="tbody-append">
                         <?php foreach ($rowdetail as $rowitem) { ?>
                             <tr>
-                            <th scope="row"><?=$rowitem->id_terumbu_karang?></th>
+                            <th scope="row">
+                              <?=$rowitem->id_terumbu_karang?>
+                          </th>
                             <td><?=$rowitem->nama_jenis?></td>
                             <td><?=$rowitem->nama_terumbu_karang?></td>
                             <td>Rp. <?=number_format($rowitem->harga_patokan_lokasi)?></td>
+                            <td>
+                              <?=$rowitem->stok_terumbu?>
+                              <br><?=alertStokTerumbu($rowitem->stok_terumbu) ?>
+                          </td>
                             <td class="">
                                 <a href="#" onclick='loadPatokanTerumbu(this.dataset.id_detail_lokasi)'
                                 data-nama_jenis='<?=$rowitem->nama_terumbu_karang?>' data-id_tk='<?=$rowitem->id_terumbu_karang?>'
@@ -264,14 +281,21 @@ function formatNumber(e){
                           <div class="col-auto text-center p-2">
                             Rp.
                           </div>
+                            <div class="col">
+                              <input onkeyup="formatNumber(this)" type="text" id="num_biaya_pergantian" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
                           <div class="col">
-                            <input onkeyup="formatNumber(this)" type="text" id="num_biaya_pergantian" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
+                            <label for="num_biaya_pergantian">Stok</label>
+                            <input type="number" min="0" id="num_stok" name="stok_terumbu" class="form-control number-input" required>
                           </div>
-                              </div>
+                        </div>
                         </form>
                               <div class="col text-center">
                                 <span onclick="simpanPatokanTerumbu()" class="btn btn-blue btn-sm btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambahkan</span>
-                                <button type="button" class="btn-sm btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="button" class="btn-sm btn-secondary rounded-pill border-0" data-dismiss="modal">Batal</button>
                               </div>
                             </div>
                       </div>

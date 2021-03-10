@@ -140,6 +140,12 @@ else{
                     </a>
                 </li>
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                    <a href="kelola_lokasi.php" class="nav-link '.('kelola_lokasi.php' == $url_sekarang  || ('edit_lokasi.php'  == $url_sekarang) || ('input_lokasi.php'  == $url_sekarang) ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
+                        <p> Kelola Lokasi </p>
+                    </a>
+                </li>
+                <li class="nav-item"> <!-- Wilayah & Lokasi -->
                     <a href="kelola_titik.php" class="nav-link '.(('kelola_titik.php' == $url_sekarang) || ('edit_titik.php' == $url_sekarang)  || ('input_titik.php'  == $url_sekarang) ? ' active ' : '').' ">
                           <i class="nav-icon fas fa-crosshairs"></i>
                           <p> Kelola Titik </p>

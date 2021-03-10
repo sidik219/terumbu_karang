@@ -20,6 +20,22 @@ $stmt->execute();
 $rowdonasi = $stmt->fetch();
 
 
+$sqlviewreservasi = 'SELECT (SELECT COUNT(t_reservasi_wisata.id_status_reservasi_wisata)
+                FROM t_reservasi_wisata
+                WHERE t_reservasi_wisata.id_status_reservasi_wisata = 1) AS reservasi_baru,
+                (SELECT COUNT(t_reservasi_wisata.id_status_reservasi_wisata)
+                                FROM t_reservasi_wisata
+                WHERE t_reservasi_wisata.id_status_reservasi_wisata = 2) AS reservasi_verifikasi,
+                (SELECT COUNT(t_reservasi_wisata.id_status_reservasi_wisata)
+                                FROM t_reservasi_wisata
+                WHERE t_reservasi_wisata.id_status_reservasi_wisata = 3) AS reservasi_bermasalah';
+$stmt = $pdo->prepare($sqlviewreservasi);
+$stmt->execute();
+$rowreservasi = $stmt->fetch();
+
+
+
+
 $sqlviewbatch = 'SELECT (SELECT COUNT(id_status_batch)
                 FROM t_batch
                 WHERE id_status_batch = 1) AS batch_penyemaian,
@@ -211,6 +227,38 @@ $rowperlupml = $stmt->fetch();
 
 
 
+                    <h5 class="mt-4"><span class="align-middle font-weight-bold"><i class="fas fa-suitcase-rolling text-info"></i> Reservasi Wisata</span></h5>
+
+                    <div class="row rounded shadow-sm p-2">
+                      <div class="col-sm">
+                        <div class="alert dash-primary m-1 border-0" role="alert">
+                          <div class="row">
+                            <div class="col-7">Reservasi Baru <span class="badge text-sm badge-pill badge-success"><?= $rowreservasi->reservasi_baru ?></span></div>
+                            <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=1" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
+                          </div>
+                      </div>
+
+                      <div class="alert dash-success m-1 border-0" role="alert">
+                          <div class="row">
+                            <div class="col-7">Reservasi Perlu Verifikasi <span class="badge text-sm badge-pill badge-info"><?= $rowreservasi->reservasi_verifikasi ?></span></div>
+                            <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=2" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
+                          </div>
+                      </div>
+                      </div>
+
+
+                      <div class="col">
+                      <div class="alert dash-danger m-1 border-0" role="alert">
+                          <div class="row">
+                            <div class="col-7">Reservasi Bermasalah <span class="badge text-sm badge-pill badge-danger"><?= $rowreservasi->reservasi_bermasalah?></span></div>
+                            <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=6" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
+                          </div>
+                      </div>
+                      </div>
+                    </div>
+
+
+
 
                   <h5 class="mt-4"><span class="align-middle font-weight-bold"><i class="fas text-warning fa-boxes"></i> Batch</span></h5>
 
@@ -256,6 +304,7 @@ $rowperlupml = $stmt->fetch();
                             <div class="col-7">Batch Perlu Cabut Label <span class="badge text-sm badge-pill badge-warning"><?= $rowperlupml->perlu_cabut_label ?></span></div>
                             <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=3" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
+                      </div>
                       </div>
                     </div>
 
