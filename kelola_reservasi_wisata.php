@@ -3,15 +3,47 @@ session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-$sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
+if(isset($_GET['id_status_reservasi_wisata'])){
+  $id_status_reservasi_wisata = $_GET['id_status_reservasi_wisata'];
+
+  if($id_status_reservasi_wisata == 1){ //reservasi baru
+    $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
+                  LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                  LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                  LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
+                  WHERE t_reservasi_wisata.id_status_reservasi_wisata = 1
+                  ORDER BY id_reservasi DESC';
+  }
+  elseif($id_status_reservasi_wisata == 3){ //reservasi bermasalah
+    $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
+                  LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                  LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                  LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
+                  WHERE t_reservasi_wisata.id_status_reservasi_wisata = 3
+                  ORDER BY id_reservasi DESC';
+  }
+    $stmt = $pdo->prepare($sqlviewreservasi);
+    $stmt->execute();
+    $row = $stmt->fetchAll();
+}
+else{
+    $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
                   LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                   LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                   LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
                   ORDER BY id_reservasi DESC';
-$stmt = $pdo->prepare($sqlviewreservasi);
-$stmt->execute();
-$row = $stmt->fetchAll();
+    $stmt = $pdo->prepare($sqlviewreservasi);
+    $stmt->execute();
+    $row = $stmt->fetchAll();
+  }
+
+
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -93,6 +125,21 @@ $row = $stmt->fetchAll();
                         -->
                         </div>
                     </div>
+                </div>
+                <div class="row">
+                      <div class="col">
+                        <div class="dropdown show">
+                          <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Pilih Kategori
+                          </a>
+
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="kelola_reservasi_wisata.php">Tampilkan Semua</a>
+                            <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=1">Reservasi Wisata Baru</a>
+                            <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=3">Reservasi Bermasalah</a>
+                        </div>
+                    </div>
+                      </div>
                 </div>
                 <!-- /.container-fluid -->
             </div>

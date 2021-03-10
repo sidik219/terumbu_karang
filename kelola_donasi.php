@@ -3,13 +3,57 @@ session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-$sqlviewdonasi = 'SELECT * FROM t_donasi
+if(isset($_GET['id_status_donasi'])){
+  $id_status_donasi =$_GET['id_status_donasi'];
+
+  if($id_status_donasi == 1){ //donasi baru
+    $sqlviewdonasi = 'SELECT * FROM t_donasi
+                  LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
+                  WHERE t_donasi.id_status_donasi = 1
+                  ORDER BY id_donasi DESC';
+  }
+  elseif($id_status_donasi == 2){ //donasi butuh verifikasi
+    $sqlviewdonasi = 'SELECT * FROM t_donasi
+                  LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
+                  WHERE t_donasi.id_status_donasi = 2
+                  ORDER BY id_donasi DESC';
+  }
+  elseif($id_status_donasi == 6){ //donasi bermasalah
+    $sqlviewdonasi = 'SELECT * FROM t_donasi
+                  LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
+                  WHERE t_donasi.id_status_donasi = 6
+                  ORDER BY id_donasi DESC';
+  }
+  $stmt = $pdo->prepare($sqlviewdonasi);
+  $stmt->execute();
+  $row = $stmt->fetchAll();
+}
+elseif(isset($_GET['id_batch'])){ //donasi belum masuk batch
+  $sqlviewdonasi = 'SELECT * FROM t_donasi
+                  LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
+                  WHERE t_donasi.id_batch IS NULL AND t_donasi.id_status_donasi = 3
+                  ORDER BY id_donasi DESC';
+
+  $stmt = $pdo->prepare($sqlviewdonasi);
+  $stmt->execute();
+  $row = $stmt->fetchAll();
+}else{ //umum
+  $sqlviewdonasi = 'SELECT * FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
                   ORDER BY id_donasi DESC';
-$stmt = $pdo->prepare($sqlviewdonasi);
-$stmt->execute();
-$row = $stmt->fetchAll();
+
+  $stmt = $pdo->prepare($sqlviewdonasi);
+  $stmt->execute();
+  $row = $stmt->fetchAll();
+}
+
+
+
 
 function ageCalculator($dob){
         $birthdate = new DateTime($dob);
@@ -117,11 +161,32 @@ function ageCalculator($dob){
             <section class="content">
                 <div class="container-fluid">
 
-                <div class="col">
+                <div class="row">
+                    <div class="col text-sm-center">
+                        <a class="btn btn-primary float-md-right" href="kelola_batch.php" role="button">Kelola Batch Penanaman<i class="nav-icon fas fa-boxes ml-1"></i></a>
+                    </div>
+                </div>
 
-                        <a class="btn btn-primary float-right" href="kelola_batch.php" role="button">Kelola Batch Penanaman<i class="nav-icon fas fa-boxes ml-1"></i></a>
 
+                <div class="row">
+                      <div class="col">
+                        <div class="dropdown show">
+                          <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Pilih Kategori
+                          </a>
+
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="kelola_donasi.php">Tampilkan Semua</a>
+                            <a class="dropdown-item" href="kelola_donasi.php?id_status_donasi=1">Donasi Baru</a>
+                            <a class="dropdown-item" href="kelola_donasi.php?id_status_donasi=2">Perlu Verifikasi</a>
+                            <a class="dropdown-item" href="kelola_donasi.php?id_batch=isnull">Belum Masuk Batch</a>
+                            <a class="dropdown-item" href="kelola_donasi.php?id_status_donasi=6">Bermasalah</a>
                         </div>
+                    </div>
+                      </div>
+                </div>
+
+
 
                 <?php
                 if(!empty($_GET['status'])){

@@ -2,6 +2,35 @@
 session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
+
+if(isset($_GET['id_status_batch'])){
+  $id_status_batch = $_GET['id_status_batch'];
+
+  if($id_status_batch == 1){ //batch penyemaian
+    $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
+                      t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, t_titik.latitude, t_titik.longitude, t_status_batch.id_status_batch, tanggal_pemeliharaan_terakhir, status_cabut_label
+                      FROM t_batch
+                      LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
+                      LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
+                      LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch
+                      WHERE t_batch.id_status_batch = 1
+                      ORDER BY update_status_batch_terakhir DESC';
+  }
+  elseif($id_status_batch == 2){ //batch siap tanam
+    $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
+                      t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, t_titik.latitude, t_titik.longitude, t_status_batch.id_status_batch, tanggal_pemeliharaan_terakhir, status_cabut_label
+                      FROM t_batch
+                      LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
+                      LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
+                      LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch
+                      WHERE t_batch.id_status_batch = 2
+                      ORDER BY update_status_batch_terakhir DESC';
+  }
+    $stmt = $pdo->prepare($sqlviewbatch);
+    $stmt->execute();
+    $rowbatch = $stmt->fetchAll();
+}
+else{
     $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
                       t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, t_titik.latitude, t_titik.longitude, t_status_batch.id_status_batch, tanggal_pemeliharaan_terakhir, status_cabut_label
                       FROM t_batch
@@ -12,6 +41,7 @@ include 'hak_akses.php';
     $stmt = $pdo->prepare($sqlviewbatch);
     $stmt->execute();
     $rowbatch = $stmt->fetchAll();
+  }
 
     function ageCalculator($dob){
         $birthdate = new DateTime($dob);
@@ -131,6 +161,22 @@ include 'hak_akses.php';
 
                         </div>
                     </div>
+
+                    <div class="row">
+                      <div class="col">
+                        <div class="dropdown show">
+                          <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Pilih Kategori
+                          </a>
+
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="kelola_batch.php">Tampilkan Semua</a>
+                            <a class="dropdown-item" href="kelola_batch.php?id_status_batch=2">Batch Siap Ditanam</a>
+                            <a class="dropdown-item" href="kelola_batch.php?id_status_batch=1">Batch dalam Penyemaian</a>
+                        </div>
+                    </div>
+                      </div>
+                </div>
                 </div>
 
 

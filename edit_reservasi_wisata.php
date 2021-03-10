@@ -212,7 +212,7 @@ include 'hak_akses.php';
                             </div>
                         <?php } ?>
 
-                            <button type="submit" name="submit" value="Simpan" class="btn btn-primary mt-2">Update Status</button></p>
+                            <button type="submit" name="submit" value="Simpan" class="btn btn-primary btn-blue mt-2">Update Status</button></p>
                         </div>
 
 
