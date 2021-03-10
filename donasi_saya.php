@@ -133,7 +133,7 @@ $row = $stmt->fetchAll();
 
                                   <div class="col-12 mb-3">
                                       <span class="badge badge-pill badge-primary mr-2"> ID Donasi <?=$rowitem->id_donasi?> </span>
-                                      <?php echo empty($rowitem->id_batch) ? '' : '<span class="badge badge-pill badge-info mr-2"> ID Batch '.$rowitem->id_batch.'</span>';?> </span>
+                                      <?php echo empty($rowitem->id_batch) ? '' : '<span class="badge badge-pill badge-info mr-2"> ID Batch '.$rowitem->id_batch.'</span>';?>
 
                                   </div>
 

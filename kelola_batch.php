@@ -3,7 +3,7 @@ session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
     $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
-                      t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, t_titik.latitude, t_titik.longitude, t_status_batch.id_status_batch, tanggal_pemeliharaan_terakhir
+                      t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, t_titik.latitude, t_titik.longitude, t_status_batch.id_status_batch, tanggal_pemeliharaan_terakhir, status_cabut_label
                       FROM t_batch
                       LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
                       LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
@@ -36,6 +36,16 @@ include 'hak_akses.php';
         if ($mn >= 3)
         {
             return '<i class="fas fa-exclamation-circle text-danger"></i> Perlu Pemeliharaan Kembali';
+        }
+    }
+
+    function alertCabutLabel($dob){
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $mn = $birthdate->diff($today)->m;
+        if ($mn >= 11)
+        {
+            return '<i class="fas fa-exclamation-circle text-danger"></i> Perlu Cabut Label';
         }
     }
 
@@ -178,6 +188,17 @@ include 'hak_akses.php';
                                               echo '<br><small class="text-muted">Usia Bibit:
                                                     <br><b>'.ageCalculator($batch->tanggal_penanaman)
                                                     .'</b></small>';
+                                              if($batch->status_cabut_label == 0){
+                                                  echo '<br><small><span class="text-danger font-weight-bold">'.
+                                                    alertCabutLabel($batch->tanggal_penanaman).'</span></small>
+                                                    ';
+                                              }
+                                               if($batch->status_cabut_label == 1){
+                                                  echo '<br><small><span class="text-info font-weight-bold">
+                                                    <i class="fas fa-exclamation-circle text-info"></i> Label sudah Dicabut
+                                                    </span></small>
+                                                    ';
+                                              }
                                           }
                                   ?>
                               </td>

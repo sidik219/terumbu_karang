@@ -152,7 +152,9 @@ function ageCalculator($dob){
                             $donasidate = strtotime($rowitem->tanggal_donasi);
                           ?>
                           <tr>
-                              <th scope="row"><?=$rowitem->id_donasi?></th>
+                              <th scope="row"><?=$rowitem->id_donasi?>
+                                  <?php echo empty($rowitem->id_batch) ? '' : '<br><span class="badge badge-pill badge-info mr-2"> ID Batch '.$rowitem->id_batch.'</span>';?>
+                              </th>
                               <td>Rp. <?=number_format($rowitem->nominal, 0)?></td>
                               <td><?=strftime('%A, %d %B %Y', $donasidate);?></td>
                               <td><?=$rowitem->nama_status_donasi?> <br><small class="text-muted">Update Terakhir:

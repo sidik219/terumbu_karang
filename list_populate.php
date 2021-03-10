@@ -27,6 +27,18 @@ function ageCalculator($dob){
         }
     }
 
+    function alertCabutLabel($dob, $slabel){
+      if($slabel == 0){
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $mn = $birthdate->diff($today)->m;
+        if ($mn >= 11)
+        {
+            return '<i class="fas fa-exclamation-circle text-danger"></i> Perlu Cabut Label';
+        }
+      }
+    }
+
 
 //Load lokasi
 if ($_POST['type'] == 'load_lokasi' && !empty($_POST["id_wilayah"])) {
@@ -156,13 +168,13 @@ if ($_POST['type'] == 'load_donasi' && !empty($_POST["id_lokasi"])) {
 if ($_POST['type'] == 'load_batch' && !empty($_POST["id_lokasi"])) {
     $id_lokasi = $_POST["id_lokasi"];
     $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
-                      t_batch.update_status_batch_terakhir, t_batch.tanggal_pemeliharaan_terakhir, nama_lokasi, keterangan_titik, nama_status_batch
+                      t_batch.update_status_batch_terakhir, t_batch.tanggal_pemeliharaan_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, status_cabut_label
                       FROM t_batch
                       LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
                       LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
                       LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch
                       WHERE t_batch.id_lokasi = :id_lokasi
-                      ORDER BY update_status_batch_terakhir';
+                      ORDER BY tanggal_pemeliharaan_terakhir';
     $stmt = $pdo->prepare($sqlviewbatch);
     $stmt->execute(['id_lokasi' => $_POST['id_lokasi']]);
     $rowbatch = $stmt->fetchAll();
@@ -176,7 +188,8 @@ if ($_POST['type'] == 'load_batch' && !empty($_POST["id_lokasi"])) {
       <b>Usia : </b>
       <?=ageCalculator($batch->tanggal_penanaman)?>
       <br><small class="font-weight-bold">Pemeliharaan Terakhir : </small> <small class="tanggal_pemeliharaan"><?php if($batch->tanggal_pemeliharaan_terakhir == null){echo 'Belum pernah pemeliharaan';}else{echo $batch->tanggal_pemeliharaan_terakhir.
-        ' ('.ageCalculator($batch->tanggal_pemeliharaan_terakhir).' yang lalu)<br><span class="font-weight-bold text-danger">'.alertPemeliharaan($batch->tanggal_pemeliharaan_terakhir).'</span>';}?>
+        ' ('.ageCalculator($batch->tanggal_pemeliharaan_terakhir).' yang lalu)<br><span class="font-weight-bold text-danger">'.alertPemeliharaan($batch->tanggal_pemeliharaan_terakhir).'</span>
+        <br><span class="font-weight-bold text-danger">'.alertCabutLabel($batch->tanggal_penanaman, $batch->status_cabut_label).'</span>';}?>
           </small>
 
       <!--collapse start -->

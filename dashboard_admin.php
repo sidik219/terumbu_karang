@@ -4,32 +4,40 @@ $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
 $sqlviewdonasi = 'SELECT (SELECT COUNT(t_donasi.id_status_donasi)
-                  FROM t_donasi
-                  WHERE t_donasi.id_status_donasi = 1) AS donasi_baru,
-                  (SELECT COUNT(t_donasi.id_status_donasi)
-                                  FROM t_donasi
-                  WHERE t_donasi.id_status_donasi = 2) AS donasi_verifikasi,
-                  (SELECT COUNT(t_donasi.id_status_donasi)
-                                  FROM t_donasi
-                  WHERE t_donasi.id_batch IS NULL AND t_donasi.id_status_donasi = 3 ) AS donasi_tanpa_batch,
-                  (SELECT COUNT(t_donasi.id_status_donasi)
-                                  FROM t_donasi
-                  WHERE t_donasi.id_status_donasi = 6) AS donasi_bermasalah';
+                FROM t_donasi
+                WHERE t_donasi.id_status_donasi = 1) AS donasi_baru,
+                (SELECT COUNT(t_donasi.id_status_donasi)
+                                FROM t_donasi
+                WHERE t_donasi.id_status_donasi = 2) AS donasi_verifikasi,
+                (SELECT COUNT(t_donasi.id_status_donasi)
+                                FROM t_donasi
+                WHERE t_donasi.id_batch IS NULL AND t_donasi.id_status_donasi = 3 ) AS donasi_tanpa_batch,
+                (SELECT COUNT(t_donasi.id_status_donasi)
+                                FROM t_donasi
+                WHERE t_donasi.id_status_donasi = 6) AS donasi_bermasalah';
 $stmt = $pdo->prepare($sqlviewdonasi);
 $stmt->execute();
 $rowdonasi = $stmt->fetch();
 
 
 $sqlviewbatch = 'SELECT (SELECT COUNT(id_status_batch)
-                  FROM t_batch
-                  WHERE id_status_batch = 1) AS batch_penyemaian,
-                  (SELECT COUNT(id_status_batch)
-                                  FROM t_batch
-                  WHERE id_status_batch = 2) AS batch_siap_tanam';
+                FROM t_batch
+                WHERE id_status_batch = 1) AS batch_penyemaian,
+                (SELECT COUNT(id_status_batch)
+                FROM t_batch
+                WHERE id_status_batch = 2) AS batch_siap_tanam';
 
 $stmt = $pdo->prepare($sqlviewbatch);
 $stmt->execute();
 $rowbatch = $stmt->fetch();
+
+$sqlviewpemeliharaan = 'SELECT (SELECT COUNT(*) FROM (SELECT TIMESTAMPDIFF(MONTH, tanggal_pemeliharaan_terakhir, NOW()) AS lama_sejak_pemeliharaan FROM t_batch HAVING lama_sejak_pemeliharaan >= 3) AS jl_pml) AS perlu_pemeliharaan,
+                        (SELECT COUNT(*) FROM (SELECT TIMESTAMPDIFF(MONTH, `tanggal_penanaman`, NOW()) AS lama_sejak_tanam FROM t_batch WHERE status_cabut_label = 0 HAVING lama_sejak_tanam >= 11) AS jl_pml) AS perlu_cabut_label';
+
+$stmt = $pdo->prepare($sqlviewpemeliharaan);
+$stmt->execute();
+$rowperlupml = $stmt->fetch();
+
 ?>
 
 <!DOCTYPE html>
@@ -235,7 +243,7 @@ $rowbatch = $stmt->fetch();
                       <div class="col-sm">
                         <div class="alert dash-primary m-1 border-0" role="alert">
                           <div class="row">
-                            <div class="col-7">Batch Perlu Pemeliharaan <span class="badge text-sm badge-pill badge-success">2</span></div>
+                            <div class="col-7">Batch Perlu Pemeliharaan <span class="badge text-sm badge-pill badge-success"><?= $rowperlupml->perlu_pemeliharaan ?></span></div>
                             <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=1" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>
@@ -245,7 +253,7 @@ $rowbatch = $stmt->fetch();
                       <div class="col">
                         <div class="alert dash-warning m-1 border-0" role="alert">
                           <div class="row">
-                            <div class="col-7">Batch Perlu Cabut Label <span class="badge text-sm badge-pill badge-warning">2</span></div>
+                            <div class="col-7">Batch Perlu Cabut Label <span class="badge text-sm badge-pill badge-warning"><?= $rowperlupml->perlu_cabut_label ?></span></div>
                             <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=3" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>

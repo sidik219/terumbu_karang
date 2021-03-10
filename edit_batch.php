@@ -20,7 +20,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
 
         $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
-                      t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, t_batch.id_status_batch
+                      t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, t_batch.id_status_batch, status_cabut_label
                       FROM t_batch
                       LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
                       LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
@@ -57,6 +57,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         if (isset($_POST['submit'])) {  // SUBMIT QUERIES ------------------!
         $id_titik        = $_POST['dd_id_titik'];
         $tanggal_penanaman        = $_POST['date_penanaman'];
+        $status_cabut_label = $_POST['radio_label'];
 
         $update_status_batch_terakhir = date ('Y-m-d H:i:s', time());
         $id_status_batch = $_POST['radio_status'];
@@ -69,11 +70,11 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         $stmt->execute(['id_batch' => $id_batch]);
 
         $sqlinsertbatch = "UPDATE t_batch
-                        SET tanggal_penanaman = :tanggal_penanaman, update_status_batch_terakhir = :update_status_batch_terakhir, id_status_batch = :id_status_batch, id_titik = :id_titik
+                        SET tanggal_penanaman = :tanggal_penanaman, update_status_batch_terakhir = :update_status_batch_terakhir, id_status_batch = :id_status_batch, id_titik = :id_titik, status_cabut_label = :status_cabut_label
                         WHERE id_batch = :id_batch";
 
         $stmt = $pdo->prepare($sqlinsertbatch);
-        $stmt->execute(['tanggal_penanaman' => $tanggal_penanaman, 'update_status_batch_terakhir' => $update_status_batch_terakhir, 'id_status_batch' => $id_status_batch, 'id_titik' => $id_titik, 'id_batch' => $id_batch]);
+        $stmt->execute(['tanggal_penanaman' => $tanggal_penanaman, 'update_status_batch_terakhir' => $update_status_batch_terakhir, 'id_status_batch' => $id_status_batch, 'id_titik' => $id_titik, 'id_batch' => $id_batch, 'status_cabut_label' => $status_cabut_label]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
@@ -243,6 +244,26 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                 </div>
 
                     <?php }?>
+
+
+                          <div class="col-12 mt-3 mb-2 border rounded bg-white p-3 text-sm">
+                          <span class="font-weight-bold"><i class="fas fa-tag text-warning"></i> Status Label</span>
+
+                                <div class="form-check mt-2 mb-2">
+                                  <input class="form-check-input" type="radio" name="radio_label" id="radio_label0" value="0" <?php if($rowbatch->status_cabut_label == 0) echo " checked"; ?>>
+                                  <label class="form-check-label <?php if($rowbatch->status_cabut_label == 0) echo " font-weight-bold"; ?>" for="radio_label0">
+                                    Belum Cabut
+                                  </label>
+                              </div>
+
+                              <div class="form-check mt-2 mb-2">
+                                  <input class="form-check-input" type="radio" name="radio_label" id="radio_label1" value="1" <?php if($rowbatch->status_cabut_label == 1) echo " checked"; ?>>
+                                  <label class="form-check-label <?php if($rowbatch->status_cabut_label == 1) echo " font-weight-bold"; ?>" for="radio_label1">
+                                    Sudah Cabut
+                                  </label>
+                              </div>
+
+                          </div>
 
                 <button type="submit" name="submit" value="Simpan" class="btn btn-primary btn-blue mt-2">Update Status</button></p>
 
