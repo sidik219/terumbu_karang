@@ -2,13 +2,39 @@
 session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
-$sqlviewpemeliharaan = 'SELECT * FROM t_pemeliharaan
+
+if(isset($_GET['id_status_pemeliharaan'])){
+  $id_status_pemeliharaan = $_GET['id_status_pemeliharaan'];
+
+  if($id_status_pemeliharaan == 1){ //pml pending
+    $sqlviewpemeliharaan = 'SELECT * FROM t_pemeliharaan
+                          LEFT JOIN t_lokasi ON t_pemeliharaan.id_lokasi = t_lokasi.id_lokasi
+                          LEFT JOIN t_status_pemeliharaan ON t_pemeliharaan.id_status_pemeliharaan = t_status_pemeliharaan.id_status_pemeliharaan
+                          WHERE t_pemeliharaan.id_status_pemeliharaan = 1
+                          ORDER BY t_pemeliharaan.id_status_pemeliharaan';
+  }
+  elseif($id_status_pemeliharaan == 2){ //pml selesai
+    $sqlviewpemeliharaan = 'SELECT * FROM t_pemeliharaan
+                          LEFT JOIN t_lokasi ON t_pemeliharaan.id_lokasi = t_lokasi.id_lokasi
+                          LEFT JOIN t_status_pemeliharaan ON t_pemeliharaan.id_status_pemeliharaan = t_status_pemeliharaan.id_status_pemeliharaan
+                          WHERE t_pemeliharaan.id_status_pemeliharaan = 2
+                          ORDER BY t_pemeliharaan.id_status_pemeliharaan';
+  }
+    $stmt = $pdo->prepare($sqlviewpemeliharaan);
+    $stmt->execute();
+    $rowpemeliharaan = $stmt->fetchAll();
+}
+else{//pml umum
+    $sqlviewpemeliharaan = 'SELECT * FROM t_pemeliharaan
                           LEFT JOIN t_lokasi ON t_pemeliharaan.id_lokasi = t_lokasi.id_lokasi
                           LEFT JOIN t_status_pemeliharaan ON t_pemeliharaan.id_status_pemeliharaan = t_status_pemeliharaan.id_status_pemeliharaan
                           ORDER BY t_pemeliharaan.id_status_pemeliharaan';
-$stmt = $pdo->prepare($sqlviewpemeliharaan);
+    $stmt = $pdo->prepare($sqlviewpemeliharaan);
     $stmt->execute();
     $rowpemeliharaan = $stmt->fetchAll();
+  }
+
+
 
 function ageCalculator($dob){
         $birthdate = new DateTime($dob);
@@ -107,6 +133,22 @@ function ageCalculator($dob){
 
                         </div>
                     </div>
+
+                    <div class="row">
+                      <div class="col">
+                        <div class="dropdown show">
+                          <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Pilih Kategori
+                          </a>
+
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="kelola_pemeliharaan.php">Tampilkan Semua</a>
+                            <a class="dropdown-item" href="kelola_pemeliharaan.php?id_status_pemeliharaan=1">Pemeliharaan Pending</a>
+                            <a class="dropdown-item" href="kelola_pemeliharaan.php?id_status_pemeliharaan=2">Pemeliharaan Selesai</a>
+                        </div>
+                    </div>
+                      </div>
+                </div>
 
                 </div>
                 <!-- /.container-fluid -->

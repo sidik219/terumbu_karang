@@ -26,6 +26,29 @@ if(isset($_GET['id_status_batch'])){
                       WHERE t_batch.id_status_batch = 2
                       ORDER BY update_status_batch_terakhir DESC';
   }
+  elseif($id_status_batch == 'perlu_pemeliharaan'){ //batch perlu_pemeliharaan
+    $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
+                      t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, t_titik.latitude, t_titik.longitude, t_status_batch.id_status_batch, tanggal_pemeliharaan_terakhir, status_cabut_label,
+                      TIMESTAMPDIFF(MONTH, tanggal_pemeliharaan_terakhir, NOW()) AS lama_sejak_pemeliharaan
+                      FROM t_batch
+                      LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
+                      LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
+                      LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch
+                      HAVING lama_sejak_pemeliharaan >= 3
+                      ORDER BY update_status_batch_terakhir DESC';
+  }
+  elseif($id_status_batch == 'perlu_cabut_label'){ //batch perlu_cabut_label
+    $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
+                      t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, t_titik.latitude, t_titik.longitude, t_status_batch.id_status_batch, tanggal_pemeliharaan_terakhir, status_cabut_label,
+                      TIMESTAMPDIFF(MONTH, `tanggal_penanaman`, NOW()) AS lama_sejak_tanam
+                      FROM t_batch
+                      LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
+                      LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
+                      LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch
+                      WHERE status_cabut_label = 0
+                      HAVING lama_sejak_tanam >= 11
+                      ORDER BY update_status_batch_terakhir DESC';
+  }
     $stmt = $pdo->prepare($sqlviewbatch);
     $stmt->execute();
     $rowbatch = $stmt->fetchAll();
@@ -173,6 +196,8 @@ else{
                             <a class="dropdown-item" href="kelola_batch.php">Tampilkan Semua</a>
                             <a class="dropdown-item" href="kelola_batch.php?id_status_batch=2">Batch Siap Ditanam</a>
                             <a class="dropdown-item" href="kelola_batch.php?id_status_batch=1">Batch dalam Penyemaian</a>
+                            <a class="dropdown-item" href="kelola_batch.php?id_status_batch=perlu_pemeliharaan">Batch Perlu Pemeliharaan Kembali</a>
+                            <a class="dropdown-item" href="kelola_batch.php?id_status_batch=perlu_cabut_label">Batch Perlu Cabut Label</a>
                         </div>
                     </div>
                       </div>

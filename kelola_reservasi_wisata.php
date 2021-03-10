@@ -28,7 +28,7 @@ if(isset($_GET['id_status_reservasi_wisata'])){
     $stmt->execute();
     $row = $stmt->fetchAll();
 }
-else{
+else{//reservasi umum
     $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
                   LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
