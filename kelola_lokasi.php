@@ -180,7 +180,7 @@ $row = $stmt->fetchAll();
                             <td><?=$rowitem->id_wilayah?> - <?=$rowitem->nama_wilayah?></td>
                             <td><?=$rowitem->nama_lokasi?><br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$rowitem->latitude?>,<?=$rowitem->longitude?>&z=8"
                                                                                                                                       class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a></td>
-                            <td><?=number_format($rowitem->total_titik).' / '.number_format($rowitem->total_lokasi).' m<sup>2</sup><br>'.number_format($rowitem->persentase_sebaran, 1).'% ( '.$kondisi_wilayah.' )'?></td>
+                            <td><?=number_format($rowitem->total_titik).' / '.number_format($rowitem->total_lokasi).' ha<br>'.number_format($rowitem->persentase_sebaran, 1).'% ( '.$kondisi_wilayah.' )'?></td>
                             <td class="text-right">
                                 <?php if(($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){ ?>
                                 <a href="edit_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="fas fa-edit mr-3 btn btn-act"></a>
@@ -217,7 +217,7 @@ $row = $stmt->fetchAll();
                                         Estimasi Total Luas Titik
                                     </div>
                                     <div class="col isi">
-                                        <?=number_format($rowitem->luas_lokasi). ' m<sup>2</sup>'?>
+                                        <?=number_format($rowitem->luas_lokasi). ' ha'?>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -225,7 +225,7 @@ $row = $stmt->fetchAll();
                                         Total Luas Titik Terdata
                                     </div>
                                     <div class="col isi">
-                                        <?=number_format($rowitem->total_titik). ' m<sup>2</sup>'?>
+                                        <?=number_format($rowitem->total_titik). ' ha'?>
                                     </div>
                                 </div>
                                 <div class="row">

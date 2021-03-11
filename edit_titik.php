@@ -204,7 +204,7 @@ include 'hak_akses.php';
                     </div>
 
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Luas Titik (m<sup>2</sup>)</label>
+                        <label for="exampleInputEmail1">Luas Titik (ha)</label>
                         <input type="number" value="<?=$row->luas_titik?>" name="tbluas_titik" class="form-control" id="#">
                     </div>
                     <div class="form-group">

@@ -204,13 +204,13 @@ $rowperizinan = $stmt->fetchAll();
                                               $luas_total += $titikperizinan->luas_titik;
                                             ?>
                                               <div class="row">
-                                                <div class="col border-bottom p-1"><b>ID <?=$titikperizinan->id_titik?></b> <?=$titikperizinan->keterangan_titik?> <br>Luas : <?=$titikperizinan->luas_titik?> m<sup>2</sup></div>
+                                                <div class="col border-bottom p-1"><b>ID <?=$titikperizinan->id_titik?></b> <?=$titikperizinan->keterangan_titik?> <br>Luas : <?=$titikperizinan->luas_titik?> ha</div>
                                                 <div class="col border-bottom p-1"><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$titikperizinan->latitude?>,<?=$titikperizinan->longitude?>&zoom=8"
                                                                                                                                       class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a> </div>
                                               </div>
 
                                            <?php } ?>
-                                              <span class="font-weight-bold mt-2 border-top ">Luas Total : <?=$luas_total?>  m<sup>2</sup></span>
+                                              <span class="font-weight-bold mt-2 border-top ">Luas Total : <?=$luas_total?>  ha</span>
                                     </div>
                                 </div>
 

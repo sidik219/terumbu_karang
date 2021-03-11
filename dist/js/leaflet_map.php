@@ -121,7 +121,7 @@
       // .bindPopup(
       // "<b>Longitude: </b><?=$value->longitude?><br/>"+
       // "<b>Latitude: </b><?=$value->latitude?><br/>"+
-      // "<b>Luas Titik: </b><?=$value->luas_titik?> m<sup>2</sup><br/>"+
+      // "<b>Luas Titik: </b><?=$value->luas_titik?> ha<br/>"+
       // "<b>Kondisi Titik: </b><?=$value->kondisi_titik?><p>"+
       // "<a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
       // marker_titik.addLayer(marker);
@@ -204,7 +204,7 @@
         "<?php } ?>"
         );
         marker_lokasi.addLayer(marker);
-      
+
 
 
 
@@ -217,7 +217,7 @@
       // var marker = L.marker([<?=$value->latitude?>,<?=$value->longitude?>], {icon: myIcon})
       // .bindPopup(
       // "<b>Nama Lokasi: </b><?=$value->nama_lokasi?><br/>"+
-      // "<b>Luas Lokasi: </b><?=$value->luas_lokasi?> m<sup>2</sup><br/>"+
+      // "<b>Luas Lokasi: </b><?=$value->luas_lokasi?> ha<br/>"+
       // "<b>Foto Lokasi: <br/></b><img src='<?=$value->foto_lokasi?>' class='card-img-top mb-2'><br/>"+
       // "<a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary' style='color:white;'>Pilih Lokasi</a>");
       // marker_lokasi.addLayer(marker);

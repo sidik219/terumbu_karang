@@ -15,6 +15,12 @@ $id_lokasi = $_GET['id_lokasi'];
     $stmt->execute(['id_lokasi' => $id_lokasi]);
     $rowdetail = $stmt->fetchAll();
 
+    $sqlviewbiaya = 'SELECT jasa_penanaman, biaya_pemeliharaan FROM t_lokasi
+                            WHERE id_lokasi = :id_lokasi';
+    $stmt = $pdo->prepare($sqlviewbiaya);
+    $stmt->execute(['id_lokasi' => $id_lokasi]);
+    $rowbiaya = $stmt->fetch();
+
 
     function alertStokTerumbu($stok){
       if($stok == 0){
@@ -24,6 +30,27 @@ $id_lokasi = $_GET['id_lokasi'];
         echo '<span class="text-warning"><i class="fas fa-exclamation-circle text-warning"></i> Stok Rendah</span>';
       }
     }
+
+    if(isset($_POST['submit_biaya'])){
+      $jasa_penanaman = $_POST['jasa_penanaman'];
+      $biaya_pemeliharaan = $_POST['biaya_pemeliharaan'];
+
+      $sqllokasi = "UPDATE t_lokasi
+                        SET jasa_penanaman = :jasa_penanaman, biaya_pemeliharaan = :biaya_pemeliharaan
+                        WHERE id_lokasi = :id_lokasi";
+
+            $stmt = $pdo->prepare($sqllokasi);
+            $stmt->execute(['id_lokasi' => $id_lokasi, 'jasa_penanaman' => $jasa_penanaman, 'biaya_pemeliharaan' => $biaya_pemeliharaan]);
+
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+                header("Location: kelola_lokasi.php?status=nochange");
+            } else {
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                header("Location: kelola_lokasi.php?status=updatesuccess");
+                }
+      }
+
 
 
 ?>
@@ -99,7 +126,7 @@ $id_lokasi = $_GET['id_lokasi'];
             <div class="content-header">
                 <div class="container-fluid">
                       <a href="kelola_lokasi.php"><button class="btn btn-warning btn-back mb-2" type="button"><i class="fas fa-angle-left"></i> Kembali</button></a>
-                <h4><span class="align-middle font-weight-bold">Kelola Harga Terumbu</span></h4>
+                <h4><span class="align-middle font-weight-bold">Kelola Harga Terumbu & Biaya Operasional</span></h4>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -109,14 +136,53 @@ $id_lokasi = $_GET['id_lokasi'];
             <section class="content">
                 <div class="container-fluid">
 
-                    <div class="terumbu-karang form-group">
+                <form method="POST">
 
-                      <label class="text-muted">Terumbu karang yang dapat dipilih donatur</label>
+                <div class="form-group">
+                        <label for="num_biaya_pergantian">Biaya Penanaman</label>
+                        <label class="text-muted  text-sm d-block">Biaya jasa tanam dan transportasi ke titik penanaman</label>
+                        <input type="hidden" id="biaya_pergantian_number1" name="jasa_penanaman" value="<?=$rowbiaya->jasa_penanaman?>">
+                        <div class="row">
+                          <div class="col-auto text-center p-2">
+                            Rp.
+                          </div>
+                          <div class="col">
+                            <input onkeyup="formatNumber1(this)" type="text" value="<?=number_format($rowbiaya->jasa_penanaman)?>"  id="num_biaya_pergantian1" name="num_jasa_penanaman" class="form-control number-input" required>
+                          </div>
+                        </div>
+                </div>
+
+
+                <div class="form-group">
+                        <label for="num_biaya_pergantian">Biaya Pemeliharaan</label>
+                        <label class="text-muted text-sm d-block">Biaya jasa pengembangan bibit dan pemeliharaan berkala</label>
+                        <input type="hidden" id="biaya_pergantian_number2" name="biaya_pemeliharaan" value="<?=$rowbiaya->biaya_pemeliharaan?>">
+                        <div class="row">
+                          <div class="col-auto text-center p-2">
+                            Rp.
+                          </div>
+                          <div class="col">
+                            <input onkeyup="formatNumber2(this)" type="text" value="<?=number_format($rowbiaya->biaya_pemeliharaan)?>" id="num_biaya_pergantian2" name="num_biaya_pemeliharaan" class="form-control number-input" required>
+                          </div>
+                        </div>
+                </div>
+                <div class="col text-center">
+                                <button type="submit" value="submit_biaya" name="submit_biaya" class="btn btn-sm btn-blue"><i class="fas fa-save"></i> Simpan Biaya</button>
+                </div>
+
+                </form>
+
+
+
+                    <div class="terumbu-karang form-group mt-4">
+
+                    <label for="num_biaya_pergantian  ">Terumbu Karang yang Disediakan</label>
+                      <label class="text-muted text-sm d-block">Tentukan Terumbu karang yang dapat dipilih donatur beserta ketersediaan stok</label>
                       <div class="col text-center">
                                 <span onclick="addDocInput()" data-toggle="modal" data-target=".tambah-modal" class="btn btn-blue btn btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah Terumbu</span>
                               </div>
 
-                    <table class="table table-striped">
+                    <table class="table table-striped table-responsive-sm">
                     <thead>
                             <tr>
                             <th scope="col">ID Terumbu</th>
@@ -220,10 +286,16 @@ $id_lokasi = $_GET['id_lokasi'];
     //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 
-function formatNumber(e){
+function formatNumber1(e){
   var formattedNumber = parseInt(e.value.replace(/\,/g,''))
-  $('#biaya_pergantian_number').val(formattedNumber)
-  $('#num_biaya_pergantian').val(formatter.format(formattedNumber))
+  $('#biaya_pergantian_number1').val(formattedNumber)
+  $('#num_biaya_pergantian1').val(formatter.format(formattedNumber))
+}
+
+function formatNumber2(e){
+  var formattedNumber = parseInt(e.value.replace(/\,/g,''))
+  $('#biaya_pergantian_number2').val(formattedNumber)
+  $('#num_biaya_pergantian2').val(formatter.format(formattedNumber))
 }
 
     </script>
@@ -392,8 +464,14 @@ function formatNumber(e){
     })
   }
 
+  var formatter = new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    });
+
 
 </script>
+
 
 
 </body>

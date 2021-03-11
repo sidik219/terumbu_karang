@@ -132,7 +132,7 @@ $row = $stmt->fetchAll();
                             <th scope="col">ID Titik</th>
                             <th scope="col">ID Lokasi</th>
                             <th class="text-right" scope="col">Koordinat</th>
-                            <th class="text-right" scope="col">Luas Titik (m<sup>2</sup>)</th>
+                            <th class="text-right" scope="col">Luas Titik (ha)</th>
                             <th scope="col">Zona</th>
                             <th scope="col">Aksi</th>
                             </tr>
