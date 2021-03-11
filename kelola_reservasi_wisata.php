@@ -1,5 +1,8 @@
 <?php include 'build/config/connection.php';
 session_start();
+if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
+  header('location: login.php?status=unrestrictedaccess');
+}
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
@@ -148,7 +151,6 @@ else{//reservasi umum
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                <?php if($_SESSION['level_user'] == '3') { ?>
                      <table class="table table-striped">
                      <thead>
                             <tr>
@@ -254,7 +256,6 @@ else{//reservasi umum
                           <?php } ?>
                           </tbody>
                   </table>
-                <?php } ?>
 
             <!-- BUTTON SUBMIT -->
 

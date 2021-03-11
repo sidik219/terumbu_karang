@@ -1,5 +1,8 @@
 <?php include 'build/config/connection.php';
 session_start();
+if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
+  header('location: login.php?status=unrestrictedaccess');
+}
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 $id_lokasi = $_GET['id_lokasi'];
@@ -105,7 +108,7 @@ $id_lokasi = $_GET['id_lokasi'];
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                <?php //if($_SESSION['level_user'] == '1') { ?>
+
                     <div class="terumbu-karang form-group">
 
                       <label class="text-muted">Terumbu karang yang dapat dipilih donatur</label>
@@ -113,7 +116,6 @@ $id_lokasi = $_GET['id_lokasi'];
                                 <span onclick="addDocInput()" data-toggle="modal" data-target=".tambah-modal" class="btn btn-blue btn btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah Terumbu</span>
                               </div>
 
-                    <?php //if($_SESSION['level_user'] == '1') { ?>
                     <table class="table table-striped">
                     <thead>
                             <tr>
@@ -148,7 +150,6 @@ $id_lokasi = $_GET['id_lokasi'];
                            <?php } ?>
                     </tbody>
                   </table>
-                <?php //} ?>
 
 
 <!-- data-toggle="modal" data-target=".edit-modal" -->

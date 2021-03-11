@@ -1,5 +1,9 @@
-<?php include 'build/config/connection.php';
+<?php
 session_start();
+if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
+  header('location: login.php?status=unrestrictedaccess');
+}
+include 'build/config/connection.php';
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
@@ -224,7 +228,6 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
             <!-- /.content-header -->
 
             <!-- Main content -->
-        <?php if($_SESSION['level_user'] == '3') { ?>
             <section class="content">
                 <div class="container-fluid bg-white p-3">
                     <form action="" enctype="multipart/form-data" method="POST">
@@ -346,7 +349,6 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
             <br><br>
 
             </section>
-        <?php } ?>
             <!-- /.Left col -->
             </div>
             <!-- /.row (main row) -->

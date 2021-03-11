@@ -156,7 +156,6 @@ $rowwilayah = $stmt->fetchAll();
                 </tbody>
                 </table>   -->
 
-                <?php if($_SESSION['level_user'] == '2') { ?>
                     <table class="table table-striped DataWilayah">
 
                 <tbody>
@@ -301,7 +300,6 @@ $rowwilayah = $stmt->fetchAll();
                             <?php } ?>
                 </tbody>
                 </table>
-            <?php } ?>
 
             </section>
             <!-- /.Left col -->

@@ -1,5 +1,8 @@
 <?php include 'build/config/connection.php';
 session_start();
+if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
+  header('location: login.php?status=unrestrictedaccess');
+}
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
@@ -106,7 +109,8 @@ $row = $stmt->fetchAll();
                             <h4><span class="align-middle font-weight-bold">Kelola Lokasi</span></h4>
                         </div>
                         <div class="col">
-                        <?php if($_SESSION['level_user'] == '2') { ?>
+
+                        <?php if(($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){ ?>
                         <a class="btn btn-primary float-right" href="input_lokasi.php" role="button">Input Data Baru (+)</a>
                         <?php } ?>
                         </div>
@@ -138,7 +142,6 @@ $row = $stmt->fetchAll();
                   }
                 ?>
 
-                <?php //if($_SESSION['level_user'] == '1') { ?>
                     <table class="table table-striped">
                     <thead>
                             <tr>
@@ -179,7 +182,7 @@ $row = $stmt->fetchAll();
                                                                                                                                       class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a></td>
                             <td><?=number_format($rowitem->total_titik).' / '.number_format($rowitem->total_lokasi).' m<sup>2</sup><br>'.number_format($rowitem->persentase_sebaran, 1).'% ( '.$kondisi_wilayah.' )'?></td>
                             <td class="text-right">
-                                <?php if($_SESSION['level_user'] == '2') { ?>
+                                <?php if(($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){ ?>
                                 <a href="edit_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 <a href="hapus.php?type=lokasi&id_lokasi=<?=$rowitem->id_lokasi?>" class="far fa-trash-alt btn btn-act"></a>
                                 <?php } ?>
@@ -324,7 +327,6 @@ $row = $stmt->fetchAll();
                            <?php } ?>
                     </tbody>
                   </table>
-                <?php //} ?>
 
             </section>
             <!-- /.Left col -->

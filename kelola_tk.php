@@ -1,5 +1,8 @@
 <?php include 'build/config/connection.php';
 session_start();
+if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
+  header('location: login.php?status=unrestrictedaccess');
+}
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
@@ -116,7 +119,7 @@ $row = $stmt->fetchAll();
                   }
                 ?>
 
-                <?php if($_SESSION['level_user'] == '2') { ?>
+
                     <table class="table table-striped">
                      <thead>
 
@@ -191,7 +194,7 @@ $row = $stmt->fetchAll();
                           <?php } ?>
                     </tbody>
                   </table>
-                <?php } ?>
+
 
             </section>
             <!-- /.Left col -->

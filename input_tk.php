@@ -1,5 +1,8 @@
 <?php include 'build/config/connection.php';
 session_start();
+if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
+  header('location: login.php?status=unrestrictedaccess');
+}
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
@@ -129,7 +132,6 @@ include 'hak_akses.php';
             <!-- /.content-header -->
 
             <!-- Main content -->
-        <?php if($_SESSION['level_user'] == '2') { ?>
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
@@ -202,7 +204,7 @@ include 'hak_akses.php';
             <br><br>
 
             </section>
-        <?php } ?>
+
             <!-- /.Left col -->
             </div>
             <!-- /.row (main row) -->

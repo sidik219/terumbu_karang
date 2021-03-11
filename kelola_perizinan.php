@@ -1,5 +1,8 @@
 <?php include 'build/config/connection.php';
 session_start();
+if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
+  header('location: login.php?status=unrestrictedaccess');
+}
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
@@ -103,7 +106,7 @@ $rowperizinan = $stmt->fetchAll();
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-            <?php if($_SESSION['level_user'] == '2') { ?>
+
               <?php
                 if(!empty($_GET['status'])){
                   if($_GET['status'] == 'updatesuccess'){
@@ -246,7 +249,6 @@ $rowperizinan = $stmt->fetchAll();
 
                     </tbody>
                   </table>
-            <?php } ?>
             </section>
             <!-- /.Left col -->
             </div>

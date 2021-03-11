@@ -1,5 +1,10 @@
-<?php include 'build/config/connection.php';
+<?php
 session_start();
+if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
+  header('location: login.php?status=unrestrictedaccess');
+}
+
+include 'build/config/connection.php';
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
@@ -130,7 +135,7 @@ $rowperlupml = $stmt->fetch();
             <!-- <div class="content-header">
                 <div class="container-fluid">
                    <div class="jumbotron jumbotron-fluid-profil">
-                        <h4>Selamat Datang, <?php echo $_SESSION['username']; ?> !</h4>
+                        <h4>Selamat Datang, <?php //echo $_SESSION['username']; ?> !</h4>
                     </div>
                     <div class="row">
                         <div class="col"> -->

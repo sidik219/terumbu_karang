@@ -202,6 +202,10 @@ if (isset($_POST['register'])) {
                     <div class="form-group">
                         <label class="font-weight-bold" for="rb_jenis_kelamin">Cakupan Pengelolaan</label><br>
                         <div class="form-check form-check-inline">
+                            <input type="radio" id="rb_wilayah" name="rb_level_user" value="4" class="form-check-input" required>
+                            <label class="form-check-label" for="rb_wilayah">Pusat (Provinsi)</label>
+                        </div><br>
+                        <div class="form-check form-check-inline">
                             <input type="radio" id="rb_wilayah" name="rb_level_user" value="2" class="form-check-input" required>
                             <label class="form-check-label" for="rb_wilayah">Wilayah (Dinas/Kabupaten)</label>
                         </div><br>

@@ -120,7 +120,6 @@ $row = $stmt->fetchAll();
 
                 ?>
 
-                <?php if($_SESSION['level_user'] == '1') { ?>
                     <div>
 
                         <?php
@@ -323,7 +322,6 @@ $row = $stmt->fetchAll();
                             } ?>
 
                     </div>
-                <?php } ?>
                 </div>
 
             </section>

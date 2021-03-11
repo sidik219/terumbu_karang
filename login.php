@@ -22,9 +22,17 @@ if (isset($_POST['login'])) {
                 $_SESSION['id_user']        = $row->id_user;
                 $_SESSION['username']        = $row->username;
                 $_SESSION['level_user']     = $row->level_user;
-                header('Location: dashboard_admin.php?pesan=login_berhasil');
+                header('Location: dashboard_admin.php?pesan=login_berhasil_w');
 
-            } else {
+            }
+            elseif ($row->level_user == "0") {
+                $_SESSION['id_user']        = $row->id_user;
+                $_SESSION['username']        = $row->username;
+                $_SESSION['level_user']     = $row->level_user;
+                header('Location: dashboard_admin.php?pesan=login_berhasil_p');
+
+            }
+            else {
                 header('location: login.php?pesan=gagal_login_session');
             }
         } else {
@@ -79,7 +87,7 @@ if (isset($_POST['login'])) {
                   else{
                     {
                   echo '<div class="alert alert-warning" role="alert">
-                          Akun Saya atau password salah.
+                          Username atau password salah.
                       </div>';}
                   }
                   }

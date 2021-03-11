@@ -1,5 +1,8 @@
 <?php include 'build/config/connection.php';
 session_start();
+if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
+  header('location: login.php?status=unrestrictedaccess');
+}
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
@@ -110,9 +113,9 @@ $row = $stmt->fetchAll();
                             <h4><span class="align-middle font-weight-bold">Kelola Titik</span></h4>
                         </div>
                         <div class="col">
-                        <?php if($_SESSION['level_user'] == '3') { ?>
+                        <?php //if($_SESSION['level_user'] == '3') { ?>
                         <a class="btn btn-primary float-right" href="input_titik.php" role="button">Input Data Baru (+)</a>
-                        <?php } ?>
+                        <?php //} ?>
                         </div>
                     </div>
                 </div>
@@ -123,7 +126,6 @@ $row = $stmt->fetchAll();
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                <?php if($_SESSION['level_user'] == '2' || $_SESSION['level_user'] == '3') { ?>
                     <table class="table table-striped">
                      <thead>
                             <tr>
@@ -132,9 +134,7 @@ $row = $stmt->fetchAll();
                             <th class="text-right" scope="col">Koordinat</th>
                             <th class="text-right" scope="col">Luas Titik (m<sup>2</sup>)</th>
                             <th scope="col">Zona</th>
-                            <?php if($_SESSION['level_user'] == '3') { ?>
                             <th scope="col">Aksi</th>
-                            <?php } ?>
                             </tr>
                           </thead>
                     <tbody>
@@ -147,17 +147,14 @@ $row = $stmt->fetchAll();
                                                                                                                                       class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a></td>
                               <td class="text-right"><?=number_format($rowitem->luas_titik)?></td>
                               <td><?=$rowitem->nama_zona_titik?></td>
-                              <?php if($_SESSION['level_user'] == '3') { ?>
                               <td>
                                 <a href="edit_titik.php?id_titik=<?=$rowitem->id_titik?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 <a href="hapus.php?type=titik&id_titik=<?=$rowitem->id_titik?>" class="far fa-trash-alt btn btn-act"></a>
                               </td>
-                              <?php } ?>
                           </tr>
                           <?php } ?>
                     </tbody>
                   </table>
-                <?php } ?>
             </section>
             <!-- /.Left col -->
             </div>

@@ -16,7 +16,63 @@ else{
 
 
   function print_sidebar($url_sekarang, $level){
-    if($level == 1){ //sidebar Donatur
+    if($level == 4){ //sidebar Pusat & debug
+      $sidebar = '
+                <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                    <a href="dashboard_admin.php" class="nav-link  '.('dashboard_admin.php' == $url_sekarang ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p> Home</p>
+                    </a>
+                </li>
+                <li class="nav-item"> <!-- Wilayah -->
+                              <a href="kelola_wilayah.php" class="nav-link '.('kelola_wilayah.php' == $url_sekarang || ('edit_wilayah.php'  == $url_sekarang) || ('input_wilayah.php'  == $url_sekarang) ? ' active ' : '').' ">
+                                  <i class="nav-icon fas fa-globe-asia"></i>
+                                  <p> Kelola Wilayah </p>
+                              </a>
+                          </li>
+                <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                    <a href="kelola_lokasi.php" class="nav-link '.('kelola_lokasi.php' == $url_sekarang  || ('edit_lokasi.php'  == $url_sekarang) || ('input_lokasi.php'  == $url_sekarang) ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
+                        <p> Kelola Lokasi </p>
+                    </a>
+                </li>
+                <li class="nav-item"> <!-- Wilayah -->
+                        <a href="kelola_jenis_tk.php" class="nav-link '.('kelola_jenis_tk.php' == $url_sekarang || ('edit_jenis_tk.php'  == $url_sekarang) || ('input_jenis_tk.php'  == $url_sekarang) ? ' active ' : '').' ">
+                              <i class="nav-icon fas fa-certificate"></i>
+                              <p> Kelola Jenis Terumbu </p>
+                        </a>
+                  </li>
+                  <li class="nav-item"> <!-- Wilayah -->
+                      <a href="kelola_tk.php" class="nav-link '.('kelola_tk.php' == $url_sekarang || ('edit_tk.php'  == $url_sekarang) || ('input_tk.php'  == $url_sekarang) ? ' active ' : '').' ">
+                            <i class="fas fa-disease nav-icon"></i>
+                            <p>Kelola Sub-Jenis Terumbu </p>
+                      </a>
+                  </li>
+                  <li class="nav-item"> <!-- Wilayah -->
+                        <a href="kelola_perizinan.php" class="nav-link '.('kelola_perizinan.php' == $url_sekarang ? ' active ' : '').' ">
+                              <i class="nav-icon fas fa-scroll"></i>
+                              <p> Kelola Perizinan </p>
+                        </a>
+                  </li>
+                  <li class="nav-item"> <!-- Wilayah -->
+                      <a href="kelola_laporan.php" class="nav-link '.('kelola_laporan.php' == $url_sekarang ? ' active ' : '').' ">
+                              <i class="nav-icon fas fa-book"></i>
+                              <p> Kelola Laporan </p>
+                      </a>
+                  </li>
+                <li class="nav-item">
+                    <a href="kelola_user.php" class="nav-link '.('kelola_user.php' == $url_sekarang ? ' active ' : '').' ">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p> Kelola User </p>
+                    </a>
+                </li>
+            ';
+
+            echo $sidebar;
+
+    }
+
+    elseif($level == 1){ //sidebar Donatur
       $sidebar = '
       <li class="nav-item">
                 <a href="dashboard_user.php" class="nav-link '.('dashboard_user.php' == $url_sekarang ? ' active ' : '').' ">
@@ -58,12 +114,6 @@ else{
                         <p> Home</p>
                     </a>
                 </li>
-                <li class="nav-item"> <!-- Wilayah -->
-                              <a href="kelola_wilayah.php" class="nav-link '.('kelola_wilayah.php' == $url_sekarang || ('edit_wilayah.php'  == $url_sekarang) || ('input_wilayah.php'  == $url_sekarang) ? ' active ' : '').' ">
-                                  <i class="nav-icon fas fa-globe-asia"></i>
-                                  <p> Kelola Wilayah </p>
-                              </a>
-                          </li>
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                     <a href="kelola_lokasi.php" class="nav-link '.('kelola_lokasi.php' == $url_sekarang  || ('edit_lokasi.php'  == $url_sekarang) || ('input_lokasi.php'  == $url_sekarang) ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
@@ -74,6 +124,12 @@ else{
                     <a href="kelola_titik.php" class="nav-link '.('kelola_titik.php' == $url_sekarang || ('edit_titik.php'  == $url_sekarang) || ('input_titik.php'  == $url_sekarang) ? ' active ' : '').' ">
                           <i class="nav-icon fas fa-crosshairs"></i>
                           <p> Kelola Titik </p>
+                    </a>
+                </li>
+                <li class="nav-item"> <!-- Lokasi -->
+                    <a href="kelola_wisata.php" class="nav-link '.(('kelola_wisata.php' == $url_sekarang) || ('edit_wisata.php'  == $url_sekarang) || ('input_wisata.php'  == $url_sekarang) ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-suitcase"></i>
+                        <p> Kelola Wisata </p>
                     </a>
                 </li>
                 <li class="nav-item"> <!-- Wilayah -->
@@ -125,12 +181,6 @@ else{
                     <a href="kelola_donasi.php" class="nav-link '.(('kelola_donasi.php' == $url_sekarang) || ('edit_donasi.php'  == $url_sekarang) ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-hand-holding-usd"></i>
                         <p> Kelola Donasi </p>
-                    </a>
-                </li>
-                <li class="nav-item"> <!-- Lokasi -->
-                    <a href="kelola_wisata.php" class="nav-link '.(('kelola_wisata.php' == $url_sekarang) || ('edit_wisata.php'  == $url_sekarang) || ('input_wisata.php'  == $url_sekarang) ? ' active ' : '').' ">
-                        <i class="nav-icon fas fa-suitcase"></i>
-                        <p> Kelola Wisata </p>
                     </a>
                 </li>
                 <li class="nav-item"> <!-- Lokasi -->
