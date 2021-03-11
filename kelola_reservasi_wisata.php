@@ -151,7 +151,7 @@ else{//reservasi umum
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                     <table class="table table-striped">
+                     <table class="table table-striped table-responsive-sm">
                      <thead>
                             <tr>
                             <th scope="col">ID Reservasi</th>

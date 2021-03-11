@@ -94,7 +94,7 @@ include 'hak_akses.php';
             <section class="content">
                 <div class="container-fluid">
             <?php if($_SESSION['level_user'] == '2' || $_SESSION['level_user'] == '3') { ?>
-                <table class="table table-striped">
+                <table class="table table-striped table-responsive-sm">
                      <thead>
                             <tr>
                                 <th scope="col">ID User</th>

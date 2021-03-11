@@ -200,7 +200,7 @@ function ageCalculator($dob){
                     }
                 ?>
 
-                   <table class="table table-striped">
+                   <table class="table table-striped table-responsive-sm">
                      <thead>
                             <tr>
                                 <th scope="col">ID Donasi</th>
