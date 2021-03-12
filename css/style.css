@@ -150,8 +150,8 @@
     }
     
     .deskripsi_pilih_tk {
-        -webkit-line-clamp: 2;
-        height: 40px;
+        /* -webkit-line-clamp: 2;
+        height: 40px; */
     }
     
     .shop-item-details {
@@ -175,6 +175,11 @@
         font-weight: bold;
         font-size: 1.25em;
         color: #333;
+    }
+    
+    .shop-button-selected {
+        background-color: gray !important;
+        background-image: none !important;
     }
     
     .cart-column {

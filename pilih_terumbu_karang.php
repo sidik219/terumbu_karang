@@ -3,23 +3,37 @@ session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-if(!$_GET['id_jenis']){
-    header("Location: pilih_jenis_tk.php");
-}
+if($_GET['id_lokasi']){
+      $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
+  }
+else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
+      header("Location: map.php");
+  }
 
-// $sqlviewtk = 'SELECT * FROM t_terumbu_karang
-//                 LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
-//                 WHERE t_terumbu_karang.id_jenis = :id_jenis';
+  if(isset($_GET['id_jenis'])){
+    $id_jenis = $_GET['id_jenis'];
 
-$sqlviewtk = 'SELECT * FROM t_detail_lokasi
+    $sqlviewtk = 'SELECT * FROM t_detail_lokasi
                 LEFT JOIN t_terumbu_karang ON t_terumbu_karang.id_terumbu_karang = t_detail_lokasi.id_terumbu_karang
                 LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
                 WHERE t_terumbu_karang.id_jenis = :id_jenis
-                AND id_lokasi = :id_lokasi';
+                AND id_lokasi = :id_lokasi AND stok_terumbu > 0';
 
-$stmt = $pdo->prepare($sqlviewtk);
-$stmt->execute(['id_jenis' => $_GET['id_jenis'], 'id_lokasi' => $_SESSION['id_lokasi']]);
-$row = $stmt->fetchAll();
+    $stmt = $pdo->prepare($sqlviewtk);
+    $stmt->execute(['id_jenis' => $_GET['id_jenis'], 'id_lokasi' => $_SESSION['id_lokasi']]);
+    $row = $stmt->fetchAll();
+  }
+  else{
+    $sqlviewtk = 'SELECT * FROM t_detail_lokasi
+                LEFT JOIN t_terumbu_karang ON t_terumbu_karang.id_terumbu_karang = t_detail_lokasi.id_terumbu_karang
+                LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
+                WHERE id_lokasi = :id_lokasi AND stok_terumbu > 0';
+
+    $stmt = $pdo->prepare($sqlviewtk);
+    $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
+    $row = $stmt->fetchAll();
+  }
+
 
 ?>
 <!DOCTYPE html>
@@ -98,22 +112,24 @@ $row = $stmt->fetchAll();
             <div class="row">
                     <div class="col">
 
+          <a href="map.php" class="btn btn-primary btn-sm btn-blue"><i class="fas fa-angle-left"></i> Ganti Lokasi Penanaman</button></a>
+        <h4 class="font-weight-bold mt-2">Pilih Terumbu Karang</h4>
+        <!-- <button class="btn btn-warning btn-back" type="button"><i class="fas fa-angle-left"></i> Jenis Lainnya</button> -->
 
-        <h4 class="font-weight-bold">Pilih Terumbu Karang</h4>
-        <button class="btn btn-warning btn-back" type="button"><i class="fas fa-angle-left"></i> Jenis Lainnya</button>
         <div class="row shop-items">
             <div class="card-columns">
         <?php
             foreach ($row as $rowitem) {
         ?>
 
-            <div class="card  card-pilihan rounded mb-4 shadow-sm shop-item">
+            <div class="card  card-pilihan rounded mb-4 shadow-sm shop-item text-sm">
                 <a href="#">
                     <img class="card-img-top rounded shop-item-image" height="150px" width="150px" src="<?=$rowitem->foto_terumbu_karang?>"
                 ></a>
                 <div class="card-body pt-2">
                 <h5 class="shop-item-title mb-0 card-title"><?=$rowitem->nama_terumbu_karang?></h5>
-                <p class="card-text text-muted deskripsi_pilih_tk"><?php echo strlen($rowitem->deskripsi_terumbu_karang) > 50 ? substr($rowitem->deskripsi_terumbu_karang,0,40)."..." :$rowitem->deskripsi_terumbu_karang;?></p>
+                <p class="card-text text-muted deskripsi_pilih_tk text-sm"><?php echo $rowitem->deskripsi_terumbu_karang;?></p>
+                <?php //echo strlen($rowitem->deskripsi_terumbu_karang) > 50 ? substr($rowitem->deskripsi_terumbu_karang,0,40)."..." :$rowitem->deskripsi_terumbu_karang;?>
                 <span class="font-weight-bold" id="harga<?=$rowitem->id_terumbu_karang?>"><script>
                                                     var hargaformat = formatter.format(<?=$rowitem->harga_patokan_lokasi?>);
                                                     var hargap =  document.createElement('p')
@@ -129,7 +145,7 @@ $row = $stmt->fetchAll();
                     </div> -->
                     <div class="col">
                             <a data-nama_tk="<?=$rowitem->id_terumbu_karang?>" data-harga_tk="<?=$rowitem->harga_patokan_lokasi?>"
-                            data-id_tk="<?=$rowitem->id_terumbu_karang?>"
+                            data-id_tk="<?=$rowitem->id_terumbu_karang?>" data-stok_tk="<?=$rowitem->stok_terumbu?>"
                             class="add-to-cart btn btn-warning shop-item-button"><i class="nav-icon fas fa-cart-plus"></i> Tambahkan Keranjang</a>
                     </div>
                 </div>
@@ -167,7 +183,7 @@ $row = $stmt->fetchAll();
             <div class="cart-items">
             </div>
             <div class="cart-total">
-                <strong class="cart-total-title">Total</strong>
+                <strong class="cart-total-title">Subtotal</strong>
                 <span class="cart-total-price font-weight-bold">Rp0</span>
             </div>
             <div class="mb-3 text-center mt-2">
@@ -175,7 +191,7 @@ $row = $stmt->fetchAll();
               (Opsional. Pesan akan disertakan dalam label khusus pada terumbu karang )</label>
               <input type="text" maxlength="64" class="form-control success" id="pesan" placeholder="Isi pesan anda di sini...">
             </div>
-            <button class="btn btn-warning btn-back" type="button"><i class="fas fa-angle-left"></i> Jenis Lainnya</button>
+            <!-- <button class="btn btn-warning btn-back" type="button"><i class="fas fa-angle-left"></i> Jenis Lainnya</button> -->
             <button class="btn btn-primary btn-purchase btn-blue" type="button">Selesai Pilih <i class="fas fa-angle-double-right"></i></button>
         </section>
     </footer>

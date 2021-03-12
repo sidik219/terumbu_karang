@@ -198,7 +198,7 @@
         "<b>Kondisi Terumbu Karang: </b><b class='<?=$warna_teks?>'><?=$kondisi_wilayah?></b><br/>"+
         "<b>Foto Lokasi: <br/></b><img src='<?=$value->foto_lokasi?>' class='card-img-top rounded mb-2'><br/>"+
         "<?php if($wisata == null) { ?>"+
-        "<div class='col text-center'><a href='pilih_jenis_tk.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary text-center' style='color:white;'>Pilih Lokasi</a></div>"+
+        "<div class='col text-center'><a href='pilih_terumbu_karang.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary text-center' style='color:white;'>Pilih Lokasi</a></div>"+
         "<?php } else {?>"+
         "<div class='col text-center'><a href='pilih_lokasi_wisata.php?id_lokasi=<?=$value->id_lokasi?>' class='btn btn-primary text-center' style='color:white;'>Pilih Lokasi</a></div>"+
         "<?php } ?>"

@@ -34,8 +34,6 @@ function ready() {
         button.addEventListener('click', addToCartClicked)
     }
 
-    document.getElementsByClassName('btn-back')[0].addEventListener('click', backClicked)
-    document.getElementsByClassName('btn-back')[1].addEventListener('click', backClicked)
     document.getElementsByClassName('btn-purchase')[0].addEventListener('click', purchaseClicked)
 
     if (sessionStorage.getItem("keranjang_serialised")) {
@@ -83,18 +81,18 @@ function purchaseClicked() {
 } //purchase clicked fx
 
 
-function backClicked() {
-    if (document.getElementById("pesan").value) {
-        var keranjang_deserialised = JSON.parse(sessionStorage.getItem('keranjang_serialised'))
-        var isipesan = document.getElementById("pesan").value;
-        keranjang_deserialised["pesan"] = isipesan
+// function backClicked() {
+//     if (document.getElementById("pesan").value) {
+//         var keranjang_deserialised = JSON.parse(sessionStorage.getItem('keranjang_serialised'))
+//         var isipesan = document.getElementById("pesan").value;
+//         keranjang_deserialised["pesan"] = isipesan
 
-        var keranjang_serialised = JSON.stringify(keranjang_deserialised)
-        sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
-    }
+//         var keranjang_serialised = JSON.stringify(keranjang_deserialised)
+//         sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
+//     }
 
-    history.back()
-}
+//     history.back()
+// }
 
 function removeCartItem(event) {
     var keranjang_old = JSON.parse(sessionStorage.getItem("keranjang_serialised"))
@@ -102,6 +100,8 @@ function removeCartItem(event) {
     var buttonClicked = event.target
     var item_name = $(buttonClicked).parent().parent().find('.cart-item-title').text()
 
+    var tombol_tambah_keranjang = $("h5:contains(" + item_name + ")").siblings('.row').children('.col').children('a')[0]
+    tombol_tambah_keranjang.classList.remove('shop-button-selected')
     for (i = 0; i < keranjang_old.keranjang.length; i++) {
         if (keranjang_old.keranjang[i] != null) {
             if (item_name == keranjang_old.keranjang[i].nama_tk) {
@@ -162,6 +162,7 @@ function addToCartClicked(event) {
     var imageSrc = shopItem.getElementsByClassName('shop-item-image')[0].src
     var itemID = shopItem.getElementsByClassName('shop-item-id')[0].value
     addItemToCart(title, price, imageSrc, itemID)
+    button.classList.add('shop-button-selected')
     updateCartTotal()
 }
 

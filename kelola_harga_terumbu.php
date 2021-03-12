@@ -167,7 +167,7 @@ $id_lokasi = $_GET['id_lokasi'];
                         </div>
                 </div>
                 <div class="col text-center">
-                                <button type="submit" value="submit_biaya" name="submit_biaya" class="btn btn-sm btn-blue"><i class="fas fa-save"></i> Simpan Biaya</button>
+                                <button type="submit" value="submit_biaya" name="submit_biaya" class="btn btn-primary btn-sm btn-blue"><i class="fas fa-save"></i> Simpan Biaya</button>
                 </div>
 
                 </form>
@@ -257,48 +257,7 @@ $id_lokasi = $_GET['id_lokasi'];
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
 
-    <script>
-      function loadTk(id_jenis){
-      $.ajax({
-        type: "POST",
-        url: "list_populate.php",
-        data:{
-            id_jenis: id_jenis,
-            type: 'load_tk'
-        },
-        beforeSend: function() {
-          $("#dd_id_jenis").addClass("loader");
-        },
-        success: function(data){
-          $("#dd_id_jenis").html(data);
-          $("#dd_id_jenis").removeClass("loader");
-        }
-      });
 
-    }
-
-    var formatter = new Intl.NumberFormat('en-US', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-
-    // These options are needed to round to whole numbers if that's what you want.
-    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
-});
-
-function formatNumber1(e){
-  var formattedNumber = parseInt(e.value.replace(/\,/g,''))
-  $('#biaya_pergantian_number1').val(formattedNumber)
-  $('#num_biaya_pergantian1').val(formatter.format(formattedNumber))
-}
-
-function formatNumber2(e){
-  var formattedNumber = parseInt(e.value.replace(/\,/g,''))
-  $('#biaya_pergantian_number2').val(formattedNumber)
-  $('#num_biaya_pergantian2').val(formatter.format(formattedNumber))
-}
-
-    </script>
 
 
 
@@ -401,8 +360,8 @@ function formatNumber2(e){
 
       </form>
                               <div class="col text-center">
-                                <span onclick="updatePatokanTerumbu()" class="btn btn-blue btn-sm btn-primary mt-2 mb-2 text-center"><i class="fas fa-save"></i> Simpan</span>
-                                <button type="button" class="btn-sm btn-secondary" data-dismiss="modal">Batal</button>
+                                <span onclick="updatePatokanTerumbu()" class="btn btn-blue btn-sm  btn-primary mt-2 mb-2 text-center"><i class="fas fa-save"></i> Simpan</span>
+                                <button type="button" class="btn-sm btn-secondary rounded-pill border-0" data-dismiss="modal">Batal</button>
                               </div>
                             </div>
                       </div>
@@ -468,6 +427,59 @@ function formatNumber2(e){
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     });
+
+
+
+      function loadTk(id_jenis){
+      $.ajax({
+        type: "POST",
+        url: "list_populate.php",
+        data:{
+            id_jenis: id_jenis,
+            type: 'load_tk'
+        },
+        beforeSend: function() {
+          $("#dd_id_jenis").addClass("loader");
+        },
+        success: function(data){
+          $("#dd_id_jenis").html(data);
+          $("#dd_id_jenis").removeClass("loader");
+        }
+      });
+
+    }
+
+    var formatter = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
+
+function formatNumber1(e){
+      if(e != "" || e != " " || e != "NaN"){
+        if(!(parseInt(e.value.replace(/\,/g,'')) == "NaN")){
+        var formattedNumber = parseInt(e.value.replace(/\,/g,''))
+        $('#biaya_pergantian_number1').val(formattedNumber)
+        $('#num_biaya_pergantian1').val(formatter.format(formattedNumber))
+      }
+  }
+}
+
+
+function formatNumber2(e){
+  if(!(isNaN(e) || e < 0)){
+    var formattedNumber = parseInt(e.value.replace(/\,/g,''))
+    $('#biaya_pergantian_number2').val(formattedNumber)
+    $('#num_biaya_pergantian2').val(formatter.format(formattedNumber))
+  }else{
+    $('#biaya_pergantian_number2').val("")
+    $('#num_biaya_pergantian2').val("")
+  }
+}
+
 
 
 </script>
