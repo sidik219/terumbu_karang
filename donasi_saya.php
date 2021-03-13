@@ -3,15 +3,37 @@ session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-
+$id_user = $_SESSION['id_user'];
 $sqlviewdonasi = 'SELECT * FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
-                WHERE id_user = 1
+                  LEFT JOIN t_batch ON t_batch.id_batch = t_donasi.id_batch
+                WHERE id_user = :id_user
                 ORDER BY id_donasi DESC';
 $stmt = $pdo->prepare($sqlviewdonasi);
-$stmt->execute();
+$stmt->execute(['id_user' => $id_user]);
 $row = $stmt->fetchAll();
+
+
+function ageCalculator($dob){
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $ag = $birthdate->diff($today)->y;
+        $mn = $birthdate->diff($today)->m;
+        $dy = $birthdate->diff($today)->d;
+        if ($mn == 0)
+        {
+            return "$dy Hari";
+        }
+        elseif ($ag == 0)
+        {
+            return "$mn Bulan  $dy Hari";
+        }
+        else
+        {
+            return "$ag Tahun $mn Bulan $dy Hari";
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -165,7 +187,7 @@ $row = $stmt->fetchAll();
                                             <?php echo ($rowitem->id_status_donasi <= 2 || $rowitem->id_status_donasi == 6) ? '<a href="edit_donasi_saya.php?id_donasi='.$rowitem->id_donasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Donasi</a>' : ''; ?>
 
                                           <br><small class="text-muted"><b>Update Terakhir</b>
-                                          <br><?=strftime('%A, %d %B %Y', $truedate);?></small>
+                                          <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($rowitem->update_terakhir).' yang lalu)';?></small>
 
                                       </div>
                                         <div class="mb-3">
@@ -213,7 +235,9 @@ $row = $stmt->fetchAll();
                                                 $rowisi = $stmt->fetchAll();
                                             foreach ($rowisi as $isi){
                                               $sqlviewhistoryitems = 'SELECT * FROM t_history_pemeliharaan
-                                                                      WHERE t_history_pemeliharaan.id_detail_donasi = :id_detail_donasi';
+                                                                      WHERE t_history_pemeliharaan.id_detail_donasi = :id_detail_donasi
+                                                                      ORDER BY tanggal_pemeliharaan DESC
+                                                                      ';
 
                                                 $stmt = $pdo->prepare($sqlviewhistoryitems);
                                                 $stmt->execute(['id_detail_donasi' => $isi->id_detail_donasi]);
@@ -247,7 +271,8 @@ $row = $stmt->fetchAll();
                                                   <?php
                                                    $sqlviewhistoryitemdetail = 'SELECT * FROM t_history_pemeliharaan
                                                                               WHERE id_detail_donasi = :id_detail_donasi
-                                                                              ORDER BY tanggal_pemeliharaan DESC';
+                                                                              ORDER BY tanggal_pemeliharaan DESC
+                                                                              LIMIT 1';
 
                                                         $stmt = $pdo->prepare($sqlviewhistoryitemdetail);
                                                         $stmt->execute(['id_detail_donasi' => $isi->id_detail_donasi]);
@@ -257,8 +282,7 @@ $row = $stmt->fetchAll();
                                                             echo '<span class="text-small text-muted">Belum tahap pemeliharaan</span>';
                                                         }
                                                     foreach ($rowhistory as $history){
-
-
+                                                      $peliharadate =  strtotime($history->tanggal_pemeliharaan);
                                                   ?>
 
 
@@ -266,14 +290,18 @@ $row = $stmt->fetchAll();
                                                       <div class="row">
                                                           <div class="col">
                                                         <div class="col-12 mb-2">
-                                                          <span class="badge badge-pill badge-success mr-2"> ID Pemeliharaan <?=$history->id_pemeliharaan?></span>
+                                                          <!-- <span class="badge badge-pill badge-success mr-2"> ID Pemeliharaan //$history->id_pemeliharaan</span> -->
                                                         </div>
                                                         <div class="col mb-2">
-                                                          <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-calendar"></i> Tanggal Pemeliharaan </span>
-                                                          <br> <span><?=$history->tanggal_pemeliharaan?></span>
+                                                          <span class="font-weight-bold"><i class="nav-icon text-pink fas fa-birthday-cake"></i> Umur Terumbu Karang </span>
+                                                          <br> <span><?=ageCalculator($rowitem->tanggal_penanaman)?></span>
+                                                        </div>
+                                                        <div class="col mb-2">
+                                                          <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-calendar-alt"></i> Pemeliharaan Terkini</span>
+                                                          <br> <span><?=strftime('%A, %d %B %Y', $peliharadate).' ('.ageCalculator($history->tanggal_pemeliharaan).' yang lalu)'?></span>
                                                         </div>
                                                         <div class="col">
-                                                            <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-heartbeat"></i> Kondisi / Keterangan</span>
+                                                            <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-heartbeat"></i> Kondisi</span>
                                                           <br> <?php echo empty($history->kondisi_terumbu) ? '<span class="text-small text-muted">Belum ada laporan</span>' : $history->kondisi_terumbu; ?>
                                                           </div>
                                                       </div>
@@ -389,6 +417,7 @@ $row = $stmt->fetchAll();
         var e = event.target
         $(e).siblings('.detail-toggle').fadeToggle()
       }
+
     </script>
 
 </body>

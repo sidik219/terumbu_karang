@@ -140,6 +140,26 @@ function alertCabutLabel($dob, $slabel){
 
 
           }//submit post end
+
+          function ageCalculator($dob){
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $ag = $birthdate->diff($today)->y;
+        $mn = $birthdate->diff($today)->m;
+        $dy = $birthdate->diff($today)->d;
+        if ($mn == 0)
+        {
+            return "$dy Hari";
+        }
+        elseif ($ag == 0)
+        {
+            return "$mn Bulan  $dy Hari";
+        }
+        else
+        {
+            return "$ag Tahun $mn Bulan $dy Hari";
+        }
+    }
     ?>
 
     <!DOCTYPE html>
@@ -289,7 +309,8 @@ function alertCabutLabel($dob, $slabel){
                                             <span class="font-weight-bold">ID Titik Penanaman : </span><?=$detailpemeliharaan->id_titik?> <?=$detailpemeliharaan->keterangan_titik?> <a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$detailpemeliharaan->latitude?>,<?=$detailpemeliharaan->longitude?>&zoom=8"
                                                                                                                                         class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a>
                                         <div class="col-12 isi mb-3 pl-0 mt-1">
-                                        <span class="font-weight-bold">Tanggal Penanaman: </span><span class=""><?=$detailpemeliharaan->tanggal_penanaman?></span>
+                                        <span class="font-weight-bold">Tanggal Penanaman: </span><span class=""><?=strftime('%A, %d %B %Y', strtotime($detailpemeliharaan->tanggal_penanaman)).'
+                                        <span class="text-muted">('.ageCalculator($detailpemeliharaan->tanggal_penanaman).' yang lalu)</span>'?></span>
                                         </div>
 
                                         </div>
@@ -355,7 +376,7 @@ function alertCabutLabel($dob, $slabel){
                                                         <label for="tb_nama_jenis">Kondisi / Keterangan</label>
                                                         <!-- <input type="text" id="tb_kondisi" name="kondisi[]" class="form-control" placeholder="Deskripsi singkat..." value="<?php //echo empty($rowhistory[0]->kondisi_terumbu) ? '' : $rowhistory[0]->kondisi_terumbu; ?>" required> -->
                                                           <select class="form-control" id="tb_nama_jenis" name="kondisi[]" required>
-                                                            <option>--Pilih Kondisi--</option>
+                                                            <option value="">--Pilih Kondisi--</option>
                                                             <option value="Sangat Baik" <?php if(!empty($rowhistory[0]->kondisi_terumbu)){if($rowhistory[0]->kondisi_terumbu == "Sangat Baik") echo ' selected ';}?>>Sangat Baik</option>
                                                             <option value="Baik"<?php if(!empty($rowhistory[0]->kondisi_terumbu)){if($rowhistory[0]->kondisi_terumbu == "Baik") echo ' selected ';}?>>Baik</option>
                                                             <option value="Rusak"<?php if(!empty($rowhistory[0]->kondisi_terumbu)){if($rowhistory[0]->kondisi_terumbu == "Rusak") echo ' selected ';}?>>Rusak</option>

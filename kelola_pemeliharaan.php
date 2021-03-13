@@ -45,7 +45,11 @@ function ageCalculator($dob){
         $ag = $birthdate->diff($today)->y;
         $mn = $birthdate->diff($today)->m;
         $dy = $birthdate->diff($today)->d;
-        if ($ag == 0)
+        if ($mn == 0)
+        {
+            return "$dy Hari";
+        }
+        elseif ($ag == 0)
         {
             return "$mn Bulan  $dy Hari";
         }
@@ -196,9 +200,9 @@ function ageCalculator($dob){
                           <tr>
                               <th scope="row"><?=$pemeliharaan->id_pemeliharaan?></th>
                               <td><?=$pemeliharaan->id_lokasi?> - <?=$pemeliharaan->nama_lokasi?></td>
-                              <td><?=$pemeliharaan->tanggal_pemeliharaan?>
+                              <td><?=strftime('%A, %d %B %Y', strtotime($pemeliharaan->tanggal_pemeliharaan))?>
                                 <br><small class="text-muted">
-                                    <?=ageCalculator($pemeliharaan->tanggal_pemeliharaan).' yang lalu'?>
+                                    <?= ($pemeliharaan->tanggal_pemeliharaan < date('Y-m-d H:i:s')) ? ageCalculator($pemeliharaan->tanggal_pemeliharaan).' yang lalu' :  ageCalculator($pemeliharaan->tanggal_pemeliharaan).' yang akan datang'?>
                                   </small>
 
                             </td>

@@ -7,7 +7,11 @@ function ageCalculator($dob){
         $ag = $birthdate->diff($today)->y;
         $mn = $birthdate->diff($today)->m;
         $dy = $birthdate->diff($today)->d;
-        if ($ag == 0)
+        if ($mn == 0)
+        {
+            return "$dy Hari";
+        }
+        elseif ($ag == 0)
         {
             return "$mn Bulan  $dy Hari";
         }

@@ -458,26 +458,51 @@ $id_lokasi = $_GET['id_lokasi'];
     //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 
+
+function formatNumber(e){
+      var formattedNumber = parseInt(e.value.replace(/\,/g,''))
+      if(!isNaN(formattedNumber)){
+        $('#biaya_pergantian_number').val(formattedNumber)
+        $('#num_biaya_pergantian').val(formatter.format(formattedNumber))
+      }else{
+        $('#biaya_pergantian_number').val('0')
+        $('#num_biaya_pergantian').val('0')
+      }
+}
+
 function formatNumber1(e){
-      if(e != "" || e != " " || e != "NaN"){
-        if(!(parseInt(e.value.replace(/\,/g,'')) == "NaN")){
-        var formattedNumber = parseInt(e.value.replace(/\,/g,''))
+      var formattedNumber = parseInt(e.value.replace(/\,/g,''))
+      if(!isNaN(formattedNumber)){
         $('#biaya_pergantian_number1').val(formattedNumber)
         $('#num_biaya_pergantian1').val(formatter.format(formattedNumber))
+      }else{
+        $('#biaya_pergantian_number1').val('0')
+        $('#num_biaya_pergantian1').val('0')
       }
-  }
 }
 
 
+
 function formatNumber2(e){
-  if(!(isNaN(e) || e < 0)){
-    var formattedNumber = parseInt(e.value.replace(/\,/g,''))
-    $('#biaya_pergantian_number2').val(formattedNumber)
-    $('#num_biaya_pergantian2').val(formatter.format(formattedNumber))
-  }else{
-    $('#biaya_pergantian_number2').val("")
-    $('#num_biaya_pergantian2').val("")
-  }
+  var formattedNumber = parseInt(e.value.replace(/\,/g,''))
+      if(!isNaN(formattedNumber)){
+        $('#biaya_pergantian_number2').val(formattedNumber)
+        $('#num_biaya_pergantian2').val(formatter.format(formattedNumber))
+      }else{
+        $('#biaya_pergantian_number2').val('0')
+        $('#num_biaya_pergantian2').val('0')
+      }
+}
+
+function formatNumber3(e){
+  var formattedNumber = parseInt(e.value.replace(/\,/g,''))
+      if(!isNaN(formattedNumber)){
+        $('#biaya_pergantian_number3').val(formattedNumber)
+        $('#num_biaya_pergantian3').val(formatter.format(formattedNumber))
+      }else{
+        $('#biaya_pergantian_number3').val('0')
+        $('#num_biaya_pergantian3').val('0')
+      }
 }
 
 

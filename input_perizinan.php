@@ -400,9 +400,14 @@ include 'hak_akses.php';
 });
 
 function formatNumber(e){
-  var formattedNumber = parseInt(e.value.replace(/\,/g,''))
-  $('#biaya_pergantian_number').val(formattedNumber)
-  $('#num_biaya_pergantian').val(formatter.format(formattedNumber))
+      var formattedNumber = parseInt(e.value.replace(/\,/g,''))
+      if(!isNaN(formattedNumber)){
+        $('#biaya_pergantian_number').val(formattedNumber)
+        $('#num_biaya_pergantian').val(formatter.format(formattedNumber))
+      }else{
+        $('#biaya_pergantian_number').val('0')
+        $('#num_biaya_pergantian').val('0')
+      }
 }
 
 

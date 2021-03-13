@@ -6,7 +6,7 @@ if(isset($_SESSION['data_donasi'])){
 
   $keranjang =  json_decode($_SESSION['data_donasi']);
 
-  $id_user = 1;
+  $id_user = $_SESSION['id_user'];
   $nominal = $keranjang->nominal;
   $id_lokasi = $keranjang->id_lokasi;
   $pesan = $keranjang->pesan;

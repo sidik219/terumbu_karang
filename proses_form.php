@@ -48,7 +48,7 @@ if ($_POST['type'] == 'save_modal_patokan_harga_terumbu' && !empty($_POST["id_lo
                             <div class="row">
                               <div class="col">
                                <label for="num_biaya_pergantian">Harga Patokan</label>
-                        <input type="hidden" id="biaya_pergantian_number" name="num_harga_patokan_lokasi_angka" value="<?=$rowitem->harga_patokan_lokasi?>">
+                        <input type="hidden" id="biaya_pergantian_number3" name="num_harga_patokan_lokasi_angka" value="<?=$rowitem->harga_patokan_lokasi?>">
                         <input type="hidden" id="hid_type" name="type" value="update_modal_patokan_harga_terumbu">
                         <input type="hidden" id="hid_id_detail_lokasi" name="id_detail_lokasi" value="<?=$id_detail_lokasi?>">
                         <div class="row">
@@ -56,7 +56,7 @@ if ($_POST['type'] == 'save_modal_patokan_harga_terumbu' && !empty($_POST["id_lo
                             Rp.
                           </div>
                           <div class="col">
-                            <input onkeyup="formatNumber(this)" type="text" id="num_biaya_pergantian" value="<?=$rowitem->harga_patokan_lokasi?>" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
+                            <input onkeyup="formatNumber3(this)" type="text" id="num_biaya_pergantian3" value="<?=number_format($rowitem->harga_patokan_lokasi)?>" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
                           </div>
                         </div>
                         <div class="row mt-2">

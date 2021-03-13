@@ -135,7 +135,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
         <div class="col-md-4 order-md-2 mb-4">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
             <span class="text-muted"><i class="fas fa-shopping-cart"></i> Keranjang Anda</span>
-            <span id="badge-jumlah" class="badge badge-secondary badge-pill"></span>
+            <span id="badge-jumlah" class="badge badge-info badge-pill"></span>
           </h4>
 
           <ul class="list-group mb-3" id="keranjangancestor">
@@ -259,6 +259,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
+    <script src="plugins/popper/popper.js"></script>
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
@@ -289,7 +290,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
         listcontentrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed")
         var listcontent =
         `<div>
-          <img src="${keranjang.keranjang[item].image}" height="30px">
+          <img class="rounded" src="${keranjang.keranjang[item].image}" height="30px">
         </div>
           <div>
             <h6 class="my-0">${keranjang.keranjang[item].nama_tk}</h6>
@@ -309,7 +310,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
         var listpesan =
         `<div class="row">
         <div class="col-12">
-            <h6 class="my-0">Pesan/Ekspresi</h6>
+            <h6 class="my-0 font-weight-bold">Pesan/Ekspresi</h6>
           </div>
           <div class="col">
           <span><i>${keranjang.pesan}</i></span>
@@ -318,6 +319,41 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
         listpesanrow.innerHTML = listpesan
         keranjangancestor.append(listpesanrow)
 
+
+        var listbiayarow = document.createElement('li')
+        listbiayarow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed", "text-break", "text-sm")
+        var listbiaya =
+        `<div class="row">
+        <div class="col-12">
+            <h6 class="my-0">Jasa Penanaman <i class="fas fa-question-circle text-info"  data-toggle="tooltip" data-placement="top" title="Biaya transportasi ke titik penanaman bibit, peralatan selam, dan perlengkapan pendukung lainnya"></i></h6>
+          </div>
+          <div class="col">
+          <span>${formatter.format(jumlahitem * <?=$rowlokasi->jasa_penanaman?>)}</span>
+          <span class="d-none">${jumlahitem * <?=$rowlokasi->jasa_penanaman?>}</span>
+          </div>
+        </div>`
+
+        var jasa_penanaman = jumlahitem * <?=$rowlokasi->jasa_penanaman?>;
+        listbiayarow.innerHTML = listbiaya
+        keranjangancestor.append(listbiayarow)
+
+        var listpemeliharaanrow = document.createElement('li')
+        listpemeliharaanrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed", "text-break", "text-sm")
+        var listpmlh =
+        `<div class="row">
+        <div class="col-12">
+            <h6 class="my-0">Biaya Pemeliharaan <i class="fas fa-question-circle text-info"  data-toggle="tooltip" data-placement="top" title="Biaya pemeliharaan bibit mulai dari laboratorium hingga pemeliharaan berkala setelah matang di laut"></i></h6>
+          </div>
+          <div class="col">
+          <span>${formatter.format(jumlahitem * <?=$rowlokasi->biaya_pemeliharaan?>)}</span>
+          </div>
+        </div>`
+
+        var biaya_pemeliharaan = jumlahitem * <?=$rowlokasi->biaya_pemeliharaan?>;
+        listpemeliharaanrow.innerHTML = listpmlh
+        keranjangancestor.append(listpemeliharaanrow)
+
+        keranjang.nominal = keranjang.nominal + biaya_pemeliharaan + jasa_penanaman;
 
       var listtotalrow = document.createElement('li')
         listtotalrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed")
@@ -332,7 +368,9 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
       var badgejumlah = document.getElementById("badge-jumlah")
       badgejumlah.innerText = jumlahitem
 
-
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
     </script>
 
 </body>

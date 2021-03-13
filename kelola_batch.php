@@ -75,7 +75,11 @@ else{
         $ag = $birthdate->diff($today)->y;
         $mn = $birthdate->diff($today)->m;
         $dy = $birthdate->diff($today)->d;
-        if ($ag == 0)
+        if ($mn == 0)
+        {
+            return "$dy Hari";
+        }
+        elseif ($ag == 0)
         {
             return "$mn Bulan  $dy Hari";
         }
@@ -254,7 +258,7 @@ else{
                               <td>ID <?=$batch->id_lokasi?> - <?=$batch->nama_lokasi?></td>
                               <td><?=$batch->id_titik?> <?=$batch->keterangan_titik?><br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$batch->latitude?>,<?=$batch->longitude?>&zoom=8"
                                                                                                                                       class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a></td>
-                              <td><?=$batch->tanggal_penanaman?>
+                              <td><?=strftime('%A, %d %B %Y', strtotime($batch->tanggal_penanaman))?>
                                   <?php
                                           if($batch->id_status_batch > 1){
 
@@ -283,7 +287,7 @@ else{
                                   <br>('.ageCalculator($batch->update_status_batch_terakhir).' yang lalu)
                                   </small>';
                                 }else{
-                                  echo '<small class="text-muted">Pemeliharaan Terakhir: <br>'. $batch->tanggal_pemeliharaan_terakhir.'<br>('.ageCalculator($batch->tanggal_pemeliharaan_terakhir).' yang lalu) <br> <span class="text-danger font-weight-bold">'.
+                                  echo '<small class="text-muted">Pemeliharaan Terakhir: <br>'. strftime('%A, %d %B %Y', strtotime($batch->tanggal_pemeliharaan_terakhir)).'<br>('.ageCalculator($batch->tanggal_pemeliharaan_terakhir).' yang lalu) <br> <span class="text-danger font-weight-bold">'.
                                             alertPemeliharaan($batch->tanggal_pemeliharaan_terakhir).'</span></small>';
                                 }
                                 ?>
