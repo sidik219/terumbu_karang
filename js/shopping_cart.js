@@ -25,7 +25,7 @@ function ready() {
     var quantityInputs = document.getElementsByClassName('cart-quantity-input')
     for (var i = 0; i < quantityInputs.length; i++) {
         var input = quantityInputs[i]
-        input.addEventListener('change', quantityChanged)
+        input.addEventListener('keyup', quantityChanged)
     }
 
     var addToCartButtons = document.getElementsByClassName('shop-item-button')
@@ -47,8 +47,9 @@ function ready() {
                     var itemID = keranjang_old.keranjang[i].id_tk
                     var jumlah_tk = keranjang_old.keranjang[i].jumlah_tk
                     keranjang_old.keranjang[i]["ignore"] = 1
+                    var stok_tk = keranjang_old.keranjang[i].stok_tk
                     var ignore = keranjang_old.keranjang[i].ignore
-                    addItemToCart(title, price, imageSrc, itemID, ignore, jumlah_tk)
+                    addItemToCart(title, price, imageSrc, itemID, ignore, jumlah_tk, stok_tk)
                     updateCartTotal()
                 }
             }
@@ -138,13 +139,20 @@ function quantityChanged(event) {
         input.value = 1
     }
 
+    var stok_tk = input.dataset.stok_tk
     var keranjang_old = JSON.parse(sessionStorage.getItem("keranjang_serialised"))
     var item_name = $(input).parent().parent().find('.cart-item-title').text()
 
     for (i = 0; i < keranjang_old.keranjang.length; i++) {
         if (keranjang_old.keranjang[i] != null) {
             if (item_name == keranjang_old.keranjang[i].nama_tk) {
-                keranjang_old.keranjang[i].jumlah_tk = input.value
+                if (input.value >= stok_tk) {
+                    keranjang_old.keranjang[i].jumlah_tk = stok_tk
+                } else {
+                    keranjang_old.keranjang[i].jumlah_tk = input.value
+                }
+
+                keranjang_old.keranjang[i].stok_tk = stok_tk
             }
         }
     }
@@ -161,13 +169,14 @@ function addToCartClicked(event) {
     var price = shopItem.getElementsByClassName('shop-item-price')[0].innerText
     var imageSrc = shopItem.getElementsByClassName('shop-item-image')[0].src
     var itemID = shopItem.getElementsByClassName('shop-item-id')[0].value
-    addItemToCart(title, price, imageSrc, itemID)
+    var stok_tk = button.dataset.stok_tk
+    addItemToCart(title, price, imageSrc, itemID, undefined, undefined, stok_tk)
     button.classList.add('shop-button-selected')
     updateCartTotal()
 }
 
 
-function addItemToCart(title, price, imageSrc, itemID, ignore, jumlah_tk) {
+function addItemToCart(title, price, imageSrc, itemID, ignore, jumlah_tk, stok_tk) {
     var cartRow = document.createElement('div')
     cartRow.classList.add('cart-row')
     var cartItems = document.getElementsByClassName('cart-items')[0]
@@ -193,7 +202,7 @@ function addItemToCart(title, price, imageSrc, itemID, ignore, jumlah_tk) {
         <span class="cart-price-display cart-column">${formatter.format(price.replace('Rp.', ''))}</span>
         <span class="cart-price cart-column d-none">${price}</span>
         <div class="cart-quantity cart-column">
-            <input class="cart-quantity-input" min="1" step="1" type="number" max="999" value="${jumlah_tk}">
+            <input class="cart-quantity-input" onBlur="if(this.value>${stok_tk}){this.value='${stok_tk}';}else if(this.value<0){this.value='0';} updateCartTotal()" min="1" max="${stok_tk}" data-stok_tk="${stok_tk}" step="1" type="number" value="${jumlah_tk}">
             <button class="btn btn-danger" type="button">X</button>
             <input type="hidden" class="cart-item-id" value=" ${itemID}">
             <input type="hidden" class="cart-item-ignore" value="${ignore}">
@@ -227,7 +236,13 @@ function addItemToCart(title, price, imageSrc, itemID, ignore, jumlah_tk) {
 
                 var jumtk
                 if (quantity > 1) {
-                    jumtk = parseInt(quantityElement.value)
+                    if (quantity >= stok_tk) {
+                        jumtk = stok_tk
+                    } else {
+                        jumtk = parseInt(quantityElement.value)
+                        updateCartTotal()
+                    }
+
                 } else jumtk = 1
                 keranjang.push({
                     nama_tk: nama_tk,

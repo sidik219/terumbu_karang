@@ -192,7 +192,7 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
               <input type="text" maxlength="64" class="form-control success" id="pesan" placeholder="Isi pesan anda di sini...">
             </div>
             <!-- <button class="btn btn-warning btn-back" type="button"><i class="fas fa-angle-left"></i> Jenis Lainnya</button> -->
-            <button class="btn btn-primary btn-purchase btn-blue" type="button">Selesai Pilih <i class="fas fa-angle-double-right"></i></button>
+            <button class="btn btn-primary btn-purchase btn-blue" onclick="updateCartTotal()" type="button">Selesai Pilih <i class="fas fa-angle-double-right"></i></button>
         </section>
     </footer>
     <!-- jQuery -->

@@ -49,6 +49,15 @@ if(isset($_SESSION['data_donasi'])){
 
         $stmt = $pdo->prepare($sqlinsertdetaildonasi);
         $stmt->execute(['id_donasi' => $id_donasi, 'id_terumbu_karang' => $id_terumbu_karang , 'jumlah_terumbu' => $jumlah_terumbu]);
+
+
+        $sqlupdatestoktk = 'UPDATE t_detail_lokasi
+                            SET stok_terumbu = (stok_terumbu - :jumlah_terumbu)
+                            WHERE id_lokasi = :id_lokasi AND id_terumbu_karang = :id_terumbu_karang';
+
+        $stmt = $pdo->prepare($sqlupdatestoktk);
+        $stmt->execute(['id_lokasi' => $id_lokasi, 'id_terumbu_karang' => $id_terumbu_karang , 'jumlah_terumbu' => $jumlah_terumbu]);
+
       }
       header("Location:donasi_saya.php?status=addsuccess");
 
