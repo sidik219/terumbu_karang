@@ -116,6 +116,37 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
         <h4 class="font-weight-bold mt-2">Pilih Terumbu Karang</h4>
         <!-- <button class="btn btn-warning btn-back" type="button"><i class="fas fa-angle-left"></i> Jenis Lainnya</button> -->
 
+        <div class="row">
+                      <div class="col">
+                        <div class="dropdown show">
+                          <a class="btn btn-warning mb-2 dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Pilih Jenis
+                          </a>
+
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="pilih_terumbu_karang.php?id_lokasi=<?=$_SESSION['id_lokasi'];?>">Tampilkan Semua</a>
+
+                            <?php
+
+                            $sqlviewjenis = 'SELECT * FROM t_detail_lokasi
+                                              LEFT JOIN t_terumbu_karang ON t_terumbu_karang.id_terumbu_karang = t_detail_lokasi.id_terumbu_karang
+                                              LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
+                                              AND id_lokasi = :id_lokasi AND stok_terumbu > 0 AND t_jenis_terumbu_karang.id_jenis IS NOT NULL
+                                              GROUP BY t_jenis_terumbu_karang.id_jenis';
+
+                            $stmt = $pdo->prepare($sqlviewjenis);
+                            $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
+                            $rowjenis = $stmt->fetchAll();
+
+                            foreach($rowjenis as $jenis){
+                            ?>
+                            <a class="dropdown-item" href="pilih_terumbu_karang.php?id_lokasi=<?=$_SESSION['id_lokasi']?>&id_jenis=<?= $jenis->id_jenis?>"><?=$jenis->nama_jenis?></a>
+                            <?php } ?>
+                        </div>
+                    </div>
+                      </div>
+        </div>
+
         <div class="row shop-items">
             <div class="card-columns">
         <?php
