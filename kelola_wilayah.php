@@ -144,6 +144,7 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
                               <th scope="row"><?=$rowitem->id_wilayah?></th>
                               <td><?=$rowitem->nama_wilayah?></td>
                               <td>
+                              <a href="atur_pengelola_wilayah.php?id_wilayah=<?=$rowitem->id_wilayah?>" class="mr-3 btn btn-act"><i class="fas fa-id-badge"></i> Atur Pengelola</a>
                                 <a href="edit_wilayah.php?id_wilayah=<?=$rowitem->id_wilayah?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 <a href="hapus.php?type=wilayah&id_wilayah=<?=$rowitem->id_wilayah?>" class="far fa-trash-alt btn btn-act"></a>
                                 </td>

@@ -18,18 +18,18 @@ if (isset($_POST['login'])) {
                 $_SESSION['level_user']     = $row->level_user;
                 header('Location: dashboard_user.php?pesan=login_berhasil');
 
-            } elseif ($row->level_user == "2" || ($row->level_user >= "3")) {
+            } elseif ($row->level_user == "2" || ($row->level_user == "3")) {
                 $_SESSION['id_user']        = $row->id_user;
                 $_SESSION['username']        = $row->username;
                 $_SESSION['level_user']     = $row->level_user;
                 header('Location: dashboard_admin.php?pesan=login_berhasil_w');
 
             }
-            elseif ($row->level_user == "0") {
+            elseif ($row->level_user == "4") {
                 $_SESSION['id_user']        = $row->id_user;
                 $_SESSION['username']        = $row->username;
                 $_SESSION['level_user']     = $row->level_user;
-                header('Location: dashboard_admin.php?pesan=login_berhasil_p');
+                header('Location: dashboard_admin_pusat.php?pesan=login_berhasil_p');
 
             }
             else {
@@ -126,6 +126,12 @@ if (isset($_POST['login'])) {
     						</span>
                 <a href="register_pengelola.php" class="txt2 hov1">
     							Daftar Pengelola
+                </a><br>
+                <span class="txt1">
+    							Pengelola Pusat/Provinsi ?
+    						</span>
+                <a href="register_pusat.php" class="txt2 hov1">
+    							Daftar Pengelola Pusat
     						</a>
     					</div>
     				</form>

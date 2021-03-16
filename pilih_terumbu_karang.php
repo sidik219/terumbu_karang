@@ -10,7 +10,7 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
       header("Location: map.php");
   }
 
-  if(isset($_GET['id_jenis'])){
+  if(isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")){
     $id_jenis = $_GET['id_jenis'];
 
     $sqlviewtk = 'SELECT * FROM t_detail_lokasi
@@ -21,6 +21,15 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
 
     $stmt = $pdo->prepare($sqlviewtk);
     $stmt->execute(['id_jenis' => $_GET['id_jenis'], 'id_lokasi' => $_SESSION['id_lokasi']]);
+    $row = $stmt->fetchAll();
+  }elseif(isset($_GET['id_jenis']) && (($_GET['id_jenis']) == "")){
+    $sqlviewtk = 'SELECT * FROM t_detail_lokasi
+                LEFT JOIN t_terumbu_karang ON t_terumbu_karang.id_terumbu_karang = t_detail_lokasi.id_terumbu_karang
+                LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
+                WHERE id_lokasi = :id_lokasi AND stok_terumbu > 0';
+
+    $stmt = $pdo->prepare($sqlviewtk);
+    $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
     $row = $stmt->fetchAll();
   }
   else{
@@ -104,7 +113,7 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
         </aside>
 
 <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div class="content-wrapper bg-light">
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
@@ -208,8 +217,8 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
     </div>
     <!-- ./wrapper -->
 
- <footer class="main-footer p-0 border-top-0">
-        <section class="container content-section p-3 shadow-lg pb-0 rounded">
+ <footer class="main-footer bg-light p-0 border-top-0">
+        <section class="container bg-white content-section p-3 shadow-lg pb-0 rounded">
             <h4 class="section-header font-weight-bold" id="keranjang"><i class="fas fa-cart-arrow-down"></i> Keranjang Anda</h4>
             <div class="cart-items">
             </div>
