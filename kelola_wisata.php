@@ -160,7 +160,7 @@ $row = $stmt->fetchAll();
                                             Paket donasi
                                         </div>
 
-                                        <?php
+                                        <?php/*
                                         $sqlviewpaket = 'SELECT * FROM tb_paket_donasi
                                                             LEFT JOIN t_wisata ON tb_paket_donasi.id_wisata = t_wisata.id_wisata
                                                             WHERE t_wisata.id_wisata = :id_wisata
@@ -170,13 +170,13 @@ $row = $stmt->fetchAll();
                                         $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
                                         $rowpersentase = $stmt->fetchAll();
 
-                                        foreach ($rowpersentase as $rowpaket) { ?>
+                                        foreach ($rowpersentase as $rowpaket) { */?>
                                         <div class="col isi">
                                             <span class="badge badge-pill badge-success mr-2">
                                                 <?=number_format($rowpaket->persentase_paket_donasi, 0)?>%
                                             </span>
                                         </div>
-                                        <?php } ?>
+                                        <?php //} ?>
 
                                     </div>
 

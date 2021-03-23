@@ -23,7 +23,7 @@ include 'hak_akses.php';
         $rowwisata = $stmt->fetch();
 
         if (isset($_POST['submit'])) {
-            if (isset($_POST['persentase_paket_donasi'])) {
+            if ($_POST['submit'] == 'Simpan') {
                 $id_lokasi                  = $_POST['dd_id_lokasi'];
                 $judul_wisata               = $_POST['tb_judul_wisata'];
                 $deskripsi_wisata           = $_POST['tb_deskripsi_wisata'];
@@ -54,7 +54,7 @@ include 'hak_akses.php';
                 }
                 //---image upload end
 
-                $sqldeleteisipaket = "DELETE FROM tb_paket_donasi
+                $sqldeleteisipaket = "DELETE FROM tb_paket_wisata
                                         WHERE id_wisata = :id_wisata";
 
                 $stmt = $pdo->prepare($sqldeleteisipaket);
@@ -84,16 +84,19 @@ include 'hak_akses.php';
                     $last_wisata_id = $pdo->lastInsertId();
                 }
 
-                foreach ($_POST['persentase_paket_donasi'] as $persentase_paket_donasi) {
-                    $persentase_paket_donasi    = $persentase_paket_donasi;
-                    $id_wisata                  = $_GET['id_wisata'];
+                $i = 0;
+                foreach ($_POST['nama_paket'] as $nama_paket) {
+                    $nama_paket_wisata    = $_POST['nama_paket'][$i];
+                    $biaya_paket          = $_POST['biaya_paket'][$i];
+                    $id_wisata            = $_GET['id_wisata'];
 
-                    $sqlinsertpaketdonasi = "INSERT INTO tb_paket_donasi (persentase_paket_donasi, id_wisata)
-                                        VALUES (:persentase_paket_donasi, :id_wisata)";
+                    $sqlinsertpaketdonasi = "INSERT INTO tb_paket_wisata (nama_paket_wisata, biaya_paket, id_wisata)
+                                        VALUES (:nama_paket_wisata, :biaya_paket, :id_wisata)";
 
                     $stmt = $pdo->prepare($sqlinsertpaketdonasi);
-                    $stmt->execute(['persentase_paket_donasi' => $persentase_paket_donasi,
-                                    'id_wisata'               => $id_wisata
+                    $stmt->execute(['nama_paket_wisata' => $nama_paket_wisata,
+                                    'biaya_paket'       => $biaya_paket,
+                                    'id_wisata'         => $id_wisata
                                     ]);
 
                     $affectedrows = $stmt->rowCount();
@@ -103,6 +106,7 @@ include 'hak_akses.php';
                         //echo "HAHAHAAHA GREAT SUCCESSS !";
                         header("Location: kelola_wisata.php?status=addsuccess");
                     }
+                    $i++;
                 } //End Foreach
             } else {
                 echo '<script>alert("Harap pilih paket donasi yang akan ditambahkan")</script>';
@@ -232,23 +236,24 @@ include 'hak_akses.php';
                     </div>
 
                     <div class="form-group field_wrapper">
-                        <label for="persentase_paket_donasi">Paket donasi</label><br>
+                        <label for="persentase_paket_donasi">Paket Wisata</label><br>
                         <div class="form-group fieldGroup">
                             <div class="input-group">
 
                                 <?php
-                                $sqlviewpaket = 'SELECT * FROM tb_paket_donasi
-                                                    LEFT JOIN t_wisata ON tb_paket_donasi.id_wisata = t_wisata.id_wisata
+                                $sqlviewpaket = 'SELECT * FROM tb_paket_wisata
+                                                    LEFT JOIN t_wisata ON tb_paket_wisata.id_wisata = t_wisata.id_wisata
                                                     WHERE t_wisata.id_wisata = :id_wisata
-                                                    AND t_wisata.id_wisata = tb_paket_donasi.id_wisata';
+                                                    AND t_wisata.id_wisata = tb_paket_wisata.id_wisata';
 
                                 $stmt = $pdo->prepare($sqlviewpaket);
                                 $stmt->execute(['id_wisata' => $rowwisata->id_wisata]);
-                                $rowpersentase = $stmt->fetchAll();
+                                $rowpaket = $stmt->fetchAll();
 
-                                foreach ($rowpersentase as $rowpaket) {
+                                foreach ($rowpaket as $paket) {
                                 ?>
-                                <input type="text" name="persentase_paket_donasi[]" value="<?=$rowpaket->persentase_paket_donasi?>" class="form-control" placeholder="Paket Donasi"/>
+                                <input type="text" name="nama_paket[]" value="<?=$paket->nama_paket_wisata?>" class="form-control" placeholder="Nama Paket"/>
+                                <input type="text" name="biaya_paket[]" value="<?=$paket->biaya_paket?>" class="form-control" placeholder="Biaya Paket"/>
                                 <?php } ?>
                             </div>
                         </div>

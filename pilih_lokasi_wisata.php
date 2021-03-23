@@ -114,15 +114,25 @@ include 'hak_akses.php';
                     foreach ($rowwisata as $rowitem) {
                         if ($rowitem->status_aktif == "Aktif") { ?>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4" style="text-align: left;">
                             <div class="card card-pilihan mb-4 shadow-sm">
                             <a href="detail_lokasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>">
                                 <img class="card-img-top" height="100%" src="<?=$rowitem->foto_wisata?>">
                             </a>
                                 <div class="card-body card-body-costom">
                                     <p class="card-title"><h5 class="font-weight-bold"><?=$rowitem->nama_lokasi?></h5></p>
-                                    <p class="card-text"><?=$rowitem->judul_wisata?></p>
-                                    <a class="btn btn-primary btn-lg btn-block mb-4" href="detail_lokasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" class="card-donasi__cta" style="color: white;">Pilih Wisata</a>
+
+                                    <h5 style="text-align: left;"> Wisata :</h5>
+                                    <p class="card-text font-weight-bold" style="text-align: left;">
+                                        <span class="badge-pill badge-info mr-2"><?=$rowitem->judul_wisata?></span></p>
+
+                                    <h5 style="text-align: left;"> Biaya Wisata :</h5>
+                                    <h4 class="card-text font-weight-bold" style="text-align: left;">
+                                        <span class="badge badge-pill badge-success mr-2">
+                                        Rp. <?=number_format($rowitem->biaya_wisata, 0)?></span></h4>
+
+                                    
+                                    <a class="btn btn-primary btn-lg btn-block mb-4" href="detail_lokasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" class="card-donasi__cta" style="color: white;">Rincian Wisata</a>
                                 </div>
                             </div>
                         </div>

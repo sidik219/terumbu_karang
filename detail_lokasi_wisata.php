@@ -15,7 +15,7 @@ include 'hak_akses.php';
 
     $stmt = $pdo->prepare($sqllokasi);
     $stmt->execute(['id_wisata' => $id_wisata]);
-    $row = $stmt->fetchAll();
+    $rowwisata = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -103,8 +103,7 @@ include 'hak_akses.php';
                 <div class="container-fluid">
                     <?php
                      //$index = 0;
-                        foreach ($row as $rowitem) { ?>
-
+                        foreach ($rowwisata as $rowitem) { ?>
                           <div class="row card-donasi p-2 m-0">
                             <div class="col-6 text-center">
                               <img class="w-50" src="<?=$rowitem->foto_wisata?>">
@@ -114,15 +113,39 @@ include 'hak_akses.php';
                               <div class="col-12 p-0 border-bottom"><span class="text-xl text-warning"><?=$rowitem->nama_lokasi?></span></div></div>
 
                               <div class="row p-2 border-bottom"><p class="">
+                                    <i class="text-danger fas fa-map-marker-alt"></i>
                                     <b>Alamat:</b> <?=$rowitem->deskripsi_lokasi?>
                                 </p></div>
                               <div class="row p-2 border-bottom"><p class="">
+                                    <i class="text-primary fas fa-suitcase"></i>
                                     <b>Daftar Wisata:</b> <?=$rowitem->judul_wisata?>
                                 </p></div>
+
                               <div class="row p-2 border-bottom"><p class="">
+                                    <i class="text-info fas fa-luggage-cart"></i>
+                                    <label>Paket Wisata:</label><br>
+                              <?php
+                                $sqlviewpaket = 'SELECT * FROM tb_paket_wisata
+                                                    LEFT JOIN t_wisata ON tb_paket_wisata.id_wisata = t_wisata.id_wisata
+                                                    WHERE t_wisata.id_wisata = :id_wisata
+                                                    AND t_wisata.id_wisata = tb_paket_wisata.id_wisata';
+
+                                $stmt = $pdo->prepare($sqlviewpaket);
+                                $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
+                                $rowpaket = $stmt->fetchAll();
+
+                                foreach ($rowpaket as $paket) { ?>
+                                    <i class="text-info fas fa-arrow-circle-right"></i> <?=$paket->nama_paket_wisata?>
+                                    (<i class="text-success fas fa-money-bill-wave"></i> Rp. <?=number_format($paket->biaya_paket, 0)?>)<br>
+                                <?php } ?>
+                                </p></div>
+
+                              <div class="row p-2 border-bottom"><p class="">
+                                    <i class="text-success fas fa-money-bill-wave"></i>
                                     <b>Harga:</b> Rp. <?=number_format($rowitem->biaya_wisata, 0)?>
                                 </p></div>
                               <div class="row p-2 border-bottom"><p class="">
+                                    <i class="text-warning far fa-bookmark"></i>
                                     <b>Deskripsi:</b> <?=$rowitem->deskripsi_wisata?>
                                 </p></div>
                               <div class="row"><a class="btn btn-primary btn-lg btn-block mb-1"

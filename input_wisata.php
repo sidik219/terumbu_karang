@@ -13,7 +13,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         $rowlokasi = $stmt->fetchAll();
 
 if (isset($_POST['submit'])) {
-    if (isset($_POST['persentase_paket_donasi'])) {
+    if ($_POST['submit'] == 'Simpan') {
         $id_lokasi                  = $_POST['dd_id_lokasi'];
         $judul_wisata               = $_POST['tb_judul_wisata'];
         $deskripsi_wisata           = $_POST['tb_deskripsi_wisata'];
@@ -56,17 +56,20 @@ if (isset($_POST['submit'])) {
             //echo "HAHAHAAHA GREAT SUCCESSS !";
             $last_wisata_id = $pdo->lastInsertId();
         }
+        //var_dump($_POST['nama_paket']);var_dump($_POST['biaya_paket']);exit();
+        $i = 0;
+        foreach ($_POST['nama_paket'] as $nama_paket) {
+            $nama_paket_wisata    = $_POST['nama_paket'][$i];
+            $biaya_paket          = $_POST['biaya_paket'][$i];
+            $id_wisata            = $last_wisata_id;
 
-        foreach ($_POST['persentase_paket_donasi'] as $persentase_paket_donasi) {
-            $persentase_paket_donasi       = $persentase_paket_donasi;
-            $id_wisata                     = $last_wisata_id;
-
-            $sqlinsertpaketdonasi = "INSERT INTO tb_paket_donasi (persentase_paket_donasi, id_wisata)
-                                        VALUES (:persentase_paket_donasi, :id_wisata)";
+            $sqlinsertpaketdonasi = "INSERT INTO tb_paket_wisata (nama_paket_wisata, biaya_paket, id_wisata)
+                                        VALUES (:nama_paket_wisata, :biaya_paket, :id_wisata)";
 
             $stmt = $pdo->prepare($sqlinsertpaketdonasi);
-            $stmt->execute(['persentase_paket_donasi' => $persentase_paket_donasi,
-                            'id_wisata'               => $id_wisata
+            $stmt->execute(['nama_paket_wisata' => $nama_paket_wisata,
+                            'biaya_paket'       => $biaya_paket,
+                            'id_wisata'         => $id_wisata
                             ]);
 
             $affectedrows = $stmt->rowCount();
@@ -76,6 +79,7 @@ if (isset($_POST['submit'])) {
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
                 header("Location: kelola_wisata.php?status=addsuccess");
             }
+            $i++;
         } //End Foreach
     } else {
         echo '<script>alert("Harap pilih paket donasi yang akan ditambahkan")</script>';
@@ -202,14 +206,15 @@ if (isset($_POST['submit'])) {
 
                     <div class="form-group">
                         <label for="num_biaya_wisata">Biaya Wisata</label>
-                        <input type="number" id="num_biaya_wisata" name="num_biaya_wisata" class="form-control" required>
+                        <input type="text" id="total_paket" name="num_biaya_wisata" class="form-control" required>
                     </div>
 
                     <div class="form-group field_wrapper">
-                        <label for="persentase_paket_donasi">Paket donasi</label><br>
+                        <label for="paket_wisata">Paket Wisata</label><br>
                         <div class="form-group fieldGroup">
                             <div class="input-group">
-                                <input type="text" name="persentase_paket_donasi[]" class="form-control" placeholder="Paket Donasi"/>
+                                <input type="text" name="nama_paket[]" class="form-control" placeholder="Nama Paket"/>
+                                <input type="number" name="biaya_paket[]" min="0" class="form-control" placeholder="Biaya Paket"/>
                                 <div class="input-group-addon">
                                     <a href="javascript:void(0)" class="btn btn-success addMore">
                                         <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Paket
@@ -275,7 +280,8 @@ if (isset($_POST['submit'])) {
                     <!-- copy of input fields group -->
                     <div class="form-group fieldGroupCopy" style="display: none;">
                         <div class="input-group">
-                            <input type="text" name="persentase_paket_donasi[]" class="form-control" placeholder="Paket Donasi"/>
+                            <input type="text" name="nama_paket[]" class="form-control" placeholder="Nama Paket"/>
+                            <input type="number" name="biaya_paket[]" min="0" class="form-control" placeholder="Biaya Paket"/>
                             <div class="input-group-addon">
                                 <a href="javascript:void(0)" class="btn btn-danger remove">
                                     <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Paket
@@ -321,7 +327,7 @@ if (isset($_POST['submit'])) {
     <script>
         $(document).ready(function(){
         //group add limit
-        var maxGroup = 3;
+        var maxGroup = 5;
 
         //add more fields group
         $(".addMore").click(function(){
