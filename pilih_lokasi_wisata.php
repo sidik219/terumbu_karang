@@ -126,7 +126,53 @@ include 'hak_akses.php';
                                     <p class="card-text font-weight-bold" style="text-align: left;">
                                         <span class="badge-pill badge-info mr-2"><?=$rowitem->judul_wisata?></span></p>
 
-                                    <h5 style="text-align: left;"> Biaya Wisata :</h5>
+                                    <h5 style="text-align: left;"> Paket Wisata :</h5>
+                                    <p class="card-text font-weight-bold" style="text-align: left;">
+                                        <?php
+                                        $sqlviewpaket = 'SELECT * FROM tb_paket_wisata 
+                                                            LEFT JOIN t_wisata ON tb_paket_wisata.id_wisata = t_wisata.id_wisata
+                                                            WHERE t_wisata.id_wisata = :id_wisata
+                                                            AND t_wisata.id_wisata = tb_paket_wisata.id_wisata';
+
+                                        $stmt = $pdo->prepare($sqlviewpaket);
+                                        $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
+                                        $rowpaket = $stmt->fetchAll();
+
+                                        foreach ($rowpaket as $paket) { ?>
+                                        <div class="divTable">
+                                            <div class="divTableBody">
+                                                <div class="divTableRow">
+                                                    <div class="divTableCell-1">
+                                                        <i class="text-info fas fa-arrow-circle-right"></i>                             
+                                                        <?=$paket->nama_paket_wisata?>
+                                                    </div>
+                                                    <div class="divTableCell-2">
+                                                        <i class="text-success fas fa-money-bill-wave"></i> 
+                                                        Rp. <?=number_format($paket->biaya_paket, 0)?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php } ?></p>
+
+                                    <h5 style="text-align: left;"> Total Paket Wisata :</h5>
+                                    <h4 class="card-text font-weight-bold" style="text-align: left;">
+                                        <?php
+                                        $sqlviewpaket = 'SELECT SUM(biaya_paket) AS total_biaya_paket, nama_paket_wisata, biaya_paket FROM tb_paket_wisata 
+                                                            LEFT JOIN t_wisata ON tb_paket_wisata.id_wisata = t_wisata.id_wisata
+                                                            WHERE t_wisata.id_wisata = :id_wisata
+                                                            AND t_wisata.id_wisata = tb_paket_wisata.id_wisata';
+
+                                        $stmt = $pdo->prepare($sqlviewpaket);
+                                        $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
+                                        $rowpaket = $stmt->fetchAll();
+
+                                        foreach ($rowpaket as $paket) { ?>
+                                        <span class="badge badge-pill badge-success mr-2">
+                                        Rp. <?=number_format($paket->total_biaya_paket, 0)?></span>
+                                        <?php } ?></h4>
+
+                                    <h5 style="text-align: left;"> Biaya Wisata Peserta:</h5>
                                     <h4 class="card-text font-weight-bold" style="text-align: left;">
                                         <span class="badge badge-pill badge-success mr-2">
                                         Rp. <?=number_format($rowitem->biaya_wisata, 0)?></span></h4>

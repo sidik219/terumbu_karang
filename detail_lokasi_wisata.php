@@ -109,23 +109,51 @@ include 'hak_akses.php';
                               <img class="w-50" src="<?=$rowitem->foto_wisata?>">
                             </div>
                             <div class="col">
-                              <div class="row p-2"><span><b>Nama Lokasi</b></span>
-                              <div class="col-12 p-0 border-bottom"><span class="text-xl text-warning"><?=$rowitem->nama_lokasi?></span></div></div>
+                                <div class="row p-2"><span><b>Nama Lokasi</b></span>
+                                <div class="col-12 p-0 border-bottom"><span class="text-xl text-warning"><?=$rowitem->nama_lokasi?></span></div></div>
 
-                              <div class="row p-2 border-bottom"><p class="">
+                                <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-danger fas fa-map-marker-alt"></i>
                                     <b>Alamat:</b> <?=$rowitem->deskripsi_lokasi?>
                                 </p></div>
-                              <div class="row p-2 border-bottom"><p class="">
+                                <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-primary fas fa-suitcase"></i>
                                     <b>Daftar Wisata:</b> <?=$rowitem->judul_wisata?>
                                 </p></div>
 
-                              <div class="row p-2 border-bottom"><p class="">
+                                <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-info fas fa-luggage-cart"></i>
                                     <label>Paket Wisata:</label><br>
-                              <?php
-                                $sqlviewpaket = 'SELECT * FROM tb_paket_wisata
+                                <?php
+                                    $sqlviewpaket = 'SELECT * FROM tb_paket_wisata 
+                                                        LEFT JOIN t_wisata ON tb_paket_wisata.id_wisata = t_wisata.id_wisata
+                                                        WHERE t_wisata.id_wisata = :id_wisata
+                                                        AND t_wisata.id_wisata = tb_paket_wisata.id_wisata';
+
+                                    $stmt = $pdo->prepare($sqlviewpaket);
+                                    $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
+                                    $rowpaket = $stmt->fetchAll();
+
+                                    foreach ($rowpaket as $paket) { ?>
+                                    <div class="divTable">
+                                        <div class="divTableBody">
+                                            <div class="divTableRow">
+                                                <div class="divTableCell-1">
+                                                    <i class="text-info fas fa-arrow-circle-right"></i>                             
+                                                    <?=$paket->nama_paket_wisata?>
+                                                </div>
+                                                <div class="divTableCell-2">
+                                                    <i class="text-success fas fa-money-bill-wave"></i> 
+                                                    Rp. <?=number_format($paket->biaya_paket, 0)?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?></p>
+                                </p></div>
+
+                                <?php
+                                $sqlviewpaket = 'SELECT SUM(biaya_paket) AS total_biaya_paket, nama_paket_wisata, biaya_paket FROM tb_paket_wisata 
                                                     LEFT JOIN t_wisata ON tb_paket_wisata.id_wisata = t_wisata.id_wisata
                                                     WHERE t_wisata.id_wisata = :id_wisata
                                                     AND t_wisata.id_wisata = tb_paket_wisata.id_wisata';
@@ -135,20 +163,21 @@ include 'hak_akses.php';
                                 $rowpaket = $stmt->fetchAll();
 
                                 foreach ($rowpaket as $paket) { ?>
-                                    <i class="text-info fas fa-arrow-circle-right"></i> <?=$paket->nama_paket_wisata?>
-                                    (<i class="text-success fas fa-money-bill-wave"></i> Rp. <?=number_format($paket->biaya_paket, 0)?>)<br>
-                                <?php } ?>
-                                </p></div>
-
-                              <div class="row p-2 border-bottom"><p class="">
+                                <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-success fas fa-money-bill-wave"></i>
-                                    <b>Harga:</b> Rp. <?=number_format($rowitem->biaya_wisata, 0)?>
+                                    <b>Total Paket Wisata:</b><br> Rp. <?=number_format($paket->total_biaya_paket, 0)?>
                                 </p></div>
-                              <div class="row p-2 border-bottom"><p class="">
+                                <?php } ?>
+
+                                <div class="row p-2 border-bottom"><p class="">
+                                    <i class="text-success fas fa-money-bill-wave"></i>
+                                    <b>Biaya Wisata Peserta:</b><br> Rp. <?=number_format($rowitem->biaya_wisata, 0)?>
+                                </p></div>
+                                <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-warning far fa-bookmark"></i>
                                     <b>Deskripsi:</b> <?=$rowitem->deskripsi_wisata?>
                                 </p></div>
-                              <div class="row"><a class="btn btn-primary btn-lg btn-block mb-1"
+                                <div class="row"><a class="btn btn-primary btn-lg btn-block mb-1"
                                 href="reservasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>_&status=review_reservasi" style="color: white;">Wisata Sekarang</a></div>
 
                             </div>

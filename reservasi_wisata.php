@@ -7,7 +7,7 @@ include 'hak_akses.php';
     $id_user = 1;
     $id_status_reservasi_wisata = 1;
     $keterangan = '-';
-
+    
     $sqllokasi = 'SELECT * FROM t_wisata
                     LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
                     WHERE id_wisata = :id_wisata';
@@ -17,38 +17,88 @@ include 'hak_akses.php';
     $row = $stmt->fetchAll();
 
     if (isset($_POST['submit'])) {
-        $id_lokasi          = $_POST['id_lokasi'];
-        $id_wisata          = $_POST['id_wisata'];
-        $tgl_reservasi      = $_POST['tgl_reservasi'];
-        $jumlah_peserta     = $_POST['jumlah_peserta'];
-        $jumlah_donasi      = $_POST['jumlah_donasi'];
-        $total              = $_POST['total'];
+        if ($_POST['submit'] == 'Simpan') {
+            $id_lokasi          = $_POST['id_lokasi'];
+            $id_wisata          = $_POST['id_wisata'];
+            $tgl_reservasi      = $_POST['tgl_reservasi'];
+            $jumlah_peserta     = $_POST['jumlah_peserta'];
+            $jumlah_donasi      = $_POST['split_harga_tk'];
+            $total              = $_POST['total'];
+            
+            //var_dump($jumlah_donasi); exit();
+            $tanggal_sekarang = date ('Y-m-d H:i:s', time());
 
-        $tanggal_sekarang = date ('Y-m-d H:i:s', time());
+            $sqlreservasi = "INSERT INTO t_reservasi_wisata (id_user, id_lokasi, id_wisata,
+                                            tgl_reservasi, jumlah_peserta, jumlah_donasi, total,
+                                            id_status_reservasi_wisata, keterangan, update_terakhir)
+                                VALUES (:id_user, :id_lokasi, :id_wisata,
+                                            :tgl_reservasi, :jumlah_peserta, :jumlah_donasi, :total,
+                                            :id_status_reservasi_wisata, :keterangan, :update_terakhir)";
 
-        $sqlreservasi = "INSERT INTO t_reservasi_wisata (id_user, id_lokasi, id_wisata,
-                                        tgl_reservasi, jumlah_peserta, jumlah_donasi, total,
-                                        id_status_reservasi_wisata, keterangan, update_terakhir)
-                            VALUES (:id_user, :id_lokasi, :id_wisata,
-                                        :tgl_reservasi, :jumlah_peserta, :jumlah_donasi, :total,
-                                        :id_status_reservasi_wisata, :keterangan, :update_terakhir)";
+            $stmt = $pdo->prepare($sqlreservasi);
+            $stmt->execute(['id_user' => $id_user, 'id_lokasi' => $id_lokasi,
+                            'id_wisata' => $id_wisata, 'tgl_reservasi' => $tgl_reservasi,
+                            'jumlah_peserta' => $jumlah_peserta, 'jumlah_donasi' => $jumlah_donasi, 'total' => $total,
+                            'id_status_reservasi_wisata' => $id_status_reservasi_wisata, 'keterangan' => $keterangan,
+                            'update_terakhir' => $tanggal_sekarang]);
 
-        $stmt = $pdo->prepare($sqlreservasi);
-        $stmt->execute(['id_user' => $id_user, 'id_lokasi' => $id_lokasi,
-                        'id_wisata' => $id_wisata, 'tgl_reservasi' => $tgl_reservasi,
-                        'jumlah_peserta' => $jumlah_peserta, 'jumlah_donasi' => $jumlah_donasi, 'total' => $total,
-                        'id_status_reservasi_wisata' => $id_status_reservasi_wisata, 'keterangan' => $keterangan,
-                        'update_terakhir' => $tanggal_sekarang]);
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+                //echo "HAHAHAAHA INSERT FAILED !";
+            } else {
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                //header("Location: reservasi_saya.php?status=addsuccess");
+                $last_id_reservasi = $pdo->lastInsertId();
+            }
+            
+            $i = 0;
+            foreach ($_POST['nominal'] as $nominal) {
+                $id_user                = 1; //ok
+                $id_status_donasi       = 1; //ok
+                $nominal                = $_POST['nominal'][$i]; //ok
+                $nama_donatur           = $_POST['nama_donatur'][$i]; //ok
+                $nomor_rekening_donatur = $_POST['no_rekening_donatur'][$i]; //ok
+                $bank_donatur           = $_POST['nama_bank_donatur'][$i]; //ok
+                $id_lokasi              = $_POST['id_lokasi'][$i]; //ok
+                $pesan                  = $_POST['pesan'][$i]; //ok
+                $tanggal_donasi         = date ('Y-m-d H:i:s', time()); //ok
+                $id_reservasi           = $last_id_reservasi; //ok
+        
+                $sqlinsertdonasi = "INSERT INTO t_donasi
+                                        (id_user, nominal, tanggal_donasi, id_status_donasi, 
+                                        id_lokasi, nama_donatur, nomor_rekening_donatur, bank_donatur, 
+                                        pesan, update_terakhir, id_reservasi)
+                                    VALUES (:id_user, :nominal, :tanggal_donasi, :id_status_donasi,
+                                            :id_lokasi,  :nama_donatur, :nomor_rekening_donatur, :bank_donatur, 
+                                            :pesan, :update_terakhir, :id_reservasi)";
+        
+                $stmt = $pdo->prepare($sqlinsertdonasi);
+                $stmt->execute(['id_user'                   => $id_user, 
+                                'nominal'                   => $nominal,
+                                'id_lokasi'                 => $id_lokasi,
+                                'id_status_donasi'          => $id_status_donasi,
+                                'pesan'                     => $pesan,
+                                'nama_donatur'              => $nama_donatur,
+                                'bank_donatur'              => $bank_donatur,
+                                'nomor_rekening_donatur'    => $nomor_rekening_donatur,
+                                'tanggal_donasi'            => $tanggal_donasi,
+                                'update_terakhir'           => $tanggal_donasi,
+                                'id_reservasi'              => $id_reservasi
+                                ]);
 
-        $affectedrows = $stmt->rowCount();
-        if ($affectedrows == '0') {
-            //echo "HAHAHAAHA INSERT FAILED !";
+                $affectedrows = $stmt->rowCount();
+                if ($affectedrows == '0') {
+                    //echo "HAHAHAAHA INSERT FAILED !";
+                } else {
+                    //echo "HAHAHAAHA GREAT SUCCESSS !";
+                    header("Location: reservasi_saya.php?status=addsuccess");
+                }
+                $i++;
+            }
         } else {
-            //echo "HAHAHAAHA GREAT SUCCESSS !";
-            header("Location: reservasi_saya.php?status=addsuccess");
+            echo '<script>alert("Harap pilih paket donasi yang akan ditambahkan")</script>';
         }
     }
-
 ?>
 
 <!DOCTYPE html>
@@ -152,9 +202,9 @@ include 'hak_akses.php';
                 <!-- Paket Wisata -->
                 <div class="card" style="width: 20.5rem; margin-bottom: 20px;">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item card-reservasi">Paket Wisata :</li>
-                        <input type="text" id="deskripsi_wisata" name="deskripsi_wisata" value="<?=$rowitem->judul_wisata?> : " class="list-group-item reservasi-input" readonly>
-                        <input type="text" id="subtotal" name="subtotal" value="Subtotal : Rp " class="list-group-item reservasi-input" readonly>
+                        <li class="list-group-item card-reservasi">Wisata :</li>
+                        <input type="text" id="deskripsi_wisata" name="deskripsi_wisata" value="Peserta <?=$rowitem->judul_wisata?> : " class="list-group-item paket-wisata" disabled>
+                        <input type="text" id="subtotal" name="subtotal" value="Subtotal : Rp " class="list-group-item paket-wisata" disabled>
                     </ul>
                 </div>
 
@@ -162,67 +212,66 @@ include 'hak_akses.php';
                 <div class="card" style="width: 20.5rem;">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item card-reservasi">Paket Donasi : </li>
-                        <select class="custom-select" id="donasi_saya" onchange="myFunction()">
-                            <option value="1" selected disabled>Pilih Donasi:</option>
+
+                        <!-- Jenis Terumbu Karang -->
+                        <label  class="keterangan-paket-donasi">Jenis Terumbu Karang</label>
+                        <select class="form-control" id="dd_id_wilayah" onchange="load_detail_lokasi(this.value); myFunction2();">
+                            <option value="1" selected disabled>Pilih Jenis Terumbu Karang:</option>
                             <option value="1">Tidak Donasi</option>
 
                             <?php
-                            $sqlviewpaket = 'SELECT * FROM tb_paket_donasi
-                                                LEFT JOIN t_wisata ON tb_paket_donasi.id_wisata = t_wisata.id_wisata
-                                                WHERE t_wisata.id_wisata = :id_wisata
-                                                AND t_wisata.id_wisata = tb_paket_donasi.id_wisata';
+                            $sqlviewjenis = 'SELECT * FROM t_jenis_terumbu_karang';
+                            $stmt = $pdo->prepare($sqlviewjenis);
+                            $stmt->execute();
+                            $rowjenis = $stmt->fetchAll();
 
-                            $stmt = $pdo->prepare($sqlviewpaket);
-                            $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
-                            $rowpersentase = $stmt->fetchAll();
-
-                            foreach ($rowpersentase as $rowpaket) { ?>
-                            <option value="<?=$rowpaket->persentase_paket_donasi?>"><?=$rowpaket->persentase_paket_donasi?>%</option>
+                            foreach ($rowjenis as $jenis) { ?>
+                            <option value="<?=$jenis->id_jenis?>">
+                                ID <?=$jenis->id_jenis?> - <?=$jenis->nama_jenis?>
+                            </option>
                             <?php } ?>
 
                         </select>
+
+                        <!-- Terumbu Karang -->
+                        <label  class="keterangan-paket-donasi">Terumbu Karang</label>
+                        <select class="form-control" id="id_tk"name="dd_id_tk" onchange="myFunction()">
+                            <option value="1" selected disabled>Pilih Terumbu Karang:</option>
+                        </select>
+
+                        <!-- Info Paket Donasi -->
                         <span class="keterangan-paket-donasi">
                             *Harap Transfer sesuai dengan nominal tunai <br> *Paket Donasi =
-                            <?php
-                            $sqlviewpaket = 'SELECT * FROM tb_paket_donasi
-                                                LEFT JOIN t_wisata ON tb_paket_donasi.id_wisata = t_wisata.id_wisata
-                                                WHERE t_wisata.id_wisata = :id_wisata
-                                                AND t_wisata.id_wisata = tb_paket_donasi.id_wisata';
-
-                            $stmt = $pdo->prepare($sqlviewpaket);
-                            $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
-                            $rowpersentase = $stmt->fetchAll();
-
-                            foreach ($rowpersentase as $rowpaket) { ?>
-                            <span class="badge badge-pill badge-success mr-2">
-                                <?=$rowpaket->persentase_paket_donasi?>%
-                            </span>
-                            <?php } ?>
-                            Harga Wisata di Lokasi
+                            Sekalian melakukan donasi terumbu karang
+                            di Lokasi <br>
                             <b style="color: #17a2b8;"><?=$rowitem->nama_lokasi?></b>
                         </span>
-                        <input type="hidden" id="jumlah_donasi" name="jumlah_donasi" value="" class="list-group-item reservasi-input" readonly>
+
+                        <!-- Hiiden Output Jenis Terumbu Karang [data insert donasi] -->
+                        <input type="hidden" id="jenis_tk" name="jenis_tk" value="" class="list-group-item paket-wisata" readonly>
+                        <!-- Hiiden Output Terumbu Karang -->
+                        <input type="hidden" id="terumbu_karang" name="terumbu_karang" value="" class="list-group-item paket-wisata" disabled>
+                        <!-- Hiiden Hasil Split Terumbu Karang [data insert donasi] -->
+                        <input type="hidden" id="split_tk" name="split_tk" value="" class="list-group-item paket-wisata" readonly>
+                        <!-- Hiiden Hasil Split Harga Patokan Terumbu Karang [data insert donasi] -->
+                        <input type="hidden" id="nominal" name="nominal[]" value="" class="list-group-item paket-wisata" readonly>
+
+                        <!-- Output Hasil Split Harga Patokan Terumbu Karang [data insert wisata] -->
+                        <input type="text" id="split_harga_tk" name="split_harga_tk" value="" class="list-group-item" style="color: gray;" readonly>
+
                     </ul>
                 </div>
-
-                <!-- Pesan / Ekspresi
-                <div class="card" style="width: 20.5rem;">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item card-reservasi">Pesan / Ekspresi : </li>
-                        <input type="text" id="jumlah_donasi" name="jumlah_donasi" value="" class="list-group-item reservasi-input">
-                    </ul>
-                </div>-->
 
                 <!-- Total -->
                 <div class="card" style="width: 20.5rem;">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item card-reservasi">Total : </li>
-                        <input type="text" id="total" name="total" value="" class="list-group-item reservasi-input" readonly>
+                        <label class="list-group-item card-reservasi">Total : </label>
+                        <input type="text" id="total" name="total" value="" class="list-group-item" style="color: gray;" readonly>
                     </ul>
                 </div>
 
                 <!-- Link Untuk Ke Halaman Donasi Terumbu Karang -->
-                <a class="btn btn-primary btn-lg btn-block mb-4" href="pilih_jenis_tk.php?id_lokasi=<?=$rowitem->id_lokasi?>" style="color: white; width: 20.5rem;">
+                <a class="btn btn-primary btn-lg btn-block mb-4" href="pilih_terumbu_karang.php?id_lokasi=<?=$rowitem->id_lokasi?>" style="color: white; width: 20.5rem;">
                     Ayo Donasi Terumbu Karang
                 </a>
             </ul>
@@ -249,14 +298,103 @@ include 'hak_akses.php';
 
                 <div class="form-group">
                     <label for="jumlah_peserta">Jumlah Peserta</label>
-                    <input type="number" id="jumlah_peserta" name="jumlah_peserta" value="1" min="1" onchange="myFunction()" class="form-control" required>
+                    <input type="number" id="jumlah_peserta" name="jumlah_peserta" value="0" min="0" onchange="myFunction()" class="form-control" required>
                 </div>
 
                 <div class="form-group">
                     <label for="jumlah_peserta"></label>
                     <input type="hidden" id="biaya_wisata" name="biaya_wisata" value="<?=$rowitem->biaya_wisata?>" class="form-control" readonly>
                 </div>
+                
+                <!-- Paket Wisata -->
+                <div class="" style="width:100%;">
+                    <div class="">
+                        <h4 class="card-header mb-2 pl-0">Rincian Paket Wisata,
+                            <span class="text-info font-weight-bolder"> <?=$rowitem->nama_lokasi?></span></h4>
+                    </div>
+                </div>
+                <?php
+                $sqlviewpaket = 'SELECT * FROM tb_paket_wisata 
+                                    LEFT JOIN t_wisata ON tb_paket_wisata.id_wisata = t_wisata.id_wisata
+                                    WHERE t_wisata.id_wisata = :id_wisata
+                                    AND t_wisata.id_wisata = tb_paket_wisata.id_wisata';
 
+                $stmt = $pdo->prepare($sqlviewpaket);
+                $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
+                $rowpaket = $stmt->fetchAll();
+
+                foreach ($rowpaket as $paket) { ?>
+                <div class="row">
+                    <div class="col">
+                        <span class="font-weight-bold">
+                        <i class="text-info fas fa-arrow-circle-right"></i> <?=$paket->nama_paket_wisata?></span>
+                    </div>
+                    <div class="col-lg-8  mb-2">
+                        <span class="">
+                        <i class="text-success fas fa-money-bill-wave"></i> Rp. <?=number_format($paket->biaya_paket, 0)?></span>
+                    </div>
+                </div>
+                <?php } ?>
+                <hr class="mb-2"/>
+                <?php
+                $sqlviewpaket = 'SELECT SUM(biaya_paket) AS total_biaya_paket, nama_paket_wisata, biaya_paket FROM tb_paket_wisata 
+                                    LEFT JOIN t_wisata ON tb_paket_wisata.id_wisata = t_wisata.id_wisata
+                                    WHERE t_wisata.id_wisata = :id_wisata
+                                    AND t_wisata.id_wisata = tb_paket_wisata.id_wisata';
+
+                $stmt = $pdo->prepare($sqlviewpaket);
+                $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
+                $rowpaket = $stmt->fetchAll();
+
+                foreach ($rowpaket as $paket) { ?>
+                <div class="row">
+                    <div class="col">
+                        <span class="font-weight-bold">
+                        <i class="text-info fas fa-arrow-circle-right"></i> Total Paket Wisata:</span>
+                    </div>
+                    <div class="col-lg-8  mb-2">
+                        <span class="">
+                        <i class="text-success fas fa-money-bill-wave"></i>
+                        <input type="hidden" id="total_paket_wisata" value="<?=$paket->total_biaya_paket?>">
+                        Rp. <input value="<?=number_format($paket->total_biaya_paket, 0)?>" class="paket-wisata" disabled></span>
+                    </div>
+                </div>
+                <?php } ?>
+                <hr class="mb-2"/>
+                
+                <!-- Paket Donasi -->
+                <?php if($id_user > 0) {?>
+                <div class="output">
+
+                    <p class="btn btn-blue btn-primary" onclick="toggleDetail()">
+                        <i class="icon fas fa-chevron-down"></i>
+                        Isi Rincian Data Rekening Donatur
+                    </p>
+                    <div class="detail-toggle" id="main-toggle">
+                    <h4 class="mb-3 card-header pl-0">Data Rekening Donatur</h4>
+                        <div class="mb-3">
+                            <label for="nama_donatur">Nama Pemilik Rekening</label>
+                            <input type="text" class="form-control data_donatur" id="nama_donatur" name="nama_donatur[]">
+                        </div>
+                        <div class="mb-3">
+                            <label for="no_rekening_donatur">Nomor Rekening</label>
+                            <input type="number" class="form-control data_donatur" id="no_rekening_donatur" name="no_rekening_donatur[]">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nama_bank_donatur">Nama Bank</label>
+                            <input type="text" class="form-control data_donatur" id="nama_bank_donatur" name="nama_bank_donatur[]">
+                        </div>
+                        <div class="mb-3">
+                            <!-- Pesan/Ekspresi -->
+                            <label>Pesan/Ekspresi di Terumbu Karang</label>
+                            <input type="text" id="pesan" name="pesan[]" class="form-control">
+                        </div>
+                    </div>
+
+                </div>
+                <?php } ?>
+                
+                <!-- Metode Pembayaran -->
                 <div class="" style="width:100%;">
                     <div class="">
                         <h4 class="card-header mb-2 pl-0">Metode Pembayaran</h4>
@@ -267,34 +405,38 @@ include 'hak_akses.php';
                         <label class="custom-control-label  mb-2" for="credit">Bank Transfer (Konfirmasi Manual)</label>
                         <p class="text-muted">Harap upload bukti transfer agar reservasi wisata segera diproses pengelola lokasi.</p>
                     </div>
+                </div>
                 <hr class="mb-2"/>
 
                 <div class="row">
                     <div class="col">
-                        <span class="font-weight-bold">Nama Rekening Pengelola
+                        <span class="font-weight-bold">
+                        <i class="fas fa-user-tie"></i> Nama Rekening Pengelola</span>
                     </div>
-                    <div class="col-lg-8 mb-2">
+                    <div class="col-lg-6 mb-2">
                         <span class=""><?=$rowitem->nama_rekening?></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        <span class="font-weight-bold">Nomor Rekening Pengelola  </span>
+                        <span class="font-weight-bold">
+                        <i class="text-warning fas fa-university"></i> Nomor Rekening Pengelola</span>
                     </div>
-                    <div class="col-lg-8  mb-2">
+                    <div class="col-lg-6  mb-2">
                         <span class=""><?=$rowitem->nomor_rekening?></span>
                     </div>
                 </div>
                 <div class="row mb-2">
                     <div class="col">
-                        <span class="font-weight-bold">Bank Pengelola  </span>
+                        <span class="font-weight-bold">
+                        <i class="text-info fas fa-hashtag"></i> Bank Pengelola</span>
                     </div>
-                    <div class="col-lg-8  mb-2">
+                    <div class="col-lg-6  mb-2">
                         <span class=""><?=$rowitem->nama_bank?></span>
                     </div>
                 </div>
 
-                <button name="submit" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4" type="submit">Buat Reservasi Wisata</button>
+                <button type="submit" name="submit" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4">Buat Reservasi Wisata</button>
             <?php } ?>
           </form>
         </div>
@@ -327,43 +469,97 @@ include 'hak_akses.php';
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="dist/js/pages/dashboard.js"></script>
     <script src="js\numberformat.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <!--(づ｡◕‿‿◕｡)づ pika pika pikachu (づ｡◕‿‿◕｡)づ-->
     <script>
         function myFunction() {
             var jumlah_peserta  = document.getElementById("jumlah_peserta").value;
             var biaya_wisata    = document.getElementById("biaya_wisata").value;
-            var donasi_saya     = document.getElementById("donasi_saya").value;
+            var paket_wisata    = document.getElementById("total_paket_wisata").value;
+            var id_tk           = document.getElementById("id_tk").value; //data terumbu karang
+            var nominal         = document.getElementById("id_tk").value; //data nominal terumbu karang
 
-            var deskripsi   = jumlah_peserta;
-            var reservasi   = jumlah_peserta * biaya_wisata; //5 x 750.000 = 3.750.000
-            var donasi      = donasi_saya * (biaya_wisata / 100); //0.4 x 750.000 = 300.000
+            var deskripsi       = jumlah_peserta;
+            var reservasi       = jumlah_peserta * biaya_wisata; //5 x 750.000 = 3.750.000
+            var total_reservasi = parseInt(reservasi) + parseInt(paket_wisata);
+            var terumbu_karang  = id_tk;
+            var hasil_split     = nominal.split("-");
+            var split_tk        = hasil_split[0];
+            var split_harga_tk  = hasil_split[1];
 
-            if(donasi_saya == 1)
+            if(id_tk == 1)
             {
-                //3.750.000 tidak pakai donasi
-                var donasi = 0;
-                var hasil   = reservasi;
+                var jenis_tk        = null;
+                var split_harga_tk  = null;
+                var hasil           = total_reservasi;
             } else {
-                //3.750.000 + 300.000 = 4.050.000 pakai donasi
-                var hasil   = reservasi + donasi ;
+                var hasil   = parseInt(total_reservasi) + parseInt(split_harga_tk);
             }
 
-            //Reservasi Wisata subtotal
-            //var	reverse1     = reservasi.toString().split('').reverse().join(''),
-                //ribuan1      = reverse1.match(/\d{1,3}/g);
-                //subtotal     = ribuan1.join('.').split('').reverse().join('');
-
-            //Reservasi Wisata total
-            //var	reverse2     = hasil.toString().split('').reverse().join(''),
-                //ribuan2      = reverse2.match(/\d{1,3}/g);
-                //total        = ribuan2.join('.').split('').reverse().join('');
-
-            document.getElementById("deskripsi_wisata").value = "<?=$rowitem->judul_wisata?> : " + deskripsi;
+            document.getElementById("deskripsi_wisata").value = "Peserta <?=$rowitem->judul_wisata?> : " + deskripsi;
             document.getElementById("subtotal").value = "Subtotal : Rp " + reservasi; //subtotal dari jumlah_peserta * biaya_wisata
-            document.getElementById("jumlah_donasi").value = donasi; //jumlah donasi dari donasi_saya * biaya_wisata
-            document.getElementById("total").value = hasil; //total dari reservasi * donasi
+            document.getElementById("terumbu_karang").value = terumbu_karang;
+            document.getElementById("split_tk").value = split_tk;
+            document.getElementById("split_harga_tk").value = split_harga_tk;
+            document.getElementById("nominal").value = split_harga_tk;
+            document.getElementById("total").value = hasil; //total dari total_reservasi * donasi
+            //document.write(harga_tk);
+        }
+        
+        //Jenis Terumbu Karang
+        function myFunction2() {
+            var id_jenis = document.getElementById("dd_id_wilayah").value; //data jenis terumbu karang
 
+            if(id_jenis == 1)
+            {
+                var jenis = null;
+            } else {
+                var jenis   = id_jenis;
+            }
+
+            document.getElementById("jenis_tk").value = jenis;
+        }
+
+        function load_detail_lokasi(id_jenis){
+            $.ajax({
+                type: "POST",
+                url: "list_populate.php",
+                data:{
+                    id_jenis: id_jenis,
+                    type: 'load_detail_lokasi'
+                },
+                beforeSend: function() {
+                $("#id_tk").addClass("loader");
+                },
+                success: function(data){
+                $("#id_tk").html(data);
+                $("#id_tk").removeClass("loader");
+                }
+            });
+        }
+    </script>
+
+    <!-- Get value selected untuk menampilkan ke input -->
+    <script>
+        //$(function(){
+            //$("#id_tk").change(function(){
+                //var tampil = $("#id_tk option:selected").text();
+                //$("#nominal").val(tampil);
+            //})
+        //})
+    </script>
+
+    <!-- Hiden/Show Button Inputan Data Donatur -->
+    <script>
+        $(document).ready(function() {
+            $('.preview-images').hide()
+            $('.detail-toggle').hide()
+        });
+
+        function toggleDetail(e){
+            var e = event.target
+            $(e).siblings('.detail-toggle').fadeToggle()
         }
     </script>
 

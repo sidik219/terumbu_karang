@@ -82,7 +82,7 @@ if (isset($_POST['submit'])) {
             $i++;
         } //End Foreach
     } else {
-        echo '<script>alert("Harap pilih paket donasi yang akan ditambahkan")</script>';
+        echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
     }
 }
 ?>
@@ -205,7 +205,7 @@ if (isset($_POST['submit'])) {
 
 
                     <div class="form-group">
-                        <label for="num_biaya_wisata">Biaya Wisata</label>
+                        <label for="num_biaya_wisata">Biaya Wisata Peserta</label>
                         <input type="text" id="total_paket" name="num_biaya_wisata" class="form-control" required>
                     </div>
 
@@ -327,7 +327,7 @@ if (isset($_POST['submit'])) {
     <script>
         $(document).ready(function(){
         //group add limit
-        var maxGroup = 5;
+        var maxGroup = 50;
 
         //add more fields group
         $(".addMore").click(function(){

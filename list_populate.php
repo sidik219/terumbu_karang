@@ -113,7 +113,29 @@ if ($_POST['type'] == 'load_tk' && !empty($_POST["id_jenis"])) {
 
 
 
+<?php
+//Load Daftar detail lokasi berdasarkan id_jenis
+if ($_POST['type'] == 'load_detail_lokasi' && !empty($_POST["id_jenis"])) {
+    $id_jenis = $_POST["id_jenis"];
+    $sqlviewdetaillokasi = 'SELECT * FROM t_detail_lokasi
+                            LEFT JOIN t_terumbu_karang ON t_detail_lokasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang
+                            LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
+                            WHERE t_terumbu_karang.id_jenis = :id_jenis';
 
+    $stmt = $pdo->prepare($sqlviewdetaillokasi);
+    $stmt->execute(['id_jenis' => $id_jenis]);
+    $rowdetail = $stmt->fetchAll();
+?>
+    <option value="1" disabled>Pilih Terumbu Karang:</option>
+    <option value="1" selected>Tidak Donasi</option>
+    <?php foreach ($rowdetail as $detail) { ?>
+    <option value="<?php echo $detail->id_terumbu_karang.' - '.$detail->harga_patokan_lokasi; ?>">
+        <?php echo $detail->nama_terumbu_karang.' - '.$detail->harga_patokan_lokasi?></option>
+        
+<?php 
+    }
+}
+?>
 
 <?php
 //Load Daftar Donasi berdasarkan id_lokasi

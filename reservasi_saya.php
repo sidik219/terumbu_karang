@@ -149,7 +149,7 @@ include 'hak_akses.php';
                                             <?=strftime('%A, %d %B %Y', $reservasidate);?>
                                         </div>
                                         <div class="mb-3">
-                                            <span class="font-weight-bold"><i class="nav-icon text-info fas fas fa-comment-dots"></i> Keterangan</span>
+                                            <span class="font-weight-bold"><i class="nav-icon text-info fas fas fa-comment-dots"></i> Keterangan Pengelola Lokasi</span>
                                             <br><?=$rowitem->keterangan?><br>
                                         </div>
                                     </div>
