@@ -64,5 +64,24 @@ elseif ($type == 'detail_lokasi'){
             $stmt->execute(['id_detail_lokasi' => $_GET['id_detail_lokasi']]);
             header('Location: kelola_harga_terumbu.php?id_lokasi='.$id_lokasi.'&status=deletesuccess');
 }
+elseif ($type == 'user_p_wilayah'){
+    $id_wilayah = $_GET['id_wilayah'];
+    $id_user = $_GET['id_user'];
+    $sql = 'DELETE FROM t_pengelola_wilayah
+            WHERE id_wilayah = :id_wilayah AND id_user = :id_user';
 
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_wilayah' => $id_wilayah, 'id_user' => $id_user]);
+            header('Location: atur_pengelola_wilayah.php?id_wilayah='.$id_wilayah.'&status=deletesuccess');
+}
+elseif ($type == 'user_p_lokasi'){
+    $id_lokasi = $_GET['id_lokasi'];
+    $id_user = $_GET['id_user'];
+    $sql = 'DELETE FROM t_pengelola_lokasi
+            WHERE id_lokasi = :id_lokasi AND id_user = :id_user';
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_lokasi' => $id_lokasi, 'id_user' => $id_user]);
+            header('Location: atur_pengelola_lokasi.php?id_lokasi='.$id_lokasi.'&status=deletesuccess');
+}
 

@@ -42,13 +42,15 @@ $id_lokasi = $_GET['id_lokasi'];
             $stmt = $pdo->prepare($sqllokasi);
             $stmt->execute(['id_lokasi' => $id_lokasi, 'jasa_penanaman' => $jasa_penanaman, 'biaya_pemeliharaan' => $biaya_pemeliharaan]);
 
-            $affectedrows = $stmt->rowCount();
-            if ($affectedrows == '0') {
-                header("Location: kelola_lokasi.php?status=nochange");
-            } else {
-                //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: kelola_lokasi.php?status=updatesuccess");
-                }
+            header("Refresh: 0");
+
+            // $affectedrows = $stmt->rowCount();
+            // if ($affectedrows == '0') {
+            //     header("Location: kelola_lokasi.php?status=nochange");
+            // } else {
+            //     //echo "HAHAHAAHA GREAT SUCCESSS !";
+            //     header("Location: kelola_lokasi.php?status=updatesuccess");
+            //     }
       }
 
 

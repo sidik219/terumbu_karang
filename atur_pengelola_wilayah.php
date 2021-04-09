@@ -3,13 +3,17 @@ session_start();
 if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
   header('location: login.php?status=unrestrictedaccess');
 }
+if(!isset($_GET['id_wilayah'])){
+  header('location: kelola_wilayah.php?status=no_id');
+}
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
+
 
     $id_wilayah = $_GET['id_wilayah'];
     $defaultpic = "images/image_default.jpg";
 
-    $sqlviewkandidat = 'SELECT * FROM t_user
+        $sqlviewkandidat = 'SELECT *, t_user.id_user FROM t_user
                         LEFT JOIN t_pengelola_wilayah ON t_user.id_user = t_pengelola_wilayah.id_user
                     WHERE level_user = 2 AND t_pengelola_wilayah.id_user IS NULL
                     ORDER BY nama_user';
@@ -34,8 +38,15 @@ include 'hak_akses.php';
     $rowitem = $stmt->fetch();
 
     if (isset($_POST['submit'])) {
-    }
+        $id_user = $_POST['id_user_pengelola'];
 
+        $sqlinsertkandidat = 'INSERT INTO t_pengelola_wilayah
+                            (id_wilayah, id_user)
+                            VALUES (:id_wilayah, :id_user)';
+        $stmt = $pdo->prepare($sqlinsertkandidat);
+        $stmt->execute(['id_wilayah' => $id_wilayah, 'id_user' => $id_user]);
+        header("Refresh: 0");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +59,7 @@ include 'hak_akses.php';
         <link rel="stylesheet" href= "plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href= "dist/css/adminlte.min.css">
-    <!-- overlayScrollbars -->"
+    <!-- overlayScrollbars -->
         <link rel="stylesheet" href= "plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href= "css/style.css">
@@ -59,7 +70,6 @@ include 'hak_akses.php';
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-
         <!-- NAVBAR -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Navbar Toogle -->
@@ -129,7 +139,8 @@ include 'hak_akses.php';
                                 <div class="mt-3">
                         <label for="dd_id_wilayah ">User Kandidat</label>
                                 </div>
-                        <select id="dd_id_wilayah" name="tb_id_user_pengelola" class="form-control" required>
+                        <select id="dd_id_wilayah" name="id_user_pengelola" class="form-control" required>
+                          <option value="">-- Pilih Calon Pengelola --</option>
                             <?php foreach ($rowkandidat as $rowitem) {
                             ?>
                             <option value="<?=$rowitem->id_user?>">ID <?=$rowitem->id_user?> - <?=$rowitem->nama_user?> - <?=$rowitem->organisasi_user?></option>
@@ -137,7 +148,7 @@ include 'hak_akses.php';
                             <?php } ?>
                         </select>
                    <div class="text-center">
-                        <button type="submit" class="btn btn-blue btn btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah Pengelola</button>
+                        <button type="submit" name="submit" value="Simpan" class="btn btn-blue btn btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah Pengelola</button>
                    </div>
 
               </form>

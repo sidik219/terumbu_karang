@@ -187,6 +187,7 @@ $row = $stmt->fetchAll();
                                 <a href="hapus.php?type=lokasi&id_lokasi=<?=$rowitem->id_lokasi?>" class="far fa-trash-alt btn btn-act"></a>
                                 <?php } ?>
                                 <a href="kelola_harga_terumbu.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="btn btn-act text-dark mt-3"><i class="fas fa-money-bill-alt text-success"></i> Kelola Harga & Stok</a>
+                                <a href="atur_pengelola_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="mr-3 btn btn-act"><i class="fas fa-id-badge"></i> Atur Pengelola</a>
                                 </td>
                             </tr>
 
