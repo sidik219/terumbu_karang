@@ -429,10 +429,22 @@ body{
     width: 100%;
 }
 
+.berita-img{
+    width: 100%;
+    height: 20vw;
+    object-fit: cover;
+}
+
 
 /* ==========================================================================
 =============================================================================
 ============================================================================= */
+@media only screen and (max-width: 767px){
+.berita-img{
+    height: 45vw;
+}
+
+}
 
 /* Medium devices (tablets, less than 992px) */
 @media only screen and (max-width: 991.98px){
@@ -590,6 +602,8 @@ body{
     .donasi-caption h2{
         font-size: 15px;
     }
+    
+    
     
 }
 

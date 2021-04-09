@@ -245,7 +245,7 @@
                                 <div class="col-md-4">
                                     <div class="card card-pilihan mb-4 shadow-sm">
                                     <a href="">
-                                        <img class="card-img-top" width="100%" src="img/news1.jpg">
+                                        <img class="card-img-top berita-img" width="100%" src="img/news1.jpg">
                                     </a>
                                         <div class="card-body">
                                             <p > <h5 class="max-length">Tahun 2023 Nanti Pantai Tangkolak Jadi Wisata Bahari Terintegritas</h5></p>
@@ -257,7 +257,7 @@
                                 <div class="col-md-4">
                                     <div class="card card-pilihan mb-4 shadow-sm">
                                     <a href="">
-                                        <img class="card-img-top" width="100%" src="img/news2.jpg">
+                                        <img class="card-img-top berita-img" width="100%" src="img/news2.jpg">
                                     </a>
                                         <div class="card-body card-body-costom">
                                             <p><h5 class="max-length">Pantai Tangkolak,<br>Wajah Baru Wisata Bahari</h5></p>
@@ -270,7 +270,7 @@
                                 <div class="col-md-4">
                                     <div class="card card-pilihan mb-4 shadow-sm">
                                     <a href="">
-                                        <img class="card-img-top" width="100%" src="img/news3.jpg">
+                                        <img class="card-img-top berita-img" width="100%" src="img/news3.jpg">
                                     </a>
                                         <div class="card-body card-body-costom">
                                             <p><h5 class="max-length">Cerita Harta Karun Belanda Membuat Kampung Tangkolak Populer</h5></p>
