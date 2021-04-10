@@ -167,6 +167,14 @@ function ageCalculator($dob){
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+                   <?php
+                if(!empty($_GET['status'])){
+                  if($_GET['status'] == 'updatesuccess'){
+                  echo '<div class="alert alert-success" role="alert">
+                          Update data donasi berhasil!
+                      </div>';}
+                    }
+                ?>
 
                 <div class="row">
                     <div class="col text-sm-center">
@@ -193,16 +201,6 @@ function ageCalculator($dob){
                       </div>
                 </div>
 
-
-
-                <?php
-                if(!empty($_GET['status'])){
-                  if($_GET['status'] == 'updatesuccess'){
-                  echo '<div class="alert alert-success" role="alert">
-                          Update data donasi berhasil!
-                      </div>';}
-                    }
-                ?>
 
                    <table class="table table-striped table-responsive-sm">
                      <thead>

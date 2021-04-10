@@ -206,7 +206,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                                 <span class="text-muted">Pilih lokasi dahulu</span>
                             </div>
 
-                            <label class="mt-4" for="dd_id_donasi">Donasi dalam Batch</label>
+                            <label class="mt-4" for="dd_id_donasi">Donasi dalam Batch : <span id="jumlah_bibit">0</span> Bibit</label>
                             <div id="donasipilihan">
 
                             </div>
@@ -379,6 +379,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
     function tambahPilihan(e){
         id_donasi = $(e).siblings('.id_donasi').text()
+        jumlah_bibit = parseInt($(e).siblings('.jumlah').text())
         pilihanbaru = $(e).parent().clone()
         pilihanbaru.removeClass('batch-donasi')
         pilihanbaru.addClass('batch-pilihan')
@@ -391,6 +392,8 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
           $(e).parent().remove()
           $(pilihanbaru).appendTo('#donasipilihan').hide()
           $(pilihanbaru).fadeIn()
+          jumlah_total = parseInt($('#jumlah_bibit').text())
+          $('#jumlah_bibit').text(jumlah_bibit + jumlah_total)
       });
 
         $('.userinfo').click(function(){
@@ -415,6 +418,9 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
     function hapusPilihan(e){
       pilihanbaru = $(e).parent().clone()
+      jumlah_bibit_hapus = parseInt($(e).siblings('.jumlah').text())
+      jumlah_total = parseInt($('#jumlah_bibit').text())
+      $('#jumlah_bibit').text(jumlah_total - jumlah_bibit_hapus)
       pilihanbaru.addClass('batch-donasi')
       pilihanbaru.removeClass('batch-pilihan')
       pilihanbaru.children('button').attr('onclick', 'tambahPilihan(this)')

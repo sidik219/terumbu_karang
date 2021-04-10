@@ -34,10 +34,11 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         $stmt->execute(['id_batch' => $id_batch]);
         $rowbatch = $stmt->fetch();
 
-        $sqlviewdonasi = 'SELECT * FROM t_donasi
+        $sqlviewdonasi = 'SELECT *, SUM(t_detail_donasi.jumlah_terumbu) AS jumlah_bibit_donasi FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
-                  WHERE t_donasi.id_status_donasi = 3 AND t_donasi.id_lokasi = :id_lokasi';
+                  LEFT JOIN t_detail_donasi ON  t_donasi.id_donasi = t_detail_donasi.id_donasi
+                  WHERE t_donasi.id_status_donasi = 3 AND t_donasi.id_lokasi = :id_lokasi GROUP BY t_detail_donasi.id_donasi';
         $stmt = $pdo->prepare($sqlviewdonasi);
         $stmt->execute(['id_lokasi' => $rowbatch->id_lokasi]);
         $rowdonasi = $stmt->fetchAll();
@@ -48,13 +49,23 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         $stmt->execute(['id_lokasi' => $rowbatch->id_lokasi]);
         $rowtitik = $stmt->fetchAll();
 
-        $sqlviewdetailbatch = 'SELECT t_donasi.id_donasi, nama_donatur FROM `t_detail_batch`
+        $sqlviewdetailbatch = 'SELECT t_donasi.id_donasi, nama_donatur, SUM(t_detail_donasi.jumlah_terumbu) AS jumlah_bibit_donasi FROM `t_detail_batch`
                               LEFT JOIN t_donasi ON t_donasi.id_batch = t_detail_batch.id_batch
-                              AND t_donasi.id_donasi = t_detail_batch.id_donasi
-                              WHERE t_detail_batch.id_batch = :id_batch';
+                              LEFT JOIN t_detail_donasi ON  t_donasi.id_donasi = t_detail_donasi.id_donasi
+                              WHERE t_detail_batch.id_batch = :id_batch
+                              AND t_donasi.id_donasi = t_detail_batch.id_donasi GROUP BY t_detail_donasi.id_donasi';
         $stmt = $pdo->prepare($sqlviewdetailbatch);
         $stmt->execute(['id_batch' => $id_batch]);
         $rowdetailbatch = $stmt->fetchAll();
+
+        $sqlviewjumlah = 'SELECT t_donasi.id_donasi, nama_donatur, SUM(t_detail_donasi.jumlah_terumbu) AS jumlah_bibit_donasi FROM `t_detail_batch`
+                              LEFT JOIN t_donasi ON t_donasi.id_batch = t_detail_batch.id_batch
+                              LEFT JOIN t_detail_donasi ON  t_donasi.id_donasi = t_detail_donasi.id_donasi
+                              WHERE t_detail_batch.id_batch = :id_batch
+                              AND t_donasi.id_donasi = t_detail_batch.id_donasi';
+        $stmt = $pdo->prepare($sqlviewjumlah);
+        $stmt->execute(['id_batch' => $id_batch]);
+        $rowjumlah = $stmt->fetch();
 
 
 
@@ -314,7 +325,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                                   ?>
                           <div class="border rounded p-1 batch-donasi mb-2 shadow-sm" id="donasi<?=$donasi->id_donasi?>">
                             ID <span class="id_donasi"><?=$donasi->id_donasi?></span> -
-                            <span class="nama_donatur"><?=$donasi->nama_donatur?></span>
+                            <span class="nama_donatur"><?=$donasi->nama_donatur?></span>  || Jumlah : <span class="jumlah"><?=$donasi->jumlah_bibit_donasi?></span>
                             <a data-id='<?=$donasi->id_donasi?>' class="btn btn-sm btn-outline-primary  userinfo">Rincian></a>
                             <button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus-circle"></i></button>
                           </div>
@@ -323,7 +334,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
                             </div>
 
-                     <label class="mt-4" for="dd_id_donasi">Donasi dalam Batch</label>
+                     <label class="mt-4" for="dd_id_donasi">Donasi dalam Batch : <span id="jumlah_bibit"><?= $rowjumlah->jumlah_bibit_donasi ?></span> Bibit</label>
                             <div id="donasipilihan">
 
                             <?php
@@ -331,7 +342,8 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                                   ?>
                           <div class="border rounded p-1 batch-donasi mb-2 shadow-sm" id="donasi<?=$detailbatch->id_donasi?>">
                             ID <span class="id_donasi"><?=$detailbatch->id_donasi?></span> -
-                            <span class="nama_donatur"><?=$detailbatch->nama_donatur?></span> <a data-id='<?=$detailbatch->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo">Rincian></a>
+                            <span class="nama_donatur"><?=$detailbatch->nama_donatur?></span>   || Jumlah : <span class="jumlah"><?=$detailbatch->jumlah_bibit_donasi?></span>
+                            <a data-id='<?=$detailbatch->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo">Rincian></a>
                             <button type="button" class="btn donasitambah" onclick="hapusPilihan(this)"><i class="nav-icon fas fa-times-circle text-danger"></i></button>
                             <input type='hidden' name='id_donasi[]' value='<?=$detailbatch->id_donasi?>'>
                           </div>
@@ -454,6 +466,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
     function tambahPilihan(e){
         id_donasi = $(e).siblings('.id_donasi').text()
+        jumlah_bibit = parseInt($(e).siblings('.jumlah').text())
         pilihanbaru = $(e).parent().clone()
         pilihanbaru.children('button').attr('onclick', 'hapusPilihan(this)')
         pilihanbaru.children('button').html('<i class="nav-icon fas fa-times-circle text-danger"></i>')
@@ -465,11 +478,16 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
           $(e).parent().remove()
           $(pilihanbaru).appendTo('#donasipilihan').fadeIn().hide()
           $(pilihanbaru).fadeIn()
+          jumlah_total = parseInt($('#jumlah_bibit').text())
+          $('#jumlah_bibit').text(jumlah_bibit + jumlah_total)
       });
     }
 
     function hapusPilihan(e){
       id_donasi = $(e).siblings('.id_donasi').text()
+      jumlah_bibit_hapus = parseInt($(e).siblings('.jumlah').text())
+      jumlah_total = parseInt($('#jumlah_bibit').text())
+      $('#jumlah_bibit').text(jumlah_total - jumlah_bibit_hapus)
       pilihanbaru = $(e).parent().clone()
       pilihanbaru.addClass('batch-donasi')
       pilihanbaru.removeClass('batch-pilihan')

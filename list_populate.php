@@ -131,8 +131,8 @@ if ($_POST['type'] == 'load_detail_lokasi' && !empty($_POST["id_jenis"])) {
     <?php foreach ($rowdetail as $detail) { ?>
     <option value="<?php echo $detail->id_terumbu_karang.' - '.$detail->harga_patokan_lokasi; ?>">
         <?php echo $detail->nama_terumbu_karang.' - '.$detail->harga_patokan_lokasi?></option>
-        
-<?php 
+
+<?php
     }
 }
 ?>
@@ -167,9 +167,11 @@ if ($_POST['type'] == 'load_donasi' && !empty($_POST["id_lokasi"])) {
 //Load Daftar Donasi berdasarkan id_batch & belum punya id_batch (NULL)
 if ($_POST['type'] == 'load_donasi' && !empty($_POST["id_lokasi"])) {
     $id_lokasi = $_POST["id_lokasi"];
-    $daftardonasi = 'SELECT * FROM t_donasi
+    $daftardonasi = 'SELECT *, SUM(t_detail_donasi.jumlah_terumbu) AS jumlah_bibit_donasi FROM t_donasi
+                      LEFT JOIN t_detail_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
                       WHERE id_lokasi = :id_lokasi AND t_donasi.id_status_donasi = 3
-                        ORDER BY id_donasi';
+                      GROUP BY t_detail_donasi.id_donasi
+                        ORDER BY t_donasi.id_donasi';
         $stmt = $pdo->prepare($daftardonasi);
         $stmt->execute(['id_lokasi' => $id_lokasi]);
         $rowdonasi = $stmt->fetchAll();
@@ -180,7 +182,7 @@ if ($_POST['type'] == 'load_donasi' && !empty($_POST["id_lokasi"])) {
             ?>
     <div class="border rounded p-1 batch-donasi  mb-2 shadow-sm" id="donasi<?=$donasi->id_donasi?>">
       ID <span class="id_donasi"><?=$donasi->id_donasi?></span> -
-      <span class="nama_donatur"><?=$donasi->nama_donatur?></span> <a data-id='<?=$donasi->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo">Rincian></a>
+      <span class="nama_donatur"><?=$donasi->nama_donatur?></span> || Jumlah : <span class="jumlah"><?=$donasi->jumlah_bibit_donasi?></span> <a data-id='<?=$donasi->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo">Rincian></a>
       <button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus-circle"></i></button>
     </div>
     <?php
