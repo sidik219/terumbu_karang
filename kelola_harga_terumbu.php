@@ -1,7 +1,7 @@
 <?php include 'build/config/connection.php';
 session_start();
 if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
-  header('location: login.php?status=restrictedaccess');
+  header('location: login.php?status=unrestrictedaccess');
 }
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
@@ -181,7 +181,7 @@ $id_lokasi = $_GET['id_lokasi'];
                     <label for="num_biaya_pergantian  ">Terumbu Karang yang Disediakan</label>
                       <label class="text-muted text-sm d-block">Tentukan Terumbu karang yang dapat dipilih donatur beserta ketersediaan stok</label>
                       <div class="col text-center">
-                                <span onclick="//addDocInput()" data-toggle="modal" data-target=".tambah-modal" class="btn btn-blue btn btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah Terumbu</span>
+                                <span onclick="addDocInput()" data-toggle="modal" data-target=".tambah-modal" class="btn btn-blue btn btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah Terumbu</span>
                               </div>
 
                     <table class="table table-striped table-responsive-sm">

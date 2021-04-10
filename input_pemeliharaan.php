@@ -1,7 +1,7 @@
 <?php include 'build/config/connection.php';
 session_start();
 if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
-  header('location: login.php?status=restrictedaccess');
+  header('location: login.php?status=unrestrictedaccess');
 }
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
