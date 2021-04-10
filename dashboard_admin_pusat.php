@@ -2,7 +2,7 @@
 session_start();
 
 if(!($_SESSION['level_user'] == 4)){
-  header('location: login.php?status=unrestrictedaccess');
+  header('location: login.php?status=restrictedaccess');
 }
 
 include 'build/config/connection.php';
