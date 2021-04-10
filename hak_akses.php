@@ -24,24 +24,15 @@ else{
                         <p> Home</p>
                     </a>
                 </li>
-                <li class="nav-item"> <!-- Pusat -->
+
+                <!--
+                <li class="nav-item">
                     <a href="kelola_organisasi.php" class="nav-link  '.('kelola_organisasi.php' == $url_sekarang ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-shield-alt"></i>
                         <p> Kelola Organisasi</p>
                     </a>
-                </li>
-                <li class="nav-item"> <!-- Pusat -->
-                    <a href="atur_pengelola_wilayah.php" class="nav-link  '.('atur_pengelola_wilayah.php' == $url_sekarang ? ' active ' : '').' ">
-                        <i class="nav-icon fas fa-street-view"></i>
-                        <p> Atur Pengelola Wilayah</p>
-                    </a>
-                </li>
-                <li class="nav-item"> <!-- Pusat -->
-                    <a href="atur_pengelola_lokasi.php" class="nav-link  '.('atur_pengelola_lokasi.php' == $url_sekarang ? ' active ' : '').' ">
-                        <i class="nav-icon fas fa-user-tie"></i>
-                        <p> Atur Pengelola Lokasi</p>
-                    </a>
-                </li>
+                </li> -->
+
                 <li class="nav-item"> <!-- Wilayah -->
                               <a href="kelola_wilayah.php" class="nav-link '.('kelola_wilayah.php' == $url_sekarang || ('edit_wilayah.php'  == $url_sekarang) || ('input_wilayah.php'  == $url_sekarang) ? ' active ' : '').' ">
                                   <i class="nav-icon fas fa-globe-asia"></i>

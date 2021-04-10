@@ -198,6 +198,7 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
 
                           <?php } ?>
                           </tbody>
+                     </table>
             </div>
 
             </section>
