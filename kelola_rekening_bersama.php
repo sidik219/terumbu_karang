@@ -113,20 +113,16 @@ include 'hak_akses.php';
                         <?php foreach ($rowdetail as $rowitem) { ?>
                             <tr>
                             <th scope="row">
-                              <?=$rowitem->id_terumbu_karang?>
+                              <?=$rowitem->id_rekening_bank?>
                           </th>
-                            <td><?=$rowitem->nama_jenis?></td>
-                            <td><?=$rowitem->nama_terumbu_karang?></td>
-                            <td>Rp. <?=number_format($rowitem->harga_patokan_lokasi)?></td>
-                            <td>
-                              <?=$rowitem->stok_terumbu?>
-                              <br><?=alertStokTerumbu($rowitem->stok_terumbu) ?>
-                          </td>
+                            <td><?=$rowitem->nama_pemilik_rekening?></td>
+                            <td><?=$rowitem->nomor_rekening?></td>
+                            <td><?=$rowitem->nama_bank?></td>
                             <td class="">
-                                <a href="#" onclick='loadPatokanTerumbu(this.dataset.id_detail_lokasi)'
-                                data-nama_jenis='<?=$rowitem->nama_terumbu_karang?>' data-id_tk='<?=$rowitem->id_terumbu_karang?>'
-                                data-harga_patokan='<?=$rowitem->harga_patokan_lokasi?>' data-id_detail_lokasi='<?=$rowitem->id_detail_lokasi?>' class="fas fa-edit mr-3 btn btn-act"></a>
-                                <a href="hapus.php?type=detail_lokasi&id_detail_lokasi=<?=$rowitem->id_detail_lokasi?>&id_lokasi=<?=$id_lokasi?>" class="far fa-trash-alt btn btn-act"></a>
+                                <a href="#" onclick='loadRekening(this.dataset.id_rekening_bank)'
+                                data-nama_jenis='<?=$rowitem->nama_pemilik_rekening?>' data-id_rekening_bank='<?=$rowitem->id_rekening_bank?>'
+                                data-nomor_rekening='<?=$rowitem->nomor_rekening?>' class="fas fa-edit mr-3 btn btn-act"></a>
+                                <a href="hapus.php?type=rekening_bersama&id_rekening_bank=<?=$rowitem->id_rekening_bank?>" class="far fa-trash-alt btn btn-act"></a>
                                 </td>
                             </tr>
                            <?php } ?>
@@ -183,7 +179,7 @@ include 'hak_akses.php';
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
     <div class="modal-header">
-        <h5 class="modal-title">Tambah Rekening</h5>
+        <h5 class="modal-title">Tambah Rekening Bersama</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -194,20 +190,20 @@ include 'hak_akses.php';
                               <div class="col">
                         <div class="row mt-2">
                           <div class="col">
-                            <label for="tb_pemilik">Nama Pemilik Rekening</label>
-                            <input type="text" id="tb_pemilik" name="nama_pemilik_rekening" class="form-control" required>
+                            <label for="nama_pemilik_rekening">Nama Pemilik Rekening</label>
+                            <input type="text" id="nama_pemilik_rekening" name="nama_pemilik_rekening" class="form-control" required>
                           </div>
                         </div>
                         <div class="row mt-2">
                           <div class="col">
-                            <label for="tb_norek">Nomor Rekening</label>
-                            <input type="text" id="tb_norek" name="nomor_rekening" class="form-control" required>
+                            <label for="nomor_rekening">Nomor Rekening</label>
+                            <input type="text" id="nomor_rekening" name="nomor_rekening" class="form-control" required>
                           </div>
                         </div>
                         <div class="row mt-2">
                           <div class="col">
-                            <label for="tb_pemilik">Nama Bank</label>
-                            <input type="text" id="tb_pemilik" name="nama_pemilik_rekening" class="form-control" required>
+                            <label for="nama_bank">Nama Bank</label>
+                            <input type="text" id="nama_bank" name="nama_bank" class="form-control" required>
                           </div>
                         </div>
                         </form>
@@ -235,7 +231,7 @@ include 'hak_akses.php';
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
     <div class="modal-header">
-        <h5 class="modal-title">Edit Harga Terumbu</h5>
+        <h5 class="modal-title">Edit Rekening Bersama</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -246,7 +242,7 @@ include 'hak_akses.php';
 
       </form>
                               <div class="col text-center">
-                                <span onclick="updatePatokanTerumbu()" class="btn btn-blue btn-sm  btn-primary mt-2 mb-2 text-center"><i class="fas fa-save"></i> Simpan</span>
+                                <span onclick="updateRekening()" class="btn btn-blue btn-sm  btn-primary mt-2 mb-2 text-center"><i class="fas fa-save"></i> Simpan</span>
                                 <button type="button" class="btn-sm btn-secondary rounded-pill border-0" data-dismiss="modal">Batal</button>
                               </div>
                             </div>
@@ -261,12 +257,15 @@ include 'hak_akses.php';
 <!-- Edit modal end -->
 
 <script>
-  function simpanPatokanTerumbu(){
+  function simpanRekening(){
     var isiform = $('#tambah_form').serialize()
     $.ajax({
         type:'POST',
         url:'proses_form.php',
-        data:isiform,
+        data:{
+          isiform,
+          type: 'save_modal_rekber'
+        },
         success: function(){
             alert('Data berhasil ditambahkan')
             location.reload();
@@ -275,7 +274,7 @@ include 'hak_akses.php';
     })
   }
 
-  function loadPatokanTerumbu(id_detail_lokasi){
+  function loadRekening(id_detail_lokasi){
     var id_detail_lokasi_int = parseInt(id_detail_lokasi)
     $.ajax({
         type:'POST',
@@ -295,7 +294,7 @@ include 'hak_akses.php';
     })
   }
 
-  function updatePatokanTerumbu(){
+  function updateRekening(){
     var isiform = $('#edit_form').serialize()
     $.ajax({
         type:'POST',
@@ -308,13 +307,6 @@ include 'hak_akses.php';
 
     })
   }
-
-  var formatter = new Intl.NumberFormat('en-US', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    });
-
-
 
       function loadTk(id_jenis){
       $.ajax({
@@ -334,63 +326,6 @@ include 'hak_akses.php';
       });
 
     }
-
-    var formatter = new Intl.NumberFormat('en-US', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-
-    // These options are needed to round to whole numbers if that's what you want.
-    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
-});
-
-
-function formatNumber(e){
-      var formattedNumber = parseInt(e.value.replace(/\,/g,''))
-      if(!isNaN(formattedNumber)){
-        $('#biaya_pergantian_number').val(formattedNumber)
-        $('#num_biaya_pergantian').val(formatter.format(formattedNumber))
-      }else{
-        $('#biaya_pergantian_number').val('0')
-        $('#num_biaya_pergantian').val('0')
-      }
-}
-
-function formatNumber1(e){
-      var formattedNumber = parseInt(e.value.replace(/\,/g,''))
-      if(!isNaN(formattedNumber)){
-        $('#biaya_pergantian_number1').val(formattedNumber)
-        $('#num_biaya_pergantian1').val(formatter.format(formattedNumber))
-      }else{
-        $('#biaya_pergantian_number1').val('0')
-        $('#num_biaya_pergantian1').val('0')
-      }
-}
-
-
-
-function formatNumber2(e){
-  var formattedNumber = parseInt(e.value.replace(/\,/g,''))
-      if(!isNaN(formattedNumber)){
-        $('#biaya_pergantian_number2').val(formattedNumber)
-        $('#num_biaya_pergantian2').val(formatter.format(formattedNumber))
-      }else{
-        $('#biaya_pergantian_number2').val('0')
-        $('#num_biaya_pergantian2').val('0')
-      }
-}
-
-function formatNumber3(e){
-  var formattedNumber = parseInt(e.value.replace(/\,/g,''))
-      if(!isNaN(formattedNumber)){
-        $('#biaya_pergantian_number3').val(formattedNumber)
-        $('#num_biaya_pergantian3').val(formatter.format(formattedNumber))
-      }else{
-        $('#biaya_pergantian_number3').val('0')
-        $('#num_biaya_pergantian3').val('0')
-      }
-}
-
 
 
 </script>

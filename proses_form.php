@@ -85,6 +85,22 @@ if ($_POST['type'] == 'update_modal_patokan_harga_terumbu' && !empty($_POST["id_
 
 
 
+    //Rekening Bersama--------------------------------
+//Tambah
+if ($_POST['type'] == 'save_modal_rekber') {
+    $nama_pemilik_rekening = $_POST['nama_pemilik_rekening'];
+    $nomor_rekening = $_POST['nomor_rekening'];
+    $nama_bank = $_POST['nama_bank'];
+
+    $insertpatokan = 'INSERT INTO t_rekening_bank
+                      (nama_pemilik_rekening, nomor_rekening, nama_bank)
+                      VALUES (:nama_pemilik_rekening, :nomor_rekening, :nama_bank)';
+        $stmt = $pdo->prepare($insertpatokan);
+        $stmt->execute(['nama_pemilik_rekening' => $nama_pemilik_rekening, 'nomor_rekening' => $nomor_rekening, 'nama_bank' => $nama_bank]);
+    }
+
+
+
 
 
 ?>

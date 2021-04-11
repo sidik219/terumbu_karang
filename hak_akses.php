@@ -55,7 +55,7 @@ else{
                 <li class="nav-item"> <!-- Pusat -->
                               <a href="kelola_rekening_bersama.php" class="nav-link '.('kelola_rekening_bersama.php' == $url_sekarang ? ' active ' : '').' ">
                                   <i class="nav-icon fas fa-money-check-alt"></i>
-                                  <p> Kelola Rekening Bersama</p>
+                                  <p> Rekening Bersama</p>
                               </a>
                 </li>
 
@@ -80,7 +80,7 @@ else{
                   <li class="nav-item"> <!-- Wilayah -->
                       <a href="kelola_tk.php" class="nav-link '.('kelola_tk.php' == $url_sekarang || ('edit_tk.php'  == $url_sekarang) || ('input_tk.php'  == $url_sekarang) ? ' active ' : '').' ">
                             <i class="fas fa-disease nav-icon"></i>
-                            <p>Kelola Sub-Jenis Terumbu </p>
+                            <p>Sub-Jenis Terumbu </p>
                       </a>
                   </li>
                   <li class="nav-item"> <!-- Wilayah -->
@@ -176,7 +176,7 @@ else{
                   <li class="nav-item"> <!-- Wilayah -->
                       <a href="kelola_tk.php" class="nav-link '.('kelola_tk.php' == $url_sekarang || ('edit_tk.php'  == $url_sekarang) || ('input_tk.php'  == $url_sekarang) ? ' active ' : '').' ">
                             <i class="fas fa-disease nav-icon"></i>
-                            <p>Kelola Sub-Jenis Terumbu </p>
+                            <p>Sub-Jenis Terumbu </p>
                       </a>
                   </li>
                   <li class="nav-item"> <!-- Wilayah -->

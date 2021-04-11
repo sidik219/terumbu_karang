@@ -76,7 +76,7 @@ if (isset($_POST['login'])) {
     				<form action="" method="POST" class="login100-form validate-form">
 
     					<span class="login100-form-title p-b-33">
-                            GoKarang
+                            <img class="logo-img" src="dist/img/gokarang_logo_complete.png">
               </span>
               <?php
                 if(!empty($_GET['pesan'])){
