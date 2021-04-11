@@ -191,7 +191,7 @@ function ageCalculator($dob){
                     }
                 ?>
 
-                <div class="row">
+                <div class="row <?php if(!($_SESSION['level_user'] == 3)){echo " d-none ";} ?>">
                     <div class="col text-sm-center">
                         <a class="btn btn-primary float-md-right" href="kelola_batch.php" role="button">Kelola Batch Penanaman<i class="nav-icon fas fa-boxes ml-1"></i></a>
                     </div>
@@ -247,10 +247,10 @@ function ageCalculator($dob){
 
                               </small></td>
                               <td>
-                                <button type="button" class="btn btn-act">
+                                <button type="button" class="btn btn-act <?php if(!($_SESSION['level_user'] == 4)){echo " d-none ";} ?>">
                                 <a href="edit_donasi.php?id_donasi=<?=$rowitem->id_donasi?>" class="fas fa-edit"></a>
                             	</button>
-                                <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
+                                <button type="button" class="btn btn-act <?php if(!($_SESSION['level_user'] == 4)){echo " d-none ";} ?>"><i class="far fa-trash-alt"></i></button>
                               </td>
 
                           </tr>

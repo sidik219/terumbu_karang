@@ -21,6 +21,9 @@ include 'hak_akses.php';
     $stmt->execute();
     $rowstatus = $stmt->fetchAll();
 
+
+
+
     if (isset($_POST['submit'])) {
         // $randomstring = substr(md5(rand()), 0, 7);
 
@@ -180,7 +183,7 @@ include 'hak_akses.php';
             <!-- /.content-header -->
 
             <!-- Main content -->
-        <?php if($_SESSION['level_user'] == '3') { ?>
+        <?php if($_SESSION['level_user'] == '4') { ?>
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">

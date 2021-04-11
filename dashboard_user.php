@@ -99,7 +99,7 @@ include 'hak_akses.php';
                                         <div class="card m-3 dashboard-home">
                                             <img class="card-img-top mb-3" src="dist/img/konservasi.jpg" alt="Card image cap" id="img-cap">
                                             <div class="card-block">
-                                                <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='donasi_saya.php';">Donasi</button>
+                                                <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='donasi_saya.php';">Donasi Terumbu Karang</button>
                                             </div>
                                         </div>
                                     </div>
@@ -107,7 +107,7 @@ include 'hak_akses.php';
                                         <div class="card m-3 dashboard-home">
                                             <img class="card-img-top mb-3" src="dist/img/briefcase.jpg" alt="Card image cap" id="img-cap">
                                             <div class="card-block">
-                                            <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='reservasi_saya.php';">Reservasi</button>
+                                            <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='reservasi_saya.php';">Reservasi Wisata</button>
                                             </div>
                                         </div>
                                     </div>
@@ -120,6 +120,8 @@ include 'hak_akses.php';
                                             </div>
                                         </div>
                                     </div> -->
+
+                                    <!--
                                     <div class="col-md-12 col-lg-4">
                                         <div class="card m-3 dashboard-home">
                                             <img class="card-img-top mb-3" src="dist/img/user.jpg" alt="Card image cap" id="img-cap">
@@ -127,7 +129,7 @@ include 'hak_akses.php';
                                             <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='profil_saya.php';">Profil</button>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 <?php } ?>
 
 

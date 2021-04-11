@@ -45,6 +45,13 @@ else{
                     </a>
                 </li>
 
+                <li class="nav-item"> <!-- Lokasi -->
+                    <a href="kelola_donasi.php" class="nav-link '.(('kelola_donasi.php' == $url_sekarang) || ('edit_donasi.php'  == $url_sekarang) ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-hand-holding-usd"></i>
+                        <p> Kelola Donasi </p>
+                    </a>
+                </li>
+
                 <!--
                 <li class="nav-item">
                     <a href="kelola_organisasi.php" class="nav-link  '.('kelola_organisasi.php' == $url_sekarang ? ' active ' : '').' ">
@@ -95,12 +102,13 @@ else{
                               <p> Kelola Laporan </p>
                       </a>
                   </li>
+                <!--
                 <li class="nav-item">
                     <a href="kelola_user.php" class="nav-link '.('kelola_user.php' == $url_sekarang ? ' active ' : '').' ">
                             <i class="nav-icon fas fa-user"></i>
                             <p> Kelola User </p>
                     </a>
-                </li>
+                </li> -->
             ';
 
             echo $sidebar;
@@ -127,12 +135,13 @@ else{
                     <p> Reservasi Saya  </p>
                 </a>
             </li>
+            <!--
             <li class="nav-item">
                 <a href="profil_saya.php" class="nav-link '.('profil_saya.php' == $url_sekarang ? ' active ' : '').' ">
                     <i class="nav-icon fas fas fa-user"></i>
                     <p> Profil Saya  </p>
                 </a>
-            </li>';
+            </li> -->';
 
             echo $sidebar;
 
@@ -179,12 +188,7 @@ else{
                               <p> Kelola Laporan </p>
                       </a>
                   </li>
-                <li class="nav-item">
-                    <a href="kelola_user.php" class="nav-link '.('kelola_user.php' == $url_sekarang ? ' active ' : '').' ">
-                            <i class="nav-icon fas fa-user"></i>
-                            <p> Kelola User </p>
-                    </a>
-                </li>
+
                 ';
 
                 echo $sidebar;
@@ -236,12 +240,7 @@ else{
                           <p> Kelola Pemeliharaan </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="kelola_user.php" class="nav-link '.('kelola_user.php' == $url_sekarang ? ' active ' : '').' ">
-                            <i class="nav-icon fas fa-user"></i>
-                            <p> Kelola User </p>
-                    </a>
-                </li>';
+                ';
 
                 echo $sidebar;
     }

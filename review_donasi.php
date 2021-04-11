@@ -4,6 +4,11 @@
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
+$sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank';
+    $stmt = $pdo->prepare($sqlviewrekeningbersama);
+    $stmt->execute();
+    $rowrekening = $stmt->fetch();
+
     $sqlviewlokasi = 'SELECT * FROM t_lokasi
                 WHERE id_lokasi = :id_lokasi
                     ';
@@ -11,10 +16,6 @@ include 'hak_akses.php';
     $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
     $rowlokasi = $stmt->fetch();
 
-    $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank';
-    $stmt = $pdo->prepare($sqlviewrekeningbersama);
-    $stmt->execute();
-    $rowrekening = $stmt->fetchAll();
 
 
 
@@ -216,7 +217,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
                      <span class="font-weight-bold">Nama Rekening Pengelola
                 </div>
                 <div class="col-lg-8 mb-2">
-                     <span class=""><?=$rowlokasi->nama_rekening?></span>
+                     <span class=""><?=$rowrekening->nama_pemilik_rekening?></span>
                 </div>
             </div>
             <div class="row">
@@ -224,7 +225,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
                     <span class="font-weight-bold">Nomor Rekening Pengelola  </span>
                 </div>
                 <div class="col-lg-8  mb-2">
-                    <span class=""><?=$rowlokasi->nomor_rekening?></span>
+                    <span class=""><?=$rowrekening->nomor_rekening?></span>
                 </div>
             </div>
             <div class="row mb-2">
@@ -232,7 +233,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
                     <span class="font-weight-bold">Bank Pengelola  </span>
                 </div>
                 <div class="col-lg-8  mb-2">
-                    <span class=""><?=$rowlokasi->nama_bank?></span>
+                    <span class=""><?=$rowrekening->nama_bank?></span>
                 </div>
             </div>
                 </div>

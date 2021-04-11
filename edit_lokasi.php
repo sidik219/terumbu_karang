@@ -27,6 +27,7 @@ else if($level_user == 4){
   $extra_query_noand = "  ";
   $wilayah_join = " ";
   $extra_query_k_lok = " ";
+  $extra_query_where = "";
 }
 
     $sqlviewlokasi = 'SELECT * FROM t_lokasi

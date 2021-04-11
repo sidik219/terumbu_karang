@@ -15,6 +15,11 @@ include 'hak_akses.php';
     $stmt->execute(['id_donasi' => $id_donasi]);
     $rowitem = $stmt->fetch();
 
+    $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank';
+    $stmt = $pdo->prepare($sqlviewrekeningbersama);
+    $stmt->execute();
+    $rowrekening = $stmt->fetch();
+
     if (isset($_POST['submit'])) {
         $randomstring = substr(md5(rand()), 0, 7);
 
@@ -184,7 +189,7 @@ include 'hak_akses.php';
                      <span class="font-weight-bold"><i class="fas fa-user-tie"></i> Nama Rekening Pengelola
                 </div>
                 <div class="col-lg-8 mb-2">
-                     <span class=""><?=$rowitem->nama_rekening?></span>
+                     <span class=""><?=$rowrekening->nama_pemilik_rekening?></span>
                 </div>
             </div>
             <div class="row mb-2">
@@ -200,7 +205,7 @@ include 'hak_akses.php';
                     <span class="font-weight-bold"><i class="text-warning fas fa-university"></i> Bank Pengelola  </span>
                 </div>
                 <div class="col-lg-8  mb-2">
-                    <span class=""><?=$rowitem->nama_bank?></span>
+                    <span class=""><?=$rowrekening->nama_bank?></span>
                 </div>
             </div>
             <div class="row">
@@ -208,7 +213,7 @@ include 'hak_akses.php';
                     <span class="font-weight-bold"><i class="text-info fas fa-hashtag"></i> Nomor Rekening Pengelola  </span>
                 </div>
                 <div class="col-lg-8  mb-2">
-                    <span class=""><?=$rowitem->nomor_rekening?></span>
+                    <span class=""><?=$rowrekening->nomor_rekening?></span>
                 </div>
             </div>
             <div class="row mb-2">
