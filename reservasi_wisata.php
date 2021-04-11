@@ -3,44 +3,59 @@ session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-    $id_wisata = $_GET['id_wisata'];
+    $id_paket_wisata = $_GET['id_paket_wisata'];
     $id_user = 1;
     $id_status_reservasi_wisata = 1;
     $keterangan = '-';
 
-    $sqllokasi = 'SELECT * FROM t_wisata
-                    LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
-                    WHERE id_wisata = :id_wisata';
+    $sqldetailpaket = 'SELECT * FROM tb_detail_paket_wisata
+                LEFT JOIN tb_paket_wisata ON tb_detail_paket_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                LEFT JOIN t_lokasi ON tb_detail_paket_wisata.id_lokasi = t_lokasi.id_lokasi
+                WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
 
-    $stmt = $pdo->prepare($sqllokasi);
-    $stmt->execute(['id_wisata' => $id_wisata]);
+    $stmt = $pdo->prepare($sqldetailpaket);
+    $stmt->execute(['id_paket_wisata' => $_GET['id_paket_wisata']]);
     $row = $stmt->fetchAll();
 
     if (isset($_POST['submit'])) {
         if ($_POST['submit'] == 'Simpan') {
-            $id_lokasi          = $_POST['id_lokasi'];
-            $id_wisata          = $_POST['id_wisata'];
-            $tgl_reservasi      = $_POST['tgl_reservasi'];
-            $jumlah_peserta     = $_POST['jumlah_peserta'];
-            $jumlah_donasi      = $_POST['split_harga_tk'];
-            $total              = $_POST['total'];
+            $id_lokasi              = $_POST['id_lokasi'];
+            $tgl_reservasi          = $_POST['tgl_reservasi'];
+            $jumlah_peserta         = $_POST['jumlah_peserta'];
+            $jumlah_donasi          = $_POST['split_harga_tk'];
+            $total                  = $_POST['total'];
+            $nama_donatur           = $_POST['nama_donatur'];
+            $bank_donatur           = $_POST['nama_bank_donatur'];
+            $nomor_rekening_donatur = $_POST['no_rekening_donatur'];
+            $pesan                  = $_POST['pesan'];
+            $id_paket_wisata        = $_POST['id_paket_wisata'];
 
             //var_dump($jumlah_donasi); exit();
             $tanggal_sekarang = date ('Y-m-d H:i:s', time());
 
-            $sqlreservasi = "INSERT INTO t_reservasi_wisata (id_user, id_lokasi, id_wisata,
-                                            tgl_reservasi, jumlah_peserta, jumlah_donasi, total,
-                                            id_status_reservasi_wisata, keterangan, update_terakhir)
-                                VALUES (:id_user, :id_lokasi, :id_wisata,
-                                            :tgl_reservasi, :jumlah_peserta, :jumlah_donasi, :total,
-                                            :id_status_reservasi_wisata, :keterangan, :update_terakhir)";
+            $sqlreservasi = "INSERT INTO t_reservasi_wisata (id_user, id_lokasi, tgl_reservasi, jumlah_peserta,
+                                            jumlah_donasi, total, id_status_reservasi_wisata, keterangan,
+                                            nama_donatur, bank_donatur, nomor_rekening_donatur, pesan, update_terakhir, id_paket_wisata)
+                                VALUES (:id_user, :id_lokasi, :tgl_reservasi, :jumlah_peserta,
+                                            :jumlah_donasi, :total, :id_status_reservasi_wisata, :keterangan,
+                                            :nama_donatur, :bank_donatur, :nomor_rekening_donatur, :pesan, :update_terakhir, :id_paket_wisata)";
 
             $stmt = $pdo->prepare($sqlreservasi);
-            $stmt->execute(['id_user' => $id_user, 'id_lokasi' => $id_lokasi,
-                            'id_wisata' => $id_wisata, 'tgl_reservasi' => $tgl_reservasi,
-                            'jumlah_peserta' => $jumlah_peserta, 'jumlah_donasi' => $jumlah_donasi, 'total' => $total,
-                            'id_status_reservasi_wisata' => $id_status_reservasi_wisata, 'keterangan' => $keterangan,
-                            'update_terakhir' => $tanggal_sekarang]);
+            $stmt->execute(['id_user' => $id_user,
+                            'id_lokasi' => $id_lokasi,
+                            'tgl_reservasi' => $tgl_reservasi,
+                            'jumlah_peserta' => $jumlah_peserta,
+                            'jumlah_donasi' => $jumlah_donasi,
+                            'total' => $total,
+                            'id_status_reservasi_wisata' => $id_status_reservasi_wisata,
+                            'keterangan' => $keterangan,
+                            'nama_donatur' => $nama_donatur,
+                            'bank_donatur' => $bank_donatur,
+                            'nomor_rekening_donatur' => $nomor_rekening_donatur,
+                            'pesan' => $pesan,
+                            'update_terakhir' => $tanggal_sekarang,
+                            'id_paket_wisata' => $id_paket_wisata
+                            ]);
 
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
@@ -201,7 +216,7 @@ include 'hak_akses.php';
                 <div class="card" style="width: 20.5rem; margin-bottom: 20px;">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item card-reservasi">Wisata :</li>
-                        <input type="text" id="deskripsi_wisata" name="deskripsi_wisata" value="Peserta <?=$rowitem->judul_wisata?> : " class="list-group-item paket-wisata" disabled>
+                        <input type="text" id="deskripsi_wisata" name="deskripsi_wisata" value="<?=$rowitem->nama_paket_wisata?>, Peserta : " class="list-group-item paket-wisata" disabled>
                     </ul>
                 </div>
 
@@ -279,7 +294,7 @@ include 'hak_akses.php';
 
                 <div class="form-group">
                     <label for="id_user"></label>
-                    <input type="hidden" id="id_wisata" name="id_wisata" value="<?=$rowitem->id_wisata?>" class="form-control">
+                    <input type="hidden" id="id_paket_wisata" name="id_paket_wisata" value="<?=$rowitem->id_paket_wisata?>" class="form-control">
                 </div>
 
                 <div class="form-group">
@@ -301,41 +316,47 @@ include 'hak_akses.php';
                 <!-- Paket Wisata -->
                 <div class="" style="width:100%;">
                     <div class="">
-                        <h4 class="card-header mb-2 pl-0">Rincian Paket Wisata,
+                        <h4 class="card-header mb-2 pl-0">Rincian Paket Wisata, Lokasi
                             <span class="text-info font-weight-bolder"> <?=$rowitem->nama_lokasi?></span></h4>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col">
+                        <h5><span class="font-weight-bold">
+                        <?=$rowitem->nama_paket_wisata?></h5>
+                    </div>
+                </div><p>
+                
                 <?php
-                $sqlviewpaket = 'SELECT * FROM tb_paket_wisata
-                                    LEFT JOIN t_wisata ON tb_paket_wisata.id_wisata = t_wisata.id_wisata
-                                    WHERE t_wisata.id_wisata = :id_wisata
-                                    AND t_wisata.id_wisata = tb_paket_wisata.id_wisata';
+                $sqlviewpaket = 'SELECT * FROM t_wisata
+                                    LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
+                                    LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                    WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                    AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
                 $stmt = $pdo->prepare($sqlviewpaket);
-                $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
+                $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
                 $rowpaket = $stmt->fetchAll();
 
                 foreach ($rowpaket as $paket) { ?>
                 <div class="row">
                     <div class="col">
                         <span class="font-weight-bold">
-                        <i class="text-info fas fa-arrow-circle-right"></i> <?=$paket->nama_paket_wisata?></span>
-                    </div>
-                    <div class="col-lg-8  mb-2">
-                        <span class="">
-                        <i class="text-success fas fa-money-bill-wave"></i> Rp. <?=number_format($paket->biaya_paket, 0)?></span>
+                        <i class="text-info fas fa-arrow-circle-right"></i> <?=$paket->judul_wisata?></span>
                     </div>
                 </div>
                 <?php } ?>
                 <hr class="mb-2"/>
                 <?php
-                $sqlviewpaket = 'SELECT SUM(biaya_paket) AS total_biaya_paket, nama_paket_wisata, biaya_paket FROM tb_paket_wisata
-                                    LEFT JOIN t_wisata ON tb_paket_wisata.id_wisata = t_wisata.id_wisata
-                                    WHERE t_wisata.id_wisata = :id_wisata
-                                    AND t_wisata.id_wisata = tb_paket_wisata.id_wisata';
+                $sqlviewpaket = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, nama_fasilitas, biaya_fasilitas 
+                                FROM tb_fasilitas_wisata 
+                                LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
+                                LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
                 $stmt = $pdo->prepare($sqlviewpaket);
-                $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
+                $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
                 $rowpaket = $stmt->fetchAll();
 
                 foreach ($rowpaket as $paket) { ?>
@@ -347,8 +368,8 @@ include 'hak_akses.php';
                     <div class="col-lg-8  mb-2">
                         <span class="">
                         <i class="text-success fas fa-money-bill-wave"></i>
-                        <input type="hidden" id="total_paket_wisata" value="<?=$paket->total_biaya_paket?>">
-                        Rp. <input value="<?=number_format($paket->total_biaya_paket, 0)?>" class="paket-wisata" disabled></span>
+                        <input type="hidden" id="total_paket_wisata" value="<?=$paket->total_biaya_fasilitas?>">
+                        Rp. <input value="<?=number_format($paket->total_biaya_fasilitas, 0)?>" class="paket-wisata" disabled></span>
                     </div>
                 </div>
                 <?php } ?>
@@ -366,20 +387,20 @@ include 'hak_akses.php';
                     <h4 class="mb-3 card-header pl-0">Data Rekening Wisatawan</h4>
                         <div class="mb-3">
                             <label for="nama_donatur">Nama Pemilik Rekening</label>
-                            <input type="text" class="form-control data_donatur" id="nama_donatur" name="nama_donatur[]">
+                            <input type="text" class="form-control data_donatur" id="nama_donatur" name="nama_donatur">
                         </div>
                         <div class="mb-3">
                             <label for="no_rekening_donatur">Nomor Rekening</label>
-                            <input type="number" class="form-control data_donatur" id="no_rekening_donatur" name="no_rekening_donatur[]">
+                            <input type="number" class="form-control data_donatur" id="no_rekening_donatur" name="no_rekening_donatur">
                         </div>
                         <div class="mb-3">
                             <label for="nama_bank_donatur">Nama Bank</label>
-                            <input type="text" class="form-control data_donatur" id="nama_bank_donatur" name="nama_bank_donatur[]">
+                            <input type="text" class="form-control data_donatur" id="nama_bank_donatur" name="nama_bank_donatur">
                         </div>
                         <div class="mb-3">
                             <!-- Pesan/Ekspresi -->
                             <label>Pesan/Ekspresi di Terumbu Karang</label>
-                            <input type="text" id="pesan" name="pesan[]" class="form-control">
+                            <input type="text" id="pesan" name="pesan" class="form-control">
                         </div>
                     </div>
 
@@ -488,7 +509,7 @@ include 'hak_akses.php';
                 var hasil   = parseInt(total_reservasi) + parseInt(split_harga_tk);
             }
 
-            document.getElementById("deskripsi_wisata").value = "Peserta <?=$rowitem->judul_wisata?> : " + deskripsi;
+            document.getElementById("deskripsi_wisata").value = "<?=$rowitem->nama_paket_wisata?>, Peserta : " + deskripsi;
             document.getElementById("terumbu_karang").value = terumbu_karang;
             document.getElementById("split_tk").value = split_tk;
             document.getElementById("split_harga_tk").value = split_harga_tk;

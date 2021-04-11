@@ -6,58 +6,34 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-$sqlviewlokasi = 'SELECT * FROM t_lokasi
-                    ORDER BY nama_lokasi';
-        $stmt = $pdo->prepare($sqlviewlokasi);
-        $stmt->execute();
-        $rowlokasi = $stmt->fetchAll();
+$sqlviewfasilitas = 'SELECT * FROM tb_fasilitas_wisata
+                  ORDER BY id_fasilitas_wisata DESC';
+$stmt = $pdo->prepare($sqlviewfasilitas);
+$stmt->execute();
+$rowfasilitas = $stmt->fetchAll();
 
 if (isset($_POST['submit'])) {
     if ($_POST['submit'] == 'Simpan') {
-        $id_lokasi                  = $_POST['dd_id_lokasi'];
-        $judul_wisata               = $_POST['tb_judul_wisata'];
-        $deskripsi_wisata           = $_POST['tb_deskripsi_wisata'];
-
-        //Insert t_wisata
-        $sqlwisata = "INSERT INTO t_wisata
-                            (id_lokasi, judul_wisata, deskripsi_wisata)
-                            VALUES (:id_lokasi, :judul_wisata, :deskripsi_wisata)";
-
-        $stmt = $pdo->prepare($sqlwisata);
-        $stmt->execute(['id_lokasi'         => $id_lokasi,
-                        'judul_wisata'      => $judul_wisata,
-                        'deskripsi_wisata'  => $deskripsi_wisata
-                        ]);
-
-        $affectedrows = $stmt->rowCount();
-        if ($affectedrows == '0') {
-            //echo "HAHAHAAHA INSERT FAILED !";
-        } else {
-            //echo "HAHAHAAHA GREAT SUCCESSS !";
-            $last_wisata_id = $pdo->lastInsertId();
-        }
         //var_dump($_POST['nama_fasilitas']);var_dump($_POST['biaya_fasilitas']);exit();
         $i = 0;
         foreach ($_POST['nama_fasilitas'] as $nama_fasilitas) {
             $nama_fasilitas    = $_POST['nama_fasilitas'][$i];
             $biaya_fasilitas   = $_POST['biaya_fasilitas'][$i];
-            $id_wisata         = $last_wisata_id;
 
-            $sqlinsertfasilitas = "INSERT INTO tb_fasilitas_wisata (nama_fasilitas, biaya_fasilitas, id_wisata)
-                                        VALUES (:nama_fasilitas, :biaya_fasilitas, :id_wisata)";
+            $sqlinsertfasilitas = "INSERT INTO tb_fasilitas_wisata (nama_fasilitas, biaya_fasilitas)
+                                        VALUES (:nama_fasilitas, :biaya_fasilitas)";
 
             $stmt = $pdo->prepare($sqlinsertfasilitas);
             $stmt->execute(['nama_fasilitas' => $nama_fasilitas,
-                            'biaya_fasilitas' => $biaya_fasilitas,
-                            'id_wisata' => $id_wisata
+                            'biaya_fasilitas' => $biaya_fasilitas
                             ]);
 
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
-                header("Location: input_wisata.php?status=insertfailed");
+                header("Location: input_fasilitas_wisata.php?status=insertfailed");
             } else {
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: input_wisata.php?status=addsuccess");
+                header("Location: input_fasilitas_wisata.php?status=addsuccess");
             }
             $i++;
         } //End Foreach
@@ -141,12 +117,8 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="input_fasilitas_wisata.php">< Kembali</a><br><br>
-                    <h4><span class="align-middle font-weight-bold">Input Data Wisata</span></h4>
-                </div>
-                <div align="right">
-                    <a class="btn btn-outline-primary" href="input_paket_wisata.php">
-                    Selanjutnya Paket Wisata <i class="fas fa-angle-right"></i></a>
+                    <a class="btn btn-outline-primary" href="kelola_wisata.php">< Kembali</a><br><br>
+                    <h4><span class="align-middle font-weight-bold">Data Fasilitas Wisata</span></h4>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -155,59 +127,35 @@ if (isset($_POST['submit'])) {
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <form action="" enctype="multipart/form-data" method="POST">
-
-                    <div class="form-group">
-                    <label for="dd_id_lokasi">ID Lokasi</label>
-                    <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" required>
-                            <option value="">Pilih Lokasi</option>
-                        <?php foreach ($rowlokasi as $rowitem) {  ?>
-                            <option value="<?=$rowitem->id_lokasi?>">ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
-                        <?php } ?>
-                    </select>
+                    <div align="right">
+                    <a class="btn btn-outline-primary" href="input_wisata.php">
+                    Selanjutnya Input Wisata <i class="fas fa-angle-right"></i></a>
                     </div>
 
-                    <div class="form-group">
-                        <label for="tb_judul_wisata">Judul Wisata</label>
-                        <input type="text" id="tb_judul_wisata" name="tb_judul_wisata" class="form-control" required>
-                    </div>
+                    <table class="table table-striped table-responsive-sm">
+                     <thead>
+                            <tr>
+                            <th scope="col">ID Fasilitas</th>
+                            <th scope="col">Nama Fasilitas</th>
+                            <th scope="col">Biaya Fasilitas</th>
+                            <th scope="col">Aksi</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <?php foreach ($rowfasilitas as $fasilitas) { ?>
+                            <tr>
+                              <th scope="row"><?=$fasilitas->id_fasilitas_wisata?></th>
+                              <td><?=$fasilitas->nama_fasilitas?></td>
+                              <td><?=$fasilitas->biaya_fasilitas?></td>
+                              <td>
+                                <a href="edit_wisata.php?id_wisata=<?=$fasilitas->id_fasilitas_wisata?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                                <a href="hapus.php?type=wisata&id_wisata=<?=$fasilitas->id_fasilitas_wisata?>" class="far fa-trash-alt btn btn-act"></a>
+                              </td>
+                            </tr>
+                          <?php } ?>
+                          </tbody>
+                  </table>
 
-                    <div class="form-group">
-                        <label for="tb_deskripsi_wisata">Deskripsi Singkat Wisata</label>
-                        <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" class="form-control" required>
-                    </div>
-
-                    <div class="form-group field_wrapper">
-                        <label for="paket_wisata">Fasilitas Wisata</label><br>
-                        <div class="form-group fieldGroup">
-                            <div class="input-group">
-                                <input type="text" name="nama_fasilitas[]" class="form-control" placeholder="Nama Fasilitas"/>
-                                <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/>
-                                <div class="input-group-addon">
-                                    <a href="javascript:void(0)" class="btn btn-success addMore">
-                                        <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Fasilitas
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p align="center">
-                    <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
-                    </form><br><br>
-
-                    <!-- copy of input fields group -->
-                    <div class="form-group fieldGroupCopy" style="display: none;">
-                        <div class="input-group">
-                            <input type="text" name="nama_fasilitas[]" class="form-control" placeholder="Nama Fasilitas"/>
-                            <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/>
-                            <div class="input-group-addon">
-                                <a href="javascript:void(0)" class="btn btn-danger remove">
-                                    <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Fasilitas
-                                </a>
-                            </div>
-                        </div>
-                    </div>
 
             </section>
             <!-- /.Left col -->

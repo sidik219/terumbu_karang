@@ -14,19 +14,20 @@ include 'hak_akses.php';
         header("Location: map.php?aksi=wisata");
     }
 
-    $sqlwisata = 'SELECT * FROM t_wisata
-                LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
-                WHERE t_wisata.id_lokasi = :id_lokasi';
+    $sqldetailpaket = 'SELECT * FROM tb_detail_paket_wisata
+                LEFT JOIN tb_paket_wisata ON tb_detail_paket_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                LEFT JOIN t_lokasi ON tb_detail_paket_wisata.id_lokasi = t_lokasi.id_lokasi
+                WHERE tb_detail_paket_wisata.id_lokasi = :id_lokasi';
 
-    $stmt = $pdo->prepare($sqlwisata);
+    $stmt = $pdo->prepare($sqldetailpaket);
     $stmt->execute(['id_lokasi' => $_GET['id_lokasi']]);
-    $rowwisata = $stmt->fetchAll();
+    $rowpaket = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Pilih Wisata - GoKarang</title>
+    <title>Pilih Wisata - TKJB</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -40,7 +41,7 @@ include 'hak_akses.php';
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style-card.css">
     <!-- Favicon -->
-    <?= $favicon ?>
+    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -70,7 +71,9 @@ include 'hak_akses.php';
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
             <a href="dashboard_user.php" class="brand-link">
-                <?= $logo_website ?>
+                <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
+                <!-- BRAND TEXT (TOP) -->
+                <span class="brand-text font-weight-bold">TKJB</span>
             </a>
             <!-- END OF TOP SIDEBAR -->
 
@@ -109,16 +112,16 @@ include 'hak_akses.php';
                         <i class="fas fa-angle-left"></i> Ganti Lokasi Wisata</button></a>
                     <div class="row">
                     <?php
-                    foreach ($rowwisata as $rowitem) {
-                        if ($rowitem->status_aktif == "Aktif") { ?>
+                    foreach ($rowpaket as $rowitem) {
+                        //if ($rowitem->status_aktif == "Aktif") { ?>
 
                         <div class="col-md-4" style="text-align: left;">
                             <div class="card card-pilihan mb-4 shadow-sm">
-                            <a href="detail_lokasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>">
+                            <a href="detail_lokasi_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>">
                                 <img class="card-img-top" height="100%" src="<?=$rowitem->foto_wisata?>">
                             </a>
                                 <div class="card-body card-body-costom">
-                                    <p class="card-title"><h5 class="font-weight-bold"><?=$rowitem->judul_wisata?></h5></p>
+                                    <p class="card-title"><h5 class="font-weight-bold"><?=$rowitem->nama_paket_wisata?></h5></p>
 
                                     <h5 style="text-align: left;"> Lokasi :</h5>
                                     <p class="card-text font-weight-bold" style="text-align: left;">
@@ -127,13 +130,13 @@ include 'hak_akses.php';
                                     <h5 style="text-align: left;"> Paket Wisata :</h5>
                                     <p class="card-text font-weight-bold" style="text-align: left;">
                                         <?php
-                                        $sqlviewpaket = 'SELECT * FROM tb_paket_wisata
-                                                            LEFT JOIN t_wisata ON tb_paket_wisata.id_wisata = t_wisata.id_wisata
-                                                            WHERE t_wisata.id_wisata = :id_wisata
-                                                            AND t_wisata.id_wisata = tb_paket_wisata.id_wisata';
+                                        $sqlviewpaket = 'SELECT * FROM t_wisata
+                                                            LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                                            WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                                            AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
                                         $stmt = $pdo->prepare($sqlviewpaket);
-                                        $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
+                                        $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
                                         $rowpaket = $stmt->fetchAll();
 
                                         foreach ($rowpaket as $paket) { ?>
@@ -141,8 +144,8 @@ include 'hak_akses.php';
                                             <div class="divTableBody">
                                                 <div class="divTableRow">
                                                     <div class="divTableCell-1">
-                                                        <i class="text-info fas fa-arrow-circle-right"></i>
-                                                        <?=$paket->nama_paket_wisata?>
+                                                        <i class="text-info fas fa-arrow-circle-right"></i>                             
+                                                        <?=$paket->judul_wisata?>
                                                     </div>
                                                     <div class="divTableCell-2">
                                                     </div>
@@ -154,27 +157,29 @@ include 'hak_akses.php';
                                     <h5 style="text-align: left;"> Total Paket Wisata :</h5>
                                     <h4 class="card-text font-weight-bold" style="text-align: left;">
                                         <?php
-                                        $sqlviewpaket = 'SELECT SUM(biaya_paket) AS total_biaya_paket, nama_paket_wisata, biaya_paket FROM tb_paket_wisata
-                                                            LEFT JOIN t_wisata ON tb_paket_wisata.id_wisata = t_wisata.id_wisata
-                                                            WHERE t_wisata.id_wisata = :id_wisata
-                                                            AND t_wisata.id_wisata = tb_paket_wisata.id_wisata';
+                                        $sqlviewpaket = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, nama_fasilitas, biaya_fasilitas 
+                                                            FROM tb_fasilitas_wisata 
+                                                            LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
+                                                            LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                                            WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                                            AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
                                         $stmt = $pdo->prepare($sqlviewpaket);
-                                        $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
+                                        $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
                                         $rowpaket = $stmt->fetchAll();
 
                                         foreach ($rowpaket as $paket) { ?>
                                         <span class="badge badge-pill badge-success mr-2">
-                                        Rp. <?=number_format($paket->total_biaya_paket, 0)?></span>
+                                        Rp. <?=number_format($paket->total_biaya_fasilitas, 0)?></span>
                                         <?php } ?></h4>
-
-                                    <a class="btn btn-primary btn-lg btn-block mb-4" href="detail_lokasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" class="card-donasi__cta" style="color: white;">Rincian Wisata</a>
+                                    
+                                    <a class="btn btn-primary btn-lg btn-block mb-4" href="detail_lokasi_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>" class="card-donasi__cta" style="color: white;">Rincian Wisata</a>
                                 </div>
                             </div>
                         </div>
 
 
-                        <?php } ?>
+                        <?php //} ?>
                     <?php } ?>
                     </div>
                 </div>
@@ -191,7 +196,7 @@ include 'hak_akses.php';
     <!-- /.content-wrapper -->
 
     <footer class="main-footer">
-        <?= $footer ?>
+        <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
     </footer>
 
     <!-- Control Sidebar -->
