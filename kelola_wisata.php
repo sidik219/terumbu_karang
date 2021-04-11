@@ -12,19 +12,25 @@ if($level_user == 2){
   $id_wilayah = $_SESSION['id_wilayah_dikelola'];
   $extra_query = " AND t_lokasi.id_wilayah = $id_wilayah ";
   $extra_query_noand = " t_lokasi.id_wilayah = $id_wilayah ";
+
+  $join_wilayah = " LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah ";
 }
 else if($level_user == 3){
   $id_lokasi = $_SESSION['id_lokasi_dikelola'];
   $extra_query = " AND t_lokasi.id_lokasi = $id_lokasi ";
   $extra_query_noand = " t_lokasi.id_lokasi = $id_lokasi ";
+
+  $join_wilayah = " ";
 }
 else if($level_user == 4){
-  $extra_query = " 1 ";
-  $extra_query_noand = " 1 ";
+  $extra_query = " ";
+  $extra_query_noand = " ";
+  $join_wilayah = "  ";
 }
 
 $sqlviewwisata = 'SELECT * FROM t_wisata
-                  LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi WHERE   '.$extra_query.'
+                  LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi '.$join_wilayah.'
+                  WHERE  '.$extra_query_noand.'
                   ORDER BY id_wisata DESC';
 $stmt = $pdo->prepare($sqlviewwisata);
 $stmt->execute();
