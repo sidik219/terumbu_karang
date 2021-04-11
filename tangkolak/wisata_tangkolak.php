@@ -105,7 +105,7 @@
                                                 <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media2" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
                                                         Lihat Detail
                                                 </a> 
-                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="https://radarkarawang.id/cilamaya/tangkolak-wajah-baru-wisata-bahari/" target="_blank">Lihat Paket Wisata</a>
+                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="paket_wisata.php" target="_blank">Lihat Paket Wisata</a>
                                         </div>
                                     </div>
                                 </div>
@@ -127,7 +127,7 @@
                                                 <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media2" data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample">
                                                         Lihat Detail
                                                 </a> 
-                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="https://radarkarawang.id/cilamaya/tangkolak-wajah-baru-wisata-bahari/" target="_blank">Lihat Paket Wisata</a>
+                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="paket_wisata.php" target="_blank">Lihat Paket Wisata</a>
                                         </div>
                                     </div>
                                 </div>
@@ -150,7 +150,7 @@
                                                 <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media2" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample">
                                                         Lihat Detail
                                                 </a> 
-                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="https://radarkarawang.id/cilamaya/tangkolak-wajah-baru-wisata-bahari/" target="_blank">Lihat Paket Wisata</a>
+                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="paket_wisata.php" target="_blank">Lihat Paket Wisata</a>
                                         </div>
                                     </div>
                                 </div>

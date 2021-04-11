@@ -137,8 +137,8 @@
 
                 <div class="tkjb-banner-caption">
                 <h2>Bagian dari GoKarang</h2>
-                <p>Pantai Tangkolak merupakan bagian dari Program Terumbu Karang Jawa Barat (<a href="https://tkjb.or.id/">tkjb.or.id</a>) yang merupakan bentuk kerjasama antara
-                Dinas Kelautan dan Perikanan Jawa Barat (DKP) dengan Kelompok Usaha Bersama (KUB) masyarakat pesisir pantai di Provinsi Jawa Barat yang memiliki tujuan sebagai berikut :</p>
+                <p>Pantai Tangkolak merupakan bagian dari Program GoKarang (<a href="https://tkjb.or.id/">tkjb.or.id</a>) yang merupakan bentuk kerjasama antara
+                Dinas Kelautan dan Perikanan Jawa Barat (DKP Jabar) dengan Kelompok Usaha Bersama (KUB) masyarakat pesisir pantai Tangkolak yang memiliki tujuan sebagai berikut :</p>
                     <div id="accordion " class="list-tujuan-tkjb">
                         <div class="card accordion-bg">
                             <div class="card-header accordion-header" id="headingOne">
