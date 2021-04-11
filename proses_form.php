@@ -85,21 +85,74 @@ if ($_POST['type'] == 'update_modal_patokan_harga_terumbu' && !empty($_POST["id_
 
 
 
-    //Rekening Bersama--------------------------------
+//Rekening Bersama--------------------------------
 //Tambah
 if ($_POST['type'] == 'save_modal_rekber') {
     $nama_pemilik_rekening = $_POST['nama_pemilik_rekening'];
     $nomor_rekening = $_POST['nomor_rekening'];
     $nama_bank = $_POST['nama_bank'];
 
-    $insertpatokan = 'INSERT INTO t_rekening_bank
+    $insertrekening = 'INSERT INTO t_rekening_bank
                       (nama_pemilik_rekening, nomor_rekening, nama_bank)
                       VALUES (:nama_pemilik_rekening, :nomor_rekening, :nama_bank)';
-        $stmt = $pdo->prepare($insertpatokan);
+        $stmt = $pdo->prepare($insertrekening);
         $stmt->execute(['nama_pemilik_rekening' => $nama_pemilik_rekening, 'nomor_rekening' => $nomor_rekening, 'nama_bank' => $nama_bank]);
     }
 
+    //Load untuk Edit
+    if ($_POST['type'] == 'load_modal_rekber') {
+    $id_rekening_bank = $_POST["id_rekening_bank"];
 
+    $loadrekening = 'SELECT * FROM t_rekening_bank
+                    WHERE id_rekening_bank = :id_rekening_bank';
+        $stmt = $pdo->prepare($loadrekening);
+        $stmt->execute(['id_rekening_bank' => $id_rekening_bank]);
+        $rowitem = $stmt->fetch();
+
+        ?>
+
+        <div class="col border rounded p-2 bg-light">
+                            <div class="row">
+                              <div class="col">
+                        <div class="row mt-2">
+                          <div class="col">
+                            <label for="nama_pemilik_rekening">Nama Pemilik Rekening</label>
+                            <input type="text" id="nama_pemilik_rekening" name="nama_pemilik_rekening" class="form-control" value="<?=$rowitem->nama_pemilik_rekening?>" required>
+                          </div>
+                        </div>
+                        <div class="row mt-2">
+                          <div class="col">
+                            <label for="nomor_rekening">Nomor Rekening</label>
+                            <input type="text" id="nomor_rekening" name="nomor_rekening" class="form-control" value="<?=$rowitem->nomor_rekening?>" required>
+                          </div>
+                        </div>
+                        <div class="row mt-2">
+                          <div class="col">
+                            <label for="nama_bank">Nama Bank</label>
+                            <input type="text" id="nama_bank" name="nama_bank" class="form-control" value="<?=$rowitem->nama_bank?>" required>
+                            <input type="hidden" id="hid_type" name="type" value="update_modal_rekber">
+                            <input type="hidden" id="hid_type" name="id_rekening_bank" value="<?=$rowitem->id_rekening_bank?>">
+                          </div>
+                        </div>
+                      </div>
+
+        <?php
+    }
+
+
+    //Edit
+if ($_POST['type'] == 'update_modal_rekber') {
+    $id_rekening_bank = $_POST["id_rekening_bank"];
+    $nama_pemilik_rekening = $_POST['nama_pemilik_rekening'];
+    $nomor_rekening = $_POST['nomor_rekening'];
+    $nama_bank = $_POST['nama_bank'];
+
+    $updatepatokan = 'UPDATE t_rekening_bank
+                      SET nama_pemilik_rekening = :nama_pemilik_rekening, nomor_rekening = :nomor_rekening, nama_bank = :nama_bank
+                      WHERE id_rekening_bank = :id_rekening_bank';
+        $stmt = $pdo->prepare($updatepatokan);
+        $stmt->execute(['id_rekening_bank' => $id_rekening_bank, 'nama_pemilik_rekening' => $nama_pemilik_rekening, 'nomor_rekening' => $nomor_rekening, 'nama_bank' => $nama_bank]);
+    }
 
 
 

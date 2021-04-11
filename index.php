@@ -32,7 +32,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light  main-navigation fixed-top">
         <!-- LOGO HOLDER -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="index.php"><img id=logo src="dist/img/logo.png"></a>
+            <a class="navbar-brand" href="index.php"><img id=logo src="dist/img/gokarang_logo_complete.png"></a>
         </nav>
         <!-- END OF LOGO HOLDER -->
 

@@ -84,4 +84,11 @@ elseif ($type == 'user_p_lokasi'){
             $stmt->execute(['id_lokasi' => $id_lokasi, 'id_user' => $id_user]);
             header('Location: atur_pengelola_lokasi.php?id_lokasi='.$id_lokasi.'&status=deletesuccess');
 }
+elseif ($type == 'rekening_bersama'){
+    $sql = 'DELETE FROM t_rekening_bank
+            WHERE id_rekening_bank = :id_rekening_bank';
 
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_rekening_bank' => $_GET['id_rekening_bank']]);
+            header('Location: kelola_rekening_bersama.php?status=deletesuccess');
+}

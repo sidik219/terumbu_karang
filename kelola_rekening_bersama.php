@@ -206,6 +206,7 @@ include 'hak_akses.php';
                             <input type="text" id="nama_bank" name="nama_bank" class="form-control" required>
                           </div>
                         </div>
+                        <input type="hidden" id="hid_type" name="type" value="save_modal_rekber">
                         </form>
                               <div class="col text-center">
                                 <span onclick="simpanRekening()" class="btn btn-blue btn-sm btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambahkan</span>
@@ -262,10 +263,7 @@ include 'hak_akses.php';
     $.ajax({
         type:'POST',
         url:'proses_form.php',
-        data:{
-          isiform,
-          type: 'save_modal_rekber'
-        },
+        data:isiform,
         success: function(){
             alert('Data berhasil ditambahkan')
             location.reload();
@@ -274,14 +272,14 @@ include 'hak_akses.php';
     })
   }
 
-  function loadRekening(id_detail_lokasi){
-    var id_detail_lokasi_int = parseInt(id_detail_lokasi)
+  function loadRekening(id_rekening_bank){
+    var id_rekening_bank_int = parseInt(id_rekening_bank)
     $.ajax({
         type:'POST',
         url:'proses_form.php',
         data:
-        {id_detail_lokasi:id_detail_lokasi_int,
-         type:'load_modal_patokan_harga_terumbu'
+        {id_rekening_bank:id_rekening_bank_int,
+         type:'load_modal_rekber'
         },
         success: function(rowitem){
             $('#edit_form').html(rowitem)
