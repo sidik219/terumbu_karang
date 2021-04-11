@@ -27,7 +27,7 @@
                     <!-- Navbar First Layer -->
                         <!-- Logo Holder -->
                             <a class="navbar-brand" href="index.php">
-                                <img id="logo-tkjb-navbar" src="images/tkjb.png">
+                                <img id="logo-tkjb-navbar" src="images/gokarang.png">
                             </a>
                         <!-- Menu Toogler -->
                         <button class="navbar-toggler custom-toggler hamburger-menu" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
@@ -218,7 +218,7 @@
     <section id="footer">
         <div class="row">
             <div class="blogo col-xs-12 col-sm-12 col-md-12 col-lg-4">
-                <a href="#"><img src="images/tkjb.png" id="footer-logo" alt="Tangkolak Footer Logo"></a>
+                <a href="#"><img src="images/gokarang.png" id="footer-logo"></a>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 cr-tkjb">
                 <div class="cpt text-light text-center">
