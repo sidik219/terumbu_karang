@@ -174,14 +174,7 @@ $row = $stmt->fetchAll();
                                         <img src="<?=$rowitem->foto_terumbu_karang?>?<?php if ($status='nochange'){echo time();}?>" width="150px">
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Harga
-                                    </div>
-                                    <div class="col isi">
-                                        Rp. <?=$rowitem->harga_terumbu_karang?>
-                                    </div>
-                                </div>
+
 
                             </div>
                         </div>

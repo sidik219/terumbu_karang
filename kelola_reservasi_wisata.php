@@ -6,6 +6,38 @@ if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
+$level_user = $_SESSION['level_user'];
+
+if($level_user == 2){
+  $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+  $extra_query = " AND t_wilayah.id_wilayah = $id_wilayah ";
+  $extra_query_noand = " t_wilayah.id_wilayah = $id_wilayah ";
+  $wilayah_join = " LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
+                    LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
+  $extra_query_k_lok = " AND t_lokasi.id_wilayah = $id_wilayah ";
+  $extra_query_noand_where = " WHERE id_wilayah = $id_wilayah ";
+  $extra_query_k_titik = " WHERE t_lokasi.id_wilayah = $id_wilayah ";
+  $extra_query_noand_where_k_reservasi = " WHERE t_wilayah.id_wilayah = $id_wilayah ";
+}
+else if($level_user == 3){
+  $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+  $extra_query = " AND id_lokasi = $id_lokasi ";
+  $extra_query_k_lok = " AND t_lokasi.id_lokasi = $id_lokasi ";
+  $extra_query_noand = " id_lokasi = $id_lokasi ";
+  $extra_query_noand_where = " WHERE id_lokasi = $id_lokasi ";
+  $extra_query_noand_where_k_reservasi = " WHERE t_lokasi.id_lokasi = $id_lokasi ";
+  $wilayah_join = " ";
+  $extra_query_k_titik = " WHERE t_lokasi.id_lokasi = $id_lokasi ";
+}
+else if($level_user == 4){
+  $extra_query = "  ";
+  $extra_query_noand = "  ";
+  $wilayah_join = " ";
+  $extra_query_k_lok = " ";
+  $extra_query_noand_where = " ";
+  $extra_query_k_titik = "  ";
+}
+
 if(isset($_GET['id_status_reservasi_wisata'])){
   $id_status_reservasi_wisata = $_GET['id_status_reservasi_wisata'];
 
@@ -15,7 +47,7 @@ if(isset($_GET['id_status_reservasi_wisata'])){
                   LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                   LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                   LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
-                  WHERE t_reservasi_wisata.id_status_reservasi_wisata = 1
+                  WHERE t_reservasi_wisata.id_status_reservasi_wisata = 1 '.$extra_query_k_lok.'
                   ORDER BY id_reservasi DESC';
   }
   elseif($id_status_reservasi_wisata == 3){ //reservasi bermasalah
@@ -24,7 +56,7 @@ if(isset($_GET['id_status_reservasi_wisata'])){
                   LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                   LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                   LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
-                  WHERE t_reservasi_wisata.id_status_reservasi_wisata = 3
+                  WHERE t_reservasi_wisata.id_status_reservasi_wisata = 3 '.$extra_query_k_lok.'
                   ORDER BY id_reservasi DESC';
   }
     $stmt = $pdo->prepare($sqlviewreservasi);
@@ -36,7 +68,7 @@ else{//reservasi umum
                   LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                   LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-                  LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
+                  LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata '.$extra_query_noand_where_k_reservasi.'
                   ORDER BY id_reservasi DESC';
     $stmt = $pdo->prepare($sqlviewreservasi);
     $stmt->execute();

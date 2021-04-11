@@ -29,7 +29,7 @@ if (isset($_POST['login'])) {
                 $_SESSION['id_user']        = $row->id_user;
                 $_SESSION['username']        = $row->username;
                 $_SESSION['level_user']     = $row->level_user;
-                header('Location: dashboard_admin.php?pesan=login_berhasil_w&id_wilayah='.$rowkelolalokasi->id_wilayah);
+                header('Location: dashboard_admin.php?pesan=login_berhasil_w&id_wilayah='.$rowkelolawilayah->id_wilayah);
               }
               else{
                 header('Location: login.php?pesan=akun_belum_diberi_akses');
@@ -90,6 +90,8 @@ if (isset($_POST['login'])) {
     <link rel="stylesheet" type="text/css" href="css/login.css">
     <link rel="stylesheet" type="text/css" href="css/util.css">
     <title>Login - GoKarang</title>
+    <!-- Favicon -->
+    <link rel="icon" href="dist/img/gokarang_coral_favicon.png" type="image/x-icon" />
 </head>
 <body>
 
@@ -114,7 +116,7 @@ if (isset($_POST['login'])) {
                     }
                   else if($_GET['pesan'] == 'akun_belum_diberi_akses'){
                   echo '<div class="alert alert-primary" role="alert">
-                          Akun anda dalam tahap verifikasi oleh Pengelola Pusat. Harap tunggu beberapa saat.
+                          Akun anda dalam tahap verifikasi oleh Pengelola Pusat. Harap tunggu beberapa saat. Terima kasih.
                       </div>';
                     }
                   else{

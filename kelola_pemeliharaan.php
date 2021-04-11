@@ -6,6 +6,39 @@ if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
+$level_user = $_SESSION['level_user'];
+
+if($level_user == 2){
+  $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+  $extra_query = " AND t_wilayah.id_wilayah = $id_wilayah ";
+  $extra_query_noand = " t_wilayah.id_wilayah = $id_wilayah ";
+  $wilayah_join = " LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
+                    LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
+  $extra_query_k_lok = " AND t_lokasi.id_wilayah = $id_wilayah ";
+  $extra_query_noand_where = " WHERE id_wilayah = $id_wilayah ";
+  $extra_query_k_titik = " WHERE t_lokasi.id_wilayah = $id_wilayah ";
+  $extra_query_noand_where_k_reservasi = " WHERE t_wilayah.id_wilayah = $id_wilayah ";
+}
+else if($level_user == 3){
+  $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+  $extra_query = " AND id_lokasi = $id_lokasi ";
+  $extra_query_k_lok = " AND t_lokasi.id_lokasi = $id_lokasi ";
+  $extra_query_noand = " id_lokasi = $id_lokasi ";
+  $extra_query_noand_where = " WHERE id_lokasi = $id_lokasi ";
+  $extra_query_noand_where_k_reservasi = " WHERE t_lokasi.id_lokasi = $id_lokasi ";
+  $wilayah_join = " ";
+  $extra_query_k_titik = " WHERE t_lokasi.id_lokasi = $id_lokasi ";
+}
+else if($level_user == 4){
+  $extra_query = "  ";
+  $extra_query_noand = "  ";
+  $wilayah_join = " ";
+  $extra_query_k_lok = " ";
+  $extra_query_noand_where = " ";
+  $extra_query_k_titik = "  ";
+  $extra_query_noand_where_k_reservasi = "  ";
+}
+
 if(isset($_GET['id_status_pemeliharaan'])){
   $id_status_pemeliharaan = $_GET['id_status_pemeliharaan'];
 
@@ -13,14 +46,14 @@ if(isset($_GET['id_status_pemeliharaan'])){
     $sqlviewpemeliharaan = 'SELECT * FROM t_pemeliharaan
                           LEFT JOIN t_lokasi ON t_pemeliharaan.id_lokasi = t_lokasi.id_lokasi
                           LEFT JOIN t_status_pemeliharaan ON t_pemeliharaan.id_status_pemeliharaan = t_status_pemeliharaan.id_status_pemeliharaan
-                          WHERE t_pemeliharaan.id_status_pemeliharaan = 1
+                          WHERE t_pemeliharaan.id_status_pemeliharaan = 1 '.$extra_query_k_lok.'
                           ORDER BY t_pemeliharaan.id_status_pemeliharaan';
   }
   elseif($id_status_pemeliharaan == 2){ //pml selesai
     $sqlviewpemeliharaan = 'SELECT * FROM t_pemeliharaan
                           LEFT JOIN t_lokasi ON t_pemeliharaan.id_lokasi = t_lokasi.id_lokasi
                           LEFT JOIN t_status_pemeliharaan ON t_pemeliharaan.id_status_pemeliharaan = t_status_pemeliharaan.id_status_pemeliharaan
-                          WHERE t_pemeliharaan.id_status_pemeliharaan = 2
+                          WHERE t_pemeliharaan.id_status_pemeliharaan = 2 '.$extra_query_k_lok.'
                           ORDER BY t_pemeliharaan.id_status_pemeliharaan';
   }
     $stmt = $pdo->prepare($sqlviewpemeliharaan);
@@ -30,7 +63,7 @@ if(isset($_GET['id_status_pemeliharaan'])){
 else{//pml umum
     $sqlviewpemeliharaan = 'SELECT * FROM t_pemeliharaan
                           LEFT JOIN t_lokasi ON t_pemeliharaan.id_lokasi = t_lokasi.id_lokasi
-                          LEFT JOIN t_status_pemeliharaan ON t_pemeliharaan.id_status_pemeliharaan = t_status_pemeliharaan.id_status_pemeliharaan
+                          LEFT JOIN t_status_pemeliharaan ON t_pemeliharaan.id_status_pemeliharaan = t_status_pemeliharaan.id_status_pemeliharaan  '.$extra_query_noand_where_k_reservasi.'
                           ORDER BY t_pemeliharaan.id_status_pemeliharaan';
     $stmt = $pdo->prepare($sqlviewpemeliharaan);
     $stmt->execute();
@@ -106,9 +139,7 @@ function ageCalculator($dob){
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
             <a href="dashboard_admin.php" class="brand-link">
-                <img src="dist/img/KKPlogo.png"  class="brand-image img-circle">
-                <!-- BRAND TEXT (TOP) -->
-                <span class="brand-text font-weight-bold">GoKarang</span>
+                <?= $logo_website ?>
             </a>
             <!-- END OF TOP SIDEBAR -->
 

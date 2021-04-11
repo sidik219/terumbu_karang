@@ -6,6 +6,38 @@ if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
+$level_user = $_SESSION['level_user'];
+
+if($level_user == 2){
+  $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+  $extra_query = " AND t_wilayah.id_wilayah = $id_wilayah ";
+  $extra_query_noand = " t_wilayah.id_wilayah = $id_wilayah ";
+  $wilayah_join = " LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
+                    LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
+  $extra_query_k_lok = " AND t_lokasi.id_wilayah = $id_wilayah ";
+  $extra_query_noand_where = " WHERE id_wilayah = $id_wilayah ";
+  $extra_query_k_titik = " WHERE t_lokasi.id_wilayah = $id_wilayah ";
+  $extra_query_noand_where_k_reservasi = " WHERE t_wilayah.id_wilayah = $id_wilayah ";
+}
+else if($level_user == 3){
+  $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+  $extra_query = " AND id_lokasi = $id_lokasi ";
+  $extra_query_k_lok = " AND t_lokasi.id_lokasi = $id_lokasi ";
+  $extra_query_noand = " id_lokasi = $id_lokasi ";
+  $extra_query_noand_where = " WHERE id_lokasi = $id_lokasi ";
+  $extra_query_noand_where_k_reservasi = " WHERE t_lokasi.id_lokasi = $id_lokasi ";
+  $wilayah_join = " ";
+  $extra_query_k_titik = " WHERE t_lokasi.id_lokasi = $id_lokasi ";
+}
+else if($level_user == 4){
+  $extra_query = "  ";
+  $extra_query_noand = "  ";
+  $wilayah_join = " ";
+  $extra_query_k_lok = " ";
+  $extra_query_noand_where = " ";
+  $extra_query_k_titik = "  ";
+}
+
 if(isset($_GET['id_status_batch'])){
   $id_status_batch = $_GET['id_status_batch'];
 
@@ -16,7 +48,7 @@ if(isset($_GET['id_status_batch'])){
                       LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
                       LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
                       LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch
-                      WHERE t_batch.id_status_batch = 1
+                      WHERE t_batch.id_status_batch = 1 '.$extra_query_k_lok.'
                       ORDER BY update_status_batch_terakhir DESC';
   }
   elseif($id_status_batch == 2){ //batch siap tanam
@@ -26,7 +58,7 @@ if(isset($_GET['id_status_batch'])){
                       LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
                       LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
                       LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch
-                      WHERE t_batch.id_status_batch = 2
+                      WHERE t_batch.id_status_batch = 2 '.$extra_query_k_lok.'
                       ORDER BY update_status_batch_terakhir DESC';
   }
   elseif($id_status_batch == 'perlu_pemeliharaan'){ //batch perlu_pemeliharaan
@@ -36,7 +68,7 @@ if(isset($_GET['id_status_batch'])){
                       FROM t_batch
                       LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
                       LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
-                      LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch
+                      LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch  '.$extra_query_noand_where_k_reservasi.'
                       HAVING lama_sejak_pemeliharaan >= 3
                       ORDER BY update_status_batch_terakhir DESC';
   }
@@ -48,7 +80,7 @@ if(isset($_GET['id_status_batch'])){
                       LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
                       LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
                       LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch
-                      WHERE status_cabut_label = 0
+                      WHERE status_cabut_label = 0 '.$extra_query_k_lok.'
                       HAVING lama_sejak_tanam >= 11
                       ORDER BY update_status_batch_terakhir DESC';
   }
@@ -62,7 +94,7 @@ else{
                       FROM t_batch
                       LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
                       LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
-                      LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch
+                      LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch '.$extra_query_noand_where_k_reservasi.'
                       ORDER BY update_status_batch_terakhir DESC';
     $stmt = $pdo->prepare($sqlviewbatch);
     $stmt->execute();

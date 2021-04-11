@@ -1,36 +1,69 @@
 <?php
 session_start();
 if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
-  header('location: login.php?status=unrestrictedaccess');
+  header('location: login.php?status=restrictedaccess');
 }
 
 include 'build/config/connection.php';
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
+$level_user = $_SESSION['level_user'];
+
+if($level_user == 2){
+  $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+  $extra_query = " AND t_wilayah.id_wilayah = $id_wilayah ";
+  $extra_query_noand = " t_wilayah.id_wilayah = $id_wilayah ";
+
+  $wilayah_join_donasi = " LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
+                            LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
+
+  $wilayah_join_reservasi = " LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_reservasi_wisata.id_lokasi
+                            LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
+
+  $wilayah_join_batch = "   LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_batch.id_lokasi
+                            LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
+
+}
+else if($level_user == 3){
+  $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+  $extra_query = " AND id_lokasi = $id_lokasi ";
+  $extra_query_noand = " id_lokasi = $id_lokasi ";
+  $wilayah_join_donasi = " ";
+  $wilayah_join_reservasi = " ";
+  $wilayah_join_batch = " ";
+}
+else if($level_user == 4){
+  $extra_query = "  ";
+  $extra_query_noand = "  ";
+  $wilayah_join_donasi = " ";
+  $wilayah_join_reservasi = " ";
+  $wilayah_join_batch = " ";
+}
+
 $sqlviewdonasi = 'SELECT (SELECT COUNT(t_donasi.id_status_donasi)
-                FROM t_donasi
-                WHERE t_donasi.id_status_donasi = 1) AS donasi_baru,
+                FROM t_donasi '.$wilayah_join_donasi.'
+                WHERE t_donasi.id_status_donasi = 1 '.$extra_query.') AS donasi_baru,
                 (SELECT COUNT(t_donasi.id_status_donasi)
-                                FROM t_donasi
-                WHERE t_donasi.id_status_donasi = 2) AS donasi_verifikasi,
+                                FROM t_donasi '.$wilayah_join_donasi.'
+                WHERE t_donasi.id_status_donasi = 2 '.$extra_query.') AS donasi_verifikasi,
                 (SELECT COUNT(t_donasi.id_status_donasi)
-                                FROM t_donasi
-                WHERE t_donasi.id_batch IS NULL AND t_donasi.id_status_donasi = 3 ) AS donasi_tanpa_batch,
+                                FROM t_donasi '.$wilayah_join_donasi.'
+                WHERE t_donasi.id_batch IS NULL AND t_donasi.id_status_donasi = 3  '.$extra_query.') AS donasi_tanpa_batch,
                 (SELECT COUNT(t_donasi.id_status_donasi)
-                                FROM t_donasi
-                WHERE t_donasi.id_status_donasi = 6) AS donasi_bermasalah';
+                                FROM t_donasi '.$wilayah_join_donasi.'
+                WHERE t_donasi.id_status_donasi = 6 '.$extra_query.') AS donasi_bermasalah';
 $stmt = $pdo->prepare($sqlviewdonasi);
 $stmt->execute();
 $rowdonasi = $stmt->fetch();
 
 
 $sqlviewreservasi = 'SELECT (SELECT COUNT(t_reservasi_wisata.id_status_reservasi_wisata)
-                FROM t_reservasi_wisata
-                WHERE t_reservasi_wisata.id_status_reservasi_wisata = 1) AS reservasi_baru,
+                FROM t_reservasi_wisata '.$wilayah_join_reservasi.'
+                WHERE t_reservasi_wisata.id_status_reservasi_wisata = 1 '.$extra_query.') AS reservasi_baru,
                 (SELECT COUNT(t_reservasi_wisata.id_status_reservasi_wisata)
-                                FROM t_reservasi_wisata
-                WHERE t_reservasi_wisata.id_status_reservasi_wisata = 3) AS reservasi_bermasalah';
+                                FROM t_reservasi_wisata '.$wilayah_join_reservasi.'
+                WHERE t_reservasi_wisata.id_status_reservasi_wisata = 3 '.$extra_query.') AS reservasi_bermasalah';
 $stmt = $pdo->prepare($sqlviewreservasi);
 $stmt->execute();
 $rowreservasi = $stmt->fetch();
@@ -39,18 +72,18 @@ $rowreservasi = $stmt->fetch();
 
 
 $sqlviewbatch = 'SELECT (SELECT COUNT(id_status_batch)
-                FROM t_batch
-                WHERE id_status_batch = 1) AS batch_penyemaian,
+                FROM t_batch '.$wilayah_join_batch.'
+                WHERE id_status_batch = 1 '.$extra_query.') AS batch_penyemaian,
                 (SELECT COUNT(id_status_batch)
-                FROM t_batch
-                WHERE id_status_batch = 2) AS batch_siap_tanam';
+                FROM t_batch '.$wilayah_join_batch.'
+                WHERE id_status_batch = 2 '.$extra_query.') AS batch_siap_tanam';
 
 $stmt = $pdo->prepare($sqlviewbatch);
 $stmt->execute();
 $rowbatch = $stmt->fetch();
 
-$sqlviewpemeliharaan = 'SELECT (SELECT COUNT(*) FROM (SELECT TIMESTAMPDIFF(MONTH, tanggal_pemeliharaan_terakhir, NOW()) AS lama_sejak_pemeliharaan FROM t_batch HAVING lama_sejak_pemeliharaan >= 3) AS jl_pml) AS perlu_pemeliharaan,
-                        (SELECT COUNT(*) FROM (SELECT TIMESTAMPDIFF(MONTH, `tanggal_penanaman`, NOW()) AS lama_sejak_tanam FROM t_batch WHERE status_cabut_label = 0 HAVING lama_sejak_tanam >= 11) AS jl_pml) AS perlu_cabut_label';
+$sqlviewpemeliharaan = 'SELECT (SELECT COUNT(*) FROM (SELECT TIMESTAMPDIFF(MONTH, tanggal_pemeliharaan_terakhir, NOW()) AS lama_sejak_pemeliharaan FROM t_batch  '.$wilayah_join_batch.' WHERE  '.$extra_query_noand.' HAVING lama_sejak_pemeliharaan >= 3) AS jl_pml) AS perlu_pemeliharaan,
+                        (SELECT COUNT(*) FROM (SELECT TIMESTAMPDIFF(MONTH, `tanggal_penanaman`, NOW()) AS lama_sejak_tanam FROM t_batch  '.$wilayah_join_batch.' WHERE status_cabut_label = 0 '.$extra_query.' HAVING lama_sejak_tanam >= 11) AS jl_pml) AS perlu_cabut_label';
 
 $stmt = $pdo->prepare($sqlviewpemeliharaan);
 $stmt->execute();

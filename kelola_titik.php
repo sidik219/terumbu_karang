@@ -6,11 +6,40 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 3 || $_SESSION['
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
+$level_user = $_SESSION['level_user'];
+
+if($level_user == 2){
+  $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+  $extra_query = " AND t_wilayah.id_wilayah = $id_wilayah ";
+  $extra_query_noand = " t_wilayah.id_wilayah = $id_wilayah ";
+  $wilayah_join = " LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
+                    LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
+  $extra_query_k_lok = " AND t_lokasi.id_wilayah = $id_wilayah ";
+  $extra_query_noand_where = " WHERE id_wilayah = $id_wilayah ";
+  $extra_query_k_titik = " WHERE t_lokasi.id_wilayah = $id_wilayah ";
+}
+else if($level_user == 3){
+  $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+  $extra_query = " AND id_lokasi = $id_lokasi ";
+  $extra_query_k_lok = " AND t_lokasi.id_lokasi = $id_lokasi ";
+  $extra_query_noand = " id_lokasi = $id_lokasi ";
+  $extra_query_noand_where = " WHERE id_lokasi = $id_lokasi ";
+  $wilayah_join = " ";
+  $extra_query_k_titik = " WHERE t_lokasi.id_lokasi = $id_lokasi ";
+}
+else if($level_user == 4){
+  $extra_query = "  ";
+  $extra_query_noand = "  ";
+  $wilayah_join = " ";
+  $extra_query_k_lok = " ";
+  $extra_query_noand_where = " ";
+}
+
 $sqlviewtitik = 'SELECT *, t_titik.latitude AS latitude_titik,
                           t_titik.longitude AS longitude_titik
             FROM t_titik
             LEFT JOIN t_lokasi ON t_titik.id_lokasi = t_lokasi.id_lokasi
-            LEFT JOIN t_zona_titik ON t_titik.id_zona_titik = t_zona_titik.id_zona_titik';
+            LEFT JOIN t_zona_titik ON t_titik.id_zona_titik = t_zona_titik.id_zona_titik '.$extra_query_k_titik;
 $stmt = $pdo->prepare($sqlviewtitik);
 $stmt->execute();
 $row = $stmt->fetchAll();

@@ -190,9 +190,9 @@ include 'hak_akses.php';
                             }
                         </script>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group d-none">
                         <label for="num_harga_terumbu_karang">Harga Terumbu Karang</label>
-                        <input type="number" id="num_harga_terumbu_karang" name="num_harga_terumbu_karang" class="form-control">
+                        <input type="number" id="num_harga_terumbu_karang" name="num_harga_terumbu_karang" class="form-control" value="1">
                     </div>
 
                     <br>

@@ -10,6 +10,30 @@ if (isset($_GET['status'])){
     $status = $_GET['status'];
 }
 
+$level_user = $_SESSION['level_user'];
+
+if($level_user == 2){
+  $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+  $extra_query = " AND t_wilayah.id_wilayah = $id_wilayah ";
+  $extra_query_noand = " t_wilayah.id_wilayah = $id_wilayah ";
+  $wilayah_join = " LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
+                    LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
+  $extra_query_k_lok = " AND t_lokasi.id_wilayah = $id_wilayah ";
+}
+else if($level_user == 3){
+  $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+  $extra_query = " AND id_lokasi = $id_lokasi ";
+  $extra_query_k_lok = " AND t_lokasi.id_lokasi = $id_lokasi ";
+  $extra_query_noand = " id_lokasi = $id_lokasi ";
+  $wilayah_join = " ";
+}
+else if($level_user == 4){
+  $extra_query = " 1 ";
+  $extra_query_noand = " 1 ";
+  $wilayah_join = " ";
+  $extra_query_k_lok = " ";
+}
+
 $sqlviewlokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
                                   COUNT(DISTINCT id_titik) AS jumlah_titik,
                                   SUM(DISTINCT luas_lokasi) AS total_lokasi,
@@ -21,7 +45,7 @@ $sqlviewlokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
 
                                   FROM `t_titik`, t_lokasi, t_wilayah
                                   WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
-                                  AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                                  AND t_lokasi.id_wilayah = t_wilayah.id_wilayah  '.$extra_query_k_lok.'
                                   GROUP BY t_lokasi.id_lokasi';
 
 $stmt = $pdo->prepare($sqlviewlokasi);

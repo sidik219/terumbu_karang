@@ -195,7 +195,7 @@ include 'hak_akses.php';
                         </div>
                     </div>
                     <div class="form-group">
-                        <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
+                        <img id="preview" src="#"  width="300px" alt="Preview Gambar"/>
                         <img id="oldpic" src="<?=$rowitem->foto_terumbu_karang?>" width="100px">
                         <script>
                             window.onload = function() {
@@ -217,9 +217,9 @@ include 'hak_akses.php';
                             }
                         </script>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group d-none">
                         <label for="num_harga_terumbu_karang">Harga Terumbu Karang</label>
-                        <input type="number"  value="<?=$rowitem->harga_terumbu_karang?>"  id="num_harga_terumbu_karang" name="num_harga_terumbu_karang" class="form-control">
+                        <input type="number"  value="1"  id="num_harga_terumbu_karang" name="num_harga_terumbu_karang" class="form-control">
                     </div>
 
                     <br>

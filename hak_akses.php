@@ -167,18 +167,6 @@ else{
                         <p> Kelola Wisata </p>
                     </a>
                 </li>
-                <li class="nav-item"> <!-- Wilayah -->
-                        <a href="kelola_jenis_tk.php" class="nav-link '.('kelola_jenis_tk.php' == $url_sekarang || ('edit_jenis_tk.php'  == $url_sekarang) || ('input_jenis_tk.php'  == $url_sekarang) ? ' active ' : '').' ">
-                              <i class="nav-icon fas fa-certificate"></i>
-                              <p> Kelola Jenis Terumbu </p>
-                        </a>
-                  </li>
-                  <li class="nav-item"> <!-- Wilayah -->
-                      <a href="kelola_tk.php" class="nav-link '.('kelola_tk.php' == $url_sekarang || ('edit_tk.php'  == $url_sekarang) || ('input_tk.php'  == $url_sekarang) ? ' active ' : '').' ">
-                            <i class="fas fa-disease nav-icon"></i>
-                            <p>Sub-Jenis Terumbu </p>
-                      </a>
-                  </li>
                   <li class="nav-item"> <!-- Wilayah -->
                         <a href="kelola_perizinan.php" class="nav-link '.('kelola_perizinan.php' == $url_sekarang ? ' active ' : '').' ">
                               <i class="nav-icon fas fa-scroll"></i>

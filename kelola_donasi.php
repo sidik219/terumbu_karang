@@ -6,6 +6,23 @@ if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
+$level_user = $_SESSION['level_user'];
+
+if($level_user == 2){
+  $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+  $extra_query = " AND t_lokasi.id_wilayah = $id_wilayah ";
+  $extra_query_noand = " t_lokasi.id_wilayah = $id_wilayah ";
+}
+else if($level_user == 3){
+  $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+  $extra_query = " AND t_lokasi.id_lokasi = $id_lokasi ";
+  $extra_query_noand = " t_lokasi.id_lokasi = $id_lokasi ";
+}
+else if($level_user == 4){
+  $extra_query = " 1 ";
+  $extra_query_noand = " 1 ";
+}
+
 if(isset($_GET['id_status_donasi'])){
   $id_status_donasi =$_GET['id_status_donasi'];
 
@@ -13,21 +30,21 @@ if(isset($_GET['id_status_donasi'])){
     $sqlviewdonasi = 'SELECT * FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
-                  WHERE t_donasi.id_status_donasi = 1
+                  WHERE t_donasi.id_status_donasi = 1  '.$extra_query.'
                   ORDER BY id_donasi DESC';
   }
   elseif($id_status_donasi == 2){ //donasi butuh verifikasi
     $sqlviewdonasi = 'SELECT * FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
-                  WHERE t_donasi.id_status_donasi = 2
+                  WHERE t_donasi.id_status_donasi = 2  '.$extra_query.'
                   ORDER BY id_donasi DESC';
   }
   elseif($id_status_donasi == 6){ //donasi bermasalah
     $sqlviewdonasi = 'SELECT * FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
-                  WHERE t_donasi.id_status_donasi = 6
+                  WHERE t_donasi.id_status_donasi = 6  '.$extra_query.'
                   ORDER BY id_donasi DESC';
   }
   $stmt = $pdo->prepare($sqlviewdonasi);
@@ -38,7 +55,7 @@ elseif(isset($_GET['id_batch'])){ //donasi belum masuk batch
   $sqlviewdonasi = 'SELECT * FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
-                  WHERE t_donasi.id_batch IS NULL AND t_donasi.id_status_donasi = 3
+                  WHERE t_donasi.id_batch IS NULL AND t_donasi.id_status_donasi = 3  '.$extra_query.'
                   ORDER BY id_donasi DESC';
 
   $stmt = $pdo->prepare($sqlviewdonasi);
@@ -47,7 +64,7 @@ elseif(isset($_GET['id_batch'])){ //donasi belum masuk batch
 }else{ //umum
   $sqlviewdonasi = 'SELECT * FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
-                  LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
+                  LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi WHERE  '.$extra_query_noand.'
                   ORDER BY id_donasi DESC';
 
   $stmt = $pdo->prepare($sqlviewdonasi);
