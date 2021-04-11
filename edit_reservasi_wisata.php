@@ -261,7 +261,7 @@ include 'hak_akses.php';
                                                 <span class="font-weight-bold">Wisata  </span>
                                             </div>
                                             <div class="col-lg-8  mb-2">
-                                                <span class="font-weight-bold"><?=$rowitem->judul_wisata?></span>
+                                                <span class="font-weight-bold"><?=$rowitem->nama_paket_wisata?></span>
                                             </div>
                                         </div>
 
