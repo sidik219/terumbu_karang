@@ -3,12 +3,12 @@ session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
     $defaultpic = "images/image_default.jpg";
-
+    
     $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
                     LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                     LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                     LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-                    LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
+                    LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                     ORDER BY id_reservasi DESC';
     $stmt = $pdo->prepare($sqlviewreservasi);
     $stmt->execute();
@@ -126,7 +126,7 @@ include 'hak_akses.php';
                                     <div class="col-12 mb-3">
                                         <span class="badge badge-pill badge-primary mr-2"> ID Reservasi <?=$rowitem->id_reservasi?> </span>
                                             <?php echo empty($rowitem->id_user) ? '' : '<span class="badge badge-pill badge-info mr-2"> Nama User - '.$rowitem->nama_user.'</span>';?>
-                                            <?php echo empty($rowitem->id_wisata) ? '' : '<span class="badge badge-pill badge-success mr-2"> Wisata  - '.$rowitem->judul_wisata.'</span>';?>
+                                            <?php echo empty($rowitem->id_paket_wisata) ? '' : '<span class="badge badge-pill badge-success mr-2"> Wisata  - '.$rowitem->nama_paket_wisata.'</span>';?>
                                         </span>
                                     </div>
 
