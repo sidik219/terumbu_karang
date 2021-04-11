@@ -63,7 +63,7 @@
                                 Pantai Jawa Barat
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="#">Pantai Tangkolak</a>
+                                <a class="dropdown-item" href="tangkolak/index.php" target="_blank">Pantai Tangkolak</a>
                                 <a class="dropdown-item" href="#">Pulau Biawak</a>
                                 </div>
                             </li>

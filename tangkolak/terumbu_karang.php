@@ -45,11 +45,14 @@
                         <li class="nav-item ">
                             <a class="nav-link " href="index.php">Beranda</a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="wisata_tangkolak.php">Wisata Bahari</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="wisata_tangkolak.php">Wisata Bahari</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="paket_wisata.php">Paket Wisata</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link current" href="terumbu_karang.php">Terumbu Karang</a>
+                            <a class="nav-link current" href="terumbu_karang.php">Terumbu Karang Tangkolak</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="https://tkjb.or.id/"  target="_blank">Website GoKarang</a>

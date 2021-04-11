@@ -63,7 +63,7 @@
                                 Pantai Jawa Barat
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="#">Pantai Tangkolak</a>
+                                <a class="dropdown-item" href="tangkolak/index.php" target="_blank">Pantai Tangkolak</a>
                                 <a class="dropdown-item" href="#">Pulau Biawak</a>
                                 </div>
                             </li>
@@ -145,7 +145,7 @@
                                         <div class="card-body">
                                             <p > <h5 class="max-length">Acropora Cervicurnis</h5></p>
                                             <p class="max-length2">Terumbu karang ini berbentuk seperti semak dan berbentuk melebar. Cabang dari terumbu karang ini berbentuk horizontal yang menyabar serta tipis.</p>
-                                            <div class="collapse" id="collapseExample">
+                                            <div class="collapse" id="collapseExample1">
                                                     <div class="card card-body">
                                                     Terumbu karang ini berbentuk seperti semak dan berbentuk melebar. Cabang dari terumbu karang ini berbentuk horizontal yang menyabar serta tipis. Serta aksial koralit yang terlihat jelas. 
                                                     </div>
@@ -154,7 +154,7 @@
                                                     </div>
                                                 </div>
                                                 <p>
-                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample">
                                                         Lihat Detail
                                                 </a> 
                                         </div>
@@ -168,7 +168,7 @@
                                         <div class="card-body card-body-costom">
                                             <p><h5 class="max-length">Acropoda Micropthalma</h5></p>
                                             <p class="max-length2">Berbentuk bantalan dengan cabang yang pendek dan gemuk serta dengan ukuran yang sama. terumbu karang ini ada kemiripan dengan Acropora Aspera. </p>
-                                            <div class="collapse" id="collapseExample">
+                                            <div class="collapse" id="collapseExample2">
                                                     <div class="card card-body">
                                                     Berbentuk bantalan dengan cabang yang pendek dan gemuk serta dengan ukuran yang sama. terumbu karang ini ada kemiripan dengan Acropora Aspera.
                                                     </div>
@@ -177,7 +177,7 @@
                                                     </div>
                                                 </div>
                                                 <p>
-                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
                                                         Lihat Detail
                                                 </a> 
                                         </div>
