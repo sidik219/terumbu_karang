@@ -41,7 +41,7 @@ header('Content-Disposition: attachment; filename="' . $fileName . '"');
 //Open up a file pointer
 $fp = fopen('php://output', 'w');
 
-fputcsv($fp, array("Laporan Wilayah TKJB ",date("j F Y, g:i a")," tkjb.or.id"));
+fputcsv($fp, array("Laporan Wilayah GoKarang ",date("j F Y, g:i a")," tkjb.or.id"));
 
 
 

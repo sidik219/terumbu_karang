@@ -26,7 +26,7 @@ session_start();
     <meta name="author" content="">
     <link rel="icon" href="dist/img/KKPlogo.png">
 
-    <title>TKJB | Terumbu Karang Jawa Barat</title>
+    <title>GoKarang | Terumbu Karang Jawa Barat</title>
 
     <!-- GOOGLE FONT -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -48,7 +48,7 @@ session_start();
     <link rel="stylesheet" type="text/css" href="css/style-card.css">
 
     <!-- Favicon -->
-    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
+    <?= $favicon ?>
 
 
 </head>

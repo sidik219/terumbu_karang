@@ -31,6 +31,9 @@ else{
     }
   }
 
+  //Favicon website
+  $favicon = '<link rel="icon" href="dist/img/gokarang_coral_favicon.png" type="image/x-icon" />';
+
 
   function print_sidebar($url_sekarang, $level){
     if($level == 4){ //sidebar Pusat & debug

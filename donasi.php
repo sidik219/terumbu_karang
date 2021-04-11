@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="icon" href="dist/img/KKPlogo.png">
 
-    <title>TKJB | Terumbu Karang Jawa Barat</title>
+    <title>GoKarang | Terumbu Karang Jawa Barat</title>
 
     <!-- GOOGLE FONT -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -23,7 +23,7 @@
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Favicon -->
-    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
+    <?= $favicon ?>
 
 
 </head>

@@ -36,7 +36,7 @@ $rowwilayah = $stmt->fetchAll();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Laporan - TKJB</title>
+    <title>Kelola Laporan - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -48,7 +48,7 @@ $rowwilayah = $stmt->fetchAll();
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Favicon -->
-    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
+    <?= $favicon ?>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -354,7 +354,7 @@ $rowwilayah = $stmt->fetchAll();
             var element = document.getElementById('clientPrintContent');
             var opt = {
             margin:       [1.5,2,2,2],
-            filename:     `Laporan_Wilayah_TKJB_${dateTime}.pdf`,
+            filename:     `Laporan_Wilayah_GoKarang_${dateTime}.pdf`,
             pagebreak: { mode: 'avoid-all', after: '.break-after' },
             image:        { type: 'jpeg', quality: 0.95 },
             html2canvas:  { scale: 3 },

@@ -48,7 +48,7 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Pilih Jenis Terumbu Karang - TKJB</title>
+    <title>Pilih Jenis Terumbu Karang - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -61,7 +61,7 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
     <!-- Favicon -->
-    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
+    <?= $favicon ?>
 
 </head>
  <script src="js\numberformat.js"></script>

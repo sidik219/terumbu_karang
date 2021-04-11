@@ -7,7 +7,7 @@ include 'hak_akses.php';
     $id_user = 1;
     $id_status_reservasi_wisata = 1;
     $keterangan = '-';
-    
+
     $sqllokasi = 'SELECT * FROM t_wisata
                     LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
                     WHERE id_wisata = :id_wisata';
@@ -24,7 +24,7 @@ include 'hak_akses.php';
             $jumlah_peserta     = $_POST['jumlah_peserta'];
             $jumlah_donasi      = $_POST['split_harga_tk'];
             $total              = $_POST['total'];
-            
+
             //var_dump($jumlah_donasi); exit();
             $tanggal_sekarang = date ('Y-m-d H:i:s', time());
 
@@ -50,7 +50,7 @@ include 'hak_akses.php';
                 //header("Location: reservasi_saya.php?status=addsuccess");
                 $last_id_reservasi = $pdo->lastInsertId();
             }
-            
+
             $i = 0;
             foreach ($_POST['nominal'] as $nominal) {
                 $id_user                = 1; //ok
@@ -63,17 +63,17 @@ include 'hak_akses.php';
                 $pesan                  = $_POST['pesan'][$i]; //ok
                 $tanggal_donasi         = date ('Y-m-d H:i:s', time()); //ok
                 $id_reservasi           = $last_id_reservasi; //ok
-        
+
                 $sqlinsertdonasi = "INSERT INTO t_donasi
-                                        (id_user, nominal, tanggal_donasi, id_status_donasi, 
-                                        id_lokasi, nama_donatur, nomor_rekening_donatur, bank_donatur, 
+                                        (id_user, nominal, tanggal_donasi, id_status_donasi,
+                                        id_lokasi, nama_donatur, nomor_rekening_donatur, bank_donatur,
                                         pesan, update_terakhir, id_reservasi)
                                     VALUES (:id_user, :nominal, :tanggal_donasi, :id_status_donasi,
-                                            :id_lokasi,  :nama_donatur, :nomor_rekening_donatur, :bank_donatur, 
+                                            :id_lokasi,  :nama_donatur, :nomor_rekening_donatur, :bank_donatur,
                                             :pesan, :update_terakhir, :id_reservasi)";
-        
+
                 $stmt = $pdo->prepare($sqlinsertdonasi);
-                $stmt->execute(['id_user'                   => $id_user, 
+                $stmt->execute(['id_user'                   => $id_user,
                                 'nominal'                   => $nominal,
                                 'id_lokasi'                 => $id_lokasi,
                                 'id_status_donasi'          => $id_status_donasi,
@@ -104,7 +104,7 @@ include 'hak_akses.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Review Informasi Donasi - TKJB</title>
+    <title>Review Informasi Donasi - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -118,7 +118,7 @@ include 'hak_akses.php';
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style-card.css">
     <!-- Favicon -->
-    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
+    <?= $favicon ?>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -148,9 +148,7 @@ include 'hak_akses.php';
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
             <a href="dashboard_user.php" class="brand-link">
-                <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
-                <!-- BRAND TEXT (TOP) -->
-                <span class="brand-text font-weight-bold">TKJB</span>
+                <?= $logo_website ?>
             </a>
             <!-- END OF TOP SIDEBAR -->
 
@@ -299,7 +297,7 @@ include 'hak_akses.php';
                     <label for="jumlah_peserta">Jumlah Peserta</label>
                     <input type="number" id="jumlah_peserta" name="jumlah_peserta" value="0" min="0" onchange="myFunction()" class="form-control" required>
                 </div>
-                
+
                 <!-- Paket Wisata -->
                 <div class="" style="width:100%;">
                     <div class="">
@@ -308,7 +306,7 @@ include 'hak_akses.php';
                     </div>
                 </div>
                 <?php
-                $sqlviewpaket = 'SELECT * FROM tb_paket_wisata 
+                $sqlviewpaket = 'SELECT * FROM tb_paket_wisata
                                     LEFT JOIN t_wisata ON tb_paket_wisata.id_wisata = t_wisata.id_wisata
                                     WHERE t_wisata.id_wisata = :id_wisata
                                     AND t_wisata.id_wisata = tb_paket_wisata.id_wisata';
@@ -331,7 +329,7 @@ include 'hak_akses.php';
                 <?php } ?>
                 <hr class="mb-2"/>
                 <?php
-                $sqlviewpaket = 'SELECT SUM(biaya_paket) AS total_biaya_paket, nama_paket_wisata, biaya_paket FROM tb_paket_wisata 
+                $sqlviewpaket = 'SELECT SUM(biaya_paket) AS total_biaya_paket, nama_paket_wisata, biaya_paket FROM tb_paket_wisata
                                     LEFT JOIN t_wisata ON tb_paket_wisata.id_wisata = t_wisata.id_wisata
                                     WHERE t_wisata.id_wisata = :id_wisata
                                     AND t_wisata.id_wisata = tb_paket_wisata.id_wisata';
@@ -355,7 +353,7 @@ include 'hak_akses.php';
                 </div>
                 <?php } ?>
                 <hr class="mb-2"/>
-                
+
                 <!-- Paket Donasi -->
                 <?php if($id_user > 0) {?>
                 <div class="output">
@@ -387,7 +385,7 @@ include 'hak_akses.php';
 
                 </div>
                 <?php } ?>
-                
+
                 <!-- Metode Pembayaran -->
                 <div class="" style="width:100%;">
                     <div class="">
@@ -441,7 +439,7 @@ include 'hak_akses.php';
         <!-- /.content -->
     </div>
     <footer class="main-footer">
-        <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
+        <?= $footer ?>
     </footer>
     <!-- /.content-wrapper -->
 
@@ -498,7 +496,7 @@ include 'hak_akses.php';
             document.getElementById("total").value = hasil; //total dari total_reservasi * donasi
             //document.write(harga_tk);
         }
-        
+
         //Jenis Terumbu Karang
         function myFunction2() {
             var id_jenis = document.getElementById("dd_id_wilayah").value; //data jenis terumbu karang

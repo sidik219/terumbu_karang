@@ -90,7 +90,7 @@ if (isset($_POST['submit'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Wisata - TKJB</title>
+    <title>Kelola Wisata - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -106,7 +106,7 @@ if (isset($_POST['submit'])) {
     <link rel="stylesheet" href="js/trumbowyg/dist/ui/trumbowyg.min.css">
     <script src="js/trumbowyg/dist/trumbowyg.js"></script>
     <!-- Favicon -->
-    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
+    <?= $favicon ?>
 
 </head>
 

@@ -33,7 +33,7 @@
                         <span class="navbar-toggler-icon "></span>
                     </button>
                     <!-- Button & Link Action -->
-                    <ul class="ml-auto d-none d-lg-block navbar-nav">                        
+                    <ul class="ml-auto d-none d-lg-block navbar-nav">
                         <button class="btn radius-50 py-1.5 px-4 ml-3 btn-wisata " onclick="window.location.href='wisata_tangkolak.php'">Reservasi Wisata</button>
                         <button class="btn radius-50 py-1.5 px-5 ml-3 btn-login " onclick="window.location.href='login.php'">Login</button>
                     </ul>
@@ -52,22 +52,22 @@
                             <a class="nav-link current" href="terumbu_karang.php">Terumbu Karang</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="https://tkjb.or.id/"  target="_blank">Website TKJB</a>
-                        </li>  
+                            <a class="nav-link" href="https://tkjb.or.id/"  target="_blank">Website GoKarang</a>
+                        </li>
                     </ul>
                     <!-- END Navbar Menu -->
                     <!-- Navbar Button & Link Action Mobile Version-->
                     <div class="d-flex d-lg-none p-3 mobile-act-button">
-                        <div class="row-mid">			
-                                    <button class="btn radius-50 py-1.5 px-4  btn-wisata " onclick="window.location.href='wisata_tangkolak.php'">Reservasi Wisata</button>	
+                        <div class="row-mid">
+                                    <button class="btn radius-50 py-1.5 px-4  btn-wisata " onclick="window.location.href='wisata_tangkolak.php'">Reservasi Wisata</button>
                         </div>
                         <div class="row-mid d-none d-md-block">
                                 <p>
-                                    
+
                                 </p>
                         </div>
-                        <div class="row-mid">		
-                                    <button class="btn radius-50 py-1.5 px-5 btn-login " onclick="window.location.href='login.php'">Login</button>	
+                        <div class="row-mid">
+                                    <button class="btn radius-50 py-1.5 px-5 btn-login " onclick="window.location.href='login.php'">Login</button>
                         </div>
                     </div>
                     <!-- END Navbar Button & Link Action Mobile Version-->
@@ -83,7 +83,7 @@
         <div class="informational-container">
             <!-- Head -->
             <div class="header-tkjb">
-            
+
             <div class="terumbu-karang-tangkolak">
                 <h2>Kondisi Terumbu Karang Tangkolak</h2>
                     <div class="row ">
@@ -95,7 +95,7 @@
                                     <div class="col-sm-4 border border-dark py-1" style="color:green;">
                                         <b>76.7%</b>
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="row justify-content-center">
                                     <div class="col-sm-6 border border-dark py-1 top-col-bg">
                                     <b> Estimasi Total Luas Titik</b>
@@ -103,7 +103,7 @@
                                     <div class="col-sm-4 border border-dark py-1">
                                         3,000 m2
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="row justify-content-center">
                                     <div class="col-sm-6 border border-dark py-1 top-col-bg">
                                     <b>Total Luas Titik Terdata</b>
@@ -111,7 +111,7 @@
                                     <div class="col-sm-4 border border-dark py-1">
                                         2,320 m2
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="row justify-content-center">
                                     <div class="col-sm-6 border border-dark py-1 top-col-bg">
                                     <b>Jumlah Titik Terdata</b>
@@ -119,7 +119,7 @@
                                     <div class="col-sm-4 border border-dark py-1 ">
                                         7 Titik
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="row justify-content-center">
                                     <div class="col-sm-6 border border-dark py-1 top-col-bg">
                                     <b>Status</b>
@@ -127,15 +127,15 @@
                                     <div class="col-sm-4 border border-dark py-1" style="color:green;">
                                         Sangat Baik
                                     </div>
-                                </div> 
-                                  
-                            </div>      
+                                </div>
+
+                            </div>
                             <div class="col-md-12 col-lg-6 p-5 text-center tabel-kondisi-tangkolak ">
                                 <div class="row justify-content-center">
                                     <div class="col-sm-10 border border-dark py-1 top-col-bg">
                                     <b>     Kondisi Titik</b>
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="row justify-content-center">
                                     <div class="col-sm-6 border border-dark py-1 top-col-bg">
                                         Sangat Baik
@@ -143,7 +143,7 @@
                                     <div class="col-sm-4 border border-dark py-1">
                                         1
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="row justify-content-center">
                                     <div class="col-sm-6 border border-dark py-1 top-col-bg">
                                         Baik
@@ -151,7 +151,7 @@
                                     <div class="col-sm-4 border border-dark py-1">
                                         2
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="row justify-content-center">
                                     <div class="col-sm-6 border border-dark py-1 top-col-bg">
                                         Cukup
@@ -159,7 +159,7 @@
                                     <div class="col-sm-4 border border-dark py-1">
                                         2
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="row justify-content-center">
                                     <div class="col-sm-6 border border-dark py-1 top-col-bg">
                                         Kurang
@@ -167,16 +167,16 @@
                                     <div class="col-sm-4 border border-dark py-1">
                                         2
                                     </div>
-                                </div> 
-                                   
-                            </div>   
+                                </div>
+
+                            </div>
                         </div>
 
-                        
-                    </div>   
-                
-                            
-                </div>     
+
+                    </div>
+
+
+                </div>
             </div>
             <!-- End Head -->
 
@@ -191,28 +191,28 @@
                     </picture>
                     <div class="carousel-caption donasi-caption">
                                     <div>
-                                        <h2>Bersama TKJB Bantu lestarikan terumbu karang di pantai Tangkolak</h2>                                 
+                                        <h2>Bersama GoKarang Bantu lestarikan terumbu karang di pantai Tangkolak</h2>
                                     </div>
-                                    <div class="row-mid py-4">			
-                                    <button class="btn radius-50 py-1.5 px-4  btn-donasi " onclick="window.location.href='#'">Donasi</button>	
+                                    <div class="row-mid py-4">
+                                    <button class="btn radius-50 py-1.5 px-4  btn-donasi " onclick="window.location.href='#'">Donasi</button>
                                     </div>
                                 </div>
                     </div>
                 </div>
-                           
-             
+
+
 
 
             </div>
             <!-- End Konten Mid Container -->
 
-          
+
 
         </div>
         </div>
         <!-- End Konten -->
-           
-          
+
+
 
        <!-- Footer -->
        <section id="footer">
@@ -222,14 +222,14 @@
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 cr-tkjb">
                             <div class="cpt text-light text-center">
-                                <p>© 2021 - Wisata Bahari Tangkolak</p>                    
+                                <p>© 2021 - Wisata Bahari Tangkolak</p>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                             <div class="ftaw text-light text-center">
-                                <a href="#" target="_blank"><i class="fa fa-phone-square-alt"></i></a> 
-                                <a href="#" target="_blank"><i class="fas fa-envelope-square"></i></a> 
-                                <a href="#" target="_blank"><i class="fa fa-facebook-square"></i></a> 
+                                <a href="#" target="_blank"><i class="fa fa-phone-square-alt"></i></a>
+                                <a href="#" target="_blank"><i class="fas fa-envelope-square"></i></a>
+                                <a href="#" target="_blank"><i class="fa fa-facebook-square"></i></a>
                                 <a href="#" target="_blank"><i class="fa fa-instagram"></i></a>
                             </div>
                         </div>
@@ -241,6 +241,6 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
+
 </body>
 </html>

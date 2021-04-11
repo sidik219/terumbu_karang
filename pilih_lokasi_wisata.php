@@ -26,7 +26,7 @@ include 'hak_akses.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Pilih Wisata - TKJB</title>
+    <title>Pilih Wisata - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -40,7 +40,7 @@ include 'hak_akses.php';
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style-card.css">
     <!-- Favicon -->
-    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
+    <?= $favicon ?>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -70,9 +70,7 @@ include 'hak_akses.php';
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
             <a href="dashboard_user.php" class="brand-link">
-                <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
-                <!-- BRAND TEXT (TOP) -->
-                <span class="brand-text font-weight-bold">TKJB</span>
+                <?= $logo_website ?>
             </a>
             <!-- END OF TOP SIDEBAR -->
 
@@ -129,7 +127,7 @@ include 'hak_akses.php';
                                     <h5 style="text-align: left;"> Paket Wisata :</h5>
                                     <p class="card-text font-weight-bold" style="text-align: left;">
                                         <?php
-                                        $sqlviewpaket = 'SELECT * FROM tb_paket_wisata 
+                                        $sqlviewpaket = 'SELECT * FROM tb_paket_wisata
                                                             LEFT JOIN t_wisata ON tb_paket_wisata.id_wisata = t_wisata.id_wisata
                                                             WHERE t_wisata.id_wisata = :id_wisata
                                                             AND t_wisata.id_wisata = tb_paket_wisata.id_wisata';
@@ -143,7 +141,7 @@ include 'hak_akses.php';
                                             <div class="divTableBody">
                                                 <div class="divTableRow">
                                                     <div class="divTableCell-1">
-                                                        <i class="text-info fas fa-arrow-circle-right"></i>                             
+                                                        <i class="text-info fas fa-arrow-circle-right"></i>
                                                         <?=$paket->nama_paket_wisata?>
                                                     </div>
                                                     <div class="divTableCell-2">
@@ -156,7 +154,7 @@ include 'hak_akses.php';
                                     <h5 style="text-align: left;"> Total Paket Wisata :</h5>
                                     <h4 class="card-text font-weight-bold" style="text-align: left;">
                                         <?php
-                                        $sqlviewpaket = 'SELECT SUM(biaya_paket) AS total_biaya_paket, nama_paket_wisata, biaya_paket FROM tb_paket_wisata 
+                                        $sqlviewpaket = 'SELECT SUM(biaya_paket) AS total_biaya_paket, nama_paket_wisata, biaya_paket FROM tb_paket_wisata
                                                             LEFT JOIN t_wisata ON tb_paket_wisata.id_wisata = t_wisata.id_wisata
                                                             WHERE t_wisata.id_wisata = :id_wisata
                                                             AND t_wisata.id_wisata = tb_paket_wisata.id_wisata';
@@ -169,7 +167,7 @@ include 'hak_akses.php';
                                         <span class="badge badge-pill badge-success mr-2">
                                         Rp. <?=number_format($paket->total_biaya_paket, 0)?></span>
                                         <?php } ?></h4>
-                                    
+
                                     <a class="btn btn-primary btn-lg btn-block mb-4" href="detail_lokasi_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" class="card-donasi__cta" style="color: white;">Rincian Wisata</a>
                                 </div>
                             </div>
@@ -193,7 +191,7 @@ include 'hak_akses.php';
     <!-- /.content-wrapper -->
 
     <footer class="main-footer">
-        <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
+        <?= $footer ?>
     </footer>
 
     <!-- Control Sidebar -->

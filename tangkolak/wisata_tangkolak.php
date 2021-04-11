@@ -33,7 +33,7 @@
                         <span class="navbar-toggler-icon "></span>
                     </button>
                     <!-- Button & Link Action -->
-                    <ul class="ml-auto d-none d-lg-block navbar-nav">                        
+                    <ul class="ml-auto d-none d-lg-block navbar-nav">
                         <button class="btn radius-50 py-1.5 px-4 ml-3 btn-wisata " onclick="window.location.href='wisata_tangkolak.php'">Reservasi Wisata</button>
                         <button class="btn radius-50 py-1.5 px-5 ml-3 btn-login " onclick="window.location.href='login.php'">Login</button>
                     </ul>
@@ -52,22 +52,22 @@
                             <a class="nav-link" href="terumbu_karang.php">Terumbu Karang</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="https://tkjb.or.id/"  target="_blank">Website TKJB</a>
-                        </li>  
+                            <a class="nav-link" href="https://tkjb.or.id/"  target="_blank">Website GoKarang</a>
+                        </li>
                     </ul>
                     <!-- END Navbar Menu -->
                     <!-- Navbar Button & Link Action Mobile Version-->
                     <div class="d-flex d-lg-none p-3 mobile-act-button">
-                        <div class="row-mid">			
-                                    <button class="btn radius-50 py-1.5 px-4  btn-wisata " onclick="window.location.href='wisata_tangkolak.php'">Reservasi Wisata</button>	
+                        <div class="row-mid">
+                                    <button class="btn radius-50 py-1.5 px-4  btn-wisata " onclick="window.location.href='wisata_tangkolak.php'">Reservasi Wisata</button>
                         </div>
                         <div class="row-mid d-none d-md-block">
                                 <p>
-                                    
+
                                 </p>
                         </div>
-                        <div class="row-mid">		
-                                    <button class="btn radius-50 py-1.5 px-5 btn-login " onclick="window.location.href='login.php'">Login</button>	
+                        <div class="row-mid">
+                                    <button class="btn radius-50 py-1.5 px-5 btn-login " onclick="window.location.href='login.php'">Login</button>
                         </div>
                     </div>
                     <!-- END Navbar Button & Link Action Mobile Version-->
@@ -90,7 +90,7 @@
                 Pemerintah menjadikan tempat karam kapal tersebut menjadi museum bawah laut Benda Muatan Kapal Tenggelam (BMKT) dan menjadi bagian dari pengembangan wisata bahari terpadu. Untuk menuju lokasi tersebut memerlukan waktu sekitar 30 menit dari Pantai Tangkolak.
                 Selain Wisata BMKT Tangkolak, berikut wisata yang akan kita dapatkan di Wisata Bahari Tangkolak :
                 </p>
-                <div class="row ">  
+                <div class="row ">
                             <div class="col-sm-12  col-lg-4 p-5 text-center tabel-kondisi-tangkolak ">
                                 <div class="row justify-content-center">
                                     <div class="card card-pilihan mb-4 shadow-sm">
@@ -103,48 +103,48 @@
                                                 <p class="max-length1">Harga : Rp.700.000,- / orang</p>
                                                 <button class="btn radius-50 py-1.5 px-4  btn-wisata " onclick="window.location.href='wisata_tangkolak.php'">Reservasi</button>
                                             </div>
-                                    </div>   
-                                </div> 
-                            </div>      
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-sm-12  col-lg-4 p-5 text-center tabel-kondisi-tangkolak ">
                                 <div class="row justify-content-center">
                                     <div class="card card-pilihan mb-4 shadow-sm">
-                                        
+
                                             <img class="card-img-top" width="100%" src="img/news2.jpg">
-                                        
+
                                             <div class="card-body">
                                                 <p > <h5 class="max-length">Snorkling Karang Sendulang</h5></p>
                                                 <p class="max-length1">Kunjungi titik selam terbesar di perairan Tangkolak</p>
                                                 <p class="max-length1">Harga : Rp.300.000,- / orang</p>
                                                 <button class="btn radius-50 py-1.5 px-4  btn-wisata " onclick="window.location.href='wisata_tangkolak.php'">Reservasi</button>
                                             </div>
-                                          
-                                    </div>   
-                                </div> 
-                            </div>  
-                            
-                            
-                </div>                
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                </div>
             </div>
             <!-- End Head -->
 
             <!-- Konten Mid Container -->
             <div class="mid-tkjb">
-        
-                
-             
+
+
+
 
 
             </div>
             <!-- End Konten Mid Container -->
 
-          
+
 
         </div>
         </div>
         <!-- End Konten -->
-           
-          
+
+
 
       <<!-- Footer -->
       <section id="footer">
@@ -154,14 +154,14 @@
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 cr-tkjb">
                             <div class="cpt text-light text-center">
-                                <p>© 2021 - Wisata Bahari Tangkolak</p>                    
+                                <p>© 2021 - Wisata Bahari Tangkolak</p>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                             <div class="ftaw text-light text-center">
-                                <a href="#" target="_blank"><i class="fa fa-phone-square-alt"></i></a> 
-                                <a href="#" target="_blank"><i class="fas fa-envelope-square"></i></a> 
-                                <a href="#" target="_blank"><i class="fa fa-facebook-square"></i></a> 
+                                <a href="#" target="_blank"><i class="fa fa-phone-square-alt"></i></a>
+                                <a href="#" target="_blank"><i class="fas fa-envelope-square"></i></a>
+                                <a href="#" target="_blank"><i class="fa fa-facebook-square"></i></a>
                                 <a href="#" target="_blank"><i class="fa fa-instagram"></i></a>
                             </div>
                         </div>
@@ -173,6 +173,6 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
+
 </body>
 </html>

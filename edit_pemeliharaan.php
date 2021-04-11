@@ -165,7 +165,7 @@ function alertCabutLabel($dob, $slabel){
     <!DOCTYPE html>
     <html lang="en">
     <head>
-        <title>Kelola Pemeliharaan - TKJB</title>
+        <title>Kelola Pemeliharaan - GoKarang</title>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Font Awesome -->
@@ -178,7 +178,7 @@ function alertCabutLabel($dob, $slabel){
         <link rel="stylesheet" type="text/css" href="css/style.css">
 
         <!-- Favicon -->
-    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
+    <?= $favicon ?>
     </head>
 
     <body class="hold-transition sidebar-mini layout-fixed">
@@ -210,7 +210,7 @@ function alertCabutLabel($dob, $slabel){
                 <a href="dashboard_admin.php" class="brand-link">
                     <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
                     <!-- BRAND TEXT (TOP) -->
-                    <span class="brand-text font-weight-bold">TKJB</span>
+                    <span class="brand-text font-weight-bold">GoKarang</span>
                 </a>
                 <!-- END OF TOP SIDEBAR -->
 

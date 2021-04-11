@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="icon" href="dist/img/KKPlogo.png">
 
-    <title>TKJB | Terumbu Karang Jawa Barat</title>
+    <title>GoKarang | Terumbu Karang Jawa Barat</title>
 
     <!-- GOOGLE FONT -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -147,7 +147,7 @@
             <!-- 1st PARAGRAPH -->
             <div class="starter-template">
                 <h1 class="mb-5">TENTANG KAMI</h1><br>
-                <p><b>TKJB</b> (Terumbu Karang Jawa Barat) merupakan bentuk kerjasama
+                <p><b>GoKarang</b> (Terumbu Karang Jawa Barat) merupakan bentuk kerjasama
                     antara Kementrian Kelautan dan
                     Perikanan (KKP) dengan Kelompok
                     Usaha Bersama (KUB) masyarakat

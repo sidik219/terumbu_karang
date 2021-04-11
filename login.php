@@ -62,7 +62,7 @@ if (isset($_POST['login'])) {
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="css/login.css">
     <link rel="stylesheet" type="text/css" href="css/util.css">
-    <title>Login - TKJB</title>
+    <title>Login - GoKarang</title>
 </head>
 <body>
 
@@ -76,7 +76,7 @@ if (isset($_POST['login'])) {
     				<form action="" method="POST" class="login100-form validate-form">
 
     					<span class="login100-form-title p-b-33">
-                            TKJB
+                            GoKarang
               </span>
               <?php
                 if(!empty($_GET['pesan'])){

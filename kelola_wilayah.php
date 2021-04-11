@@ -20,7 +20,7 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Wilayah - TKJB</title>
+    <title>Kelola Wilayah - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -33,7 +33,7 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Favicon -->
-    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
+    <?= $favicon ?>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
