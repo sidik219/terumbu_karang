@@ -17,7 +17,7 @@ if (isset($_POST['submit'])) {
     if($_POST['submit'] == 'Simpan'){
         $nama_wilayah        = $_POST['tbnama_wilayah'];
         $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
-        $id_user_pengelola     = $_POST['tb_id_user_pengelola'];
+        $id_user_pengelola     = 1;
         $randomstring = substr(md5(rand()), 0, 7);
 
         //Image upload
@@ -130,7 +130,7 @@ if (isset($_POST['submit'])) {
 
                           <div class="form-group">
                                 <label for="nama_wilayah">Nama Wilayah</label>
-                                <input type="text" class="form-control" name="tbnama_wilayah" id="#" placeholder="Nama Kota/Kabupaten">
+                                <input type="text" class="form-control" name="tbnama_wilayah" id="#">
                           </div>
                           <div class="form-group">
                                 <label for="nama_wilayah">Deskripsi Wilayah</label>
@@ -169,16 +169,7 @@ if (isset($_POST['submit'])) {
                                             </script>
                                         </div>
 
-                          <div class="form-group">
-                        <label for="dd_id_wilayah">User Pengelola Wilayah</label>
-                        <select id="dd_id_wilayah" name="tb_id_user_pengelola" class="form-control" required>
-                            <?php foreach ($row as $rowitem) {
-                            ?>
-                            <option value="<?=$rowitem->id_user?>">ID <?=$rowitem->id_user?> - <?=$rowitem->nama_user?> - <?=$rowitem->organisasi_user?></option>
 
-                            <?php } ?>
-                        </select>
-                    </div>
 
 
                           <p align="center">

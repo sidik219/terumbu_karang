@@ -162,12 +162,7 @@ $sqlviewwilayah = 'SELECT * FROM t_wilayah
                             </div>
                             <div class="col-12 cell<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?> border rounded shadow-sm p-3">
                             <div class="row">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        User Pengelola
-                                    </div>
-                                    <div class="col isi">
-                                        ID <?=$rowitem->id_user_pengelola?> - <?=$rowitem->nama_user?> - <?=$rowitem->organisasi_user?>
-                                    </div>
+
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-3 kolom font-weight-bold">

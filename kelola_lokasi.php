@@ -229,14 +229,7 @@ $row = $stmt->fetchAll();
                                     Rincian Lokasi</p>
                             </div>
                             <div class="col-12 cell<?=$rowitem->id_lokasi?> collapse contentall<?=$rowitem->id_lokasi?> border rounded shadow-sm p-3">
-                            <div class="row">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        User Pengelola
-                                    </div>
-                                    <div class="col isi">
-                                        ID <?=$rowpengelola->id_user_pengelola?> - <?=$rowpengelola->nama_user?> - <?=$rowpengelola->organisasi_user?>
-                                    </div>
-                                </div>
+
                                 <div class="row">
                                     <div class="col-md-3 kolom font-weight-bold">
                                         Estimasi Total Luas Titik

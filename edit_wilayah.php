@@ -27,7 +27,7 @@ include 'hak_akses.php';
             if($_POST['submit'] == 'Simpan'){
                 $nama_wilayah        = $_POST['tbnama_wilayah'];
                 $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
-                $id_user_pengelola     = $_POST['tb_id_user_pengelola'];
+                $id_user_pengelola     = 1;
 
                 //Image upload
             if($_FILES["image_uploads"]["size"] == 0) {
@@ -195,16 +195,7 @@ include 'hak_akses.php';
                                             </script>
                                         </div>
 
-                                         <div class="form-group">
-                        <label for="dd_id_wilayah">User Pengelola Wilayah</label>
-                        <select id="dd_id_wilayah" name="tb_id_user_pengelola" class="form-control" required>
-                            <?php foreach ($row as $rowuser) {
-                            ?>
-                            <option <?php if($rowuser->id_user == $rowitem->id_user_pengelola) echo ' selected ' ?> value="<?=$rowuser->id_user?>">ID <?=$rowuser->id_user?> - <?=$rowuser->nama_user?> - <?=$rowuser->organisasi_user?></option>
 
-                            <?php } ?>
-                        </select>
-                    </div>
 
 
                          <p align="center">
