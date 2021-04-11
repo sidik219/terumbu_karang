@@ -52,6 +52,13 @@ else{
                     </a>
                 </li>
 
+                <li class="nav-item"> <!-- Lokasi -->
+                    <a href="kelola_reservasi_wisata.php" class="nav-link '.(('kelola_reservasi_wisata.php' == $url_sekarang) || ('edit_reservasi_wisata.php'  == $url_sekarang) ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-th-list"></i>
+                        <p> Kelola Reservasi </p>
+                    </a>
+                </li>
+
                 <!--
                 <li class="nav-item">
                     <a href="kelola_organisasi.php" class="nav-link  '.('kelola_organisasi.php' == $url_sekarang ? ' active ' : '').' ">
