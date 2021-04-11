@@ -45,11 +45,11 @@
                         <li class="nav-item ">
                             <a class="nav-link " href="index.php">Beranda</a>
                         </li>
-                        <li class="nav-item active">
-                            <a class="nav-link current" href="wisata_tangkolak.php">Wisata Bahari</a>
-                        </li>
                         <li class="nav-item ">
-                            <a class="nav-link " href="paket_wisata.php">Paket Wisata</a>
+                            <a class="nav-link " href="wisata_tangkolak.php">Wisata Bahari</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link current" href="paket_wisata.php">Paket Wisata</a>
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link " href="terumbu_karang.php">Terumbu Karang Tangkolak</a>
@@ -81,12 +81,50 @@
         </div>
         <!-- END Navbar Container -->
 
-    <!-- Konten -->
-    <div class="informational">
+   <!-- Konten -->
+   <div class="informational">
         <div class="informational-container">
             <div class="wisata-media">
-                 <h2> Wisata Tangkolak </h2>
+                 <h2> Paket Wisata Tangkolak </h2>
                             <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card card-pilihan mb-4 shadow-sm">
+                                    <a href="">
+                                        <img class="card-img-top berita-img" width="100%" src="img/news2.jpg">                           
+                                    </a>
+                                    <div class="card-body">
+                                            <p > <h5 class="max-length">Paket A</h5></p>
+                                            <p class="max-length2">Dua destinasi wisata</p>
+                                            <div class="collapse" id="collapseExample2">
+                                                    <div class="card card-body">
+                                                        <ol>
+                                                            <li>Snorkling Karang Sendulang</li>
+                                                            <li>Kuliner Mangrove</li>
+                                                        </ol>
+                                                    </div>
+                                                    <div class="card card-body">
+                                                        Waktu Pelaksanaan :
+                                                        1 Hari
+                                                    </div>
+                                                    <div class="card card-body">
+                                                    Fasilitas
+                                                        <ol>
+                                                            <li>2x Makan </li>
+                                                            <li>Alat selam</li>
+                                                        </ol>         
+                                                    </div>
+                                                    <div class="card card-body">
+                                                    Harga Paket Rp. 400.000 / orang
+                                                    </div>
+                                                </div>
+                                                <p>
+                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media2" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                        Lihat Detail
+                                                </a> 
+                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="https://radarkarawang.id/cilamaya/tangkolak-wajah-baru-wisata-bahari/" target="_blank">Reservasi</a>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-md-4">
                                     <div class="card card-pilihan mb-4 shadow-sm">
                                     <a href="">
@@ -94,66 +132,42 @@
                                         
                                     </a>
                                     <div class="card-body">
-                                            <p > <h5 class="max-length">Diving BMKT</h5></p>
-                                            <p class="max-length2">Selami Kapal Karam VOC disini</p>
-                                            <div class="collapse" id="collapseExample2">
-                                                    <div class="card card-body">
-                                                    Perairan tangkolak dikenal sebagai kuburan bagi kapal-kapal Kongsi Dagang atau perusahaan Hindia Timur Belanda (Vereenigde Oostindische Compagnie atau VOC) yang tenggelam ratusan tahun lalu.
-                                                    </div>
-                                                </div>
-                                                <p>
-                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media2" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                                        Lihat Detail
-                                                </a> 
-                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="https://radarkarawang.id/cilamaya/tangkolak-wajah-baru-wisata-bahari/" target="_blank">Lihat Paket Wisata</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card card-pilihan mb-4 shadow-sm">
-                                    <a href="">
-                                        <img class="card-img-top berita-img" width="100%" src="img/news2.jpg">
-                                        
-                                    </a>
-                                    <div class="card-body">
-                                            <p > <h5 class="max-length">Karang Sendulang</h5></p>
-                                            <p class="max-length2">Titik terumbu karang terbesar di Tangkolak</p>
+                                            <p > <h5 class="max-length">Paket B</h5></p>
+                                            <p class="max-length2">Tiga destinasi wisata</p>
                                             <div class="collapse" id="collapseExample3">
+                                                 <div class="card card-body">
+                                                    <ol>
+                                                        <li>Snorkling Karang Sendulang</li>
+                                                        <li>Kuliner Mangrove</li>
+                                                        <li>Diving BMKT</li>
+                                                    </ol>                                                  
+                                                    </div>
                                                     <div class="card card-body">
-                                                    Untuk sampai titik ini,traveler bisa menggunakan perahu dari Pantai Tangkolak. Menempuh jarak 15 Km atau satu jam pelayaran. 
+                                                        Waktu Pelaksanaan :
+                                                        2 Hari
+                                                    </div>
+                                                    <div class="card card-body">
+                                                        Fasilitas
+                                                        <ol>
+                                                            <li>Titik jemput 0 km</li>
+                                                            <li>6x Makan </li>
+                                                            <li>Alat selam</li>
+                                                            <li>Tempat menginap</li>
+                                                        </ol>         
+                                                    </div>
+                                                    <div class="card card-body">
+                                                    Harga Paket Rp. 1.200.000 / orang
                                                     </div>
                                                 </div>
                                                 <p>
                                                 <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media2" data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample">
                                                         Lihat Detail
                                                 </a> 
-                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="https://radarkarawang.id/cilamaya/tangkolak-wajah-baru-wisata-bahari/" target="_blank">Lihat Paket Wisata</a>
+                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="https://radarkarawang.id/cilamaya/tangkolak-wajah-baru-wisata-bahari/" target="_blank">Reservasi</a>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <div class="card card-pilihan mb-4 shadow-sm">
-                                    <a href="">
-                                        <img class="card-img-top berita-img" width="100%" src="img/magrove.png">
-                                        
-                                    </a>
-                                    <div class="card-body">
-                                            <p > <h5 class="max-length">Hutan Mangrove</h5></p>
-                                            <p class="max-length2">Mangrove terbaik di karawang</p>
-                                            <div class="collapse" id="collapseExample1">
-                                                    <div class="card card-body">
-                                                    Nikmati suasana sejuk dari hutan mangrove seluas 20 hektar dengan panjang jelajah 2 km
-                                                    </div>
-                                                </div>
-                                                <p>
-                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media2" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                                        Lihat Detail
-                                                </a> 
-                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="https://radarkarawang.id/cilamaya/tangkolak-wajah-baru-wisata-bahari/" target="_blank">Lihat Paket Wisata</a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
             </div>  
           
@@ -165,7 +179,7 @@
 
 
 
-      <!-- Footer -->
+      <<!-- Footer -->
       <section id="footer">
                     <div class="row">
                         <div class="blogo col-xs-12 col-sm-12 col-md-12 col-lg-4">

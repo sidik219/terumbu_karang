@@ -49,7 +49,10 @@
                             <a class="nav-link" href="wisata_tangkolak.php">Wisata Bahari</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="terumbu_karang.php">Terumbu Karang</a>
+                            <a class="nav-link" href="paket_wisata.php">Paket Wisata</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="terumbu_karang.php">Terumbu Karang Tangkolak</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="https://tkjb.or.id/"  target="_blank">Website GoKarang</a>
@@ -83,75 +86,32 @@
         <div class="informational-container">
             <!-- Header Container -->
             <div class="header-tkjb">
-                <!-- Carousel -->
-                <div id="carousel" class="carousel slide carousel-fade" data-ride="carousel" data-interval="6000">
-                    <ol class="carousel-indicators">
-                        <li data-target="#carousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#carousel" data-slide-to="1"></li>
-                        <li data-target="#carousel" data-slide-to="2"></li>
-                    </ol>
-                    <div class="carousel-inner" role="listbox">
-                        <!-- Slide 1 -->
-                        <div class="carousel-item active">
-                                <!-- Image -->
-                                <picture>
-                                    <source srcset="img/banner1.jpg" media="(min-width: 604px)">
-                                    <source srcset="img/banner2.jpg" media="(max-width: 604px)">
-                                    <img src="img/jembatan.jpg" alt="Slide 1 Image" class="d-block img-fluid">
-                                </picture>
-                                <!-- Caption -->
-                                <div class="carousel-caption">
-                                    <div>
-                                        <h2>Selamat Datang di Wisata Bahari Tangkolak</h2>
-                                        <!-- <p>Paragraph</p> -->
-                                    </div>
-                                </div>
-                        </div>
-                        <!-- Slide 2 -->
-                        <div class="carousel-item">
-                                <!-- Image -->
-                                <picture>
-                                    <source srcset="img/santai1.jpg" media="(min-width: 604px)">
-                                    <source srcset="img/santai2.jpg" media="(max-width: 604px)">
-                                    <img src="img/mob1.jpg" alt="Slide 2 Image" class="d-block img-fluid">
-                                </picture>
-                                <!-- Caption -->
-                                <div class="carousel-caption justify-content-center align-items-center">
-                                    <div>
-                                        <h2>Tempat wisata bahari terbaik di Karawang</h2>
-                                        <!-- <p>Paragraph</p> -->
-                                    </div>
-                                </div>
-                        </div>
-                        <!-- Slide 3 -->
-                        <div class="carousel-item">
-                                <!-- Image -->
-                                <picture>
-                                    <source srcset="img/diving1.jpg" media="(min-width: 604px)">
-                                    <source srcset="img/diving2.jpg" media="(max-width: 604px)">
-                                    <img src="img/vol1.jpg" alt="Slide 3 Image" class="d-block img-fluid">
-                                </picture>
-                                <!-- Caption -->
-                                <div class="carousel-caption justify-content-center align-items-center">
-                                    <div>
-                                        <h2>Dengan ratusan titik snorkling dan hutan mangrove</h2>
-                                        <!-- <p>Paragraph</p> -->
-                                    </div>
-                                </div>
-                        </div>
-                        <!-- /.carousel-item -->
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                    <img class="d-block w-100" src="img/banner1.jpg" alt="First slide">
                     </div>
-                    <!-- /.carousel-inner -->
-                    <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
+                    <div class="carousel-item">
+                    <img class="d-block w-100" src="img/banner1.jpg" alt="Second slide">
+                    </div>
+                    <div class="carousel-item">
+                    <img class="d-block w-100" src="img/banner1.jpg" alt="Third slide">
+                    </div>
                 </div>
-                <!-- / END Carousel -->
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+                </div>
             </div>
             <!-- End Header Container -->
 

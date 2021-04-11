@@ -257,6 +257,31 @@ body{
     color: #1990a7;
 }
 
+.wisata-media{
+    margin-top: 18vh;
+    height: auto;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+    padding-right: 5vh;
+    padding-left: 5vh;
+}
+
+.wisata-media{
+    
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+
+.wisata-media h2{
+    font-size: 25px;
+    padding-bottom: 2vh;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    color: #1990a7;
+}
+
+
 
 .card-pilihan {
     text-align: center;
@@ -283,6 +308,13 @@ body{
     -webkit-line-clamp: 1; /* number of lines to show */
     -webkit-box-orient: vertical;
 }
+.max-length2{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}
 
 .btn-kata-media{
     border-style: none;
@@ -292,6 +324,17 @@ body{
     font-family: 'Montserrat', sans-serif;
     font-size: 15px;
 }
+
+.btn-kata-media2{
+    background: none;
+    border-style: 2.5px solid;
+    border-color: #1990a7;
+    color: #1990a7;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing:0.3px;
+    font-size: 15px;
+}
+
 
 .tkjb-banner-caption{
     background: #f7f8fb;
@@ -435,6 +478,9 @@ body{
     object-fit: cover;
 }
 
+.card-body ol{
+    margin-left: 15px;
+}
 
 /* ==========================================================================
 =============================================================================
@@ -574,6 +620,19 @@ body{
         text-align: center;
         padding-bottom: 3vh;
     }
+    .wisata-media{
+        margin-top: 65px;
+        height: auto;
+  
+        padding-left: 5vh;
+        padding-right: 5vh;
+   
+    }
+    
+    .wisata-media h2{
+        text-align: center;
+        padding-bottom: 3vh;
+    }
     .list-tujuan-tkjb button
     {
     margin-left: -2vh;
@@ -597,6 +656,9 @@ body{
         margin-top: -6vh;
     }
     .kata-media h2{
+        text-align: center;
+    }
+    .wisata-media h2{
         text-align: center;
     }
     .donasi-caption h2{
@@ -670,6 +732,12 @@ body{
         
     }
 
+    .wisata-media{
+       
+        padding-left: 5vh;
+        padding-right: 5vh;
+        
+    }
 }
 
 
