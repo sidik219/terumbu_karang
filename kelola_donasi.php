@@ -19,7 +19,7 @@ else if($level_user == 3){
   $extra_query_noand = " t_lokasi.id_lokasi = $id_lokasi ";
 }
 else if($level_user == 4){
-  $extra_query = " 1 ";
+  $extra_query = "  ";
   $extra_query_noand = " 1 ";
 }
 
@@ -336,7 +336,7 @@ function ageCalculator($dob){
                                              ?>
                                              <div class="row  mb-3">
                                                <div class="col">
-                                                <img class="" height="60px" src="<?=$isi->foto_terumbu_karang?>?<?php if ($status='nochange'){echo time();}?>">
+                                                <img class="rounded" height="60px" src="<?=$isi->foto_terumbu_karang?>?<?php if ($status='nochange'){echo time();}?>">
                                               </div>
                                               <div class="col">
                                                 <span><?= $isi->nama_terumbu_karang?>

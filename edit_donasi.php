@@ -59,12 +59,13 @@ include 'hak_akses.php';
         $stmt->execute(['id_donasi' => $id_donasi, 'id_status_donasi' => $id_status_donasi, 'update_terakhir' => $tanggal_update_status]);
 
         $affectedrows = $stmt->rowCount();
-        if ($affectedrows == '0') {
-        header("Location: kelola_donasi.php?status=nochange");
-        } else {
-            //echo "HAHAHAAHA GREAT SUCCESSS !";
-            header("Location: kelola_donasi.php?status=updatesuccess");
-            }
+        header("Refresh: 0");
+        // if ($affectedrows == '0') {
+        // header("Location: kelola_donasi.php?status=nochange");
+        // } else {
+        //     //echo "HAHAHAAHA GREAT SUCCESSS !";
+        //     header("Location: kelola_donasi.php?status=updatesuccess");
+        //     }
         }
 
         if(isset($_POST['submit_terima'])){
@@ -76,12 +77,14 @@ include 'hak_akses.php';
         $stmt->execute(['id_donasi' => $id_donasi, 'id_status_donasi' => 3, 'update_terakhir' => $tanggal_update_status]);
 
         $affectedrows = $stmt->rowCount();
-        if ($affectedrows == '0') {
-        header("Location: kelola_donasi.php?status=nochange");
-        } else {
-            //echo "HAHAHAAHA GREAT SUCCESSS !";
-            header("Location: kelola_donasi.php?status=updatesuccess");
-            }
+        header("Refresh: 0");
+
+        // if ($affectedrows == '0') {
+        // header("Location: kelola_donasi.php?status=nochange");
+        // } else {
+        //     //echo "HAHAHAAHA GREAT SUCCESSS !";
+        //     header("Location: kelola_donasi.php?status=updatesuccess");
+        //     }
         }
 
         if(isset($_POST['submit_tolak'])){
@@ -170,12 +173,7 @@ include 'hak_akses.php';
             <!-- Content Header (Page header) -->
             <div class="content-header">
                     <div class="container-fluid">
-                        <button class="btn btn-outline-primary" onclick="goBack()">< Kembali</button><br><br>
-                        <script>
-                          function goBack() {
-                            window.history.back();
-                          }
-                        </script>
+                        <a href="kelola_donasi.php"><button class="btn btn-outline-primary">< Kembali</button></a><br><br>
                         <h4><span class="align-middle font-weight-bold">Kelola Donasi</span></h4>
                     </div>
                 <!-- /.container-fluid -->
