@@ -41,22 +41,22 @@
                     <!-- END Navbar First Layer -->
                     <!-- Navbar Second Layer -->
                     <div class="navbar-tkjb-navigation col px-0 collapse navbar-collapse" id="navbarTogglerDemo02">
-                         <!-- Navbar Menu -->
-                         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <!-- Navbar Menu -->
+                        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                             <li class="nav-item">
                                 <a class="nav-link" href="index.php">Beranda</a>
                             </li>
-                            <li class="nav-item ">
-                                <a class="nav-link " href="konten-donasi.php">Donasi</a>
+                            <li class="nav-item active teks-biru">
+                                <a class="nav-link current" href="konten-donasi.php">Donasi</a>
                             </li>
-                            <li class="nav-item ">
-                                <a class="nav-link " href="coralpedia.php">Coralpedia</a>
+                            <li class="nav-item">
+                                <a class="nav-link" href="coralpedia.php">Coralpedia</a>
                             </li>  
-                            <li class="nav-item active  teks-biru">
-                                <a class="nav-link current" href="coralmaps.php">Coralmaps</a>
+                            <li class="nav-item">
+                                <a class="nav-link" href="coralmaps.php">Coralmaps</a>
                             </li>
-                            <li class="nav-item ">
-                                <a class="nav-link " href="konten-wisata.php">Info Wisata</a>
+                            <li class="nav-item">
+                                <a class="nav-link" href="konten-wisata.php">Info Wisata</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -89,8 +89,73 @@
                 </nav>
                 <!-- END Navbar -->
             </div>
-            <!-- END Navbar Container -->            
+            <!-- END Navbar Container -->
 
+            <section id="benefit">
+                <div class="container">
+                    <div class="starter-title">
+                        <h1 class="mb-5">Manfaat Donasi Terumbu Karang</h1><br>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-lg-6 p-5 text-center">
+                            <img src="images/nelayan.jpg" class="img-fluid" alt="team">
+                        </div>
+                        <div class="col-md-12 col-lg-6 p-5 text-light">
+                            <h2>Bagi Masyarakat Pesisir</h2>
+                            <p>
+                            Terumbu karang yang anda donasikan bermanfaat untuk perbaikan dan perluasan titik
+                            terumbu karang di tempat tinggal mereka.
+                            <br>
+                            <ol>
+                                Manfaat yang didapat antara lain:
+                                <li>Terumbu karang melindungi pantai dan daerah pesisir dari ombak besar.</li>
+                                <li>Terumbu karang dapat mencegah abrasi.</li>
+                                <li>Terumbu karang dapat dijadikan tempat wisata yang mendorong ekonomi masyarakat pesisir.</li>
+                            </ol>
+                            <a href="coralpedia.php"> <p>Pelajari manfaat terumbu karang lebih lanjut ></p></a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+           <!-- Donasi About -->
+            <div class="donasi-about-container">
+                <div id="about" class="container ">
+                    <!-- 1st PARAGRAPH -->
+                    <div class="starter-template">
+                        <h1 class="mb-5">SISTEM DONASI</h1><br>
+                    </div>
+                    <!-- END 1st PARAGRAPH -->
+                    <!-- ROW WITH ICON -->
+                    <div class="row text-center pb-4 starter-template">
+                        <div class="col-md-12 col-lg-4 p-1">
+                            <img src="images/choose.jpg" class="rounded-circle p-3" alt="" width="250" height="250">
+                            <h3>Pilih</h3><br>
+                            <p>Pilih sendiri lokasi penanaman dan jenis terumbu karang yang tersedia pada lokasi pilihan.</p>
+                        </div>
+                        <div class="col-md-12 col-lg-4 p-1-middle">
+                            <img src="images/pesan.jpg" class="rounded-circle p-3" alt="" width="250" height="250">
+                            <h3>Pesan</h3><br>
+                            <p>Tulis pesan untuk dipasang pada terumbu karang, yang nantinya bisa kita lihat pada saat menyelam nanti.
+                                </p>
+                        </div>
+                        <div class="col-md-12 col-lg-4 p-1">
+                            <img src="images/coral-status.jpg" class="rounded-circle p-3" alt="" width="250" height="250">
+                            <h3>Pantau</h3><br>
+                            <p>Pantau status perkembangan dan kondisi terumbu karang yang telah kita donasikan.</p>
+                        </div>
+                    </div>
+                <div id="about" class="container donate-now">
+                    <!-- 1st PARAGRAPH -->
+                    <div class="starter-template">
+                        <a href="coralmaps.php" class="btn btn-link-slide" role="button" aria-pressed="true">
+                        Donasi Sekarang
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- End of Donasi About -->
+            
         </div>
     </div>
 

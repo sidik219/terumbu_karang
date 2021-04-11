@@ -41,22 +41,22 @@
                     <!-- END Navbar First Layer -->
                     <!-- Navbar Second Layer -->
                     <div class="navbar-tkjb-navigation col px-0 collapse navbar-collapse" id="navbarTogglerDemo02">
-                         <!-- Navbar Menu -->
-                         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <!-- Navbar Menu -->
+                        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                             <li class="nav-item">
                                 <a class="nav-link" href="index.php">Beranda</a>
                             </li>
                             <li class="nav-item ">
                                 <a class="nav-link " href="konten-donasi.php">Donasi</a>
                             </li>
-                            <li class="nav-item ">
-                                <a class="nav-link " href="coralpedia.php">Coralpedia</a>
+                            <li class="nav-item">
+                                <a class="nav-link" href="coralpedia.php">Coralpedia</a>
                             </li>  
-                            <li class="nav-item active  teks-biru">
-                                <a class="nav-link current" href="coralmaps.php">Coralmaps</a>
+                            <li class="nav-item">
+                                <a class="nav-link" href="coralmaps.php">Coralmaps</a>
                             </li>
-                            <li class="nav-item ">
-                                <a class="nav-link " href="konten-wisata.php">Info Wisata</a>
+                            <li class="nav-item active  teks-biru">
+                                <a class="nav-link current" href="konten-wisata.php">Info Wisata</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -89,8 +89,40 @@
                 </nav>
                 <!-- END Navbar -->
             </div>
-            <!-- END Navbar Container -->            
+            <!-- END Navbar Container -->
 
+            <div class="tkjb-card">
+                 <h2> Wisata Terumbu Karang Jawa Barat </h2>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card card-pilihan mb-4 shadow-sm">
+                                    <a href="">
+                                        <img class="card-img-top berita-img" width="100%" src="images/tangkolak.jpg">
+                                    </a>
+                                        <div class="card-body">
+                                            <p > <h5 class="max-length">Pantai Tangkolak</h5></p>
+                                            <p class="max-length1">Karawang</p>
+                                            <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="" target="_blank" >Lihat Detail</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card card-pilihan mb-4 shadow-sm">
+                                    <a href="">
+                                        <img class="card-img-top berita-img" width="100%" src="images/Pulau-Biawak-Indramayu.jpg">
+                                    </a>
+                                        <div class="card-body card-body-costom">
+                                            <p><h5 class="max-length">Pulau Biawak</h5></p>
+                                            <p class="max-length1">Indramayu</p>
+                                            <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="" target="_blank">Lihat Detail</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                </div>
+            
+            
         </div>
     </div>
 
