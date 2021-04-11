@@ -482,6 +482,46 @@ body{
     margin-left: 15px;
 }
 
+.coralpedia-title h2 {
+    color: #0E447E;
+    text-align: center;
+    line-height: 40px;
+    font-size: 24px;
+    padding-bottom: 20px;
+}
+
+.coralpedia-card{
+    height: auto;
+    margin-top :20px;
+    background: white;
+    padding-top: 8vh;
+    padding-bottom: 5vh;
+    padding-right: 5vh;
+    padding-left: 5vh;
+}
+
+.coralpedia-paragraph
+{
+    padding-bottom: 5vh;
+}
+.coralpedia-paragraph2
+{
+    padding-bottom: 5vh;
+}
+.btn.btn-link-slide {  
+    border-radius: 10px;
+    color: white;
+    background: rgb(209,72,4);
+    background: linear-gradient(37deg, rgba(209,72,4,1) 0%, rgba(226,73,1,1) 55%, rgba(235,95,56,1) 100%); 
+    border: none;
+    padding: 12px 24px;
+    border-radius: 24px;
+    font-family: 'Montserrat', sans-serif;   
+}
+.donasi-caption h2{
+    margin-bottom: 20px;
+}
+
 /* ==========================================================================
 =============================================================================
 ============================================================================= */
@@ -664,7 +704,27 @@ body{
     .donasi-caption h2{
         font-size: 15px;
     }
-    
+    .coralpedia-paragraph
+    {
+        padding-left: 5vh;
+        padding-right: 5vh;
+    }
+    .coralpedia-paragraph2
+    {
+        text-align: justify;
+        
+    }
+    .coralpedia-title h2 {
+        color: #0E447E;
+        text-align: center;
+        font-size: 20px;
+        padding-bottom: 20px;
+        line-height: 30px;
+    }
+    .btn.btn-link-slide {  
+        font-size: 15px;
+        font-family: 'Montserrat', sans-serif;   
+    }
     
     
 }

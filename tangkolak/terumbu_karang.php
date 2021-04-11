@@ -196,9 +196,9 @@
                                     <div>
                                         <h2>Bersama GoKarang Bantu lestarikan terumbu karang di pantai Tangkolak</h2>
                                     </div>
-                                    <div class="row-mid py-4">
-                                    <button class="btn radius-50 py-1.5 px-4  btn-donasi " onclick="window.location.href='#'">Donasi</button>
-                                    </div>
+                                    <a href="../konten-donasi.php" class="btn btn-link-slide" role="button" aria-pressed="true">
+                                        Info Donasi
+                                    </a>
                                 </div>
                     </div>
                 </div>
@@ -208,6 +208,85 @@
 
             </div>
             <!-- End Konten Mid Container -->
+            <div class="coralpedia-card coralpedia-title">
+                 <h2> Eksplor Terumbu Karang Tangkolak </h2>
+                 <div class="coralpedia-paragraph2">
+                     Berikut merupakan jenis terumbu karang yang terdapat di wilayah pantai Tangkolak :
+                </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card card-pilihan mb-4 shadow-sm">
+                                    <a href="">
+                                        <img class="card-img-top berita-img" width="100%" src="../images/acropora_cervicornis01.jpg">
+                                    </a>
+                                        <div class="card-body">
+                                            <p > <h5 class="max-length">Acropora Cervicurnis</h5></p>
+                                            <p class="max-length2">Terumbu karang ini berbentuk seperti semak dan berbentuk melebar. Cabang dari terumbu karang ini berbentuk horizontal yang menyabar serta tipis.</p>
+                                            <div class="collapse" id="collapseExample1">
+                                                    <div class="card card-body">
+                                                    Terumbu karang ini berbentuk seperti semak dan berbentuk melebar. Cabang dari terumbu karang ini berbentuk horizontal yang menyabar serta tipis. Serta aksial koralit yang terlihat jelas. 
+                                                    </div>
+                                                    <div class="card card-body">
+                                                        Tumbuh di daerah : Karawang, Indramayu, Cirebon
+                                                    </div>
+                                                </div>
+                                                <p>
+                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                        Lihat Detail
+                                                </a> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card card-pilihan mb-4 shadow-sm">
+                                    <a href="">
+                                        <img class="card-img-top berita-img" width="100%" src="../images/Acropora-microphthalma.jpg">
+                                    </a>
+                                        <div class="card-body card-body-costom">
+                                            <p><h5 class="max-length">Acropoda Micropthalma</h5></p>
+                                            <p class="max-length2">Berbentuk bantalan dengan cabang yang pendek dan gemuk serta dengan ukuran yang sama. terumbu karang ini ada kemiripan dengan Acropora Aspera. </p>
+                                            <div class="collapse" id="collapseExample2">
+                                                    <div class="card card-body">
+                                                    Berbentuk bantalan dengan cabang yang pendek dan gemuk serta dengan ukuran yang sama. terumbu karang ini ada kemiripan dengan Acropora Aspera.
+                                                    </div>
+                                                    <div class="card card-body">
+                                                        Tumbuh di daerah : Karawang, Cirebon
+                                                    </div>
+                                                </div>
+                                                <p>
+                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                        Lihat Detail
+                                                </a> 
+                                        </div>
+                                    </div>
+                                </div>
+                                
+
+                                <div class="col-md-4">
+                                    <div class="card card-pilihan mb-4 shadow-sm">
+                                    <a href="">
+                                        <img class="card-img-top berita-img" width="100%" src="../images/Acropora_humilis.jpg">
+                                    </a>
+                                        <div class="card-body card-body-costom">
+                                            <p><h5 class="max-length">Acropora Humilis</h5></p>
+                                            <p class="max-length2">Berbetuk seperti piring dengan cabang yang tipis. Terumbu karang ini termasuk terumbu karang yang mudah rapuh. </p>
+                                                <div class="collapse" id="collapseExample">
+                                                    <div class="card card-body">
+                                                    Berbetuk seperti piring dengan cabang yang tipis. Terumbu karang ini termasuk terumbu karang yang mudah rapuh.
+                                                    </div>
+                                                    <div class="card card-body">
+                                                        Tumbuh di daerah : Karawang, Indramayu
+                                                    </div>
+                                                </div>
+                                                <p>
+                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                        Lihat Detail
+                                                </a>   
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                </div>  
 
 
 
