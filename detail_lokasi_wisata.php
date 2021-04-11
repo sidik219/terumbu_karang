@@ -109,16 +109,16 @@ include 'hak_akses.php';
                               <img class="w-50" src="<?=$rowitem->foto_wisata?>">
                             </div>
                             <div class="col">
-                                <div class="row p-2"><span><b>Nama Lokasi</b></span>
-                                <div class="col-12 p-0 border-bottom"><span class="text-xl text-warning"><?=$rowitem->nama_lokasi?></span></div></div>
+                                <div class="row p-2"><span><b>Wisata</b></span>
+                                <div class="col-12 p-0 border-bottom"><span class="text-xl text-warning"><?=$rowitem->judul_wisata?></span></div></div>
 
                                 <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-danger fas fa-map-marker-alt"></i>
                                     <b>Alamat:</b> <?=$rowitem->deskripsi_lokasi?>
                                 </p></div>
                                 <div class="row p-2 border-bottom"><p class="">
-                                    <i class="text-primary fas fa-suitcase"></i>
-                                    <b>Daftar Wisata:</b> <?=$rowitem->judul_wisata?>
+                                    <i class="text-primary fas fa-umbrella-beach"></i>
+                                    <b>Nama Lokasi:</b> <?=$rowitem->nama_lokasi?>
                                 </p></div>
 
                                 <div class="row p-2 border-bottom"><p class="">
@@ -169,10 +169,6 @@ include 'hak_akses.php';
                                 </p></div>
                                 <?php } ?>
 
-                                <div class="row p-2 border-bottom"><p class="">
-                                    <i class="text-success fas fa-money-bill-wave"></i>
-                                    <b>Biaya Wisata Peserta:</b><br> Rp. <?=number_format($rowitem->biaya_wisata, 0)?>
-                                </p></div>
                                 <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-warning far fa-bookmark"></i>
                                     <b>Deskripsi:</b> <?=$rowitem->deskripsi_wisata?>

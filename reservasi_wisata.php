@@ -204,7 +204,6 @@ include 'hak_akses.php';
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item card-reservasi">Wisata :</li>
                         <input type="text" id="deskripsi_wisata" name="deskripsi_wisata" value="Peserta <?=$rowitem->judul_wisata?> : " class="list-group-item paket-wisata" disabled>
-                        <input type="text" id="subtotal" name="subtotal" value="Subtotal : Rp " class="list-group-item paket-wisata" disabled>
                     </ul>
                 </div>
 
@@ -300,11 +299,6 @@ include 'hak_akses.php';
                     <label for="jumlah_peserta">Jumlah Peserta</label>
                     <input type="number" id="jumlah_peserta" name="jumlah_peserta" value="0" min="0" onchange="myFunction()" class="form-control" required>
                 </div>
-
-                <div class="form-group">
-                    <label for="jumlah_peserta"></label>
-                    <input type="hidden" id="biaya_wisata" name="biaya_wisata" value="<?=$rowitem->biaya_wisata?>" class="form-control" readonly>
-                </div>
                 
                 <!-- Paket Wisata -->
                 <div class="" style="width:100%;">
@@ -368,10 +362,10 @@ include 'hak_akses.php';
 
                     <p class="btn btn-blue btn-primary" onclick="toggleDetail()">
                         <i class="icon fas fa-chevron-down"></i>
-                        Isi Rincian Data Rekening Donatur
+                        Isi Rincian Data Rekening Reservasi Wisata
                     </p>
                     <div class="detail-toggle" id="main-toggle">
-                    <h4 class="mb-3 card-header pl-0">Data Rekening Donatur</h4>
+                    <h4 class="mb-3 card-header pl-0">Data Rekening Wisatawan</h4>
                         <div class="mb-3">
                             <label for="nama_donatur">Nama Pemilik Rekening</label>
                             <input type="text" class="form-control data_donatur" id="nama_donatur" name="nama_donatur[]">
@@ -475,14 +469,13 @@ include 'hak_akses.php';
     <script>
         function myFunction() {
             var jumlah_peserta  = document.getElementById("jumlah_peserta").value;
-            var biaya_wisata    = document.getElementById("biaya_wisata").value;
             var paket_wisata    = document.getElementById("total_paket_wisata").value;
             var id_tk           = document.getElementById("id_tk").value; //data terumbu karang
             var nominal         = document.getElementById("id_tk").value; //data nominal terumbu karang
 
             var deskripsi       = jumlah_peserta;
-            var reservasi       = jumlah_peserta * biaya_wisata; //5 x 750.000 = 3.750.000
-            var total_reservasi = parseInt(reservasi) + parseInt(paket_wisata);
+            var reservasi       = jumlah_peserta * paket_wisata; //5 x 750.000 = 3.750.000
+            var total_reservasi = reservasi;
             var terumbu_karang  = id_tk;
             var hasil_split     = nominal.split("-");
             var split_tk        = hasil_split[0];
@@ -498,7 +491,6 @@ include 'hak_akses.php';
             }
 
             document.getElementById("deskripsi_wisata").value = "Peserta <?=$rowitem->judul_wisata?> : " + deskripsi;
-            document.getElementById("subtotal").value = "Subtotal : Rp " + reservasi; //subtotal dari jumlah_peserta * biaya_wisata
             document.getElementById("terumbu_karang").value = terumbu_karang;
             document.getElementById("split_tk").value = split_tk;
             document.getElementById("split_harga_tk").value = split_harga_tk;
