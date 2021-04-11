@@ -376,7 +376,7 @@ function alertCabutLabel($dob, $slabel){
                                                         <label for="tb_nama_jenis">Kondisi / Keterangan</label>
                                                         <!-- <input type="text" id="tb_kondisi" name="kondisi[]" class="form-control" placeholder="Deskripsi singkat..." value="<?php //echo empty($rowhistory[0]->kondisi_terumbu) ? '' : $rowhistory[0]->kondisi_terumbu; ?>" required> -->
                                                           <select class="form-control" id="tb_nama_jenis" name="kondisi[]" required>
-                                                            <option value="">--Pilih Kondisi--</option>
+                                                            <option value="" disabled>--Pilih Kondisi--</option>
                                                             <option value="Sangat Baik" <?php if(!empty($rowhistory[0]->kondisi_terumbu)){if($rowhistory[0]->kondisi_terumbu == "Sangat Baik") echo ' selected ';}?>>Sangat Baik</option>
                                                             <option value="Baik"<?php if(!empty($rowhistory[0]->kondisi_terumbu)){if($rowhistory[0]->kondisi_terumbu == "Baik") echo ' selected ';}?>>Baik</option>
                                                             <option value="Rusak"<?php if(!empty($rowhistory[0]->kondisi_terumbu)){if($rowhistory[0]->kondisi_terumbu == "Rusak") echo ' selected ';}?>>Rusak</option>

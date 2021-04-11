@@ -201,7 +201,7 @@ if ($_POST['type'] == 'load_batch' && !empty($_POST["id_lokasi"])) {
                       LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
                       LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
                       LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch
-                      WHERE t_batch.id_lokasi = :id_lokasi
+                      WHERE t_batch.id_lokasi = :id_lokasi AND status_cabut_label != 1
                       ORDER BY tanggal_pemeliharaan_terakhir';
     $stmt = $pdo->prepare($sqlviewbatch);
     $stmt->execute(['id_lokasi' => $_POST['id_lokasi']]);

@@ -81,7 +81,7 @@ if (isset($_POST['register'])) {
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Favicon -->
-    <?= $favicon ?>
+    <link rel="icon" href="dist/img/gokarang_coral_favicon.png" type="image/x-icon" />
 
 
 </head>
@@ -93,7 +93,7 @@ if (isset($_POST['register'])) {
     <nav class="navbar navbar-expand-lg navbar-light bg-light  main-navigation fixed-top">
         <!-- LOGO HOLDER -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="index.php"><img id=logo src="dist/img/logo.png"></a>
+            <a class="navbar-brand" href="index.php"><img id=logo src="dist/img/gokarang_logo_complete.png"></a>
         </nav>
         <!-- END OF LOGO HOLDER -->
 
@@ -143,17 +143,28 @@ if (isset($_POST['register'])) {
         <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
                     <div class="form-group">
-                        <label for="tb_nama_user">Nama Lengkap</label>
+                        <label for="tb_nama_user" class="font-weight-bold" >Nama Lengkap</label>
                         <input type="text" id="tb_nama_user" name="tb_nama_user" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="tb_organisasi">Organisasi</label>
+                        <label for="tb_organisasi" class="font-weight-bold" >Organisasi</label>
                         <input type="text" id="tb_organisasi" name="tb_organisasi_user" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="rb_jenis_kelamin">Jenis Kelamin</label><br>
+                        <label class="font-weight-bold" for="rb_jenis_kelamin">Cakupan Pengelolaan</label><br>
                         <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_jenis_kelamin_pria" name="rb_jenis_kelamin" value="pria" class="form-check-input">
+                            <input type="radio" id="rb_wilayah" name="rb_level_user" value="2" class="form-check-input" required checked>
+                            <label class="form-check-label" for="rb_wilayah">Wilayah (Kabupaten/Dinas)</label>
+                        </div><br>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="rb_lokasi" name="rb_level_user" value="3" class="form-check-input">
+                            <label class="form-check-label" for="rb_lokasi">Lokasi (Pantai/Organisasi Masyarakat)</label>
+                        </div>
+                    </div><br>
+                    <div class="form-group">
+                        <label for="rb_jenis_kelamin" class="font-weight-bold" >Jenis Kelamin</label><br>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="rb_jenis_kelamin_pria" name="rb_jenis_kelamin" value="pria" class="form-check-input" checked>
                             <label class="form-check-label" for="rb_jenis_kelamin_pria">Pria</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -162,19 +173,19 @@ if (isset($_POST['register'])) {
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="tb_email">Email</label>
+                        <label for="tb_email" class="font-weight-bold" >Email</label>
                         <input type="text" id="tb_email" name="tb_email" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="num_nomer_hp">No. HP</label>
+                        <label for="num_nomer_hp" class="font-weight-bold" >Nomor Handphone</label>
                         <input type="number" id="num_nomer_hp" name="num_nomer_hp" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="tb_alamat_user">Alamat</label>
+                        <label for="tb_alamat_user" class="font-weight-bold" >Alamat</label>
                         <input type="text" id="tb_email" name="tb_alamat_user" class="form-control">
                     </div>
                     <div class="form-group d-none">
-                        <label for="num_ktp_user">No. KTP</label>
+                        <label for="num_ktp_user" class="font-weight-bold" >No. KTP</label>
                         <input type="number" id="num_ktp_user" name="num_ktp_user" class="form-control">
                     </div>
                     <div class="form-group d-none">
@@ -188,7 +199,7 @@ if (isset($_POST['register'])) {
                         <input type="text" id="tb_tempat_lahir" name="tb_tempat_lahir" class="form-control">
                     </div>
                     <div class="form-group">
-                         <label for="date_tanggal_lahir">Tanggal Lahir</label>
+                         <label for="date_tanggal_lahir" class="font-weight-bold" >Tanggal Lahir</label>
                          <div class="file-form">
                          <input type="date" id="date_tanggal_lahir" name="date_tanggal_lahir" class="form-control" >
                          </div>
@@ -199,27 +210,13 @@ if (isset($_POST['register'])) {
                         <input type="file" id="image_uploads2" name="image_uploads2" class="form-control">
                         </div>
                     </div><br>
+
                     <div class="form-group">
-                        <label class="font-weight-bold" for="rb_jenis_kelamin">Cakupan Pengelolaan</label><br>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_wilayah" name="rb_level_user" value="4" class="form-check-input" required>
-                            <label class="form-check-label" for="rb_wilayah">Pusat (Provinsi)</label>
-                        </div><br>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_wilayah" name="rb_level_user" value="2" class="form-check-input" required>
-                            <label class="form-check-label" for="rb_wilayah">Wilayah (Dinas/Kabupaten)</label>
-                        </div><br>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_lokasi" name="rb_level_user" value="3" class="form-check-input">
-                            <label class="form-check-label" for="rb_lokasi">Lokasi (Pantai/Masyarakat)</label>
-                        </div>
-                    </div><br>
-                    <div class="form-group">
-                        <label for="tb_username">Akun Saya</label>
+                        <label for="tb_username" class="font-weight-bold" >Username</label>
                         <input type="text" id="tb_username" name="tb_username" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="pwd">Password</label>
+                        <label for="pwd" class="font-weight-bold" >Password</label>
                         <input type="password" id="pwd" name="pwd" class="form-control">
                     </div>
                     <br>
@@ -241,7 +238,7 @@ if (isset($_POST['register'])) {
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                     <div class="cpt text-light text-center">
-                        <p>© 2020-Terumbu Karang Jawa Barat.</p>
+                        <p><strong>Copyright &copy; <?= date("Y") ?> </strong> GoKarang</p>
                     </div>
                 </div>
 

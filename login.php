@@ -18,11 +18,38 @@ if (isset($_POST['login'])) {
                 $_SESSION['level_user']     = $row->level_user;
                 header('Location: dashboard_user.php?pesan=login_berhasil');
 
-            } elseif ($row->level_user == "2" || ($row->level_user == "3")) {
+            } elseif ($row->level_user == "2") {
+              $sql  = "SELECT id_wilayah FROM t_pengelola_wilayah WHERE id_user=:id_user";
+              $stmt = $pdo->prepare($sql);
+              $stmt->execute(['id_user' => $row->id_user]);
+              $rowkelolawilayah = $stmt->fetch();
+              if($stmt->rowCount() != 0){
+
+                $_SESSION['id_wilayah_dikelola']     = $rowkelolawilayah->id_wilayah;
                 $_SESSION['id_user']        = $row->id_user;
                 $_SESSION['username']        = $row->username;
                 $_SESSION['level_user']     = $row->level_user;
-                header('Location: dashboard_admin.php?pesan=login_berhasil_w');
+                header('Location: dashboard_admin.php?pesan=login_berhasil_w&id_wilayah='.$rowkelolalokasi->id_wilayah);
+              }
+              else{
+                header('Location: login.php?pesan=akun_belum_diberi_akses');
+              }
+            }
+            elseif ($row->level_user == "3") {
+              $sql  = "SELECT id_lokasi FROM t_pengelola_lokasi WHERE id_user=:id_user";
+              $stmt = $pdo->prepare($sql);
+              $stmt->execute(['id_user' => $row->id_user]);
+              $rowkelolalokasi = $stmt->fetch();
+              if($stmt->rowCount() != 0){
+                $_SESSION['id_user']        = $row->id_user;
+                $_SESSION['username']        = $row->username;
+                $_SESSION['level_user']     = $row->level_user;
+                $_SESSION['id_lokasi_dikelola']     = $rowkelolalokasi->id_lokasi;
+                header('Location: dashboard_admin.php?pesan=login_berhasil_l&id_lokasi='.$rowkelolalokasi->id_lokasi);
+              }
+              else{
+                header('Location: login.php?pesan=akun_belum_diberi_akses');
+              }
 
             }
             elseif ($row->level_user == "4") {
@@ -83,7 +110,13 @@ if (isset($_POST['login'])) {
                   if($_GET['pesan'] == 'registrasi_berhasil'){
                   echo '<div class="alert alert-success" role="alert">
                           Pendaftaran berhasil! Silahkan Log In.
-                      </div>';}
+                      </div>';
+                    }
+                  else if($_GET['pesan'] == 'akun_belum_diberi_akses'){
+                  echo '<div class="alert alert-primary" role="alert">
+                          Akun anda dalam tahap verifikasi oleh Pengelola Pusat. Harap tunggu beberapa saat.
+                      </div>';
+                    }
                   else{
                     {
                   echo '<div class="alert alert-warning" role="alert">
@@ -115,14 +148,14 @@ if (isset($_POST['login'])) {
                         <br>
     					<div class="text-center">
     						<span class="txt1">
-    							Belum punya akun ?
+    							Belum punya akun donatur?
     						</span>
 
     						<a href="register.php" class="txt2 hov1">
     							Daftar Donatur
                 </a><br><br>
                 <span class="txt1">
-    							Calon pengelola ?
+    							Calon pengelola Wilayah/Lokasi?
     						</span>
                 <a href="register_pengelola.php" class="txt2 hov1">
     							Daftar Pengelola
@@ -131,7 +164,7 @@ if (isset($_POST['login'])) {
     							Pengelola Pusat/Provinsi ?
     						</span>
                 <a href="register_pusat.php" class="txt2 hov1">
-    							Daftar Pengelola Pusat
+    							Daftar Pusat
     						</a>
     					</div>
     				</form>

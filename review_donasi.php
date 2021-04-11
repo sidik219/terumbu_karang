@@ -11,6 +11,12 @@ include 'hak_akses.php';
     $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
     $rowlokasi = $stmt->fetch();
 
+    $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank';
+    $stmt = $pdo->prepare($sqlviewrekeningbersama);
+    $stmt->execute();
+    $rowrekening = $stmt->fetchAll();
+
+
 
     if (isset($_POST['submit'])) {
         if($_POST['submit'] == 'Simpan'){
