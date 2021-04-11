@@ -420,14 +420,20 @@ include 'hak_akses.php';
                     </div>
                 </div>
                 <hr class="mb-2"/>
+                <?php
+                $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank';
+                $stmt = $pdo->prepare($sqlviewrekeningbersama);
+                $stmt->execute();
+                $rowrekening = $stmt->fetchAll(); 
 
+                foreach ($rowrekening as $rekening) { ?>
                 <div class="row">
                     <div class="col">
                         <span class="font-weight-bold">
                         <i class="fas fa-user-tie"></i> Nama Rekening Pengelola</span>
                     </div>
                     <div class="col-lg-6 mb-2">
-                        <span class=""><?=$rowitem->nama_rekening?></span>
+                        <span class=""><?=$rekening->nama_pemilik_rekening?></span>
                     </div>
                 </div>
                 <div class="row">
@@ -436,7 +442,7 @@ include 'hak_akses.php';
                         <i class="text-warning fas fa-university"></i> Nomor Rekening Pengelola</span>
                     </div>
                     <div class="col-lg-6  mb-2">
-                        <span class=""><?=$rowitem->nomor_rekening?></span>
+                        <span class=""><?=$rekening->nomor_rekening?></span>
                     </div>
                 </div>
                 <div class="row mb-2">
@@ -445,10 +451,10 @@ include 'hak_akses.php';
                         <i class="text-info fas fa-hashtag"></i> Bank Pengelola</span>
                     </div>
                     <div class="col-lg-6  mb-2">
-                        <span class=""><?=$rowitem->nama_bank?></span>
+                        <span class=""><?=$rekening->nama_bank?></span>
                     </div>
                 </div>
-
+                <?php } ?>
                 <button type="submit" name="submit" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4">Buat Reservasi Wisata</button>
             <?php } ?>
           </form>

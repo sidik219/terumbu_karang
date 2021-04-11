@@ -153,21 +153,21 @@ include 'hak_akses.php';
                                 </p></div>
 
                                 <?php
-                                $sqlviewpaket = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, nama_fasilitas, biaya_fasilitas 
+                                $sqlviewfasilitas = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, nama_fasilitas, biaya_fasilitas 
                                                     FROM tb_fasilitas_wisata 
                                                     LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
                                                     LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                                                     WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
                                                     AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
-                                $stmt = $pdo->prepare($sqlviewpaket);
+                                $stmt = $pdo->prepare($sqlviewfasilitas);
                                 $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                                $rowpaket = $stmt->fetchAll();
+                                $rowfasilitas = $stmt->fetchAll();
 
-                                foreach ($rowpaket as $paket) { ?>
+                                foreach ($rowfasilitas as $fasilitas) { ?>
                                 <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-success fas fa-money-bill-wave"></i>
-                                    <b>Total Paket Wisata:</b><br> Rp. <?=number_format($paket->total_biaya_fasilitas, 0)?>
+                                    <b>Total Paket Wisata:</b><br> Rp. <?=number_format($fasilitas->total_biaya_fasilitas, 0)?>
                                 </p></div>
                                 <?php } ?>
 

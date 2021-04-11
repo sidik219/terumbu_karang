@@ -130,22 +130,22 @@ include 'hak_akses.php';
                                     <h5 style="text-align: left;"> Paket Wisata :</h5>
                                     <p class="card-text font-weight-bold" style="text-align: left;">
                                         <?php
-                                        $sqlviewpaket = 'SELECT * FROM t_wisata
+                                        $sqlviewwisata = 'SELECT * FROM t_wisata
                                                             LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                                                             WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
                                                             AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
-                                        $stmt = $pdo->prepare($sqlviewpaket);
+                                        $stmt = $pdo->prepare($sqlviewwisata);
                                         $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                                        $rowpaket = $stmt->fetchAll();
+                                        $rowwisata = $stmt->fetchAll();
 
-                                        foreach ($rowpaket as $paket) { ?>
+                                        foreach ($rowwisata as $wisata) { ?>
                                         <div class="divTable">
                                             <div class="divTableBody">
                                                 <div class="divTableRow">
                                                     <div class="divTableCell-1">
                                                         <i class="text-info fas fa-arrow-circle-right"></i>                             
-                                                        <?=$paket->judul_wisata?>
+                                                        <?=$wisata->judul_wisata?>
                                                     </div>
                                                     <div class="divTableCell-2">
                                                     </div>
@@ -157,20 +157,20 @@ include 'hak_akses.php';
                                     <h5 style="text-align: left;"> Total Paket Wisata :</h5>
                                     <h4 class="card-text font-weight-bold" style="text-align: left;">
                                         <?php
-                                        $sqlviewpaket = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, nama_fasilitas, biaya_fasilitas 
+                                        $sqlviewfasilitas = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, nama_fasilitas, biaya_fasilitas 
                                                             FROM tb_fasilitas_wisata 
                                                             LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
                                                             LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                                                             WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
                                                             AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
-                                        $stmt = $pdo->prepare($sqlviewpaket);
+                                        $stmt = $pdo->prepare($sqlviewfasilitas);
                                         $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                                        $rowpaket = $stmt->fetchAll();
+                                        $rowfasilitas = $stmt->fetchAll();
 
-                                        foreach ($rowpaket as $paket) { ?>
+                                        foreach ($rowfasilitas as $fasilitas) { ?>
                                         <span class="badge badge-pill badge-success mr-2">
-                                        Rp. <?=number_format($paket->total_biaya_fasilitas, 0)?></span>
+                                        Rp. <?=number_format($fasilitas->total_biaya_fasilitas, 0)?></span>
                                         <?php } ?></h4>
                                     
                                     <a class="btn btn-primary btn-lg btn-block mb-4" href="detail_lokasi_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>" class="card-donasi__cta" style="color: white;">Rincian Wisata</a>

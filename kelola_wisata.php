@@ -128,7 +128,7 @@ $row = $stmt->fetchAll();
                             <th scope="col">ID Wisata</th>
                             <th scope="col">ID Lokasi</th>
                             <th scope="col">Judul Wisata</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">Deskripsi Wisata</th>
                             <th scope="col">Aksi</th>
                             </tr>
                           </thead>
@@ -138,7 +138,7 @@ $row = $stmt->fetchAll();
                               <th scope="row"><?=$rowitem->id_wisata?></th>
                               <td><?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></td>
                               <td><?=$rowitem->judul_wisata?></td>
-                              <td><?=$rowitem->status_aktif?></td>
+                              <td><?=$rowitem->deskripsi_wisata?></td>
                               <td>
                                 <a href="edit_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 <a href="hapus.php?type=wisata&id_wisata=<?=$rowitem->id_wisata?>" class="far fa-trash-alt btn btn-act"></a>
@@ -160,45 +160,45 @@ $row = $stmt->fetchAll();
 
                                     <div class="row  mb-3">
                                         <div class="col-md-3 kolom font-weight-bold">
-                                            Deskripsi Wisata
-                                        </div>
-                                        <div class="col isi">
-                                            <?=$rowitem->deskripsi_wisata?>
-                                        </div>
-                                    </div>
-
-                                    <div class="row  mb-3">
-                                        <div class="col-md-3 kolom font-weight-bold">
                                             Biaya Wisata
                                         </div>
+                                        <?php
+                                        $sqlviewpaket = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, nama_fasilitas, biaya_fasilitas 
+                                                            FROM tb_fasilitas_wisata 
+                                                            LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
+                                                            LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                                            WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                                            AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
+
+                                        $stmt = $pdo->prepare($sqlviewpaket);
+                                        $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                        $rowfasilitas = $stmt->fetchAll();
+
+                                        foreach ($rowfasilitas as $fasilitas) { ?>
                                         <div class="col isi">
-                                            Rp. <?=number_format($rowitem->biaya_wisata, 0)?>
+                                            Rp. <?=number_format($fasilitas->total_biaya_fasilitas, 0)?>
                                         </div>
+                                        <?php } ?>
                                     </div>
 
                                     <div class="row  mb-3">
                                         <div class="col-md-3 kolom font-weight-bold">
-                                            Paket donasi
+                                            Paket wisata
                                         </div>
+                                        <?php 
+                                        $sqlviewwisata = 'SELECT * FROM t_wisata
+                                                            LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                                            WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                                            AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
-                                        <?php /*
-                                        $sqlviewpaket = 'SELECT * FROM tb_paket_donasi
-                                                            LEFT JOIN t_wisata ON tb_paket_donasi.id_wisata = t_wisata.id_wisata
-                                                            WHERE t_wisata.id_wisata = :id_wisata
-                                                            AND t_wisata.id_wisata = tb_paket_donasi.id_wisata';
+                                        $stmt = $pdo->prepare($sqlviewwisata);
+                                        $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                        $rowwisata = $stmt->fetchAll();
 
-                                        $stmt = $pdo->prepare($sqlviewpaket);
-                                        $stmt->execute(['id_wisata' => $rowitem->id_wisata]);
-                                        $rowpersentase = $stmt->fetchAll();
-
-                                        foreach ($rowpersentase as $rowpaket) { */?>
+                                        foreach ($rowwisata as $wisata) { ?>
                                         <div class="col isi">
-                                            <span class="badge badge-pill badge-success mr-2">
-                                                <?=number_format($rowpaket->persentase_paket_donasi, 0)?>%
-                                            </span>
+                                            <?=$wisata->judul_wisata?>
                                         </div>
-                                        <?php //} ?>
-
                                     </div>
 
                                     <div class="row  mb-3">
@@ -206,8 +206,18 @@ $row = $stmt->fetchAll();
                                             Foto Wisata
                                         </div>
                                         <div class="col isi">
-                                            <img src="<?=$rowitem->foto_wisata?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
+                                            <img src="<?=$wisata->foto_wisata?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
                                         </div>
+                                    </div>
+
+                                    <div class="row  mb-3">
+                                        <div class="col-md-3 kolom font-weight-bold">
+                                            Status
+                                        </div>
+                                        <div class="col isi">
+                                            <?=$wisata->status_aktif?>
+                                        </div>
+                                        <?php } ?>
                                     </div>
 
                                 </div>
