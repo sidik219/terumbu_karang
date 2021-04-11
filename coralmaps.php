@@ -16,6 +16,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/b41ecad032.js" crossorigin="anonymous"></script>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <!--Leaflet panel layer CSS-->
+    <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
+    <!-- Leaflet Marker Cluster CSS -->
+    <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
+    <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
 </head>
 <body>
     <div class="informational">
@@ -90,7 +97,30 @@
                 <!-- END Navbar -->
             </div>
             <!-- END Navbar Container -->            
-
+            
+            <section id="benefit">
+                <div class="container">
+                    <div class="starter-title">
+                        <h1 class="mb-5">Coralmaps</h1><br>
+                    </div>
+                    <div class="row">
+                        <div>
+                            <label>Keterangan Icon:</label>
+                        </div>
+                        <div>
+                            <img src="images/foto_lokasi/icon_lokasi/icon_lokasi.png" style="width: 35px;">:
+                            <label>Lokasi Pantai </label>
+                            <img src="images/kumpulan_icon/cluster.png" style="width: 35px;">:
+                            <label>Pengelompokan Pantai Berdekatan </label>
+                            <img src="images/kumpulan_icon/geo_wilayah1.png" style="width: 35px;">:
+                            <label>Wilayah Aktif </label>
+                            <img src="images/kumpulan_icon/geo_wilayah2.png" style="width: 35px;">:
+                            <label>Wilayah Tidak Aktif </label>
+                        </div>
+                        <div id="mapid" style="height: 640px; width: 100%; margin-top: 20px;"></div>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
 
@@ -121,5 +151,15 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <!-- Leaflet Marker Cluster -->
+    <script src="dist/js/leaflet.markercluster-src.js"></script>
+    <!-- Leaflet panel layer JS-->
+    <script src="dist/js/leaflet-panel-layers.js"></script>
+    <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
+    <script src="dist/js/leaflet.ajax.js"></script>
+    <!-- Leaflet Map -->
+    <?php include 'dist/js/leaflet_map.php';?>
 </body>
 </html>
