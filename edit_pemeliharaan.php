@@ -487,7 +487,7 @@ function alertCabutLabel($dob, $slabel){
 
         <br><br>
         <footer class="main-footer">
-            <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
+            <?= $footer ?>
         </footer>
 
         <!-- Control Sidebar -->

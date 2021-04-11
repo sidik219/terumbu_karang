@@ -305,7 +305,7 @@ function ageCalculator($dob){
     <!-- /.content-wrapper -->
 
     <footer class="main-footer">
-        <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
+        <?= $footer ?>
     </footer>
 
     <!-- Control Sidebar -->

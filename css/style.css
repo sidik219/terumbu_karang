@@ -17,10 +17,12 @@
     .table th {
         border-top: none;
     }
+    /* Logo / branding */
     
     .brand-link {
         background-color: white;
-        font-family: LostFish;
+        font-family: DaysOne-Regular;
+        /* font-weight: 600; */
     }
     
     [class*=sidebar-dark] .brand-link {
@@ -385,6 +387,16 @@
     @font-face {
         font-family: LostFish;
         src: url(../webfonts/LostFish.ttf);
+    }
+    
+    @font-face {
+        font-family: DaysOne-Regular;
+        src: url(../webfonts/DaysOne-Regular.ttf);
+    }
+    
+    @font-face {
+        font-family: RussoOne-Regular;
+        src: url(../webfonts/RussoOne-Regular.ttf);
     }
     
     .blue-container,

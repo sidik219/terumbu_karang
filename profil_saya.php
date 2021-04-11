@@ -62,9 +62,7 @@ include 'hak_akses.php';
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
             <a href="index_admin.php" class="brand-link">
-                <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
-                <!-- BRAND TEXT (TOP) -->
-                <span class="brand-text font-weight-bold">TKJB</span>
+                <?= $logo_website ?>
             </a>
             <!-- END OF TOP SIDEBAR -->
 
@@ -199,7 +197,7 @@ include 'hak_akses.php';
     <!-- /.content-wrapper -->
 
     <footer class="main-footer">
-        <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
+        <?= $footer ?>
     </footer>
 
     <!-- Control Sidebar -->

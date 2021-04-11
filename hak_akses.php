@@ -8,6 +8,23 @@ if (!$_SESSION['level_user'])  { //Belum log in
 else{
   $level = $_SESSION['level_user'];
 
+  //Logo/branding
+  $file_gambar_logo = 'dist/img/gokarang_coral_purple.png';
+
+  $logo_website = '<img src="'.$file_gambar_logo.'"  class="brand-image">
+                <!-- BRAND TEXT (TOP) -->
+                <span class="brand-text"><span class="text-orange">Go</span><span>Karang<span></span>';
+
+  //Format logo lama
+  // $logo_website = '<img src="'.$file_gambar_logo.'"  class="brand-image img-circle elevation-3" style="opacity: .8">
+  //               <!-- BRAND TEXT (TOP) -->
+  //               <span class="brand-text font-weight-bold">GoKarang</span>';
+
+  //Footer dinamis
+  $tahun = date("Y");
+  $footer = "<strong>Copyright &copy; $tahun </strong> GoKarang";
+
+
   function cek_url_aktif($nav_url, $nama_file_php){
     if($nav_url == $nama_file_php){
       echo ' active';
@@ -32,13 +49,19 @@ else{
                         <p> Kelola Organisasi</p>
                     </a>
                 </li> -->
+                <li class="nav-item"> <!-- Pusat -->
+                              <a href="kelola_rekening_bersama.php" class="nav-link '.('kelola_rekening_bersama.php' == $url_sekarang ? ' active ' : '').' ">
+                                  <i class="nav-icon fas fa-money-check-alt"></i>
+                                  <p> Kelola Rekening Bersama</p>
+                              </a>
+                </li>
 
                 <li class="nav-item"> <!-- Wilayah -->
                               <a href="kelola_wilayah.php" class="nav-link '.('kelola_wilayah.php' == $url_sekarang || ('edit_wilayah.php'  == $url_sekarang) || ('input_wilayah.php'  == $url_sekarang) ? ' active ' : '').' ">
                                   <i class="nav-icon fas fa-globe-asia"></i>
                                   <p> Kelola Wilayah </p>
                               </a>
-                          </li>
+                </li>
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                     <a href="kelola_lokasi.php" class="nav-link '.('kelola_lokasi.php' == $url_sekarang  || ('edit_lokasi.php'  == $url_sekarang) || ('input_lokasi.php'  == $url_sekarang) || ('kelola_harga_terumbu.php'  == $url_sekarang) ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>

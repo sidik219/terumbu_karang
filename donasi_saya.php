@@ -84,9 +84,7 @@ function ageCalculator($dob){
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
             <a href="dashboard_user.php" class="brand-link">
-                <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
-                <!-- BRAND TEXT (TOP) -->
-                <span class="brand-text font-weight-bold">TKJB</span>
+                <?= $logo_website ?>
             </a>
             <!-- END OF TOP SIDEBAR -->
 
@@ -383,7 +381,7 @@ function ageCalculator($dob){
    </div>
 
     <footer class="main-footer">
-        <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
+        <?= $footer ?>
     </footer>
 
     <!-- Control Sidebar -->
