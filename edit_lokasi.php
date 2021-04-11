@@ -11,13 +11,31 @@ include 'hak_akses.php';
     $id_lokasi = $_GET['id_lokasi'];
     $defaultpic = "images/image_default.jpg";
 
+    $level_user = $_SESSION['level_user'];
+
+if($level_user == 2){
+  $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+  $extra_query = " AND t_wilayah.id_wilayah = $id_wilayah ";
+  $extra_query_noand = " t_wilayah.id_wilayah = $id_wilayah ";
+  $extra_query_where = " WHERE t_wilayah.id_wilayah = $id_wilayah ";
+  $wilayah_join = " LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
+                    LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
+  $extra_query_k_lok = " AND t_lokasi.id_wilayah = $id_wilayah ";
+}
+else if($level_user == 4){
+  $extra_query = "  ";
+  $extra_query_noand = "  ";
+  $wilayah_join = " ";
+  $extra_query_k_lok = " ";
+}
+
     $sqlviewlokasi = 'SELECT * FROM t_lokasi
     LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah WHERE id_lokasi = :id_lokasi';
     $stmt = $pdo->prepare($sqlviewlokasi);
     $stmt->execute(['id_lokasi' => $id_lokasi]);
     $row = $stmt->fetch();
 
-    $sqlviewwilayah = 'SELECT * FROM t_wilayah
+    $sqlviewwilayah = 'SELECT * FROM t_wilayah '.$extra_query_where.'
                         ORDER BY nama_wilayah';
         $stmt = $pdo->prepare($sqlviewwilayah);
         $stmt->execute();
@@ -36,7 +54,7 @@ include 'hak_akses.php';
             $nama_lokasi        = $_POST['tb_nama_lokasi'];
             $luas_lokasi        = $_POST['num_luas_lokasi'];
             $deskripsi_lokasi     = $_POST['tb_deskripsi_lokasi'];
-            $id_user_pengelola     = $_POST['tb_id_pengelola'];
+            $id_user_pengelola     = 1;
             $kontak_lokasi     = $_POST['num_kontak_lokasi'];
             $nama_bank     = $_POST['tb_nama_bank'];
             $nama_rekening     = $_POST['tb_nama_rekening'];
@@ -221,16 +239,7 @@ include 'hak_akses.php';
                         <label for="tb_deskripsi_lokasi">Deskripsi</label>
                         <input type="text" value="<?=$row->deskripsi_lokasi?>"  id="tb_deskripsi_lokasi" name="tb_deskripsi_lokasi" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label for="dd_id_wilayah">User Pengelola Lokasi</label>
-                        <select id="dd_id_wilayah" name="tb_id_pengelola" class="form-control" required>
-                            <?php foreach ($rowpengelola as $rowitem) {
-                            ?>
-                            <option <?php if($row->id_user_pengelola == $rowitem->id_user) echo ' selected ' ?> value="<?=$rowitem->id_user?>">ID <?=$rowitem->id_user?> - <?=$rowitem->nama_user?> - <?=$rowitem->organisasi_user?></option>
 
-                            <?php } ?>
-                        </select>
-                    </div>
                     <div class="form-group">
                         <label for="num_kontak_lokasi">Kontak Lokasi</label>
                         <input type="number" value="<?=$row->kontak_lokasi?>"  id="num_kontak_lokasi" name="num_kontak_lokasi" class="form-control number-input">

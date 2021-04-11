@@ -6,9 +6,19 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
+$level_user = $_SESSION['level_user'];
+if($level_user == 2){
+  $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+  $extra_query_k_perizinan = " WHERE t_lokasi.id_wilayah = $id_wilayah ";
+}
+else if($level_user == 4){
+  $extra_query_k_perizinan = "  ";
+}
+
+
 $sqlviewperizinan = 'SELECT * FROM t_perizinan
                       LEFT JOIN t_lokasi ON t_perizinan.id_lokasi = t_lokasi.id_lokasi
-                      LEFT JOIN t_status_perizinan ON t_perizinan.id_status_perizinan = t_status_perizinan.id_status_perizinan
+                      LEFT JOIN t_status_perizinan ON t_perizinan.id_status_perizinan = t_status_perizinan.id_status_perizinan '.$extra_query_k_perizinan.'
                 ORDER BY id_perizinan DESC';
 $stmt = $pdo->prepare($sqlviewperizinan);
 $stmt->execute();

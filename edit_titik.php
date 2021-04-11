@@ -9,13 +9,34 @@ include 'hak_akses.php';
 
     $id_titik = $_GET['id_titik'];
 
-    $sqlviewlokasi = 'SELECT * FROM t_lokasi
+    $level_user = $_SESSION['level_user'];
+
+if($level_user == 2){
+  $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+  $extra_query = " AND t_wilayah.id_wilayah = $id_wilayah ";
+  $extra_query_noand = " t_wilayah.id_wilayah = $id_wilayah ";
+  $wilayah_join = " LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
+                    LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
+  $extra_query_k_lok = " AND t_lokasi.id_wilayah = $id_wilayah ";
+  $extra_query_where = "WHERE t_wilayah.id_wilayah = $id_wilayah ";
+  $extra_query_where_lok = "WHERE t_lokasi.id_wilayah = $id_wilayah ";
+}
+else if($level_user == 4){
+  $extra_query = "  ";
+  $extra_query_noand = "  ";
+  $wilayah_join = " ";
+  $extra_query_k_lok = " ";
+  $extra_query_where = " ";
+  $extra_query_where_lok = " ";
+}
+
+    $sqlviewlokasi = 'SELECT * FROM t_lokasi '.$extra_query_where_lok.'
                         ORDER BY nama_lokasi';
         $stmt = $pdo->prepare($sqlviewlokasi);
         $stmt->execute();
         $rowlokasi = $stmt->fetchAll();
 
-        $sqlviewwilayah = 'SELECT * FROM t_wilayah
+        $sqlviewwilayah = 'SELECT * FROM t_wilayah  '.$extra_query_where.'
                         ORDER BY nama_wilayah';
         $stmt = $pdo->prepare($sqlviewwilayah);
         $stmt->execute();
@@ -165,7 +186,7 @@ include 'hak_akses.php';
                             </div>
                           <?php } ?>
                     </div>
-                        <label for="dd_id_wilayah">ID Wilayah</label>
+                        <label for="dd_id_wilayah">Wilayah</label>
                         <select id="dd_id_wilayah" name="dd_id_wilayah" class="form-control" onChange="loadLokasi(this.value);" required>
                             <?php foreach ($rowwilayah as $rowitem) {
                             ?>
@@ -176,7 +197,7 @@ include 'hak_akses.php';
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="dd_id_lokasi">ID Lokasi</label>
+                        <label for="dd_id_lokasi">Lokasi</label>
                         <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" required>
                             <?php foreach ($rowlokasi as $rowitem) {
                             ?>
@@ -185,6 +206,10 @@ include 'hak_akses.php';
 
                             <?php } ?>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Luas Titik (ha)</label>
+                        <input type="number" value="<?=$row->luas_titik?>" name="tbluas_titik" class="form-control" id="#">
                     </div>
                     <label for="tblongitude">Koordinat Titik</label>
                     <div class="col-12 border rounded p-3 bg-light mb-2">
@@ -201,11 +226,8 @@ include 'hak_akses.php';
                     <span class="text-muted small"> (Perlu izin browser)</span>
                     </div>
 
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Luas Titik (ha)</label>
-                        <input type="number" value="<?=$row->luas_titik?>" name="tbluas_titik" class="form-control" id="#">
-                    </div>
-                    <div class="form-group">
+
+                    <div class="form-group d-none">
                         <label for="rb_status_wisata">Kondisi</label><br>
                             <div class="form-check form-check-inline">
                                 <input type="radio" id="rb_kondisi_kurang" name="rb_kondisi_titik" value="Kurang" class="form-check-input"<?php if ($row->kondisi_titik == "Kurang"){echo " checked";} ?>>

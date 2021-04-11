@@ -3,7 +3,28 @@ session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-    $sqlviewlokasi = 'SELECT * FROM t_lokasi
+$level_user = $_SESSION['level_user'];
+
+if($level_user == 2){
+  $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+  $extra_query = " AND t_wilayah.id_wilayah = $id_wilayah ";
+  $extra_query_noand = " t_wilayah.id_wilayah = $id_wilayah ";
+  $wilayah_join = " LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
+                    LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
+  $extra_query_k_lok = " AND t_lokasi.id_wilayah = $id_wilayah ";
+  $extra_query_where = "WHERE t_wilayah.id_wilayah = $id_wilayah ";
+  $extra_query_where_lok = "WHERE t_lokasi.id_wilayah = $id_wilayah ";
+}
+else if($level_user == 4){
+  $extra_query = "  ";
+  $extra_query_noand = "  ";
+  $wilayah_join = " ";
+  $extra_query_k_lok = " ";
+  $extra_query_where = " ";
+  $extra_query_where_lok = " ";
+}
+
+    $sqlviewlokasi = 'SELECT * FROM t_lokasi '.$extra_query_where_lok.'
                         ORDER BY nama_lokasi';
         $stmt = $pdo->prepare($sqlviewlokasi);
         $stmt->execute();
