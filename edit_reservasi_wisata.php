@@ -11,10 +11,10 @@ include 'hak_akses.php';
     $update_terakhir = date ('Y-m-d H:i:s', time());
     $status_reservasi_wisata = "Menunggu Konfirmasi Pembayaran";
 
-    $sql = 'SELECT * FROM t_reservasi_wisata, t_user, t_lokasi, t_wisata
+    $sql = 'SELECT * FROM t_reservasi_wisata, t_user, t_lokasi, tb_paket_wisata
     WHERE id_reservasi = :id_reservasi
     AND t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
-    AND t_reservasi_wisata.id_wisata = t_wisata.id_wisata';
+    AND t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata';
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['id_reservasi' => $id_reservasi]);

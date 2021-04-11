@@ -46,9 +46,33 @@ function ageCalculator($dob){
 
 //Load lokasi
 if ($_POST['type'] == 'load_lokasi' && !empty($_POST["id_wilayah"])) {
+  $level_user = $_SESSION['level_user'];
+
+if($level_user == 2){
+  $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+  $extra_query = " AND t_wilayah.id_wilayah = $id_wilayah ";
+  $extra_query_noand = " t_wilayah.id_wilayah = $id_wilayah ";
+  $wilayah_join = " LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
+                    LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
+  $extra_query_k_lok = " AND t_lokasi.id_wilayah = $id_wilayah ";
+  $extra_query_where = " WHERE t_wilayah.id_wilayah = $id_wilayah ";
+}
+else if($level_user == 4){
+  $extra_query = "  ";
+  $extra_query_noand = "  ";
+  $wilayah_join = " ";
+  $extra_query_k_lok = " ";
+  $extra_query_where = " ";
+}
+else if($level_user == 3){
+  $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+  $extra_query_where_lok = "LEFT JOIN t_lokasi ON t_lokasi.id_wilayah = t_wilayah.id_wilayah WHERE t_lokasi.id_lokasi = $id_lokasi ";
+  $extra_query_where = " WHERE t_lokasi.id_lokasi = $id_lokasi ";
+  $extra_query = " AND t_lokasi.id_lokasi = $id_lokasi ";
+}
     $id_wilayah = $_POST["id_wilayah"];
     $daftarlokasi = 'SELECT * FROM t_lokasi
-                      WHERE id_wilayah = :id_wilayah
+                      WHERE id_wilayah = :id_wilayah '.$extra_query.'
                         ORDER BY nama_lokasi';
         $stmt = $pdo->prepare($daftarlokasi);
         $stmt->execute(['id_wilayah' => $id_wilayah]);

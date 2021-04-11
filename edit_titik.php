@@ -29,6 +29,11 @@ else if($level_user == 4){
   $extra_query_where = " ";
   $extra_query_where_lok = " ";
 }
+else if($level_user == 3){
+  $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+  $extra_query_where_lok = "WHERE t_lokasi.id_lokasi = $id_lokasi ";
+  $extra_query_where = " LEFT JOIN t_lokasi ON t_lokasi.id_wilayah = t_wilayah.id_wilayah WHERE t_lokasi.id_lokasi = $id_lokasi ";
+}
 
     $sqlviewlokasi = 'SELECT * FROM t_lokasi '.$extra_query_where_lok.'
                         ORDER BY nama_lokasi';

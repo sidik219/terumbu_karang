@@ -46,7 +46,7 @@ if(isset($_GET['id_status_reservasi_wisata'])){
                   LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                   LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-                  LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
+                  LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                   WHERE t_reservasi_wisata.id_status_reservasi_wisata = 1 '.$extra_query_k_lok.'
                   ORDER BY id_reservasi DESC';
   }
@@ -55,7 +55,7 @@ if(isset($_GET['id_status_reservasi_wisata'])){
                   LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                   LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-                  LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
+                  LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                   WHERE t_reservasi_wisata.id_status_reservasi_wisata = 3 '.$extra_query_k_lok.'
                   ORDER BY id_reservasi DESC';
   }
@@ -68,7 +68,7 @@ else{//reservasi umum
                   LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                   LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-                  LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata '.$extra_query_noand_where_k_reservasi.'
+                  LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata '.$extra_query_noand_where_k_reservasi.'
                   ORDER BY id_reservasi DESC';
     $stmt = $pdo->prepare($sqlviewreservasi);
     $stmt->execute();

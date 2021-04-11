@@ -15,7 +15,8 @@ if($level_user == 2){
   $wilayah_join = " LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
                     LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
   $extra_query_k_lok = " AND t_lokasi.id_wilayah = $id_wilayah ";
-  $extra_query_where = "WHERE t_wilayah.id_wilayah = $id_wilayah ";
+  $extra_query_where = " WHERE t_lokasi.id_wilayah = $id_wilayah ";
+  $extra_query_where_lok = " WHERE id_wilayah = $id_wilayah ";
 }
 else if($level_user == 4){
   $extra_query = "  ";
@@ -23,15 +24,21 @@ else if($level_user == 4){
   $wilayah_join = " ";
   $extra_query_k_lok = " ";
   $extra_query_where = " ";
+  $extra_query_where_lok = " ";
+}
+else if($level_user == 3){
+  $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+  $extra_query_where_lok = "LEFT JOIN t_lokasi ON t_lokasi.id_wilayah = t_wilayah.id_wilayah WHERE t_lokasi.id_lokasi = $id_lokasi ";
+  $extra_query_where = " WHERE t_lokasi.id_lokasi = $id_lokasi ";
 }
 
-    $sqlviewlokasi = 'SELECT * FROM t_lokasi
+    $sqlviewlokasi = 'SELECT * FROM t_lokasi '.$extra_query_where.'
                         ORDER BY nama_lokasi';
         $stmt = $pdo->prepare($sqlviewlokasi);
         $stmt->execute();
         $rowlokasi = $stmt->fetchAll();
 
-        $sqlviewwilayah = 'SELECT * FROM t_wilayah '.$extra_query_where.'
+        $sqlviewwilayah = 'SELECT * FROM t_wilayah '.$extra_query_where_lok.'
                         ORDER BY nama_wilayah';
         $stmt = $pdo->prepare($sqlviewwilayah);
         $stmt->execute();
