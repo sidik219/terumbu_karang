@@ -14,10 +14,10 @@ include 'hak_akses.php';
         header("Location: map.php?aksi=wisata");
     }
 
-    $sqldetailpaket = 'SELECT * FROM tb_detail_paket_wisata
-                LEFT JOIN tb_paket_wisata ON tb_detail_paket_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                LEFT JOIN t_lokasi ON tb_detail_paket_wisata.id_lokasi = t_lokasi.id_lokasi
-                WHERE tb_detail_paket_wisata.id_lokasi = :id_lokasi';
+    $sqldetailpaket = 'SELECT * FROM t_wisata
+                LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
+                WHERE t_wisata.id_lokasi = :id_lokasi';
 
     $stmt = $pdo->prepare($sqldetailpaket);
     $stmt->execute(['id_lokasi' => $_GET['id_lokasi']]);
@@ -129,30 +129,18 @@ include 'hak_akses.php';
 
                                     <h5 style="text-align: left;"> Paket Wisata :</h5>
                                     <p class="card-text font-weight-bold" style="text-align: left;">
-                                        <?php
-                                        $sqlviewwisata = 'SELECT * FROM t_wisata
-                                                            LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                                                            WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
-                                                            AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
-
-                                        $stmt = $pdo->prepare($sqlviewwisata);
-                                        $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                                        $rowwisata = $stmt->fetchAll();
-
-                                        foreach ($rowwisata as $wisata) { ?>
                                         <div class="divTable">
                                             <div class="divTableBody">
                                                 <div class="divTableRow">
                                                     <div class="divTableCell-1">
                                                         <i class="text-info fas fa-arrow-circle-right"></i>                             
-                                                        <?=$wisata->judul_wisata?>
+                                                        <?=$rowitem->judul_wisata?>
                                                     </div>
                                                     <div class="divTableCell-2">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php } ?></p>
 
                                     <h5 style="text-align: left;"> Total Paket Wisata :</h5>
                                     <h4 class="card-text font-weight-bold" style="text-align: left;">

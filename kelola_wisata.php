@@ -29,6 +29,7 @@ else if($level_user == 4){
 }
 
 $sqlviewwisata = 'SELECT * FROM t_wisata
+                  LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                   LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi '.$join_wilayah.'
                   WHERE  '.$extra_query_noand.'
                   ORDER BY id_wisata DESC';
@@ -125,9 +126,9 @@ $row = $stmt->fetchAll();
                      <table class="table table-striped table-responsive-sm">
                      <thead>
                             <tr>
-                            <th scope="col">ID Wisata</th>
+                            <th scope="col">ID Paket Wisata</th>
                             <th scope="col">ID Lokasi</th>
-                            <th scope="col">Judul Wisata</th>
+                            <th scope="col">Nama Paket Wisata</th>
                             <th scope="col">Deskripsi Wisata</th>
                             <th scope="col">Aksi</th>
                             </tr>
@@ -135,9 +136,9 @@ $row = $stmt->fetchAll();
                           <tbody>
                           <?php foreach ($row as $rowitem) { ?>
                             <tr>
-                              <th scope="row"><?=$rowitem->id_wisata?></th>
+                              <th scope="row"><?=$rowitem->id_paket_wisata?></th>
                               <td><?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></td>
-                              <td><?=$rowitem->judul_wisata?></td>
+                              <td><?=$rowitem->nama_paket_wisata?></td>
                               <td><?=$rowitem->deskripsi_wisata?></td>
                               <td>
                                 <a href="edit_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" class="fas fa-edit mr-3 btn btn-act"></a>
@@ -160,6 +161,33 @@ $row = $stmt->fetchAll();
 
                                     <div class="row  mb-3">
                                         <div class="col-md-3 kolom font-weight-bold">
+                                            Deskripsi Lengkap
+                                        </div>
+                                        <div class="col isi">
+                                            <?=$rowitem->deskripsi_panjang_wisata?>
+                                        </div>
+                                    </div>
+
+                                    <div class="row  mb-3">
+                                        <div class="col-md-3 kolom font-weight-bold">
+                                            Foto Wisata
+                                        </div>
+                                        <div class="col isi">
+                                            <img src="<?=$rowitem->foto_wisata?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
+                                        </div>
+                                    </div>
+
+                                    <div class="row  mb-3">
+                                        <div class="col-md-3 kolom font-weight-bold">
+                                            wisata
+                                        </div>
+                                        <div class="col isi">
+                                            <?=$rowitem->judul_wisata?>
+                                        </div>
+                                    </div>
+
+                                    <div class="row  mb-3">
+                                        <div class="col-md-3 kolom font-weight-bold">
                                             Biaya Wisata
                                         </div>
                                         <?php
@@ -178,36 +206,30 @@ $row = $stmt->fetchAll();
                                         <div class="col isi">
                                             Rp. <?=number_format($fasilitas->total_biaya_fasilitas, 0)?>
                                         </div>
+                                    </div>
+
+                                    <div class="row  mb-3">
+                                        <div class="col-md-3 kolom font-weight-bold">
+                                            Fasilitas Wisata
+                                        </div>
+                                        <div class="col isi">
+                                            <?php
+                                            $sqlviewpaket = 'SELECT * FROM tb_fasilitas_wisata 
+                                                                LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
+                                                                LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                                                WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                                                AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
+
+                                            $stmt = $pdo->prepare($sqlviewpaket);
+                                            $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                            $rowfasilitas = $stmt->fetchAll();
+
+                                            foreach ($rowfasilitas as $fasilitas) { ?>
+                                            <i class="text-info fas fa-arrow-circle-right"></i>
+                                            <?=$fasilitas->nama_fasilitas?><br>
+                                            <?php } ?>
+                                        </div>
                                         <?php } ?>
-                                    </div>
-
-                                    <div class="row  mb-3">
-                                        <div class="col-md-3 kolom font-weight-bold">
-                                            Paket wisata
-                                        </div>
-                                        <?php 
-                                        $sqlviewwisata = 'SELECT * FROM t_wisata
-                                                            LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                                                            WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
-                                                            AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
-
-                                        $stmt = $pdo->prepare($sqlviewwisata);
-                                        $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                                        $rowwisata = $stmt->fetchAll();
-
-                                        foreach ($rowwisata as $wisata) { ?>
-                                        <div class="col isi">
-                                            <?=$wisata->judul_wisata?>
-                                        </div>
-                                    </div>
-
-                                    <div class="row  mb-3">
-                                        <div class="col-md-3 kolom font-weight-bold">
-                                            Foto Wisata
-                                        </div>
-                                        <div class="col isi">
-                                            <img src="<?=$wisata->foto_wisata?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
-                                        </div>
                                     </div>
 
                                     <div class="row  mb-3">
@@ -215,9 +237,8 @@ $row = $stmt->fetchAll();
                                             Status
                                         </div>
                                         <div class="col isi">
-                                            <?=$wisata->status_aktif?>
+                                            <?=$rowitem->status_aktif?>
                                         </div>
-                                        <?php } ?>
                                     </div>
 
                                 </div>

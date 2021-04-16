@@ -9,9 +9,9 @@ include 'hak_akses.php';
 
     $id_paket_wisata = $_GET['id_paket_wisata'];
 
-    $sqldetailpaket = 'SELECT * FROM tb_detail_paket_wisata
-                LEFT JOIN tb_paket_wisata ON tb_detail_paket_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                LEFT JOIN t_lokasi ON tb_detail_paket_wisata.id_lokasi = t_lokasi.id_lokasi
+    $sqldetailpaket = 'SELECT * FROM t_wisata
+                LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
                 WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
 
     $stmt = $pdo->prepare($sqldetailpaket);
@@ -105,9 +105,9 @@ include 'hak_akses.php';
                     <?php
                      //$index = 0;
                         foreach ($rowwisata as $rowitem) { ?>
-                          <div class="row card-donasi p-2 m-0">
+                        <div class="row card-donasi p-2 m-0">
                             <div class="col-6 text-center">
-                              <img class="w-50" src="<?=$rowitem->foto_wisata?>">
+                                <img class="w-50" src="<?=$rowitem->foto_wisata?>">
                             </div>
                             <div class="col">
                                 <div class="row p-2">
@@ -124,32 +124,19 @@ include 'hak_akses.php';
 
                                 <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-info fas fa-luggage-cart"></i>
-                                    <label>Paket Wisata:</label><br>
-                                <?php
-                                    $sqlviewpaket = 'SELECT * FROM t_wisata
-                                                        LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
-                                                        LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                                                        WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
-                                                        AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
-
-                                    $stmt = $pdo->prepare($sqlviewpaket);
-                                    $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                                    $rowpaket = $stmt->fetchAll();
-
-                                    foreach ($rowpaket as $paket) { ?>
+                                    <label>Paket Wisata:</label>
                                     <div class="divTable">
                                         <div class="divTableBody">
                                             <div class="divTableRow">
                                                 <div class="divTableCell-1">
                                                     <i class="text-info fas fa-arrow-circle-right"></i>                             
-                                                    <?=$paket->judul_wisata?>
+                                                    <?=$rowitem->judul_wisata?>
                                                 </div>
                                                 <div class="divTableCell-2">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                <?php } ?></p>
                                 </p></div>
 
                                 <?php
@@ -166,6 +153,36 @@ include 'hak_akses.php';
 
                                 foreach ($rowfasilitas as $fasilitas) { ?>
                                 <div class="row p-2 border-bottom"><p class="">
+                                    <i class="text-info fas fa-cubes"></i>
+                                    <label>Fasilitas Wisata:</label>
+                                    <div class="divTable">
+                                        <div class="divTableBody">
+                                            <div class="divTableRow">
+                                                <div class="divTableCell-1">
+                                                    <?php
+                                                    $sqlviewfasilitas = 'SELECT * FROM tb_fasilitas_wisata 
+                                                                        LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
+                                                                        LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                                                        WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                                                        AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
+
+                                                    $stmt = $pdo->prepare($sqlviewfasilitas);
+                                                    $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                                    $rowfasilitas = $stmt->fetchAll();
+
+                                                    foreach ($rowfasilitas as $allfasilitas) { ?> 
+                                                    <i class="text-info fas fa-arrow-circle-right"></i>                 
+                                                    <?=$allfasilitas->nama_fasilitas?><br>
+                                                    <?php } ?>
+                                                </div>
+                                                <div class="divTableCell-2">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </p></div>
+
+                                <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-success fas fa-money-bill-wave"></i>
                                     <b>Total Paket Wisata:</b><br> Rp. <?=number_format($fasilitas->total_biaya_fasilitas, 0)?>
                                 </p></div>
@@ -179,24 +196,20 @@ include 'hak_akses.php';
                                 href="reservasi_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>_&status=review_reservasi" style="color: white;">Wisata Sekarang</a></div>
 
                             </div>
-                          </div>
-
-
-
-                        <div class="row mt-0">
-                          <div class="col p-3 shadow rounded"><b class="text-lg"><i class="text-primary nav-icon fas fa-info-circle"></i> Tentang Paket Wisata ini</b><br>
-                          <?php
-                            if($rowitem->deskripsi_panjang_wisata == NULL){
-                              echo "<span class='text-muted mt-3'>Informasi tidak tersedia</span>";
-                            }
-                            else{
-                               echo $rowitem->deskripsi_panjang_wisata;
-                            }
-                          ?>
-                          </div>
                         </div>
 
-
+                        <div class="row mt-0">
+                            <div class="col p-3 shadow rounded"><b class="text-lg"><i class="text-primary nav-icon fas fa-info-circle"></i> Tentang Paket Wisata ini</b><br>
+                            <?php
+                                if($rowitem->deskripsi_panjang_wisata == NULL){
+                                echo "<span class='text-muted mt-3'>Informasi tidak tersedia</span>";
+                                }
+                                else{
+                                echo $rowitem->deskripsi_panjang_wisata;
+                                }
+                            ?>
+                            </div>
+                        </div>
                     <?php  } ?>
                 </div>
             <?php } ?>

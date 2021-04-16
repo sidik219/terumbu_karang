@@ -8,9 +8,14 @@ include 'hak_akses.php';
     $id_status_reservasi_wisata = 1;
     $keterangan = '-';
 
-    $sqldetailpaket = 'SELECT * FROM tb_detail_paket_wisata
-                LEFT JOIN tb_paket_wisata ON tb_detail_paket_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                LEFT JOIN t_lokasi ON tb_detail_paket_wisata.id_lokasi = t_lokasi.id_lokasi
+    $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank';
+    $stmt = $pdo->prepare($sqlviewrekeningbersama);
+    $stmt->execute();
+    $rowrekening = $stmt->fetch();
+    
+    $sqldetailpaket = 'SELECT * FROM t_wisata
+                LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
                 WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
 
     $stmt = $pdo->prepare($sqldetailpaket);
@@ -326,26 +331,38 @@ include 'hak_akses.php';
                         <?=$rowitem->nama_paket_wisata?></h5>
                     </div>
                 </div><p>
-                
-                <?php
-                $sqlviewpaket = 'SELECT * FROM t_wisata
-                                    LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
+                <div class="row">
+                    <div class="col">
+                        <span class="font-weight-bold">
+                        <i class="text-info fas fa-arrow-circle-right"></i> <?=$rowitem->judul_wisata?></span>
+                    </div>
+                </div><p>
+                <div class="row">
+                    <div class="col">
+                        <h5><span class="font-weight-bold">
+                        Fasilitas Wisata</h5>
+                    </div>
+                </div><p>
+                <div class="row">
+                    <div class="col">
+                    <?php
+                    $sqlviewpaket = 'SELECT * FROM tb_fasilitas_wisata 
+                                    LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
                                     LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                                     WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
                                     AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
-                $stmt = $pdo->prepare($sqlviewpaket);
-                $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                $rowpaket = $stmt->fetchAll();
+                    $stmt = $pdo->prepare($sqlviewpaket);
+                    $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                    $rowfasilitas = $stmt->fetchAll();
 
-                foreach ($rowpaket as $paket) { ?>
-                <div class="row">
-                    <div class="col">
+                    foreach ($rowfasilitas as $allfasilitas) { ?>
                         <span class="font-weight-bold">
-                        <i class="text-info fas fa-arrow-circle-right"></i> <?=$paket->judul_wisata?></span>
+                        <i class="text-info fas fa-arrow-circle-right"></i> <?=$allfasilitas->nama_fasilitas?></span><br>
+                    <?php } ?>
                     </div>
-                </div>
-                <?php } ?>
+                </div><p>
+
                 <hr class="mb-2"/>
                 <?php
                 $sqlviewpaket = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, nama_fasilitas, biaya_fasilitas 
@@ -357,9 +374,9 @@ include 'hak_akses.php';
 
                 $stmt = $pdo->prepare($sqlviewpaket);
                 $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                $rowpaket = $stmt->fetchAll();
+                $rowfasilitas = $stmt->fetchAll();
 
-                foreach ($rowpaket as $paket) { ?>
+                foreach ($rowfasilitas as $fasilitas) { ?>
                 <div class="row">
                     <div class="col">
                         <span class="font-weight-bold">
@@ -368,8 +385,8 @@ include 'hak_akses.php';
                     <div class="col-lg-8  mb-2">
                         <span class="">
                         <i class="text-success fas fa-money-bill-wave"></i>
-                        <input type="hidden" id="total_paket_wisata" value="<?=$paket->total_biaya_fasilitas?>">
-                        Rp. <input value="<?=number_format($paket->total_biaya_fasilitas, 0)?>" class="paket-wisata" disabled></span>
+                        <input type="hidden" id="total_paket_wisata" value="<?=$fasilitas->total_biaya_fasilitas?>">
+                        Rp. <input value="<?=number_format($fasilitas->total_biaya_fasilitas, 0)?>" class="paket-wisata" disabled></span>
                     </div>
                 </div>
                 <?php } ?>
@@ -399,7 +416,8 @@ include 'hak_akses.php';
                         </div>
                         <div class="mb-3">
                             <!-- Pesan/Ekspresi -->
-                            <label>Pesan/Ekspresi di Terumbu Karang</label>
+                            <label>Pesan/Ekspresi di Terumbu Karang, 
+                                <small style="color: red;">Isi jika melakukan donasi</small></label>
                             <input type="text" id="pesan" name="pesan" class="form-control">
                         </div>
                     </div>
@@ -420,20 +438,13 @@ include 'hak_akses.php';
                     </div>
                 </div>
                 <hr class="mb-2"/>
-                <?php
-                $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank';
-                $stmt = $pdo->prepare($sqlviewrekeningbersama);
-                $stmt->execute();
-                $rowrekening = $stmt->fetchAll(); 
-
-                foreach ($rowrekening as $rekening) { ?>
                 <div class="row">
                     <div class="col">
                         <span class="font-weight-bold">
                         <i class="fas fa-user-tie"></i> Nama Rekening Pengelola</span>
                     </div>
                     <div class="col-lg-6 mb-2">
-                        <span class=""><?=$rekening->nama_pemilik_rekening?></span>
+                        <span class=""><?=$rowrekening->nama_pemilik_rekening?></span>
                     </div>
                 </div>
                 <div class="row">
@@ -442,7 +453,7 @@ include 'hak_akses.php';
                         <i class="text-warning fas fa-university"></i> Nomor Rekening Pengelola</span>
                     </div>
                     <div class="col-lg-6  mb-2">
-                        <span class=""><?=$rekening->nomor_rekening?></span>
+                        <span class=""><?=$rowrekening->nomor_rekening?></span>
                     </div>
                 </div>
                 <div class="row mb-2">
@@ -451,10 +462,9 @@ include 'hak_akses.php';
                         <i class="text-info fas fa-hashtag"></i> Bank Pengelola</span>
                     </div>
                     <div class="col-lg-6  mb-2">
-                        <span class=""><?=$rekening->nama_bank?></span>
+                        <span class=""><?=$rowrekening->nama_bank?></span>
                     </div>
                 </div>
-                <?php } ?>
                 <button type="submit" name="submit" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4">Buat Reservasi Wisata</button>
             <?php } ?>
           </form>
