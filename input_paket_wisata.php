@@ -53,8 +53,9 @@ if (isset($_POST['submit'])) {
             $id_paket_wisata   = $last_paket_wisata_id; //tb_paket_wisata
             $id_wisata         = $_POST['nama_paket'][$i]; //t_wisata
 
-            $sqlinsertdetailpaket = "INSERT INTO tb_detail_paket_wisata (id_paket_wisata, id_wisata)
-                                        VALUES (:id_paket_wisata, :id_wisata)";
+            $sqlinsertdetailpaket = "UPDATE t_wisata
+                                        SET id_paket_wisata = :id_paket_wisata
+                                        WHERE id_wisata = :id_wisata";
 
             $stmt = $pdo->prepare($sqlinsertdetailpaket);
             $stmt->execute(['id_paket_wisata' => $id_paket_wisata,
