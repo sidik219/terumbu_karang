@@ -64,7 +64,7 @@
     .btn-submit-paket,
     .btn-lg-paket,
     .btn-paket {
-        border-radius: 40px;
+        border-radius: .25rem;
         background-image: url('../images/yellowbtnbg.jpg');
         background-repeat: no-repeat;
         background-size: cover;

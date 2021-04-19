@@ -125,8 +125,7 @@ include 'hak_akses.php';
                                     <div>
                                         <div class="card card-body" style="text-align: left;">
                                             <ol style="margin-left: 1rem;">
-                                                <li>
-                                                <?=$rowitem->judul_wisata?></li>
+                                                <li><?=$rowitem->judul_wisata?></li>
                                             </ol>
                                         </div>
                                         <div class="card card-body">

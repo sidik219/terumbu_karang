@@ -283,7 +283,8 @@ include 'hak_akses.php';
                 <div class="card" style="width: 20.5rem;">
                     <ul class="list-group list-group-flush">
                         <label class="list-group-item card-reservasi">Total : </label>
-                        <input type="text" id="total" name="total" value="" class="list-group-item" style="color: gray;" readonly>
+                        <input type="hidden" id="total" name="total" value="" class="list-group-item" style="color: gray;" readonly>
+                        <input type="text" id="total_reservasi" name="total_reservasi" value="" class="list-group-item" style="color: gray;" readonly>
                     </ul>
                 </div>
 
@@ -525,12 +526,19 @@ include 'hak_akses.php';
                 var hasil   = parseInt(total_reservasi) + parseInt(split_harga_tk);
             }
 
+            // Format untuk number.
+            var formatter = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+            });
+
             document.getElementById("deskripsi_wisata").value = "<?=$rowitem->nama_paket_wisata?>, Peserta : " + deskripsi;
             document.getElementById("terumbu_karang").value = terumbu_karang;
             document.getElementById("split_tk").value = split_tk;
             document.getElementById("split_harga_tk").value = split_harga_tk;
             document.getElementById("nominal").value = split_harga_tk;
             document.getElementById("total").value = hasil; //total dari total_reservasi * donasi
+            document.getElementById("total_reservasi").value = formatter.format(hasil); //total dari total_reservasi * donasi
             //document.write(harga_tk);
         }
 
