@@ -52,7 +52,7 @@ if (isset($_POST['submit'])) {
             $stmt->execute(['nama_fasilitas' => $nama_fasilitas,
                             'biaya_fasilitas' => $biaya_fasilitas,
                             'id_wisata' => $id_wisata,
-                            'update_terakhir' => $update_terakhir
+                            'update_terakhir' => $tanggal_sekarang
                             ]);
 
             $affectedrows = $stmt->rowCount();
@@ -166,7 +166,7 @@ if (isset($_POST['submit'])) {
                                         </div>'; }
                             else if($_GET['status'] == 'addsuccess') {
                                 echo '<div class="alert alert-success" role="alert">
-                                        Input data wisata dan fasilitas berhasil ditambahkan!
+                                        Input data wisata dan fasilitas wisata berhasil ditambahkan!
                                         </div>'; }
                         }
                     ?>

@@ -18,62 +18,34 @@ include 'hak_akses.php';
         $sqleditwisata = 'SELECT * FROM t_wisata
                             LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
                             WHERE id_wisata = :id_wisata';
+
         $stmt = $pdo->prepare($sqleditwisata);
         $stmt->execute(['id_wisata' => $id_wisata]);
-        $rowwisata = $stmt->fetch();
+        $wisata = $stmt->fetch();
 
         if (isset($_POST['submit'])) {
             if ($_POST['submit'] == 'Simpan') {
                 $id_lokasi                  = $_POST['dd_id_lokasi'];
                 $judul_wisata               = $_POST['tb_judul_wisata'];
                 $deskripsi_wisata           = $_POST['tb_deskripsi_wisata'];
-                $biaya_wisata               = $_POST['num_biaya_wisata'];
-                $status_aktif               = $_POST['rb_status_wisata'];
-                $deskripsi_panjang_wisata   = $_POST['deskripsi_panjang_wisata'];
-
-                $randomstring = substr(md5(rand()), 0, 7);
-
-                //Image upload
-                if($_FILES["image_uploads"]["size"] == 0) {
-                    $foto_wisata = $rowwisata->foto_wisata;
-                    $pic = "&none=";
-                }
-                else if (isset($_FILES['image_uploads'])) {
-                    if (($rowwisata->foto_wisata == $defaultpic) || (!$rowwisata->foto_wisata)){
-                        $target_dir  = "images/foto_wisata/";
-                        $foto_wisata = $target_dir .'WIL_'.$randomstring. '.jpg';
-                        move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wisata);
-                        $pic = "&new=";
-                    }
-                    else if (isset($rowwisata->foto_wisata)){
-                        $foto_wisata = $rowwisata->foto_wisata;
-                        unlink($rowwisata->foto_wisata);
-                        move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowwisata->foto_wisata);
-                        $pic = "&replace=";
-                    }
-                }
-                //---image upload end
-
-                $sqldeleteisipaket = "DELETE FROM tb_paket_wisata
+                
+                $sqldeletefasilitas = "DELETE FROM tb_fasilitas_wisata
                                         WHERE id_wisata = :id_wisata";
 
-                $stmt = $pdo->prepare($sqldeleteisipaket);
+                $stmt = $pdo->prepare($sqldeletefasilitas);
                 $stmt->execute(['id_wisata' => $id_wisata]);
-
+                
                 $sqlwisata = "UPDATE t_wisata
-                                SET id_lokasi = :id_lokasi, judul_wisata = :judul_wisata, deskripsi_wisata = :deskripsi_wisata,
-                                deskripsi_panjang_wisata = :deskripsi_panjang_wisata, biaya_wisata = :biaya_wisata, foto_wisata = :foto_wisata,
-                                status_aktif = :status_aktif WHERE id_wisata = :id_wisata";
+                                SET id_lokasi = :id_lokasi, 
+                                    judul_wisata = :judul_wisata, 
+                                    deskripsi_wisata = :deskripsi_wisata
+                                WHERE id_wisata = :id_wisata";
 
                 $stmt = $pdo->prepare($sqlwisata);
-                $stmt->execute(['id_lokasi' => $id_lokasi,
+                $stmt->execute(['id_wisata' => $id_wisata,
+                                'id_lokasi' => $id_lokasi,
                                 'judul_wisata' => $judul_wisata,
-                                'deskripsi_wisata' => $deskripsi_wisata,
-                                'biaya_wisata' => $biaya_wisata,
-                                'foto_wisata' => $foto_wisata,
-                                'status_aktif' => $status_aktif,
-                                'id_wisata' => $id_wisata,
-                                'deskripsi_panjang_wisata' => $deskripsi_panjang_wisata
+                                'deskripsi_wisata' => $deskripsi_wisata
                                 ]);
 
                 $affectedrows = $stmt->rowCount();
@@ -85,18 +57,21 @@ include 'hak_akses.php';
                 }
 
                 $i = 0;
-                foreach ($_POST['nama_paket'] as $nama_paket) {
-                    $nama_paket_wisata    = $_POST['nama_paket'][$i];
-                    $biaya_paket          = $_POST['biaya_paket'][$i];
-                    $id_wisata            = $_GET['id_wisata'];
+                foreach ($_POST['nama_fasilitas'] as $nama_fasilitas) {
+                    $nama_fasilitas    = $_POST['nama_fasilitas'][$i];
+                    $biaya_fasilitas   = $_POST['biaya_fasilitas'][$i];
+                    $id_wisata         = $_GET['id_wisata'];
 
-                    $sqlinsertpaketdonasi = "INSERT INTO tb_paket_wisata (nama_paket_wisata, biaya_paket, id_wisata)
-                                        VALUES (:nama_paket_wisata, :biaya_paket, :id_wisata)";
+                    $tanggal_sekarang = date ('Y-m-d H:i:s', time());
 
-                    $stmt = $pdo->prepare($sqlinsertpaketdonasi);
-                    $stmt->execute(['nama_paket_wisata' => $nama_paket_wisata,
-                                    'biaya_paket'       => $biaya_paket,
-                                    'id_wisata'         => $id_wisata
+                    $sqlinsertfasilitas = "INSERT INTO tb_fasilitas_wisata (nama_fasilitas, biaya_fasilitas, id_wisata, update_terakhir)
+                                        VALUES (:nama_fasilitas, :biaya_fasilitas, :id_wisata, :update_terakhir)";
+
+                    $stmt = $pdo->prepare($sqlinsertfasilitas);
+                    $stmt->execute(['nama_fasilitas' => $nama_fasilitas,
+                                    'biaya_fasilitas' => $biaya_fasilitas,
+                                    'id_wisata' => $id_wisata,
+                                    'update_terakhir' => $tanggal_sekarang
                                     ]);
 
                     $affectedrows = $stmt->rowCount();
@@ -104,7 +79,7 @@ include 'hak_akses.php';
                         header("Location: kelola_wisata.php?status=insertfailed");
                     } else {
                         //echo "HAHAHAAHA GREAT SUCCESSS !";
-                        header("Location: kelola_wisata.php?status=addsuccess");
+                        header("Location: kelola_wisata.php?status=updatesuccess");
                     }
                     $i++;
                 } //End Foreach
@@ -197,120 +172,83 @@ include 'hak_akses.php';
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <form action="" enctype="multipart/form-data" method="POST" name="updateWisata">
-
+                    <?php
+                        if(!empty($_GET['status'])) {
+                            if($_GET['status'] == 'updatesuccess') {
+                                echo '<div class="alert alert-success" role="alert">
+                                        Update data wisata dan fasilitas wisata berhasil!
+                                        </div>'; }
+                            else if($_GET['status'] == 'addsuccess') {
+                                echo '<div class="alert alert-success" role="alert">
+                                        Input data wisata dan fasilitas wisata berhasil ditambahkan!
+                                        </div>'; }
+                        }
+                    ?>
+                    <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
                     <label for="dd_id_lokasi">ID Lokasi</label>
                     <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" required>
                             <option value="">Pilih Lokasi</option>
-                        <?php foreach ($rowlokasi as $rowitem) {  ?>
-                            <option <?php if($rowitem->id_lokasi == $rowwisata->id_lokasi) echo 'selected'; ?> value="<?=$rowitem->id_lokasi?>">ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
+                            <?php foreach ($rowlokasi as $lokasi) {  ?>
+                            <option <?php if($lokasi->id_lokasi == $wisata->id_lokasi) echo 'selected'; ?> value="<?=$lokasi->id_lokasi?>">ID <?=$lokasi->id_lokasi?> - <?=$lokasi->nama_lokasi?></option>
                         <?php } ?>
                     </select>
                     </div>
 
-
                     <div class="form-group">
                         <label for="tb_judul_wisata">Judul Wisata</label>
-                        <input type="text" id="tb_judul_wisata" name="tb_judul_wisata" value="<?=$rowwisata->judul_wisata?>" class="form-control">
+                        <input type="text" id="tb_judul_wisata" name="tb_judul_wisata" value="<?=$wisata->judul_wisata?>" class="form-control" required>
                     </div>
 
                     <div class="form-group">
                         <label for="tb_deskripsi_wisata">Deskripsi Singkat Wisata</label>
-                        <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" value="<?=$rowwisata->deskripsi_wisata?>" class="form-control">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="isi_artikel">Deskripsi Lengkap Wisata:</label>
-                        <textarea id="deskripsi_lengkap_wisata" name="deskripsi_panjang_wisata" required><?=$rowwisata->deskripsi_panjang_wisata?></textarea>
-                    <script>
-                            $('#deskripsi_lengkap_wisata').trumbowyg();
-                    </script>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="num_biaya_wisata">Biaya Wisata</label>
-                        <input type="number" id="num_biaya_wisata" name="num_biaya_wisata" value="<?=$rowwisata->biaya_wisata?>" class="form-control">
+                        <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" value="<?=$wisata->deskripsi_wisata?>" class="form-control" required>
                     </div>
 
                     <div class="form-group field_wrapper">
-                        <label for="persentase_paket_donasi">Paket Wisata</label><br>
+                        <label for="paket_wisata">Fasilitas Wisata</label><br>
                         <div class="form-group fieldGroup">
                             <div class="input-group">
-
                                 <?php
-                                $sqlviewpaket = 'SELECT * FROM tb_paket_wisata
-                                                    LEFT JOIN t_wisata ON tb_paket_wisata.id_wisata = t_wisata.id_wisata
+                                $sqlviewpaket = 'SELECT * FROM tb_fasilitas_wisata 
+                                                    LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
                                                     WHERE t_wisata.id_wisata = :id_wisata
-                                                    AND t_wisata.id_wisata = tb_paket_wisata.id_wisata';
+                                                    AND t_wisata.id_wisata = t_wisata.id_wisata';
 
                                 $stmt = $pdo->prepare($sqlviewpaket);
-                                $stmt->execute(['id_wisata' => $rowwisata->id_wisata]);
-                                $rowpaket = $stmt->fetchAll();
+                                $stmt->execute(['id_wisata' => $wisata->id_wisata]);
+                                $rowfasilitas = $stmt->fetchAll();
 
-                                foreach ($rowpaket as $paket) {
-                                ?>
-                                <input type="text" name="nama_paket[]" value="<?=$paket->nama_paket_wisata?>" class="form-control" placeholder="Nama Paket"/>
-                                <input type="text" name="biaya_paket[]" value="<?=$paket->biaya_paket?>" class="form-control" placeholder="Biaya Paket"/>
+                                foreach ($rowfasilitas as $fasilitas) { ?>
+                                <input type="text" name="nama_fasilitas[]" value="<?=$fasilitas->nama_fasilitas?>" class="form-control" placeholder="Nama Fasilitas"/>
+                                <input type="number" name="biaya_fasilitas[]" value="<?=$fasilitas->biaya_fasilitas?>" class="form-control" placeholder="Biaya Fasilitas"/>
                                 <?php } ?>
+                                <div class="input-group-addon">
+                                    <a href="javascript:void(0)" class="btn btn-success addMore">
+                                        <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Fasilitas
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class='form-group' id='fotowilayah'>
-                        <div>
-                            <label for='image_uploads'>Upload Foto Wisata</label>
-                            <input type='file'  class='form-control' id='image_uploads'
-                                name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
-                        <img id="oldpic" src="<?=$rowwisata->foto_wisata?>" width="100px">
-                        <script>
-                            window.onload = function() {
-                            document.getElementById('preview').style.display = 'none';
-                            };
-                            function readURL(input) {
-                                if (input.files && input.files[0]) {
-                                    var reader = new FileReader();
-                                    document.getElementById('oldpic').style.display = 'none';
-                                    reader.onload = function (e) {
-                                        $('#preview')
-                                            .attr('src', e.target.result)
-                                            .width(200);
-                                            document.getElementById('preview').style.display = 'block';
-                                    };
-
-                                    reader.readAsDataURL(input.files[0]);
-                                }
-                            }
-                        </script>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="rb_status_wisata">Status</label><br>
-                            <div class="form-check form-check-inline">
-                                <input type="radio" id="rb_status_aktif" name="rb_status_wisata" value="Aktif" class="form-check-input" <?php if($rowwisata->status_aktif == 'Aktif') echo ' checked'; ?>>
-                                <label class="form-check-label" for="rb_status_aktif" style="color: green">
-                                    Aktif
-                                </label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input type="radio" id="rb_status_tidak_aktif" name="rb_status_wisata" value="Tidak Aktif" class="form-check-input" <?php if($rowwisata->status_aktif == 'Tidak Aktif') echo ' checked'; ?>>
-                                <label class="form-check-label" for="rb_status_tidak_aktif" style="color: gray">
-                                    Tidak Aktif
-                                </label>
-                            </div>
-                    </div>
-
-                    <br>
                     <p align="center">
                     <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
-                    </form>
-                    <br><br>
+                    </form><br><br>
 
+                    <!-- copy of input fields group -->
+                    <div class="form-group fieldGroupCopy" style="display: none;">
+                        <div class="input-group">
+                            <input type="text" name="nama_fasilitas[]" class="form-control" placeholder="Nama Fasilitas"/>
+                            <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/>
+                            
+                            <div class="input-group-addon">
+                                <a href="javascript:void(0)" class="btn btn-danger remove">
+                                    <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Fasilitas
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
             </section>
             <!-- /.Left col -->
@@ -343,8 +281,32 @@ include 'hak_akses.php';
 
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
+
+    <!-- Fasilitas wisata -->
+    <script>
+        $(document).ready(function(){
+        //group add limit
+        var maxGroup = 50;
+
+        //add more fields group
+        $(".addMore").click(function(){
+            if($('body').find('.fieldGroup').length < maxGroup){
+                var fieldHTML = '<div class="form-group fieldGroup">'+$(".fieldGroupCopy").html()+'</div>';
+                $('body').find('.fieldGroup:last').after(fieldHTML);
+            }else{
+                alert('Maksimal '+maxGroup+' group yang boleh dibuat.');
+            }
+        });
+
+        //remove fields group
+        $("body").on("click",".remove",function(){
+            $(this).parents(".fieldGroup").remove();
+        });
+    });
+    </script>
 
 </div>
 
