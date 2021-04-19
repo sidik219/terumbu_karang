@@ -59,6 +59,19 @@
         border: none;
         padding: 6px 12px;
     }
+
+    a.btn.btn-primary-paket,
+    .btn-submit-paket,
+    .btn-lg-paket,
+    .btn-paket {
+        border-radius: 40px;
+        background-image: url('../images/yellowbtnbg.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: #E24901;
+        border: none;
+        padding: 6px 12px;
+    }
     
     .file-form {
         background-color: white;

@@ -148,7 +148,7 @@ include 'hak_akses.php';
                                         </div>
                                     </div>
                                     <p>
-                                    <a class="btn btn-primary btn-lg btn-block mb-4" href="detail_lokasi_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>">
+                                    <a class="btn btn-primary-paket btn-lg-paket btn-paket btn-block mb-4" href="detail_lokasi_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>">
                                     Rincian Reservasi</a>
                                 </div>
                             </div>

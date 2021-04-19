@@ -168,7 +168,7 @@ function ageCalculator($dob){
                             <tr>
                                 <th scope="row"><?=$fasilitas->id_fasilitas_wisata?></th>
                                 <td><?=$fasilitas->nama_fasilitas?></td>
-                                <td><?=$fasilitas->biaya_fasilitas?></td>
+                                <td>Rp. <?=number_format($fasilitas->biaya_fasilitas, 0)?></td>
                                 <td>
                                     <small class="text-muted"><b>Update Terakhir</b>
                                     <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($fasilitas->update_terakhir).' yang lalu)';?></small>

@@ -190,8 +190,8 @@ include 'hak_akses.php';
                                     <i class="text-warning far fa-bookmark"></i>
                                     <b>Deskripsi:</b> <?=$rowitem->deskripsi_wisata?>
                                 </p></div>
-                                <div class="row"><a class="btn btn-primary btn-lg btn-block mb-1"
-                                href="reservasi_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>_&status=review_reservasi" style="color: white;">Wisata Sekarang</a></div>
+                                <div class="row"><a class="btn btn-primary-paket btn-lg-paket btn-paket btn-block mb-1"
+                                href="reservasi_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>_&status=review_reservasi">Wisata Sekarang</a></div>
 
                             </div>
                         </div>
