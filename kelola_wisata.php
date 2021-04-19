@@ -123,6 +123,18 @@ $row = $stmt->fetchAll();
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+                    <?php
+                        if(!empty($_GET['status'])) {
+                            if($_GET['status'] == 'updatesuccess') {
+                                echo '<div class="alert alert-success" role="alert">
+                                        Update paket wisata berhasil!
+                                        </div>'; }
+                            else if($_GET['status'] == 'addsuccess') {
+                                echo '<div class="alert alert-success" role="alert">
+                                        Data paket wisata berhasil ditambahkan!
+                                        </div>'; }
+                        }
+                    ?>
                      <table class="table table-striped table-responsive-sm">
                      <thead>
                             <tr>

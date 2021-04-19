@@ -43,13 +43,16 @@ if (isset($_POST['submit'])) {
             $biaya_fasilitas   = $_POST['biaya_fasilitas'][$i];
             $id_wisata         = $last_wisata_id;
 
-            $sqlinsertfasilitas = "INSERT INTO tb_fasilitas_wisata (nama_fasilitas, biaya_fasilitas, id_wisata)
-                                        VALUES (:nama_fasilitas, :biaya_fasilitas, :id_wisata)";
+            $tanggal_sekarang = date ('Y-m-d H:i:s', time());
+
+            $sqlinsertfasilitas = "INSERT INTO tb_fasilitas_wisata (nama_fasilitas, biaya_fasilitas, id_wisata, update_terakhir)
+                                        VALUES (:nama_fasilitas, :biaya_fasilitas, :id_wisata, :update_terakhir)";
 
             $stmt = $pdo->prepare($sqlinsertfasilitas);
             $stmt->execute(['nama_fasilitas' => $nama_fasilitas,
                             'biaya_fasilitas' => $biaya_fasilitas,
-                            'id_wisata' => $id_wisata
+                            'id_wisata' => $id_wisata,
+                            'update_terakhir' => $update_terakhir
                             ]);
 
             $affectedrows = $stmt->rowCount();
@@ -155,8 +158,19 @@ if (isset($_POST['submit'])) {
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+                    <?php
+                        if(!empty($_GET['status'])) {
+                            if($_GET['status'] == 'updatesuccess') {
+                                echo '<div class="alert alert-success" role="alert">
+                                        Update bukti pembayaran reservasi wisata berhasil!
+                                        </div>'; }
+                            else if($_GET['status'] == 'addsuccess') {
+                                echo '<div class="alert alert-success" role="alert">
+                                        Input data wisata dan fasilitas berhasil ditambahkan!
+                                        </div>'; }
+                        }
+                    ?>
                     <form action="" enctype="multipart/form-data" method="POST">
-
                     <div class="form-group">
                     <label for="dd_id_lokasi">ID Lokasi</label>
                     <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" required>
