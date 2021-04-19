@@ -113,37 +113,25 @@ include 'hak_akses.php';
                     <div class="row">
                     <?php
                     foreach ($rowpaket as $rowitem) {
-                        //if ($rowitem->status_aktif == "Aktif") { ?>
+                        if ($rowitem->status_aktif == "Aktif") { ?>
 
                         <div class="col-md-4" style="text-align: left;">
                             <div class="card card-pilihan mb-4 shadow-sm">
-                            <a href="detail_lokasi_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>">
-                                <img class="card-img-top" height="100%" src="<?=$rowitem->foto_wisata?>">
-                            </a>
-                                <div class="card-body card-body-costom">
-                                    <p class="card-title"><h5 class="font-weight-bold"><?=$rowitem->nama_paket_wisata?></h5></p>
-
-                                    <h5 style="text-align: left;"> Lokasi :</h5>
-                                    <p class="card-text font-weight-bold" style="text-align: left;">
-                                        <span class="badge-pill badge-info mr-2"><?=$rowitem->nama_lokasi?></span></p>
-
-                                    <h5 style="text-align: left;"> Paket Wisata :</h5>
-                                    <p class="card-text font-weight-bold" style="text-align: left;">
-                                        <div class="divTable">
-                                            <div class="divTableBody">
-                                                <div class="divTableRow">
-                                                    <div class="divTableCell-1">
-                                                        <i class="text-info fas fa-arrow-circle-right"></i>                             
-                                                        <?=$rowitem->judul_wisata?>
-                                                    </div>
-                                                    <div class="divTableCell-2">
-                                                    </div>
-                                                </div>
-                                            </div>
+                                <a href="detail_lokasi_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>">
+                                    <img class="card-img-top img-paket-wisata" src="<?=$rowitem->foto_wisata?>">                           
+                                </a>
+                                <div class="card-body" style="font-weight: bold;">
+                                    <p><h5 class="max-length" style="font-weight: bold;"><?=$rowitem->nama_paket_wisata?></h5></p>
+                                    <p class="max-length2">
+                                    <i class="fas fa-map-marked-alt"></i> <?=$rowitem->nama_lokasi?></p>
+                                    <div>
+                                        <div class="card card-body" style="text-align: left;">
+                                            <ol style="margin-left: 1rem;">
+                                                <li>
+                                                <?=$rowitem->judul_wisata?></li>
+                                            </ol>
                                         </div>
-
-                                    <h5 style="text-align: left;"> Total Paket Wisata :</h5>
-                                    <h4 class="card-text font-weight-bold" style="text-align: left;">
+                                        <div class="card card-body">
                                         <?php
                                         $sqlviewfasilitas = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, nama_fasilitas, biaya_fasilitas 
                                                             FROM tb_fasilitas_wisata 
@@ -157,17 +145,17 @@ include 'hak_akses.php';
                                         $rowfasilitas = $stmt->fetchAll();
 
                                         foreach ($rowfasilitas as $fasilitas) { ?>
-                                        <span class="badge badge-pill badge-success mr-2">
-                                        Rp. <?=number_format($fasilitas->total_biaya_fasilitas, 0)?></span>
-                                        <?php } ?></h4>
-                                    
-                                    <a class="btn btn-primary btn-lg btn-block mb-4" href="detail_lokasi_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>" class="card-donasi__cta" style="color: white;">Rincian Wisata</a>
+                                        Rp. <?=number_format($fasilitas->total_biaya_fasilitas, 0)?> / orang
+                                        <?php } ?>
+                                        </div>
+                                    </div>
+                                    <p>
+                                    <a class="btn btn-primary btn-lg btn-block mb-4" href="detail_lokasi_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>">
+                                    Rincian Reservasi</a>
                                 </div>
                             </div>
                         </div>
-
-
-                        <?php //} ?>
+                        <?php } ?>
                     <?php } ?>
                     </div>
                 </div>
@@ -203,11 +191,6 @@ include 'hak_akses.php';
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-
-
-    <script>
-
-
-    </script>
+    
 </body>
 </html>

@@ -197,3 +197,10 @@ body {
 .divTableBody {
 	display: table-row-group;
 }
+
+/* Same size img paket wisata */
+.img-paket-wisata {
+    width:  100%;
+    height: 200px;
+    background-size: cover;
+}
