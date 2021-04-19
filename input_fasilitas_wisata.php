@@ -41,6 +41,26 @@ if (isset($_POST['submit'])) {
         echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
     }
 }
+
+function ageCalculator($dob){
+    $birthdate = new DateTime($dob);
+    $today   = new DateTime('today');
+    $ag = $birthdate->diff($today)->y;
+    $mn = $birthdate->diff($today)->m;
+    $dy = $birthdate->diff($today)->d;
+    if ($mn == 0)
+    {
+        return "$dy Hari";
+    }
+    elseif ($ag == 0)
+    {
+        return "$mn Bulan  $dy Hari";
+    }
+    else
+    {
+        return "$ag Tahun $mn Bulan $dy Hari";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -138,19 +158,24 @@ if (isset($_POST['submit'])) {
                             <th scope="col">ID Fasilitas</th>
                             <th scope="col">Nama Fasilitas</th>
                             <th scope="col">Biaya Fasilitas</th>
+                            <th scope="col">Update Terakhir</th>
                             <th scope="col">Aksi</th>
                             </tr>
                           </thead>
                           <tbody>
-                          <?php foreach ($rowfasilitas as $fasilitas) { ?>
+                          <?php foreach ($rowfasilitas as $fasilitas) { 
+                                $truedate = strtotime($fasilitas->update_terakhir); ?>
                             <tr>
-                              <th scope="row"><?=$fasilitas->id_fasilitas_wisata?></th>
-                              <td><?=$fasilitas->nama_fasilitas?></td>
-                              <td><?=$fasilitas->biaya_fasilitas?></td>
-                              <td>
-                                <a href="edit_wisata.php?id_wisata=<?=$fasilitas->id_fasilitas_wisata?>" class="fas fa-edit mr-3 btn btn-act"></a>
-                                <a href="hapus.php?type=wisata&id_wisata=<?=$fasilitas->id_fasilitas_wisata?>" class="far fa-trash-alt btn btn-act"></a>
-                              </td>
+                                <th scope="row"><?=$fasilitas->id_fasilitas_wisata?></th>
+                                <td><?=$fasilitas->nama_fasilitas?></td>
+                                <td><?=$fasilitas->biaya_fasilitas?></td>
+                                <td>
+                                    <small class="text-muted"><b>Update Terakhir</b>
+                                    <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($fasilitas->update_terakhir).' yang lalu)';?></small>
+                                <td>
+                                    <a href="edit_wisata.php?id_wisata=<?=$fasilitas->id_fasilitas_wisata?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                                    <a href="hapus.php?type=wisata&id_wisata=<?=$fasilitas->id_fasilitas_wisata?>" class="far fa-trash-alt btn btn-act"></a>
+                                </td>
                             </tr>
                           <?php } ?>
                           </tbody>

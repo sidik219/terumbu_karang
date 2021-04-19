@@ -13,6 +13,26 @@ include 'hak_akses.php';
     $stmt = $pdo->prepare($sqlviewreservasi);
     $stmt->execute();
     $row = $stmt->fetchAll();
+
+    function ageCalculator($dob){
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $ag = $birthdate->diff($today)->y;
+        $mn = $birthdate->diff($today)->m;
+        $dy = $birthdate->diff($today)->d;
+        if ($mn == 0)
+        {
+            return "$dy Hari";
+        }
+        elseif ($ag == 0)
+        {
+            return "$mn Bulan  $dy Hari";
+        }
+        else
+        {
+            return "$ag Tahun $mn Bulan $dy Hari";
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -176,7 +196,7 @@ include 'hak_akses.php';
                                                 ?>
 
                                             <br><small class="text-muted"><b>Update Terakhir</b>
-                                            <br><?=strftime('%A, %d %B %Y', $truedate);?></small>
+                                            <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($rowitem->update_terakhir).' yang lalu)';?></small>
                                         </div>
                                         <div class="mb-3">
                                             <?php if ($rowitem->id_status_reservasi_wisata == 2) { ?>

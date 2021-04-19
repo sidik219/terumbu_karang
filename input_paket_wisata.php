@@ -55,7 +55,7 @@ if (isset($_POST['submit'])) {
 
             $sqlinsertdetailpaket = "UPDATE t_wisata
                                         SET id_paket_wisata = :id_paket_wisata
-                                        WHERE id_wisata = :id_wisata";
+                                        WHERE id_wisata = (SELECT max(:id_wisata) FROM t_wisata)";
 
             $stmt = $pdo->prepare($sqlinsertdetailpaket);
             $stmt->execute(['id_paket_wisata' => $id_paket_wisata,
