@@ -137,24 +137,13 @@ $id_lokasi = $_GET['id_lokasi'];
                 <div class="container-fluid">
 
                 <form method="POST">
+                 <div class="col text-center">
 
-                <div class="form-group">
-                        <label for="num_biaya_pergantian">Biaya Penanaman</label>
-                        <label class="text-muted  text-sm d-block">Biaya jasa tanam dan transportasi ke titik penanaman</label>
-                        <input type="hidden" id="biaya_pergantian_number1" name="jasa_penanaman" value="<?=$rowbiaya->jasa_penanaman?>">
-                        <div class="row">
-                          <div class="col-auto text-center p-2">
-                            Rp.
-                          </div>
-                          <div class="col">
-                            <input onkeyup="formatNumber1(this)" type="text" value="<?=number_format($rowbiaya->jasa_penanaman)?>"  id="num_biaya_pergantian1" name="num_jasa_penanaman" class="form-control number-input" required>
-                          </div>
-                        </div>
-                </div>
+                              </div>
 
 
                 <div class="form-group">
-                        <label for="num_biaya_pergantian">Biaya Pemeliharaan</label>
+                        <label for="num_biaya_pergantian">Biaya Pemeliharaan</label> <span onclick="//addDocInput()" data-toggle="modal" data-target=".hitung-modal" class="btn btn-sm btn-info"><i class="fas fa-file-invoice-dollar"></i> Hitung Biaya</span>
                         <label class="text-muted text-sm d-block">Biaya jasa pengembangan bibit dan pemeliharaan berkala</label>
                         <input type="hidden" id="biaya_pergantian_number2" name="biaya_pemeliharaan" value="<?=$rowbiaya->biaya_pemeliharaan?>">
                         <div class="row">
@@ -339,6 +328,104 @@ $id_lokasi = $_GET['id_lokasi'];
 </div>
 
 <!-- Tambah modal end -->
+
+
+
+
+
+
+
+
+<!-- Hitung Large modal -->
+<div class="modal fade hitung-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Hitung Biaya</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="hitung_form">
+      <div class="col border rounded p-2 bg-light">
+
+                            <div class="row">
+                              <div class="col">
+                               <label for="num_biaya_pergantian">Biaya Sewa Kapal</label>
+                        <input type="hidden" id="biaya_pergantian_number" name="num_harga_patokan_lokasi_angka" value="">
+                        <input type="hidden" id="hid_id_lokasi" name="id_lokasi" value="<?=$id_lokasi?>">
+                        <input type="hidden" id="hid_type" name="type" value="save_modal_patokan_harga_terumbu">
+                        <div class="row">
+                          <div class="col-auto text-center p-2">
+                            Rp.
+                          </div>
+                            <div class="col">
+                              <input onkeyup="formatNumber(this)" type="text" id="num_biaya_pergantian" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
+                            </div>
+                        </div>
+
+                        <label for="num_biaya_pergantian">Biaya Solar</label>
+                        <input type="hidden" id="biaya_pergantian_number" name="num_harga_patokan_lokasi_angka" value="">
+                        <input type="hidden" id="hid_id_lokasi" name="id_lokasi" value="<?=$id_lokasi?>">
+                        <input type="hidden" id="hid_type" name="type" value="save_modal_patokan_harga_terumbu">
+                        <div class="row">
+                          <div class="col-auto text-center p-2">
+                            Rp.
+                          </div>
+                            <div class="col">
+                              <input onkeyup="formatNumber(this)" type="text" id="num_biaya_pergantian" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
+                            </div>
+                        </div>
+
+                        <label for="num_biaya_pergantian">Biaya Laboratorium</label>
+                        <input type="hidden" id="biaya_pergantian_number" name="num_harga_patokan_lokasi_angka" value="">
+                        <input type="hidden" id="hid_id_lokasi" name="id_lokasi" value="<?=$id_lokasi?>">
+                        <input type="hidden" id="hid_type" name="type" value="save_modal_patokan_harga_terumbu">
+                        <div class="row">
+                          <div class="col-auto text-center p-2">
+                            Rp.
+                          </div>
+                            <div class="col">
+                              <input onkeyup="formatNumber(this)" type="text" id="num_biaya_pergantian" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
+                            </div>
+                        </div>
+
+                        <label for="num_biaya_pergantian">Upah Jasa Penanaman</label>
+                        <input type="hidden" id="biaya_pergantian_number" name="num_harga_patokan_lokasi_angka" value="">
+                        <input type="hidden" id="hid_id_lokasi" name="id_lokasi" value="<?=$id_lokasi?>">
+                        <input type="hidden" id="hid_type" name="type" value="save_modal_patokan_harga_terumbu">
+                        <div class="row">
+                          <div class="col-auto text-center p-2">
+                            Rp.
+                          </div>
+                            <div class="col">
+                              <input onkeyup="formatNumber(this)" type="text" id="num_biaya_pergantian" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
+                            </div>
+                        </div>
+
+
+                        <div class="row mt-2">
+                          <div class="col">
+                            <label for="num_biaya_pergantian">Kapasitas Bibit per Kapal</label>
+                            <input type="number" min="0" id="num_stok" name="stok_terumbu" class="form-control number-input" required>
+                          </div>
+                        </div>
+                        </form>
+                              <div class="col text-center">
+                                <span onclick="simpanPatokanTerumbu()" class="btn btn-blue btn-sm btn-primary mt-2 mb-2 text-center"><i class="fas fa-donate"></i> Hitung Biaya</span>
+                                <button type="button" class="btn-sm btn-secondary rounded-pill border-0" data-dismiss="modal">Batal</button>
+                              </div>
+                            </div>
+                      </div>
+
+                    </div>
+                <?php //} ?>
+    </div>
+  </div>
+</div>
+
+<!-- Hitung modal end -->
+
 
 
 
