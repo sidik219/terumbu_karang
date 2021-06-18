@@ -6,46 +6,59 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-$sqlviewwisata = 'SELECT * FROM t_wisata
-                    ORDER BY id_wisata
-                    DESC LIMIT 1';
-        $stmt = $pdo->prepare($sqlviewwisata);
-        $stmt->execute();
-        $rowwisata = $stmt->fetch();
+$sqlviewfasilitas = 'SELECT * FROM tb_fasilitas_wisata
+                  ORDER BY id_fasilitas_wisata DESC';
+$stmt = $pdo->prepare($sqlviewfasilitas);
+$stmt->execute();
+$rowfasilitas = $stmt->fetchAll();
 
-if (isset($_POST['submit'])) {
-    if ($_POST['submit'] == 'Simpan') {
-        
-        //var_dump($_POST['nama_fasilitas']);var_dump($_POST['biaya_fasilitas']);exit();
-        $i = 0;
-        foreach ($_POST['nama_fasilitas'] as $nama_fasilitas) {
-            $nama_fasilitas    = $_POST['nama_fasilitas'][$i];
-            $biaya_fasilitas   = $_POST['biaya_fasilitas'][$i];
-            $id_wisata         = $_POST['id_wisata'];
+// if (isset($_POST['submit'])) {
+//     if ($_POST['submit'] == 'Simpan') {
+//         //var_dump($_POST['nama_fasilitas']);var_dump($_POST['biaya_fasilitas']);exit();
+//         $i = 0;
+//         foreach ($_POST['nama_fasilitas'] as $nama_fasilitas) {
+//             $nama_fasilitas    = $_POST['nama_fasilitas'][$i];
+//             $biaya_fasilitas   = $_POST['biaya_fasilitas'][$i];
 
-            $tanggal_sekarang = date ('Y-m-d H:i:s', time());
+//             $sqlinsertfasilitas = "INSERT INTO tb_fasilitas_wisata (nama_fasilitas, biaya_fasilitas)
+//                                         VALUES (:nama_fasilitas, :biaya_fasilitas)";
 
-            $sqlinsertfasilitas = "INSERT INTO tb_fasilitas_wisata (nama_fasilitas, biaya_fasilitas, id_wisata, update_terakhir)
-                                        VALUES (:nama_fasilitas, :biaya_fasilitas, :id_wisata, :update_terakhir)";
+//             $stmt = $pdo->prepare($sqlinsertfasilitas);
+//             $stmt->execute(['nama_fasilitas' => $nama_fasilitas,
+//                             'biaya_fasilitas' => $biaya_fasilitas
+//                             ]);
 
-            $stmt = $pdo->prepare($sqlinsertfasilitas);
-            $stmt->execute(['nama_fasilitas' => $nama_fasilitas,
-                            'biaya_fasilitas' => $biaya_fasilitas,
-                            'id_wisata' => $id_wisata,
-                            'update_terakhir' => $tanggal_sekarang
-                            ]);
+//             $affectedrows = $stmt->rowCount();
+//             if ($affectedrows == '0') {
+//                 header("Location: input_fasilitas_wisata.php?status=insertfailed");
+//             } else {
+//                 //echo "HAHAHAAHA GREAT SUCCESSS !";
+//                 header("Location: input_fasilitas_wisata.php?status=addsuccess");
+//             }
+//             $i++;
+//         } //End Foreach
+//     } else {
+//         echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
+//     }
+// }
 
-            $affectedrows = $stmt->rowCount();
-            if ($affectedrows == '0') {
-                header("Location: input_fasilitas_wisata.php?status=insertfailed");
-            } else {
-                //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: input_fasilitas_wisata.php?status=addsuccess");
-            }
-            $i++;
-        } //End Foreach
-    } else {
-        echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
+function ageCalculator($dob){
+    $birthdate = new DateTime($dob);
+    $today   = new DateTime('today');
+    $ag = $birthdate->diff($today)->y;
+    $mn = $birthdate->diff($today)->m;
+    $dy = $birthdate->diff($today)->d;
+    if ($mn == 0)
+    {
+        return "$dy Hari";
+    }
+    elseif ($ag == 0)
+    {
+        return "$mn Bulan  $dy Hari";
+    }
+    else
+    {
+        return "$ag Tahun $mn Bulan $dy Hari";
     }
 }
 ?>
@@ -124,12 +137,8 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="input_wisata.php">< Kembali</a><br><br>
-                    <h4><span class="align-middle font-weight-bold">Input Data Fasilitas</span></h4>
-                </div>
-                <div align="right">
-                    <a class="btn btn-outline-primary" href="input_paket_wisata.php">
-                    Selanjutnya Paket Wisata <i class="fas fa-angle-right"></i></a>
+                    <a class="btn btn-outline-primary" href="kelola_wisata.php">< Kembali</a><br><br>
+                    <h4><span class="align-middle font-weight-bold">Data Fasilitas Wisata</span></h4>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -138,52 +147,40 @@ if (isset($_POST['submit'])) {
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <?php
-                        if(!empty($_GET['status'])) {
-                            if($_GET['status'] == 'updatesuccess') {
-                                echo '<div class="alert alert-success" role="alert">
-                                        Update bukti pembayaran reservasi wisata berhasil!
-                                        </div>'; }
-                            else if($_GET['status'] == 'addsuccess') {
-                                echo '<div class="alert alert-success" role="alert">
-                                        Input data fasilitas wisata berhasil ditambahkan!
-                                        </div>'; }
-                        }
-                    ?>
-                    <form action="" enctype="multipart/form-data" method="POST">
-                    <input type="hidden" name="id_wisata" value="<?=$rowwisata->id_wisata?>">
-
-                    <div class="form-group field_wrapper">
-                        <label for="paket_wisata">Fasilitas Wisata</label><br>
-                        <div class="form-group fieldGroup">
-                            <div class="input-group">
-                                <input type="text" name="nama_fasilitas[]" class="form-control" placeholder="Nama Fasilitas"/>
-                                <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/>
-                                <div class="input-group-addon">
-                                    <a href="javascript:void(0)" class="btn btn-success addMore">
-                                        <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Fasilitas
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                    <div align="right">
+                    <a class="btn btn-outline-primary" href="input_wisata.php">
+                    Selanjutnya Input Wisata <i class="fas fa-angle-right"></i></a>
                     </div>
 
-                    <p align="center">
-                    <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
-                    </form><br><br>
+                    <table class="table table-striped table-responsive-sm">
+                     <thead>
+                            <tr>
+                            <th scope="col">ID Fasilitas</th>
+                            <th scope="col">Nama Fasilitas</th>
+                            <th scope="col">Biaya Fasilitas</th>
+                            <th scope="col">Update Terakhir</th>
+                            <th scope="col">Aksi</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <?php foreach ($rowfasilitas as $fasilitas) { 
+                                $truedate = strtotime($fasilitas->update_terakhir); ?>
+                            <tr>
+                                <th scope="row"><?=$fasilitas->id_fasilitas_wisata?></th>
+                                <td><?=$fasilitas->nama_fasilitas?></td>
+                                <td>Rp. <?=number_format($fasilitas->biaya_fasilitas, 0)?></td>
+                                <td>
+                                    <small class="text-muted"><b>Update Terakhir</b>
+                                    <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($fasilitas->update_terakhir).' yang lalu)';?></small>
+                                <td>
+                                    <a href="edit_wisata.php?id_wisata=<?=$fasilitas->id_fasilitas_wisata?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                                    <a href="hapus.php?type=wisata&id_wisata=<?=$fasilitas->id_fasilitas_wisata?>" class="far fa-trash-alt btn btn-act"></a>
+                                </td>
+                            </tr>
+                          <?php } ?>
+                          </tbody>
+                  </table>
 
-                    <!-- copy of input fields group -->
-                    <div class="form-group fieldGroupCopy" style="display: none;">
-                        <div class="input-group">
-                            <input type="text" name="nama_fasilitas[]" class="form-control" placeholder="Nama Fasilitas"/>
-                            <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/>
-                            <div class="input-group-addon">
-                                <a href="javascript:void(0)" class="btn btn-danger remove">
-                                    <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Fasilitas
-                                </a>
-                            </div>
-                        </div>
-                    </div>
 
             </section>
             <!-- /.Left col -->

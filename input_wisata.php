@@ -13,7 +13,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         $rowlokasi = $stmt->fetchAll();
 
 if (isset($_POST['submit'])) {
-    if ($_POST['submit'] == 'Simpan') {
+    //if ($_POST['submit'] == 'Simpan') {
         $id_lokasi                  = $_POST['dd_id_lokasi'];
         $judul_wisata               = $_POST['tb_judul_wisata'];
         $deskripsi_wisata           = $_POST['tb_deskripsi_wisata'];
@@ -31,42 +31,42 @@ if (isset($_POST['submit'])) {
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
-            //echo "HAHAHAAHA INSERT FAILED !";
+            header("Location: input_wisata.php?status=insertfailed");
         } else {
             //echo "HAHAHAAHA GREAT SUCCESSS !";
-            $last_wisata_id = $pdo->lastInsertId();
+            header("Location: input_wisata.php?status=addsuccess");
         }
         //var_dump($_POST['nama_fasilitas']);var_dump($_POST['biaya_fasilitas']);exit();
-        $i = 0;
-        foreach ($_POST['nama_fasilitas'] as $nama_fasilitas) {
-            $nama_fasilitas    = $_POST['nama_fasilitas'][$i];
-            $biaya_fasilitas   = $_POST['biaya_fasilitas'][$i];
-            $id_wisata         = $last_wisata_id;
+        // $i = 0;
+        // foreach ($_POST['nama_fasilitas'] as $nama_fasilitas) {
+        //     $nama_fasilitas    = $_POST['nama_fasilitas'][$i];
+        //     $biaya_fasilitas   = $_POST['biaya_fasilitas'][$i];
+        //     $id_wisata         = $last_wisata_id;
 
-            $tanggal_sekarang = date ('Y-m-d H:i:s', time());
+        //     $tanggal_sekarang = date ('Y-m-d H:i:s', time());
 
-            $sqlinsertfasilitas = "INSERT INTO tb_fasilitas_wisata (nama_fasilitas, biaya_fasilitas, id_wisata, update_terakhir)
-                                        VALUES (:nama_fasilitas, :biaya_fasilitas, :id_wisata, :update_terakhir)";
+        //     $sqlinsertfasilitas = "INSERT INTO tb_fasilitas_wisata (nama_fasilitas, biaya_fasilitas, id_wisata, update_terakhir)
+        //                                 VALUES (:nama_fasilitas, :biaya_fasilitas, :id_wisata, :update_terakhir)";
 
-            $stmt = $pdo->prepare($sqlinsertfasilitas);
-            $stmt->execute(['nama_fasilitas' => $nama_fasilitas,
-                            'biaya_fasilitas' => $biaya_fasilitas,
-                            'id_wisata' => $id_wisata,
-                            'update_terakhir' => $tanggal_sekarang
-                            ]);
+        //     $stmt = $pdo->prepare($sqlinsertfasilitas);
+        //     $stmt->execute(['nama_fasilitas' => $nama_fasilitas,
+        //                     'biaya_fasilitas' => $biaya_fasilitas,
+        //                     'id_wisata' => $id_wisata,
+        //                     'update_terakhir' => $tanggal_sekarang
+        //                     ]);
 
-            $affectedrows = $stmt->rowCount();
-            if ($affectedrows == '0') {
-                header("Location: input_wisata.php?status=insertfailed");
-            } else {
-                //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: input_wisata.php?status=addsuccess");
-            }
-            $i++;
-        } //End Foreach
-    } else {
-        echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
-    }
+        //     $affectedrows = $stmt->rowCount();
+        //     if ($affectedrows == '0') {
+        //         header("Location: input_wisata.php?status=insertfailed");
+        //     } else {
+        //         //echo "HAHAHAAHA GREAT SUCCESSS !";
+        //         header("Location: input_wisata.php?status=addsuccess");
+        //     }
+        //     $i++;
+        // } //End Foreach
+    // } else {
+    //     echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
+    // }
 }
 ?>
 
@@ -144,12 +144,12 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="input_fasilitas_wisata.php">< Kembali</a><br><br>
+                    <a class="btn btn-outline-primary" href="kelola_fasilitas_wisata.php">< Kembali</a><br><br>
                     <h4><span class="align-middle font-weight-bold">Input Data Wisata</span></h4>
                 </div>
                 <div align="right">
-                    <a class="btn btn-outline-primary" href="input_paket_wisata.php">
-                    Selanjutnya Paket Wisata <i class="fas fa-angle-right"></i></a>
+                    <a class="btn btn-outline-primary" href="input_fasilitas_wisata.php">
+                    Selanjutnya Fasilitas Wisata <i class="fas fa-angle-right"></i></a>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -191,7 +191,7 @@ if (isset($_POST['submit'])) {
                         <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" class="form-control" required>
                     </div>
 
-                    <div class="form-group field_wrapper">
+                    <!-- <div class="form-group field_wrapper">
                         <label for="paket_wisata">Fasilitas Wisata</label><br>
                         <div class="form-group fieldGroup">
                             <div class="input-group">
@@ -204,14 +204,14 @@ if (isset($_POST['submit'])) {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <p align="center">
                     <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form><br><br>
 
                     <!-- copy of input fields group -->
-                    <div class="form-group fieldGroupCopy" style="display: none;">
+                    <!-- <div class="form-group fieldGroupCopy" style="display: none;">
                         <div class="input-group">
                             <input type="text" name="nama_fasilitas[]" class="form-control" placeholder="Nama Fasilitas"/>
                             <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/>
@@ -221,7 +221,7 @@ if (isset($_POST['submit'])) {
                                 </a>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
             </section>
             <!-- /.Left col -->
@@ -256,7 +256,7 @@ if (isset($_POST['submit'])) {
 
     <!-- jQuery library -->
 
-    <script>
+    <!-- <script>
         $(document).ready(function(){
         //group add limit
         var maxGroup = 50;
@@ -276,7 +276,7 @@ if (isset($_POST['submit'])) {
             $(this).parents(".fieldGroup").remove();
         });
     });
-    </script>
+    </script> -->
 </div>
 <!-- Import Trumbowyg font size JS at the end of <body>... -->
 <script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>

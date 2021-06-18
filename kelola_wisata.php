@@ -112,7 +112,7 @@ $row = $stmt->fetchAll();
                         </div>
                         <div class="col">
 
-                        <a class="btn btn-primary float-right" href="input_fasilitas_wisata.php" role="button">Input Data Baru (+)</a>
+                        <a class="btn btn-primary float-right" href="kelola_fasilitas_wisata.php" role="button">Input Data Baru (+)</a>
 
                         </div>
                     </div>

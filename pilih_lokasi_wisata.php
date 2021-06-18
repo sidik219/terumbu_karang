@@ -107,7 +107,7 @@ include 'hak_akses.php';
                 <div class="container-fluid">
                     <h3>Pilihan Wisata</h3>
                     <a href="map.php?aksi=wisata"><button class="btn btn-warning btn-back" type="button">
-                        <i class="fas fa-angle-left"></i> Ganti Lokasi Wisata</button></a>
+                        <i class="fas fa-angle-left"></i> Ganti Lokasi Wisata</button></a><p>
                     <div class="row">
                     <?php
                     foreach ($rowpaket as $rowitem) {
