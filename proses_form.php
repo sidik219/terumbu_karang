@@ -17,6 +17,24 @@ if ($_POST['type'] == 'save_modal_patokan_harga_terumbu' && !empty($_POST["id_lo
         $stmt->execute(['id_lokasi' => $id_lokasi, 'id_terumbu_karang' => $id_terumbu_karang, 'harga_patokan_lokasi' => $harga_patokan_lokasi, 'stok_terumbu' => $stok_terumbu]);
     }
 
+    //Save modal Biaya Pemeliharaan
+if ($_POST['type'] == 'save_modal_biaya_pemeliharaan' && !empty($_POST["id_lokasi"])) {
+    $id_lokasi = $_POST["id_lokasi"];
+    $jasa_penanaman = $_POST['jasa_penanaman_angka'];
+    $biaya_sewa_kapal = $_POST['num_biaya_sewa_kapal_angka'];
+    $biaya_solar = $_POST['biaya_solar_angka'];
+    $biaya_laboratorium = $_POST['biaya_laboratorium_angka'];
+    $kapasitas_kapal = $_POST['kapasitas_kapal'];
+
+    $updatebiaya = 'UPDATE t_lokasi
+                      SET jasa_penanaman = :jasa_penanaman, biaya_sewa_kapal = :biaya_sewa_kapal, biaya_solar = :biaya_solar,
+                      biaya_laboratorium = :biaya_laboratorium, kapasitas_kapal = :kapasitas_kapal
+                      WHERE id_lokasi = :id_lokasi';
+        $stmt = $pdo->prepare($updatebiaya);
+        $stmt->execute(['id_lokasi' => $id_lokasi, 'jasa_penanaman' => $jasa_penanaman, 'biaya_sewa_kapal' => $biaya_sewa_kapal, 'biaya_solar' => $biaya_solar,
+        'biaya_laboratorium' => $biaya_laboratorium,'kapasitas_kapal' => $kapasitas_kapal,]);
+    }
+
   //Load untuk Edit
     if ($_POST['type'] == 'load_modal_patokan_harga_terumbu' && !empty($_POST["id_detail_lokasi"])) {
     $id_detail_lokasi = $_POST["id_detail_lokasi"];

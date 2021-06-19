@@ -15,11 +15,14 @@ $id_lokasi = $_GET['id_lokasi'];
     $stmt->execute(['id_lokasi' => $id_lokasi]);
     $rowdetail = $stmt->fetchAll();
 
-    $sqlviewbiaya = 'SELECT jasa_penanaman, biaya_pemeliharaan FROM t_lokasi
+    $sqlviewbiaya = 'SELECT * FROM t_lokasi
                             WHERE id_lokasi = :id_lokasi';
     $stmt = $pdo->prepare($sqlviewbiaya);
     $stmt->execute(['id_lokasi' => $id_lokasi]);
     $rowbiaya = $stmt->fetch();
+
+    $biaya_rekomendasi = ($rowbiaya->biaya_pemeliharaan + $rowbiaya->jasa_penanaman + $rowbiaya->biaya_sewa_kapal + $rowbiaya->biaya_solar +
+                          $rowbiaya->biaya_laboratorium) / $rowbiaya->kapasitas_kapal;
 
 
     function alertStokTerumbu($stok){
@@ -32,15 +35,14 @@ $id_lokasi = $_GET['id_lokasi'];
     }
 
     if(isset($_POST['submit_biaya'])){
-      $jasa_penanaman = $_POST['jasa_penanaman'];
       $biaya_pemeliharaan = $_POST['biaya_pemeliharaan'];
 
       $sqllokasi = "UPDATE t_lokasi
-                        SET jasa_penanaman = :jasa_penanaman, biaya_pemeliharaan = :biaya_pemeliharaan
+                        SET biaya_pemeliharaan = :biaya_pemeliharaan
                         WHERE id_lokasi = :id_lokasi";
 
             $stmt = $pdo->prepare($sqllokasi);
-            $stmt->execute(['id_lokasi' => $id_lokasi, 'jasa_penanaman' => $jasa_penanaman, 'biaya_pemeliharaan' => $biaya_pemeliharaan]);
+            $stmt->execute(['id_lokasi' => $id_lokasi, 'biaya_pemeliharaan' => $biaya_pemeliharaan]);
 
             header("Refresh: 0");
 
@@ -143,8 +145,9 @@ $id_lokasi = $_GET['id_lokasi'];
 
 
                 <div class="form-group">
-                        <label for="num_biaya_pergantian">Biaya Pemeliharaan</label> <span onclick="//addDocInput()" data-toggle="modal" data-target=".hitung-modal" class="btn btn-sm btn-info"><i class="fas fa-file-invoice-dollar"></i> Hitung Biaya</span>
-                        <label class="text-muted text-sm d-block">Biaya jasa pengembangan bibit dan pemeliharaan berkala</label>
+                        <label for="num_biaya_pergantian">Biaya Pemeliharaan</label>
+                        <label class="text-muted text-sm d-block">Biaya jasa pemeliharaan akan ditambahkan ke harga terumbu karang</label>
+                        <?= ($rowbiaya->kapasitas_kapal != 0) ? "<label class='text-sm d-block'>Biaya agar Balik Modal : Rp. ".number_format($biaya_rekomendasi)." </label>" : "" ?>
                         <input type="hidden" id="biaya_pergantian_number2" name="biaya_pemeliharaan" value="<?=$rowbiaya->biaya_pemeliharaan?>">
                         <div class="row">
                           <div class="col-auto text-center p-2">
@@ -152,6 +155,9 @@ $id_lokasi = $_GET['id_lokasi'];
                           </div>
                           <div class="col">
                             <input onkeyup="formatNumber2(this)" type="text" value="<?=number_format($rowbiaya->biaya_pemeliharaan)?>" id="num_biaya_pergantian2" name="num_biaya_pemeliharaan" class="form-control number-input" required>
+                          </div>
+                          <div class="col">
+                          <span onclick="//addDocInput()" data-toggle="modal" data-target=".hitung-modal" class="btn btn-sm  btn-secondary"><i class="fas fa-file-invoice-dollar"></i> Hitung Biaya</span>
                           </div>
                         </div>
                 </div>
@@ -341,7 +347,7 @@ $id_lokasi = $_GET['id_lokasi'];
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
     <div class="modal-header">
-        <h5 class="modal-title">Hitung Biaya</h5>
+        <h5 class="modal-title">Hitung Biaya Pemeliharaan</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -351,68 +357,68 @@ $id_lokasi = $_GET['id_lokasi'];
 
                             <div class="row">
                               <div class="col">
-                               <label for="num_biaya_pergantian">Biaya Sewa Kapal</label>
-                        <input type="hidden" id="biaya_pergantian_number" name="num_harga_patokan_lokasi_angka" value="">
-                        <input type="hidden" id="hid_id_lokasi" name="id_lokasi" value="<?=$id_lokasi?>">
-                        <input type="hidden" id="hid_type" name="type" value="save_modal_patokan_harga_terumbu">
+                              <label class="text-muted text-sm d-block">Tentukan biaya untuk penanaman dan 4 kali pemeliharaan</label>
+                               <label for="num_sewa">Biaya Sewa Kapal</label>
+                        <input type="hidden" id="num_biaya_sewa_kapal_angka" name="num_biaya_sewa_kapal_angka" value="<?=$rowbiaya->biaya_sewa_kapal?>">
+
                         <div class="row">
                           <div class="col-auto text-center p-2">
                             Rp.
                           </div>
                             <div class="col">
-                              <input onkeyup="formatNumber(this)" type="text" id="num_biaya_pergantian" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
+                              <input onkeyup="formatNumberSewa(this)" value="<?=number_format($rowbiaya->biaya_sewa_kapal)?>" type="text" id="num_sewa" min="1" name="num_biaya_sewa_kapal_angka_f" class="form-control number-input" required>
                             </div>
                         </div>
 
-                        <label for="num_biaya_pergantian">Biaya Solar</label>
-                        <input type="hidden" id="biaya_pergantian_number" name="num_harga_patokan_lokasi_angka" value="">
-                        <input type="hidden" id="hid_id_lokasi" name="id_lokasi" value="<?=$id_lokasi?>">
-                        <input type="hidden" id="hid_type" name="type" value="save_modal_patokan_harga_terumbu">
+                        <label for="num_solar">Biaya Solar</label>
+                        <input type="hidden" id="biaya_solar_angka" name="biaya_solar_angka" value="<?=$rowbiaya->biaya_solar?>">
+
+
                         <div class="row">
                           <div class="col-auto text-center p-2">
                             Rp.
                           </div>
                             <div class="col">
-                              <input onkeyup="formatNumber(this)" type="text" id="num_biaya_pergantian" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
+                              <input onkeyup="formatNumberSolar(this)"  value="<?=number_format($rowbiaya->biaya_solar)?>"  type="text" id="num_solar" min="1" name="biaya_solar_angka_f" class="form-control number-input" required>
                             </div>
                         </div>
 
-                        <label for="num_biaya_pergantian">Biaya Laboratorium</label>
-                        <input type="hidden" id="biaya_pergantian_number" name="num_harga_patokan_lokasi_angka" value="">
-                        <input type="hidden" id="hid_id_lokasi" name="id_lokasi" value="<?=$id_lokasi?>">
-                        <input type="hidden" id="hid_type" name="type" value="save_modal_patokan_harga_terumbu">
+                        <label for="num_lab">Biaya Laboratorium</label>
+                        <input type="hidden" id="biaya_laboratorium_angka" name="biaya_laboratorium_angka" value="<?=$rowbiaya->biaya_laboratorium?>">
+
+
                         <div class="row">
                           <div class="col-auto text-center p-2">
                             Rp.
                           </div>
                             <div class="col">
-                              <input onkeyup="formatNumber(this)" type="text" id="num_biaya_pergantian" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
+                              <input onkeyup="formatNumberLab(this)" type="text"  value="<?=number_format($rowbiaya->biaya_laboratorium)?>"  id="num_lab" min="1" name="biaya_laboratorium_angka_f" class="form-control number-input" required>
                             </div>
                         </div>
 
-                        <label for="num_biaya_pergantian">Upah Jasa Penanaman</label>
-                        <input type="hidden" id="biaya_pergantian_number" name="num_harga_patokan_lokasi_angka" value="">
+                        <label for="num_jasa">Upah Jasa Penanaman</label>
+                        <input type="hidden" id="jasa_penanaman_angka" name="jasa_penanaman_angka" value="<?=$rowbiaya->jasa_penanaman?>">
                         <input type="hidden" id="hid_id_lokasi" name="id_lokasi" value="<?=$id_lokasi?>">
-                        <input type="hidden" id="hid_type" name="type" value="save_modal_patokan_harga_terumbu">
+                        <input type="hidden" id="hid_type" name="type" value="save_modal_biaya_pemeliharaan">
                         <div class="row">
                           <div class="col-auto text-center p-2">
                             Rp.
                           </div>
                             <div class="col">
-                              <input onkeyup="formatNumber(this)" type="text" id="num_biaya_pergantian" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
+                              <input onkeyup="formatNumberJasa(this)" type="text" value="<?=number_format($rowbiaya->jasa_penanaman)?>"  id="num_jasa" min="1" name="jasa_penanaman_angka_f" class="form-control number-input" required>
                             </div>
                         </div>
 
 
                         <div class="row mt-2">
                           <div class="col">
-                            <label for="num_biaya_pergantian">Kapasitas Bibit per Kapal</label>
-                            <input type="number" min="0" id="num_stok" name="stok_terumbu" class="form-control number-input" required>
+                            <label for="num_kapasitas">Kapasitas Bibit per Kapal</label>
+                            <input type="number" min="0" id="kapasitas_kapal"  value="<?=number_format($rowbiaya->kapasitas_kapal)?>"  name="kapasitas_kapal" class="form-control number-input" required>
                           </div>
                         </div>
                         </form>
                               <div class="col text-center">
-                                <span onclick="simpanPatokanTerumbu()" class="btn btn-blue btn-sm btn-primary mt-2 mb-2 text-center"><i class="fas fa-donate"></i> Hitung Biaya</span>
+                                <span onclick="simpanRekomendasiBaiaya()" class="btn btn-blue btn-sm btn-primary mt-2 mb-2 text-center"><i class="fas fa-donate"></i> Hitung Biaya</span>
                                 <button type="button" class="btn-sm btn-secondary rounded-pill border-0" data-dismiss="modal">Batal</button>
                               </div>
                             </div>
@@ -592,6 +598,64 @@ function formatNumber3(e){
       }
 }
 
+function formatNumberSewa(e){
+  var formattedNumber = parseInt(e.value.replace(/\,/g,''))
+      if(!isNaN(formattedNumber)){
+        $('#num_biaya_sewa_kapal_angka').val(formattedNumber)
+        $('#num_sewa').val(formatter.format(formattedNumber))
+      }else{
+        $('#num_biaya_sewa_kapal_angka').val('0')
+        $('#num_sewa').val('0')
+      }
+}
+
+function formatNumberSolar(e){
+  var formattedNumber = parseInt(e.value.replace(/\,/g,''))
+      if(!isNaN(formattedNumber)){
+        $('#biaya_solar_angka').val(formattedNumber)
+        $('#num_solar').val(formatter.format(formattedNumber))
+      }else{
+        $('#biaya_solar_angka').val('0')
+        $('#num_solar').val('0')
+      }
+}
+
+function formatNumberLab(e){
+  var formattedNumber = parseInt(e.value.replace(/\,/g,''))
+      if(!isNaN(formattedNumber)){
+        $('#biaya_laboratorium_angka').val(formattedNumber)
+        $('#num_lab').val(formatter.format(formattedNumber))
+      }else{
+        $('#biaya_laboratorium_angka').val('0')
+        $('#num_lab').val('0')
+      }
+}
+
+function formatNumberJasa(e){
+  var formattedNumber = parseInt(e.value.replace(/\,/g,''))
+      if(!isNaN(formattedNumber)){
+        $('#jasa_penanaman_angka').val(formattedNumber)
+        $('#num_jasa').val(formatter.format(formattedNumber))
+      }else{
+        $('#jasa_penanaman_angka').val('0')
+        $('#num_jasa').val('0')
+      }
+}
+
+
+function simpanRekomendasiBaiaya(){
+  var isiform = $('#hitung_form').serialize()
+    $.ajax({
+        type:'POST',
+        url:'proses_form.php',
+        data:isiform,
+        success: function(){
+            alert('Memproses data...')
+            location.reload();
+        }
+
+    })
+}
 
 
 </script>
