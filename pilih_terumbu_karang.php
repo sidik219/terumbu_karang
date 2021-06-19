@@ -16,8 +16,9 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
     $sqlviewtk = 'SELECT * FROM t_detail_lokasi
                 LEFT JOIN t_terumbu_karang ON t_terumbu_karang.id_terumbu_karang = t_detail_lokasi.id_terumbu_karang
                 LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
+                LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_detail_lokasi.id_lokasi
                 WHERE t_terumbu_karang.id_jenis = :id_jenis
-                AND id_lokasi = :id_lokasi AND stok_terumbu > 0';
+                AND  t_detail_lokasi.id_lokasi = :id_lokasi AND stok_terumbu > 0';
 
     $stmt = $pdo->prepare($sqlviewtk);
     $stmt->execute(['id_jenis' => $_GET['id_jenis'], 'id_lokasi' => $_SESSION['id_lokasi']]);
@@ -26,7 +27,8 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
     $sqlviewtk = 'SELECT * FROM t_detail_lokasi
                 LEFT JOIN t_terumbu_karang ON t_terumbu_karang.id_terumbu_karang = t_detail_lokasi.id_terumbu_karang
                 LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
-                WHERE id_lokasi = :id_lokasi AND stok_terumbu > 0';
+                LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_detail_lokasi.id_lokasi
+                WHERE  t_detail_lokasi.id_lokasi = :id_lokasi AND stok_terumbu > 0';
 
     $stmt = $pdo->prepare($sqlviewtk);
     $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
@@ -36,7 +38,8 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
     $sqlviewtk = 'SELECT * FROM t_detail_lokasi
                 LEFT JOIN t_terumbu_karang ON t_terumbu_karang.id_terumbu_karang = t_detail_lokasi.id_terumbu_karang
                 LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
-                WHERE id_lokasi = :id_lokasi AND stok_terumbu > 0';
+                LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_detail_lokasi.id_lokasi
+                WHERE  t_detail_lokasi.id_lokasi = :id_lokasi AND stok_terumbu > 0';
 
     $stmt = $pdo->prepare($sqlviewtk);
     $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
@@ -158,6 +161,7 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
             <div class="card-columns">
         <?php
             foreach ($row as $rowitem) {
+              $harga_tk = $rowitem->harga_patokan_lokasi + $rowitem->biaya_pemeliharaan;
         ?>
 
             <div class="card  card-pilihan rounded mb-4 shadow-sm shop-item text-sm">
@@ -169,20 +173,20 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
                 <p class="card-text text-muted deskripsi_pilih_tk text-sm"><?php echo $rowitem->deskripsi_terumbu_karang;?></p>
                 <?php //echo strlen($rowitem->deskripsi_terumbu_karang) > 50 ? substr($rowitem->deskripsi_terumbu_karang,0,40)."..." :$rowitem->deskripsi_terumbu_karang;?>
                 <span class="font-weight-bold" id="harga<?=$rowitem->id_terumbu_karang?>"><script>
-                                                    var hargaformat = formatter.format(<?=$rowitem->harga_patokan_lokasi?>);
+                                                    var hargaformat = formatter.format(<?=$harga_tk?>);
                                                     var hargap =  document.createElement('p')
                                                     hargap.classList.add("mb-0", "mt-0")
                                                     hargap.textContent = hargaformat
                                                     document.getElementById("harga<?=$rowitem->id_terumbu_karang?>").appendChild(hargap)
                                             </script></span>
-                <span class="shop-item-price d-none">Rp. <?=$rowitem->harga_patokan_lokasi?></span>
+                <span class="shop-item-price d-none">Rp. <?=$harga_tk?></span>
                 <input type="hidden" class="shop-item-id" value="<?=$rowitem->id_terumbu_karang?>">
                 <div class="row">
                     <!-- <div class="col-2">
                         <input type="number" min="1" id="tbqty" style="width: 100%; height:100%;">
                     </div> -->
                     <div class="col">
-                            <a data-nama_tk="<?=$rowitem->id_terumbu_karang?>" data-harga_tk="<?=$rowitem->harga_patokan_lokasi?>"
+                            <a data-nama_tk="<?=$rowitem->id_terumbu_karang?>" data-harga_tk="<?=$harga_tk?>"
                             data-id_tk="<?=$rowitem->id_terumbu_karang?>" data-stok_tk="<?=$rowitem->stok_terumbu?>"
                             class="add-to-cart btn btn-warning shop-item-button"><i class="nav-icon fas fa-cart-plus"></i> Tambahkan Keranjang</a>
                     </div>

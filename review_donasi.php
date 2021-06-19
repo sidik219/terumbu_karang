@@ -325,40 +325,40 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
         keranjangancestor.append(listpesanrow)
 
 
-        var listbiayarow = document.createElement('li')
-        listbiayarow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed", "text-break", "text-sm")
-        var listbiaya =
-        `<div class="row">
-        <div class="col-12">
-            <h6 class="my-0">Jasa Penanaman <i class="fas fa-question-circle text-info"  data-toggle="tooltip" data-placement="top" title="Biaya transportasi ke titik penanaman bibit, peralatan selam, dan perlengkapan pendukung lainnya"></i></h6>
-          </div>
-          <div class="col">
-          <span>${formatter.format(jumlahitem * <?=$rowlokasi->jasa_penanaman?>)}</span>
-          <span class="d-none">${jumlahitem * <?=$rowlokasi->jasa_penanaman?>}</span>
-          </div>
-        </div>`
+      //   var listbiayarow = document.createElement('li')
+      //   listbiayarow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed", "text-break", "text-sm")
+      //   var listbiaya =
+      //   `<div class="row">
+      //   <div class="col-12">
+      //       <h6 class="my-0">Jasa Penanaman <i class="fas fa-question-circle text-info"  data-toggle="tooltip" data-placement="top" title="Biaya transportasi ke titik penanaman bibit, peralatan selam, dan perlengkapan pendukung lainnya"></i></h6>
+      //     </div>
+      //     <div class="col">
+      //     <span>${formatter.format(jumlahitem * <?=$rowlokasi->jasa_penanaman?>)}</span>
+      //     <span class="d-none">${jumlahitem * <?=$rowlokasi->jasa_penanaman?>}</span>
+      //     </div>
+      //   </div>`
 
-        var jasa_penanaman = jumlahitem * <?=$rowlokasi->jasa_penanaman?>;
-        listbiayarow.innerHTML = listbiaya
-        keranjangancestor.append(listbiayarow)
+      //   var jasa_penanaman = jumlahitem * <?=$rowlokasi->jasa_penanaman?>;
+      //   listbiayarow.innerHTML = listbiaya
+      //   keranjangancestor.append(listbiayarow)
 
-        var listpemeliharaanrow = document.createElement('li')
-        listpemeliharaanrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed", "text-break", "text-sm")
-        var listpmlh =
-        `<div class="row">
-        <div class="col-12">
-            <h6 class="my-0">Biaya Pemeliharaan <i class="fas fa-question-circle text-info"  data-toggle="tooltip" data-placement="top" title="Biaya pemeliharaan bibit mulai dari laboratorium hingga pemeliharaan berkala setelah matang di laut"></i></h6>
-          </div>
-          <div class="col">
-          <span>${formatter.format(jumlahitem * <?=$rowlokasi->biaya_pemeliharaan?>)}</span>
-          </div>
-        </div>`
+      //   var listpemeliharaanrow = document.createElement('li')
+      //   listpemeliharaanrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed", "text-break", "text-sm")
+      //   var listpmlh =
+      //   `<div class="row">
+      //   <div class="col-12">
+      //       <h6 class="my-0">Biaya Pemeliharaan <i class="fas fa-question-circle text-info"  data-toggle="tooltip" data-placement="top" title="Biaya pemeliharaan bibit mulai dari laboratorium hingga pemeliharaan berkala setelah matang di laut"></i></h6>
+      //     </div>
+      //     <div class="col">
+      //     <span>${formatter.format(jumlahitem * <?=$rowlokasi->biaya_pemeliharaan?>)}</span>
+      //     </div>
+      //   </div>`
 
-        var biaya_pemeliharaan = jumlahitem * <?=$rowlokasi->biaya_pemeliharaan?>;
-        listpemeliharaanrow.innerHTML = listpmlh
-        keranjangancestor.append(listpemeliharaanrow)
+      //   var biaya_pemeliharaan = jumlahitem * <?=$rowlokasi->biaya_pemeliharaan?>;
+      //   listpemeliharaanrow.innerHTML = listpmlh
+      //   keranjangancestor.append(listpemeliharaanrow)
 
-        keranjang.nominal = keranjang.nominal + biaya_pemeliharaan + jasa_penanaman;
+      //   keranjang.nominal = keranjang.nominal + biaya_pemeliharaan + jasa_penanaman;
 
       var listtotalrow = document.createElement('li')
         listtotalrow.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-condensed")
@@ -370,8 +370,8 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
         listtotalrow.innerHTML = listtotal
         keranjangancestor.append(listtotalrow)
 
-      var badgejumlah = document.getElementById("badge-jumlah")
-      badgejumlah.innerText = jumlahitem
+      // var badgejumlah = document.getElementById("badge-jumlah")
+      // badgejumlah.innerText = jumlahitem
 
       $(function () {
         $('[data-toggle="tooltip"]').tooltip()
