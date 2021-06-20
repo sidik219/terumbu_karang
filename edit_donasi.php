@@ -3,6 +3,10 @@ session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
+if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
+  header('location: login.php?status=restrictedaccess');
+}
+
     $id_donasi = $_GET['id_donasi'];
     $defaultpic = "images/image_default.jpg";
     $status_donasi = "Menunggu Konfirmasi oleh Pengelola Lokasi";
@@ -10,6 +14,7 @@ include 'hak_akses.php';
     $sql = 'SELECT * FROM t_donasi
     LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
     LEFT JOIN t_user ON t_donasi.id_user = t_user.id_user
+    LEFT JOIN t_rekening_bank ON t_donasi.id_rekening_bersama = t_rekening_bank.id_rekening_bank
     WHERE id_donasi = :id_donasi';
 
     $stmt = $pdo->prepare($sql);
@@ -69,6 +74,7 @@ include 'hak_akses.php';
         }
 
         if(isset($_POST['submit_terima'])){
+          $tanggal_update_status = date ('Y-m-d H:i:s', time());
           $sqldonasi = "UPDATE t_donasi
                         SET id_status_donasi = :id_status_donasi, update_terakhir = :update_terakhir
                         WHERE id_donasi = :id_donasi";
@@ -181,7 +187,7 @@ include 'hak_akses.php';
             <!-- /.content-header -->
 
             <!-- Main content -->
-        <?php if($_SESSION['level_user'] == '4') { ?>
+
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
@@ -217,6 +223,8 @@ include 'hak_akses.php';
               <div class="custom-control custom-radio">
                 <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
                 <label class="custom-control-label  mb-2" for="credit">Bank Transfer (Konfirmasi Manual)</label>
+                <br><label class="font-weight-bold"> Rekening Pembayaran : </label>
+                <br><?=$rowitem->nama_bank?> A.N. <?=$rowitem->nama_pemilik_rekening?> - <?=$rowitem->nomor_rekening?>
               </div>
 <hr class="mb-2"/>
 
@@ -366,7 +374,7 @@ include 'hak_akses.php';
 
 
             </section>
-        <?php } ?>
+
             <!-- /.Left col -->
             </div>
             <!-- /.row (main row) -->

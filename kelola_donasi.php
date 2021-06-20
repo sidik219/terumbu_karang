@@ -1,6 +1,6 @@
 <?php include 'build/config/connection.php';
 session_start();
-if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
+if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
   header('location: login.php?status=restrictedaccess');
 }
 $url_sekarang = basename(__FILE__);
@@ -247,7 +247,7 @@ function ageCalculator($dob){
 
                               </small></td>
                               <td>
-                                <button type="button" class="btn btn-act <?php if(!($_SESSION['level_user'] == 4)){echo " d-none ";} ?>">
+                                <button type="button" class="btn btn-act <?php if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){echo " d-none ";} ?>">
                                 <a href="edit_donasi.php?id_donasi=<?=$rowitem->id_donasi?>" class="fas fa-edit"></a>
                             	</button>
                                 <button type="button" class="btn btn-act <?php if(!($_SESSION['level_user'] == 4)){echo " d-none ";} ?>"><i class="far fa-trash-alt"></i></button>

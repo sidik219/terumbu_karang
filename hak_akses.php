@@ -165,6 +165,12 @@ else{
                         <p> Home</p>
                     </a>
                 </li>
+                <li class="nav-item"> <!-- Wilayah Lokasi Pusat -->
+                    <a href="kelola_donasi.php" class="nav-link '.(('kelola_donasi.php' == $url_sekarang) || ('edit_donasi.php'  == $url_sekarang) ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-hand-holding-usd"></i>
+                        <p> Kelola Donasi </p>
+                    </a>
+                </li>
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                     <a href="kelola_lokasi.php" class="nav-link '.('kelola_lokasi.php' == $url_sekarang  || ('edit_lokasi.php'  == $url_sekarang) || ('input_lokasi.php'  == $url_sekarang) || ('kelola_harga_terumbu.php'  == $url_sekarang) ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
@@ -182,6 +188,12 @@ else{
                         <i class="nav-icon fas fa-suitcase"></i>
                         <p> Kelola Wisata </p>
                     </a>
+                </li>
+                <li class="nav-item"> <!-- Pusat & Wilayah -->
+                              <a href="kelola_rekening_bersama.php" class="nav-link '.('kelola_rekening_bersama.php' == $url_sekarang ? ' active ' : '').' ">
+                                  <i class="nav-icon fas fa-money-check-alt"></i>
+                                  <p> Rekening Bersama</p>
+                              </a>
                 </li>
                   <li class="nav-item"> <!-- Wilayah -->
                         <a href="kelola_perizinan.php" class="nav-link '.('kelola_perizinan.php' == $url_sekarang ? ' active ' : '').' ">

@@ -1,14 +1,21 @@
 <?php include 'build/config/connection.php';
 session_start();
-if(!($_SESSION['level_user'] == 4)){
+if(!($_SESSION['level_user'] == 4 || $_SESSION['level_user'] == 2)){
   header('location: login.php?status=restrictedaccess');
 }
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-    $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank';
+if ($_SESSION['level_user'] == 4){
+  $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_rekening_bank.id_wilayah';
+  $id_wilayah = ' NOT NULL';
+}
+else{
+  $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+  $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_rekening_bank.id_wilayah WHERE t_rekening_bank.id_wilayah = :id_wilayah';
+}
     $stmt = $pdo->prepare($sqlviewrekeningbersama);
-    $stmt->execute();
+    $stmt->execute(['id_wilayah' => $id_wilayah]);
     $rowdetail = $stmt->fetchAll();
 
 
@@ -106,6 +113,7 @@ include 'hak_akses.php';
                             <th scope="col">Nama Pemilik</th>
                             <th scope="col">Nomor Rekening</th>
                             <th scope="col">Bank</th>
+                            <th scope="col">Wilayah</th>
                             <th class="" scope="col">Aksi</th>
                             </tr>
                         </thead>
@@ -118,6 +126,7 @@ include 'hak_akses.php';
                             <td><?=$rowitem->nama_pemilik_rekening?></td>
                             <td><?=$rowitem->nomor_rekening?></td>
                             <td><?=$rowitem->nama_bank?></td>
+                            <td><?=$rowitem->nama_wilayah." (ID ".$rowitem->id_wilayah.")"?></td>
                             <td class="">
                                 <a href="#" onclick='loadRekening(this.dataset.id_rekening_bank)'
                                 data-nama_jenis='<?=$rowitem->nama_pemilik_rekening?>' data-id_rekening_bank='<?=$rowitem->id_rekening_bank?>'
@@ -128,7 +137,6 @@ include 'hak_akses.php';
                            <?php } ?>
                     </tbody>
                   </table>
-
 
 <!-- data-toggle="modal" data-target=".edit-modal" -->
 
@@ -200,6 +208,22 @@ include 'hak_akses.php';
                             <input type="text" id="nomor_rekening" name="nomor_rekening" class="form-control" required>
                           </div>
                         </div>
+                        <?php if ($_SESSION['level_user'] == 4){ ?>
+                          <div class="row mt-2">
+                          <div class="col">
+                            <label for="nomor_rekening">Wilayah</label>
+                            <select id="dd_id_wilayah" name="id_wilayah" class="form-control">
+
+                            <?php foreach ($rowdetail as $rowitem2) {
+                            ?>
+                            <option value="<?=$rowitem2->id_wilayah?>">
+                            ID <?=$rowitem2->id_wilayah?> - <?=$rowitem2->nama_wilayah?></option>
+
+                            <?php } ?>
+                        </select>
+                          </div>
+                        </div>
+                        <?php } ?>
                         <div class="row mt-2">
                           <div class="col">
                             <label for="nama_bank">Nama Bank</label>
@@ -207,6 +231,7 @@ include 'hak_akses.php';
                           </div>
                         </div>
                         <input type="hidden" id="hid_type" name="type" value="save_modal_rekber">
+                        <?php if ($_SESSION['level_user'] == 2) {?><input type="hidden" id="hid_id_wilayah" name="id_wilayah" value="<?=$id_wilayah?>"> <?php } ?>
                         </form>
                               <div class="col text-center">
                                 <span onclick="simpanRekening()" class="btn btn-blue btn-sm btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambahkan</span>

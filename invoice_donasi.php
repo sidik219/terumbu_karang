@@ -19,6 +19,7 @@ class myPDF extends FPDF{
                         LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
                         LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
                         LEFT JOIN t_user ON t_donasi.id_user = t_user.id_user
+                        LEFT JOIN t_rekening_bank ON t_donasi.id_rekening_bersama = t_rekening_bank.id_rekening_bank
                         WHERE id_donasi = :id_donasi
                         ORDER BY id_donasi DESC';
         $stmt = $pdo->prepare($sqlviewreservasi);
@@ -60,6 +61,7 @@ class myPDF extends FPDF{
                         LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
                         LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
                         LEFT JOIN t_user ON t_donasi.id_user = t_user.id_user
+                        LEFT JOIN t_rekening_bank ON t_donasi.id_rekening_bersama = t_rekening_bank.id_rekening_bank
                         WHERE id_donasi = :id_donasi
                         ORDER BY id_donasi DESC';
         $stmt = $pdo->prepare($sqlviewreservasi);
@@ -95,11 +97,11 @@ class myPDF extends FPDF{
             $this->Line(10, 65, 286, 65); //Line Tengah
 
             $this->Ln(10);
-            $this->Cell(55, 5, 'Nama Rekening Pengelola', 0, 0);
-            $this->Cell(117, 5, ': '.$rowitem->nama_rekening, 0, 1);
-            $this->Cell(55, 5, 'Bank Pengelola', 0, 0);
+            $this->Cell(55, 5, 'Nama Rekening Pembayaran', 0, 0);
+            $this->Cell(117, 5, ': '.$rowitem->nama_pemilik_rekening, 0, 1);
+            $this->Cell(55, 5, 'Bank Pembayaran', 0, 0);
             $this->Cell(117, 5, ': '.$rowitem->nama_bank, 0, 1);
-            $this->Cell(55, 5, 'Nomor Rekening Pengelola ', 0, 0);
+            $this->Cell(55, 5, 'Nomor Rekening Pembayaran ', 0, 0);
             $this->Cell(117, 5, ': '.$rowitem->nomor_rekening, 0, 1);
 
             $this->Line(10, 90, 286, 90); //Line Bawah
@@ -109,7 +111,7 @@ class myPDF extends FPDF{
             $this->Cell(117, 5, ': '.$rowitem->pesan, 0, 1);
             $this->Cell(55, 5, 'No HP Pengelola Lokasi', 0, 0);
             $this->Cell(117, 5, ': '.$rowitem->kontak_lokasi, 0, 1);
-            
+
             //$this->SetTextColor(0, 0, 0);
             $this->Line(234, 170, 286, 170); //Line TTD
 

@@ -109,12 +109,13 @@ if ($_POST['type'] == 'save_modal_rekber') {
     $nama_pemilik_rekening = $_POST['nama_pemilik_rekening'];
     $nomor_rekening = $_POST['nomor_rekening'];
     $nama_bank = $_POST['nama_bank'];
+    $id_wilayah = $_POST['id_wilayah'];
 
     $insertrekening = 'INSERT INTO t_rekening_bank
-                      (nama_pemilik_rekening, nomor_rekening, nama_bank)
-                      VALUES (:nama_pemilik_rekening, :nomor_rekening, :nama_bank)';
+                      (nama_pemilik_rekening, nomor_rekening, nama_bank, id_wilayah)
+                      VALUES (:nama_pemilik_rekening, :nomor_rekening, :nama_bank, :id_wilayah)';
         $stmt = $pdo->prepare($insertrekening);
-        $stmt->execute(['nama_pemilik_rekening' => $nama_pemilik_rekening, 'nomor_rekening' => $nomor_rekening, 'nama_bank' => $nama_bank]);
+        $stmt->execute(['nama_pemilik_rekening' => $nama_pemilik_rekening, 'nomor_rekening' => $nomor_rekening, 'nama_bank' => $nama_bank, 'id_wilayah' => $id_wilayah]);
     }
 
     //Load untuk Edit

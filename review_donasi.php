@@ -4,11 +4,6 @@
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-$sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank';
-    $stmt = $pdo->prepare($sqlviewrekeningbersama);
-    $stmt->execute();
-    $rowrekening = $stmt->fetch();
-
     $sqlviewlokasi = 'SELECT * FROM t_lokasi
                 WHERE id_lokasi = :id_lokasi
                     ';
@@ -16,6 +11,12 @@ $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank';
     $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
     $rowlokasi = $stmt->fetch();
 
+    $id_wilayah = $rowlokasi->id_wilayah;
+
+    $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank WHERE id_wilayah = :id_wilayah';
+    $stmt = $pdo->prepare($sqlviewrekeningbersama);
+    $stmt->execute(['id_wilayah' => $id_wilayah]);
+    $rowrekening = $stmt->fetchAll();
 
 
 
@@ -125,11 +126,11 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
         </aside>
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
+        <div class="content-wrapper bg-light">
             <!-- Content Header (Page header) -->
 
             <!-- /.content-header -->
-        <?php if($_SESSION['level_user'] == '1') { ?>
+
             <!-- Main content -->
             <section class="content">
                 <div class="container">
@@ -186,11 +187,12 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
                 }
 
 
-                function updateData(){
+                function updateData(e){
                     keranjang["nama_donatur"] = tbnama_donatur.value
                     keranjang["no_rekening_donatur"] = tbno_rekening_donatur.value
                     keranjang["nama_bank_donatur"] = tbnama_bank_donatur.value
                     keranjang["id_user"] = 1;
+                    keranjang["id_rekening_bersama"] = e
                     document.getElementById('tb_deskripsi_donasi').value = JSON.stringify(keranjang)
                 }
 
@@ -201,42 +203,60 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
             </script>
 
             <div class="" style="width:100%;">
-                <div class="">
-                    <h4 class="card-header mb-2 pl-0">Metode Pembayaran</h4>
-            <span class="">Pilihan untuk lokasi</span>  <span class="text-info font-weight-bolder"><?=$rowlokasi->nama_lokasi?> : </span>
-            <div class="d-block my-3">
-              <div class="custom-control custom-radio">
-                <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
-                <label class="custom-control-label  mb-2" for="credit">Bank Transfer (Konfirmasi Manual)</label>
-                <p class="text-muted">Harap upload bukti transfer di halaman "Donasi Saya" setelah menekan tombol Buat Donasi.</p>
-              </div>
-<hr class="mb-2"/>
+              <div class="">
+                <h4 class="card-header mb-2 pl-0">Metode Pembayaran</h4>
+                <span class="">Pilihan untuk lokasi</span>  <span class="text-info font-weight-bolder"><?=$rowlokasi->nama_lokasi?> : </span>
 
-            <div class="row">
-                <div class="col">
-                     <span class="font-weight-bold">Nama Rekening Pengelola
+
+                <?php foreach($rowrekening as $rekening) {?>
+                <div class="d-block my-4">
+
+                <div class="rounded p-sm-4 pt-2 shadow-sm border">
+                  <div class="custom-control custom-radio">
+                    <input id="id_rekening<?=$rekening->id_rekening_bank?>" onchange="updateData(this.value)" name="id_rekening_bersama" type="radio" value="<?=$rekening->id_rekening_bank?>" class="custom-control-input" required>
+                    <label class="custom-control-label " for="id_rekening<?=$rekening->id_rekening_bank?>">Bank Transfer - <span class=""><?=$rekening->nama_bank?> (Konfirmasi Manual)</label>
+
+                  </div>
+                <hr class="mb-1"/>
+
+                <div class="pl-2">
+                    <div class="row">
+                        <div class="col">
+                            <span class="font-weight-bold">Nama Rekening Pengelola
+                        </div>
+                        <div class="col-lg-8 mb-2">
+                            <span class=""><?=$rekening->nama_pemilik_rekening?></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <span class="font-weight-bold">Nomor Rekening Pengelola  </span>
+                        </div>
+                        <div class="col-lg-8  mb-2">
+                            <span class=""><?=$rekening->nomor_rekening?></span>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col">
+                            <span class="font-weight-bold">Bank Pengelola  </span>
+                        </div>
+                        <div class="col-lg-8  mb-2">
+                            <span class=""><?=$rekening->nama_bank?></span>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-lg-8 mb-2">
-                     <span class=""><?=$rowrekening->nama_pemilik_rekening?></span>
+
+
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <span class="font-weight-bold">Nomor Rekening Pengelola  </span>
-                </div>
-                <div class="col-lg-8  mb-2">
-                    <span class=""><?=$rowrekening->nomor_rekening?></span>
-                </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col">
-                    <span class="font-weight-bold">Bank Pengelola  </span>
-                </div>
-                <div class="col-lg-8  mb-2">
-                    <span class=""><?=$rowrekening->nama_bank?></span>
-                </div>
-            </div>
-                </div>
+
+
+              </div>
+
+              <?php } ?>
+
+
+
+                  <p class="text-muted"><i class="fas fa-info-circle"></i> Harap upload bukti transfer di halaman "Donasi Saya" setelah menekan tombol Buat Donasi.</p>
             </div>
 
             <button  name="submit" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4" type="submit">Buat Donasi</button>
@@ -245,7 +265,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
       </div>
         <!-- /.container-fluid -->
         </section>
-      <?php } ?>
+
         <!-- /.content -->
     </div>
     <footer class="main-footer">

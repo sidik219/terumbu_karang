@@ -147,7 +147,7 @@ $id_lokasi = $_GET['id_lokasi'];
                 <div class="form-group">
                         <label for="num_biaya_pergantian">Biaya Pemeliharaan</label>
                         <label class="text-muted text-sm d-block">Biaya jasa pemeliharaan akan ditambahkan ke harga terumbu karang</label>
-                        <?= ($rowbiaya->kapasitas_kapal != 0) ? "<label class='text-sm d-block'>Biaya agar Balik Modal : Rp. ".number_format($biaya_rekomendasi)." </label>" : "" ?>
+                        <?= ($rowbiaya->kapasitas_kapal > 1) ? "<label class='text-sm d-block'>Biaya agar Balik Modal : Rp. ".number_format($biaya_rekomendasi)." </label>" : "" ?>
                         <input type="hidden" id="biaya_pergantian_number2" name="biaya_pemeliharaan" value="<?=$rowbiaya->biaya_pemeliharaan?>">
                         <div class="row">
                           <div class="col-auto text-center p-2">
@@ -418,7 +418,7 @@ $id_lokasi = $_GET['id_lokasi'];
                         </div>
                         </form>
                               <div class="col text-center">
-                                <span onclick="simpanRekomendasiBaiaya()" class="btn btn-blue btn-sm btn-primary mt-2 mb-2 text-center"><i class="fas fa-donate"></i> Hitung Biaya</span>
+                                <button type="submit" onclick="simpanRekomendasiBaiaya()" class="btn btn-blue btn-sm btn-primary mt-2 mb-2 text-center"><i class="fas fa-donate"></i> Hitung Biaya</button>
                                 <button type="button" class="btn-sm btn-secondary rounded-pill border-0" data-dismiss="modal">Batal</button>
                               </div>
                             </div>

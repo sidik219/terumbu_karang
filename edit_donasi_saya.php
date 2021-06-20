@@ -15,9 +15,11 @@ include 'hak_akses.php';
     $stmt->execute(['id_donasi' => $id_donasi]);
     $rowitem = $stmt->fetch();
 
-    $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank';
+    $id_rekening_bersama = $rowitem->id_rekening_bersama;
+
+    $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank WHERE id_rekening_bank = :id_rekening_bersama';
     $stmt = $pdo->prepare($sqlviewrekeningbersama);
-    $stmt->execute();
+    $stmt->execute(['id_rekening_bersama' => $id_rekening_bersama]);
     $rowrekening = $stmt->fetch();
 
     if (isset($_POST['submit'])) {
