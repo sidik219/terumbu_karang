@@ -111,7 +111,7 @@ $row = $stmt->fetchAll();
                             <h4><span class="align-middle font-weight-bold">Kelola Wisata</span></h4>
                             
                             <!-- Cetak Laporan Wisata -->
-                            <a class="btn btn-success" href="laporan_wisata.php?laporan=wisata&id_wisata=<?=$row->id_wisata?>">
+                            <a class="btn btn-success" href="laporan_wisata.php?laporan=wisata&id_wisata=<?=$row->id_wisata?>" style="margin-bottom: 10px;">
                             <i class="fas fa-file-excel"></i> Laporan Wisata</a>
                         </div>
                         <div class="col">
@@ -193,7 +193,7 @@ $row = $stmt->fetchAll();
 
                                     <div class="row  mb-3">
                                         <div class="col-md-3 kolom font-weight-bold">
-                                            wisata
+                                            Wisata
                                         </div>
                                         <div class="col isi">
                                             <?=$rowitem->judul_wisata?>
