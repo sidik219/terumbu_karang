@@ -109,11 +109,13 @@ $row = $stmt->fetchAll();
                 <div class="row">
                         <div class="col">
                             <h4><span class="align-middle font-weight-bold">Kelola Wisata</span></h4>
+                            
+                            <!-- Cetak Laporan Wisata -->
+                            <a class="btn btn-success" href="laporan_wisata.php?laporan=wisata&id_wisata=<?=$row->id_wisata?>">
+                            <i class="fas fa-file-excel"></i> Laporan Wisata</a>
                         </div>
                         <div class="col">
-
-                        <a class="btn btn-primary float-right" href="kelola_fasilitas_wisata.php" role="button">Input Data Baru (+)</a>
-
+                            <a class="btn btn-primary float-right" href="kelola_fasilitas_wisata.php" role="button">Input Data Baru (+)</a>
                         </div>
                     </div>
                 <!-- /.container-fluid -->
