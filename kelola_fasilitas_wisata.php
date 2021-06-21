@@ -159,11 +159,11 @@ function ageCalculator($dob){
                     <table class="table table-striped table-responsive-sm">
                         <thead>
                             <tr>
-                            <th scope="col">ID Fasilitas</th>
-                            <th scope="col">Nama Fasilitas</th>
-                            <th scope="col">Biaya Fasilitas</th>
-                            <th scope="col">Update Terakhir</th>
-                            <th scope="col">Aksi</th>
+                                <th scope="col">ID Fasilitas</th>
+                                <th scope="col">Nama Fasilitas</th>
+                                <th scope="col">Biaya Fasilitas</th>
+                                <th scope="col">Update Terakhir</th>
+                                <th scope="col">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
