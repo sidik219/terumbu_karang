@@ -109,6 +109,12 @@ else{
                               <p> Kelola Laporan </p>
                       </a>
                   </li>
+                   <li class="nav-item"> <!-- Wilayah & Pusat -->
+                      <a href="kelola_arsip_laporan.php" class="nav-link '.('kelola_arsip_laporan.php' == $url_sekarang ? ' active ' : '').' ">
+                              <i class="nav-icon fas fa-history"></i>
+                              <p> Kelola Arsip Laporan </p>
+                      </a>
+                  </li>
                 <!--
                 <li class="nav-item">
                     <a href="kelola_user.php" class="nav-link '.('kelola_user.php' == $url_sekarang ? ' active ' : '').' ">
@@ -205,6 +211,12 @@ else{
                       <a href="kelola_laporan.php" class="nav-link '.('kelola_laporan.php' == $url_sekarang ? ' active ' : '').' ">
                               <i class="nav-icon fas fa-book"></i>
                               <p> Kelola Laporan </p>
+                      </a>
+                  </li>
+                  <li class="nav-item"> <!-- Wilayah & Pusat -->
+                      <a href="kelola_arsip_laporan.php" class="nav-link '.('kelola_arsip_laporan.php' == $url_sekarang ? ' active ' : '').' ">
+                              <i class="nav-icon fas fa-history"></i>
+                              <p> Kelola Arsip Laporan </p>
                       </a>
                   </li>
 

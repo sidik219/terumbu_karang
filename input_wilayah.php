@@ -17,6 +17,9 @@ if (isset($_POST['submit'])) {
     if($_POST['submit'] == 'Simpan'){
         $nama_wilayah        = $_POST['tbnama_wilayah'];
         $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
+        $alamat_kantor_wilayah = $_POST['alamat_kantor_wilayah'];
+        $kontak_wilayah = $_POST['kontak_wilayah'];
+        $sisi_pantai = $_POST['sisi_pantai'];
         $id_user_pengelola     = 1;
         $randomstring = substr(md5(rand()), 0, 7);
 
@@ -33,11 +36,12 @@ if (isset($_POST['submit'])) {
         //---image upload end
 
         $sqlwilayah = "INSERT INTO t_wilayah
-                        (nama_wilayah, deskripsi_wilayah, foto_wilayah, id_user_pengelola)
-                        VALUES (:nama_wilayah, :deskripsi_wilayah, :foto_wilayah, :id_user_pengelola)";
+                        (nama_wilayah, deskripsi_wilayah, foto_wilayah, id_user_pengelola, sisi_pantai, alamat_kantor_wilayah, kontak_wilayah)
+                        VALUES (:nama_wilayah, :deskripsi_wilayah, :foto_wilayah, :id_user_pengelola, :sisi_pantai, :alamat_kantor_wilayah, :kontak_wilayah)";
 
         $stmt = $pdo->prepare($sqlwilayah);
-        $stmt->execute(['nama_wilayah' => $nama_wilayah, 'deskripsi_wilayah' => $deskripsi_wilayah, 'foto_wilayah' => $foto_wilayah, 'id_user_pengelola' => $id_user_pengelola]);
+        $stmt->execute(['nama_wilayah' => $nama_wilayah, 'deskripsi_wilayah' => $deskripsi_wilayah, 'foto_wilayah' => $foto_wilayah, 'id_user_pengelola' => $id_user_pengelola, 'sisi_pantai' => $sisi_pantai,
+        'alamat_kantor_wilayah' => $alamat_kantor_wilayah, 'kontak_wilayah' => $kontak_wilayah]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
@@ -130,11 +134,22 @@ if (isset($_POST['submit'])) {
 
                           <div class="form-group">
                                 <label for="nama_wilayah">Nama Wilayah</label>
-                                <input type="text" class="form-control" name="tbnama_wilayah" id="#">
+                                <input type="text" class="form-control" name="tbnama_wilayah" id="#" required>
                           </div>
+
+                          <div class="form-group">
+                                <label for="alamat_kantor_wilayah">Alamat Kantor Wilayah</label>
+                                <input type="text" class="form-control" name="alamat_kantor_wilayah" id="alamat_kantor_wilayah" required>
+                          </div>
+
+                          <div class="form-group">
+                                <label for="kontak_wilayah">Kontak Wilayah</label>
+                                <input type="text" class="form-control" name="kontak_wilayah" id="kontak_wilayah" placeholder="Nomor yang bisa dihubungi" required>
+                          </div>
+
                           <div class="form-group">
                                 <label for="nama_wilayah">Deskripsi Wilayah</label>
-                                <input type="#" class="form-control" name="txtdeskripsi_wilayah" id="#" placeholder="Deskripsi singkat">
+                                <input type="text" class="form-control" name="txtdeskripsi_wilayah" id="#" placeholder="Deskripsi singkat">
                           </div>
 
                                         <div class='form-group' id='fotowilayah'>
@@ -168,6 +183,15 @@ if (isset($_POST['submit'])) {
                                                 }
                                             </script>
                                         </div>
+
+                                        <div class="form-group">
+                        <label for="dd_id_jenis">Sisi Pantai</label>
+                        <select id="dd_id_jenis" name="sisi_pantai" class="form-control" required>
+                        <option value="">-- Pilih Sisi Pantai --</option>
+                            <option value="Pantai Utara">Pantai Utara</option>
+                            <option value="Pantai Selatan">Pantai Selatan</option>
+                        </select>
+                    </div>
 
 
 

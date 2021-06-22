@@ -28,6 +28,9 @@ include 'hak_akses.php';
                 $nama_wilayah        = $_POST['tbnama_wilayah'];
                 $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
                 $id_user_pengelola     = 1;
+                $alamat_kantor_wilayah = $_POST['alamat_kantor_wilayah'];
+                $kontak_wilayah = $_POST['kontak_wilayah'];
+                $sisi_pantai = $_POST['sisi_pantai'];
 
                 //Image upload
             if($_FILES["image_uploads"]["size"] == 0) {
@@ -55,14 +58,15 @@ include 'hak_akses.php';
                 $sqleditwilayah = "UPDATE t_wilayah
                             SET nama_wilayah = :nama_wilayah,
                             deskripsi_wilayah = :deskripsi_wilayah, foto_wilayah = :foto_wilayah,
-                            id_user_pengelola = :id_user_pengelola
+                            id_user_pengelola = :id_user_pengelola, alamat_kantor_wilayah = :alamat_kantor_wilayah, kontak_wilayah = :kontak_wilayah, sisi_pantai = :sisi_pantai
                             WHERE id_wilayah = :id_wilayah";
 
                 $stmt = $pdo->prepare($sqleditwilayah);
                 $stmt->execute(['nama_wilayah' => $nama_wilayah,
                 'deskripsi_wilayah' => $deskripsi_wilayah,
                 'foto_wilayah' => $foto_wilayah, 'id_wilayah' => $id_wilayah,
-                'id_user_pengelola' => $id_user_pengelola]);
+                'id_user_pengelola' => $id_user_pengelola, 'sisi_pantai' => $sisi_pantai,
+                'alamat_kantor_wilayah' => $alamat_kantor_wilayah, 'kontak_wilayah' => $kontak_wilayah]);
 
                 $affectedrows = $stmt->rowCount();
                 if ($affectedrows == '0') {
@@ -156,11 +160,22 @@ include 'hak_akses.php';
 
                           <div class="form-group">
                                 <label for="nama_wilayah">Nama Wilayah</label>
-                                <input type="text" value="<?=$rowitem->nama_wilayah?>" class="form-control" name="tbnama_wilayah" id="#" placeholder="Nama Kota/Kabupaten">
+                                <input type="text" value="<?=$rowitem->nama_wilayah?>" class="form-control" name="tbnama_wilayah" id="nama_wilayah" placeholder="Nama Kota/Kabupaten" required>
                           </div>
+
                           <div class="form-group">
-                                <label for="nama_wilayah">Deskripsi Wilayah</label>
-                                <input type="#" value="<?=$rowitem->deskripsi_wilayah?>" class="form-control" name="txtdeskripsi_wilayah" id="#" placeholder="Deskripsi singkat">
+                                <label for="alamat_kantor_wilayah">Alamat Kantor Wilayah</label>
+                                <input type="text" class="form-control" value="<?=$rowitem->alamat_kantor_wilayah?>" name="alamat_kantor_wilayah" id="alamat_kantor_wilayah" required>
+                          </div>
+
+                          <div class="form-group">
+                                <label for="kontak_wilayah">Kontak Wilayah</label>
+                                <input type="text" class="form-control" value="<?=$rowitem->kontak_wilayah?>" name="kontak_wilayah" id="kontak_wilayah" placeholder="Nomor yang bisa dihubungi" required>
+                          </div>
+
+                          <div class="form-group">
+                                <label for="desk_wilayah">Deskripsi Wilayah</label>
+                                <input type="text" value="<?=$rowitem->deskripsi_wilayah?>" class="form-control" name="txtdeskripsi_wilayah" id="desk_wilayah" placeholder="Deskripsi singkat">
                           </div>
 
                                         <div class='form-group' id='fotowilayah'>
@@ -194,6 +209,15 @@ include 'hak_akses.php';
                                                 }
                                             </script>
                                         </div>
+
+                                        <div class="form-group">
+                        <label for="dd_id_jenis">Sisi Pantai</label>
+                        <select id="dd_id_jenis" name="sisi_pantai" class="form-control" required>
+                        <option value="">-- Pilih Sisi Pantai --</option>
+                            <option <?=$rowitem->sisi_pantai == "Pantai Utara" ? "selected" : "";?> value="Pantai Utara">Pantai Utara</option>
+                            <option <?=$rowitem->sisi_pantai == "Pantai Selatan" ? "selected" : "";?> value="Pantai Selatan">Pantai Selatan</option>
+                        </select>
+                    </div>
 
 
 
