@@ -8,16 +8,16 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
 //Generate arsip laporan baru menggunakan isi database terumbu karang saat ini.
 //Proses : Buat entry t_laporan baru, save last inserted id_laporan. Hitung semua data dan insert ke t_arsip_wilayah. INSERT INTO SELECT data t_arsip_lokasi dan t_arsip_titik.
 
-$tahun_sekarang = date("Y");
+$tahun_sekarang = date("Y") + 1;
 $tipe_laporan = "Arsip luas sebaran terumbu karang Tahun ".$tahun_sekarang;
 
-// $sqlarsipbaru = 'INSERT INTO t_laporan
-//                   (periode_laporan, tipe_laporan)
-//                   VALUES (:periode_laporan, :tipe_laporan)';
-// $stmt = $pdo->prepare($sqlarsipbaru);
-// $stmt->execute(['periode_laporan' => $periode_laporan, 'tipe_laporan' => $tipe_laporan]);
+$sqlarsipbaru = 'INSERT INTO t_laporan_sebaran
+                  (periode_laporan, tipe_laporan)
+                  VALUES (:periode_laporan, :tipe_laporan)';
+$stmt = $pdo->prepare($sqlarsipbaru);
+$stmt->execute(['periode_laporan' => $tahun_sekarang, 'tipe_laporan' => $tipe_laporan]);
 
-// $last_id_laporan = $pdo->lastInsertId(); //id_laporan terbaru
+$last_id_laporan = $pdo->lastInsertId(); //id_laporan terbaru
 
 //Hitung luas sebaran per wilayah
 
@@ -83,14 +83,36 @@ foreach ($rowwilayah as $rowitem) { //wilayah loop
                     $total_persentase_sebaran += $lokasi->persentase_sebaran ;
 
 
-                    //INSERT lokasi
-                  $sqlinsertlokasi = 'INSERT INTO t_arsip_lokasi
-                  (tahun_arsip_lokasi, id_lokasi, id_wilayah, id_laporan, total_titik_l, total_luas_l, luas_sebaran_l, persentase_sebaran_l, kondisi_l)
-                  VALUES (:tahun_arsip_lokasi, :id_lokasi, :id_wilayah, :id_laporan, :total_titik_l, :total_luas_l, :luas_sebaran_l, :persentase_sebaran_l, :kondisi_l)';
-                  $stmt = $pdo->prepare($sqlinsertlokasi);
-                  $stmt->execute(['tahun_arsip_lokasi' => $tahun_arsip_lokasi, 'id_lokasi' => $id_lokasi, 'id_wilayah' => $id_wilayah, 'id_laporan' => $id_laporan
-                        , 'total_titik_l' => $total_titik_l, 'total_luas_l' => $total_luas_l, 'luas_sebaran_l' => $luas_sebaran_l, 'persentase_sebaran_l' => $persentase_sebaran_l,
-                        'persentase_sebaran_l' => $persentase_sebaran_l, 'kondisi_l' => $kondisi_l]);
+                    //INSERT t_arsip_lokasi
+
+                    $tahun_arsip_lokasi = $tahun_sekarang;
+                    $id_lokasi = $lokasi->id_lokasi;
+                    $id_wilayah = $rowitem->id_wilayah;
+                    $id_laporan = $last_id_laporan;
+                    $total_titik_l = $lokasi->jumlah_titik;
+                    $total_luas_l = round($lokasi->total_lokasi, 0);
+                    $luas_sebaran_l = $lokasi->total_titik;
+                    $persentase_sebaran_l = round($lokasi->persentase_sebaran,1);
+                    $kondisi_l = $kondisi_lokasi;
+
+
+                    // echo 'Lokasi: '. $lokasi->nama_lokasi
+                    //     .'<br>id: '. $id_lokasi
+                    //     .'<br>total titik: '. $total_titik_l
+                    //     .'<br>total luas: '. $total_luas_l
+                    //     .'<br>luas sebaran: '. $luas_sebaran_l
+                    //     .'<br>persen sebaran: '. $persentase_sebaran_l
+                    //     .'<br>kondisi rata2: '. $kondisi_l
+                    //     .'<br>'. $id_laporan
+                    //     .'<br>==========================================<br>';
+
+                    $sqlinsertlokasi = 'INSERT INTO t_arsip_lokasi
+                    (tahun_arsip_lokasi, id_lokasi, id_wilayah, id_laporan, total_titik_l, total_luas_l, luas_sebaran_l, persentase_sebaran_l, kondisi_l)
+                    VALUES (:tahun_arsip_lokasi, :id_lokasi, :id_wilayah, :id_laporan, :total_titik_l, :total_luas_l, :luas_sebaran_l, :persentase_sebaran_l, :kondisi_l)';
+                    $stmt = $pdo->prepare($sqlinsertlokasi);
+                    $stmt->execute(['tahun_arsip_lokasi' => $tahun_arsip_lokasi, 'id_lokasi' => $id_lokasi, 'id_wilayah' => $id_wilayah, 'id_laporan' => $id_laporan
+                          , 'total_titik_l' => $total_titik_l, 'total_luas_l' => $total_luas_l, 'luas_sebaran_l' => $luas_sebaran_l, 'persentase_sebaran_l' => $persentase_sebaran_l,
+                          'persentase_sebaran_l' => $persentase_sebaran_l, 'kondisi_l' => $kondisi_l]);
 
                 } //lokasi loop end
 
@@ -119,43 +141,45 @@ foreach ($rowwilayah as $rowitem) { //wilayah loop
                         $luas_sebaran_w = $rowitem->total_titik;
                         $persentase_sebaran_w = round(($rowitem->total_titik / $total_luas_lokasi) * 100, 1);
                         $kondisi_w = $kondisi_wilayah;
-                        // $id_laporan = $last_id_laporan;
+                        $id_laporan = $last_id_laporan;
                         $sisi_pantai = $rowitem->sisi_pantai;
                         $kurang = $kurang_luas;
                         $cukup = $cukup_luas;
                         $baik = $baik_luas;
                         $sangat_baik = $sangat_baik_luas;
 
-                        echo 'Wilayah: '. $rowitem->nama_wilayah
-                        .'<br>id: '. $id_wilayah
-                        .'<br>total titik: '. $total_titik_w
-                        .'<br>total luas: '. $total_luas_w
-                        .'<br>luas sebaran: '. $luas_sebaran_w
-                        .'<br>luas sebaran: '. $persentase_sebaran_w
-                        .'<br>kondisi rata2: '. $kondisi_w
-                        // .'<br>'. $id_laporan
-                        .'<br>'. $sisi_pantai
-                        .'<br>kurang : '. $kurang
-                        .'<br>cukup: '. $cukup
-                        .'<br>baik: '. $baik
-                        .'<br>sangat baik: '. $sangat_baik
-                        .'<br>==========================================<br>';
+                        // echo 'Wilayah: '. $rowitem->nama_wilayah
+                        // .'<br>id: '. $id_wilayah
+                        // .'<br>total titik: '. $total_titik_w
+                        // .'<br>total luas: '. $total_luas_w
+                        // .'<br>luas sebaran: '. $luas_sebaran_w
+                        // .'<br>persen sebaran: '. $persentase_sebaran_w
+                        // .'<br>kondisi rata2: '. $kondisi_w
+                        // // .'<br>'. $id_laporan
+                        // .'<br>'. $sisi_pantai
+                        // .'<br>kurang : '. $kurang
+                        // .'<br>cukup: '. $cukup
+                        // .'<br>baik: '. $baik
+                        // .'<br>sangat baik: '. $sangat_baik
+                        // .'<br>==========================================<br>';
 
-            //   $sql_arsip_wilayah = 'INSERT INTO t_arsip_wilayah
-            //       (tahun_arsip_wilayah, id_wilayah, total_titik_w, total_luas_w, luas_sebaran_w,
-            //       persentase_sebaran_w, kondisi_w, id_laporan, sisi_pantai, kurang, cukup, baik, sangat_baik)
+              $sql_arsip_wilayah = 'INSERT INTO t_arsip_wilayah
+                  (tahun_arsip_wilayah, id_wilayah, total_titik_w, total_luas_w, luas_sebaran_w,
+                  persentase_sebaran_w, kondisi_w, id_laporan, sisi_pantai, kurang, cukup, baik, sangat_baik)
 
-            //       VALUES (:tahun_arsip_wilayah, :id_wilayah, :total_titik_w, :total_luas_w, :luas_sebaran_w,
-            //       :persentase_sebaran_w, :kondisi_w, :id_laporan, :sisi_pantai, :kurang, :cukup, :baik, :sangat_baik)';
-            // $stmt = $pdo->prepare($sql_arsip_wilayah);
-            // $stmt->execute(['tahun_arsip_wilayah' => $tahun_arsip_wilayah, 'id_wilayah' => $id_wilayah, 'total_titik_w' => $total_titik_w, 'total_luas_w' => $total_luas_w
-            // , 'luas_sebaran_w' => $luas_sebaran_w, 'persentase_sebaran_w' => $persentase_sebaran_w, 'kondisi_w' => $kondisi_w, 'id_laporan' => $id_laporan, 'sisi_pantai' => $sisi_pantai
-            // , 'kurang' => $kurang, 'cukup' => $cukup, 'baik' => $baik, 'sangat_baik' => $sangat_baik]);
+                  VALUES (:tahun_arsip_wilayah, :id_wilayah, :total_titik_w, :total_luas_w, :luas_sebaran_w,
+                  :persentase_sebaran_w, :kondisi_w, :id_laporan, :sisi_pantai, :kurang, :cukup, :baik, :sangat_baik)';
+            $stmt = $pdo->prepare($sql_arsip_wilayah);
+            $stmt->execute(['tahun_arsip_wilayah' => $tahun_arsip_wilayah, 'id_wilayah' => $id_wilayah, 'total_titik_w' => $total_titik_w, 'total_luas_w' => $total_luas_w
+            , 'luas_sebaran_w' => $luas_sebaran_w, 'persentase_sebaran_w' => $persentase_sebaran_w, 'kondisi_w' => $kondisi_w, 'id_laporan' => $id_laporan, 'sisi_pantai' => $sisi_pantai
+            , 'kurang' => $kurang, 'cukup' => $cukup, 'baik' => $baik, 'sangat_baik' => $sangat_baik]);
 
 
 
 
 }//Wilayah loop end
+
+header('location: kelola_arsip_laporan_sebaran.php?status=addsuccess');
 
 
 

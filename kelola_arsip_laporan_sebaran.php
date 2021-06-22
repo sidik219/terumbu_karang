@@ -6,9 +6,9 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-$sqlviewjenis = 'SELECT * FROM t_jenis_terumbu_karang
-                ORDER BY nama_jenis';
-$stmt = $pdo->prepare($sqlviewjenis);
+$sqlviewlaporan = 'SELECT * FROM t_laporan_sebaran
+                ORDER BY periode_laporan';
+$stmt = $pdo->prepare($sqlviewlaporan);
 $stmt->execute();
 $row = $stmt->fetchAll();
 
@@ -17,7 +17,7 @@ $row = $stmt->fetchAll();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Arsip Laporan - GoKarang</title>
+    <title>Kelola Arsip Laporan Sebaran - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -83,12 +83,12 @@ $row = $stmt->fetchAll();
                 <div class="container-fluid">
                 <div class="row">
                         <div class="col">
-                            <h4><span class="align-middle font-weight-bold">Kelola Arsip Laporan</span></h4>
+                            <h4><span class="align-middle font-weight-bold">Kelola Arsip Laporan Sebaran</span></h4>
                         </div>
                         <div class="col">
 
                         <a class="btn btn-primary float-right" href="input_jenis_tk.php" role="button">Input Data Baru (+)</a>
-                        <a class="btn btn-primary float-right mr-2" href="generate_arsip_laporan_baru.php" role="button">Capture Data Baru (+)</a>
+                        <a class="btn btn-primary float-right mr-2" href="generate_arsip_laporan_sebaran_baru.php" role="button">Capture Data Baru (+)</a>
                         </div>
                     </div>
                 </div>
@@ -133,9 +133,9 @@ $row = $stmt->fetchAll();
                           foreach ($row as $rowitem) {
                           ?>
                           <tr>
-                              <th scope="row"><?=$rowitem->id_jenis?></th>
-                              <td><?=$rowitem->nama_jenis?></td>
-                              <td><?=$rowitem->nama_jenis?></td>
+                              <th scope="row"><?=$rowitem->id_laporan?></th>
+                              <td><?=$rowitem->periode_laporan?></td>
+                              <td><?=$rowitem->tipe_laporan?></td>
                               <td>
                               <a href="edit_jenis_tk.php?id_jenis=<?=$rowitem->id_jenis?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 <a href="hapus.php?type=jenis&id_jenis=<?=$rowitem->id_jenis?>" class="far fa-trash-alt btn btn-act"></a>
