@@ -12,36 +12,6 @@ $stmt = $pdo->prepare($sqlviewfasilitas);
 $stmt->execute();
 $rowfasilitas = $stmt->fetchAll();
 
-// if (isset($_POST['submit'])) {
-//     if ($_POST['submit'] == 'Simpan') {
-//         //var_dump($_POST['nama_fasilitas']);var_dump($_POST['biaya_fasilitas']);exit();
-//         $i = 0;
-//         foreach ($_POST['nama_fasilitas'] as $nama_fasilitas) {
-//             $nama_fasilitas    = $_POST['nama_fasilitas'][$i];
-//             $biaya_fasilitas   = $_POST['biaya_fasilitas'][$i];
-
-//             $sqlinsertfasilitas = "INSERT INTO tb_fasilitas_wisata (nama_fasilitas, biaya_fasilitas)
-//                                         VALUES (:nama_fasilitas, :biaya_fasilitas)";
-
-//             $stmt = $pdo->prepare($sqlinsertfasilitas);
-//             $stmt->execute(['nama_fasilitas' => $nama_fasilitas,
-//                             'biaya_fasilitas' => $biaya_fasilitas
-//                             ]);
-
-//             $affectedrows = $stmt->rowCount();
-//             if ($affectedrows == '0') {
-//                 header("Location: input_fasilitas_wisata.php?status=insertfailed");
-//             } else {
-//                 //echo "HAHAHAAHA GREAT SUCCESSS !";
-//                 header("Location: input_fasilitas_wisata.php?status=addsuccess");
-//             }
-//             $i++;
-//         } //End Foreach
-//     } else {
-//         echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
-//     }
-// }
-
 function ageCalculator($dob){
     $birthdate = new DateTime($dob);
     $today   = new DateTime('today');
@@ -77,6 +47,7 @@ function ageCalculator($dob){
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style-card.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="js/trumbowyg/dist/ui/trumbowyg.min.css">
@@ -139,6 +110,12 @@ function ageCalculator($dob){
                 <div class="container-fluid">
                     <a class="btn btn-outline-primary" href="kelola_wisata.php">< Kembali</a><br><br>
                     <h4><span class="align-middle font-weight-bold">Data Fasilitas Wisata</span></h4>
+                    <ul class="app-breadcrumb breadcrumb" style="margin-bottom: 20px;">
+                        <li class="breadcrumb-item">
+                            <a href="kelola_wisata.php" class="non">Kelola Wisata</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="kelola_fasilitas_wisata.php" class="tanda">Data Fasilitas Wisata</a></li>
+                    </ul>
                 </div>
                 <!-- /.container-fluid -->
             </div>

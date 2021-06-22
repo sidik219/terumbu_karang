@@ -64,6 +64,7 @@ if (isset($_POST['submit'])) {
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style-card.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="js/trumbowyg/dist/ui/trumbowyg.min.css">
@@ -126,6 +127,16 @@ if (isset($_POST['submit'])) {
                 <div class="container-fluid">
                     <a class="btn btn-outline-primary" href="input_wisata.php">< Kembali</a><br><br>
                     <h4><span class="align-middle font-weight-bold">Input Data Fasilitas</span></h4>
+                    <ul class="app-breadcrumb breadcrumb" style="margin-bottom: 20px;">
+                        <li class="breadcrumb-item">
+                            <a href="kelola_wisata.php" class="non">Kelola Wisata</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="kelola_fasilitas_wisata.php" class="non">Data Fasilitas Wisata</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="input_wisata.php" class="non">Input Wisata</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="input_fasilitas_wisata.php" class="tanda">Input Fasilitas</a></li>
+                    </ul>
                 </div>
                 <div align="right">
                     <a class="btn btn-outline-primary" href="input_paket_wisata.php">

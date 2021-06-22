@@ -20,16 +20,20 @@ include 'hak_akses.php';
             $nama_fasilitas  = $_POST['nama_fasilitas'];
             $biaya_fasilitas = $_POST['biaya_fasilitas'];
             $id_wisata       = $_POST['id_wisata'];
+
+            $tanggal_sekarang = date ('Y-m-d H:i:s', time());
             
             $sqlwisata = "UPDATE tb_fasilitas_wisata
                             SET nama_fasilitas  = :nama_fasilitas, 
-                                biaya_fasilitas = :biaya_fasilitas, 
+                                biaya_fasilitas = :biaya_fasilitas,
+                                update_terakhir = :update_terakhir,
                                 id_wisata       = :id_wisata
                             WHERE id_fasilitas_wisata = :id_fasilitas_wisata";
 
             $stmt = $pdo->prepare($sqlwisata);
             $stmt->execute(['nama_fasilitas' => $nama_fasilitas,
                             'biaya_fasilitas' => $biaya_fasilitas,
+                            'update_terakhir' => $tanggal_sekarang,
                             'id_wisata' => $id_wisata,
                             'id_fasilitas_wisata' => $id_fasilitas_wisata
                             ]);

@@ -3,204 +3,269 @@
 *,
 *::before,
 *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html {
-    font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 img {
-    width: 100%;
+  width: 100%;
 }
 
 body {
-    font-family: MontserratRegular;
-    background-color: #F5F7FA;
+  font-family: MontserratRegular;
+  background-color: #f5f7fa;
 }
 
 .card-donasi {
-    width: 100%;
-    background-image: url('../images/topbarbg.jpg');
-    background-size: cover;
-    display: flex;
-    align-items: center;
-    border-radius: .8rem;
+  width: 100%;
+  background-image: url("../images/topbarbg.jpg");
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  border-radius: 0.8rem;
 }
 
 .card-body-costom {
-    background-image: url('../images/topbarbg.jpg');
+  background-image: url("../images/topbarbg.jpg");
 }
 
 .card-donasi__img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    border-radius: .8rem;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0.8rem;
 }
 
 .card-donasi__img::before {
-    content: '';
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    box-shadow: .5rem .5rem 3rem 1px rgba(0, 0, 0, .05);
-    border-radius: .8rem;
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-shadow: 0.5rem 0.5rem 3rem 1px rgba(0, 0, 0, 0.05);
+  border-radius: 0.8rem;
 }
 
 .card-donasi__tk span {
-    display: block;
-    color: black;
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin: .5rem 0;
-    margin-left: 8rem;
+  display: block;
+  color: black;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0.5rem 0;
+  margin-left: 8rem;
 }
 
 .card-donasi__title {
-    font-size: 1.5rem;
-    margin: 1.5rem 0 2rem;
-    margin-left: 8rem;
-    text-transform: uppercase;
-    color: #E24901;
+  font-size: 1.5rem;
+  margin: 1.5rem 0 2rem;
+  margin-left: 8rem;
+  text-transform: uppercase;
+  color: #e24901;
 }
 
 .card-donasi__text {
-    margin-bottom: 1rem;
-    margin-left: 8rem;
-    font-weight: 1.5rem;
-    color: black;
+  margin-bottom: 1rem;
+  margin-left: 8rem;
+  font-weight: 1.5rem;
+  color: black;
 }
 
 .card-donasi__jarak {
-    margin-left: 8rem;
+  margin-left: 8rem;
 }
 
 .card-donasi__cta {
-    display: inline-block;
-    padding: 1rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    /*font-size: .7rem;*/
-    color: white;
-    background-image: linear-gradient(to right, #E24901 100%, #E24901 100%);
-    border-radius: .8rem;
-    text-decoration: none;
-    margin-left: 8rem;
-    width: 100%;
-    height: 40px;
-    text-align: center
+  display: inline-block;
+  padding: 1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  /*font-size: .7rem;*/
+  color: white;
+  background-image: linear-gradient(to right, #e24901 100%, #e24901 100%);
+  border-radius: 0.8rem;
+  text-decoration: none;
+  margin-left: 8rem;
+  width: 100%;
+  height: 40px;
+  text-align: center;
 }
 
 @media screen and (max-width: 1068px) {
-    .card-donasi {
-        max-width: 80rem;
-    }
-    .card-donasi__img {
-        min-width: 30rem;
-        max-width: 30rem;
-    }
+  .card-donasi {
+    max-width: 80rem;
+  }
+  .card-donasi__img {
+    min-width: 30rem;
+    max-width: 30rem;
+  }
 }
 
 @media screen and (max-width: 868px) {
-    .card-donasi {
-        max-width: 70rem;
-    }
+  .card-donasi {
+    max-width: 70rem;
+  }
 }
 
 @media screen and (max-width: 768px) {
-    .card-donasi {
-        padding: 2.5rem;
-        flex-direction: column;
-    }
-    .card-donasi__img {
-        min-width: 100%;
-        max-width: 100%;
-        transform: translate(-3rem, -1rem);
-    }
-    .card-donasi__tk span {
-        margin-right: 20rem;
-        font-size: 1.2rem;
-        font-weight: 600;
-    }
-    .card-donasi__jarak {
-        margin-right: 8rem;
-    }
-    .card-donasi__cta {
-        margin-left: 8rem;
-        width: 50%;
-    }
+  .card-donasi {
+    padding: 2.5rem;
+    flex-direction: column;
+  }
+  .card-donasi__img {
+    min-width: 100%;
+    max-width: 100%;
+    transform: translate(-3rem, -1rem);
+  }
+  .card-donasi__tk span {
+    margin-right: 20rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  .card-donasi__jarak {
+    margin-right: 8rem;
+  }
+  .card-donasi__cta {
+    margin-left: 8rem;
+    width: 50%;
+  }
 }
 
 .card-reservasi {
-    font-weight: bold;
-    color: white;
-    background-image: url('../images/sidebarbg.jpg');
+  font-weight: bold;
+  color: white;
+  background-image: url("../images/sidebarbg.jpg");
 }
 
 .reservasi-input {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 .keterangan-paket-donasi {
-    font-size: 15px;
-    margin-left: 15px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+  font-size: 15px;
+  margin-left: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
-.paket-wisata{
-    border: none; 
-    color: black; 
-    background-color: white;
+.paket-wisata {
+  border: none;
+  color: black;
+  background-color: white;
 }
 
 /*Div Paket Wisata*/
-.divTable{
-	display: table;
-	width: 100%;
+.divTable {
+  display: table;
+  width: 100%;
 }
 .divTableRow {
-	display: table-row;
+  display: table-row;
 }
 .divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
+  background-color: #eee;
+  display: table-header-group;
 }
-.divTableCell-1, .divTableHead {
-	border: none;
-	display: table-cell;
-    padding: 3px 10px;
-    text-align: left;
+.divTableCell-1,
+.divTableHead {
+  border: none;
+  display: table-cell;
+  padding: 3px 10px;
+  text-align: left;
 }
-.divTableCell-2, .divTableHead {
-	border: none;
-	display: table-cell;
-    padding: 3px 10px;
-    text-align: right;
+.divTableCell-2,
+.divTableHead {
+  border: none;
+  display: table-cell;
+  padding: 3px 10px;
+  text-align: right;
 }
 .divTableHeading {
-	background-color: #EEE;
-	display: table-header-group;
-	font-weight: bold;
+  background-color: #eee;
+  display: table-header-group;
+  font-weight: bold;
 }
 .divTableFoot {
-	background-color: #EEE;
-	display: table-footer-group;
-	font-weight: bold;
+  background-color: #eee;
+  display: table-footer-group;
+  font-weight: bold;
 }
 .divTableBody {
-	display: table-row-group;
+  display: table-row-group;
 }
 
 /* Same size img paket wisata */
 .img-paket-wisata {
-    width:  100%;
-    height: 200px;
-    background-size: cover;
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+}
+
+/* Untuk menentukan sedang di halaman mana */
+.tanda {
+  color: #594df7;
+}
+
+.non {
+  color: #666666;
+}
+
+.breadcrumb {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  list-style: none;
+  background-color: #e9ecef;
+  border-radius: 0.25rem;
+}
+
+.breadcrumb-item + .breadcrumb-item {
+  padding-left: 0.5rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  display: inline-block;
+  padding-right: 0.5rem;
+  color: #6c757d;
+  content: "/";
+}
+
+.breadcrumb-item + .breadcrumb-item:hover::before {
+  text-decoration: underline;
+}
+
+.breadcrumb-item + .breadcrumb-item:hover::before {
+  text-decoration: none;
+}
+
+.breadcrumb-item.active {
+  color: #6c757d;
+}
+
+.app-breadcrumb {
+  margin-bottom: 0;
+  text-align: right;
+  font-weight: 500;
+  font-size: 13px;
+  text-transform: capitalize;
+  padding: 0;
+  text-align: left;
+  padding: 0;
+  background-color: transparent;
+}
+
+@media (max-width: 480px) {
+  .app-breadcrumb {
+    margin-top: 10px;
+  }
 }

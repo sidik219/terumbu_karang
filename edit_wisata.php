@@ -24,67 +24,35 @@ include 'hak_akses.php';
         $wisata = $stmt->fetch();
 
         if (isset($_POST['submit'])) {
-            if ($_POST['submit'] == 'Simpan') {
-                $id_lokasi                  = $_POST['dd_id_lokasi'];
-                $judul_wisata               = $_POST['tb_judul_wisata'];
-                $deskripsi_wisata           = $_POST['tb_deskripsi_wisata'];
-                
-                $sqldeletefasilitas = "DELETE FROM tb_fasilitas_wisata
-                                        WHERE id_wisata = :id_wisata";
+            $id_lokasi                  = $_POST['dd_id_lokasi'];
+            $judul_wisata               = $_POST['tb_judul_wisata'];
+            $deskripsi_wisata           = $_POST['tb_deskripsi_wisata'];
+            
+            $sqldeletefasilitas = "DELETE FROM tb_fasilitas_wisata
+                                    WHERE id_wisata = :id_wisata";
 
-                $stmt = $pdo->prepare($sqldeletefasilitas);
-                $stmt->execute(['id_wisata' => $id_wisata]);
-                
-                $sqlwisata = "UPDATE t_wisata
-                                SET id_lokasi = :id_lokasi, 
-                                    judul_wisata = :judul_wisata, 
-                                    deskripsi_wisata = :deskripsi_wisata
-                                WHERE id_wisata = :id_wisata";
+            $stmt = $pdo->prepare($sqldeletefasilitas);
+            $stmt->execute(['id_wisata' => $id_wisata]);
+            
+            $sqlwisata = "UPDATE t_wisata
+                            SET id_lokasi = :id_lokasi, 
+                                judul_wisata = :judul_wisata, 
+                                deskripsi_wisata = :deskripsi_wisata
+                            WHERE id_wisata = :id_wisata";
 
-                $stmt = $pdo->prepare($sqlwisata);
-                $stmt->execute(['id_wisata' => $id_wisata,
-                                'id_lokasi' => $id_lokasi,
-                                'judul_wisata' => $judul_wisata,
-                                'deskripsi_wisata' => $deskripsi_wisata
-                                ]);
+            $stmt = $pdo->prepare($sqlwisata);
+            $stmt->execute(['id_wisata' => $id_wisata,
+                            'id_lokasi' => $id_lokasi,
+                            'judul_wisata' => $judul_wisata,
+                            'deskripsi_wisata' => $deskripsi_wisata
+                            ]);
 
-                $affectedrows = $stmt->rowCount();
-                if ($affectedrows == '0') {
-                    header("Location: kelola_wisata.php?status=nochange");
-                } else {
-                    //echo "HAHAHAAHA GREAT SUCCESSS !";
-                    $last_wisata_id = $pdo->lastInsertId();
-                }
-
-                $i = 0;
-                foreach ($_POST['nama_fasilitas'] as $nama_fasilitas) {
-                    $nama_fasilitas    = $_POST['nama_fasilitas'][$i];
-                    $biaya_fasilitas   = $_POST['biaya_fasilitas'][$i];
-                    $id_wisata         = $_GET['id_wisata'];
-
-                    $tanggal_sekarang = date ('Y-m-d H:i:s', time());
-
-                    $sqlinsertfasilitas = "INSERT INTO tb_fasilitas_wisata (nama_fasilitas, biaya_fasilitas, id_wisata, update_terakhir)
-                                        VALUES (:nama_fasilitas, :biaya_fasilitas, :id_wisata, :update_terakhir)";
-
-                    $stmt = $pdo->prepare($sqlinsertfasilitas);
-                    $stmt->execute(['nama_fasilitas' => $nama_fasilitas,
-                                    'biaya_fasilitas' => $biaya_fasilitas,
-                                    'id_wisata' => $id_wisata,
-                                    'update_terakhir' => $tanggal_sekarang
-                                    ]);
-
-                    $affectedrows = $stmt->rowCount();
-                    if ($affectedrows == '0') {
-                        header("Location: kelola_wisata.php?status=insertfailed");
-                    } else {
-                        //echo "HAHAHAAHA GREAT SUCCESSS !";
-                        header("Location: kelola_wisata.php?status=updatesuccess");
-                    }
-                    $i++;
-                } //End Foreach
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+                header("Location: kelola_wisata.php?status=insertfailed");
             } else {
-                echo '<script>alert("Harap pilih paket donasi yang akan ditambahkan")</script>';
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                header("Location: kelola_wisata.php?status=updatesuccess");
             }
         }
 
@@ -205,50 +173,9 @@ include 'hak_akses.php';
                         <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" value="<?=$wisata->deskripsi_wisata?>" class="form-control" required>
                     </div>
 
-                    <div class="form-group field_wrapper">
-                        <label for="paket_wisata">Fasilitas Wisata</label><br>
-                        <div class="form-group fieldGroup">
-                            <div class="input-group">
-                                <?php
-                                $sqlviewpaket = 'SELECT * FROM tb_fasilitas_wisata 
-                                                    LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
-                                                    WHERE t_wisata.id_wisata = :id_wisata
-                                                    AND t_wisata.id_wisata = t_wisata.id_wisata';
-
-                                $stmt = $pdo->prepare($sqlviewpaket);
-                                $stmt->execute(['id_wisata' => $wisata->id_wisata]);
-                                $rowfasilitas = $stmt->fetchAll();
-
-                                foreach ($rowfasilitas as $fasilitas) { ?>
-                                <input type="text" name="nama_fasilitas[]" value="<?=$fasilitas->nama_fasilitas?>" class="form-control" placeholder="Nama Fasilitas"/>
-                                <input type="number" name="biaya_fasilitas[]" value="<?=$fasilitas->biaya_fasilitas?>" class="form-control" placeholder="Biaya Fasilitas"/>
-                                <?php } ?>
-                                <div class="input-group-addon">
-                                    <a href="javascript:void(0)" class="btn btn-success addMore">
-                                        <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Fasilitas
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <p align="center">
                     <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form><br><br>
-
-                    <!-- copy of input fields group -->
-                    <div class="form-group fieldGroupCopy" style="display: none;">
-                        <div class="input-group">
-                            <input type="text" name="nama_fasilitas[]" class="form-control" placeholder="Nama Fasilitas"/>
-                            <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/>
-                            
-                            <div class="input-group-addon">
-                                <a href="javascript:void(0)" class="btn btn-danger remove">
-                                    <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Fasilitas
-                                </a>
-                            </div>
-                        </div>
-                    </div>
 
             </section>
             <!-- /.Left col -->
@@ -284,29 +211,6 @@ include 'hak_akses.php';
     
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-
-    <!-- Fasilitas wisata -->
-    <script>
-        $(document).ready(function(){
-        //group add limit
-        var maxGroup = 50;
-
-        //add more fields group
-        $(".addMore").click(function(){
-            if($('body').find('.fieldGroup').length < maxGroup){
-                var fieldHTML = '<div class="form-group fieldGroup">'+$(".fieldGroupCopy").html()+'</div>';
-                $('body').find('.fieldGroup:last').after(fieldHTML);
-            }else{
-                alert('Maksimal '+maxGroup+' group yang boleh dibuat.');
-            }
-        });
-
-        //remove fields group
-        $("body").on("click",".remove",function(){
-            $(this).parents(".fieldGroup").remove();
-        });
-    });
-    </script>
 
 </div>
 
