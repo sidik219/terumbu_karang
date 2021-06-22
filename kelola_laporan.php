@@ -264,7 +264,7 @@ $rowwilayah = $stmt->fetchAll();
 
                 ?>
 
-                                    <tr class="table-active border-top">
+                          <tr class="table-active border-top">
                             <th scope="row">Total</th>      <!-- TOTAL WILAYAH -->
                             <th><?=$rowitem->jumlah_titik?></th>
                             <th><?=number_format($rowitem->total_titik).' / '.number_format($total_luas_lokasi).' ha'?></th>
