@@ -178,7 +178,7 @@ function ageCalculator($dob){
                                     <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($fasilitas->update_terakhir).' yang lalu)';?></small>
                                 <td>
                                     <a href="edit_fasilitas_wisata.php?id_fasilitas_wisata=<?=$fasilitas->id_fasilitas_wisata?>" class="fas fa-edit mr-3 btn btn-act"></a>
-                                    <a href="hapus.php?type=wisata&id_wisata=<?=$fasilitas->id_fasilitas_wisata?>" class="far fa-trash-alt btn btn-act"></a>
+                                    <a href="hapus.php?type=fasilitas_wisata&id_fasilitas_wisata=<?=$fasilitas->id_fasilitas_wisata?>" class="far fa-trash-alt btn btn-act"></a>
                                 </td>
                             </tr>
                             <?php } ?>

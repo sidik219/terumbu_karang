@@ -92,3 +92,11 @@ elseif ($type == 'rekening_bersama'){
             $stmt->execute(['id_rekening_bank' => $_GET['id_rekening_bank']]);
             header('Location: kelola_rekening_bersama.php?status=deletesuccess');
 }
+elseif ($type == 'fasilitas_wisata'){
+    $sql = 'DELETE FROM tb_fasilitas_wisata
+            WHERE id_fasilitas_wisata = :id_fasilitas_wisata';
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_fasilitas_wisata' => $_GET['id_fasilitas_wisata']]);
+            header('Location: kelola_fasilitas_wisata.php?status=deletesuccess');
+}
