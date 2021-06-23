@@ -219,8 +219,14 @@ else{
                               <p> Kelola Laporan </p>
                       </a>
                   </li>
+                  <li class="nav-item"> <!-- Wilayah -->
+                      <a href="kelola_laporan_baru.php" class="nav-link '.('kelola_laporan_baru.php' == $url_sekarang ? ' active ' : '').' ">
+                              <i class="nav-icon fas fa-book"></i>
+                              <p> Kelola Laporan Baru</p>
+                      </a>
+                  </li>
                   <li class="nav-item"> <!-- Wilayah & Pusat -->
-                      <a href="kelola_arsip_laporan.php" class="nav-link '.('kelola_arsip_laporan.php' == $url_sekarang ? ' active ' : '').' ">
+                      <a href="kelola_arsip_laporan_sebaran.php" class="nav-link '.('kelola_arsip_laporan_sebaran.php' == $url_sekarang ? ' active ' : '').' ">
                               <i class="nav-icon fas fa-history"></i>
                               <p> Kelola Arsip Laporan </p>
                       </a>

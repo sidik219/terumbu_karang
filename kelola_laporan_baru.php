@@ -3,16 +3,36 @@ session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-$sqlviewwilayah = 'SELECT *, SUM(luas_titik) AS total_titik,
-                    COUNT(t_titik.id_titik) AS jumlah_titik,
-                    SUM(t_lokasi.luas_lokasi) / (SELECT COUNT(t_titik.id_titik) GROUP BY t_titik.id_titik) AS total_lokasi,
-                    (SUM(t_titik.luas_titik) / (SUM(t_lokasi.luas_lokasi) / (SELECT COUNT(t_titik.id_titik) GROUP BY t_titik.id_titik))) * 100 AS persentase_sebaran
+if(isset($_GET['awal'])){
+        $awal      = (int) $_GET['awal'];
+        $akhir     = (int) $_GET['akhir'];
+        if($akhir < $awal){
+          $temp = $awal;
+          $awal = $akhir;
+          $akhir = $temp;
+        }
 
-                    FROM t_titik, t_lokasi, t_wilayah
-					          WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
-                    AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
-                    GROUP BY t_wilayah.id_wilayah
-ORDER BY t_lokasi.id_wilayah ASC';
+        $limit_hasil = ' ';
+    }
+    else{
+        $awal      = (int) " 1 ";
+        $akhir     = (int) " 9999 ";
+        $limit_hasil = ' LIMIT 3 ';
+    }
+
+    $query_periode = ' WHERE tahun_arsip_wilayah BETWEEN :awal AND :akhir ';
+    $query_periode_and = ' AND tahun_arsip_wilayah BETWEEN :awal AND :akhir ';
+
+// $sqlviewwilayah = 'SELECT *, SUM(luas_titik) AS total_titik,
+//                     COUNT(t_titik.id_titik) AS jumlah_titik,
+//                     SUM(t_lokasi.luas_lokasi) / (SELECT COUNT(t_titik.id_titik) GROUP BY t_titik.id_titik) AS total_lokasi,
+//                     (SUM(t_titik.luas_titik) / (SUM(t_lokasi.luas_lokasi) / (SELECT COUNT(t_titik.id_titik) GROUP BY t_titik.id_titik))) * 100 AS persentase_sebaran
+
+//                     FROM t_titik, t_lokasi, t_wilayah
+// 					          WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
+//                     AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
+//                     GROUP BY t_wilayah.id_wilayah
+// ORDER BY t_lokasi.id_wilayah ASC';
 
 // 'SELECT *,
 //             SUM(luas_titik) AS luas_total, COUNT(id_titik) AS jumlah_titik,
@@ -27,9 +47,21 @@ ORDER BY t_lokasi.id_wilayah ASC';
 //             LEFT JOIN t_lokasi ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
 //             GROUP BY nama_wilayah';
 
-$stmt = $pdo->prepare($sqlviewwilayah);
+// $stmt = $pdo->prepare($sqlviewwilayah);
+// $stmt->execute();
+// $rowwilayah = $stmt->fetchAll();
+$sqltahun = 'SELECT * FROM t_arsip_wilayah GROUP BY tahun_arsip_wilayah ORDER BY tahun_arsip_wilayah ASC';
+$stmt = $pdo->prepare($sqltahun);
 $stmt->execute();
-$rowwilayah = $stmt->fetchAll();
+$rowtahunsemua = $stmt->fetchAll();
+
+$sqlviewarsip = 'SELECT * FROM t_arsip_wilayah '.$query_periode.' GROUP BY tahun_arsip_wilayah ORDER BY tahun_arsip_wilayah ASC '.$limit_hasil;
+$stmt = $pdo->prepare($sqlviewarsip);
+$stmt->execute(['awal' => $awal, 'akhir' => $akhir]);
+$rowtahun = $stmt->fetchAll();
+
+
+
 
 ?>
 
@@ -102,23 +134,47 @@ $rowwilayah = $stmt->fetchAll();
                 <div class="container-fluid">
                 <div class="row">
                         <div class="col">
-                            <h4><span class="align-middle font-weight-bold">Laporan Wilayah Baru</span></h4>
+                            <!-- <h4><span class="align-middle font-weight-bold">Laporan Wilayah Baru</span></h4> -->
                             <div id="datalaporan">
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-auto">
                                 <span class="text-bold">Tanggal Laporan :</span>
                             </div>
                             <div class="col">
                                 <?= strftime("%A, %d %B %Y");?>
                             </div>
-                        </div>
+                        </div> -->
                 </div>
-                        </div>
+                <form method="GET" action="" enctype="multipart/form-data" name="filter_tahun">
+                <div class="row capture-hide">
+                  <div class="col">
+                    Periode :
+                    <select  class="form-select" name="awal" id="awal">
+                      <?php
+                        foreach($rowtahunsemua as $tahun){
+                      ?>
+                        <option <?=$awal == $tahun->tahun_arsip_wilayah ? 'selected' : ' ' ?> value="<?=$tahun->tahun_arsip_wilayah?>"><?=$tahun->tahun_arsip_wilayah?></option>
+                      <?php } ?>
+                    </select>
+                          -
+                    <select  class="form-select" name="akhir" id="akhir">
+                      <?php
+                        foreach($rowtahunsemua as $tahun){
+                      ?>
+                        <option <?=$akhir == $tahun->tahun_arsip_wilayah ? 'selected' : ' ' ?> value="<?=$tahun->tahun_arsip_wilayah?>"><?=$tahun->tahun_arsip_wilayah?></option>
+                      <?php } ?>
+                    </select>
+                    <button type="submit" name="submit" value="filter_tahun" class="btn btn-sm btn-info">Terapkan</button></p>
+                  </div>
+                </form>
+              </div>
+
+      </div>
                         <div id="btn-unduh" class="col">
 
                         <!-- <a class="btn btn-primary float-right" onclick="saveCSVs()" href="#" role="button"><i class="fas fa-file-excel"></i> Unduh Laporan (CSV)</a> -->
 
-                        <a class="btn btn-primary float-right" target="_blank" href="generate_laporan.php?type=generate_csv_laporan_wilayah"><i class="fas fa-file-excel"></i> Unduh Laporan (CSV)</a>
+                        <a class="btn btn-primary float-right" target="_blank" href="generate_laporan_baru.php?type=generate_csv_laporan_wilayah?awal=<?=$awal.'&akhir='.$akhir?>"><i class="fas fa-file-excel"></i> Unduh Laporan (CSV)</a>
 
                         <a class="btn btn-primary float-right  mr-2" onclick="savePDF()" href="#" role="button"><i class="fas fa-file-pdf"></i> Unduh Laporan (PDF)</a>
 
@@ -155,6 +211,13 @@ $rowwilayah = $stmt->fetchAll();
                 </table>   -->
 
                     <table class="table table-striped table-bordered DataWilayah">
+                    <div class="row text-center">
+                      <div class="col">
+                          <h4 class="mb-0"><span class="align-middle font-weight-bold mb-0">Laporan Luas Sebaran Terumbu Karang</span></h4>
+                          <h5 class="mt-0 font-weight-bold"><?= $awal != 1 ? ' Tahun '.$awal : ''; ?><?= $awal != $akhir && $akhir != 9999 ? ' - '.$akhir : ''; ?></h5>
+                          <span class="align-middle mt-2">*Data dalam satuan hektar (ha)</span>
+                      </div>
+                    </div>
 
                     <thead>
                             <tr>
@@ -162,11 +225,7 @@ $rowwilayah = $stmt->fetchAll();
 
 
                                 <?php //Print header tabel
-                                $sqlviewarsip = 'SELECT * FROM t_arsip_wilayah GROUP BY tahun_arsip_wilayah
-                                                  ORDER BY tahun_arsip_wilayah ASC';
-                                $stmt = $pdo->prepare($sqlviewarsip);
-                                $stmt->execute();
-                                $rowtahun = $stmt->fetchAll();
+
 
                                 foreach($rowtahun as $tahun){
                                 ?>
@@ -192,7 +251,7 @@ $rowwilayah = $stmt->fetchAll();
                 <?php
 
                     $sqlviewsisi = 'SELECT * FROM t_arsip_wilayah GROUP BY sisi_pantai
-                                                ORDER BY sisi_pantai DESC';
+                                                ORDER BY sisi_pantai DESC'.$limit_hasil;
                               $stmt = $pdo->prepare($sqlviewsisi);
                               $stmt->execute();
                               $rowsisi = $stmt->fetchAll();
@@ -200,10 +259,10 @@ $rowwilayah = $stmt->fetchAll();
                       foreach($rowsisi as $sisi){
 
                     $sqlviewluasnama = 'SELECT * FROM t_wilayah
-                                    LEFT JOIN t_arsip_wilayah ON t_wilayah.id_wilayah = t_arsip_wilayah.id_wilayah WHERE t_wilayah.sisi_pantai = :sisi_pantai
-                                    GROUP BY t_arsip_wilayah.id_wilayah  ORDER BY tahun_arsip_wilayah ASC';
+                                    LEFT JOIN t_arsip_wilayah ON t_wilayah.id_wilayah = t_arsip_wilayah.id_wilayah WHERE t_wilayah.sisi_pantai = :sisi_pantai  '.$query_periode_and.'
+                                    GROUP BY t_arsip_wilayah.id_wilayah  ORDER BY tahun_arsip_wilayah ASC'.$limit_hasil;
                               $stmt = $pdo->prepare($sqlviewluasnama);
-                              $stmt->execute(['sisi_pantai' => $sisi->sisi_pantai]);
+                              $stmt->execute(['sisi_pantai' => $sisi->sisi_pantai, 'awal' => $awal, 'akhir' => $akhir]);
                               $rowluasnama = $stmt->fetchAll();
 
 
@@ -212,10 +271,10 @@ $rowwilayah = $stmt->fetchAll();
 
                         $sqlviewluastahunan = 'SELECT * FROM t_wilayah
                                     LEFT JOIN t_arsip_wilayah ON t_wilayah.id_wilayah = t_arsip_wilayah.id_wilayah
-                                   WHERE t_wilayah.id_wilayah = :id_wilayah
-                                   ORDER BY tahun_arsip_wilayah ASC';
+                                   WHERE t_wilayah.id_wilayah = :id_wilayah  '.$query_periode_and.'
+                                   ORDER BY tahun_arsip_wilayah ASC'.$limit_hasil;
                               $stmt = $pdo->prepare($sqlviewluastahunan);
-                              $stmt->execute(['id_wilayah' => $luasnama->id_wilayah]);
+                              $stmt->execute(['id_wilayah' => $luasnama->id_wilayah, 'awal' => $awal, 'akhir' => $akhir]);
                               $rowluastahunan = $stmt->fetchAll();
                 ?>
                         <tr>
@@ -241,9 +300,10 @@ $rowwilayah = $stmt->fetchAll();
                       ';
 
                       foreach($rowtahun as $tahun){
-                        $sqlhitungluas = 'SELECT id_wilayah, sum(kurang) as total_kurang, sum(cukup) as total_cukup, SUM(baik) as total_baik, SUM(sangat_baik) as total_sangat_baik FROM t_arsip_wilayah WHERE tahun_arsip_wilayah = :tahun AND sisi_pantai = :sisi_pantai';
+                        $sqlhitungluas = 'SELECT id_wilayah, sum(kurang) as total_kurang, sum(cukup) as total_cukup, SUM(baik) as total_baik, SUM(sangat_baik) as total_sangat_baik
+                                        FROM t_arsip_wilayah WHERE tahun_arsip_wilayah = :tahun AND sisi_pantai = :sisi_pantai '.$query_periode_and.$limit_hasil;
                                 $stmt = $pdo->prepare($sqlhitungluas);
-                                $stmt->execute(['tahun' => $tahun->tahun_arsip_wilayah, 'sisi_pantai' => $sisi->sisi_pantai]);
+                                $stmt->execute(['tahun' => $tahun->tahun_arsip_wilayah, 'sisi_pantai' => $sisi->sisi_pantai, 'awal' => $awal, 'akhir' => $akhir]);
                                 $rowhitung = $stmt->fetchAll();
                               foreach($rowhitung as $hitungan){ ?>
 
@@ -260,10 +320,10 @@ $rowwilayah = $stmt->fetchAll();
                     <th scope="row">Total Keseluruhan</th>
 
                     <?php
-                      foreach($rowtahun as $tahun){
-                        $sqlhitungluas = 'SELECT id_wilayah, sum(kurang) as total_kurang, sum(cukup) as total_cukup, SUM(baik) as total_baik, SUM(sangat_baik) as total_sangat_baik FROM t_arsip_wilayah';
+
+                        $sqlhitungluas = 'SELECT id_wilayah, sum(kurang) as total_kurang, sum(cukup) as total_cukup, SUM(baik) as total_baik, SUM(sangat_baik) as total_sangat_baik FROM t_arsip_wilayah  '.$query_periode.' GROUP BY tahun_arsip_wilayah'.$limit_hasil;
                                 $stmt = $pdo->prepare($sqlhitungluas);
-                                $stmt->execute(['tahun' => $tahun->tahun_arsip_wilayah, 'sisi_pantai' => $sisi->sisi_pantai]);
+                                $stmt->execute(['awal' => $awal, 'akhir' => $akhir]);
                                 $rowhitung = $stmt->fetchAll();
                               foreach($rowhitung as $hitungan){ ?>
 
@@ -272,7 +332,7 @@ $rowwilayah = $stmt->fetchAll();
 
                               <?php }
 
-                      }
+
                     ?>
 
 
@@ -328,6 +388,8 @@ $rowwilayah = $stmt->fetchAll();
             $('.main-sidebar').show()
             $('#clientPrintContent, .main-header, .navbar navbar-expand, .navbar-white, .navbar-light').css('margin-left', 0)
 
+            $('.capture-hide').hide()
+
             var today = new Date();
             var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
             var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -338,10 +400,10 @@ $rowwilayah = $stmt->fetchAll();
             var opt = {
             margin:       [1.5,2,2,2],
             filename:     `Laporan_Wilayah_GoKarang_${dateTime}.pdf`,
-            pagebreak: { mode: 'avoid-all', after: '.break-after' },
+
             image:        { type: 'jpeg', quality: 0.95 },
             html2canvas:  { scale: 3 },
-            jsPDF:        { unit: 'cm', format: 'a4', orientation: 'landscape' }
+            jsPDF:        { unit: 'cm', format: 'a2', orientation: 'landscape' }
             };
 
             // New Promise-based usage:
