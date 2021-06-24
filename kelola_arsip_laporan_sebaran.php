@@ -87,8 +87,8 @@ $row = $stmt->fetchAll();
                         </div>
                         <div class="col">
 
-                        <a class="btn btn-primary float-right" href="input_jenis_tk.php" role="button">Input Data Baru (+)</a>
-                        <a class="btn btn-primary float-right mr-2" href="generate_arsip_laporan_sebaran_baru.php" role="button">Capture Data Baru (+)</a>
+                        <!-- <a class="btn btn-primary float-right" href="input_jenis_tk.php" role="button">Input Data Baru (+)</a> -->
+                        <a class="btn btn-primary float-right mr-2" href="generate_arsip_laporan_sebaran_baru.php" role="button">Capture Data Saat Ini (+)</a>
                         </div>
                     </div>
                 </div>
@@ -137,14 +137,14 @@ $row = $stmt->fetchAll();
                               <td><?=$rowitem->periode_laporan?></td>
                               <td><?=$rowitem->tipe_laporan?></td>
                               <td>
-                              <a href="edit_jenis_tk.php?id_jenis=<?=$rowitem->id_jenis?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                              <a href="edit_arsip_luas_wilayah.php?id_laporan=<?=$rowitem->id_laporan?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 <a href="hapus.php?type=jenis&id_jenis=<?=$rowitem->id_jenis?>" class="far fa-trash-alt btn btn-act"></a>
                               </td>
                           </tr>
                           <tr>
                                 <td colspan="3">
                                     <!--collapse start -->
-                            <div class="row  m-0">
+                            <!-- <div class="row  m-0">
                             <div class="col-12 cell detailcollapser<?=$rowitem->id_jenis?>"
                                 data-toggle="collapse"
                                 data-target=".cell<?=$rowitem->id_jenis?>, .contentall<?=$rowitem->id_jenis?>">
@@ -174,7 +174,7 @@ $row = $stmt->fetchAll();
 
 
                             </div>
-                        </div>
+                        </div> -->
 
                         <!--collapse end -->
                                 </td>

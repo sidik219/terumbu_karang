@@ -8,7 +8,7 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
 //Generate arsip laporan baru menggunakan isi database terumbu karang saat ini.
 //Proses : Buat entry t_laporan baru, save last inserted id_laporan. Hitung semua data dan insert ke t_arsip_wilayah. INSERT INTO SELECT data t_arsip_lokasi dan t_arsip_titik.
 
-$tahun_sekarang = date("Y");
+$tahun_sekarang = date("Y")+3;
 $tipe_laporan = "Arsip luas sebaran terumbu karang per wilayah Tahun ".$tahun_sekarang;
 
 $sqlarsipbaru = 'INSERT INTO t_laporan_sebaran
