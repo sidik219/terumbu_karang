@@ -8,14 +8,15 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
 //Generate arsip laporan baru menggunakan isi database terumbu karang saat ini.
 //Proses : Buat entry t_laporan baru, save last inserted id_laporan. Hitung semua data dan insert ke t_arsip_wilayah. INSERT INTO SELECT data t_arsip_lokasi dan t_arsip_titik.
 
-$tahun_sekarang = date("Y")+3;
+$tahun_sekarang = date("Y");
 $tipe_laporan = "Arsip luas sebaran terumbu karang per wilayah Tahun ".$tahun_sekarang;
+$update_terakhir = $tanggal_update_status = date ('Y-m-d H:i:s', time());
 
 $sqlarsipbaru = 'INSERT INTO t_laporan_sebaran
-                  (periode_laporan, tipe_laporan)
-                  VALUES (:periode_laporan, :tipe_laporan)';
+                  (periode_laporan, tipe_laporan, update_terakhir)
+                  VALUES (:periode_laporan, :tipe_laporan, :update_terakhir)';
 $stmt = $pdo->prepare($sqlarsipbaru);
-$stmt->execute(['periode_laporan' => $tahun_sekarang, 'tipe_laporan' => $tipe_laporan]);
+$stmt->execute(['periode_laporan' => $tahun_sekarang, 'tipe_laporan' => $tipe_laporan, 'update_terakhir' => $update_terakhir]);
 
 $last_id_laporan = $pdo->lastInsertId(); //id_laporan terbaru
 
@@ -114,6 +115,32 @@ foreach ($rowwilayah as $rowitem) { //wilayah loop
                           , 'total_titik_l' => $total_titik_l, 'total_luas_l' => $total_luas_l, 'luas_sebaran_l' => $luas_sebaran_l, 'persentase_sebaran_l' => $persentase_sebaran_l,
                           'persentase_sebaran_l' => $persentase_sebaran_l, 'kondisi_l' => $kondisi_l]);
 
+
+                          //INSERT titik ke arsip_titik
+                          $sqlviewtitik = "SELECT * FROM t_titik WHERE id_lokasi = :id_lokasi";
+                          $stmt = $pdo->prepare($sqlviewtitik);
+                          $stmt->execute(['id_lokasi' => $id_lokasi]);
+                          $semuatitik = $stmt->fetchAll();
+                          $last_id_arsip_lokasi = $pdo->lastInsertId();
+
+                          foreach($semuatitik as $titik){
+                            $id_titik = $titik->id_titik;
+                            $id_arsip_lokasi = $last_id_arsip_lokasi;
+                            $longitude = $titik->longitude;
+                            $latitude = $titik->latitude;
+                            $luas_titik = $titik->luas_titik;
+                            $keterangan_titik = $titik->keterangan_titik;
+                            $id_zona_titik = $titik->id_zona_titik;
+
+                            $sqlinsertarsiptitik = "INSERT INTO t_arsip_titik
+                                              (id_laporan, tahun_arsip_titik, id_titik, id_lokasi, id_arsip_lokasi, longitude, latitude, luas_titik, keterangan_titik, id_zona_titik)
+                                              VALUES (:id_laporan, :tahun_arsip_titik, :id_titik, :id_lokasi, :id_arsip_lokasi, :longitude, :latitude, :luas_titik, :keterangan_titik, :id_zona_titik)";
+                            $stmt = $pdo->prepare($sqlinsertarsiptitik);
+                            $stmt->execute(['id_laporan' => $id_laporan, 'tahun_arsip_titik' => $tahun_arsip_lokasi, 'id_titik' => $id_titik, 'id_lokasi' => $id_lokasi, 'id_arsip_lokasi' => $id_arsip_lokasi,
+                                          'longitude' => $longitude, 'latitude' => $latitude, 'luas_titik' => $luas_titik, 'keterangan_titik' => $keterangan_titik, 'id_zona_titik' => $id_zona_titik]);
+
+                          } //loop titik end
+
                 } //lokasi loop end
 
                 $ps = number_format($rowitem->total_titik / $total_luas_lokasi * 100, 1);
@@ -173,8 +200,6 @@ foreach ($rowwilayah as $rowitem) { //wilayah loop
             $stmt->execute(['tahun_arsip_wilayah' => $tahun_arsip_wilayah, 'id_wilayah' => $id_wilayah, 'total_titik_w' => $total_titik_w, 'total_luas_w' => $total_luas_w
             , 'luas_sebaran_w' => $luas_sebaran_w, 'persentase_sebaran_w' => $persentase_sebaran_w, 'kondisi_w' => $kondisi_w, 'id_laporan' => $id_laporan, 'sisi_pantai' => $sisi_pantai
             , 'kurang' => $kurang, 'cukup' => $cukup, 'baik' => $baik, 'sangat_baik' => $sangat_baik]);
-
-
 
 
 }//Wilayah loop end

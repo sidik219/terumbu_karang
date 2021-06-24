@@ -100,3 +100,12 @@ elseif ($type == 'fasilitas_wisata'){
             $stmt->execute(['id_fasilitas_wisata' => $_GET['id_fasilitas_wisata']]);
             header('Location: kelola_fasilitas_wisata.php?status=deletesuccess');
 }
+elseif ($type == 'arsip_laporan_sebaran'){
+    $id_laporan = $_GET['id_laporan'];
+    $sql = 'DELETE FROM t_laporan_sebaran
+            WHERE id_laporan = :id_laporan';
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_laporan' => $id_laporan]);
+            header('Location: kelola_arsip_laporan_sebaran.php?status=deletesuccess');
+}

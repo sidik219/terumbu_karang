@@ -21,20 +21,22 @@ include 'hak_akses.php';
     $stmt->execute(['id_laporan' => $id_laporan]);
     $rowlaporan = $stmt->fetchAll();
 
-    $sqltahun = 'SELECT * FROM t_arsip_wilayah GROUP BY tahun_arsip_wilayah ORDER BY tahun_arsip_wilayah ASC';
-    $stmt = $pdo->prepare($sqltahun);
-    $stmt->execute();
-    $rowtahunsemua = $stmt->fetchAll();
+    $sqllaporan1 = 'SELECT * FROM t_laporan_sebaran WHERE id_laporan = :id_laporan';
+    $stmt = $pdo->prepare($sqllaporan1);
+    $stmt->execute(['id_laporan' => $id_laporan]);
+    $laporansebaran = $stmt->fetch();
 
-    $sqlviewarsip = 'SELECT * FROM t_arsip_wilayah GROUP BY tahun_arsip_wilayah ORDER BY tahun_arsip_wilayah ASC';
-    $stmt = $pdo->prepare($sqlviewarsip);
-    $stmt->execute();
-    $rowtahun = $stmt->fetchAll();
 
 
     if (isset($_POST['submit'])) {
             if($_POST['submit'] == 'Simpan'){
                 $i = 0;
+                $update_terakhir = date ('Y-m-d H:i:s', time());
+                $tipe_laporan = $_POST['tipe_laporan'];
+
+                $sqlupdatearsip = 'UPDATE t_laporan_sebaran SET update_terakhir = :update_terakhir, tipe_laporan = :tipe_laporan WHERE id_laporan = :id_laporan';
+                $stmt = $pdo->prepare($sqlupdatearsip);
+                $stmt->execute(['update_terakhir' => $update_terakhir, 'id_laporan' => $id_laporan, 'tipe_laporan' => $tipe_laporan]);
 
                 foreach($_POST['id_arsip_wilayah'] as $id_arsip){
                   $kurang = $_POST['kurang'][$i];
@@ -196,7 +198,8 @@ include 'hak_akses.php';
 
                 </tbody>
                 </table>
-
+                          <label class="mt-2">Keterangan: </label>
+                          <input type="text" value="<?=$laporansebaran->tipe_laporan?>" name="tipe_laporan" class="form-control mb-4">
                          <p align="center">
                         <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form>

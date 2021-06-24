@@ -88,7 +88,7 @@ $row = $stmt->fetchAll();
                         <div class="col">
 
                         <!-- <a class="btn btn-primary float-right" href="input_jenis_tk.php" role="button">Input Data Baru (+)</a> -->
-                        <a class="btn btn-primary float-right mr-2" href="generate_arsip_laporan_sebaran_baru.php" role="button">Capture Data Saat Ini (+)</a>
+                        <a class="btn btn-primary float-right mr-2" href="generate_arsip_laporan_sebaran_baru.php" role="button"><i class="fas fa-cogs"></i> Arsipkan Data Saat Ini  <i class="fas fa-arrow-right"></i> <i class="fas fa-database"></i></a>
                         </div>
                     </div>
                 </div>
@@ -125,6 +125,7 @@ $row = $stmt->fetchAll();
                                 <th scope="col">ID Laporan</th>
                                 <th scope="col">Tahun</th>
                                 <th scope="col">Keterangan</th>
+                                <th scope="col">Update Terakhir</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                           </thead>
@@ -136,9 +137,10 @@ $row = $stmt->fetchAll();
                               <th scope="row"><?=$rowitem->id_laporan?></th>
                               <td><?=$rowitem->periode_laporan?></td>
                               <td><?=$rowitem->tipe_laporan?></td>
+                              <td><?=strftime('%A, %d %B %Y', strtotime($rowitem->update_terakhir))?></td>
                               <td>
                               <a href="edit_arsip_luas_wilayah.php?id_laporan=<?=$rowitem->id_laporan?>" class="fas fa-edit mr-3 btn btn-act"></a>
-                                <a href="hapus.php?type=jenis&id_jenis=<?=$rowitem->id_jenis?>" class="far fa-trash-alt btn btn-act"></a>
+                                <a href="hapus.php?type=arsip_laporan_sebaran&id_laporan=<?=$rowitem->id_laporan?>" class="far fa-trash-alt btn btn-act"></a>
                               </td>
                           </tr>
                           <tr>
