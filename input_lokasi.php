@@ -12,26 +12,23 @@ $level_user = $_SESSION['level_user'];
 
 if($level_user == 2){
   $id_wilayah = $_SESSION['id_wilayah_dikelola'];
-  $extra_query = " AND t_wilayah.id_wilayah = $id_wilayah ";
-  $extra_query_noand = " t_wilayah.id_wilayah = $id_wilayah ";
-  $extra_query_where = " WHERE t_wilayah.id_wilayah = $id_wilayah ";
-  $wilayah_join = " LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
-                    LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
-  $extra_query_k_lok = " AND t_lokasi.id_wilayah = $id_wilayah ";
+
+  $sqlviewwilayah = 'SELECT * FROM t_wilayah
+                    WHERE id_wilayah = :id_wilayah
+                    ORDER BY nama_wilayah';
+        $stmt = $pdo->prepare($sqlviewwilayah);
+        $stmt->execute(['id_wilayah' => $id_wilayah]);
+        $row = $stmt->fetchAll();
 }
 else if($level_user == 4){
-  $extra_query = "  ";
-  $extra_query_noand = "  ";
-  $wilayah_join = " ";
-  $extra_query_k_lok = " ";
-  $extra_query_where = "  ";
-}
-
-    $sqlviewwilayah = 'SELECT * FROM t_wilayah '.$extra_query_where.'
-                        ORDER BY nama_wilayah';
+   $sqlviewwilayah = 'SELECT * FROM t_wilayah
+                    ORDER BY nama_wilayah';
         $stmt = $pdo->prepare($sqlviewwilayah);
         $stmt->execute();
         $row = $stmt->fetchAll();
+}
+
+
 
 
     if (isset($_POST['submit'])) {

@@ -69,7 +69,7 @@ include 'hak_akses.php';
         <link rel="stylesheet" href= "plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
         <link rel="stylesheet" href= "dist/css/adminlte.min.css">
-    <!-- overlayScrollbars -->"
+    <!-- overlayScrollbars -->
         <link rel="stylesheet" href= "plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href= "css/style.css">
@@ -140,10 +140,8 @@ include 'hak_akses.php';
                     <form action="" enctype="multipart/form-data" method="POST" name="updateWilayah">
 
                           <table class="table table-striped table-bordered DataWilayah">
-                    <div class="row text-center">
+                    <div class="row">
                       <div class="col">
-                          <h4 class="mb-0"><span class="align-middle font-weight-bold mb-0">Laporan Luas Sebaran Terumbu Karang</span></h4>
-                          <h5 class="mt-0 font-weight-bold"><?='Tahun '.$rowlaporan[0]->tahun_arsip_wilayah; ?></h5>
                           <span class="align-middle mt-2">*Data dalam satuan hektar (ha)</span>
                       </div>
                     </div>

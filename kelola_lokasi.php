@@ -14,18 +14,12 @@ $level_user = $_SESSION['level_user'];
 
 if($level_user == 2){
   $id_wilayah = $_SESSION['id_wilayah_dikelola'];
-  $extra_query = " AND t_wilayah.id_wilayah = $id_wilayah ";
-  $extra_query_noand = " t_wilayah.id_wilayah = $id_wilayah ";
-  $wilayah_join = " LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
-                    LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
-  $extra_query_k_lok = " AND t_lokasi.id_wilayah = $id_wilayah ";
+  $extra_query_k_lok = " WHERE t_lokasi.id_wilayah = $id_wilayah ";
 }
 else if($level_user == 3){
   $id_lokasi = $_SESSION['id_lokasi_dikelola'];
   $extra_query = " AND id_lokasi = $id_lokasi ";
-  $extra_query_k_lok = " AND t_lokasi.id_lokasi = $id_lokasi ";
-  $extra_query_noand = " id_lokasi = $id_lokasi ";
-  $wilayah_join = " ";
+  $extra_query_k_lok = " WHERE t_lokasi.id_lokasi = $id_lokasi ";
 }
 else if($level_user == 4){
   $extra_query = " 1 ";
@@ -43,10 +37,28 @@ $sqlviewlokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
                                   COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
                                   COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
 
-                                  FROM `t_titik`, t_lokasi, t_wilayah
-                                  WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
-                                  AND t_lokasi.id_wilayah = t_wilayah.id_wilayah  '.$extra_query_k_lok.'
+                                  FROM t_lokasi
+                                  LEFT JOIN t_titik ON t_titik.id_lokasi = t_lokasi.id_lokasi
+                                  LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah  '.$extra_query_k_lok.'
                                   GROUP BY t_lokasi.id_lokasi';
+
+
+
+
+
+$sqlviewlokasi222 = 'SELECT *, SUM(luas_titik) AS total_titik,
+COUNT(DISTINCT id_titik) AS jumlah_titik,
+SUM(DISTINCT luas_lokasi) AS total_lokasi,
+SUM(DISTINCT luas_titik) / SUM(DISTINCT luas_lokasi) * 100 AS persentase_sebaran,
+COUNT(id_titik) AS jumlah_titik, COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang,
+COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup,
+COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
+COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
+
+FROM `t_titik`, t_lokasi, t_wilayah
+WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
+AND t_lokasi.id_wilayah = t_wilayah.id_wilayah  '.$extra_query_k_lok.'
+GROUP BY t_lokasi.id_lokasi';
 
 $stmt = $pdo->prepare($sqlviewlokasi);
 $stmt->execute();
