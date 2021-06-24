@@ -174,7 +174,7 @@ $rowtahun = $stmt->fetchAll();
 
                         <!-- <a class="btn btn-primary float-right" onclick="saveCSVs()" href="#" role="button"><i class="fas fa-file-excel"></i> Unduh Laporan (CSV)</a> -->
 
-                        <a class="btn btn-primary float-right" target="_blank" href="generate_laporan_baru.php?type=generate_csv_laporan_wilayah?awal=<?=$awal.'&akhir='.$akhir?>"><i class="fas fa-file-excel"></i> Unduh Laporan (CSV)</a>
+                        <a class="btn btn-primary float-right" target="_blank" href="generate_laporan_baru.php?type=generate_csv_laporan_wilayah"><i class="fas fa-file-excel"></i> Unduh Laporan (CSV)</a>
 
                         <a class="btn btn-primary float-right  mr-2" onclick="savePDF()" href="#" role="button"><i class="fas fa-file-pdf"></i> Unduh Laporan (PDF)</a>
 
