@@ -55,7 +55,8 @@ fputcsv($fp, array(date("j F Y, g:i a")));
 
 
                                 $array_tahun_doang = array(" ");
-                                $array_kondisi = array("", "Kurang", "Cukup", "Baik", "Sangat Baik");
+                                $array_kondisi = array("Kabupaten");
+
 
                                 foreach($rowtahun as $tahun){
                                 array_push($array_tahun_doang, $tahun->tahun_arsip_wilayah, "", "", "",);
@@ -68,7 +69,75 @@ fputcsv($fp, array(date("j F Y, g:i a")));
                             }
                             fputcsv($fp,$array_kondisi); //kondisi header
 
-                            fputcsv($fp,array(" Kabupaten "));
+
+
+
+
+                            $sqlviewsisi = 'SELECT * FROM t_arsip_wilayah GROUP BY sisi_pantai
+                                                ORDER BY sisi_pantai DESC';
+                              $stmt = $pdo->prepare($sqlviewsisi);
+                              $stmt->execute();
+                              $rowsisi = $stmt->fetchAll();
+
+                      foreach($rowsisi as $sisi){
+                        $array_data_kabupaten = array();
+                        $array_data_sisi = array("Total ".$sisi->sisi_pantai);
+                        $array_data_total = array("Total Keseluruhan");
+
+                    $sqlviewluasnama = 'SELECT * FROM t_wilayah
+                                    LEFT JOIN t_arsip_wilayah ON t_wilayah.id_wilayah = t_arsip_wilayah.id_wilayah WHERE t_wilayah.sisi_pantai = :sisi_pantai
+                                    GROUP BY t_arsip_wilayah.id_wilayah  ORDER BY tahun_arsip_wilayah ASC';
+                              $stmt = $pdo->prepare($sqlviewluasnama);
+                              $stmt->execute(['sisi_pantai' => $sisi->sisi_pantai]);
+                              $rowluasnama = $stmt->fetchAll();
+
+
+
+                    foreach ($rowluasnama as $luasnama) {
+
+                        $sqlviewluastahunan = 'SELECT * FROM t_wilayah
+                                    LEFT JOIN t_arsip_wilayah ON t_wilayah.id_wilayah = t_arsip_wilayah.id_wilayah
+                                   WHERE t_wilayah.id_wilayah = :id_wilayah
+                                   ORDER BY tahun_arsip_wilayah ASC';
+                              $stmt = $pdo->prepare($sqlviewluastahunan);
+                              $stmt->execute(['id_wilayah' => $luasnama->id_wilayah]);
+                              $rowluastahunan = $stmt->fetchAll();
+
+                          array_push($array_data_kabupaten, $luasnama->nama_wilayah);
+
+                          foreach ($rowluastahunan as $luastahunan) {
+                              array_push($array_data_kabupaten, $luastahunan->kurang, $luastahunan->cukup, $luastahunan->baik, $luastahunan->sangat_baik);
+
+                          }
+                          fputcsv($fp, $array_data_kabupaten);
+                          $array_data_kabupaten = array();
+                    }
+
+                    foreach($rowtahun as $tahun){
+                        $sqlhitungluas = 'SELECT id_wilayah, sum(kurang) as total_kurang, sum(cukup) as total_cukup, SUM(baik) as total_baik, SUM(sangat_baik) as total_sangat_baik
+                                        FROM t_arsip_wilayah WHERE tahun_arsip_wilayah = :tahun AND sisi_pantai = :sisi_pantai ';
+                                $stmt = $pdo->prepare($sqlhitungluas);
+                                $stmt->execute(['tahun' => $tahun->tahun_arsip_wilayah, 'sisi_pantai' => $sisi->sisi_pantai]);
+                                $rowhitung = $stmt->fetchAll();
+                              foreach($rowhitung as $hitungan){
+                                array_push($array_data_sisi, $hitungan->total_kurang, $hitungan->total_cukup, $hitungan->total_baik, $hitungan->total_sangat_baik);
+                              }
+
+                  }
+                  fputcsv($fp, $array_data_sisi);
+                  fputcsv($fp, array(" "));
+                              // $array_data_sisi = array();
+                }
+
+                $sqlhitungluas = 'SELECT id_wilayah, sum(kurang) as total_kurang, sum(cukup) as total_cukup, SUM(baik) as total_baik, SUM(sangat_baik) as total_sangat_baik FROM t_arsip_wilayah GROUP BY tahun_arsip_wilayah';
+                                $stmt = $pdo->prepare($sqlhitungluas);
+                                $stmt->execute();
+                                $rowhitung = $stmt->fetchAll();
+                              foreach($rowhitung as $hitungan){
+                                array_push($array_data_total, $hitungan->total_kurang, $hitungan->total_cukup, $hitungan->total_baik, $hitungan->total_sangat_baik);
+                              }
+                  fputcsv($fp, $array_data_total);
+                  fputcsv($fp, array(" "));
 
 
 
