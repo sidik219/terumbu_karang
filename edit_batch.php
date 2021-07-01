@@ -23,7 +23,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
 
 
-        $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
+        $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman, kapasitas_kapal,
                       t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, t_batch.id_status_batch, status_cabut_label
                       FROM t_batch
                       LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
@@ -239,7 +239,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid bg-white p-3">
-                    <form action="" enctype="multipart/form-data" method="POST">
+                    <form action="" onsubmit="return cekJumlahBibit(event)"  enctype="multipart/form-data" method="POST">
 
                      <div class="col-12 mb-2 border rounded bg-white p-3">
                   <h5 class="font-weight-bold">Status Batch</h5>
@@ -332,7 +332,8 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
 
                             </div>
 
-                     <label class="mt-4" for="dd_id_donasi">Donasi dalam Batch : <span id="jumlah_bibit"><?= $rowjumlah->jumlah_bibit_donasi ?></span> Bibit</label>
+                     <label class="mt-4" for="dd_id_donasi">Donasi dalam Batch : <span id="jumlah_bibit"><?= ($rowjumlah->jumlah_bibit_donasi) ? $rowjumlah->jumlah_bibit_donasi : '0' ?></span> Bibit</label>
+                     <br><label class="mt-0 text-sm text-info" for="dd_id_donasi">Kapasitas Kapal : <span id="kapasitas_kapal"><?= $rowbatch->kapasitas_kapal ?></span> Bibit</label>
                             <div id="donasipilihan">
 
                             <?php
@@ -440,6 +441,26 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
           loadDonasi(id_lokasi)
         }
       });
+    }
+
+    function cekJumlahBibit(event){
+      jmlbibitbatch = $('#jumlah_bibit').text()
+      kapasitas_kapal = parseInt($('#kapasitas_kapal').text())
+      jawab = true
+      if (jmlbibitbatch < kapasitas_kapal){
+      jawab = confirm('Jumlah bibit kurang dari ' + kapasitas_kapal + '. Tetap buat batch?')
+      }
+
+      if (jawab){
+        // alert('Lanjut.')
+        return true
+      }
+      else{
+        alert('Silahkan tambahkan donasi ke Batch.')
+        event.preventDefault()
+        return false
+
+      }
     }
 
     function loadDonasi(id_lokasi){

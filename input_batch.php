@@ -6,10 +6,17 @@ if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-$sqlviewlokasi = 'SELECT * FROM t_lokasi
+if($_SESSION['level_user'] == 3){
+  $id_lokasi_dikelola = $_SESSION['id_lokasi_dikelola'];
+}
+else{
+  $id_lokasi_dikelola = " ";
+}
+
+$sqlviewlokasi = 'SELECT * FROM t_lokasi WHERE id_lokasi =  :id_lokasi
                         ORDER BY id_lokasi';
         $stmt = $pdo->prepare($sqlviewlokasi);
-        $stmt->execute();
+        $stmt->execute(['id_lokasi' => $id_lokasi_dikelola]);
         $rowlokasi = $stmt->fetchAll();
 
         $sqlviewtitik = 'SELECT * FROM t_titik
@@ -170,7 +177,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid bg-white border rounded p-3">
-                    <form action="" enctype="multipart/form-data" method="POST">
+                    <form action="" onsubmit="return cekJumlahBibit(event)" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
                         <label for="dd_id_lokasi">Lokasi Penanaman</label>
                         <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" onchange="loadTitik(this.value);" required>
@@ -205,6 +212,7 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
                             </div>
 
                             <label class="mt-4" for="dd_id_donasi">Donasi dalam Batch : <span id="jumlah_bibit">0</span> Bibit</label>
+                            <br><label class="mt-0 text-sm text-info" for="dd_id_donasi">Kapasitas Kapal : <span id="kapasitas_kapal"><?= $rowlokasi[0]->kapasitas_kapal ?></span> Bibit</label>
                             <div id="donasipilihan">
 
                             </div>
@@ -371,6 +379,26 @@ $sqlviewlokasi = 'SELECT * FROM t_lokasi
         }
       });
 
+    }
+
+    function cekJumlahBibit(event){
+      jmlbibitbatch = $('#jumlah_bibit').text()
+      kapasitas_kapal = parseInt($('#kapasitas_kapal').text())
+      jawab = true
+      if (jmlbibitbatch < kapasitas_kapal){
+      jawab = confirm('Jumlah bibit kurang dari ' + kapasitas_kapal + '. Tetap buat batch?')
+      }
+
+      if (jawab){
+        // alert('Lanjut.')
+        return true
+      }
+      else{
+        alert('Silahkan tambahkan donasi ke Batch.')
+        event.preventDefault()
+        return false
+
+      }
     }
 
 
