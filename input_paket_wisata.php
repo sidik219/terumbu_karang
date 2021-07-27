@@ -6,15 +6,24 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
+// Lokasi
 $sqlviewlokasi = 'SELECT * FROM t_lokasi
-                    ORDER BY id_lokasi';
+                    ORDER BY id_lokasi ASC';
         $stmt = $pdo->prepare($sqlviewlokasi);
         $stmt->execute();
         $rowlokasi = $stmt->fetchAll();
 
+// Asuransi
+$sqlviewasuransi = 'SELECT * FROM t_asuransi
+                    ORDER BY id_asuransi ASC';
+        $stmt = $pdo->prepare($sqlviewasuransi);
+        $stmt->execute();
+        $rowasuransi = $stmt->fetchAll();
+
 if (isset($_POST['submit'])) {
     if ($_POST['submit'] == 'Simpan') {
         $id_lokasi                  = $_POST['id_lokasi'];
+        $id_asuransi                = $_POST['id_asuransi'];
         $nama_paket_wisata          = $_POST['tb_nama_paket_wisata'];
         $deskripsi_paket_wisata     = $_POST['tb_deskripsi_paket_wisata'];
         $deskripsi_panjang_wisata   = $_POST['deskripsi_panjang_wisata'];
@@ -35,11 +44,24 @@ if (isset($_POST['submit'])) {
 
         //Insert t_wisata
         $sqlpaketwisata = "INSERT INTO tb_paket_wisata
-                            (id_lokasi, nama_paket_wisata, deskripsi_paket_wisata, deskripsi_panjang_wisata, foto_wisata, status_aktif)
-                            VALUES (:id_lokasi, :nama_paket_wisata, :deskripsi_paket_wisata, :deskripsi_panjang_wisata, :foto_wisata, :status_aktif)";
+                            (id_lokasi,
+                            id_asuransi,
+                            nama_paket_wisata, 
+                            deskripsi_paket_wisata, 
+                            deskripsi_panjang_wisata, 
+                            foto_wisata, 
+                            status_aktif)
+                            VALUES (:id_lokasi, 
+                            :id_asuransi,
+                            :nama_paket_wisata, 
+                            :deskripsi_paket_wisata, 
+                            :deskripsi_panjang_wisata, 
+                            :foto_wisata, 
+                            :status_aktif)";
 
         $stmt = $pdo->prepare($sqlpaketwisata);
         $stmt->execute(['id_lokasi' => $id_lokasi,
+                        'id_asuransi' => $id_asuransi,
                         'nama_paket_wisata' => $nama_paket_wisata,
                         'deskripsi_paket_wisata' => $deskripsi_paket_wisata,
                         'deskripsi_panjang_wisata' => $deskripsi_panjang_wisata,
@@ -189,6 +211,17 @@ if (isset($_POST['submit'])) {
                             <option value="">Pilih Lokasi</option>
                         <?php foreach ($rowlokasi as $lokasi) {  ?>
                             <option value="<?=$lokasi->id_lokasi?>">ID <?=$lokasi->id_lokasi?> - <?=$lokasi->nama_lokasi?></option>
+                        <?php } ?>
+                    </select>
+                    </div>
+
+                    <!-- Asuransi -->
+                    <div class="form-group">
+                    <label for="id_asuransi">ID Asuransi</label>
+                    <select id="id_asuransi" name="id_asuransi" class="form-control" required>
+                            <option value="">Pilih Asuransi</option>
+                        <?php foreach ($rowasuransi as $asuransi) {  ?>
+                            <option value="<?=$asuransi->id_asuransi?>">ID <?=$asuransi->id_asuransi?> - <?=$asuransi->biaya_asuransi?></option>
                         <?php } ?>
                     </select>
                     </div>

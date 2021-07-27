@@ -196,6 +196,12 @@ else{
                     </a>
                 </li>
                 <li class="nav-item"> <!-- Lokasi -->
+                    <a href="kelola_asuransi.php" class="nav-link '.(('kelola_asuransi.php' == $url_sekarang) || ('edit_asuransi.php'  == $url_sekarang) || ('input_asuransi.php'  == $url_sekarang) ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-suitcase"></i>
+                        <p> Kelola Asuransi </p>
+                    </a>
+                </li>
+                <li class="nav-item"> <!-- Lokasi -->
                     <a href="kelola_wisata.php" class="nav-link '.(('kelola_wisata.php' == $url_sekarang) || ('edit_wisata.php'  == $url_sekarang) || ('kelola_fasilitas_wisata.php'  == $url_sekarang) || ('input_wisata.php'  == $url_sekarang) || ('input_fasilitas_wisata.php'  == $url_sekarang) || ('input_paket_wisata.php'  == $url_sekarang) ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-suitcase"></i>
                         <p> Kelola Wisata </p>

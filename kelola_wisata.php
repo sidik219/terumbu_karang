@@ -29,6 +29,7 @@ else if($level_user == 4){
 }
 
 $sqlviewpaket = 'SELECT * FROM tb_paket_wisata
+                LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
                 ORDER BY id_paket_wisata DESC';
 $stmt = $pdo->prepare($sqlviewpaket);
 $stmt->execute();
@@ -162,7 +163,7 @@ $row = $stmt->fetchAll();
                               <td><?=$rowitem->status_aktif?></td>
                               <td>
                                 <a href="edit_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" class="fas fa-edit mr-3 btn btn-act"></a>
-                                <a href="hapus.php?type=wisata&id_wisata=<?=$rowitem->id_wisata?>" class="far fa-trash-alt btn btn-act"></a>
+                                <a href="hapus.php?type=paket_wisata&id_wisata=<?=$rowitem->id_wisata?>" class="far fa-trash-alt btn btn-act"></a>
                               </td>
                             </tr>
 
@@ -233,13 +234,24 @@ $row = $stmt->fetchAll();
 
                                     <!-- Data Untuk Fasilitas -->
                                     <div class="col-12 cell<?=$rowitem->id_paket_wisata?> collapse contentall<?=$rowitem->id_paket_wisata?> border rounded shadow-sm p-3">
+                                    <!-- Asuransi -->
+                                    <div class="row  mb-3">
+                                        <div class="col-md-3 kolom font-weight-bold">
+                                            Biaya Asuransi
+                                        </div>
+                                        
+                                        <div class="col isi">
+                                        Rp. <?=number_format($rowitem->biaya_asuransi, 0)?>
+                                        </div>
+                                    </div>
+
                                     <!-- Fasilitas -->
                                     <div class="row  mb-3">
                                         <div class="col-md-3 kolom font-weight-bold">
                                             Biaya Wisata
                                         </div>
                                         <?php
-                                        $sqlviewpaket = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, nama_fasilitas, biaya_fasilitas 
+                                        $sqlviewpaket = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas
                                                             FROM tb_fasilitas_wisata 
                                                             LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
                                                             LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
@@ -250,10 +262,13 @@ $row = $stmt->fetchAll();
                                         $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
                                         $rowfasilitas = $stmt->fetchAll();
 
+                                        
+
                                         foreach ($rowfasilitas as $fasilitas) { ?>
                                         <div class="col isi">
                                             Rp. <?=number_format($fasilitas->total_biaya_fasilitas, 0)?>
                                         </div>
+                                        <?php } ?>
                                     </div>
 
                                     <div class="row  mb-3">
@@ -277,7 +292,6 @@ $row = $stmt->fetchAll();
                                             <?=$fasilitas->nama_fasilitas?><br>
                                             <?php } ?>
                                         </div>
-                                        <?php } ?>
                                     </div>
                                     </table>
 

@@ -47,12 +47,14 @@ elseif ($type == 'terumbu_karang'){
             $stmt->execute(['id_terumbu_karang' => $_GET['id_terumbu_karang']]);
             header('Location: kelola_tk.php?status=deletesuccess');
 }
-elseif ($type == 'wisata'){
-    $sql = 'DELETE FROM t_wisata
-            WHERE id_wisata = :id_wisata';
+elseif ($type == 'paket_wisata'){
+    $sql = 'DELETE t_paket_wisata, t_wisata FROM t_paket_wisata
+            INNER JOIN t_wisata
+            WHERE t_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata
+            AND t_paket_wisata.id_paket_wisata = :id_paket_wisata';
 
             $stmt = $pdo->prepare($sql);
-            $stmt->execute(['id_wisata' => $_GET['id_wisata']]);
+            $stmt->execute(['id_paket_wisata' => $_GET['id_paket_wisata']]);
             header('Location: kelola_wisata.php?status=deletesuccess');
 }
 elseif ($type == 'detail_lokasi'){
@@ -108,4 +110,13 @@ elseif ($type == 'arsip_laporan_sebaran'){
             $stmt = $pdo->prepare($sql);
             $stmt->execute(['id_laporan' => $id_laporan]);
             header('Location: kelola_arsip_laporan_sebaran.php?status=deletesuccess');
+}
+elseif ($type == 'asuransi'){
+    $id_asuransi = $_GET['id_asuransi'];
+    $sql = 'DELETE FROM t_asuransi
+            WHERE id_asuransi = :id_asuransi';
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_asuransi' => $id_asuransi]);
+            header('Location: kelola_asuransi.php?status=deletesuccess');
 }

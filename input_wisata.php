@@ -6,12 +6,6 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-// $sqlviewasuransi = 'SELECT * FROM t_asuransi
-//                     ORDER BY biaya_asuransi';
-//         $stmt = $pdo->prepare($sqlviewasuransi);
-//         $stmt->execute();
-//         $rowasuransi = $stmt->fetchAll();
-
 $sqlfasilitaswisata= 'SELECT * FROM tb_fasilitas_wisata
                         ORDER BY id_fasilitas_wisata
                         DESC LIMIT 3';
