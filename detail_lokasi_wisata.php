@@ -9,9 +9,8 @@ include 'hak_akses.php';
 
     $id_paket_wisata = $_GET['id_paket_wisata'];
 
-    $sqldetailpaket = 'SELECT * FROM t_wisata
-                LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
+    $sqldetailpaket = 'SELECT * FROM tb_paket_wisata
+                LEFT JOIN t_lokasi ON tb_paket_wisata.id_lokasi = t_lokasi.id_lokasi
                 WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
 
     $stmt = $pdo->prepare($sqldetailpaket);
@@ -127,8 +126,21 @@ include 'hak_akses.php';
                                         <div class="divTableBody">
                                             <div class="divTableRow">
                                                 <div class="divTableCell-1">
-                                                    <i class="text-info fas fa-arrow-circle-right"></i>                             
-                                                    <?=$rowitem->judul_wisata?>
+                                                    
+                                                <!-- Select Wisata -->
+                                                <?php
+                                                $sqlpaketSelect = 'SELECT * FROM t_wisata
+                                                                LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                                                WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
+
+                                                $stmt = $pdo->prepare($sqlpaketSelect);
+                                                $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                                $rowWisata = $stmt->fetchAll();
+
+                                                foreach ($rowWisata as $wisata) { ?>
+                                                    <i class="text-info fas fa-arrow-circle-right"></i>   
+                                                    <?=$wisata->judul_wisata?><br>
+                                                <?php } ?>
                                                 </div>
                                                 <div class="divTableCell-2">
                                                 </div>
@@ -157,6 +169,8 @@ include 'hak_akses.php';
                                         <div class="divTableBody">
                                             <div class="divTableRow">
                                                 <div class="divTableCell-1">
+
+                                                <!-- Select Fasilitas -->
                                                     <?php
                                                     $sqlviewfasilitas = 'SELECT * FROM tb_fasilitas_wisata 
                                                                         LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
@@ -179,7 +193,8 @@ include 'hak_akses.php';
                                         </div>
                                     </div>
                                 </p></div>
-
+                                
+                                <!-- Biaya Paket Kalkulasi Dari Biaya Fasilitas -->
                                 <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-success fas fa-money-bill-wave"></i>
                                     <b>Total Paket Wisata:</b><br> Rp. <?=number_format($fasilitas->total_biaya_fasilitas, 0)?>
@@ -188,7 +203,7 @@ include 'hak_akses.php';
 
                                 <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-warning far fa-bookmark"></i>
-                                    <b>Deskripsi:</b> <?=$rowitem->deskripsi_wisata?>
+                                    <b>Deskripsi:</b> <?=$rowitem->deskripsi_paket_wisata?>
                                 </p></div>
                                 <div class="row"><a class="btn btn-primary-paket btn-lg-paket btn-paket btn-block mb-1"
                                 href="reservasi_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>_&status=review_reservasi">Wisata Sekarang</a></div>

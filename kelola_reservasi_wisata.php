@@ -231,7 +231,7 @@ else{//reservasi umum
 
                                         <div class="row mb-3  border-bottom">
                                             <div class="col-md-3 kolom font-weight-bold">
-                                                Wisata
+                                                Paket Wisata
                                             </div>
                                             <div class="col isi">
                                                 <?=$rowitem->nama_paket_wisata?>

@@ -6,10 +6,17 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
+$sqlviewlokasi = 'SELECT * FROM t_lokasi
+                    ORDER BY id_lokasi';
+        $stmt = $pdo->prepare($sqlviewlokasi);
+        $stmt->execute();
+        $rowlokasi = $stmt->fetchAll();
+
 if (isset($_POST['submit'])) {
     if ($_POST['submit'] == 'Simpan') {
+        $id_lokasi                  = $_POST['id_lokasi'];
         $nama_paket_wisata          = $_POST['tb_nama_paket_wisata'];
-        $deskripsi_wisata           = $_POST['tb_deskripsi_wisata'];
+        $deskripsi_paket_wisata     = $_POST['tb_deskripsi_paket_wisata'];
         $deskripsi_panjang_wisata   = $_POST['deskripsi_panjang_wisata'];
         $status_aktif               = $_POST['rb_status_wisata'];
         $randomstring               = substr(md5(rand()), 0, 7);
@@ -28,12 +35,13 @@ if (isset($_POST['submit'])) {
 
         //Insert t_wisata
         $sqlpaketwisata = "INSERT INTO tb_paket_wisata
-                            (nama_paket_wisata, deskripsi_wisata, deskripsi_panjang_wisata, foto_wisata, status_aktif)
-                            VALUES (:nama_paket_wisata, :deskripsi_wisata, :deskripsi_panjang_wisata, :foto_wisata, :status_aktif)";
+                            (id_lokasi, nama_paket_wisata, deskripsi_paket_wisata, deskripsi_panjang_wisata, foto_wisata, status_aktif)
+                            VALUES (:id_lokasi, :nama_paket_wisata, :deskripsi_paket_wisata, :deskripsi_panjang_wisata, :foto_wisata, :status_aktif)";
 
         $stmt = $pdo->prepare($sqlpaketwisata);
-        $stmt->execute(['nama_paket_wisata' => $nama_paket_wisata,
-                        'deskripsi_wisata' => $deskripsi_wisata,
+        $stmt->execute(['id_lokasi' => $id_lokasi,
+                        'nama_paket_wisata' => $nama_paket_wisata,
+                        'deskripsi_paket_wisata' => $deskripsi_paket_wisata,
                         'deskripsi_panjang_wisata' => $deskripsi_panjang_wisata,
                         'foto_wisata' => $foto_wisata,
                         'status_aktif' => $status_aktif
@@ -53,14 +61,14 @@ if (isset($_POST['submit'])) {
             $id_paket_wisata   = $last_paket_wisata_id; //tb_paket_wisata
             $id_wisata         = $_POST['nama_paket'][$i]; //t_wisata
 
-            $sqlinsertdetailpaket = "UPDATE t_wisata
-                                        SET id_paket_wisata = :id_paket_wisata
-                                        WHERE id_wisata = (SELECT max(:id_wisata) FROM t_wisata)";
+            //Update dan set id_paket_wisata ke wisata pilihan
+            $sqlupdatewisata = "UPDATE t_wisata
+                            SET id_paket_wisata = :id_paket_wisata
+                            WHERE id_wisata = :id_wisata";
 
-            $stmt = $pdo->prepare($sqlinsertdetailpaket);
-            $stmt->execute(['id_paket_wisata' => $id_paket_wisata,
-                            'id_wisata' => $id_wisata
-                            ]);
+            $stmt = $pdo->prepare($sqlupdatewisata);
+            $stmt->execute(['id_wisata' => $id_wisata, 
+                            'id_paket_wisata' => $id_paket_wisata]);
 
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
@@ -80,7 +88,7 @@ if (isset($_POST['submit'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Wisata - TKJB</title>
+    <title>Kelola Wisata - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -128,9 +136,7 @@ if (isset($_POST['submit'])) {
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
             <a href="dashboard_admin.php" class="brand-link">
-                <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
-                <!-- BRAND TEXT (TOP) -->
-                <span class="brand-text font-weight-bold">TKJB</span>
+                <?= $logo_website ?>
             </a>
             <!-- END OF TOP SIDEBAR -->
 
@@ -152,7 +158,7 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="input_fasilitas_wisata.php">< Kembali</a><br><br>
+                    <a class="btn btn-outline-primary" href="input_wisata.php">< Kembali</a><br><br>
                     <h4><span class="align-middle font-weight-bold">Input Data Paket Wisata</span></h4>
                     <ul class="app-breadcrumb breadcrumb" style="margin-bottom: 20px;">
                         <li class="breadcrumb-item">
@@ -160,9 +166,9 @@ if (isset($_POST['submit'])) {
                         <li class="breadcrumb-item">
                             <a href="kelola_fasilitas_wisata.php" class="non">Data Fasilitas Wisata</a></li>
                         <li class="breadcrumb-item">
-                            <a href="input_wisata.php" class="non">Input Wisata</a></li>
-                        <li class="breadcrumb-item">
                             <a href="input_fasilitas_wisata.php" class="non">Input Fasilitas</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="input_wisata.php" class="non">Input Wisata</a></li>
                         <li class="breadcrumb-item">
                             <a href="input_paket_wisata.php" class="tanda">Input Paket Wisata</a></li>
                     </ul>
@@ -176,19 +182,30 @@ if (isset($_POST['submit'])) {
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
 
+                    <!-- Lokasi -->
+                    <div class="form-group">
+                    <label for="id_lokasi">ID Lokasi</label>
+                    <select id="id_lokasi" name="id_lokasi" class="form-control" required>
+                            <option value="">Pilih Lokasi</option>
+                        <?php foreach ($rowlokasi as $lokasi) {  ?>
+                            <option value="<?=$lokasi->id_lokasi?>">ID <?=$lokasi->id_lokasi?> - <?=$lokasi->nama_lokasi?></option>
+                        <?php } ?>
+                    </select>
+                    </div>
+
                     <div class="form-group">
                         <label for="tb_nama_paket_wisata">Nama Paket Wisata</label>
                         <input type="text" id="tb_nama_paket_wisata" name="tb_nama_paket_wisata" class="form-control" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="tb_deskripsi_wisata">Deskripsi Singkat Wisata</label>
-                        <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" class="form-control" required>
+                        <label for="tb_deskripsi_paket_wisata">Deskripsi Paket Wisata</label>
+                        <input type="text" id="tb_deskripsi_paket_wisata" name="tb_deskripsi_paket_wisata" class="form-control" required>
                     </div>
 
 
                     <div class="form-group">
-                        <label for="isi_artikel">Deskripsi Lengkap Wisata:</label>
+                        <label for="isi_artikel">Deskripsi Lengkap Paket Wisata:</label>
                         <textarea id="deskripsi_lengkap_wisata" name="deskripsi_panjang_wisata" required></textarea>
                     <script>
                             $('#deskripsi_lengkap_wisata').trumbowyg();
@@ -203,8 +220,8 @@ if (isset($_POST['submit'])) {
                                     <option selected disabled>Pilih Paket Wisata:</option>
                                     <?php
                                     $sqlviewwisata = 'SELECT * FROM t_wisata
-                                                        LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
-                                                        ORDER BY id_wisata DESC';
+                                                        ORDER BY id_wisata 
+                                                        DESC LIMIT 3';
                                     $stmt = $pdo->prepare($sqlviewwisata);
                                     $stmt->execute();
                                     $rowwisata = $stmt->fetchAll();
@@ -284,7 +301,6 @@ if (isset($_POST['submit'])) {
                                 <option selected disabled>Pilih Paket Wisata:</option>
                                 <?php
                                 $sqlviewwisata = 'SELECT * FROM t_wisata
-                                                    LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
                                                     ORDER BY id_wisata DESC';
                                 $stmt = $pdo->prepare($sqlviewwisata);
                                 $stmt->execute();
@@ -340,7 +356,7 @@ if (isset($_POST['submit'])) {
     <script>
         $(document).ready(function(){
         //group add limit
-        var maxGroup = 50;
+        var maxGroup = 3;
 
         //add more fields group
         $(".addMore").click(function(){
@@ -348,7 +364,7 @@ if (isset($_POST['submit'])) {
                 var fieldHTML = '<div class="form-group fieldGroup">'+$(".fieldGroupCopy").html()+'</div>';
                 $('body').find('.fieldGroup:last').after(fieldHTML);
             }else{
-                alert('Maksimal '+maxGroup+' group yang boleh dibuat.');
+                alert('Maksimal '+maxGroup+' paket wisata yang boleh dibuat.');
             }
         });
 

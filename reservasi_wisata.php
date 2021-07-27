@@ -13,14 +13,13 @@ include 'hak_akses.php';
     $stmt->execute();
     $rowrekening = $stmt->fetch();
     
-    $sqldetailpaket = 'SELECT * FROM t_wisata
-                LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
+    $sqldetailpaket = 'SELECT * FROM tb_paket_wisata
+                LEFT JOIN t_lokasi ON tb_paket_wisata.id_lokasi = t_lokasi.id_lokasi
                 WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
 
     $stmt = $pdo->prepare($sqldetailpaket);
     $stmt->execute(['id_paket_wisata' => $_GET['id_paket_wisata']]);
-    $row = $stmt->fetchAll();
+    $rowwisata = $stmt->fetchAll();
 
     if (isset($_POST['submit'])) {
         if ($_POST['submit'] == 'Simpan') {
@@ -215,13 +214,20 @@ include 'hak_akses.php';
             </h4>
 
         <form action="" method="POST">
-        <?php foreach ($row as $rowitem) { ?>
+        <?php foreach ($rowwisata as $rowitem) { ?>
             <ul class="list-group mb-3" id="keranjangancestor">
                 <!-- Paket Wisata -->
                 <div class="card" style="width: 20.5rem; margin-bottom: 20px;">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item card-reservasi">Wisata :</li>
-                        <input type="text" id="deskripsi_wisata" name="deskripsi_wisata" value="<?=$rowitem->nama_paket_wisata?>, Peserta : " class="list-group-item paket-wisata" disabled>
+                        <li class="list-group-item card-reservasi">
+                        <!-- Nama paket wisata -->
+                        <input type="text" value="<?=$rowitem->nama_paket_wisata?>" class="list-group-item deskripsi-paket"
+                        style="background: transparent;
+                            border: none;
+                            color: #fff;
+                            font-weight: bold;"
+                        disabled></li>
+                        <input type="text" id="deskripsi_wisata" name="deskripsi_wisata" value="Peserta: " class="list-group-item paket-wisata" disabled>
                     </ul>
                 </div>
 
@@ -334,8 +340,20 @@ include 'hak_akses.php';
                 </div><p>
                 <div class="row">
                     <div class="col">
+                        <!-- Select Wisata -->
+                        <?php
+                        $sqlpaketSelect = 'SELECT * FROM t_wisata
+                                        LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                        WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
+
+                        $stmt = $pdo->prepare($sqlpaketSelect);
+                        $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                        $rowWisata = $stmt->fetchAll();
+
+                        foreach ($rowWisata as $wisata) { ?>
                         <span class="font-weight-bold">
-                        <i class="text-info fas fa-arrow-circle-right"></i> <?=$rowitem->judul_wisata?></span>
+                        <i class="text-info fas fa-arrow-circle-right"></i> <?=$wisata->judul_wisata?></span><br>
+                        <?php } ?>
                     </div>
                 </div><p>
                 <div class="row">
@@ -532,7 +550,7 @@ include 'hak_akses.php';
                 currency: 'IDR',
             });
 
-            document.getElementById("deskripsi_wisata").value = "<?=$rowitem->nama_paket_wisata?>, Peserta : " + deskripsi;
+            document.getElementById("deskripsi_wisata").value = "Peserta: "+ deskripsi;
             document.getElementById("terumbu_karang").value = terumbu_karang;
             document.getElementById("split_tk").value = split_tk;
             document.getElementById("split_harga_tk").value = split_harga_tk;

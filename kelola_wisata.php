@@ -28,15 +28,21 @@ else if($level_user == 4){
   $join_wilayah = "  ";
 }
 
-$sqlviewwisata = 'SELECT * FROM t_wisata
-                  LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                  LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi '.$join_wilayah.'
-                  WHERE  '.$extra_query_noand.'
-                  ORDER BY id_wisata DESC';
-$stmt = $pdo->prepare($sqlviewwisata);
+$sqlviewpaket = 'SELECT * FROM tb_paket_wisata
+                ORDER BY id_paket_wisata DESC';
+$stmt = $pdo->prepare($sqlviewpaket);
 $stmt->execute();
 $row = $stmt->fetchAll();
 
+// $results = $stmt->fetchAll();
+// $json = json_encode($row);
+
+// LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi '.$join_wilayah.'
+// WHERE  '.$extra_query_noand.'
+
+// LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi '.$join_wilayah.'
+// WHERE id_paket_wisata = :id_paket_wisata
+// AND '.$extra_query_noand.'
 ?>
 
 <!DOCTYPE html>
@@ -112,7 +118,7 @@ $row = $stmt->fetchAll();
                             
                             <!-- Cetak Laporan Wisata -->
                             <a class="btn btn-success" href="laporan_wisata.php?laporan=wisata&id_wisata=<?=$row->id_wisata?>" style="margin-bottom: 10px;">
-                            <i class="fas fa-file-excel"></i> Laporan Wisata</a>
+                            <i class="fas fa-file-excel"></i> Laporan Data Wisata</a>
                         </div>
                         <div class="col">
                             <a class="btn btn-primary float-right" href="kelola_fasilitas_wisata.php" role="button">Input Data Baru (+)</a>
@@ -141,9 +147,9 @@ $row = $stmt->fetchAll();
                      <thead>
                             <tr>
                             <th scope="col">ID Paket Wisata</th>
-                            <th scope="col">ID Lokasi</th>
                             <th scope="col">Nama Paket Wisata</th>
-                            <th scope="col">Deskripsi Wisata</th>
+                            <th scope="col">Deskripsi Paket Wisata</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Aksi</th>
                             </tr>
                           </thead>
@@ -151,9 +157,9 @@ $row = $stmt->fetchAll();
                           <?php foreach ($row as $rowitem) { ?>
                             <tr>
                               <th scope="row"><?=$rowitem->id_paket_wisata?></th>
-                              <td><?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></td>
                               <td><?=$rowitem->nama_paket_wisata?></td>
-                              <td><?=$rowitem->deskripsi_wisata?></td>
+                              <td><?=$rowitem->deskripsi_paket_wisata?></td>
+                              <td><?=$rowitem->status_aktif?></td>
                               <td>
                                 <a href="edit_wisata.php?id_wisata=<?=$rowitem->id_wisata?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 <a href="hapus.php?type=wisata&id_wisata=<?=$rowitem->id_wisata?>" class="far fa-trash-alt btn btn-act"></a>
@@ -164,19 +170,23 @@ $row = $stmt->fetchAll();
                                 <td colspan="5">
                                 <!--collapse start -->
                                 <div class="row  m-0">
-                                    <div class="col-12 cell detailcollapser<?=$rowitem->id_wisata?>"
+                                    <table>
+                                    <div class="col-12 cell detailcollapser<?=$rowitem->id_paket_wisata?>"
                                         data-toggle="collapse"
-                                        data-target=".cell<?=$rowitem->id_wisata?>, .contentall<?=$rowitem->id_wisata?>">
-                                        <p class="fielddetail<?=$rowitem->id_wisata?> btn btn-act">
+                                        data-target=".cell<?=$rowitem->id_paket_wisata?>, .contentall<?=$rowitem->id_paket_wisata?>">
+                                        <p class="fielddetail<?=$rowitem->id_paket_wisata?> btn btn-act">
                                             <i class="icon fas fa-chevron-down"></i>
                                             Rincian Wisata</p>
                                     </div>
-                                    <div class="col-12 cell<?=$rowitem->id_wisata?> collapse contentall<?=$rowitem->id_wisata?> border rounded shadow-sm p-3">
 
+                                    <!-- Data Untuk Wisata -->
+                                    <div class="col-12 cell<?=$rowitem->id_paket_wisata?> collapse contentall<?=$rowitem->id_paket_wisata?> border rounded shadow-sm p-3">
+                                    <!-- Fasilitas -->
                                     <div class="row  mb-3">
                                         <div class="col-md-3 kolom font-weight-bold">
                                             Deskripsi Lengkap
                                         </div>
+                                        
                                         <div class="col isi">
                                             <?=$rowitem->deskripsi_panjang_wisata?>
                                         </div>
@@ -186,20 +196,44 @@ $row = $stmt->fetchAll();
                                         <div class="col-md-3 kolom font-weight-bold">
                                             Foto Wisata
                                         </div>
+                                        
                                         <div class="col isi">
                                             <img src="<?=$rowitem->foto_wisata?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
                                         </div>
                                     </div>
+                                    </div>
 
+                                    <?php
+                                    $sqlviewwisata = 'SELECT * FROM t_wisata
+                                                    LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                                    WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                                    AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata
+                                                    ORDER BY id_wisata DESC';
+
+                                    $stmt = $pdo->prepare($sqlviewwisata);
+                                    $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                    $rowwisata = $stmt->fetchAll();
+
+                                    foreach ($rowwisata as $wisata) { ?>
+
+                                    <!-- Data Untuk Wisata -->
+                                    <div class="col-12 cell<?=$rowitem->id_paket_wisata?> collapse contentall<?=$rowitem->id_paket_wisata?> border rounded shadow-sm p-3">
+                                    <!-- Fasilitas -->
                                     <div class="row  mb-3">
                                         <div class="col-md-3 kolom font-weight-bold">
                                             Wisata
                                         </div>
+                                        
                                         <div class="col isi">
-                                            <?=$rowitem->judul_wisata?>
+                                            <?=$wisata->judul_wisata?>
                                         </div>
                                     </div>
+                                    </div>
+                                    <?php } ?>
 
+                                    <!-- Data Untuk Fasilitas -->
+                                    <div class="col-12 cell<?=$rowitem->id_paket_wisata?> collapse contentall<?=$rowitem->id_paket_wisata?> border rounded shadow-sm p-3">
+                                    <!-- Fasilitas -->
                                     <div class="row  mb-3">
                                         <div class="col-md-3 kolom font-weight-bold">
                                             Biaya Wisata
@@ -245,15 +279,7 @@ $row = $stmt->fetchAll();
                                         </div>
                                         <?php } ?>
                                     </div>
-
-                                    <div class="row  mb-3">
-                                        <div class="col-md-3 kolom font-weight-bold">
-                                            Status
-                                        </div>
-                                        <div class="col isi">
-                                            <?=$rowitem->status_aktif?>
-                                        </div>
-                                    </div>
+                                    </table>
 
                                 </div>
                                 <!--collapse end -->

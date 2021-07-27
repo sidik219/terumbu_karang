@@ -17,12 +17,16 @@ include 'hak_akses.php';
 
         $sqleditwisata = 'SELECT * FROM t_wisata
                             LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
+                            LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                             WHERE id_wisata = :id_wisata';
 
         $stmt = $pdo->prepare($sqleditwisata);
         $stmt->execute(['id_wisata' => $id_wisata]);
         $wisata = $stmt->fetch();
-
+        
+        // Jarak
+        // 
+        // Jarak
         if (isset($_POST['submit'])) {
             $id_lokasi                  = $_POST['dd_id_lokasi'];
             $judul_wisata               = $_POST['tb_judul_wisata'];
@@ -171,6 +175,96 @@ include 'hak_akses.php';
                     <div class="form-group">
                         <label for="tb_deskripsi_wisata">Deskripsi Singkat Wisata</label>
                         <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" value="<?=$wisata->deskripsi_wisata?>" class="form-control" required>
+                    </div>
+
+                    <!-- Edit Paket Wisata -->
+                    <h4 style="margin-top: 80px;">
+                    <span class="align-middle font-weight-bold">Edit Paket Wisata</span></h4>
+                    <hr>
+
+                    <div class="form-group">
+                        <label for="nama_paket_wisata">Nama Paket Wisata</label>
+                        <input type="text" id="nama_paket_wisata" name="nama_paket_wisata" value="<?=$wisata->nama_paket_wisata?>" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deskripsi_paket_wisata">Deskripsi Paket Wisata</label>
+                        <input type="text" id="deskripsi_paket_wisata" name="deskripsi_paket_wisata" value="<?=$wisata->deskripsi_paket_wisata?>" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="isi_artikel">Deskripsi Lengkap Wisata:</label>
+                        <textarea id="deskripsi_lengkap_wisata" name="deskripsi_panjang_wisata" placeholder="Di isi jika perlu" required></textarea>
+                        <script>
+                                $('#deskripsi_lengkap_wisata').trumbowyg();
+                        </script>
+                    </div>
+
+                    <div class='form-group' id='fotowilayah'>
+                        <div>
+                            <label for='image_uploads'>Upload Foto Wisata</label>
+                            <input type='file'  class='form-control' id='image_uploads'
+                                name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
+                            <a href="<?=$wisata->foto_wisata?>" data-toggle="lightbox"><img class="img-fluid" id="oldpic" src="<?=$wisata->foto_wisata?>" width="20%" <?php if($wisata->foto_wisata == NULL) echo " style='display:none;'"; ?>></a>
+                        <br>
+
+                        <small class="text-muted">
+                            <?php if($wisata->foto_wisata == NULL){
+                                echo "Bukti transfer belum diupload<br>Format .jpg .jpeg .png";
+                            }else{
+                                echo "Klik gambar untuk memperbesar";
+                            }
+
+                            ?>
+                        </small>
+
+                        <script>
+                            const actualBtn = document.getElementById('image_uploads');
+
+                            const fileChosen = document.getElementById('file-input-label');
+
+                            actualBtn.addEventListener('change', function(){
+                            fileChosen.innerHTML = '<b>File dipilih :</b> '+this.files[0].name
+                            })
+                            window.onload = function() {
+                            document.getElementById('preview').style.display = 'none';
+                            };
+                            function readURL(input) {
+                                if (input.files && input.files[0]) {
+                                    var reader = new FileReader();
+                                    document.getElementById('oldpic').style.display = 'none';
+                                    reader.onload = function (e) {
+                                        $('#preview')
+                                            .attr('src', e.target.result)
+                                            .width(200);
+                                            document.getElementById('preview').style.display = 'block';
+                                    };
+
+                                    reader.readAsDataURL(input.files[0]);
+                                }
+                            }
+                        </script>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rb_status_wisata">Status</label><br>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" id="rb_status_aktif" name="rb_status_wisata" value="<?=$wisata->status_aktif?>" class="form-check-input">
+                                <label class="form-check-label" for="rb_status_aktif" style="color: green">
+                                    Aktif
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input checked type="radio" id="rb_status_tidak_aktif" name="rb_status_wisata" value="<?=$wisata->status_aktif?> " class="form-check-input">
+                                <label class="form-check-label" for="rb_status_tidak_aktif" style="color: gray">
+                                    Tidak Aktif
+                                </label>
+                            </div>
                     </div>
 
                     <p align="center">

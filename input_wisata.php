@@ -6,74 +6,76 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-$sqlviewlokasi = 'SELECT * FROM t_lokasi
-                    ORDER BY nama_lokasi';
-        $stmt = $pdo->prepare($sqlviewlokasi);
+// $sqlviewasuransi = 'SELECT * FROM t_asuransi
+//                     ORDER BY biaya_asuransi';
+//         $stmt = $pdo->prepare($sqlviewasuransi);
+//         $stmt->execute();
+//         $rowasuransi = $stmt->fetchAll();
+
+$sqlfasilitaswisata= 'SELECT * FROM tb_fasilitas_wisata
+                        ORDER BY id_fasilitas_wisata
+                        DESC LIMIT 3';
+        $stmt = $pdo->prepare($sqlfasilitaswisata);
         $stmt->execute();
-        $rowlokasi = $stmt->fetchAll();
+        $rowfasilitas = $stmt->fetchAll();
 
 if (isset($_POST['submit'])) {
-    //if ($_POST['submit'] == 'Simpan') {
-        $id_lokasi                  = $_POST['dd_id_lokasi'];
+    if ($_POST['submit'] == 'Simpan') {
         $judul_wisata               = $_POST['tb_judul_wisata'];
         $deskripsi_wisata           = $_POST['tb_deskripsi_wisata'];
 
         //Insert t_wisata
         $sqlwisata = "INSERT INTO t_wisata
-                            (id_lokasi, judul_wisata, deskripsi_wisata)
-                            VALUES (:id_lokasi, :judul_wisata, :deskripsi_wisata)";
+                            (judul_wisata, deskripsi_wisata)
+                            VALUES (:judul_wisata, :deskripsi_wisata)";
 
         $stmt = $pdo->prepare($sqlwisata);
-        $stmt->execute(['id_lokasi'         => $id_lokasi,
-                        'judul_wisata'      => $judul_wisata,
+        $stmt->execute(['judul_wisata'      => $judul_wisata,
                         'deskripsi_wisata'  => $deskripsi_wisata
                         ]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
-            header("Location: input_wisata.php?status=insertfailed");
+            // header("Location: input_wisata.php?status=insertfailed");
         } else {
-            //echo "HAHAHAAHA GREAT SUCCESSS !";
-            header("Location: input_wisata.php?status=addsuccess");
+            // echo "HAHAHAAHA GREAT SUCCESSS !";
+            // header("Location: input_wisata.php?status=addsuccess");
+            $last_wisata_id = $pdo->lastInsertId();
         }
-        //var_dump($_POST['nama_fasilitas']);var_dump($_POST['biaya_fasilitas']);exit();
-        // $i = 0;
-        // foreach ($_POST['nama_fasilitas'] as $nama_fasilitas) {
-        //     $nama_fasilitas    = $_POST['nama_fasilitas'][$i];
-        //     $biaya_fasilitas   = $_POST['biaya_fasilitas'][$i];
-        //     $id_wisata         = $last_wisata_id;
+        // var_dump($_POST['nama_fasilitas']);var_dump($_POST['biaya_fasilitas']);exit();
+        $i = 0;
+        foreach ($_POST['id_fasilitas_wisata'] as $id_fasilitas_wisata) {
+            $id_fasilitas_wisata    = $_POST['id_fasilitas_wisata'][$i];
+            $id_wisata              = $last_wisata_id;
 
-        //     $tanggal_sekarang = date ('Y-m-d H:i:s', time());
+            $sqlupdatefasilitas = "UPDATE tb_fasilitas_wisata
+                                    SET id_wisata = :id_wisata
+                                    WHERE id_fasilitas_wisata = :id_fasilitas_wisata";
 
-        //     $sqlinsertfasilitas = "INSERT INTO tb_fasilitas_wisata (nama_fasilitas, biaya_fasilitas, id_wisata, update_terakhir)
-        //                                 VALUES (:nama_fasilitas, :biaya_fasilitas, :id_wisata, :update_terakhir)";
+            $stmt = $pdo->prepare($sqlupdatefasilitas);
+            $stmt->execute(['id_fasilitas_wisata' => $id_fasilitas_wisata,
+                            'id_wisata' => $id_wisata
+                            ]);
 
-        //     $stmt = $pdo->prepare($sqlinsertfasilitas);
-        //     $stmt->execute(['nama_fasilitas' => $nama_fasilitas,
-        //                     'biaya_fasilitas' => $biaya_fasilitas,
-        //                     'id_wisata' => $id_wisata,
-        //                     'update_terakhir' => $tanggal_sekarang
-        //                     ]);
-
-        //     $affectedrows = $stmt->rowCount();
-        //     if ($affectedrows == '0') {
-        //         header("Location: input_wisata.php?status=insertfailed");
-        //     } else {
-        //         //echo "HAHAHAAHA GREAT SUCCESSS !";
-        //         header("Location: input_wisata.php?status=addsuccess");
-        //     }
-        //     $i++;
-        // } //End Foreach
-    // } else {
-    //     echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
-    // }
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+                header("Location: input_wisata.php?status=insertfailed");
+            } else {
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                header("Location: input_wisata.php?status=addsuccess");
+            }
+            $i++;
+        } //End Foreach
+    } else {
+        echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
+    }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Wisata - TKJB</title>
+    <title>Kelola Wisata - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -121,9 +123,7 @@ if (isset($_POST['submit'])) {
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
             <a href="dashboard_admin.php" class="brand-link">
-                <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
-                <!-- BRAND TEXT (TOP) -->
-                <span class="brand-text font-weight-bold">TKJB</span>
+                <?= $logo_website ?>
             </a>
             <!-- END OF TOP SIDEBAR -->
 
@@ -145,7 +145,7 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="kelola_fasilitas_wisata.php">< Kembali</a><br><br>
+                    <a class="btn btn-outline-primary" href="input_fasilitas_wisata.php">< Kembali</a><br><br>
                     <h4><span class="align-middle font-weight-bold">Input Data Wisata</span></h4>
                     <ul class="app-breadcrumb breadcrumb" style="margin-bottom: 20px;">
                         <li class="breadcrumb-item">
@@ -153,11 +153,13 @@ if (isset($_POST['submit'])) {
                         <li class="breadcrumb-item">
                             <a href="kelola_fasilitas_wisata.php" class="non">Data Fasilitas Wisata</a></li>
                         <li class="breadcrumb-item">
+                            <a href="input_fasilitas_wisata.php" class="non">Input Fasilitas</a></li>
+                        <li class="breadcrumb-item">
                             <a href="input_wisata.php" class="tanda">Input Wisata</a></li>
                     </ul>
                 </div>
                 <div align="right">
-                    <a class="btn btn-outline-primary" href="input_fasilitas_wisata.php">
+                    <a class="btn btn-outline-primary" href="input_paket_wisata.php">
                     Selanjutnya Fasilitas Wisata <i class="fas fa-angle-right"></i></a>
                 </div>
                 <!-- /.container-fluid -->
@@ -180,15 +182,10 @@ if (isset($_POST['submit'])) {
                         }
                     ?>
                     <form action="" enctype="multipart/form-data" method="POST">
-                    <div class="form-group">
-                    <label for="dd_id_lokasi">ID Lokasi</label>
-                    <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" required>
-                            <option value="">Pilih Lokasi</option>
-                        <?php foreach ($rowlokasi as $rowitem) {  ?>
-                            <option value="<?=$rowitem->id_lokasi?>">ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
-                        <?php } ?>
-                    </select>
-                    </div>
+                    <?php 
+                    foreach ($rowfasilitas as $fasilitas) { ?>
+                    <input type="hidden" name="id_fasilitas_wisata[]" value="<?=$fasilitas->id_fasilitas_wisata?>">
+                    <?php } ?>
 
                     <div class="form-group">
                         <label for="tb_judul_wisata">Judul Wisata</label>

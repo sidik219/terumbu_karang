@@ -14,12 +14,11 @@ include 'hak_akses.php';
         header("Location: map.php?aksi=wisata");
     }
 
-    $sqldetailpaket = 'SELECT * FROM t_wisata
-                LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
-                WHERE t_wisata.id_lokasi = :id_lokasi';
+    $sqlpaket = 'SELECT * FROM tb_paket_wisata
+                LEFT JOIN t_lokasi ON tb_paket_wisata.id_lokasi = t_lokasi.id_lokasi
+                WHERE tb_paket_wisata.id_lokasi = :id_lokasi';
 
-    $stmt = $pdo->prepare($sqldetailpaket);
+    $stmt = $pdo->prepare($sqlpaket);
     $stmt->execute(['id_lokasi' => $_GET['id_lokasi']]);
     $rowpaket = $stmt->fetchAll();
 ?>
@@ -123,11 +122,25 @@ include 'hak_akses.php';
                                     <p class="max-length2">
                                     <i class="fas fa-map-marked-alt"></i> <?=$rowitem->nama_lokasi?></p>
                                     <div>
+                                        <!-- Select Wisata -->
                                         <div class="card card-body" style="text-align: left;">
                                             <ol style="margin-left: 1rem;">
-                                                <li><?=$rowitem->judul_wisata?></li>
+                                            <?php
+                                            $sqlpaketSelect = 'SELECT * FROM t_wisata
+                                                            LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                                            WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
+
+                                            $stmt = $pdo->prepare($sqlpaketSelect);
+                                            $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                            $rowWisata = $stmt->fetchAll();
+
+                                            foreach ($rowWisata as $wisata) { ?>
+                                                <li><?=$wisata->judul_wisata?></li>
+                                            <?php } ?>
                                             </ol>
                                         </div>
+
+                                        <!-- Biaya Paket Kalkulasi Dari Biaya Fasilitas -->
                                         <div class="card card-body">
                                         <?php
                                         $sqlviewfasilitas = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, nama_fasilitas, biaya_fasilitas 

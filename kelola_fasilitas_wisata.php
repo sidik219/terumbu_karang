@@ -36,7 +36,7 @@ function ageCalculator($dob){
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Wisata - TKJB</title>
+    <title>Kelola Wisata - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -84,9 +84,7 @@ function ageCalculator($dob){
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
             <a href="dashboard_admin.php" class="brand-link">
-                <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
-                <!-- BRAND TEXT (TOP) -->
-                <span class="brand-text font-weight-bold">TKJB</span>
+                <?= $logo_website ?>
             </a>
             <!-- END OF TOP SIDEBAR -->
 
@@ -129,7 +127,7 @@ function ageCalculator($dob){
                     <a class="btn btn-success" href="laporan_wisata.php?laporan=fasilitas&id_fasilitas=<?=$rowfasilitas->id_fasilitas?>">
                     <i class="fas fa-file-excel"></i> Laporan Pengeluaran Fasilitas</a>
 
-                    <a class="btn btn-outline-primary" href="input_wisata.php" style="margin-top: 5px; margin-bottom: 5px;">
+                    <a class="btn btn-outline-primary" href="input_fasilitas_wisata.php" style="margin-top: 5px; margin-bottom: 5px;">
                     Selanjutnya Input Wisata <i class="fas fa-angle-right"></i></a>
                     </div>
 
@@ -193,30 +191,6 @@ function ageCalculator($dob){
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-
-    <!-- jQuery library -->
-
-    <script>
-        $(document).ready(function(){
-        //group add limit
-        var maxGroup = 50;
-
-        //add more fields group
-        $(".addMore").click(function(){
-            if($('body').find('.fieldGroup').length < maxGroup){
-                var fieldHTML = '<div class="form-group fieldGroup">'+$(".fieldGroupCopy").html()+'</div>';
-                $('body').find('.fieldGroup:last').after(fieldHTML);
-            }else{
-                alert('Maksimal '+maxGroup+' group yang boleh dibuat.');
-            }
-        });
-
-        //remove fields group
-        $("body").on("click",".remove",function(){
-            $(this).parents(".fieldGroup").remove();
-        });
-    });
-    </script>
 </div>
 <!-- Import Trumbowyg font size JS at the end of <body>... -->
 <script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>

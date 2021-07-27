@@ -6,13 +6,6 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-$sqlviewwisata = 'SELECT * FROM t_wisata
-                    ORDER BY id_wisata
-                    DESC LIMIT 1';
-        $stmt = $pdo->prepare($sqlviewwisata);
-        $stmt->execute();
-        $rowwisata = $stmt->fetch();
-
 if (isset($_POST['submit'])) {
     if ($_POST['submit'] == 'Simpan') {
         
@@ -53,7 +46,7 @@ if (isset($_POST['submit'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Wisata - TKJB</title>
+    <title>Kelola Wisata - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -101,9 +94,7 @@ if (isset($_POST['submit'])) {
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
             <a href="dashboard_admin.php" class="brand-link">
-                <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
-                <!-- BRAND TEXT (TOP) -->
-                <span class="brand-text font-weight-bold">TKJB</span>
+                <?= $logo_website ?>
             </a>
             <!-- END OF TOP SIDEBAR -->
 
@@ -125,7 +116,7 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="input_wisata.php">< Kembali</a><br><br>
+                    <a class="btn btn-outline-primary" href="kelola_fasilitas_wisata.php">< Kembali</a><br><br>
                     <h4><span class="align-middle font-weight-bold">Input Data Fasilitas</span></h4>
                     <ul class="app-breadcrumb breadcrumb" style="margin-bottom: 20px;">
                         <li class="breadcrumb-item">
@@ -133,13 +124,11 @@ if (isset($_POST['submit'])) {
                         <li class="breadcrumb-item">
                             <a href="kelola_fasilitas_wisata.php" class="non">Data Fasilitas Wisata</a></li>
                         <li class="breadcrumb-item">
-                            <a href="input_wisata.php" class="non">Input Wisata</a></li>
-                        <li class="breadcrumb-item">
                             <a href="input_fasilitas_wisata.php" class="tanda">Input Fasilitas</a></li>
                     </ul>
                 </div>
                 <div align="right">
-                    <a class="btn btn-outline-primary" href="input_paket_wisata.php">
+                    <a class="btn btn-outline-primary" href="input_wisata.php">
                     Selanjutnya Paket Wisata <i class="fas fa-angle-right"></i></a>
                 </div>
                 <!-- /.container-fluid -->
@@ -162,7 +151,6 @@ if (isset($_POST['submit'])) {
                         }
                     ?>
                     <form action="" enctype="multipart/form-data" method="POST">
-                    <input type="hidden" name="id_wisata" value="<?=$rowwisata->id_wisata?>">
 
                     <div class="form-group field_wrapper">
                         <label for="paket_wisata">Fasilitas Wisata</label><br>
@@ -232,7 +220,7 @@ if (isset($_POST['submit'])) {
     <script>
         $(document).ready(function(){
         //group add limit
-        var maxGroup = 50;
+        var maxGroup = 3;
 
         //add more fields group
         $(".addMore").click(function(){
@@ -240,7 +228,7 @@ if (isset($_POST['submit'])) {
                 var fieldHTML = '<div class="form-group fieldGroup">'+$(".fieldGroupCopy").html()+'</div>';
                 $('body').find('.fieldGroup:last').after(fieldHTML);
             }else{
-                alert('Maksimal '+maxGroup+' group yang boleh dibuat.');
+                alert('Maksimal '+maxGroup+' fasilitas wisata yang boleh dibuat.');
             }
         });
 
