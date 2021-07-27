@@ -146,7 +146,7 @@ include 'hak_akses.php';
                                     <div class="col-12 mb-3">
                                         <span class="badge badge-pill badge-primary mr-2"> ID Reservasi <?=$rowitem->id_reservasi?> </span>
                                             <?php echo empty($rowitem->id_user) ? '' : '<span class="badge badge-pill badge-info mr-2"> Nama User - '.$rowitem->nama_user.'</span>';?>
-                                            <?php echo empty($rowitem->id_paket_wisata) ? '' : '<span class="badge badge-pill badge-success mr-2"> Wisata  - '.$rowitem->nama_paket_wisata.'</span>';?>
+                                            <?php echo empty($rowitem->id_paket_wisata) ? '' : '<span class="badge badge-pill badge-success mr-2"> Paket Wisata  - '.$rowitem->nama_paket_wisata.'</span>';?>
                                         </span>
                                     </div>
 

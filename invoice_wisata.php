@@ -20,7 +20,7 @@ class myPDF extends FPDF{
                     LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                     LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                     LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-                    LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
+                    LEFT JOIN tb_paket_Wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_Wisata.id_paket_wisata
                     WHERE id_reservasi = :id_reservasi
                     ORDER BY id_reservasi DESC';
         $stmt = $pdo->prepare($sqlviewreservasi);
@@ -62,7 +62,7 @@ class myPDF extends FPDF{
                     LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                     LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                     LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-                    LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
+                    LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                     WHERE id_reservasi = :id_reservasi
                     ORDER BY id_reservasi DESC';
         $stmt = $pdo->prepare($sqlviewreservasi);
@@ -84,9 +84,9 @@ class myPDF extends FPDF{
             $this->Cell(107, 5, ': '.$rowitem->nama_user, 0, 0);
             $this->Cell(52, 5, 'Lokasi Reservasi Wisata', 0, 0);
             $this->Cell(62, 5, ': '.$rowitem->nama_lokasi, 0, 1);
-
-            $this->Cell(55, 5, 'Wisata', 0, 0);
-            $this->Cell(117, 5, ': '.$rowitem->judul_wisata, 0, 1);
+            
+            $this->Cell(55, 5, 'Paket Wisata', 0, 0);
+            $this->Cell(117, 5, ': '.$rowitem->nama_paket_wisata, 0, 1);
 
             $this->Line(10, 30, 286, 30); //Line atas
 
@@ -145,7 +145,7 @@ $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
             LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
             LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
             LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-            LEFT JOIN t_wisata ON t_reservasi_wisata.id_wisata = t_wisata.id_wisata
+            LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
             WHERE id_reservasi = :id_reservasi
             ORDER BY id_reservasi DESC';
 $stmt = $pdo->prepare($sqlviewreservasi);
@@ -155,7 +155,7 @@ $row = $stmt->fetchAll();
 
 foreach ($row as $rowitem) {
     $reservasidate = strtotime($rowitem->tgl_reservasi);
-    $fileName = 'Invoice - Reservasi Wisata, ' .$rowitem->judul_wisata.' - '.$rowitem->nama_user.' - '.strftime('%A, %d %B %Y', $reservasidate). '.pdf';
+    $fileName = 'Invoice - Reservasi Wisata, ' .$rowitem->nama_paket_wisata.' - '.$rowitem->nama_user.' - '.strftime('%A, %d %B %Y', $reservasidate). '.pdf';
 }
 $pdf->Output($fileName, 'D');
 ?>
