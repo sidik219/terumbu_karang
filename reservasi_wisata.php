@@ -69,7 +69,8 @@ include 'hak_akses.php';
                 //header("Location: reservasi_saya.php?status=addsuccess");
                 $last_id_reservasi = $pdo->lastInsertId();
             }
-
+            
+            // Jika wisata sekaligus donasi
             $i = 0;
             foreach ($_POST['nominal'] as $nominal) {
                 $id_user                = 1; //ok
@@ -81,15 +82,14 @@ include 'hak_akses.php';
                 $id_lokasi              = $_POST['id_lokasi'][$i]; //ok
                 $pesan                  = $_POST['pesan'][$i]; //ok
                 $tanggal_donasi         = date ('Y-m-d H:i:s', time()); //ok
-                $id_reservasi           = $last_id_reservasi; //ok
 
                 $sqlinsertdonasi = "INSERT INTO t_donasi
                                         (id_user, nominal, tanggal_donasi, id_status_donasi,
                                         id_lokasi, nama_donatur, nomor_rekening_donatur, bank_donatur,
-                                        pesan, update_terakhir, id_reservasi)
+                                        pesan, update_terakhir)
                                     VALUES (:id_user, :nominal, :tanggal_donasi, :id_status_donasi,
                                             :id_lokasi,  :nama_donatur, :nomor_rekening_donatur, :bank_donatur,
-                                            :pesan, :update_terakhir, :id_reservasi)";
+                                            :pesan, :update_terakhir)";
 
                 $stmt = $pdo->prepare($sqlinsertdonasi);
                 $stmt->execute(['id_user'                   => $id_user,
@@ -101,8 +101,7 @@ include 'hak_akses.php';
                                 'bank_donatur'              => $bank_donatur,
                                 'nomor_rekening_donatur'    => $nomor_rekening_donatur,
                                 'tanggal_donasi'            => $tanggal_donasi,
-                                'update_terakhir'           => $tanggal_donasi,
-                                'id_reservasi'              => $id_reservasi
+                                'update_terakhir'           => $tanggal_donasi
                                 ]);
 
                 $affectedrows = $stmt->rowCount();
