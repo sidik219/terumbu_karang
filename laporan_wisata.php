@@ -39,14 +39,21 @@ if(empty($laporan)){
     }
 
     // Tampil all data wisata
-    $sqlviewwisata = 'SELECT * FROM t_wisata
-                        LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                        LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi '.$join_wilayah.'
-                        WHERE  '.$extra_query_noand.'
-                        ORDER BY id_wisata ASC';
-    $stmt = $pdo->prepare($sqlviewwisata);
+    // $sqlviewwisata = 'SELECT * FROM t_wisata
+    //                     LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+    //                     LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi '.$join_wilayah.'
+    //                     WHERE  '.$extra_query_noand.'
+    //                     ORDER BY id_wisata ASC';
+    // $stmt = $pdo->prepare($sqlviewwisata);
+    // $stmt->execute();
+    // $rowwisata = $stmt->fetchAll();
+
+    // Tampil all data Paket Wisata
+    $sqlviewpaket = 'SELECT * FROM tb_paket_wisata
+                    ORDER BY id_paket_wisata DESC';
+    $stmt = $pdo->prepare($sqlviewpaket);
     $stmt->execute();
-    $rowwisata = $stmt->fetchAll();
+    $rowpaket = $stmt->fetchAll();
 
     // =====================================================================================================
 
@@ -97,29 +104,45 @@ if(empty($laporan)){
                 <th scope="col">Nama Paket Wisata</th>
                 <th scope="col">Deskripsi Wisata</th>
                 <th scope="col">Deskripsi Lengkap</th>
-                <th scope="col">Foto Wisata</th>
                 <th scope="col">Wisata</th>
                 <th scope="col">Biaya Wisata</th>
                 <th scope="col">Status Wisata</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($rowwisata as $wisata) { ?>
+            <?php foreach ($rowpaket as $paket) { ?>
             <tr>
                 <th scope="row">
-                    <?=$wisata->id_paket_wisata?></th>
+                    <?=$paket->id_paket_wisata?>
+                </th>
                 <th scope="row">
-                    <?=$wisata->id_lokasi?></th>
+                    <?=$paket->id_lokasi?>
+                </th>
                 <th style="font-weight: normal; text-align: left;">
-                    <?=$wisata->nama_paket_wisata?></th>
+                    <?=$paket->nama_paket_wisata?>
+                </th>
                 <th style="font-weight: normal; text-align: left;">
-                    <?=$wisata->deskripsi_wisata?></th>
+                    <?=$paket->deskripsi_paket_wisata?>
+                </th>
                 <th style="font-weight: normal; text-align: left;">
-                    <?=$wisata->deskripsi_panjang_wisata?></th>
+                    <?=$paket->deskripsi_panjang_wisata?>
+                </th>
                 <th style="font-weight: normal; text-align: left;">
-                    <img src='<?=$wisata->foto_wisata?>' width="100px"></th>
-                <th style="font-weight: normal; text-align: left;">
-                    <?=$wisata->judul_wisata?></th>
+                    <?php
+                    $sqlviewwisata = 'SELECT * FROM t_wisata
+                                    LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                    WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                    AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata
+                                    ORDER BY id_wisata DESC';
+
+                    $stmt = $pdo->prepare($sqlviewwisata);
+                    $stmt->execute(['id_paket_wisata' => $paket->id_paket_wisata]);
+                    $rowwisata = $stmt->fetchAll();
+
+                    foreach ($rowwisata as $wisata) { ?>
+                    <?=$wisata->judul_wisata?>
+                    <?php } ?>
+                </th>
                 
                 <?php
                 $sqlviewpaket = 'SELECT SUM(biaya_fasilitas) 
@@ -131,7 +154,7 @@ if(empty($laporan)){
                                 AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
                 $stmt = $pdo->prepare($sqlviewpaket);
-                $stmt->execute(['id_paket_wisata' => $wisata->id_paket_wisata]);
+                $stmt->execute(['id_paket_wisata' => $paket->id_paket_wisata]);
                 $sumfasilitas = $stmt->fetchAll();
 
                 foreach ($sumfasilitas as $fasilitas) { ?>
@@ -140,7 +163,7 @@ if(empty($laporan)){
                 <?php } ?>
 
                 <th style="font-weight: normal; text-align: left;">
-                    <?=$wisata->status_aktif?></th>
+                    <?=$paket->status_aktif?></th>
             </tr>
             <?php } ?>
         </tbody>
