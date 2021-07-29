@@ -327,14 +327,14 @@ include 'hak_akses.php';
                 <!-- Paket Wisata -->
                 <div class="" style="width:100%;">
                     <div class="">
-                        <h4 class="card-header mb-2 pl-0">Rincian Paket Wisata, Lokasi
+                        <h4 class="card-header mb-2 pl-0">Rincian <?=$rowitem->nama_paket_wisata?>,<br> Lokasi
                             <span class="text-info font-weight-bolder"> <?=$rowitem->nama_lokasi?></span></h4>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         <h5><span class="font-weight-bold">
-                        <?=$rowitem->nama_paket_wisata?></h5>
+                        Wisata</h5>
                     </div>
                 </div><p>
                 <div class="row">

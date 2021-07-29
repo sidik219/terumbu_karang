@@ -124,7 +124,7 @@ function ageCalculator($dob){
                 <div class="container-fluid">
                     <div align="right">
                     <!-- Cetak Laporan Fasilitas -->
-                    <a class="btn btn-success" href="laporan_wisata.php?laporan=fasilitas&id_fasilitas=<?=$rowfasilitas->id_fasilitas?>">
+                    <a class="btn btn-success" href="laporan_wisata.php?type=fasilitas">
                     <i class="fas fa-file-excel"></i> Laporan Pengeluaran Fasilitas</a>
 
                     <a class="btn btn-outline-primary" href="input_fasilitas_wisata.php" style="margin-top: 5px; margin-bottom: 5px;">
@@ -153,7 +153,6 @@ function ageCalculator($dob){
                                     <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($fasilitas->update_terakhir).' yang lalu)';?></small>
                                 <td>
                                     <a href="edit_fasilitas_wisata.php?id_fasilitas_wisata=<?=$fasilitas->id_fasilitas_wisata?>" class="fas fa-edit mr-3 btn btn-act"></a>
-                                    <a href="hapus.php?type=fasilitas_wisata&id_fasilitas_wisata=<?=$fasilitas->id_fasilitas_wisata?>" class="far fa-trash-alt btn btn-act"></a>
                                 </td>
                             </tr>
                             <?php } ?>

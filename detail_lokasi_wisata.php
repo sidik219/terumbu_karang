@@ -121,7 +121,7 @@ include 'hak_akses.php';
 
                                 <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-info fas fa-luggage-cart"></i>
-                                    <label>Paket Wisata:</label>
+                                    <label>Wisata:</label>
                                     <div class="divTable">
                                         <div class="divTableBody">
                                             <div class="divTableRow">

@@ -86,9 +86,6 @@ $rowasuransi = $stmt->fetchAll();
                         <div class="col">
                             <h4><span class="align-middle font-weight-bold">Kelola Asuransi</span></h4>
                             
-                            <!-- Cetak Laporan Asuransi -->
-                            <a class="btn btn-success" href="laporan_asuransi.php?laporan=asuransi&id_asuransi=<?=$row->id_asuransi?>" style="margin-bottom: 10px;">
-                            <i class="fas fa-file-excel"></i> Laporan Data Asuransi</a>
                         </div>
                         <div class="col">
                             <a class="btn btn-primary float-right" href="input_asuransi.php" role="button">Input Data Baru (+)</a>

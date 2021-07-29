@@ -197,7 +197,7 @@ else{
                 </li>
                 <li class="nav-item"> <!-- Lokasi -->
                     <a href="kelola_asuransi.php" class="nav-link '.(('kelola_asuransi.php' == $url_sekarang) || ('edit_asuransi.php'  == $url_sekarang) || ('input_asuransi.php'  == $url_sekarang) ? ' active ' : '').' ">
-                        <i class="nav-icon fas fa-suitcase"></i>
+                        <i class="nav-icon fas fa-heartbeat"></i>
                         <p> Kelola Asuransi </p>
                     </a>
                 </li>

@@ -2,12 +2,7 @@
 include 'build/config/connection.php';
 session_start();
 
-$laporan = $_GET['laporan'];
-
-if(empty($laporan)){
-    header('Location: kelola_wisata.php');
-    // Jarak
-} elseif ($laporan == 'wisata'){
+if ($_GET['type'] == 'wisata'){
 
     header("Content-type: application/vnd-ms-excel");
     header("Content-Disposition: attachment; filename=laporan_data_wisata.xls");
@@ -215,7 +210,7 @@ if(empty($laporan)){
 
     <?php
     // Jarak
-} elseif ($laporan == 'fasilitas') {
+} elseif ($_GET['type'] == 'fasilitas') {
 
     header("Content-type: application/vnd-ms-excel");
     header("Content-Disposition: attachment; filename=laporan_pengeluaran_fasilitas_wisata.xls");

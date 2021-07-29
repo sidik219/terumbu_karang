@@ -42,11 +42,16 @@ include 'hak_akses.php';
         $tanggal_upload_bukti = date ('Y-m-d H:i:s', time());
 
         $sqlreservasi = "UPDATE t_reservasi_wisata
-                        SET bukti_reservasi = :bukti_reservasi, id_status_reservasi_wisata = :id_status_reservasi_wisata, update_terakhir = :update_terakhir
+                        SET bukti_reservasi = :bukti_reservasi, 
+                            id_status_reservasi_wisata = :id_status_reservasi_wisata, 
+                            update_terakhir = :update_terakhir
                         WHERE id_reservasi = :id_reservasi";
 
         $stmt = $pdo->prepare($sqlreservasi);
-        $stmt->execute(['id_reservasi' => $id_reservasi, 'bukti_reservasi' => $bukti_reservasi, 'id_status_reservasi_wisata' => $id_status_reservasi_wisata, 'update_terakhir' => $tanggal_upload_bukti]);
+        $stmt->execute(['id_reservasi' => $id_reservasi, 
+                        'bukti_reservasi' => $bukti_reservasi, 
+                        'id_status_reservasi_wisata' => $id_status_reservasi_wisata, 
+                        'update_terakhir' => $tanggal_upload_bukti]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {

@@ -36,10 +36,9 @@ if (isset($_POST['submit'])) {
         }
         else if (isset($_FILES['image_uploads'])) {
             $target_dir  = "images/foto_wisata/";
-            $foto_wisata = $target_dir .'WIL_'.$randomstring. '.jpg';
+            $foto_wisata = $target_dir .'WIS_'.$randomstring. '.jpg';
             move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wisata);
         }
-
         //---image upload end
 
         //Insert t_wisata
@@ -85,8 +84,8 @@ if (isset($_POST['submit'])) {
 
             //Update dan set id_paket_wisata ke wisata pilihan
             $sqlupdatewisata = "UPDATE t_wisata
-                            SET id_paket_wisata = :id_paket_wisata
-                            WHERE id_wisata = :id_wisata";
+                                SET id_paket_wisata = :id_paket_wisata
+                                WHERE id_wisata = :id_wisata";
 
             $stmt = $pdo->prepare($sqlupdatewisata);
             $stmt->execute(['id_wisata' => $id_wisata, 

@@ -35,6 +35,7 @@ else if($level_user == 4){
   $wilayah_join = " ";
   $extra_query_k_lok = " ";
   $extra_query_noand_where = " ";
+  $extra_query_noand_where_k_reservasi = " ";
   $extra_query_k_titik = "  ";
 }
 
