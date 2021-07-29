@@ -6,49 +6,84 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-        $id_wisata = $_GET['id_wisata'];
+        $id_paket_wisata = $_GET['id_paket_wisata'];
         $defaultpic = "images/image_default.jpg";
 
+        // Lokasi
         $sqlviewlokasi = 'SELECT * FROM t_lokasi
-                            ORDER BY nama_lokasi';
+                            ORDER BY id_lokasi ASC';
         $stmt = $pdo->prepare($sqlviewlokasi);
         $stmt->execute();
         $rowlokasi = $stmt->fetchAll();
 
-        $sqleditwisata = 'SELECT * FROM t_wisata
-                            LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi
-                            LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                            WHERE id_wisata = :id_wisata';
+        // Asuransi
+        $sqlviewasuransi = 'SELECT * FROM t_asuransi
+                            ORDER BY id_asuransi ASC';
+        $stmt = $pdo->prepare($sqlviewasuransi);
+        $stmt->execute();
+        $rowasuransi = $stmt->fetchAll();
 
-        $stmt = $pdo->prepare($sqleditwisata);
-        $stmt->execute(['id_wisata' => $id_wisata]);
-        $wisata = $stmt->fetch();
+        // Paket Wisata
+        $sqleditpaket = 'SELECT * FROM tb_paket_wisata
+                        WHERE id_paket_wisata = :id_paket_wisata';
+
+        $stmt = $pdo->prepare($sqleditpaket);
+        $stmt->execute(['id_paket_wisata' => $id_paket_wisata]);
+        $rowpaket = $stmt->fetch();
         
         // Jarak
         // 
         // Jarak
         if (isset($_POST['submit'])) {
-            $id_lokasi                  = $_POST['dd_id_lokasi'];
-            $judul_wisata               = $_POST['tb_judul_wisata'];
-            $deskripsi_wisata           = $_POST['tb_deskripsi_wisata'];
-            
-            $sqldeletefasilitas = "DELETE FROM tb_fasilitas_wisata
-                                    WHERE id_wisata = :id_wisata";
+            $id_lokasi                  = $_POST['id_lokasi'];
+            $id_asuransi                = $_POST['id_asuransi'];
+            $nama_paket_wisata          = $_POST['nama_paket_wisata'];
+            $deskripsi_paket_wisata     = $_POST['deskripsi_paket_wisata'];
+            $deskripsi_panjang_wisata   = $_POST['deskripsi_panjang_wisata'];
+            $status_aktif               = $_POST['status_aktif'];
 
-            $stmt = $pdo->prepare($sqldeletefasilitas);
-            $stmt->execute(['id_wisata' => $id_wisata]);
-            
-            $sqlwisata = "UPDATE t_wisata
-                            SET id_lokasi = :id_lokasi, 
-                                judul_wisata = :judul_wisata, 
-                                deskripsi_wisata = :deskripsi_wisata
-                            WHERE id_wisata = :id_wisata";
+            $randomstring = substr(md5(rand()), 0, 7);
 
-            $stmt = $pdo->prepare($sqlwisata);
-            $stmt->execute(['id_wisata' => $id_wisata,
-                            'id_lokasi' => $id_lokasi,
-                            'judul_wisata' => $judul_wisata,
-                            'deskripsi_wisata' => $deskripsi_wisata
+            //Image upload
+            if($_FILES["image_uploads"]["size"] == 0) {
+                $foto_wisata = $rowpaket->foto_wisata;
+                $pic = "&none=";
+            }
+            else if (isset($_FILES['image_uploads'])) {
+                if (($rowpaket->foto_wisata == $defaultpic) || (!$rowpaket->foto_wisata)){
+                    $target_dir  = "images/foto_wisata/";
+                    $foto_wisata = $target_dir .'WIS_'.$randomstring. '.jpg';
+                    move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wisata);
+                    $pic = "&new=";
+                }
+                else if (isset($rowpaket->foto_wisata)){
+                    $foto_wisata = $rowpaket->foto_wisata;
+                    unlink($rowpaket->foto_wisata);
+                    move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowpaket->foto_wisata);
+                    $pic = "&replace=";
+                }
+            }
+            //---image upload end
+            
+            $sqlpaket = "UPDATE tb_paket_wisata
+                            SET id_lokasi = :id_lokasi,
+                                id_asuransi = :id_asuransi,
+                                nama_paket_wisata = :nama_paket_wisata,
+                                deskripsi_paket_wisata = :deskripsi_paket_wisata,
+                                deskripsi_panjang_wisata = :deskripsi_panjang_wisata,
+                                foto_wisata = :foto_wisata,
+                                status_aktif = :status_aktif
+                            WHERE id_paket_wisata = :id_paket_wisata";
+
+            $stmt = $pdo->prepare($sqlpaket);
+            $stmt->execute(['id_lokasi' => $id_lokasi,
+                            'id_asuransi' => $id_asuransi,
+                            'nama_paket_wisata' => $nama_paket_wisata,
+                            'deskripsi_paket_wisata' => $deskripsi_paket_wisata,
+                            'deskripsi_panjang_wisata' => $deskripsi_panjang_wisata,
+                            'foto_wisata' => $foto_wisata,
+                            'status_aktif' => $status_aktif,
+                            'id_paket_wisata' => $id_paket_wisata
                             ]);
 
             $affectedrows = $stmt->rowCount();
@@ -135,7 +170,7 @@ include 'hak_akses.php';
             <div class="content-header">
                 <div class="container-fluid">
                     <a class="btn btn-outline-primary" href="kelola_wisata.php">< Kembali</a><br><br>
-                    <h4><span class="align-middle font-weight-bold">Edit Data Wisata</span></h4>
+                    <h4><span class="align-middle font-weight-bold">Edit Data Paket Wisata</span></h4>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -144,59 +179,45 @@ include 'hak_akses.php';
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <?php
-                        if(!empty($_GET['status'])) {
-                            if($_GET['status'] == 'updatesuccess') {
-                                echo '<div class="alert alert-success" role="alert">
-                                        Update data wisata dan fasilitas wisata berhasil!
-                                        </div>'; }
-                            else if($_GET['status'] == 'addsuccess') {
-                                echo '<div class="alert alert-success" role="alert">
-                                        Input data wisata dan fasilitas wisata berhasil ditambahkan!
-                                        </div>'; }
-                        }
-                    ?>
                     <form action="" enctype="multipart/form-data" method="POST">
+
+                    <!-- Lokasi -->
                     <div class="form-group">
-                    <label for="dd_id_lokasi">ID Lokasi</label>
-                    <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" required>
+                    <label for="id_lokasi">ID Lokasi</label>
+                    <select id="id_lokasi" name="id_lokasi" class="form-control" required>
                             <option value="">Pilih Lokasi</option>
                             <?php foreach ($rowlokasi as $lokasi) {  ?>
-                            <option <?php if($lokasi->id_lokasi == $wisata->id_lokasi) echo 'selected'; ?> value="<?=$lokasi->id_lokasi?>">ID <?=$lokasi->id_lokasi?> - <?=$lokasi->nama_lokasi?></option>
+                            <option <?php if($lokasi->id_lokasi == $rowpaket->id_lokasi) echo 'selected'; ?> value="<?=$lokasi->id_lokasi?>">ID <?=$lokasi->id_lokasi?> - <?=$lokasi->nama_lokasi?></option>
+                        <?php } ?>
+                    </select>
+                    </div>
+
+                    <!-- Asuransi -->
+                    <div class="form-group">
+                    <label for="id_asuransi">ID Asuransi</label>
+                    <select id="id_asuransi" name="id_asuransi" class="form-control" required>
+                            <option value="">Pilih Asuransi</option>
+                            <?php foreach ($rowasuransi as $asuransi) {  ?>
+                            <option <?php if($asuransi->id_asuransi == $rowpaket->id_asuransi) echo 'selected'; ?> value="<?=$asuransi->id_asuransi?>">ID <?=$asuransi->id_asuransi?> - <?=$asuransi->biaya_asuransi?></option>
                         <?php } ?>
                     </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="tb_judul_wisata">Judul Wisata</label>
-                        <input type="text" id="tb_judul_wisata" name="tb_judul_wisata" value="<?=$wisata->judul_wisata?>" class="form-control" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="tb_deskripsi_wisata">Deskripsi Singkat Wisata</label>
-                        <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" value="<?=$wisata->deskripsi_wisata?>" class="form-control" required>
-                    </div>
-
-                    <!-- Edit Paket Wisata -->
-                    <h4 style="margin-top: 80px;">
-                    <span class="align-middle font-weight-bold">Edit Paket Wisata</span></h4>
-                    <hr>
-
-                    <div class="form-group">
                         <label for="nama_paket_wisata">Nama Paket Wisata</label>
-                        <input type="text" id="nama_paket_wisata" name="nama_paket_wisata" value="<?=$wisata->nama_paket_wisata?>" class="form-control" required>
+                        <input type="text" id="nama_paket_wisata" name="nama_paket_wisata" value="<?=$rowpaket->nama_paket_wisata?>" class="form-control" required>
                     </div>
 
                     <div class="form-group">
                         <label for="deskripsi_paket_wisata">Deskripsi Paket Wisata</label>
-                        <input type="text" id="deskripsi_paket_wisata" name="deskripsi_paket_wisata" value="<?=$wisata->deskripsi_paket_wisata?>" class="form-control" required>
+                        <input type="text" id="deskripsi_paket_wisata" name="deskripsi_paket_wisata" value="<?=$rowpaket->deskripsi_paket_wisata?>" class="form-control" required>
                     </div>
 
                     <div class="form-group">
                         <label for="isi_artikel">Deskripsi Lengkap Wisata:</label>
-                        <textarea id="deskripsi_lengkap_wisata" name="deskripsi_panjang_wisata" placeholder="Di isi jika perlu" required></textarea>
+                        <textarea id="deskripsi_panjang_wisata" name="deskripsi_panjang_wisata" placeholder="Di isi jika perlu" required></textarea>
                         <script>
-                                $('#deskripsi_lengkap_wisata').trumbowyg();
+                                $('#deskripsi_panjang_wisata').trumbowyg();
                         </script>
                     </div>
 
@@ -210,11 +231,11 @@ include 'hak_akses.php';
 
                     <div class="form-group">
                         <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
-                            <a href="<?=$wisata->foto_wisata?>" data-toggle="lightbox"><img class="img-fluid" id="oldpic" src="<?=$wisata->foto_wisata?>" width="20%" <?php if($wisata->foto_wisata == NULL) echo " style='display:none;'"; ?>></a>
+                            <a href="<?=$rowpaket->foto_wisata?>" data-toggle="lightbox"><img class="img-fluid" id="oldpic" src="<?=$rowpaket->foto_wisata?>" width="20%" <?php if($rowpaket->foto_wisata == NULL) echo " style='display:none;'"; ?>></a>
                         <br>
 
                         <small class="text-muted">
-                            <?php if($wisata->foto_wisata == NULL){
+                            <?php if($rowpaket->foto_wisata == NULL){
                                 echo "Bukti transfer belum diupload<br>Format .jpg .jpeg .png";
                             }else{
                                 echo "Klik gambar untuk memperbesar";
@@ -252,15 +273,15 @@ include 'hak_akses.php';
                     </div>
 
                     <div class="form-group">
-                        <label for="rb_status_wisata">Status</label><br>
+                        <label for="status_aktif">Status</label><br>
                             <div class="form-check form-check-inline">
-                                <input type="radio" id="rb_status_aktif" name="rb_status_wisata" value="<?=$wisata->status_aktif?>" class="form-check-input">
+                                <input type="radio" id="rb_status_aktif" name="status_aktif" value="<?=$rowpaket->status_aktif?>" class="form-check-input">
                                 <label class="form-check-label" for="rb_status_aktif" style="color: green">
                                     Aktif
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input checked type="radio" id="rb_status_tidak_aktif" name="rb_status_wisata" value="<?=$wisata->status_aktif?> " class="form-check-input">
+                                <input checked type="radio" id="rb_status_tidak_aktif" name="status_aktif" value="<?=$rowpaket->status_aktif?> " class="form-check-input">
                                 <label class="form-check-label" for="rb_status_tidak_aktif" style="color: gray">
                                     Tidak Aktif
                                 </label>
