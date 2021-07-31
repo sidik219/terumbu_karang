@@ -107,6 +107,14 @@ else{
         $ag = $birthdate->diff($today)->y;
         $mn = $birthdate->diff($today)->m;
         $dy = $birthdate->diff($today)->d;
+        if ($dy == 0)
+        {
+            return "Hari ini";
+        }
+        if ($dy == 1)
+        {
+            return "Kemarin";
+        }
         if ($mn == 0)
         {
             return "$dy Hari";
@@ -309,15 +317,18 @@ else{
                                           }
                                   ?>
                               </td>
-                              <td><?=$batch->nama_status_batch?>
+                              <td><?=$batch->nama_status_batch?>                              
                                 <?php if($batch->id_status_batch <= 2){
                                   echo '<small class="text-muted">
                                   <br>Update Terakhir:
                                   <br>'.strftime('%A, %d %B %Y', $truedate).'
                                   <br>('.ageCalculator($batch->update_status_batch_terakhir).' yang lalu)
                                   </small>';
-                                }else{
-                                  echo '<small class="text-muted">Pemeliharaan Terakhir: <br>'. strftime('%A, %d %B %Y', strtotime($batch->tanggal_pemeliharaan_terakhir)).'<br>('.ageCalculator($batch->tanggal_pemeliharaan_terakhir).' yang lalu) <br> <span class="text-danger font-weight-bold">'.
+                                }else if($batch->id_status_batch == 3 && $batch->tanggal_pemeliharaan_terakhir != NULL){
+                                  echo '<br><small class="text-muted">Pemeliharaan Terakhir: <br>'. strftime('%A, %d %B %Y', strtotime($batch->tanggal_pemeliharaan_terakhir)).'<br>('.ageCalculator($batch->tanggal_pemeliharaan_terakhir).') <br> <span class="text-danger font-weight-bold">'.
+                                            alertPemeliharaan($batch->tanggal_pemeliharaan_terakhir).'</span></small>';
+                                }else if($batch->id_status_batch == 3 && $batch->tanggal_pemeliharaan_terakhir == NULL){
+                                  echo '<br><small class="text-muted">Pemeliharaan Terakhir: <br>Belum pernah pemeliharaan <br> <span class="text-danger font-weight-bold">'.
                                             alertPemeliharaan($batch->tanggal_pemeliharaan_terakhir).'</span></small>';
                                 }
                                 ?>

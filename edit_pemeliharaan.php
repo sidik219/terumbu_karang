@@ -69,11 +69,18 @@ function alertCabutLabel($dob, $slabel){
                   foreach($_POST['id_batch'] as $id_batch_value){
                     $id_batch = $id_batch_value;
 
+                    $sqlviewbatch = 'SELECT * FROM t_batch
+                            WHERE id_batch = :id_batch';
+                    $stmt = $pdo->prepare($sqlviewbatch);
+                    $stmt->execute(['id_batch' => $id_batch]);
+                    $rowbatch = $stmt->fetch();
+
+
                     if($id_status_pemeliharaan == 1){
-                      $tanggal_pemeliharaan_terakhir = null;
+                      $tanggal_pemeliharaan_terakhir = $rowbatch->tanggal_penanaman;
                     }
                     else{
-                      $tanggal_pemeliharaan_terakhir = $tanggal_pemeliharaan;
+                      $tanggal_pemeliharaan_terakhir = $date ('Y-m-d H:i:s', time());
                     }
 
 

@@ -30,6 +30,7 @@ if(isset($_GET['id_status_donasi'])){
     $sqlviewdonasi = 'SELECT * FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
+                  LEFT JOIN t_status_pengadaan_bibit ON t_donasi.id_status_pengadaan_bibit = t_status_pengadaan_bibit.id_status_pengadaan_bibit
                   WHERE t_donasi.id_status_donasi = 1  '.$extra_query.'
                   ORDER BY id_donasi DESC';
   }
@@ -37,6 +38,7 @@ if(isset($_GET['id_status_donasi'])){
     $sqlviewdonasi = 'SELECT * FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
+                  LEFT JOIN t_status_pengadaan_bibit ON t_donasi.id_status_pengadaan_bibit = t_status_pengadaan_bibit.id_status_pengadaan_bibit
                   WHERE t_donasi.id_status_donasi = 2  '.$extra_query.'
                   ORDER BY id_donasi DESC';
   }
@@ -44,6 +46,7 @@ if(isset($_GET['id_status_donasi'])){
     $sqlviewdonasi = 'SELECT * FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
+                  LEFT JOIN t_status_pengadaan_bibit ON t_donasi.id_status_pengadaan_bibit = t_status_pengadaan_bibit.id_status_pengadaan_bibit
                   WHERE t_donasi.id_status_donasi = 6  '.$extra_query.'
                   ORDER BY id_donasi DESC';
   }
@@ -55,6 +58,7 @@ elseif(isset($_GET['id_batch'])){ //donasi belum masuk batch
   $sqlviewdonasi = 'SELECT * FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
+                  LEFT JOIN t_status_pengadaan_bibit ON t_donasi.id_status_pengadaan_bibit = t_status_pengadaan_bibit.id_status_pengadaan_bibit
                   WHERE t_donasi.id_batch IS NULL AND t_donasi.id_status_donasi = 3  '.$extra_query.'
                   ORDER BY id_donasi DESC';
 
@@ -64,7 +68,9 @@ elseif(isset($_GET['id_batch'])){ //donasi belum masuk batch
 }else{ //umum
   $sqlviewdonasi = 'SELECT * FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
-                  LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi WHERE  '.$extra_query_noand.'
+                  LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi 
+                  LEFT JOIN t_status_pengadaan_bibit ON t_donasi.id_status_pengadaan_bibit = t_status_pengadaan_bibit.id_status_pengadaan_bibit
+                  WHERE  '.$extra_query_noand.'
                   ORDER BY id_donasi DESC';
 
   $stmt = $pdo->prepare($sqlviewdonasi);
@@ -81,17 +87,48 @@ function ageCalculator($dob){
         $ag = $birthdate->diff($today)->y;
         $mn = $birthdate->diff($today)->m;
         $dy = $birthdate->diff($today)->d;
+        if ($dy == 0)
+        {
+            return "Hari ini";
+        }
+        if ($dy == 1)
+        {
+            return "Kemarin";
+        }
         if ($mn == 0)
         {
-            return "$dy Hari";
+            return "$dy Hari yang lalu";
         }
         elseif ($ag == 0)
         {
-            return "$mn Bulan  $dy Hari";
+            return "$mn Bulan  $dy Hari yang lalu";
         }
         else
         {
-            return "$ag Tahun $mn Bulan $dy Hari";
+            return "$ag Tahun $mn Bulan $dy Hari yang lalu";
+        }
+    }
+
+
+
+    function alertPembayaran($dob){ 
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $mn = $birthdate->diff($today)->m;
+        $dy = $birthdate->diff($today)->d;
+
+        $tglbatas = $birthdate->add(new DateInterval('P3D'));
+        $tglbatas_formatted = strftime('%A, %e %B %Y pukul %R', $tglbatas->getTimeStamp() );
+        $batas_waktu_pesan = '<br><b>Batas pembayaran:</b><br>'. $tglbatas_formatted;
+        if ($dy <= 3)
+        { 
+            //jika masih dalam batas waktu
+            return  $batas_waktu_pesan .'<br> <i class="fas fa-exclamation-circle text-primary"></i><small> Menunggu bukti pembayaran donatur</small>';
+        }
+        else if ($dy > 3){
+            //overdue
+            return $batas_waktu_pesan .'<br><i class="fas fa-exclamation-circle text-danger"></i><small> Sudah lewat batas waktu pembayaran.</small><br>
+            ';
         }
     }
 ?>
@@ -226,6 +263,7 @@ function ageCalculator($dob){
                                 <!-- <th scope="col">Bukti Donasi</th> -->
                                 <th scope="col">Tanggal Donasi</th>
                                 <th scope="col">Status Donasi</th>
+                                <th scope="col">Status Pengadaan Bibit</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                           </thead>
@@ -240,12 +278,38 @@ function ageCalculator($dob){
                                   <?php echo empty($rowitem->id_batch) ? '' : '<br><span class="badge badge-pill badge-info mr-2"> ID Batch '.$rowitem->id_batch.'</span>';?>
                               </th>
                               <td>Rp. <?=number_format($rowitem->nominal, 0)?></td>
-                              <td><?=strftime('%A, %d %B %Y', $donasidate);?></td>
+                              <td><?=strftime('%A, %e %B %Y', $donasidate);?> <br>  <?php if($rowitem->id_status_donasi == 1){
+                                              echo alertPembayaran($rowitem->tanggal_donasi);
+                                          }  ?> 
+                                          
+                                          
+                                          <div class="mb-3">
+                                            <?php
+                                            $tgldonasi = new DateTime($rowitem->tanggal_donasi);
+                                            $today   = new DateTime('today');
+                                            if (($tgldonasi->diff($today))->d > 3 && ($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4) && ($rowitem->id_status_donasi == 1)) { ?>
+                                                <!--Tombol batalkan donasi -->
+                                               <a onclick="return konfirmasiBatalDonasi(event)" href="hapus.php?type=batalkan_donasi&id_donasi=<?=$rowitem->id_donasi?>" class="btn btn-sm btn-danger userinfo">
+                                                    <i class="fas fa-times"></i> Batalkan Donasi</a>
+                                            <?php } ?>
+                                        </div>
+                             </td>
                               <td><?=$rowitem->nama_status_donasi?> <br><small class="text-muted">Update Terakhir:
-                                <br><?=strftime('%A, %d %B %Y', $truedate);?>
-                                <br>(<?=ageCalculator($rowitem->update_terakhir).' yang lalu'?>)
+                                <br><?=strftime('%A, %e %B %Y', $truedate);?>
+                                <br>(<?=ageCalculator($rowitem->update_terakhir)?>)
 
                               </small></td>
+                              <td>
+                                <?=$rowitem->nama_status_pengadaan_bibit?> <br><small class="text-muted"><br>
+                                
+                                        <div class="mb-3">
+                                            <?php if ($rowitem->id_status_donasi > 2) { ?>
+                                                <!-- Invoice Reservasi Wisata -->
+                                                <a href="kelola_pengadaan_bibit.php?id_donasi=<?=$rowitem->id_donasi?>" class="btn btn-sm btn-primary userinfo">
+                                                    <i class="fas fa-file-invoice"></i> Kelola Pengadaan Bibit</a>
+                                            <?php } ?>
+                                        </div>
+                              </td>
                               <td>
                                 <button type="button" class="btn btn-act <?php if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){echo " d-none ";} ?>">
                                 <a href="edit_donasi.php?id_donasi=<?=$rowitem->id_donasi?>" class="fas fa-edit"></a>
@@ -405,6 +469,23 @@ function ageCalculator($dob){
     <script src="dist/js/adminlte.js"></script>
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function konfirmasiBatalDonasi(event){
+        jawab = true
+        jawab = confirm('Batalkan donasi? Data donasi akan hilang permanen!')
+
+        if (jawab){
+            // alert('Lanjut.')
+            return true
+        }
+        else{
+            event.preventDefault()
+            return false
+
+        }
+    }
+    </script>
 
 
 </body>

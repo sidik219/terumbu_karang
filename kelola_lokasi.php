@@ -206,11 +206,11 @@ $row = $stmt->fetchAll();
                           $sqlplokasi = 'SELECT * FROM t_lokasi';
                         }else{
                           $sqlplokasi = 'SELECT * FROM t_lokasi
-                        LEFT JOIN t_user ON t_lokasi.id_user_pengelola = t_user.id_user
+                        
                         WHERE id_lokasi = :id_lokasi';
                         }
                         $sqlplokasi = 'SELECT * FROM t_lokasi
-                        LEFT JOIN t_user ON t_lokasi.id_user_pengelola = t_user.id_user
+                        
                         WHERE id_lokasi = :id_lokasi';
                         $stmt = $pdo->prepare($sqlplokasi);
                         $stmt->execute(['id_lokasi' => $rowitem->id_lokasi]);

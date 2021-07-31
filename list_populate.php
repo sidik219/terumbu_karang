@@ -433,8 +433,8 @@ if ($_POST['type'] == 'load_rincian_donasi' && !empty($_POST["id_donasi"])) {
                         </div> -->
                     </div>
                     <div class="form-group">
-                        <img id="preview" src="#"  width="100px" alt="Preview Gambar" <?php if($rowitem->bukti_donasi == NULL) echo " style='display:none;'"; ?>>
-                        <a href="<?=$rowitem->bukti_donasi?>" data-toggle="lightbox"><img class="img-fluid" id="oldpic" src="<?=$rowitem->bukti_donasi?>" width="50%" <?php if($rowitem->bukti_donasi == NULL) echo " style='display:none;'"; ?>></a>
+                        
+                        <a href="<?=$rowitem->bukti_donasi?>" data-toggle="lightboxbatch"><img class="img-fluid" id="oldpic" src="<?=$rowitem->bukti_donasi?>" width="50%" <?php if($rowitem->bukti_donasi == NULL) echo " style='display:none;'"; ?>></a>
                         <br>
                         <small class="text-muted">
                             <?php if($rowitem->bukti_donasi == NULL){
@@ -473,7 +473,6 @@ if ($_POST['type'] == 'load_rincian_donasi' && !empty($_POST["id_donasi"])) {
                     <!-- <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p> -->
                     </form>
                       </div>
-
 
 
             </section>

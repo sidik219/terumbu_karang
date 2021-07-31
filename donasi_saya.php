@@ -21,17 +21,73 @@ function ageCalculator($dob){
         $ag = $birthdate->diff($today)->y;
         $mn = $birthdate->diff($today)->m;
         $dy = $birthdate->diff($today)->d;
+        if ($dy == 0)
+        {
+            return "Hari ini";
+        }
+        if ($dy == 1)
+        {
+            return "Kemarin";
+        }
         if ($mn == 0)
         {
-            return "$dy Hari";
+            return "$dy Hari yang lalu";
         }
         elseif ($ag == 0)
         {
-            return "$mn Bulan  $dy Hari";
+            return "$mn Bulan  $dy Hari yang lalu";
         }
         else
         {
-            return "$ag Tahun $mn Bulan $dy Hari";
+            return "$ag Tahun $mn Bulan $dy Hari yang lalu";
+        }
+    }
+
+    function ageCalculatorFuture($dob){
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $ag = $birthdate->diff($today)->y;
+        $mn = $birthdate->diff($today)->m;
+        $dy = $birthdate->diff($today)->d;
+        if ($dy == 0)
+        {
+            return "Hari ini";
+        }
+        if ($dy == 1)
+        {
+            return "Besok";
+        }
+        if ($mn == 0)
+        {
+            return "$dy Hari mendatang";
+        }
+        elseif ($ag == 0)
+        {
+            return "$mn Bulan  $dy Hari mendatang";
+        }
+        else
+        {
+            return "$ag Tahun $mn Bulan $dy Hari mendatang";
+        }
+    }
+
+    function alertPembayaran($dob){ 
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $mn = $birthdate->diff($today)->m;
+        $dy = $birthdate->diff($today)->d;
+
+        $tglbatas = $birthdate->add(new DateInterval('P3D'));
+        $tglbatas_formatted = strftime('%A, %e %B %Y pukul %R', $tglbatas->getTimeStamp() );
+        $batas_waktu_pesan = '<br><b>Batas pembayaran:</b><br><b>'. $tglbatas_formatted.'</b>';
+        if ($dy <= 3)
+        { 
+            //jika masih dalam batas waktu
+            return  $batas_waktu_pesan .'<br> <i class="fas fa-exclamation-circle text-primary"></i> Harap upload bukti pembayaran sebelum batas waktu agar donasi segera diproses pengelola.';
+        }
+        else if ($dy > 3){
+            //overdue
+            return $batas_waktu_pesan .'<br><i class="fas fa-exclamation-circle text-danger"></i> Upload Bukti pembayaran telah melebihi batas waktu. Donasi akan segera dibatalkan pengelola.';
         }
     }
 ?>
@@ -137,8 +193,20 @@ function ageCalculator($dob){
                           Donasi berhasil dibuat! Harap upload bukti pembayaran agar donasi diproses pengelola
                       </div>';}
                     }
+                    
+                    if(count($row) == 0){?>
+                        <div class="row text-center">
+                            <div class="col">
+                                <img src="images/gs-terumbu-donasi-kosong.png" class="" width="25%"/>
+                                <br> Ayo buat donasi pertama Anda!
+                                <br> <a class="btn btn-primary" href="map.php" role="button">Let's GoKarang!</a>
+                            </div>
+                        </div>
 
-                ?>
+                    <?php
+                        }
+                    ?>
+
 
                     <div>
 
@@ -165,8 +233,23 @@ function ageCalculator($dob){
                                       <div class="mb-3">
                                           <span class="font-weight-bold"><i class="nav-icon text-secondary fas fas fa-calendar-alt"></i> Tanggal Donasi</span>
                                           <br>
-                                          <?=strftime('%A, %d %B %Y', $donasidate);?>
+                                          <?=strftime('%A, %e %B %Y', $donasidate);?>
+                                        <br>
+
+
+                                          <?php if($rowitem->id_status_donasi == 1){
+                                              echo alertPembayaran($rowitem->tanggal_donasi);
+                                          }  ?>
                                       </div>
+
+                                       <div class="mb-3">
+                                            <?php if ($rowitem->id_status_donasi >= 3 && $rowitem->id_status_donasi < 6) { ?>
+                                                <!-- Invoice -->
+                                                <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-file-invoice"></i> Invoice Donasi</span>
+                                                <a href="invoice_donasi.php?id_donasi=<?=$rowitem->id_donasi?>" class="btn btn-sm btn-primary userinfo">
+                                                    <i class="fas fa-file-invoice"></i> Download Inovice Donasi Terumbu Karang</a>
+                                            <?php } ?>
+                                        </div>
 
 
 
@@ -185,16 +268,24 @@ function ageCalculator($dob){
                                             <?php echo ($rowitem->id_status_donasi <= 2 || $rowitem->id_status_donasi == 6) ? '<a href="edit_donasi_saya.php?id_donasi='.$rowitem->id_donasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Donasi</a>' : ''; ?>
 
                                           <br><small class="text-muted"><b>Update Terakhir</b>
-                                          <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($rowitem->update_terakhir).' yang lalu)';?></small>
+                                          <br><?=strftime('%A, %e %B %Y', $truedate).'<br> ('.ageCalculator($rowitem->update_terakhir).')';?></small>
 
                                       </div>
-                                        <div class="mb-3">
-                                            <?php if ($rowitem->id_status_donasi == 3) { ?>
-                                                <!-- Invoice Reservasi Wisata -->
-                                                <a href="invoice_donasi.php?id_donasi=<?=$rowitem->id_donasi?>" class="btn btn-sm btn-primary userinfo">
-                                                    <i class="fas fa-file-invoice"></i> Download Inovice Donasi Terumbu Karang</a>
-                                            <?php } ?>
-                                        </div>
+
+
+                                    <?php if ($rowitem->id_status_donasi >= 3 && $rowitem->id_status_donasi < 6) { ?>
+                                      <div class="mb-3">
+                                          <span class="font-weight-bold"><i class="nav-icon text-success fas fas fa-calendar-alt"></i> Tanggal Penanaman</span>
+                                          <br><?=strftime('%A, %e %B %Y', strtotime($rowitem->tanggal_penanaman))?>
+                                          <small class="text-muted"><?='<br> ('.ageCalculatorFuture($rowitem->tanggal_penanaman).')';?></small>                                      
+                                       
+                                      </div>
+                                      <?php } ?>
+
+
+
+
+                                       
                                   </div>
 
 
@@ -226,7 +317,7 @@ function ageCalculator($dob){
                                                 $id_donasi = $rowitem->id_donasi;
                                                 $sqlviewisi = 'SELECT * FROM t_detail_donasi
                                                 LEFT JOIN t_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
-                                                LEFT JOIN t_terumbu_karang ON t_detail_donasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang
+                                                LEFT JOIN t_terumbu_karang ON t_detail_donasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang                                                
                                                 WHERE t_detail_donasi.id_donasi = :id_donasi';
                                                 $stmt = $pdo->prepare($sqlviewisi);
                                                 $stmt->execute(['id_donasi' => $id_donasi]);
@@ -292,11 +383,12 @@ function ageCalculator($dob){
                                                         </div>
                                                         <div class="col mb-2">
                                                           <span class="font-weight-bold"><i class="nav-icon text-pink fas fa-birthday-cake"></i> Umur Terumbu Karang </span>
-                                                          <br> <span><?=ageCalculator($rowitem->tanggal_penanaman)?></span>
+                                                          <br> <span><?=$rowitem->tanggal_penanaman > time() ? 'Bibit belum ditanam' : ageCalculator($rowitem->tanggal_penanaman)?></span>
                                                         </div>
                                                         <div class="col mb-2">
                                                           <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-calendar-alt"></i> Pemeliharaan Terkini</span>
-                                                          <br> <span><?=strftime('%A, %d %B %Y', $peliharadate).' ('.ageCalculator($history->tanggal_pemeliharaan).' yang lalu)'?></span>
+                                                          <br> <span><?=strftime('%A, %e %B %Y', $peliharadate).' <br>
+                                                          <small class="text-muted">('.ageCalculator($history->tanggal_pemeliharaan).' yang lalu)</small>'?></span>
                                                         </div>
                                                         <div class="col">
                                                             <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-heartbeat"></i> Kondisi</span>
@@ -304,10 +396,10 @@ function ageCalculator($dob){
                                                           </div>
                                                       </div>
 
-                                                      <div class="col">
-                                                                  <img class="preview-images rounded" id="preview<?=$isi->id_detail_donasi?>"  width="100px" src="#" alt="Preview Gambar"/>
-                                                                  <img class="rounded" id="oldpic<?=$isi->id_detail_donasi?>" src="<?php echo empty($history->foto_pemeliharaan) ? '' : $history->foto_pemeliharaan?>" width="130px">
-                                                                  <input type="hidden" name="oldpic[]" class="form-control" value="<?php echo empty($history->foto_pemeliharaan) ? '' : $history->foto_pemeliharaan ?>">
+                                                      <div class="col-lg-6">
+                                                                  
+                                                                  <img class="rounded" id="oldpic<?=$isi->id_detail_donasi?>" src="<?php echo empty($history->foto_pemeliharaan) ? '' : $history->foto_pemeliharaan?>" width="100%">
+                                                                  
                                                                   <br>
 
                                                           </div>
@@ -415,8 +507,11 @@ function ageCalculator($dob){
         var e = event.target
         $(e).siblings('.detail-toggle').fadeToggle()
       }
+      </script>
 
-    </script>
+
+    
+   
 
 </body>
 </html>

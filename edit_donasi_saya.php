@@ -23,7 +23,7 @@ include 'hak_akses.php';
     $rowrekening = $stmt->fetch();
 
     if (isset($_POST['submit'])) {
-        $randomstring = substr(md5(rand()), 0, 7);
+        // $randomstring = substr(md5(rand()), 0, 7);
 
         //Image upload
             if($_FILES["image_uploads"]["size"] == 0) {
@@ -33,7 +33,7 @@ include 'hak_akses.php';
             else if (isset($_FILES['image_uploads'])) {
                 if (($rowitem->bukti_donasi == $defaultpic) || (!$rowitem->bukti_donasi)){
                     $target_dir  = "images/bukti_reservasi/";
-                    $bukti_donasi = $target_dir .'BKTDNS_'.$randomstring. '.jpg';
+                    $bukti_donasi = $target_dir .'BKTDNS_id'.$id_donasi. '.jpg';
                     move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $bukti_donasi);
                     $pic = "&new=";
                 }

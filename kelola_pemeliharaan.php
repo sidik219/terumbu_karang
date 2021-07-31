@@ -233,7 +233,7 @@ function ageCalculator($dob){
                               <td><?=$pemeliharaan->id_lokasi?> - <?=$pemeliharaan->nama_lokasi?></td>
                               <td><?=strftime('%A, %d %B %Y', strtotime($pemeliharaan->tanggal_pemeliharaan))?>
                                 <br><small class="text-muted">
-                                    <?= ($pemeliharaan->tanggal_pemeliharaan < date('Y-m-d H:i:s')) ? ageCalculator($pemeliharaan->tanggal_pemeliharaan).' yang lalu' :  ageCalculator($pemeliharaan->tanggal_pemeliharaan).' yang akan datang'?>
+                                    <?= ($pemeliharaan->tanggal_pemeliharaan < date('Y-m-d H:i:s')) ? ageCalculator($pemeliharaan->tanggal_pemeliharaan).' yang lalu' :  ageCalculator($pemeliharaan->tanggal_pemeliharaan).' mendatang'?>
                                   </small>
 
                             </td>
