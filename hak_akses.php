@@ -160,7 +160,27 @@ else{
                     <i class="nav-icon fas fas fa-user"></i>
                     <p> Profil Saya  </p>
                 </a>
-            </li> -->';
+            </li> -->
+
+		<li class="nav-item"> <!-- Wilayah -->
+                      <a href="kelola_laporan_baru.php" class="nav-link '.('kelola_laporan_baru.php' == $url_sekarang ? ' active ' : '').' ">
+                              <i class="nav-icon fas fa-globe-americas"></i>
+                              <p> Laporan Sebaran</p>
+                      </a>
+                  </li>
+                  
+                  <li class="nav-item"> <!-- Wilayah -->
+                      <a href="kelola_laporan.php" class="nav-link '.('kelola_laporan.php' == $url_sekarang ? ' active ' : '').' ">
+                              <i class="nav-icon fas fa-angle-down"></i>
+                              <p> Sebaran Per-Wilayah </p>
+                      </a>
+                  </li>
+                  <li class="nav-item"> <!-- Wilayah -->
+                        <a href="arsip_perizinan.php" class="nav-link '.('arsip_perizinan.php' == $url_sekarang ? ' active ' : '').' ">
+                              <i class="nav-icon fas fa-scroll"></i>
+                              <p> Arsip Perizinan </p>
+                        </a>
+                  </li>';
 
             echo $sidebar;
 
