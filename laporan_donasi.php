@@ -70,12 +70,23 @@ elseif(isset($_GET['id_batch'])){ //donasi belum masuk batch
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi 
                   LEFT JOIN t_status_pengadaan_bibit ON t_donasi.id_status_pengadaan_bibit = t_status_pengadaan_bibit.id_status_pengadaan_bibit
-                  WHERE  '.$extra_query_noand.'
+                  WHERE  '.$extra_query_noand.' AND t_donasi.id_status_pengadaan_bibit = 4 
                   ORDER BY id_donasi DESC';
 
   $stmt = $pdo->prepare($sqlviewdonasi);
   $stmt->execute();
   $row = $stmt->fetchAll();
+
+  $sqlhitungtotal = 'SELECT COUNT(t_donasi.id_donasi) AS total_donasi, SUM(t_donasi.nominal) AS total_nominal FROM t_donasi
+                  LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi 
+                  LEFT JOIN t_status_pengadaan_bibit ON t_donasi.id_status_pengadaan_bibit = t_status_pengadaan_bibit.id_status_pengadaan_bibit
+                  WHERE  '.$extra_query_noand.' AND t_donasi.id_status_pengadaan_bibit = 4 
+                  ORDER BY id_donasi DESC';
+
+  $stmt = $pdo->prepare($sqlhitungtotal);
+  $stmt->execute();
+  $rowtotal = $stmt->fetch();
 }
 
 
@@ -203,7 +214,8 @@ function ageCalculator($dob){
                 <div class="container-fluid">
                 <div class="row">
                         <div class="col">
-                            <h4><span class="align-middle font-weight-bold">Kelola Donasi</span></h4>
+                            <h4><span class="align-middle font-weight-bold">Laporan Donasi</span></h4>
+                            <small class="text-muted"><i class="nav-icon text-info fas fa-info-circle"></i> Daftar donasi yang telah selesai pengadaan bibit</small>
                         </div>
                         <!-- <div class="col">
 
@@ -228,16 +240,16 @@ function ageCalculator($dob){
                     }
                 ?>
 
-                <div class="row <?php if(!($_SESSION['level_user'] == 3)){echo " d-none ";} ?>">
+                <div class="row">
                     <div class="col text-sm-center">
-                        <a class="btn btn-primary float-md-right" href="kelola_batch.php" role="button">Kelola Batch Penanaman<i class="nav-icon fas fa-boxes ml-1"></i></a>
+                        <a class="btn btn-primary float-md-right" href="#" role="button">Cetak Laporan Donasi<i class="nav-icon fas fa-boxes ml-1"></i></a>
                     </div>
                 </div>
 
 
                 <div class="row">
                       <div class="col">
-                        <div class="dropdown show">
+                        <!-- <div class="dropdown show">
                           <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Pilih Kategori
                           </a>
@@ -249,7 +261,7 @@ function ageCalculator($dob){
                             <a class="dropdown-item" href="kelola_donasi.php?id_batch=isnull">Belum Masuk Batch</a>
                             <a class="dropdown-item" href="kelola_donasi.php?id_status_donasi=6">Bermasalah</a>
                         </div>
-                    </div>
+                    </div> -->
                       </div>
                 </div>
 
@@ -258,12 +270,10 @@ function ageCalculator($dob){
                      <thead>
                             <tr>
                                 <th scope="col">ID Donasi</th>
-                                <!-- <th scope="col">ID User</th> -->
+                                <th scope="col">Lokasi</th>
                                 <th scope="col">Nominal</th>
-                                <!-- <th scope="col">Bukti Donasi</th> -->
+                                <th scope="col">Nama Donatur</th>
                                 <th scope="col">Tanggal Donasi</th>
-                                <th scope="col">Status Donasi</th>
-                                <th scope="col">Status Pengadaan Bibit</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                           </thead>
@@ -277,165 +287,44 @@ function ageCalculator($dob){
                               <th scope="row"><?=$rowitem->id_donasi?>
                                   <?php echo empty($rowitem->id_batch) ? '' : '<br><span class="badge badge-pill badge-info mr-2"> ID Batch '.$rowitem->id_batch.'</span>';?>
                               </th>
+                              <td><?= $rowitem->nama_lokasi ?></td>
                               <td>Rp. <?=number_format($rowitem->nominal, 0)?></td>
+                              <td><?= $rowitem->nama_donatur ?></td>
                               <td><?=strftime('%A, %e %B %Y', $donasidate);?> <br>  <?php if($rowitem->id_status_donasi == 1){
                                               echo alertPembayaran($rowitem->tanggal_donasi);
                                           }  ?> 
                                           
                                           
-                                          <div class="mb-3">
-                                            <?php
-                                            $tgldonasi = new DateTime($rowitem->tanggal_donasi);
-                                            $today   = new DateTime('today');
-                                            if (($tgldonasi->diff($today))->d > 3 && ($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4) && ($rowitem->id_status_donasi == 1)) { ?>
-                                                <!--Tombol batalkan donasi -->
-                                               <a onclick="return konfirmasiBatalDonasi(event)" href="hapus.php?type=batalkan_donasi&id_donasi=<?=$rowitem->id_donasi?>" class="btn btn-sm btn-danger userinfo">
-                                                    <i class="fas fa-times"></i> Batalkan Donasi</a>
-                                            <?php } ?>
-                                        </div>
+                                         
                              </td>
-                              <td><?=$rowitem->nama_status_donasi?> <br><small class="text-muted">Update Terakhir:
-                                <br><?=strftime('%A, %e %B %Y', $truedate);?>
-                                <br>(<?=ageCalculator($rowitem->update_terakhir)?>)
-
-                              </small></td>
+                            
                               <td>
-                                <?=$rowitem->nama_status_pengadaan_bibit?> <br><small class="text-muted"><br>
+                                <a data-id='<?=$rowitem->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo p-1">Rincian></a>
                                 
-                                        <div class="mb-3">
-                                            <?php if ($rowitem->id_status_donasi > 2 && $rowitem->id_status_donasi != 4) { ?>
-                                                <!-- Invoice Reservasi Wisata -->
-                                                <a href="kelola_pengadaan_bibit.php?id_donasi=<?=$rowitem->id_donasi?>" class="btn btn-sm btn-primary userinfo">
-                                                    <i class="fas fa-file-invoice"></i> Kelola Pengadaan Bibit</a>
-                                            <?php } ?>
-                                        </div>
-                              </td>
-                              <td>
-                                <button type="button" class="btn btn-act <?php if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){echo " d-none ";} ?>">
-                                <a href="edit_donasi.php?id_donasi=<?=$rowitem->id_donasi?>" class="fas fa-edit"></a>
-                            	</button>
-                                <button type="button" class="btn btn-act <?php if(!($_SESSION['level_user'] == 4)){echo " d-none ";} ?>"><i class="far fa-trash-alt"></i></button>
                               </td>
 
                           </tr>
 
-                          <tr>
-                                <td colspan="5">
-                                    <!--collapse start -->
-                            <div class="row  m-0">
-                            <div class="col-12 cell detailcollapser<?=$rowitem->id_donasi?>"
-                                data-toggle="collapse"
-                                data-target=".cell<?=$rowitem->id_donasi?>, .contentall<?=$rowitem->id_donasi?>">
-                                <p
-                                    class="fielddetail<?=$rowitem->id_donasi?> btn btn-act">
-                                    <i
-                                        class="icon fas fa-chevron-down"></i>
-                                    Rincian Donasi</p>
-                            </div>
-                            <div class="col-12 cell<?=$rowitem->id_donasi?> collapse contentall<?=$rowitem->id_donasi?>    border rounded shadow-sm p-3">
-                            <div class="row mb-3  border-bottom">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Nama Donatur
-                                    </div>
-                                    <div class="col isi">
-                                        <?php
-                                            echo $rowitem->nama_donatur;
-                                        ?>
-                                    </div>
-                                </div>
-                                <div class="row mb-3 border-bottom">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Nomor Rekening Donatur
-                                    </div>
-                                    <div class="col isi">
-                                        <?php
-                                            echo $rowitem->nomor_rekening_donatur;
-                                        ?>
-                                    </div>
-                                </div>
-                                <div class="row mb-2 border-bottom">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Bank Donatur
-                                    </div>
-                                    <div class="col isi">
-                                        <?php
-                                            echo $rowitem->bank_donatur;
-                                        ?>
-                                    </div>
-                                </div>
-                              <div class="row mb-2 border-bottom">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Lokasi Penanaman
-                                    </div>
-                                    <div class="col isi">
-                                        <?="$rowitem->nama_lokasi (ID $rowitem->id_lokasi)";?>
-                                    </div>
-                                </div>
-                                <div class="row mb-3 border-bottom">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Pesan/Ekspresi
-                                    </div>
-                                    <div class="col isi">
-                                        <?php
-                                            echo $rowitem->pesan;
-                                        ?>
-                                    </div>
-                                </div>
-
-
-                                <div class="row mb-3">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Pilihan
-                                    </div>
-                                    <div class="col isi">
-                                        <?php
-                                              $sqlviewisi = 'SELECT jumlah_terumbu, nama_terumbu_karang, foto_terumbu_karang FROM t_detail_donasi
-                                              LEFT JOIN t_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
-                                              LEFT JOIN t_terumbu_karang ON t_detail_donasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang
-                                              WHERE t_detail_donasi.id_donasi = :id_donasi';
-                                              $stmt = $pdo->prepare($sqlviewisi);
-                                              $stmt->execute(['id_donasi' => $rowitem->id_donasi]);
-                                              $rowisi = $stmt->fetchAll();
-                                           foreach ($rowisi as $isi){
-                                             ?>
-                                             <div class="row  mb-3">
-                                               <div class="col">
-                                                <img class="rounded" height="60px" src="<?=$isi->foto_terumbu_karang?>?<?php if ($status='nochange'){echo time();}?>">
-                                              </div>
-                                              <div class="col">
-                                                <span><?= $isi->nama_terumbu_karang?>
-                                              </div>
-                                              <div class="col">
-                                                x<?= $isi->jumlah_terumbu?></span><br/>
-                                              </div>
-
-                                             <hr class="mb-2"/>
-                                             </div>
-
-                                        <?php   }
-                                        ?>
-                                    </div>
-                                </div>
-
-                                <!-- <div class="row  mb-3">
-                                    <div class="col-md-3 kolom font-weight-bold">
-                                        Foto Wilayah
-                                    </div>
-                                    <div class="col isi">
-                                        <img src="<?=$rowitem->foto_wilayah?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
-                                    </div>
-                                </div> -->
-
-                            </div>
-                        </div>
-
-                        <!--collapse end -->
-                                </td>
-                            </tr>
+                          
                             <?php //$index++;
                             } ?>
-                    </tbody>
+                    </tbody>                    
                   </table>
+                
+                <hr class="m-0"/>
+                <hr class="m-0"/>
+                   <table class="table table-striped table-responsive-sm">
+                     <thead>
+                            <tr>
+                                <th scope="col">Total: <?= $rowtotal->total_donasi ?> Donasi</th>
+                                <th scope="col"></th>
+                                <th scope="col">Rp. <?=  number_format($rowtotal->total_nominal, 0)?></th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                          </thead>
+                   </table>
             </div>
 
             </section>
@@ -448,6 +337,25 @@ function ageCalculator($dob){
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+
+    <!-- Modal -->
+   <div class="modal fade" id="empModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+     <!-- Modal content-->
+     <div class="modal-content  bg-light">
+      <div class="modal-header">
+        <h4 class="modal-title">Rincian Donasi</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+       <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+     </div>
+    </div>
+   </div>
 
     <footer class="main-footer">
         <?= $footer ?>
@@ -470,23 +378,31 @@ function ageCalculator($dob){
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <script>
-        function konfirmasiBatalDonasi(event){
-        jawab = true
-        jawab = confirm('Batalkan donasi? Data donasi akan hilang permanen!')
 
-        if (jawab){
-            // alert('Lanjut.')
-            return true
-        }
-        else{
-            event.preventDefault()
-            return false
+<script>
+       $(document).ready(function(){
 
-        }
+ $('.userinfo').click(function(){
+
+   var id_donasi = $(this).data('id');
+
+   // AJAX request
+   $.ajax({
+    url: 'list_populate.php',
+    type: 'post',
+    data: {id_donasi: id_donasi, type : 'load_rincian_donasi'},
+    success: function(response){
+      // Add response in Modal body
+      $('.modal-body').html(response);
+
+      // Display Modal
+      $('#empModal').modal('show');
     }
-    </script>
+  });
+ });
+});
 
+    </script>
 
 </body>
 </html>

@@ -52,12 +52,13 @@ else{
                     </a>
                 </li>
 
-                <li class="nav-item"> <!-- Lokasi -->
+                <!--
+                <li class="nav-item"> 
                     <a href="kelola_reservasi_wisata.php" class="nav-link '.(('kelola_reservasi_wisata.php' == $url_sekarang) || ('edit_reservasi_wisata.php'  == $url_sekarang) ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-th-list"></i>
                         <p> Kelola Reservasi </p>
                     </a>
-                </li>
+                </li> -->
 
                 <!--
                 <li class="nav-item">
@@ -105,22 +106,18 @@ else{
                   </li>
                   <li class="nav-item"> <!-- Wilayah -->
                       <a href="kelola_laporan.php" class="nav-link '.('kelola_laporan.php' == $url_sekarang ? ' active ' : '').' ">
-                              <i class="nav-icon fas fa-book"></i>
-                              <p> Kelola Laporan </p>
+                              <i class="nav-icon fas fa-angle-down"></i>
+                              <p> Sebaran Per-Wilayah </p>
                       </a>
                   </li>
                   <li class="nav-item"> <!-- Wilayah -->
                       <a href="kelola_laporan_baru.php" class="nav-link '.('kelola_laporan_baru.php' == $url_sekarang ? ' active ' : '').' ">
-                              <i class="nav-icon fas fa-book"></i>
-                              <p> Kelola Laporan Baru</p>
+                              <i class="nav-icon fas fa-globe-americas"></i>
+                              <p> Laporan Sebaran</p>
                       </a>
-                  </li>
-                   <li class="nav-item"> <!-- Wilayah & Pusat -->
-                      <a href="kelola_arsip_laporan_sebaran.php" class="nav-link '.('kelola_arsip_laporan_sebaran.php' == $url_sekarang || ('edit_arsip_luas_wilayah.php'  == $url_sekarang)   ? ' active ' : '').' ">
-                              <i class="nav-icon fas fa-history"></i>
-                              <p> Kelola Arsip Laporan </p>
-                      </a>
-                  </li>
+                  </li>                  
+              
+
                 <!--
                 <li class="nav-item">
                     <a href="kelola_user.php" class="nav-link '.('kelola_user.php' == $url_sekarang ? ' active ' : '').' ">
@@ -128,6 +125,13 @@ else{
                             <p> Kelola User </p>
                     </a>
                 </li> -->
+
+                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                    <a href="laporan_donasi.php" class="nav-link  '.('laporan_donasi.php' == $url_sekarang ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-file-invoice"></i>
+                        <p> Laporan Donasi</p>
+                    </a>
+                </li>
             ';
 
             echo $sidebar;
@@ -148,12 +152,16 @@ else{
                     <p> Donasi Saya </p>
                 </a>
             </li>
+
+            <!--
             <li class="nav-item">
                 <a href="reservasi_saya.php" class="nav-link '.('reservasi_saya.php' == $url_sekarang ? ' active ' : '').' ">
                     <i class="nav-icon fas fa-suitcase"></i>
                     <p> Reservasi Saya  </p>
                 </a>
-            </li>
+            </li> -->
+
+
             <!--
             <li class="nav-item">
                 <a href="profil_saya.php" class="nav-link '.('profil_saya.php' == $url_sekarang ? ' active ' : '').' ">
@@ -161,8 +169,8 @@ else{
                     <p> Profil Saya  </p>
                 </a>
             </li> -->
-
-		<li class="nav-item"> <!-- Wilayah -->
+                        
+                  <li class="nav-item"> <!-- Wilayah -->
                       <a href="kelola_laporan_baru.php" class="nav-link '.('kelola_laporan_baru.php' == $url_sekarang ? ' active ' : '').' ">
                               <i class="nav-icon fas fa-globe-americas"></i>
                               <p> Laporan Sebaran</p>
@@ -180,7 +188,17 @@ else{
                               <i class="nav-icon fas fa-scroll"></i>
                               <p> Arsip Perizinan </p>
                         </a>
-                  </li>';
+                  </li>
+                  <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                    <a href="laporan_donasi.php" class="nav-link  '.('laporan_donasi.php' == $url_sekarang ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-file-invoice"></i>
+                        <p> Laporan Donasi</p>
+                    </a>
+                </li>
+                  
+                  '    
+            
+            ;
 
             echo $sidebar;
 
@@ -198,7 +216,7 @@ else{
                     </a>
                 </li>
                 <li class="nav-item"> <!-- Wilayah Lokasi Pusat -->
-                    <a href="kelola_donasi.php" class="nav-link '.(('kelola_donasi.php' == $url_sekarang) || ('edit_donasi.php'  == $url_sekarang) ? ' active ' : '').' ">
+                    <a href="kelola_donasi.php" class="nav-link '.(('kelola_donasi.php' == $url_sekarang) || ('edit_donasi.php'  == $url_sekarang || 'kelola_pengadaan_bibit.php' == $url_sekarang) ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-hand-holding-usd"></i>
                         <p> Kelola Donasi </p>
                     </a>
@@ -215,18 +233,15 @@ else{
                           <p> Kelola Titik </p>
                     </a>
                 </li>
-                <li class="nav-item"> <!-- Lokasi -->
-                    <a href="kelola_asuransi.php" class="nav-link '.(('kelola_asuransi.php' == $url_sekarang) || ('edit_asuransi.php'  == $url_sekarang) || ('input_asuransi.php'  == $url_sekarang) ? ' active ' : '').' ">
-                        <i class="nav-icon fas fa-heartbeat"></i>
-                        <p> Kelola Asuransi </p>
-                    </a>
-                </li>
-                <li class="nav-item"> <!-- Lokasi -->
+
+                <!--
+                <li class="nav-item"> 
                     <a href="kelola_wisata.php" class="nav-link '.(('kelola_wisata.php' == $url_sekarang) || ('edit_wisata.php'  == $url_sekarang) || ('kelola_fasilitas_wisata.php'  == $url_sekarang) || ('input_wisata.php'  == $url_sekarang) || ('input_fasilitas_wisata.php'  == $url_sekarang) || ('input_paket_wisata.php'  == $url_sekarang) ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-suitcase"></i>
                         <p> Kelola Wisata </p>
                     </a>
-                </li>
+                </li> -->
+
                 <li class="nav-item"> <!-- Pusat & Wilayah -->
                               <a href="kelola_rekening_bersama.php" class="nav-link '.('kelola_rekening_bersama.php' == $url_sekarang ? ' active ' : '').' ">
                                   <i class="nav-icon fas fa-money-check-alt"></i>
@@ -240,15 +255,16 @@ else{
                         </a>
                   </li>
                   <li class="nav-item"> <!-- Wilayah -->
-                      <a href="kelola_laporan.php" class="nav-link '.('kelola_laporan.php' == $url_sekarang ? ' active ' : '').' ">
-                              <i class="nav-icon fas fa-book"></i>
-                              <p> Kelola Laporan </p>
+                      <a href="kelola_laporan_baru.php" class="nav-link '.('kelola_laporan_baru.php' == $url_sekarang ? ' active ' : '').' ">
+                              <i class="nav-icon fas fa-globe-americas"></i>
+                              <p> Laporan Sebaran</p>
                       </a>
                   </li>
+                  
                   <li class="nav-item"> <!-- Wilayah -->
-                      <a href="kelola_laporan_baru.php" class="nav-link '.('kelola_laporan_baru.php' == $url_sekarang ? ' active ' : '').' ">
-                              <i class="nav-icon fas fa-book"></i>
-                              <p> Kelola Laporan Baru</p>
+                      <a href="kelola_laporan.php" class="nav-link '.('kelola_laporan.php' == $url_sekarang ? ' active ' : '').' ">
+                              <i class="nav-icon fas fa-angle-down"></i>
+                              <p> Sebaran Per-Wilayah </p>
                       </a>
                   </li>
                   <li class="nav-item"> <!-- Wilayah & Pusat -->
@@ -257,6 +273,12 @@ else{
                               <p> Kelola Arsip Laporan </p>
                       </a>
                   </li>
+                  <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                    <a href="laporan_donasi.php" class="nav-link  '.('laporan_donasi.php' == $url_sekarang ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-file-invoice"></i>
+                        <p> Laporan Donasi</p>
+                    </a>
+                </li>
 
                 ';
 
@@ -274,17 +296,21 @@ else{
                     </a>
                 </li>
                 <li class="nav-item"> <!-- Lokasi -->
-                    <a href="kelola_donasi.php" class="nav-link '.(('kelola_donasi.php' == $url_sekarang) || ('edit_donasi.php'  == $url_sekarang) ? ' active ' : '').' ">
+                    <a href="kelola_donasi.php" class="nav-link '.(('kelola_donasi.php' == $url_sekarang) || ('edit_donasi.php'  == $url_sekarang || 'kelola_pengadaan_bibit.php' == $url_sekarang) ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-hand-holding-usd"></i>
                         <p> Kelola Donasi </p>
                     </a>
                 </li>
-                <li class="nav-item"> <!-- Lokasi -->
+
+                <!--
+                <li class="nav-item">
                     <a href="kelola_reservasi_wisata.php" class="nav-link '.(('kelola_reservasi_wisata.php' == $url_sekarang) || ('edit_reservasi_wisata.php'  == $url_sekarang) ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-th-list"></i>
                         <p> Kelola Reservasi </p>
                     </a>
-                </li>
+                </li> -->
+
+
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                     <a href="kelola_lokasi.php" class="nav-link '.('kelola_lokasi.php' == $url_sekarang  || ('edit_lokasi.php'  == $url_sekarang) || ('input_lokasi.php'  == $url_sekarang) || ('kelola_harga_terumbu.php'  == $url_sekarang) ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
@@ -307,6 +333,12 @@ else{
                     <a href="kelola_pemeliharaan.php" class="nav-link '.('kelola_pemeliharaan.php' == $url_sekarang  || ('edit_pemeliharaan.php' == $url_sekarang)  || ('input_pemeliharaan.php'  == $url_sekarang) ? ' active ' : '').' ">
                           <i class="nav-icon fas fa-heart"></i>
                           <p> Kelola Pemeliharaan </p>
+                    </a>
+                </li>
+                <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                    <a href="laporan_donasi.php" class="nav-link  '.('laporan_donasi.php' == $url_sekarang ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-file-invoice"></i>
+                        <p> Laporan Donasi</p>
                     </a>
                 </li>
                 ';
