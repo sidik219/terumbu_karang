@@ -52,13 +52,19 @@ else{
                     </a>
                 </li>
 
-                <!--
+                
                 <li class="nav-item"> 
                     <a href="kelola_reservasi_wisata.php" class="nav-link '.(('kelola_reservasi_wisata.php' == $url_sekarang) || ('edit_reservasi_wisata.php'  == $url_sekarang) ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-th-list"></i>
                         <p> Kelola Reservasi </p>
                     </a>
-                </li> -->
+                </li>
+		<li class="nav-item"> <!-- Lokasi -->
+                    <a href="kelola_asuransi.php" class="nav-link '.(('kelola_asuransi.php' == $url_sekarang) || ('edit_asuransi.php'  == $url_sekarang) || ('input_asuransi.php'  == $url_sekarang) ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-heartbeat"></i>
+                        <p> Kelola Asuransi </p>
+                    </a>
+                </li>
 
                 <!--
                 <li class="nav-item">
@@ -153,13 +159,13 @@ else{
                 </a>
             </li>
 
-            <!--
+            
             <li class="nav-item">
                 <a href="reservasi_saya.php" class="nav-link '.('reservasi_saya.php' == $url_sekarang ? ' active ' : '').' ">
                     <i class="nav-icon fas fa-suitcase"></i>
                     <p> Reservasi Saya  </p>
                 </a>
-            </li> -->
+            </li>
 
 
             <!--
@@ -234,13 +240,19 @@ else{
                     </a>
                 </li>
 
-                <!--
+                
                 <li class="nav-item"> 
                     <a href="kelola_wisata.php" class="nav-link '.(('kelola_wisata.php' == $url_sekarang) || ('edit_wisata.php'  == $url_sekarang) || ('kelola_fasilitas_wisata.php'  == $url_sekarang) || ('input_wisata.php'  == $url_sekarang) || ('input_fasilitas_wisata.php'  == $url_sekarang) || ('input_paket_wisata.php'  == $url_sekarang) ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-suitcase"></i>
                         <p> Kelola Wisata </p>
                     </a>
-                </li> -->
+                </li>
+		<li class="nav-item"> <!-- Lokasi -->
+                    <a href="kelola_asuransi.php" class="nav-link '.(('kelola_asuransi.php' == $url_sekarang) || ('edit_asuransi.php'  == $url_sekarang) || ('input_asuransi.php'  == $url_sekarang) ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-heartbeat"></i>
+                        <p> Kelola Asuransi </p>
+                    </a>
+                </li>
 
                 <li class="nav-item"> <!-- Pusat & Wilayah -->
                               <a href="kelola_rekening_bersama.php" class="nav-link '.('kelola_rekening_bersama.php' == $url_sekarang ? ' active ' : '').' ">
@@ -302,13 +314,20 @@ else{
                     </a>
                 </li>
 
-                <!--
+                
                 <li class="nav-item">
                     <a href="kelola_reservasi_wisata.php" class="nav-link '.(('kelola_reservasi_wisata.php' == $url_sekarang) || ('edit_reservasi_wisata.php'  == $url_sekarang) ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-th-list"></i>
                         <p> Kelola Reservasi </p>
                     </a>
-                </li> -->
+                </li>
+
+		<li class="nav-item"> <!-- Lokasi -->
+                    <a href="kelola_asuransi.php" class="nav-link '.(('kelola_asuransi.php' == $url_sekarang) || ('edit_asuransi.php'  == $url_sekarang) || ('input_asuransi.php'  == $url_sekarang) ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-heartbeat"></i>
+                        <p> Kelola Asuransi </p>
+                    </a>
+                </li>
 
 
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
