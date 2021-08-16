@@ -206,7 +206,7 @@ $row = $stmt->fetchAll();
                                         <!-- Asuransi -->
                                         <div class="row  mb-3">
                                             <div class="col-md-3 kolom font-weight-bold">
-                                                Biaya Asuransi
+                                                Asuransi
                                             </div>
                                             
                                             <div class="col isi">
@@ -228,17 +228,22 @@ $row = $stmt->fetchAll();
                                                                 LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
                                                                 WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
                                                                 AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
-
+                                                                
                                             $stmt = $pdo->prepare($sqlviewpaket);
                                             $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
                                             $rowfasilitas = $stmt->fetchAll();
 
-                                            foreach ($rowfasilitas as $fasilitas) { ?>
-                                            <!-- Hidden Output -->
-                                            <input type="hidden" id="by_fasilitas" value="<?=$fasilitas->total_biaya_fasilitas?>">
+                                            foreach ($rowfasilitas as $fasilitas) { 
+                                            
+                                            // Menjumlahkan biaya asuransi dan biaya paket wisata
+                                            $asuransi       = $fasilitas->biaya_asuransi;
+                                            $wisata         = $fasilitas->total_biaya_fasilitas;
+                                            $total_paket    = $asuransi + $wisata;
+
+                                            ?>
                                             <div class="col isi" id="total_biaya">
                                                 <i class="text-success fas fa-money-bill-wave"></i>
-                                                Rp. <?=number_format($fasilitas->total_biaya_fasilitas, 0)?>
+                                                Rp. <?=number_format($total_paket, 0)?>
                                             </div>
 
                                                 <!-- Asuransi -->
@@ -347,7 +352,12 @@ $row = $stmt->fetchAll();
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
+    
+    <script>
+    function myFunction () {
 
+    }
+    </script>
 </div>
 
 </body>

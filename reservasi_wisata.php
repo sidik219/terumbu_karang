@@ -21,6 +21,7 @@ if (!$_SESSION['level_user']) {
     
     $sqldetailpaket = 'SELECT * FROM tb_paket_wisata
                 LEFT JOIN t_lokasi ON tb_paket_wisata.id_lokasi = t_lokasi.id_lokasi
+                LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
                 WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
 
     $stmt = $pdo->prepare($sqldetailpaket);
@@ -337,9 +338,12 @@ if (!$_SESSION['level_user']) {
                             <span class="text-info font-weight-bolder"> <?=$rowitem->nama_lokasi?></span></h4>
                     </div>
                 </div>
+
+                <!-- Wisata -->
                 <div class="row">
                     <div class="col">
                         <h5><span class="font-weight-bold">
+                        <i class="text-info fas fa-luggage-cart"></i>
                         Wisata</h5>
                     </div>
                 </div><p>
@@ -361,9 +365,12 @@ if (!$_SESSION['level_user']) {
                         <?php } ?>
                     </div>
                 </div><p>
+                
+                <!-- Fasilitas Wisata -->
                 <div class="row">
                     <div class="col">
                         <h5><span class="font-weight-bold">
+                        <i class="text-info fas fa-cubes"></i>
                         Fasilitas Wisata</h5>
                     </div>
                 </div><p>
@@ -387,12 +394,28 @@ if (!$_SESSION['level_user']) {
                     </div>
                 </div><p>
 
+                <!-- Asuransi -->
+                <div class="row">
+                    <div class="col">
+                        <h5><span class="font-weight-bold">
+                        <i class="text-warning fas fa-heartbeat"></i>
+                        Asuransi</h5>
+                    </div>
+                </div><p>
+                <div class="row">
+                    <div class="col">
+                        <span class="font-weight-bold">
+                        Rp. <?=number_format($rowitem->biaya_asuransi, 0)?></span><br>
+                    </div>
+                </div><p>
+
                 <hr class="mb-2"/>
                 <?php
-                $sqlviewpaket = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, nama_fasilitas, biaya_fasilitas 
+                $sqlviewpaket = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, nama_fasilitas, biaya_fasilitas, biaya_asuransi
                                 FROM tb_fasilitas_wisata 
                                 LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
                                 LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
                                 WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
                                 AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
@@ -400,17 +423,24 @@ if (!$_SESSION['level_user']) {
                 $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
                 $rowfasilitas = $stmt->fetchAll();
 
-                foreach ($rowfasilitas as $fasilitas) { ?>
+                foreach ($rowfasilitas as $fasilitas) { 
+                    
+                // Menjumlahkan biaya asuransi dan biaya paket wisata
+                $asuransi       = $fasilitas->biaya_asuransi;
+                $wisata         = $fasilitas->total_biaya_fasilitas;
+                $total_paket    = $asuransi + $wisata;
+
+                ?>
                 <div class="row">
                     <div class="col">
                         <span class="font-weight-bold">
-                        <i class="text-info fas fa-arrow-circle-right"></i> Total Paket Wisata:</span>
+                        <i class="text-success fas fa-money-bill-wave"></i>
+                        Total Paket Wisata:</span>
                     </div>
                     <div class="col-lg-8  mb-2">
-                        <span class="">
-                        <i class="text-success fas fa-money-bill-wave"></i>
-                        <input type="hidden" id="total_paket_wisata" value="<?=$fasilitas->total_biaya_fasilitas?>">
-                        Rp. <input value="<?=number_format($fasilitas->total_biaya_fasilitas, 0)?>" class="paket-wisata" disabled></span>
+                        <span class="font-weight-bold">
+                        <input type="hidden" id="total_paket_wisata" value="<?=$total_paket?>">
+                        Rp. <input value="<?=number_format($total_paket, 0)?>" class="paket-wisata font-weight-bold" disabled></span>
                     </div>
                 </div>
                 <?php } ?>
@@ -442,7 +472,7 @@ if (!$_SESSION['level_user']) {
                             <!-- Pesan/Ekspresi -->
                             <label>Pesan/Ekspresi di Terumbu Karang, 
                                 <small style="color: red;">Isi jika melakukan donasi</small></label>
-                            <input type="text" id="pesan" name="pesan" class="form-control">
+                            <input type="text" id="pesan" name="pesan" value="-" class="form-control">
                         </div>
                     </div>
 

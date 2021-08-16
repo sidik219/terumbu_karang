@@ -231,7 +231,8 @@ include 'hak_akses.php';
 
                     <div class="form-group">
                         <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
-                            <a href="<?=$rowpaket->foto_wisata?>" data-toggle="lightbox"><img class="img-fluid" id="oldpic" src="<?=$rowpaket->foto_wisata?>" width="20%" <?php if($rowpaket->foto_wisata == NULL) echo " style='display:none;'"; ?>></a>
+                            <a href="<?=$rowpaket->foto_wisata?>" data-toggle="lightbox">
+                            <img class="img-fluid" id="oldpic" src="<?=$rowpaket->foto_wisata?>" width="20%" <?php if($rowpaket->foto_wisata == NULL) echo "style='display: none;'"; ?>></a>
                         <br>
 
                         <small class="text-muted">
@@ -246,7 +247,6 @@ include 'hak_akses.php';
 
                         <script>
                             const actualBtn = document.getElementById('image_uploads');
-
                             const fileChosen = document.getElementById('file-input-label');
 
                             actualBtn.addEventListener('change', function(){

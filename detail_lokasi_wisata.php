@@ -11,6 +11,7 @@ include 'hak_akses.php';
 
     $sqldetailpaket = 'SELECT * FROM tb_paket_wisata
                 LEFT JOIN t_lokasi ON tb_paket_wisata.id_lokasi = t_lokasi.id_lokasi
+                LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
                 WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
 
     $stmt = $pdo->prepare($sqldetailpaket);
@@ -149,19 +150,6 @@ include 'hak_akses.php';
                                     </div>
                                 </p></div>
 
-                                <?php
-                                $sqlviewfasilitas = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, nama_fasilitas, biaya_fasilitas 
-                                                    FROM tb_fasilitas_wisata 
-                                                    LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
-                                                    LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                                                    WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
-                                                    AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
-
-                                $stmt = $pdo->prepare($sqlviewfasilitas);
-                                $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                                $rowfasilitas = $stmt->fetchAll();
-
-                                foreach ($rowfasilitas as $fasilitas) { ?>
                                 <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-info fas fa-cubes"></i>
                                     <label>Fasilitas Wisata:</label>
@@ -193,11 +181,38 @@ include 'hak_akses.php';
                                         </div>
                                     </div>
                                 </p></div>
+
+                                <div class="row p-2 border-bottom"><p class="">
+                                    <i class="text-warning fas fa-heartbeat"></i>
+                                    <b>Asuransi:</b><br> Rp. <?=number_format($rowitem->biaya_asuransi, 0)?>
+                                </p></div>
+
+                                <?php
+                                $sqlviewfasilitas = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, nama_fasilitas, biaya_fasilitas, biaya_asuransi
+                                                    FROM tb_fasilitas_wisata 
+                                                    LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
+                                                    LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                                    LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
+                                                    WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                                    AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
+
+                                $stmt = $pdo->prepare($sqlviewfasilitas);
+                                $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                $rowfasilitas = $stmt->fetchAll();
+
+                                foreach ($rowfasilitas as $fasilitas) { 
+                                
+                                // Menjumlahkan biaya asuransi dan biaya paket wisata
+                                $asuransi       = $fasilitas->biaya_asuransi;
+                                $wisata         = $fasilitas->total_biaya_fasilitas;
+                                $total_paket    = $asuransi + $wisata;
+                                
+                                ?>
                                 
                                 <!-- Biaya Paket Kalkulasi Dari Biaya Fasilitas -->
                                 <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-success fas fa-money-bill-wave"></i>
-                                    <b>Total Paket Wisata:</b><br> Rp. <?=number_format($fasilitas->total_biaya_fasilitas, 0)?>
+                                    <b>Total Paket Wisata:</b><br> Rp. <?=number_format($total_paket, 0)?>
                                 </p></div>
                                 <?php } ?>
 
