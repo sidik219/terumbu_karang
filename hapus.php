@@ -48,10 +48,13 @@ elseif ($type == 'terumbu_karang'){
             header('Location: kelola_tk.php?status=deletesuccess');
 }
 elseif ($type == 'paket_wisata'){
-    $sql = 'DELETE t_paket_wisata, t_wisata FROM t_paket_wisata
+    $id_paket_wisata = $_GET['id_paket_wisata'];
+    $sql = 'DELETE tb_paket_wisata , t_wisata, tb_fasilitas_wisata  FROM tb_paket_wisata  
             INNER JOIN t_wisata
-            WHERE t_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata
-            AND t_paket_wisata.id_paket_wisata = :id_paket_wisata';
+            INNER JOIN tb_fasilitas_wisata
+            WHERE tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata
+            AND t_wisata.id_wisata = tb_fasilitas_wisata.id_wisata
+            AND tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
 
             $stmt = $pdo->prepare($sql);
             $stmt->execute(['id_paket_wisata' => $_GET['id_paket_wisata']]);
@@ -94,23 +97,6 @@ elseif ($type == 'rekening_bersama'){
             $stmt->execute(['id_rekening_bank' => $_GET['id_rekening_bank']]);
             header('Location: kelola_rekening_bersama.php?status=deletesuccess');
 }
-elseif ($type == 'fasilitas_wisata'){
-    $sql = 'DELETE FROM tb_fasilitas_wisata
-            WHERE id_fasilitas_wisata = :id_fasilitas_wisata';
-
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute(['id_fasilitas_wisata' => $_GET['id_fasilitas_wisata']]);
-            header('Location: kelola_fasilitas_wisata.php?status=deletesuccess');
-}
-elseif ($type == 'arsip_laporan_sebaran'){
-    $id_laporan = $_GET['id_laporan'];
-    $sql = 'DELETE FROM t_laporan_sebaran
-            WHERE id_laporan = :id_laporan';
-
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute(['id_laporan' => $id_laporan]);
-            header('Location: kelola_arsip_laporan_sebaran.php?status=deletesuccess');
-}
 elseif ($type == 'asuransi'){
     $id_asuransi = $_GET['id_asuransi'];
     $sql = 'DELETE FROM t_asuransi
@@ -120,30 +106,12 @@ elseif ($type == 'asuransi'){
             $stmt->execute(['id_asuransi' => $id_asuransi]);
             header('Location: kelola_asuransi.php?status=deletesuccess');
 }
-elseif ($type == 'batalkan_donasi'){
-    $id_donasi = $_GET['id_donasi'];
+elseif ($type == 'arsip_laporan_sebaran'){
+    $id_laporan = $_GET['id_laporan'];
+    $sql = 'DELETE FROM t_laporan_sebaran
+            WHERE id_laporan = :id_laporan';
 
-    //Kembalikan stok terumbu karang
-
-    //Select detail_donasi dengan id_donasi
-    $sql = "SELECT * FROM t_detail_donasi WHERE id_donasi = :id_donasi";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['id_donasi' => $id_donasi]);
-    $row = $stmt->fetchAll();
-
-    //Tiap detail_donasi, kembalikan jumlah_tk ke stok_terumbu di t_detail_lokasi
-    foreach ($row as $isi_keranjang){
-        $sql = "UPDATE t_detail_lokasi 
-                SET stok_terumbu = stok_terumbu + :jumlah_terumbu
-                WHERE  id_terumbu_karang = :id_terumbu_karang";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(['id_terumbu_karang' => $isi_keranjang->id_terumbu_karang, 'jumlah_terumbu' => $isi_keranjang->jumlah_terumbu]);
-    }
-
-    $sql = 'DELETE FROM t_donasi
-            WHERE id_donasi = :id_donasi';
-
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['id_donasi' => $id_donasi]);
-    header('Location: kelola_donasi.php?status=deletesuccess');
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_laporan' => $id_laporan]);
+            header('Location: kelola_arsip_laporan_sebaran.php?status=deletesuccess');
 }
