@@ -2,37 +2,47 @@
 session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
-    $defaultpic = "images/image_default.jpg";
-    
-    $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
-                    LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
-                    LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
-                    LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-                    LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                    ORDER BY id_reservasi DESC';
-    $stmt = $pdo->prepare($sqlviewreservasi);
-    $stmt->execute();
-    $row = $stmt->fetchAll();
 
-    function ageCalculator($dob){
-        $birthdate = new DateTime($dob);
-        $today   = new DateTime('today');
-        $ag = $birthdate->diff($today)->y;
-        $mn = $birthdate->diff($today)->m;
-        $dy = $birthdate->diff($today)->d;
-        if ($mn == 0)
-        {
-            return "$dy Hari";
-        }
-        elseif ($ag == 0)
-        {
-            return "$mn Bulan  $dy Hari";
-        }
-        else
-        {
-            return "$ag Tahun $mn Bulan $dy Hari";
-        }
+if (!$_SESSION['level_user']) {
+    header('location: login.php?status=restrictedaccess');
+} else {
+    $id_user    = $_SESSION['id_user'];
+    $level      = $_SESSION['level_user'];
+}
+
+$defaultpic = "images/image_default.jpg";
+
+$sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
+                LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                WHERE t_reservasi_wisata.id_user = :id_user
+                ORDER BY id_reservasi DESC';
+
+$stmt = $pdo->prepare($sqlviewreservasi);
+$stmt->execute(['id_user' => $_SESSION['id_user']]);
+$row = $stmt->fetchAll();
+
+function ageCalculator($dob){
+    $birthdate = new DateTime($dob);
+    $today   = new DateTime('today');
+    $ag = $birthdate->diff($today)->y;
+    $mn = $birthdate->diff($today)->m;
+    $dy = $birthdate->diff($today)->d;
+    if ($mn == 0)
+    {
+        return "$dy Hari";
     }
+    elseif ($ag == 0)
+    {
+        return "$mn Bulan  $dy Hari";
+    }
+    else
+    {
+        return "$ag Tahun $mn Bulan $dy Hari";
+    }
+}
 ?>
 
 <!DOCTYPE html>

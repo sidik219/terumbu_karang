@@ -3,8 +3,14 @@ session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
+if (!$_SESSION['level_user']) {
+    header('location: ../index?status=akses_terbatas');
+} else {
+    $id_user    = $_SESSION['id_user'];
+    $level      = $_SESSION['level_user'];
+}
+
     $id_paket_wisata = $_GET['id_paket_wisata'];
-    $id_user = 1;
     $id_status_reservasi_wisata = 1;
     $keterangan = '-';
 
