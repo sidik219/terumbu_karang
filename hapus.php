@@ -115,3 +115,30 @@ elseif ($type == 'arsip_laporan_sebaran'){
             $stmt->execute(['id_laporan' => $id_laporan]);
             header('Location: kelola_arsip_laporan_sebaran.php?status=deletesuccess');
 }
+elseif ($type == 'batalkan_donasi'){
+    $id_donasi = $_GET['id_donasi'];
+
+    //Kembalikan stok terumbu karang
+
+    //Select detail_donasi dengan id_donasi
+    $sql = "SELECT * FROM t_detail_donasi WHERE id_donasi = :id_donasi";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_donasi' => $id_donasi]);
+    $row = $stmt->fetchAll();
+
+    //Tiap detail_donasi, kembalikan jumlah_tk ke stok_terumbu di t_detail_lokasi
+    foreach ($row as $isi_keranjang){
+        $sql = "UPDATE t_detail_lokasi 
+                SET stok_terumbu = stok_terumbu + :jumlah_terumbu
+                WHERE  id_terumbu_karang = :id_terumbu_karang";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id_terumbu_karang' => $isi_keranjang->id_terumbu_karang, 'jumlah_terumbu' => $isi_keranjang->jumlah_terumbu]);
+    }
+
+    $sql = 'DELETE FROM t_donasi
+            WHERE id_donasi = :id_donasi';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_donasi' => $id_donasi]);
+    header('Location: kelola_donasi.php?status=deletesuccess');
+}
