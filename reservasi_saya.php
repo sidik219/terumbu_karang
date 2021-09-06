@@ -43,6 +43,26 @@ function ageCalculator($dob){
         return "$ag Tahun $mn Bulan $dy Hari";
     }
 }
+
+function alertPembayaran($dob){ 
+    $birthdate = new DateTime($dob);
+    $today   = new DateTime('today');
+    $mn = $birthdate->diff($today)->m;
+    $dy = $birthdate->diff($today)->d;
+
+    $tglbatas = $birthdate->add(new DateInterval('P3D'));
+    $tglbatas_formatted = strftime('%A, %e %B %Y pukul %R', $tglbatas->getTimeStamp() );
+    $batas_waktu_pesan = '<br><b>Batas pembayaran:</b><br><b>'. $tglbatas_formatted.'</b>';
+    if ($dy <= 3)
+    { 
+        //jika masih dalam batas waktu
+        return  $batas_waktu_pesan .'<br> <i class="fas fa-exclamation-circle text-primary"></i> Harap upload bukti pembayaran sebelum batas waktu agar reservasi segera diproses pengelola.';
+    }
+    else if ($dy > 3){
+        //overdue
+        return $batas_waktu_pesan .'<br><i class="fas fa-exclamation-circle text-danger"></i> Upload Bukti pembayaran telah melebihi batas waktu. Reservasi akan segera dibatalkan pengelola.';
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -155,7 +175,6 @@ function ageCalculator($dob){
                                 <div class="row">
                                     <div class="col-12 mb-3">
                                         <span class="badge badge-pill badge-primary mr-2"> ID Reservasi <?=$rowitem->id_reservasi?> </span>
-                                            <?php echo empty($rowitem->id_user) ? '' : '<span class="badge badge-pill badge-info mr-2"> Nama User - '.$rowitem->nama_user.'</span>';?>
                                             <?php echo empty($rowitem->id_paket_wisata) ? '' : '<span class="badge badge-pill badge-success mr-2"> Paket Wisata  - '.$rowitem->nama_paket_wisata.'</span>';?>
                                         </span>
                                     </div>
@@ -174,7 +193,10 @@ function ageCalculator($dob){
                                         <div class="mb-3">
                                             <span class="font-weight-bold"><i class="nav-icon text-secondary fas fas fa-calendar-alt"></i> Tanggal Reservasi</span>
                                             <br>
-                                            <?=strftime('%A, %d %B %Y', $reservasidate);?>
+                                            <?=strftime('%A, %d %B %Y', $reservasidate);?><br>
+
+                                            <?php if ($rowitem->id_status_reservasi_wisata == 1) {
+                                              echo alertPembayaran($rowitem->tgl_reservasi); } ?>
                                         </div>
                                         <div class="mb-3">
                                             <span class="font-weight-bold"><i class="nav-icon text-info fas fas fa-comment-dots"></i> Keterangan Pengelola Lokasi</span>

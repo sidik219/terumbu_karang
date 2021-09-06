@@ -74,12 +74,27 @@ else{//reservasi umum
     $stmt = $pdo->prepare($sqlviewreservasi);
     $stmt->execute();
     $row = $stmt->fetchAll();
-  }
+}
 
+function alertPembayaran($dob){ 
+    $birthdate = new DateTime($dob);
+    $today   = new DateTime('today');
+    $mn = $birthdate->diff($today)->m;
+    $dy = $birthdate->diff($today)->d;
 
-
-
-
+    $tglbatas = $birthdate->add(new DateInterval('P3D'));
+    $tglbatas_formatted = strftime('%A, %e %B %Y pukul %R', $tglbatas->getTimeStamp() );
+    $batas_waktu_pesan = '<br><b>Batas pembayaran:</b><br>'. $tglbatas_formatted;
+    if ($dy <= 3)
+    { 
+        //jika masih dalam batas waktu
+        return  $batas_waktu_pesan .'<br> <i class="fas fa-exclamation-circle text-primary"></i><small> Menunggu bukti pembayaran wisatawan</small>';
+    }
+    else if ($dy > 3){
+        //overdue
+        return $batas_waktu_pesan .'<br><i class="fas fa-exclamation-circle text-danger"></i><small> Sudah lewat batas waktu pembayaran.</small><br>';
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -199,20 +214,40 @@ else{//reservasi umum
                                 $reservasidate = strtotime($rowitem->tgl_reservasi);
                             ?>
                             <tr>
-                              <th scope="row"><?=$rowitem->id_reservasi?></th>
-                              <td><?=$rowitem->id_user?> - <?=$rowitem->nama_user?></td>
-                              <td><?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></td>
-                              <td><?=strftime('%A, %d %B %Y', $reservasidate);?></td>
-                              <td><?=$rowitem->nama_status_reservasi_wisata?><br><small class="text-muted">Update Terakhir:
-                                <br><?=strftime('%A, %d %B %Y', $truedate);?></small></td>
-                              <td>
-                                <button type="button" class="btn btn-act">
-                                    <a href="edit_reservasi_wisata.php?id_reservasi=<?=$rowitem->id_reservasi?>" class="fas fa-edit"></a>
-                                </button>
-                                <button type="button" class="btn btn-act">
-                                    <i class="far fa-trash-alt"></i>
-                                </button>
-                              </td>
+                                <th scope="row"><?=$rowitem->id_reservasi?></th>
+                                <td><?=$rowitem->id_user?> - <?=$rowitem->nama_user?></td>
+                                <td><?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></td>
+                                <td>
+                                    <?=strftime('%A, %d %B %Y', $reservasidate);?><br>
+                                    <?php if($rowitem->id_status_reservasi_wisata == 1) {
+                                        echo alertPembayaran($rowitem->tgl_reservasi);
+                                    } ?>
+
+                                    <div class="mb-3">
+                                        <?php
+                                        $tglreservasi = new DateTime($rowitem->tgl_reservasi);
+                                        $today   = new DateTime('today');
+
+                                        if (($tglreservasi->diff($today))->d > 3 && ($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4) && ($rowitem->id_status_reservasi_wisata == 1)) { ?>
+                                            <!--Tombol batalkan donasi -->
+                                            <a 
+                                                onclick="return konfirmasiBatalReservasi(event)" 
+                                                href="hapus.php?type=batalkan_reservasi&id_reservasi=<?=$rowitem->id_reservasi?>" class="btn btn-sm btn-danger userinfo">
+                                                <i class="fas fa-times"></i> Batalkan Reservasi
+                                            </a>
+                                        <?php } ?>
+                                    </div>
+                                </td>
+                                <td>
+                                    <?=$rowitem->nama_status_reservasi_wisata?>
+                                    <br><small class="text-muted">Update Terakhir:
+                                    <br><?=strftime('%A, %d %B %Y', $truedate);?></small>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-act">
+                                        <a href="edit_reservasi_wisata.php?id_reservasi=<?=$rowitem->id_reservasi?>" class="fas fa-edit"></a>
+                                    </button>
+                                </td>
                           </tr>
                           <tr>
                             <td colspan="6">
@@ -323,6 +358,23 @@ else{//reservasi umum
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
+
+    <script>
+        function konfirmasiBatalReservasi(event){
+        jawab = true
+        jawab = confirm('Batalkan Reservasi? Data reservasi akan hilang permanen!')
+
+        if (jawab){
+            // alert('Lanjut.')
+            return true
+        }
+        else{
+            event.preventDefault()
+            return false
+
+        }
+    }
+    </script>
 
 </div>
 
