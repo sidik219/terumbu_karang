@@ -89,6 +89,42 @@ $stmt = $pdo->prepare($sqlviewpemeliharaan);
 $stmt->execute();
 $rowperlupml = $stmt->fetch();
 
+// ChartJS Wisata
+$label = ["Januari",
+            "Februari",
+            "Maret",
+            "April",
+            "Mei",
+            "Juni",
+            "Juli",
+            "Agustus",
+            "September",
+            "Oktober",
+            "November",
+            "Desember"];
+
+for($bulan = 1; $bulan < 13; $bulan++) {
+    // Donasi
+    $sqldonasiSelect = 'SELECT COUNT(id_donasi) AS total_donasi FROM t_donasi
+                            WHERE MONTH(tanggal_donasi) = :bulan';
+
+    $stmt = $pdo->prepare($sqldonasiSelect);
+    $stmt->execute(['bulan' => $bulan]);
+    $totalDonasi = $stmt->fetch();
+
+    $total_donasi[] = $totalDonasi->total_donasi;
+
+    // Wisata
+    $sqlreservasiSelect = 'SELECT COUNT(id_reservasi) AS total_reservasi FROM t_reservasi_wisata
+                            WHERE MONTH(tgl_reservasi) = :bulan';
+
+    $stmt = $pdo->prepare($sqlreservasiSelect);
+    $stmt->execute(['bulan' => $bulan]);
+    $totalReservasi = $stmt->fetch();
+
+    $total_reservasi[] = $totalReservasi->total_reservasi;
+    // var_dump($total_reservasi);
+}
 ?>
 
 <!DOCTYPE html>
@@ -333,6 +369,44 @@ $rowperlupml = $stmt->fetch();
                       </div>
                       </div>
                     </div>
+                    
+                    <!-- Grafik Donasi & Wisata -->
+                    <h5 class="mt-4"><span class="align-middle font-weight-bold"><i class="nav-icon text-primary far fa-chart-bar"></i> Data Grafik</span></h5>
+
+                    <div class="row rounded shadow-sm p-2">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between">
+                                                <button type="button" class="btn btn-outline-info btn-sm" id="btn-donasi">
+                                                <i class="far fa-file-image"></i> Export ke Image</button>
+                                                Donasi
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="donasi" width="100%" height="100%"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between">
+                                                <button type="button" class="btn btn-outline-info btn-sm" id="btn-wisata">
+                                                <i class="far fa-file-image"></i> Export ke Image</button>
+                                                Wisata
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="wisata" width="100%" height="100%"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
 
@@ -407,6 +481,127 @@ $rowperlupml = $stmt->fetch();
     <script src="dist/js/leaflet.ajax.js"></script>
     <!-- Leaflet Map -->
     <?php include 'dist/js/leaflet_map.php'; ?>
+
+    <!-- CharJs CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js" integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.js" integrity="sha512-XcsV/45eM/syxTudkE8AoKK1OfxTrlFpOltc9NmHXh3HF+0ZA917G9iG6Fm7B6AzP+UeEzV8pLwnbRNPxdUpfA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Export to Image -->
+    <script src="plugins/canvas-toBlob.js-master/canvas-toBlob.js"></script>
+    <!-- FileSaver -->
+    <script src="plugins/FileSaver.js-master/dist/FileSaver.min.js"></script>
+    <!-- Chartjs -->
+    <script>
+        // Donasi
+        $('#btn-donasi').click(function () {
+            $('#donasi').get(0).toBlob(function (blob) {
+                saveAs(blob, 'data_donasi.png')
+            });
+        });
+
+        // Any of the following formats may be used
+        var ctx = document.getElementById('donasi');
+        var donasi = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: <?php echo json_encode($label); ?>, //12 Bulan
+                datasets: [{
+                    label: 'Donatur',
+                    data: <?php echo json_encode($total_donasi); ?>, //Total Donasi Berdasarkan Bulan
+                    // data: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Data Donasi',
+                        padding: {
+                            top: 10,
+                            bottom: 30
+                        }
+                    }
+                }
+            }
+        });
+
+        // ==============================================================
+        // Wisata
+        $('#btn-wisata').click(function () {
+            $('#wisata').get(0).toBlob(function (blob) {
+                saveAs(blob, 'data_pengunjung.png')
+            });
+        });
+
+        // Any of the following formats may be used
+        var ctx = document.getElementById('wisata');
+        var wisata = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: <?php echo json_encode($label); ?>, //12 Bulan
+                datasets: [{
+                    label: 'Pengunjung',
+                    data: <?php echo json_encode($total_reservasi); ?>, //Total Pengunjung Berdasarkan Bulan
+                    // data: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Data Wisatawan',
+                        padding: {
+                            top: 10,
+                            bottom: 30
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 </div>
 </body>
 </html>
