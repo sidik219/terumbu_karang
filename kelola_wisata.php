@@ -353,12 +353,6 @@ $row = $stmt->fetchAll();
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-    
-    <script>
-    function myFunction () {
-
-    }
-    </script>
 </div>
 
 </body>
