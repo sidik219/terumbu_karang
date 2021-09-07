@@ -10,7 +10,6 @@ include 'hak_akses.php';
         $defaultpic = "images/image_default.jpg";
 
         $sqleditfasilitas = 'SELECT * FROM tb_fasilitas_wisata
-                                LEFT JOIN t_pengadaan_fasilitas ON tb_fasilitas_wisata.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
                                 WHERE id_fasilitas_wisata = :id_fasilitas_wisata';
 
         $stmt = $pdo->prepare($sqleditfasilitas);
@@ -18,22 +17,19 @@ include 'hak_akses.php';
         $fasilitas = $stmt->fetch();
 
         if (isset($_POST['submit'])) {
-            $nama_fasilitas  = $_POST['nama_fasilitas'];
-            $biaya_fasilitas = $_POST['biaya_fasilitas'];
-            $id_wisata       = $_POST['id_wisata'];
+            $biaya_fasilitas        = $_POST['biaya_fasilitas'];
+            $id_wisata              = $_POST['id_wisata'];
 
             $tanggal_sekarang = date ('Y-m-d H:i:s', time());
             
             $sqlwisata = "UPDATE tb_fasilitas_wisata
-                            SET nama_fasilitas  = :nama_fasilitas, 
-                                biaya_fasilitas = :biaya_fasilitas,
+                            SET biaya_fasilitas = :biaya_fasilitas,
                                 update_terakhir = :update_terakhir,
                                 id_wisata       = :id_wisata
                             WHERE id_fasilitas_wisata = :id_fasilitas_wisata";
 
             $stmt = $pdo->prepare($sqlwisata);
-            $stmt->execute(['nama_fasilitas' => $nama_fasilitas,
-                            'biaya_fasilitas' => $biaya_fasilitas,
+            $stmt->execute(['biaya_fasilitas' => $biaya_fasilitas,
                             'update_terakhir' => $tanggal_sekarang,
                             'id_wisata' => $id_wisata,
                             'id_fasilitas_wisata' => $id_fasilitas_wisata
@@ -123,7 +119,7 @@ include 'hak_akses.php';
             <div class="content-header">
                 <div class="container-fluid">
                     <a class="btn btn-outline-primary" href="kelola_fasilitas_wisata.php">< Kembali</a><br><br>
-                    <h4><span class="align-middle font-weight-bold">Edit Data Wisata</span></h4>
+                    <h4><span class="align-middle font-weight-bold">Edit Data Fasilitas Wisata</span></h4>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -147,10 +143,6 @@ include 'hak_akses.php';
                     <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group"><!-- ID di hidden untuk keperluan cek id juga -->
                         <input type="hidden" id="id_wisata" name="id_wisata" value="<?=$fasilitas->id_wisata?>" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="nama_fasilitas">Nama Fasilitas</label>
-                        <input type="text" id="nama_fasilitas" name="nama_fasilitas" value="<?=$fasilitas->pengadaan_fasilitas?>" class="form-control" required>
                     </div>
 
                     <div class="form-group">
