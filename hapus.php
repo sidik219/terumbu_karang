@@ -152,3 +152,13 @@ elseif ($type == 'batalkan_reservasi'){
     $stmt->execute(['id_reservasi' => $id_reservasi]);
     header('Location: kelola_reservasi_wisata.php?status=deletesuccess');
 }
+elseif ($type == 'pengadaan_fasilitas'){
+    $id_pengadaan = $_GET['id_pengadaan'];
+
+    $sql = 'DELETE FROM t_pengadaan_fasilitas
+            WHERE id_pengadaan = :id_pengadaan';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_pengadaan' => $id_pengadaan]);
+    header('Location: kelola_pengadaan_fasilitas.php?status=deletesuccess');
+}

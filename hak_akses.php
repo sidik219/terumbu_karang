@@ -247,10 +247,25 @@ else{
                         <p> Kelola Wisata </p>
                     </a>
                 </li>
-		<li class="nav-item"> <!-- Lokasi -->
+
+		        <li class="nav-item"> <!-- Lokasi -->
                     <a href="kelola_asuransi.php" class="nav-link '.(('kelola_asuransi.php' == $url_sekarang) || ('edit_asuransi.php'  == $url_sekarang) || ('input_asuransi.php'  == $url_sekarang) ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-heartbeat"></i>
                         <p> Kelola Asuransi </p>
+                    </a>
+                </li>
+
+                <li class="nav-item"> <!-- Lokasi -->
+                    <a href="kelola_pengadaan_fasilitas.php" class="nav-link '.(('kelola_pengadaan_fasilitas.php' == $url_sekarang) || ('edit_pengadaan_fasilitas.php'  == $url_sekarang) || ('input_pengadaan_fasilitas.php'  == $url_sekarang) ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-truck-loading"></i>
+                        <p> Kelola Pengadaan </p>
+                    </a>
+                </li>
+
+                <li class="nav-item"> <!-- Lokasi -->
+                    <a href="kelola_kerjasama.php" class="nav-link '.(('kelola_kerjasama.php' == $url_sekarang) || ('edit_kerjasama.php'  == $url_sekarang) || ('input_kerjasama.php'  == $url_sekarang) ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-handshake"></i>
+                        <p> Kelola Kerjsama </p>
                     </a>
                 </li>
 

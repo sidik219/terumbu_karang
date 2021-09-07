@@ -6,54 +6,45 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-        $id_fasilitas_wisata = $_GET['id_fasilitas_wisata'];
-        $defaultpic = "images/image_default.jpg";
+$id_pengadaan = $_GET['id_pengadaan'];
 
-        $sqleditfasilitas = 'SELECT * FROM tb_fasilitas_wisata
-                                LEFT JOIN t_pengadaan_fasilitas ON tb_fasilitas_wisata.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
-                                WHERE id_fasilitas_wisata = :id_fasilitas_wisata';
+$sqlpengadaan= 'SELECT * FROM t_pengadaan_fasilitas
+                    WHERE id_pengadaan = :id_pengadaan';
 
-        $stmt = $pdo->prepare($sqleditfasilitas);
-        $stmt->execute(['id_fasilitas_wisata' => $id_fasilitas_wisata]);
-        $fasilitas = $stmt->fetch();
+$stmt = $pdo->prepare($sqlpengadaan);
+$stmt->execute(['id_pengadaan' => $id_pengadaan]);
+$pengadaan = $stmt->fetch();
 
-        if (isset($_POST['submit'])) {
-            $nama_fasilitas  = $_POST['nama_fasilitas'];
-            $biaya_fasilitas = $_POST['biaya_fasilitas'];
-            $id_wisata       = $_POST['id_wisata'];
+if (isset($_POST['submit'])) {
+    $pengadaan_fasilitas    = $_POST['pengadaan_fasilitas'];
+    $status_pengadaan       = $_POST['status_pengadaan'];
+    
+    //Insert t_pengadaan_fasilitas
+    $sqlpengadaan = "UPDATE t_pengadaan_fasilitas
+                    SET pengadaan_fasilitas = :pengadaan_fasilitas, 
+                        status_pengadaan = :status_pengadaan
+                    WHERE id_pengadaan = :id_pengadaan";
 
-            $tanggal_sekarang = date ('Y-m-d H:i:s', time());
-            
-            $sqlwisata = "UPDATE tb_fasilitas_wisata
-                            SET nama_fasilitas  = :nama_fasilitas, 
-                                biaya_fasilitas = :biaya_fasilitas,
-                                update_terakhir = :update_terakhir,
-                                id_wisata       = :id_wisata
-                            WHERE id_fasilitas_wisata = :id_fasilitas_wisata";
+    $stmt = $pdo->prepare($sqlpengadaan);
+    $stmt->execute(['pengadaan_fasilitas'   => $pengadaan_fasilitas,
+                    'status_pengadaan'  => $status_pengadaan,
+                    'id_pengadaan'  => $id_pengadaan
+                    ]);
 
-            $stmt = $pdo->prepare($sqlwisata);
-            $stmt->execute(['nama_fasilitas' => $nama_fasilitas,
-                            'biaya_fasilitas' => $biaya_fasilitas,
-                            'update_terakhir' => $tanggal_sekarang,
-                            'id_wisata' => $id_wisata,
-                            'id_fasilitas_wisata' => $id_fasilitas_wisata
-                            ]);
-
-            $affectedrows = $stmt->rowCount();
-            if ($affectedrows == '0') {
-                header("Location: kelola_fasilitas_wisata.php?status=insertfailed");
-            } else {
-                //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: kelola_fasilitas_wisata.php?status=updatesuccess");
-            }
-        }
-
+    $affectedrows = $stmt->rowCount();
+    if ($affectedrows == '0') {
+        header("Location: edit_pengadaan_fasilitas.php?status=updatefailed");
+    } else {
+        //echo "HAHAHAAHA GREAT SUCCESSS !";
+        header("Location: kelola_pengadaan_fasilitas.php?status=updatesuccess");
+    }
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Wisata - GoKarang</title>
+    <title>Kelola Asuransi - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -64,13 +55,14 @@ include 'hak_akses.php';
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style-card.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="js/trumbowyg/dist/ui/trumbowyg.min.css">
-    <script src="js/trumbowyg/dist/trumbowyg.min.js"></script>
-
+    <script src="js/trumbowyg/dist/trumbowyg.js"></script>
     <!-- Favicon -->
-    <?= $favicon ?>
+    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -122,8 +114,8 @@ include 'hak_akses.php';
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="kelola_fasilitas_wisata.php">< Kembali</a><br><br>
-                    <h4><span class="align-middle font-weight-bold">Edit Data Wisata</span></h4>
+                    <a class="btn btn-outline-primary" href="kelola_pengadaan_fasilitas.php">< Kembali</a><br><br>
+                    <h4><span class="align-middle font-weight-bold">Edit Data Pengadaan Fasilitas</span></h4>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -132,30 +124,21 @@ include 'hak_akses.php';
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <?php
-                        if(!empty($_GET['status'])) {
-                            if($_GET['status'] == 'updatesuccess') {
-                                echo '<div class="alert alert-success" role="alert">
-                                        Update data wisata dan fasilitas wisata berhasil!
-                                        </div>'; }
-                            else if($_GET['status'] == 'addsuccess') {
-                                echo '<div class="alert alert-success" role="alert">
-                                        Input data wisata dan fasilitas wisata berhasil ditambahkan!
-                                        </div>'; }
-                        }
-                    ?>
+
                     <form action="" enctype="multipart/form-data" method="POST">
-                    <div class="form-group"><!-- ID di hidden untuk keperluan cek id juga -->
-                        <input type="hidden" id="id_wisata" name="id_wisata" value="<?=$fasilitas->id_wisata?>" class="form-control">
-                    </div>
                     <div class="form-group">
-                        <label for="nama_fasilitas">Nama Fasilitas</label>
-                        <input type="text" id="nama_fasilitas" name="nama_fasilitas" value="<?=$fasilitas->pengadaan_fasilitas?>" class="form-control" required>
+                        <label for="pengadaan_fasilitas">Pengadaan Fasilitas</label><br>
+                        <input type="text" name="pengadaan_fasilitas" value="<?=$pengadaan->pengadaan_fasilitas?>" class="form-control" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="biaya_fasilitas">Biaya Fasilitas</label>
-                        <input type="text" id="biaya_fasilitas" name="biaya_fasilitas" value="<?=$fasilitas->biaya_fasilitas?>" class="form-control" required>
+                        <label for="status_pengadaan">Status Pengadaan</label>
+                        <select class="form-control" name="status_pengadaan" id="exampleFormControlSelect1">
+                            <option selected disabled>Status Pengadaan:</option>
+                            <option value="Baik">Baik</option>
+                            <option value="Rusak">Rusak</option>
+                            <option value="Hilang">Hilang</option>
+                        </select>
                     </div>
 
                     <p align="center">
@@ -174,7 +157,7 @@ include 'hak_akses.php';
     <!-- /.content-wrapper -->
 
     <footer class="main-footer">
-        <?= $footer ?>
+        <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
     </footer>
 
     <!-- Control Sidebar -->
@@ -186,18 +169,15 @@ include 'hak_akses.php';
     <!-- ./wrapper -->
 <div>
     <!-- jQuery -->
-    <script src="plugins/jquery/jquery.min.js"></script>
-
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
 
 </div>
-
+<!-- Import Trumbowyg font size JS at the end of <body>... -->
+<script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
 </body>
 </html>

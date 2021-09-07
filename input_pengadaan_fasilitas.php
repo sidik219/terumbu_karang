@@ -7,46 +7,34 @@ $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
 if (isset($_POST['submit'])) {
-    if ($_POST['submit'] == 'Simpan') {
-        
-        //var_dump($_POST['nama_fasilitas']);var_dump($_POST['biaya_fasilitas']);exit();
-        $i = 0;
-        foreach ($_POST['nama_fasilitas'] as $nama_fasilitas) {
-            $id_pengadaan       = $_POST['nama_fasilitas'][$i];
-            $biaya_fasilitas    = $_POST['biaya_fasilitas'][$i];
-            $id_wisata          = $_POST['id_wisata'];
+    $i = 0;
+    foreach ($_POST['pengadaan_fasilitas'] as $pengadaan_fasilitas) {
+        $pengadaan_fasilitas    = $_POST['pengadaan_fasilitas'][$i];
+        $status_pengadaan       = $_POST['status_pengadaan'][$i];
 
-            $tanggal_sekarang = date ('Y-m-d H:i:s', time());
+        $sqlpengadaan = "INSERT INTO t_pengadaan_fasilitas (pengadaan_fasilitas, status_pengadaan)
+                                    VALUES (:pengadaan_fasilitas, :status_pengadaan)";
 
-            $sqlinsertfasilitas = "INSERT INTO tb_fasilitas_wisata (id_pengadaan, biaya_fasilitas, id_wisata, update_terakhir)
-                                        VALUES (:id_pengadaan, :biaya_fasilitas, :id_wisata, :update_terakhir)";
+        $stmt = $pdo->prepare($sqlpengadaan);
+        $stmt->execute(['pengadaan_fasilitas'   => $pengadaan_fasilitas,
+                        'status_pengadaan'  => $status_pengadaan]);
 
-            $stmt = $pdo->prepare($sqlinsertfasilitas);
-            $stmt->execute(['id_pengadaan' => $id_pengadaan,
-                            'biaya_fasilitas' => $biaya_fasilitas,
-                            'id_wisata' => $id_wisata,
-                            'update_terakhir' => $tanggal_sekarang
-                            ]);
-
-            $affectedrows = $stmt->rowCount();
-            if ($affectedrows == '0') {
-                header("Location: input_fasilitas_wisata.php?status=insertfailed");
-            } else {
-                //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: input_fasilitas_wisata.php?status=addsuccess");
-            }
-            $i++;
-        } //End Foreach
-    } else {
-        echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
-    }
+        $affectedrows = $stmt->rowCount();
+        if ($affectedrows == '0') {
+            header("Location: input_pengadaan_fasilitas.php?status=insertfailed");
+        } else {
+            //echo "HAHAHAAHA GREAT SUCCESSS !";
+            header("Location: kelola_pengadaan_fasilitas.php?status=addsuccess");
+        }
+        $i++;
+    } //End Foreach
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Wisata - GoKarang</title>
+    <title>Kelola Pengadaan Fasilitas - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -116,20 +104,14 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="kelola_fasilitas_wisata.php">< Kembali</a><br><br>
-                    <h4><span class="align-middle font-weight-bold">Input Data Fasilitas</span></h4>
+                    <a class="btn btn-outline-primary" href="kelola_pengadaan_fasilitas.php">< Kembali</a><br><br>
+                    <h4><span class="align-middle font-weight-bold">Input Data Pengadaan Fasilitas</span></h4>
                     <ul class="app-breadcrumb breadcrumb" style="margin-bottom: 20px;">
                         <li class="breadcrumb-item">
-                            <a href="kelola_wisata.php" class="non">Kelola Wisata</a></li>
+                            <a href="kelola_pengadaan_fasilitas.php" class="non">Kelola Pengadaan Fasilitas</a></li>
                         <li class="breadcrumb-item">
-                            <a href="kelola_fasilitas_wisata.php" class="non">Data Fasilitas Wisata</a></li>
-                        <li class="breadcrumb-item">
-                            <a href="input_fasilitas_wisata.php" class="tanda">Input Fasilitas</a></li>
+                            <a href="input_pengadaan_fasilitas.php" class="tanda">Input Pengadaan Fasilitas</a></li>
                     </ul>
-                </div>
-                <div align="right">
-                    <a class="btn btn-outline-primary" href="input_wisata.php">
-                    Selanjutnya Paket Wisata <i class="fas fa-angle-right"></i></a>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -138,43 +120,22 @@ if (isset($_POST['submit'])) {
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <?php
-                        if(!empty($_GET['status'])) {
-                            if($_GET['status'] == 'updatesuccess') {
-                                echo '<div class="alert alert-success" role="alert">
-                                        Update bukti pembayaran reservasi wisata berhasil!
-                                        </div>'; }
-                            else if($_GET['status'] == 'addsuccess') {
-                                echo '<div class="alert alert-success" role="alert">
-                                        Input data fasilitas wisata berhasil ditambahkan!
-                                        </div>'; }
-                        }
-                    ?>
                     <form action="" enctype="multipart/form-data" method="POST">
 
                     <div class="form-group field_wrapper">
-                        <label for="paket_wisata">Fasilitas Wisata</label><br>
+                        <label for="paket_wisata">Pengadaan Fasilitas</label><br>
                         <div class="form-group fieldGroup">
                             <div class="input-group">
-                                <select class="form-control" name="nama_fasilitas[]" id="exampleFormControlSelect1">
-                                    <option selected disabled>Fasilitas Wisata:</option>
-                                    <?php
-                                    $sqlpengadaan = 'SELECT * FROM t_pengadaan_fasilitas
-                                                        ORDER BY id_pengadaan DESC';
-                                    $stmt = $pdo->prepare($sqlpengadaan);
-                                    $stmt->execute();
-                                    $rowpengadaan = $stmt->fetchAll();
-
-                                    foreach ($rowpengadaan as $pengadaan) { ?>
-                                    <option value="<?=$pengadaan->id_pengadaan?>">
-                                        <?=$pengadaan->pengadaan_fasilitas?>
-                                    </option>
-                                    <?php } ?>
+                                <input type="text" name="pengadaan_fasilitas[]" min="0" class="form-control" placeholder="Pengadaan Fasilitas"/>
+                                <select class="form-control" name="status_pengadaan[]" id="exampleFormControlSelect1">
+                                    <option selected disabled>Status Pengadaan:</option>
+                                    <option value="Baik">Baik</option>
+                                    <option value="Rusak">Rusak</option>
+                                    <option value="Hilang">Hilang</option>
                                 </select>
-                                <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/>
                                 <div class="input-group-addon">
                                     <a href="javascript:void(0)" class="btn btn-success addMore">
-                                        <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Fasilitas
+                                        <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Pengadaan
                                     </a>
                                 </div>
                             </div>
@@ -188,25 +149,16 @@ if (isset($_POST['submit'])) {
                     <!-- copy of input fields group -->
                     <div class="form-group fieldGroupCopy" style="display: none;">
                         <div class="input-group">
-                            <select class="form-control" name="nama_fasilitas[]" id="exampleFormControlSelect1">
-                                <option selected disabled>Fasilitas Wisata:</option>
-                                <?php
-                                $sqlpengadaan = 'SELECT * FROM t_pengadaan_fasilitas
-                                                    ORDER BY id_pengadaan DESC';
-                                $stmt = $pdo->prepare($sqlpengadaan);
-                                $stmt->execute();
-                                $rowpengadaan = $stmt->fetchAll();
-
-                                foreach ($rowpengadaan as $pengadaan) { ?>
-                                <option value="<?=$pengadaan->id_pengadaan?>">
-                                    <?=$pengadaan->pengadaan_fasilitas?>
-                                </option>
-                                <?php } ?>
+                            <input type="text" name="pengadaan_fasilitas[]" min="0" class="form-control" placeholder="Pengadaan Fasilitas"/>
+                            <select class="form-control" name="status_pengadaan[]" id="exampleFormControlSelect1">
+                                <option selected disabled>Status Pengadaan:</option>
+                                <option value="Baik">Baik</option>
+                                <option value="Rusak">Rusak</option>
+                                <option value="Hilang">Hilang</option>
                             </select>
-                            <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/>
                             <div class="input-group-addon">
                                 <a href="javascript:void(0)" class="btn btn-danger remove">
-                                    <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Fasilitas
+                                    <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Pengadaan
                                 </a>
                             </div>
                         </div>
@@ -242,9 +194,6 @@ if (isset($_POST['submit'])) {
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-
-    <!-- jQuery library -->
-
     <script>
         $(document).ready(function(){
         //group add limit
@@ -256,7 +205,7 @@ if (isset($_POST['submit'])) {
                 var fieldHTML = '<div class="form-group fieldGroup">'+$(".fieldGroupCopy").html()+'</div>';
                 $('body').find('.fieldGroup:last').after(fieldHTML);
             }else{
-                alert('Maksimal '+maxGroup+' fasilitas wisata yang boleh dibuat.');
+                alert('Maksimal '+maxGroup+' Pengadaan fasilitas yang boleh dibuat.');
             }
         });
 
@@ -266,6 +215,7 @@ if (isset($_POST['submit'])) {
         });
     });
     </script>
+
 </div>
 <!-- Import Trumbowyg font size JS at the end of <body>... -->
 <script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>

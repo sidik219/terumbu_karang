@@ -6,54 +6,19 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-        $id_fasilitas_wisata = $_GET['id_fasilitas_wisata'];
-        $defaultpic = "images/image_default.jpg";
+$level_user = $_SESSION['level_user'];
 
-        $sqleditfasilitas = 'SELECT * FROM tb_fasilitas_wisata
-                                LEFT JOIN t_pengadaan_fasilitas ON tb_fasilitas_wisata.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
-                                WHERE id_fasilitas_wisata = :id_fasilitas_wisata';
-
-        $stmt = $pdo->prepare($sqleditfasilitas);
-        $stmt->execute(['id_fasilitas_wisata' => $id_fasilitas_wisata]);
-        $fasilitas = $stmt->fetch();
-
-        if (isset($_POST['submit'])) {
-            $nama_fasilitas  = $_POST['nama_fasilitas'];
-            $biaya_fasilitas = $_POST['biaya_fasilitas'];
-            $id_wisata       = $_POST['id_wisata'];
-
-            $tanggal_sekarang = date ('Y-m-d H:i:s', time());
-            
-            $sqlwisata = "UPDATE tb_fasilitas_wisata
-                            SET nama_fasilitas  = :nama_fasilitas, 
-                                biaya_fasilitas = :biaya_fasilitas,
-                                update_terakhir = :update_terakhir,
-                                id_wisata       = :id_wisata
-                            WHERE id_fasilitas_wisata = :id_fasilitas_wisata";
-
-            $stmt = $pdo->prepare($sqlwisata);
-            $stmt->execute(['nama_fasilitas' => $nama_fasilitas,
-                            'biaya_fasilitas' => $biaya_fasilitas,
-                            'update_terakhir' => $tanggal_sekarang,
-                            'id_wisata' => $id_wisata,
-                            'id_fasilitas_wisata' => $id_fasilitas_wisata
-                            ]);
-
-            $affectedrows = $stmt->rowCount();
-            if ($affectedrows == '0') {
-                header("Location: kelola_fasilitas_wisata.php?status=insertfailed");
-            } else {
-                //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: kelola_fasilitas_wisata.php?status=updatesuccess");
-            }
-        }
-
+$sqlpengadaan = 'SELECT * FROM t_pengadaan_fasilitas
+                ORDER BY id_pengadaan DESC';
+$stmt = $pdo->prepare($sqlpengadaan);
+$stmt->execute();
+$rowpengadaan = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Wisata - GoKarang</title>
+    <title>Kelola Pengadaan Fasilitas - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -64,11 +29,6 @@ include 'hak_akses.php';
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="js/trumbowyg/dist/ui/trumbowyg.min.css">
-    <script src="js/trumbowyg/dist/trumbowyg.min.js"></script>
-
     <!-- Favicon -->
     <?= $favicon ?>
 </head>
@@ -122,9 +82,15 @@ include 'hak_akses.php';
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="kelola_fasilitas_wisata.php">< Kembali</a><br><br>
-                    <h4><span class="align-middle font-weight-bold">Edit Data Wisata</span></h4>
-                </div>
+                <div class="row">
+                        <div class="col">
+                            <h4><span class="align-middle font-weight-bold">Kelola Pengadaan Fasilitas</span></h4>
+                            
+                        </div>
+                        <div class="col">
+                            <a class="btn btn-primary float-right" href="input_pengadaan_fasilitas.php" role="button">Input Data Baru (+)</a>
+                        </div>
+                    </div>
                 <!-- /.container-fluid -->
             </div>
             <!-- /.content-header -->
@@ -136,31 +102,50 @@ include 'hak_akses.php';
                         if(!empty($_GET['status'])) {
                             if($_GET['status'] == 'updatesuccess') {
                                 echo '<div class="alert alert-success" role="alert">
-                                        Update data wisata dan fasilitas wisata berhasil!
+                                        Data Pengadaan Fasilitas berhasil diupdate!
                                         </div>'; }
                             else if($_GET['status'] == 'addsuccess') {
                                 echo '<div class="alert alert-success" role="alert">
-                                        Input data wisata dan fasilitas wisata berhasil ditambahkan!
+                                        Data Pengadaan Fasilitas berhasil ditambahkan!
+                                        </div>'; }
+                            else if($_GET['status'] == 'deletesuccess') {
+                                echo '<div class="alert alert-success" role="alert">
+                                        Data Pengadaan Fasilitas berhasil dihapus!
                                         </div>'; }
                         }
                     ?>
-                    <form action="" enctype="multipart/form-data" method="POST">
-                    <div class="form-group"><!-- ID di hidden untuk keperluan cek id juga -->
-                        <input type="hidden" id="id_wisata" name="id_wisata" value="<?=$fasilitas->id_wisata?>" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="nama_fasilitas">Nama Fasilitas</label>
-                        <input type="text" id="nama_fasilitas" name="nama_fasilitas" value="<?=$fasilitas->pengadaan_fasilitas?>" class="form-control" required>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="biaya_fasilitas">Biaya Fasilitas</label>
-                        <input type="text" id="biaya_fasilitas" name="biaya_fasilitas" value="<?=$fasilitas->biaya_fasilitas?>" class="form-control" required>
-                    </div>
-
-                    <p align="center">
-                    <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
-                    </form><br><br>
+                     <table class="table table-striped table-responsive-sm">
+                     <thead>
+                            <tr>
+                            <th scope="col">ID Pengadaan</th>
+                            <th scope="col">Pengadaan Fasilitas</th>
+                            <th scope="col">Status Pengadaan</th>
+                            <th scope="col">Aksi</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <?php foreach ($rowpengadaan as $pengadaan) { ?>
+                            <tr>
+                                <th scope="row"><?=$pengadaan->id_pengadaan?></th>
+                                <td><?=$pengadaan->pengadaan_fasilitas?></td>
+                                <td>
+                                    <?php if ($pengadaan->status_pengadaan == "Baik") { ?>
+                                        <span class="badge badge-pill badge-success"><?=$pengadaan->status_pengadaan?></span>
+                                    <?php } elseif ($pengadaan->status_pengadaan == "Rusak") { ?>
+                                        <span class="badge badge-pill badge-warning"><?=$pengadaan->status_pengadaan?></span>
+                                    <?php } elseif ($pengadaan->status_pengadaan == "Hilang") { ?>
+                                        <span class="badge badge-pill badge-danger"><?=$pengadaan->status_pengadaan?></span>
+                                    <?php } ?>
+                                </td>
+                                <td>
+                                    <a href="edit_pengadaan_fasilitas.php?id_pengadaan=<?=$pengadaan->id_pengadaan?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                                    <a href="hapus.php?type=pengadaan_fasilitas&id_pengadaan=<?=$pengadaan->id_pengadaan?>" class="far fa-trash-alt btn btn-act"></a>
+                                </td>
+                            </tr>
+                          <?php } ?>
+                          </tbody>
+                  </table>
 
             </section>
             <!-- /.Left col -->
@@ -187,13 +172,10 @@ include 'hak_akses.php';
 <div>
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
-
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
     <!-- overlayScrollbars -->
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
 
