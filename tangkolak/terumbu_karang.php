@@ -1,3 +1,55 @@
+<?php 
+include '../build/config/connection.php';
+
+$sqlviewwilayah = 'SELECT *, SUM(luas_titik) AS total_titik,
+                    COUNT(t_titik.id_titik) AS jumlah_titik,
+                    SUM(t_lokasi.luas_lokasi) / (SELECT COUNT(t_titik.id_titik) GROUP BY t_titik.id_titik) AS total_lokasi,
+                    (SUM(t_titik.luas_titik) / (SUM(t_lokasi.luas_lokasi) / (SELECT COUNT(t_titik.id_titik) GROUP BY t_titik.id_titik))) * 100 AS persentase_sebaran
+
+                    FROM t_titik, t_lokasi, t_wilayah
+				    WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
+                    AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                    GROUP BY t_wilayah.id_wilayah
+                    ORDER BY t_lokasi.id_wilayah ASC';
+
+// 'SELECT *,
+//             SUM(luas_titik) AS luas_total, COUNT(id_titik) AS jumlah_titik,
+
+//             -- COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang,
+//             -- COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup,
+//             -- COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
+//             -- COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
+
+//             FROM t_wilayah
+//             LEFT JOIN t_titik ON t_wilayah.id_wilayah = t_titik.id_wilayah
+//             LEFT JOIN t_lokasi ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
+//             GROUP BY nama_wilayah';
+
+$stmt = $pdo->prepare($sqlviewwilayah);
+$stmt->execute();
+$rowwilayah = $stmt->fetchAll();
+
+// ChartJS Content
+$kondisi = array('Kurang','Cukup','Baik','Sangat Baik');
+
+for($i = 0; $i < count($kondisi); $i++) {
+
+    $kondisi_titik = $kondisi[$i];
+
+    // Donasi
+    $sqlTitik = 'SELECT COUNT(id_titik) AS jumlah_titik FROM t_titik
+                            WHERE kondisi_titik = :kondisi_titik
+                            AND id_lokasi = 5';
+
+    $stmt = $pdo->prepare($sqlTitik);
+    $stmt->execute(['kondisi_titik' => $kondisi_titik]);
+    $totalTitik = $stmt->fetch();
+
+    $jumlah_titik[] = $totalTitik->jumlah_titik;
+    // var_dump($kondisi_titik);
+}
+?>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -90,94 +142,163 @@
             <div class="terumbu-karang-tangkolak">
                 <h2>Kondisi Terumbu Karang Tangkolak</h2>
                     <div class="row ">
-                            <div class="col-md-12 col-lg-6 p-5 text-center  tabel-status-tangkolak">
-                                <div class="row justify-content-center ">
-                                    <div class="col-sm-6 border border-dark py-1 top-col-bg">
-                                    <b>Persentase Sebaran</b>
-                                    </div>
-                                    <div class="col-sm-4 border border-dark py-1" style="color:green;">
-                                        <b>76.7%</b>
-                                    </div>
-                                </div>
-                                <div class="row justify-content-center">
-                                    <div class="col-sm-6 border border-dark py-1 top-col-bg">
-                                    <b> Estimasi Total Luas Titik</b>
-                                    </div>
-                                    <div class="col-sm-4 border border-dark py-1">
-                                        3,000 m2
-                                    </div>
-                                </div>
-                                <div class="row justify-content-center">
-                                    <div class="col-sm-6 border border-dark py-1 top-col-bg">
-                                    <b>Total Luas Titik Terdata</b>
-                                    </div>
-                                    <div class="col-sm-4 border border-dark py-1">
-                                        2,320 m2
-                                    </div>
-                                </div>
-                                <div class="row justify-content-center">
-                                    <div class="col-sm-6 border border-dark py-1 top-col-bg">
-                                    <b>Jumlah Titik Terdata</b>
-                                    </div>
-                                    <div class="col-sm-4 border border-dark py-1 ">
-                                        7 Titik
-                                    </div>
-                                </div>
-                                <div class="row justify-content-center">
-                                    <div class="col-sm-6 border border-dark py-1 top-col-bg">
-                                    <b>Status</b>
-                                    </div>
-                                    <div class="col-sm-4 border border-dark py-1" style="color:green;">
-                                        Sangat Baik
-                                    </div>
-                                </div>
+                        
+                        <div class="col-md-12 col-lg-6 p-5 text-center  tabel-status-tangkolak">
+                        <?php
+                        foreach ($rowwilayah as $rowitem) {
+                        $total_luas_lokasi = 0;
+                        $total_persentase_sebaran = 0;
+                        ?>
+                            <?php 
+                            $sql_lokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
+                            COUNT(id_titik) AS jumlah_titik,
+                            SUM(luas_lokasi)  / COUNT(id_titik) AS total_lokasi,
+                            (SUM(t_titik.luas_titik) / (SUM(t_lokasi.luas_lokasi) / COUNT(t_titik.id_titik)) ) * 100 AS persentase_sebaran
 
-                            </div>
-                            <div class="col-md-12 col-lg-6 p-5 text-center tabel-kondisi-tangkolak ">
-                                <div class="row justify-content-center">
-                                    <div class="col-sm-10 border border-dark py-1 top-col-bg">
-                                    <b>     Kondisi Titik</b>
-                                    </div>
-                                </div>
-                                <div class="row justify-content-center">
-                                    <div class="col-sm-6 border border-dark py-1 top-col-bg">
-                                        Sangat Baik
-                                    </div>
-                                    <div class="col-sm-4 border border-dark py-1">
-                                        1
-                                    </div>
-                                </div>
-                                <div class="row justify-content-center">
-                                    <div class="col-sm-6 border border-dark py-1 top-col-bg">
-                                        Baik
-                                    </div>
-                                    <div class="col-sm-4 border border-dark py-1">
-                                        2
-                                    </div>
-                                </div>
-                                <div class="row justify-content-center">
-                                    <div class="col-sm-6 border border-dark py-1 top-col-bg">
-                                        Cukup
-                                    </div>
-                                    <div class="col-sm-4 border border-dark py-1">
-                                        2
-                                    </div>
-                                </div>
-                                <div class="row justify-content-center">
-                                    <div class="col-sm-6 border border-dark py-1 top-col-bg">
-                                        Kurang
-                                    </div>
-                                    <div class="col-sm-4 border border-dark py-1">
-                                        2
-                                    </div>
-                                </div>
+                            FROM `t_titik`, t_lokasi, t_wilayah
+                            WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
+                            AND t_titik.id_lokasi = 5
+                            AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                            AND t_lokasi.id_wilayah = 34
+                            AND t_lokasi.id_wilayah = '.$rowitem->id_wilayah.'
+                            GROUP BY t_lokasi.id_lokasi
+                            ORDER BY persentase_sebaran DESC';
 
+                            $stmt = $pdo->prepare($sql_lokasi);
+                            $stmt->execute();
+                            $rowlokasi = $stmt->fetchAll();
+
+                            $kurang = 0; $cukup=0; $baik=0; $sangat_baik=0;
+                            $kurang_luas = 0; $cukup_luas = 0; $baik_luas = 0; $sangat_baik_luas = 0;
+
+                            foreach ($rowlokasi as $lokasi) {
+                            $ps = $lokasi->persentase_sebaran;
+
+                            if ($ps >= 0 && $ps < 25) {
+                                $kondisi_lokasi = 'Kurang';
+                                $kurang_luas += $lokasi->total_titik;
+                            } else if($ps >= 25 && $ps < 50) {
+                                $kondisi_lokasi = 'Cukup';
+                                $cukup_luas += $lokasi->total_titik;
+                            } else if($ps >= 50 && $ps < 75) {
+                                $kondisi_lokasi = 'Baik';
+                                $baik_luas += $lokasi->total_titik;
+                            } else {
+                                $kondisi_lokasi = 'Sangat Baik';
+                                $sangat_baik_luas += $lokasi->total_titik;
+                            }
+                            ?>
+
+                            <div class="row justify-content-center ">
+                                <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                <b>Nama Lokasi</b>
+                                </div>
+                                <div class="col-sm-4 border border-dark py-1" style="color:green;">
+                                    <b><?=$lokasi->nama_lokasi?></b>
+                                </div>
                             </div>
+                            <div class="row justify-content-center ">
+                                <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                <b>Persentase Sebaran</b>
+                                </div>
+                                <div class="col-sm-4 border border-dark py-1" style="color:green;">
+                                    <b><?=number_format($lokasi->persentase_sebaran, 1).'%'?></b>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                <b> Estimasi Total Luas Titik</b>
+                                </div>
+                                <div class="col-sm-4 border border-dark py-1">
+                                    <?=number_format($lokasi->total_titik).' ha'?>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                <b>Total Luas Titik Terdata</b>
+                                </div>
+                                <div class="col-sm-4 border border-dark py-1">
+                                    <?=number_format($lokasi->total_lokasi).' ha'?>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                <b>Jumlah Titik Terdata</b>
+                                </div>
+                                <div class="col-sm-4 border border-dark py-1 ">
+                                    <?=$lokasi->jumlah_titik?>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                <b>Status</b>
+                                </div>
+                                <div class="col-sm-4 border border-dark py-1" style="color:green;">
+                                <?=$kondisi_lokasi?>
+                                </div>
+                            </div>
+                            <?php } ?>
+                        <?php } ?>
                         </div>
+                        
 
-
+                        <div class="col-md-12 col-lg-6 p-5 text-center tabel-kondisi-tangkolak ">
+                            <!-- <div class="row justify-content-center">
+                                <div class="col-sm-10 border border-dark py-1 top-col-bg">
+                                <b>     Kondisi Titik</b>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                    Sangat Baik
+                                </div>
+                                <div class="col-sm-4 border border-dark py-1">
+                                    1
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                    Baik
+                                </div>
+                                <div class="col-sm-4 border border-dark py-1">
+                                    2
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                    Cukup
+                                </div>
+                                <div class="col-sm-4 border border-dark py-1">
+                                    2
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                    Kurang
+                                </div>
+                                <div class="col-sm-4 border border-dark py-1">
+                                    2
+                                </div>
+                            </div> -->
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="d-flex justify-content-center">
+                                            <select class="form-select btn btn-info btn-sm" aria-label="Default select example">
+                                                <option selected>Pilih Tahun:</option>
+                                                <option value="2020">2020</option>
+                                                <option value="2021">2021</option>
+                                                <option value="2022">2022</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="titik" width="100%" height="100%"></canvas>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
                     </div>
-
 
                 </div>
             </div>
@@ -190,7 +311,7 @@
                     <picture>
                          <source srcset="img/donasi1.jpg" media="(min-width: 604px)">
                          <source srcset="img/donasi2.jpg" media="(max-width: 604px)">
-                         <img src="img/jembatan.jpg" alt="Slide 1 Image" class="d-block img-fluid">
+                         <img src="img/jembatan.jpg" alt="Slide 1 Image" class="d-block img-fluid" width="100%">
                     </picture>
                     <div class="carousel-caption donasi-caption">
                                     <div>
@@ -323,6 +444,69 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- CharJs CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js" integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.js" integrity="sha512-XcsV/45eM/syxTudkE8AoKK1OfxTrlFpOltc9NmHXh3HF+0ZA917G9iG6Fm7B6AzP+UeEzV8pLwnbRNPxdUpfA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Chartjs -->
+    <script>
+        // ==============================================================
+        // Test View Data Kondisi TA Untuk Content
+
+        // TK
+        $('#btn-titik').click(function () {
+            $('#titik').get(0).toBlob(function (blob) {
+                saveAs(blob, 'data_kondisi_titik.png')
+            });
+        });
+
+        // Any of the following formats may be used
+        var ctx = document.getElementById('titik');
+        var wisata = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Kurang","Cukup","Baik","Sangat Baik"], //kondisi titik
+                datasets: [{
+                    label: '2021',
+                    data: <?php echo json_encode($jumlah_titik); ?>, //Total Pendapatan Berdasarkan Bulan
+                    // data: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Data Kondisi Titik',
+                        padding: {
+                            top: 10,
+                            bottom: 30
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 
 </body>
 </html>
