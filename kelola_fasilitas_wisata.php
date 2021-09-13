@@ -161,6 +161,7 @@ function ageCalculator($dob){
                                 <td>
                                     <small class="text-muted"><b>Update Terakhir</b>
                                     <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($fasilitas->update_terakhir).' yang lalu)';?></small>
+                                </td>
                                 <td>
                                     <a href="edit_fasilitas_wisata.php?id_fasilitas_wisata=<?=$fasilitas->id_fasilitas_wisata?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 </td>

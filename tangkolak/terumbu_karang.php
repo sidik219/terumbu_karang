@@ -285,10 +285,10 @@ for($i = 0; $i < count($kondisi); $i++) {
                                     <div class="card-header">
                                         <div class="d-flex justify-content-center">
                                             <select class="form-select btn btn-info btn-sm" aria-label="Default select example">
-                                                <option selected>Pilih Tahun:</option>
-                                                <option value="2020">2020</option>
-                                                <option value="2021">2021</option>
-                                                <option value="2022">2022</option>
+                                                <option selected disabled>Pilih Tahun:</option>
+                                                <option value="2020">2021</option>
+                                                <option value="2021">2022</option>
+                                                <option value="2022">2023</option>
                                             </select>
                                         </div>
                                     </div>

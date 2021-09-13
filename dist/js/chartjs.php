@@ -7,6 +7,16 @@
         });
     });
 
+    const Donatur = document.getElementById('Donatur');
+    Donatur.addEventListener('change', pertahunDonatur);
+
+    function pertahunDonatur() {
+        const label = Donatur.options[Donatur.selectedIndex].text;
+        donasi.data.datasets[0].label = label;
+        donasi.data.datasets[0].data = Donatur.value.split(',');
+        donasi.update();
+    }
+
     // Any of the following formats may be used
     var ctx = document.getElementById('donasi');
     var donasi = new Chart(ctx, {
@@ -147,7 +157,9 @@
                     'rgba(153, 102, 255, 1)',
                     'rgba(255, 159, 64, 1)'
                 ],
-                borderWidth: 1
+                borderWidth: 1,
+                showLine: true,
+                spanGaps: true
             }]
         },
         options: {
@@ -202,7 +214,9 @@
                     'rgba(153, 102, 255, 1)',
                     'rgba(255, 159, 64, 1)'
                 ],
-                borderWidth: 1
+                borderWidth: 1,
+                showLine: true,
+                spanGaps: true
             }]
         },
         options: {

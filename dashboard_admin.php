@@ -404,11 +404,11 @@ for($bulan = 1; $bulan < 13; $bulan++) {
                                             <div class="d-flex justify-content-between">
                                                 <button type="button" class="btn btn-outline-info btn-sm" id="btn-donasi">
                                                 <i class="far fa-file-image"></i> Export ke Image</button>
-                                                <select class="form-select btn btn-info btn-sm" aria-label="Default select example">
-                                                    <option selected>Pilih Tahun:</option>
-                                                    <option value="2020">2020</option>
-                                                    <option value="2021">2021</option>
-                                                    <option value="2022">2022</option>
+                                                <select id="Donatur" class="form-select btn btn-info btn-sm" aria-label="Default select example">
+                                                    <option selected disabled>Pilih Tahun:</option>
+                                                    <option value="[1, 2, 3, 4, 5, 6]">2021</option>
+                                                    <option value="[5, 10, 15, 20, 25, 30]">2022</option>
+                                                    <option value="[35, 40, 45, 50, 55, 60]">2023</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -423,11 +423,11 @@ for($bulan = 1; $bulan < 13; $bulan++) {
                                             <div class="d-flex justify-content-between">
                                                 <button type="button" class="btn btn-outline-info btn-sm" id="btn-wisata">
                                                 <i class="far fa-file-image"></i> Export ke Image</button>
-                                                <select class="form-select btn btn-info btn-sm" aria-label="Default select example">
-                                                    <option selected>Pilih Tahun:</option>
-                                                    <option value="2020">2020</option>
-                                                    <option value="2021">2021</option>
-                                                    <option value="2022">2022</option>
+                                                <select id="Wisatawan" class="form-select btn btn-info btn-sm" aria-label="Default select example">
+                                                    <option selected disabled>Pilih Tahun:</option>
+                                                    <option value="2020">2021</option>
+                                                    <option value="2021">2022</option>
+                                                    <option value="2022">2023</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -443,11 +443,11 @@ for($bulan = 1; $bulan < 13; $bulan++) {
                                             <div class="d-flex justify-content-between">
                                                 <button type="button" class="btn btn-outline-info btn-sm" id="btn-donasi">
                                                 <i class="far fa-file-image"></i> Export ke Image</button>
-                                                <select class="form-select btn btn-info btn-sm" aria-label="Default select example">
-                                                    <option selected>Pilih Tahun:</option>
-                                                    <option value="2020">2020</option>
-                                                    <option value="2021">2021</option>
-                                                    <option value="2022">2022</option>
+                                                <select id="Donasi" class="form-select btn btn-info btn-sm" aria-label="Default select example">
+                                                    <option selected disabled>Pilih Tahun:</option>
+                                                    <option value="2020">2021</option>
+                                                    <option value="2021">2022</option>
+                                                    <option value="2022">2023</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -462,11 +462,11 @@ for($bulan = 1; $bulan < 13; $bulan++) {
                                             <div class="d-flex justify-content-between">
                                                 <button type="button" class="btn btn-outline-info btn-sm" id="btn-duid">
                                                 <i class="far fa-file-image"></i> Export ke Image</button>
-                                                <select class="form-select btn btn-info btn-sm" aria-label="Default select example">
-                                                    <option selected>Pilih Tahun:</option>
-                                                    <option value="2020">2020</option>
-                                                    <option value="2021">2021</option>
-                                                    <option value="2022">2022</option>
+                                                <select id="Reservasi" class="form-select btn btn-info btn-sm" aria-label="Default select example">
+                                                    <option selected disabled>Pilih Tahun:</option>
+                                                    <option value="2020">2021</option>
+                                                    <option value="2021">2022</option>
+                                                    <option value="2022">2023</option>
                                                 </select>
                                             </div>
                                         </div>
