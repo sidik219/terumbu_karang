@@ -162,3 +162,23 @@ elseif ($type == 'pengadaan_fasilitas'){
     $stmt->execute(['id_pengadaan' => $id_pengadaan]);
     header('Location: kelola_pengadaan_fasilitas.php?status=deletesuccess');
 }
+elseif ($type == 'kerjasama'){
+    $id_kerjasama = $_GET['id_kerjasama'];
+
+    $sql = 'DELETE FROM t_kerjasama
+            WHERE id_kerjasama = :id_kerjasama';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_kerjasama' => $id_kerjasama]);
+    header('Location: kelola_kerjasama.php?status=deletesuccess');
+}
+elseif ($type == 'pengeluaran'){
+    $id_pengeluaran = $_GET['id_pengeluaran'];
+
+    $sql = 'DELETE FROM t_laporan_pengeluaran
+            WHERE id_pengeluaran = :id_pengeluaran';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_pengeluaran' => $id_pengeluaran]);
+    header('Location: kelola_laporan_wisata.php?status=deletesuccess');
+}
