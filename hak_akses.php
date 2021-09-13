@@ -343,7 +343,7 @@ else{
                 </li>
 
                 <li class="nav-item">
-                    <a href="kelola_reservasi_wisata.php" class="nav-link '.(('kelola_reservasi_wisata.php' == $url_sekarang) || ('edit_reservasi_wisata.php'  == $url_sekarang) ? ' active ' : '').' ">
+                    <a href="kelola_reservasi_wisata.php" class="nav-link '.(('kelola_reservasi_wisata.php' == $url_sekarang) || ('edit_reservasi_wisata.php'  == $url_sekarang) || ('kelola_laporan_paket.php'  == $url_sekarang) ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-th-list"></i>
                         <p> Kelola Reservasi </p>
                     </a>
