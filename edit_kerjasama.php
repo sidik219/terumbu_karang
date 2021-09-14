@@ -6,37 +6,37 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-$id_pengadaan = $_GET['id_pengadaan'];
+$id_kerjasama = $_GET['id_kerjasama'];
 
-$sqlpengadaan= 'SELECT * FROM t_pengadaan_fasilitas
-                    WHERE id_pengadaan = :id_pengadaan';
+$sqlkerjasama= 'SELECT * FROM t_kerjasama
+                    WHERE id_kerjasama = :id_kerjasama';
 
-$stmt = $pdo->prepare($sqlpengadaan);
-$stmt->execute(['id_pengadaan' => $id_pengadaan]);
+$stmt = $pdo->prepare($sqlkerjasama);
+$stmt->execute(['id_kerjasama' => $id_kerjasama]);
 $pengadaan = $stmt->fetch();
 
 if (isset($_POST['submit'])) {
-    $pengadaan_fasilitas    = $_POST['pengadaan_fasilitas'];
-    $status_pengadaan       = $_POST['status_pengadaan'];
+    $status_kerjasama       = $_POST['status_kerjasama'];
+    $pembagian_kerjasama    = $_POST['pembagian_kerjasama'];
     
-    //Insert t_pengadaan_fasilitas
-    $sqlpengadaan = "UPDATE t_pengadaan_fasilitas
-                    SET pengadaan_fasilitas = :pengadaan_fasilitas, 
-                        status_pengadaan = :status_pengadaan
-                    WHERE id_pengadaan = :id_pengadaan";
+    //Insert t_kerjasama
+    $sqlpengadaan = "UPDATE t_kerjasama
+                    SET status_kerjasama = :status_kerjasama, 
+                    pembagian_kerjasama = :pembagian_kerjasama
+                    WHERE id_kerjasama = :id_kerjasama";
 
     $stmt = $pdo->prepare($sqlpengadaan);
-    $stmt->execute(['pengadaan_fasilitas'   => $pengadaan_fasilitas,
-                    'status_pengadaan'  => $status_pengadaan,
-                    'id_pengadaan'  => $id_pengadaan
+    $stmt->execute(['status_kerjasama'   => $status_kerjasama,
+                    'pembagian_kerjasama'  => $pembagian_kerjasama,
+                    'id_kerjasama'  => $id_kerjasama
                     ]);
 
     $affectedrows = $stmt->rowCount();
     if ($affectedrows == '0') {
-        header("Location: edit_pengadaan_fasilitas.php?status=updatefailed");
+        header("Location: edit_kerjasama.php?status=updatefailed");
     } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
-        header("Location: kelola_pengadaan_fasilitas.php?status=updatesuccess");
+        header("Location: kelola_kerjasama.php?status=updatesuccess");
     }
 }
 ?>
@@ -44,7 +44,7 @@ if (isset($_POST['submit'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Pengadaan Fasilitas - GoKarang</title>
+    <title>Kelola Kerjasama Fasilitas - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -114,8 +114,8 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="kelola_pengadaan_fasilitas.php">< Kembali</a><br><br>
-                    <h4><span class="align-middle font-weight-bold">Edit Data Pengadaan Fasilitas</span></h4>
+                    <a class="btn btn-outline-primary" href="kelola_kerjasama.php">< Kembali</a><br><br>
+                    <h4><span class="align-middle font-weight-bold">Edit Data Kerjasama Fasilitas</span></h4>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -127,17 +127,28 @@ if (isset($_POST['submit'])) {
 
                     <form action="" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
-                        <label for="pengadaan_fasilitas">Pengadaan Fasilitas</label><br>
-                        <input type="text" name="pengadaan_fasilitas" value="<?=$pengadaan->pengadaan_fasilitas?>" class="form-control" required>
+                        <label for="status_kerjasama">Status Kerjasama</label>
+                        <select class="form-control" name="status_kerjasama" id="exampleFormControlSelect1">
+                            <option selected disabled>Status Kerjasama:</option>
+                            <option value="Tidak Melakukan Kerjasama">Tidak Melakukan Kerjasama</option>
+                            <option value="Melakukan Kerjasama">Melakukan Kerjasama</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="status_pengadaan">Status Pengadaan</label>
-                        <select class="form-control" name="status_pengadaan" id="exampleFormControlSelect1">
-                            <option selected disabled>Status Pengadaan:</option>
-                            <option value="Baik">Baik</option>
-                            <option value="Rusak">Rusak</option>
-                            <option value="Hilang">Hilang</option>
+                        <label for="pembagian_kerjasama">Pembagian Kerjasama</label>
+                        <select class="form-control" name="pembagian_kerjasama" id="exampleFormControlSelect1">
+                            <option selected disabled>Pembagian Kerjasama:</option>
+                            <option value="0">0%</option>
+                            <option value="0.1">10%</option>
+                            <option value="0.2">20%</option>
+                            <option value="0.3">30%</option>
+                            <option value="0.4">40%</option>
+                            <option value="0.5">50%</option>
+                            <option value="0.6">60%</option>
+                            <option value="0.7">70%</option>
+                            <option value="0.8">80%</option>
+                            <option value="0.9">90%</option>
                         </select>
                     </div>
 

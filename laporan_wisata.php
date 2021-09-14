@@ -208,9 +208,7 @@ if ($_GET['type'] == 'wisata'){
         </tfoot>
     </table>
 
-    <?php
-    // Jarak
-} elseif ($_GET['type'] == 'fasilitas') {
+<?php } elseif ($_GET['type'] == 'fasilitas') {
 
     header("Content-type: application/vnd-ms-excel");
     header("Content-Disposition: attachment; filename=laporan_pengeluaran_fasilitas_wisata.xls");
@@ -289,7 +287,9 @@ if ($_GET['type'] == 'wisata'){
         </tfoot>
     </table>
 
-    <?php
-    // Jarak
-}
-?>
+<?php } elseif ($_GET['type'] == 'pengeluaran') { 
+    
+    
+    ?>
+    
+<?php } ?>
