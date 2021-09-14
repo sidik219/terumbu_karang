@@ -349,13 +349,6 @@ else{
                     </a>
                 </li>
 
-		        <li class="nav-item"> <!-- Lokasi -->
-                    <a href="kelola_asuransi.php" class="nav-link '.(('kelola_asuransi.php' == $url_sekarang) || ('edit_asuransi.php'  == $url_sekarang) || ('input_asuransi.php'  == $url_sekarang) ? ' active ' : '').' ">
-                        <i class="nav-icon fas fa-heartbeat"></i>
-                        <p> Kelola Asuransi </p>
-                    </a>
-                </li>
-
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                     <a href="kelola_lokasi.php" class="nav-link '.('kelola_lokasi.php' == $url_sekarang  || ('edit_lokasi.php'  == $url_sekarang) || ('input_lokasi.php'  == $url_sekarang) || ('kelola_harga_terumbu.php'  == $url_sekarang) ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
