@@ -19,7 +19,8 @@ $reservasi = $stmt->fetch();
 // Select Data Pengeluaran Berdasarkan ID Reservasi
 $sqlpengeluaran = 'SELECT * FROM t_laporan_pengeluaran
                     LEFT JOIN t_reservasi_wisata ON t_laporan_pengeluaran.id_reservasi = t_reservasi_wisata.id_reservasi
-                    WHERE t_reservasi_wisata.id_reservasi = :id_reservasi';
+                    WHERE t_reservasi_wisata.id_reservasi = :id_reservasi
+                    ORDER BY id_pengeluaran DESC';
 
 $stmt = $pdo->prepare($sqlpengeluaran);
 $stmt->execute(['id_reservasi' => $id_reservasi]);
@@ -47,10 +48,11 @@ if (isset($_POST['submit'])) {
 
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
-                // header("Location: kelola_laporan_wisata.php?status=insertfailed");
+                header("Location: kelola_laporan_wisata.php?status=insertfailed");
             } else {
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
-                echo "<meta http-equiv='refresh' content='0'>";
+                // echo "<meta http-equiv='refresh' content='0'>";
+                header('Location: kelola_laporan_wisata.php?id_reservasi='.$id_reservasi.'&status=addsuccess');
             }
             $i++;
         } //End Foreach

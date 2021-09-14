@@ -247,6 +247,11 @@ function alertPembayaran($dob){
                                     <button type="button" class="btn btn-act">
                                         <a href="edit_reservasi_wisata.php?id_reservasi=<?=$rowitem->id_reservasi?>" class="fas fa-edit"></a>
                                     </button>
+                                    <a 
+                                    class="btn btn-success" 
+                                    href="kelola_laporan_wisata.php?id_reservasi=<?=$rowitem->id_reservasi?>"
+                                    style="margin-top: 1rem;">
+                                    <i class="fas fa-file-excel"></i> Laporan Wisata</a>
                                 </td>
                           </tr>
                           <tr>
@@ -311,17 +316,6 @@ function alertPembayaran($dob){
                                             </div>
                                             <div class="col isi">
                                                 <?=$rowitem->no_hp?>
-                                            </div>
-                                        </div>
-
-                                        <!-- Laporan Pengeluaran -->
-                                        <div class="row mb-3  border-bottom">
-                                            <div class="col-md-3 kolom font-weight-bold">
-                                                <a 
-                                                class="btn btn-success" 
-                                                href="kelola_laporan_wisata.php?id_reservasi=<?=$rowitem->id_reservasi?>"
-                                                style="margin-bottom: 10px;">
-                                                <i class="fas fa-file-excel"></i> Laporan Pengeluaran Wisata</a>
                                             </div>
                                         </div>
 
