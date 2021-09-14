@@ -173,6 +173,7 @@ elseif ($type == 'kerjasama'){
     header('Location: kelola_kerjasama.php?status=deletesuccess');
 }
 elseif ($type == 'pengeluaran'){
+    $id_reservasi = $_GET['id_reservasi'];
     $id_pengeluaran = $_GET['id_pengeluaran'];
 
     $sql = 'DELETE FROM t_laporan_pengeluaran
@@ -180,5 +181,5 @@ elseif ($type == 'pengeluaran'){
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['id_pengeluaran' => $id_pengeluaran]);
-    header('Location: kelola_laporan_wisata.php?status=deletesuccess');
+    header('Location: kelola_laporan_wisata.php?id_reservasi='.$id_reservasi.'&status=deletesuccess');
 }

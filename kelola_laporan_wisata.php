@@ -252,7 +252,7 @@ function ageCalculator($dob){
                                     <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($pengeluaran->update_terakhir).' yang lalu)';?></small>
                                 </td>
                                 <td>
-                                    <a href="hapus.php?type=pengeluaran&id_pengeluaran=<?=$pengeluaran->id_pengeluaran?>" class="far fa-trash-alt btn btn-act"></a>
+                                    <a href="hapus.php?type=pengeluaran&id_pengeluaran=<?=$pengeluaran->id_pengeluaran?>&id_reservasi=<?=$id_reservasi?>" class="far fa-trash-alt btn btn-act"></a>
                                 </td>
                             </tr>
                             <?php } ?>
