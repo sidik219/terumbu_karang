@@ -287,9 +287,197 @@ if ($_GET['type'] == 'wisata'){
         </tfoot>
     </table>
 
-<?php } elseif ($_GET['type'] == 'pengeluaran') { 
+<?php } elseif ($_GET['type'] == 'all_pengeluaran') {
+
+    header("Content-type: application/vnd-ms-excel");
+    header("Content-Disposition: attachment; filename=laporan_keseluruhan_pengeluaran_wisata.xls");
     
+    $sqlreservasi = 'SELECT SUM(total) AS sum_paket FROM t_reservasi_wisata';
+
+    $stmt = $pdo->prepare($sqlreservasi);
+    $stmt->execute();
+    $reservasi = $stmt->fetch();
+
+    // Select Data Pengeluaran Berdasarkan ID Reservasi
+    $sqlpengeluaran = 'SELECT * FROM t_laporan_pengeluaran
+                        LEFT JOIN t_reservasi_wisata ON t_laporan_pengeluaran.id_reservasi = t_reservasi_wisata.id_reservasi
+                        ORDER BY id_pengeluaran DESC';
+
+    $stmt = $pdo->prepare($sqlpengeluaran);
+    $stmt->execute();
+    $rowPengeluaran = $stmt->fetchAll();
     
+    function ageCalculator($dob){
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $ag = $birthdate->diff($today)->y;
+        $mn = $birthdate->diff($today)->m;
+        $dy = $birthdate->diff($today)->d;
+        if ($mn == 0)
+        {
+            return "$dy Hari";
+        }
+        elseif ($ag == 0)
+        {
+            return "$mn Bulan  $dy Hari";
+        }
+        else
+        {
+            return "$ag Tahun $mn Bulan $dy Hari";
+        }
+    }
     ?>
     
+    <!-- Select Data Reservasi Untuk Laporan Pengeluaran Berdasarkan ID -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th scope="col">ID Pengeluaran</th>
+                <th scope="col">ID Reservasi</th>
+                <th scope="col">Nama Pengeluaran</th>
+                <th scope="col">Biaya Pengeluaran</th>
+                <th scope="col">Update Terakhir</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $sum_paket = 0;
+            $sum_pengeluaran = 0;
+
+            foreach ($rowPengeluaran as $pengeluaran) { 
+            $truedate = strtotime($pengeluaran->update_terakhir);
+            
+            $sum_pengeluaran+= $pengeluaran->biaya_pengeluaran;
+            // var_dump($sum);
+            ?>
+            <tr>
+                <th scope="row"><?=$pengeluaran->id_pengeluaran?></th>
+                <td><?=$pengeluaran->id_reservasi?></td>
+                <td><?=$pengeluaran->nama_pengeluaran?></td>
+                <td>Rp. <?=number_format($pengeluaran->biaya_pengeluaran, 0)?></td>
+                <td>
+                    <small class="text-muted"><b>Update Terakhir</b>
+                    <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($pengeluaran->update_terakhir).' yang lalu)';?></small>
+                </td>
+            </tr>
+            <?php } ?>
+
+            <!-- Hasil -->
+            <?php 
+            $total_paket= $reservasi->sum_paket; // get data dari DB t_reservasi_wisata
+            $total_saldo = $total_paket - $sum_pengeluaran;
+            ?>
+            <tr>
+                <th scope="row" colspan="4" style="text-align: right;">Biaya Pemasukan:</th>
+                <td>Rp. <?=number_format($total_paket, 0)?></td>
+            </tr>
+            <tr>
+                <th scope="row" colspan="4" style="text-align: right;">Biaya Pengeluaran:</th>
+                <td>Rp. <?=number_format($sum_pengeluaran, 0)?></td>
+            </tr>
+            <tr>
+                <th scope="row" colspan="4" style="text-align: right;">Total Sisa Biaya:</th>
+                <td>Rp. <?=number_format($total_saldo, 0)?></td>
+            </tr>
+        </tbody>
+    </table>
+
+<?php } elseif ($_GET['type'] == 'pengeluaran') {
+
+    header("Content-type: application/vnd-ms-excel");
+    header("Content-Disposition: attachment; filename=laporan_pengeluaran_wisata.xls");
+
+    // GET ID Reservasi
+    $id_reservasi = $_GET['id_reservasi'];
+
+    $sqlreservasi = 'SELECT * FROM t_reservasi_wisata
+                    WHERE id_reservasi = :id_reservasi';
+
+    $stmt = $pdo->prepare($sqlreservasi);
+    $stmt->execute(['id_reservasi' => $id_reservasi]);
+    $reservasi = $stmt->fetch();
+
+    // Select Data Pengeluaran Berdasarkan ID Reservasi
+    $sqlpengeluaran = 'SELECT * FROM t_laporan_pengeluaran
+                        LEFT JOIN t_reservasi_wisata ON t_laporan_pengeluaran.id_reservasi = t_reservasi_wisata.id_reservasi
+                        WHERE t_reservasi_wisata.id_reservasi = :id_reservasi
+                        ORDER BY id_pengeluaran DESC';
+
+    $stmt = $pdo->prepare($sqlpengeluaran);
+    $stmt->execute(['id_reservasi' => $id_reservasi]);
+    $rowPengeluaran = $stmt->fetchAll();
+    
+    function ageCalculator($dob){
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $ag = $birthdate->diff($today)->y;
+        $mn = $birthdate->diff($today)->m;
+        $dy = $birthdate->diff($today)->d;
+        if ($mn == 0)
+        {
+            return "$dy Hari";
+        }
+        elseif ($ag == 0)
+        {
+            return "$mn Bulan  $dy Hari";
+        }
+        else
+        {
+            return "$ag Tahun $mn Bulan $dy Hari";
+        }
+    }
+    ?>
+    <!-- Select Data Reservasi Untuk Laporan Pengeluaran Berdasarkan ID -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th scope="col">ID Pengeluaran</th>
+                <th scope="col">ID Reservasi</th>
+                <th scope="col">Nama Pengeluaran</th>
+                <th scope="col">Biaya Pengeluaran</th>
+                <th scope="col">Update Terakhir</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $sum_paket = 0;
+            $sum_pengeluaran = 0;
+
+            foreach ($rowPengeluaran as $pengeluaran) { 
+            $truedate = strtotime($pengeluaran->update_terakhir);
+            
+            $sum_pengeluaran+= $pengeluaran->biaya_pengeluaran;
+            // var_dump($sum);
+            ?>
+            <tr>
+                <th scope="row"><?=$pengeluaran->id_pengeluaran?></th>
+                <td><?=$pengeluaran->id_reservasi?></td>
+                <td><?=$pengeluaran->nama_pengeluaran?></td>
+                <td>Rp. <?=number_format($pengeluaran->biaya_pengeluaran, 0)?></td>
+                <td>
+                    <small class="text-muted"><b>Update Terakhir</b>
+                    <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($pengeluaran->update_terakhir).' yang lalu)';?></small>
+                </td>
+            </tr>
+            <?php } ?>
+
+            <!-- Hasil -->
+            <?php 
+            $sum_paket = $reservasi->total; // get data dari DB t_reservasi_wisata
+            $total_saldo = $sum_paket - $sum_pengeluaran;
+            ?>
+            <tr>
+                <th scope="row" colspan="4" style="text-align: right;">Biaya Reservasi:</th>
+                <td>Rp. <?=number_format($reservasi->total, 0)?></td>
+            </tr>
+            <tr>
+                <th scope="row" colspan="4" style="text-align: right;">Biaya Pengeluaran:</th>
+                <td>Rp. <?=number_format($sum_pengeluaran, 0)?></td>
+            </tr>
+            <tr>
+                <th scope="row" colspan="4" style="text-align: right;">Total Sisa Biaya:</th>
+                <td>Rp. <?=number_format($total_saldo, 0)?></td>
+            </tr>
+        </tbody>
+    </table>
 <?php } ?>

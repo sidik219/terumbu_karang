@@ -219,7 +219,7 @@ function ageCalculator($dob){
                     </div>
 
                     <!-- Cetak Laporan Fasilitas -->
-                    <a class="btn btn-success" href="laporan_wisata.php?type=pengeluaran">
+                    <a class="btn btn-success" href="laporan_wisata.php?type=pengeluaran&id_reservasi=<?=$id_reservasi?>">
                     <i class="fas fa-file-excel"></i> Cetak Laporan Pengeluaran</a>
 
                     <!-- Select Data Reservasi Untuk Laporan Pengeluaran Berdasarkan ID -->
@@ -236,12 +236,13 @@ function ageCalculator($dob){
                         </thead>
                         <tbody>
                             <?php
-                            $sum = 0;
+                            $sum_paket = 0;
+                            $sum_pengeluaran = 0;
 
                             foreach ($rowPengeluaran as $pengeluaran) { 
                             $truedate = strtotime($pengeluaran->update_terakhir);
                             
-                            $sum+= $pengeluaran->biaya_pengeluaran;
+                            $sum_pengeluaran+= $pengeluaran->biaya_pengeluaran;
                             // var_dump($sum);
                             ?>
                             <tr>
@@ -261,19 +262,19 @@ function ageCalculator($dob){
 
                             <!-- Hasil -->
                             <?php 
-                            $total_paket = $reservasi->total; // get data dari DB t_reservasi_wisata
-                            $total_saldo = $total_paket - $sum;
+                            $sum_paket = $reservasi->total; // get data dari DB t_reservasi_wisata
+                            $total_saldo = $sum_paket - $sum_pengeluaran;
                             ?>
                             <tr>
-                                <th scope="row" colspan="5" style="text-align: right;">Biaya Awal:</th>
+                                <th scope="row" colspan="5" style="text-align: right;">Biaya Reservasi:</th>
                                 <td>Rp. <?=number_format($reservasi->total, 0)?></td>
                             </tr>
                             <tr>
-                                <th scope="row" colspan="5" style="text-align: right;">Total Biaya Pengeluaran:</th>
-                                <td>Rp. <?=number_format($sum, 0)?></td>
+                                <th scope="row" colspan="5" style="text-align: right;">Biaya Pengeluaran:</th>
+                                <td>Rp. <?=number_format($sum_pengeluaran, 0)?></td>
                             </tr>
                             <tr>
-                                <th scope="row" colspan="5" style="text-align: right;">Sisa Biaya Awal:</th>
+                                <th scope="row" colspan="5" style="text-align: right;">Total Sisa Biaya:</th>
                                 <td>Rp. <?=number_format($total_saldo, 0)?></td>
                             </tr>
                         </tbody>
