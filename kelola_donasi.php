@@ -111,21 +111,21 @@ function ageCalculator($dob){
 
 
 
-    function alertPembayaran($dob){ 
+    function alertPembayaran($dob, $batas_hari_pembayaran){ 
         $birthdate = new DateTime($dob);
         $today   = new DateTime('today');
         $mn = $birthdate->diff($today)->m;
         $dy = $birthdate->diff($today)->d;
 
-        $tglbatas = $birthdate->add(new DateInterval('P3D'));
+        $tglbatas = $birthdate->add(new DateInterval('P'.$batas_hari_pembayaran.'D'));
         $tglbatas_formatted = strftime('%A, %e %B %Y pukul %R', $tglbatas->getTimeStamp() );
         $batas_waktu_pesan = '<br><b>Batas pembayaran:</b><br>'. $tglbatas_formatted;
-        if ($dy <= 3)
+        if ($dy <= $batas_hari_pembayaran)
         { 
             //jika masih dalam batas waktu
             return  $batas_waktu_pesan .'<br> <i class="fas fa-exclamation-circle text-primary"></i><small> Menunggu bukti pembayaran donatur</small>';
         }
-        else if ($dy > 3){
+        else if ($dy > $batas_hari_pembayaran){
             //overdue
             return $batas_waktu_pesan .'<br><i class="fas fa-exclamation-circle text-danger"></i><small> Sudah lewat batas waktu pembayaran.</small><br>
             ';
@@ -279,7 +279,7 @@ function ageCalculator($dob){
                               </th>
                               <td>Rp. <?=number_format($rowitem->nominal, 0)?></td>
                               <td><?=strftime('%A, %e %B %Y', $donasidate);?> <br>  <?php if($rowitem->id_status_donasi == 1){
-                                              echo alertPembayaran($rowitem->tanggal_donasi);
+                                              echo alertPembayaran($rowitem->tanggal_donasi, $rowitem->batas_hari_pembayaran);
                                           }  ?> 
                                           
                                           

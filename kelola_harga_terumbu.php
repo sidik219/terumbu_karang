@@ -316,7 +316,7 @@ $id_lokasi = $_GET['id_lokasi'];
                         <div class="row mt-2 d-none">
                           <div class="col">
                             <label for="num_biaya_pergantian">Stok</label>
-                            <input type="number" min="0" id="num_stok" name="stok_terumbu" value="0" class="form-control number-input" required>
+                            <input type="number" min="0" id="num_stok" name="stok_terumbu" value="1" class="form-control number-input" required>
                           </div>
                         </div>
                         </form>

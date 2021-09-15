@@ -44,6 +44,7 @@ else if($level_user == 4){
             $nomor_rekening     = $_POST['num_nomor_rekening'];
             $longitude        = $_POST['tb_longitude'];
             $latitude        = $_POST['tb_latitude'];
+            $batas_hari_pembayaran = $_POST['num_batas_hari_pembayaran'];
             $randomstring = substr(md5(rand()), 0, 7);
 
             //Image upload
@@ -62,14 +63,14 @@ else if($level_user == 4){
                             (id_wilayah, nama_lokasi, deskripsi_lokasi, foto_lokasi, luas_lokasi, id_user_pengelola,
                             kontak_lokasi, nama_bank, nama_rekening, nomor_rekening, longitude, latitude)
                             VALUES (:id_wilayah, :nama_lokasi, :deskripsi_lokasi, :foto_lokasi, :luas_lokasi,
-                            :id_user_pengelola, :kontak_lokasi, :nama_bank, :nama_rekening, :nomor_rekening, :longitude, :latitude)";
+                            :id_user_pengelola, :kontak_lokasi, :nama_bank, :nama_rekening, :nomor_rekening, :longitude, :latitude, :batas_hari_pembayaran)";
 
             $stmt = $pdo->prepare($sqllokasi);
             $stmt->execute(['id_wilayah' => $id_wilayah, 'nama_lokasi' => $nama_lokasi,
             'deskripsi_lokasi' => $deskripsi_lokasi, 'foto_lokasi' => $foto_lokasi,
             'luas_lokasi' => $luas_lokasi, 'id_user_pengelola' => $id_user_pengelola,
             'kontak_lokasi' => $kontak_lokasi,'nama_bank' => $nama_bank,
-            'nama_rekening' => $nama_rekening,'nomor_rekening' => $nomor_rekening, 'longitude' => $longitude, 'latitude' => $latitude]);
+            'nama_rekening' => $nama_rekening,'nomor_rekening' => $nomor_rekening, 'longitude' => $longitude, 'latitude' => $latitude, 'batas_hari_pembayaran' => $batas_hari_pembayaran]);
 
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
@@ -243,6 +244,10 @@ else if($level_user == 4){
                     <button class="btn btn-act mb-1" onclick="getCoordinates()"><i class="nav-icon fas fa-map-marked-alt"></i> Deteksi Lokasi Anda</button><br>
                     <span class="" id="akurasi"></span><br>
                     <span class="text-muted small"> (Perlu izin browser)</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="num_batas_hari_pembayaran">Batas Pembayaran Donasi (Hari)</label>
+                        <input type="number" value="3"  id="num_batas_hari_pembayaran" name="num_batas_hari_pembayaran" class="form-control number-input">
                     </div>
                     <br>
                     <p align="center">

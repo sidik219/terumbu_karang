@@ -71,21 +71,21 @@ function ageCalculator($dob){
         }
     }
 
-    function alertPembayaran($dob){ 
+    function alertPembayaran($dob, $batas_hari_pembayaran){ 
         $birthdate = new DateTime($dob);
         $today   = new DateTime('today');
         $mn = $birthdate->diff($today)->m;
         $dy = $birthdate->diff($today)->d;
 
-        $tglbatas = $birthdate->add(new DateInterval('P3D'));
+        $tglbatas = $birthdate->add(new DateInterval('P'.$batas_hari_pembayaran.'D'));
         $tglbatas_formatted = strftime('%A, %e %B %Y pukul %R', $tglbatas->getTimeStamp() );
         $batas_waktu_pesan = '<br><b>Batas pembayaran:</b><br><b>'. $tglbatas_formatted.'</b>';
-        if ($dy <= 3)
+        if ($dy <= $batas_hari_pembayaran)
         { 
             //jika masih dalam batas waktu
             return  $batas_waktu_pesan .'<br> <i class="fas fa-exclamation-circle text-primary"></i> Harap upload bukti pembayaran sebelum batas waktu agar donasi segera diproses pengelola.';
         }
-        else if ($dy > 3){
+        else if ($dy > $batas_hari_pembayaran){
             //overdue
             return $batas_waktu_pesan .'<br><i class="fas fa-exclamation-circle text-danger"></i> Upload Bukti pembayaran telah melebihi batas waktu. Donasi akan segera dibatalkan pengelola.';
         }
@@ -238,7 +238,7 @@ function ageCalculator($dob){
 
 
                                           <?php if($rowitem->id_status_donasi == 1){
-                                              echo alertPembayaran($rowitem->tanggal_donasi);
+                                              echo alertPembayaran($rowitem->tanggal_donasi, $rowitem->batas_hari_pembayaran);
                                           }  ?>
                                       </div>
 
