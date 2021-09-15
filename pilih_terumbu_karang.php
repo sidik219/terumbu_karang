@@ -18,7 +18,7 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
                 LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
                 LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_detail_lokasi.id_lokasi
                 WHERE t_terumbu_karang.id_jenis = :id_jenis
-                AND  t_detail_lokasi.id_lokasi = :id_lokasi AND stok_terumbu > 0';
+                AND  t_detail_lokasi.id_lokasi = :id_lokasi'; //AND stok_terumbu > 0
 
     $stmt = $pdo->prepare($sqlviewtk);
     $stmt->execute(['id_jenis' => $_GET['id_jenis'], 'id_lokasi' => $_SESSION['id_lokasi']]);
@@ -28,7 +28,7 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
                 LEFT JOIN t_terumbu_karang ON t_terumbu_karang.id_terumbu_karang = t_detail_lokasi.id_terumbu_karang
                 LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
                 LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_detail_lokasi.id_lokasi
-                WHERE  t_detail_lokasi.id_lokasi = :id_lokasi AND stok_terumbu > 0';
+                WHERE  t_detail_lokasi.id_lokasi = :id_lokasi';
 
     $stmt = $pdo->prepare($sqlviewtk);
     $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
@@ -39,7 +39,7 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
                 LEFT JOIN t_terumbu_karang ON t_terumbu_karang.id_terumbu_karang = t_detail_lokasi.id_terumbu_karang
                 LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
                 LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_detail_lokasi.id_lokasi
-                WHERE  t_detail_lokasi.id_lokasi = :id_lokasi AND stok_terumbu > 0';
+                WHERE  t_detail_lokasi.id_lokasi = :id_lokasi';
 
     $stmt = $pdo->prepare($sqlviewtk);
     $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
@@ -141,8 +141,8 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
                             $sqlviewjenis = 'SELECT * FROM t_detail_lokasi
                                               LEFT JOIN t_terumbu_karang ON t_terumbu_karang.id_terumbu_karang = t_detail_lokasi.id_terumbu_karang
                                               LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
-                                              AND id_lokasi = :id_lokasi AND stok_terumbu > 0 AND t_jenis_terumbu_karang.id_jenis IS NOT NULL
-                                              GROUP BY t_jenis_terumbu_karang.id_jenis';
+                                              AND id_lokasi = :id_lokasi AND t_jenis_terumbu_karang.id_jenis IS NOT NULL
+                                              GROUP BY t_jenis_terumbu_karang.id_jenis'; //AND stok_terumbu > 0 
 
                             $stmt = $pdo->prepare($sqlviewjenis);
                             $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
@@ -187,7 +187,7 @@ else if(!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]){
                     </div> -->
                     <div class="col">
                             <a data-nama_tk="<?=$rowitem->id_terumbu_karang?>" data-harga_tk="<?=$harga_tk?>"
-                            data-id_tk="<?=$rowitem->id_terumbu_karang?>" data-stok_tk="<?=$rowitem->stok_terumbu?>"
+                            data-id_tk="<?=$rowitem->id_terumbu_karang?>" data-stok_tk="9999"
                             class="add-to-cart btn btn-warning shop-item-button"><i class="nav-icon fas fa-cart-plus"></i> Tambahkan Keranjang</a>
                     </div>
                 </div>

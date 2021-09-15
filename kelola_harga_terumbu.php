@@ -184,7 +184,7 @@ $id_lokasi = $_GET['id_lokasi'];
                             <th scope="col">Jenis</th>
                             <th scope="col">Sub-jenis</th>
                             <th scope="col">Harga</th>
-                            <th scope="col">Stok</th>
+                            <!-- <th scope="col">Stok</th> -->
                             <th class="" scope="col">Aksi</th>
                             </tr>
                         </thead>
@@ -197,10 +197,10 @@ $id_lokasi = $_GET['id_lokasi'];
                             <td><?=$rowitem->nama_jenis?></td>
                             <td><?=$rowitem->nama_terumbu_karang?></td>
                             <td>Rp. <?=number_format($rowitem->harga_patokan_lokasi)?></td>
-                            <td>
+                            <!-- <td>
                               <?=$rowitem->stok_terumbu?>
                               <br><?=alertStokTerumbu($rowitem->stok_terumbu) ?>
-                          </td>
+                          </td> -->
                             <td class="">
                                 <a href="#" onclick='loadPatokanTerumbu(this.dataset.id_detail_lokasi)'
                                 data-nama_jenis='<?=$rowitem->nama_terumbu_karang?>' data-id_tk='<?=$rowitem->id_terumbu_karang?>'
@@ -313,10 +313,10 @@ $id_lokasi = $_GET['id_lokasi'];
                             </div>
                         </div>
 
-                        <div class="row mt-2">
+                        <div class="row mt-2 d-none">
                           <div class="col">
                             <label for="num_biaya_pergantian">Stok</label>
-                            <input type="number" min="0" id="num_stok" name="stok_terumbu" class="form-control number-input" required>
+                            <input type="number" min="0" id="num_stok" name="stok_terumbu" value="0" class="form-control number-input" required>
                           </div>
                         </div>
                         </form>

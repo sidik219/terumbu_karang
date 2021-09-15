@@ -57,7 +57,7 @@ if(isset($_SESSION['data_donasi'])){
                             WHERE id_lokasi = :id_lokasi AND id_terumbu_karang = :id_terumbu_karang';
 
         $stmt = $pdo->prepare($sqlupdatestoktk);
-        $stmt->execute(['id_lokasi' => $id_lokasi, 'id_terumbu_karang' => $id_terumbu_karang , 'jumlah_terumbu' => $jumlah_terumbu]);
+        $stmt->execute(['id_lokasi' => $id_lokasi, 'id_terumbu_karang' => $id_terumbu_karang , 'jumlah_terumbu' => 0]);
 
       }
       header("Location:donasi_saya.php?status=addsuccess");

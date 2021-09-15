@@ -77,10 +77,10 @@ if ($_POST['type'] == 'save_modal_biaya_pemeliharaan' && !empty($_POST["id_lokas
                             <input onkeyup="formatNumber3(this)" type="text" id="num_biaya_pergantian3" value="<?=number_format($rowitem->harga_patokan_lokasi)?>" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
                           </div>
                         </div>
-                        <div class="row mt-2">
+                        <div class="row mt-2 d-none">
                           <div class="col">
                             <label for="num_biaya_pergantian">Stok</label>
-                            <input type="number" min="0" id="num_stok" name="stok_terumbu" value="<?=$rowitem->stok_terumbu?>" class="form-control number-input" required>
+                            <input type="number" min="0" id="num_stok" name="stok_terumbu" value="1" class="form-control number-input" required>
                           </div>
                         </div>
 
