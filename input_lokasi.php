@@ -61,7 +61,7 @@ else if($level_user == 4){
 
             $sqllokasi = "INSERT INTO t_lokasi
                             (id_wilayah, nama_lokasi, deskripsi_lokasi, foto_lokasi, luas_lokasi, id_user_pengelola,
-                            kontak_lokasi, nama_bank, nama_rekening, nomor_rekening, longitude, latitude)
+                            kontak_lokasi, nama_bank, nama_rekening, nomor_rekening, longitude, latitude, batas_hari_pembayaran)
                             VALUES (:id_wilayah, :nama_lokasi, :deskripsi_lokasi, :foto_lokasi, :luas_lokasi,
                             :id_user_pengelola, :kontak_lokasi, :nama_bank, :nama_rekening, :nomor_rekening, :longitude, :latitude, :batas_hari_pembayaran)";
 
@@ -71,6 +71,16 @@ else if($level_user == 4){
             'luas_lokasi' => $luas_lokasi, 'id_user_pengelola' => $id_user_pengelola,
             'kontak_lokasi' => $kontak_lokasi,'nama_bank' => $nama_bank,
             'nama_rekening' => $nama_rekening,'nomor_rekening' => $nomor_rekening, 'longitude' => $longitude, 'latitude' => $latitude, 'batas_hari_pembayaran' => $batas_hari_pembayaran]);
+
+
+            $last_lokasi_id = $pdo->lastInsertId();            
+
+            $sqltitik = "INSERT INTO t_titik
+                            (id_lokasi, luas_titik, longitude, latitude, kondisi_titik, keterangan_titik, id_zona_titik)
+                            VALUES ($last_lokasi_id, 0, 0,
+                            0, 'Cukup', '-', 5)";
+             $stmt = $pdo->prepare($sqltitik);
+            $stmt->execute();
 
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {

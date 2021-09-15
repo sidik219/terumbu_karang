@@ -35,7 +35,9 @@ $sqlviewlokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
                                   COUNT(id_titik) AS jumlah_titik, COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang,
                                   COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup,
                                   COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
-                                  COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
+                                  COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik,
+                                  t_lokasi.latitude AS latitude_lokasi,
+                                  t_lokasi.longitude AS longitude_lokasi
 
                                   FROM t_lokasi
                                   LEFT JOIN t_titik ON t_titik.id_lokasi = t_lokasi.id_lokasi
@@ -46,19 +48,19 @@ $sqlviewlokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
 
 
 
-$sqlviewlokasi222 = 'SELECT *, SUM(luas_titik) AS total_titik,
-COUNT(DISTINCT id_titik) AS jumlah_titik,
-SUM(DISTINCT luas_lokasi) AS total_lokasi,
-SUM(DISTINCT luas_titik) / SUM(DISTINCT luas_lokasi) * 100 AS persentase_sebaran,
-COUNT(id_titik) AS jumlah_titik, COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang,
-COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup,
-COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
-COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
+// $sqlviewlokasi222 = 'SELECT *, SUM(luas_titik) AS total_titik,
+// COUNT(DISTINCT id_titik) AS jumlah_titik,
+// SUM(DISTINCT luas_lokasi) AS total_lokasi,
+// SUM(DISTINCT luas_titik) / SUM(DISTINCT luas_lokasi) * 100 AS persentase_sebaran,
+// COUNT(id_titik) AS jumlah_titik, COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang,
+// COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup,
+// COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
+// COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
 
-FROM `t_titik`, t_lokasi, t_wilayah
-WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
-AND t_lokasi.id_wilayah = t_wilayah.id_wilayah  '.$extra_query_k_lok.'
-GROUP BY t_lokasi.id_lokasi';
+// FROM `t_titik`, t_lokasi, t_wilayah
+// WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
+// AND t_lokasi.id_wilayah = t_wilayah.id_wilayah  '.$extra_query_k_lok.'
+// GROUP BY t_lokasi.id_lokasi';
 
 $stmt = $pdo->prepare($sqlviewlokasi);
 $stmt->execute();
@@ -219,7 +221,7 @@ $row = $stmt->fetchAll();
                             <tr>
                             <th scope="row"><?=$rowitem->id_lokasi?></th>
                             <td><?=$rowitem->id_wilayah?> - <?=$rowitem->nama_wilayah?></td>
-                            <td><?=$rowitem->nama_lokasi?><br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$rowitem->latitude?>,<?=$rowitem->longitude?>&z=8"
+                            <td><?=$rowitem->nama_lokasi?><br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$rowitem->latitude_lokasi?>,<?=$rowitem->longitude_lokasi?>&z=8"
                                                                                                                                       class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a></td>
                             <td><?=number_format($rowitem->total_titik).' / '.number_format($rowitem->total_lokasi).' ha<br>'.number_format($rowitem->persentase_sebaran, 1).'% ( '.$kondisi_wilayah.' )'?></td>
                             <td class="text-right">
@@ -227,7 +229,7 @@ $row = $stmt->fetchAll();
                                 <a href="edit_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 <a href="hapus.php?type=lokasi&id_lokasi=<?=$rowitem->id_lokasi?>" class="far fa-trash-alt btn btn-act"></a>
                                 <?php } ?>
-                                <a href="kelola_harga_terumbu.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="btn btn-act text-dark mt-3"><i class="fas fa-money-bill-alt text-success"></i> Kelola Harga & Stok</a>
+                                <a href="kelola_harga_terumbu.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="btn btn-act text-dark mt-3"><i class="fas fa-money-bill-alt text-success"></i> Kelola Harga & Biaya Operasional</a>
                                 <?php if(($_SESSION['level_user'] == 4)){ ?>
                                 <a href="atur_pengelola_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="mr-3 btn btn-act"><i class="fas fa-id-badge"></i> Atur Pengelola</a>
                                 <?php } ?>

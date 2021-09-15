@@ -172,7 +172,7 @@ $id_lokasi = $_GET['id_lokasi'];
                     <div class="terumbu-karang form-group mt-4">
 
                     <label for="num_biaya_pergantian  ">Terumbu Karang yang Disediakan</label>
-                      <label class="text-muted text-sm d-block">Tentukan Terumbu karang yang dapat dipilih donatur beserta ketersediaan stok</label>
+                      <label class="text-muted text-sm d-block">Tentukan Terumbu karang yang dapat dipilih donatur</label>
                       <div class="col text-center">
                                 <span onclick="//addDocInput()" data-toggle="modal" data-target=".tambah-modal" class="btn btn-blue btn btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah Terumbu</span>
                               </div>

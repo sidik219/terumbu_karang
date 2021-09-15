@@ -86,12 +86,12 @@ if(!($_SESSION['level_user'] == 2|| $_SESSION['level_user'] == 3 || $_SESSION['l
         $affectedrows = $stmt->rowCount();
         header("Refresh: 0");
 
-        // if ($affectedrows == '0') {
-        // header("Location: kelola_donasi.php?status=nochange");
-        // } else {
-        //     //echo "HAHAHAAHA GREAT SUCCESSS !";
-        //     header("Location: kelola_donasi.php?status=updatesuccess");
-        //     }
+        if ($affectedrows == '0') {
+        header("Location: kelola_donasi.php?status=nochange");
+        } else {
+            //echo "HAHAHAAHA GREAT SUCCESSS !";
+            header("Location: kelola_donasi.php?status=updatesuccess");
+            }
         }
 
         if(isset($_POST['submit_tolak_bibit'])){
@@ -383,7 +383,7 @@ if(!($_SESSION['level_user'] == 2|| $_SESSION['level_user'] == 3 || $_SESSION['l
                     <?php } ?>
                     <div class="form-group">
                         
-                        <img id="preview_pembelian" src="#" class="<?= $rowitem->bukti_pengadaan_bibit ? 'd-none' : '' ?>"  width="100px" alt="Preview Gambar"/>
+                        <img id="preview_pembelian" src="#" class="<?= $rowitem->bukti_pengadaan_bibit == NULL ? 'd-none' : '' ?>"  width="100px" alt="Preview Gambar"/>
                         
                         
                         <a href="<?=$rowitem->	bukti_pengadaan_bibit?>" data-toggle="lightbox"><img class="img-fluid" id="oldpicpembelian" src="<?=$rowitem->bukti_pengadaan_bibit?>" width="50%" <?php if($rowitem->bukti_pengadaan_bibit == NULL) echo " style='display:none;'"; ?>></a>
