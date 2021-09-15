@@ -15,40 +15,45 @@ if (isset($_POST['register'])) {
     $level_user = 4;
     $organisasi_user = $_POST['tb_organisasi_user'];
 
+    // Verifikasi Username Sudah terdaftar
+    $result = mysqli_query($conn, "SELECT username FROM t_user WHERE username = '$username'");
+    // var_dump($result);
+    // die;
+    if (mysqli_fetch_assoc($result)) {
+        header('location: register.php?pesan=Username_Telah_Terdaftar');
+    } else {
+        //Fotokopi KTP upload
+        if (isset($_FILES['image_uploads1'])) {
+            $target_dir     = "images/ktp/";
+            $fotokopi_ktp = $target_dir . 'KTP_' . $randomstring . '.jpg';
+            move_uploaded_file($_FILES["image_uploads1"]["tmp_name"], $fotokopi_ktp);
+        } else if ($_FILES["file"]["error"] == 4) {
+            $fotokopi_ktp = "images/ktpdefault.png";
+        }
+        //---Fotokopi KTP upload end
 
-    //Fotokopi KTP upload
-    if (isset($_FILES['image_uploads1'])) {
-        $target_dir     = "images/ktp/";
-        $fotokopi_ktp = $target_dir .'KTP_'. $randomstring .'.jpg';
-        move_uploaded_file($_FILES["image_uploads1"]["tmp_name"], $fotokopi_ktp);
-    }
-    else if($_FILES["file"]["error"] == 4) {
-        $fotokopi_ktp = "images/ktpdefault.png";
-    }
-    //---Fotokopi KTP upload end
+        //Foto user upload
+        if (isset($_FILES['image_uploads2'])) {
+            $target_dir = "images/foto_user/";
+            $foto_user = $target_dir . 'FU_' . $randomstring . '.jpg';
+            move_uploaded_file($_FILES["image_uploads2"]["tmp_name"], $foto_user);
+        } else if ($_FILES["file"]["error"] == 4) {
+            $foto_user = "images/fudefault.png";
+        }
+        //---Foto user upload end
 
-     //Foto user upload
-    if (isset($_FILES['image_uploads2'])) {
-        $target_dir = "images/foto_user/";
-        $foto_user = $target_dir .'FU_'. $randomstring .'.jpg';
-        move_uploaded_file($_FILES["image_uploads2"]["tmp_name"], $foto_user);
-    }
-    else if($_FILES["file"]["error"] == 4) {
-        $foto_user = "images/fudefault.png";
-    }
-    //---Foto user upload end
-
-    $sql = 'INSERT INTO t_user (nama_user, organisasi_user, jk, email, no_hp, alamat, no_ktp, fotokopi_ktp, tanggal_lahir, foto_user, level_user, aktivasi_user, username, password )
+        $sql = 'INSERT INTO t_user (nama_user, organisasi_user, jk, email, no_hp, alamat, no_ktp, fotokopi_ktp, tanggal_lahir, foto_user, level_user, aktivasi_user, username, password )
         VALUES (:nama_user, :organisasi_user, :jk, :email, :no_hp, :alamat, :no_ktp, :fotokopi_ktp, :tanggal_lahir, :foto_user, :level_user, :aktivasi_user, :username, :password)';
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['nama_user' => $nama_user, 'organisasi_user' => $organisasi_user, 'jk' => $jk, 'email' => $email, 'no_hp' => $no_hp, 'alamat' => $alamat, 'no_ktp' => $no_ktp, 'fotokopi_ktp' => $fotokopi_ktp, 'tanggal_lahir' => $tanggal_lahir, 'foto_user' => $foto_user, 'level_user' => $level_user, 'aktivasi_user' => $aktivasi_user, 'username' => $username, 'password' => $password]);
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['nama_user' => $nama_user, 'organisasi_user' => $organisasi_user, 'jk' => $jk, 'email' => $email, 'no_hp' => $no_hp, 'alamat' => $alamat, 'no_ktp' => $no_ktp, 'fotokopi_ktp' => $fotokopi_ktp, 'tanggal_lahir' => $tanggal_lahir, 'foto_user' => $foto_user, 'level_user' => $level_user, 'aktivasi_user' => $aktivasi_user, 'username' => $username, 'password' => $password]);
 
-    $affectedrows = $stmt->rowCount();
-    if ($affectedrows == '0') {
-        echo "Failed !";
-    } else {
-        header('Location: login.php?pesan=registrasi_berhasil');
+        $affectedrows = $stmt->rowCount();
+        if ($affectedrows == '0') {
+            echo "Failed !";
+        } else {
+            header('Location: login.php?pesan=registrasi_berhasil');
+        }
     }
 } else {
     echo '';
@@ -57,6 +62,7 @@ if (isset($_POST['register'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -87,7 +93,7 @@ if (isset($_POST['register'])) {
 </head>
 
 
-<body >
+<body>
 
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light  main-navigation fixed-top">
@@ -137,90 +143,100 @@ if (isset($_POST['register'])) {
     <div id="about" class="container reg-container p-5 rounded">
 
         <div class="starter-template p-0 mt-0">
-            <h1 ><br>REGISTRASI AKUN PENGELOLA PUSAT</h1><br>
+            <h1><br>REGISTRASI AKUN PENGELOLA PUSAT</h1><br>
         </div>
-
+        <?php
+        if (!empty($_GET['pesan'])) {
+            if ($_GET['pesan'] == 'Username_Telah_Terdaftar') {
+                echo '<div class="alert alert-warning" role="alert">
+                          Username Sudah Terdaftar.
+                      </div>';
+            }
+        }
+        ?>
         <form action="" enctype="multipart/form-data" method="POST">
-                    <div class="form-group">
-                    <div class="form-group">
-                        <label for="tb_nama_user" class="font-weight-bold" >Nama Lengkap</label>
-                        <input type="text" id="tb_nama_user" name="tb_nama_user" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="tb_organisasi" class="font-weight-bold" >Organisasi</label>
-                        <input type="text" id="tb_organisasi" name="tb_organisasi_user" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="font-weight-bold" for="rb_jenis_kelamin">Cakupan Pengelolaan</label><br>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_wilayah" name="rb_level_user" value="4" checked class="form-check-input" required>
-                            <label class="form-check-label" for="rb_wilayah">Pusat (Provinsi)</label>
-                        </div><br>
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="tb_nama_user" class="font-weight-bold">Nama Lengkap</label>
+                    <input type="text" id="tb_nama_user" name="tb_nama_user" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="tb_organisasi" class="font-weight-bold">Organisasi</label>
+                    <input type="text" id="tb_organisasi" name="tb_organisasi_user" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold" for="rb_jenis_kelamin">Cakupan Pengelolaan</label><br>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" id="rb_wilayah" name="rb_level_user" value="4" checked class="form-check-input" required>
+                        <label class="form-check-label" for="rb_wilayah">Pusat (Provinsi)</label>
                     </div><br>
-                    <div class="form-group">
-                        <label for="rb_jenis_kelamin" class="font-weight-bold" >Jenis Kelamin</label><br>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_jenis_kelamin_pria" name="rb_jenis_kelamin" value="pria" class="form-check-input">
-                            <label class="form-check-label" for="rb_jenis_kelamin_pria">Pria</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" id="rb_jenis_kelamin_wanita" name="rb_jenis_kelamin" value="wanita" class="form-check-input">
-                            <label class="form-check-label" for="rb_jenis_kelamin_wanita">Wanita</label>
-                        </div>
+                </div><br>
+                <div class="form-group">
+                    <label for="rb_jenis_kelamin" class="font-weight-bold">Jenis Kelamin</label><br>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" id="rb_jenis_kelamin_pria" name="rb_jenis_kelamin" value="pria" class="form-check-input">
+                        <label class="form-check-label" for="rb_jenis_kelamin_pria">Pria</label>
                     </div>
-                    <div class="form-group">
-                        <label for="tb_email" class="font-weight-bold" >Email</label>
-                        <input type="text" id="tb_email" name="tb_email" class="form-control">
+                    <div class="form-check form-check-inline">
+                        <input type="radio" id="rb_jenis_kelamin_wanita" name="rb_jenis_kelamin" value="wanita" class="form-check-input">
+                        <label class="form-check-label" for="rb_jenis_kelamin_wanita">Wanita</label>
                     </div>
-                    <div class="form-group">
-                        <label for="num_nomer_hp" class="font-weight-bold" >Nomor Handphone</label>
-                        <input type="number" id="num_nomer_hp" name="num_nomer_hp" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="tb_alamat_user" class="font-weight-bold" >Alamat</label>
-                        <input type="text" id="tb_email" name="tb_alamat_user" class="form-control">
-                    </div>
-                    <div class="form-group d-none">
-                        <label for="num_ktp_user">No. KTP</label>
-                        <input type="number" id="num_ktp_user" name="num_ktp_user" class="form-control">
-                    </div>
-                    <div class="form-group d-none">
-                        <label for="image_uploads1">Fotokopi KTP</label>
-                        <div class="file-form">
+                </div>
+                <div class="form-group">
+                    <label for="tb_email" class="font-weight-bold">Email</label>
+                    <input type="text" id="tb_email" name="tb_email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="num_nomer_hp" class="font-weight-bold">Nomor Handphone</label>
+                    <input type="tel" id="num_nomer_hp" name="num_nomer_hp" class="form-control" required placeholder="Format No : 0812-1234-1234" pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}">
+                    <p class="small">Masukan No Sesuai Format</p>
+                </div>
+                <div class="form-group">
+                    <label for="tb_alamat_user" class="font-weight-bold">Alamat</label>
+                    <input type="text" id="tb_email" name="tb_alamat_user" class="form-control" required>
+                </div>
+                <div class="form-group d-none">
+                    <label for="num_ktp_user">No. KTP</label>
+                    <input type="number" id="num_ktp_user" name="num_ktp_user" class="form-control">
+                </div>
+                <div class="form-group d-none">
+                    <label for="image_uploads1">Fotokopi KTP</label>
+                    <div class="file-form">
                         <input type="file" id="image_uploads1" name="image_uploads1" class="form-control">
-                        </div>
                     </div>
-                    <div class="form-group d-none">
-                        <label for="tb_tempat_lahir" class="font-weight-bold" >Tempat Lahir</label>
-                        <input type="text" id="tb_tempat_lahir" name="tb_tempat_lahir" class="form-control">
+                </div>
+                <div class="form-group d-none">
+                    <label for="tb_tempat_lahir" class="font-weight-bold">Tempat Lahir</label>
+                    <input type="text" id="tb_tempat_lahir" name="tb_tempat_lahir" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="date_tanggal_lahir" class="font-weight-bold">Tanggal Lahir</label>
+                    <div class="file-form">
+                        <input type="date" id="date_tanggal_lahir" name="date_tanggal_lahir" class="form-control">
                     </div>
-                    <div class="form-group">
-                         <label for="date_tanggal_lahir" class="font-weight-bold" >Tanggal Lahir</label>
-                         <div class="file-form">
-                         <input type="date" id="date_tanggal_lahir" name="date_tanggal_lahir" class="form-control" >
-                         </div>
-                     </div>
-                     <div class="form-group d-none">
-                        <label for="image_uploads2">Foto Diri</label>
-                        <div class="file-form">
+                </div>
+                <div class="form-group d-none">
+                    <label for="image_uploads2">Foto Diri</label>
+                    <div class="file-form">
                         <input type="file" id="image_uploads2" name="image_uploads2" class="form-control">
-                        </div>
-                    </div><br>
-
-                    <div class="form-group">
-                        <label for="tb_username" class="font-weight-bold" >Username</label>
-                        <input type="text" id="tb_username" name="tb_username" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label for="pwd" class="font-weight-bold" >Password</label>
-                        <input type="password" id="pwd" name="pwd" class="form-control">
-                    </div>
-                    <br>
-                    <p align="center">
-                         <button type="submit" name="register" class="btn btn-submit">Daftar</button></p>
-                    </form>
+                </div><br>
 
-</div>
+                <div class="form-group">
+                    <label for="tb_username" class="font-weight-bold">Username</label>
+                    <input type="text" id="tb_username" name="tb_username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="pwd" class="font-weight-bold">Password</label>
+                    <input type="password" id="pwd" name="pwd" class="form-control" required>
+                </div>
+                <br>
+                <p align="center">
+                    <button type="submit" name="register" class="btn btn-submit">Daftar</button>
+                </p>
+        </form>
+
+    </div>
 
     </div>
     <!-- END OF BODY CONTAINER -->
@@ -252,7 +268,12 @@ if (isset($_POST['register'])) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <!-- Scrollspy -->
-    <script>$('body').scrollspy({ target: '#navbarsExampleDefault', offset: 108 })</script>
+    <script>
+        $('body').scrollspy({
+            target: '#navbarsExampleDefault',
+            offset: 108
+        })
+    </script>
     <!-- Smooth Scroll -->
     <script src="js/smooth-scroll.js"></script>
 
@@ -261,4 +282,5 @@ if (isset($_POST['register'])) {
 
 
 </body>
+
 </html>
