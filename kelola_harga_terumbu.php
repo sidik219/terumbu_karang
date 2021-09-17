@@ -128,7 +128,7 @@ $id_lokasi = $_GET['id_lokasi'];
             <div class="content-header">
                 <div class="container-fluid">
                       <a href="kelola_lokasi.php"><button class="btn btn-warning btn-back mb-2" type="button"><i class="fas fa-angle-left"></i> Kembali</button></a>
-                <h4><span class="align-middle font-weight-bold">Kelola Harga Terumbu & Biaya Operasional</span></h4>
+                <h4><span class="align-middle font-weight-bold">Kelola Harga Patokan Terumbu</span></h4>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -138,7 +138,7 @@ $id_lokasi = $_GET['id_lokasi'];
             <section class="content">
                 <div class="container-fluid">
 
-                <form method="POST">
+                <!-- <form method="POST">
                  <div class="col text-center">
 
                               </div>
@@ -165,11 +165,11 @@ $id_lokasi = $_GET['id_lokasi'];
                                 <button type="submit" value="submit_biaya" name="submit_biaya" class="btn btn-primary btn-sm btn-blue"><i class="fas fa-save"></i> Simpan Biaya</button>
                 </div>
 
-                </form>
+                </form> -->
 
 
 
-                    <div class="terumbu-karang form-group mt-4">
+                    <div class="terumbu-karang form-group mt-0">
 
                     <label for="num_biaya_pergantian  ">Terumbu Karang yang Disediakan</label>
                       <label class="text-muted text-sm d-block">Tentukan Terumbu karang yang dapat dipilih donatur</label>

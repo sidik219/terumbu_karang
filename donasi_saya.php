@@ -292,7 +292,7 @@ function ageCalculator($dob){
                                 <div class="col-md mb-3">
                                       <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-map-marker-alt"></i> Lokasi Penanaman</span><br>
                                       <img height='75px' class="rounded" src=<?=$rowitem->foto_lokasi;?>><br><br>
-                                      <span class=""><?="$rowitem->nama_lokasi (ID $rowitem->id_lokasi)";?></span>
+                                      <span class=""><?="$rowitem->nama_lokasi"?></span>
                                       <br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$rowitem->latitude?>,<?=$rowitem->longitude?>&z=8"
                                                                                                                                       class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a>
                                   <div class="mt-2">

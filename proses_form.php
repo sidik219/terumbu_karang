@@ -102,6 +102,83 @@ if ($_POST['type'] == 'update_modal_patokan_harga_terumbu' && !empty($_POST["id_
     }
 
 
+//BIAYA OPERASIONAL--------------------------------
+//Tambah
+if ($_POST['type'] == 'save_modal_biaya_operasional' && !empty($_POST["id_lokasi"])) {
+    $id_lokasi = $_POST["id_lokasi"];
+    $nama_biaya_operasional = $_POST['nama_biaya_operasional'];
+    $jumlah_biaya_operasional = $_POST['jumlah_biaya_operasional'];
+
+    $insertbiayaop = 'INSERT INTO t_biaya_operasional
+                      (id_lokasi, nama_biaya_operasional, jumlah_biaya_operasional)
+                      VALUES (:id_lokasi, :nama_biaya_operasional, :jumlah_biaya_operasional)';
+        $stmt = $pdo->prepare($insertbiayaop);
+        $stmt->execute(['id_lokasi' => $id_lokasi, 'nama_biaya_operasional' => $nama_biaya_operasional, 'jumlah_biaya_operasional' => $jumlah_biaya_operasional]);
+    }
+
+
+//Load untuk Edit
+    if ($_POST['type'] == 'load_modal_biaya_operasional' && !empty($_POST["id_biaya_operasional"])) {
+    $id_biaya_operasional = $_POST["id_biaya_operasional"];
+
+    $loadpatokan = 'SELECT * FROM t_biaya_operasional
+                    WHERE id_biaya_operasional = :id_biaya_operasional';
+        $stmt = $pdo->prepare($loadpatokan);
+        $stmt->execute(['id_biaya_operasional' => $id_biaya_operasional]);
+        $rowitem = $stmt->fetch();
+
+        ?>
+
+        <div class="col border rounded p-2 bg-light">
+                            <div class="row mb-2">
+                              <div class="col-sm">
+                                <label for="num_biaya_pergantian">Nama Biaya Operasional</label>
+                              <input type="text" class="form-control" name="nama_biaya_operasional" value="<?=$rowitem->nama_biaya_operasional?>" required/>                            
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col">
+                               <label for="num_biaya_pergantian">Harga Patokan</label>
+                        <input type="hidden" id="biaya_pergantian_number3" name="jumlah_biaya_operasional" value="<?=$rowitem->jumlah_biaya_operasional?>">
+                        <input type="hidden" id="hid_type" name="type" value="update_modal_biaya_operasional">
+                        <input type="hidden" id="hid_id_detail_lokasi" name="id_biaya_operasional" value="<?=$id_biaya_operasional?>">
+                        <div class="row">
+                          <div class="col-auto text-center p-2">
+                            Rp.
+                          </div>
+                          <div class="col">
+                            <input onkeyup="formatNumber3(this)" type="text" id="num_biaya_pergantian3" value="<?=number_format($rowitem->jumlah_biaya_operasional)?>" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
+                          </div>
+                        </div>
+                        
+                       
+
+        <?php
+    }
+
+
+    //Edit
+if ($_POST['type'] == 'update_modal_biaya_operasional' && !empty($_POST["id_biaya_operasional"])) {
+    $id_biaya_operasional = $_POST["id_biaya_operasional"];
+    $jumlah_biaya_operasional = $_POST['jumlah_biaya_operasional'];
+    $nama_biaya_operasional = $_POST['nama_biaya_operasional'];
+
+    $updatepatokan = 'UPDATE t_biaya_operasional
+                      SET jumlah_biaya_operasional = :jumlah_biaya_operasional, nama_biaya_operasional = :nama_biaya_operasional
+                      WHERE id_biaya_operasional = :id_biaya_operasional';
+        $stmt = $pdo->prepare($updatepatokan);
+        $stmt->execute(['id_biaya_operasional' => $id_biaya_operasional, 'jumlah_biaya_operasional' => $jumlah_biaya_operasional, 'nama_biaya_operasional' => $nama_biaya_operasional]);
+    }
+
+
+
+
+
+
+
+
+
+
 
 //Rekening Bersama--------------------------------
 //Tambah

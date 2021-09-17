@@ -64,6 +64,7 @@ else if($level_user == 4){
             $latitude        = $_POST['tb_latitude'];
             $randomstring = substr(md5(rand()), 0, 7);
             $batas_hari_pembayaran = $_POST['num_batas_hari_pembayaran'];
+            $kapasitas_kapal = $_POST['kapasitas_kapal'];
 
             //Image upload
             if($_FILES["image_uploads"]["size"] == 0) {
@@ -86,7 +87,7 @@ else if($level_user == 4){
 
             $sqllokasi = "UPDATE t_lokasi
                         SET id_wilayah = :id_wilayah, nama_lokasi=:nama_lokasi, deskripsi_lokasi=:deskripsi_lokasi, foto_lokasi = :foto_lokasi,
-                        luas_lokasi=:luas_lokasi, id_user_pengelola=:id_user_pengelola,
+                        luas_lokasi=:luas_lokasi, id_user_pengelola=:id_user_pengelola, kapasitas_kapal = :kapasitas_kapal,
                         kontak_lokasi=:kontak_lokasi, nama_bank=:nama_bank, nama_rekening=:nama_rekening, nomor_rekening=:nomor_rekening, longitude=:longitude, latitude=:latitude, batas_hari_pembayaran =:batas_hari_pembayaran
 
                         WHERE id_lokasi = :id_lokasi";
@@ -95,7 +96,7 @@ else if($level_user == 4){
             $stmt->execute(['id_wilayah' => $id_wilayah, 'nama_lokasi' => $nama_lokasi,
             'deskripsi_lokasi' => $deskripsi_lokasi,
             'luas_lokasi' => $luas_lokasi, 'id_user_pengelola' => $id_user_pengelola,
-            'kontak_lokasi' => $kontak_lokasi,'nama_bank' => $nama_bank,
+            'kontak_lokasi' => $kontak_lokasi,'nama_bank' => $nama_bank, 'kapasitas_kapal' => $kapasitas_kapal,
             'nama_rekening' => $nama_rekening,'nomor_rekening' => $nomor_rekening,'id_lokasi' => $id_lokasi,
             'foto_lokasi' => $foto_lokasi, 'longitude' => $longitude, 'latitude' => $latitude, 'batas_hari_pembayaran' => $batas_hari_pembayaran]);
 
@@ -203,6 +204,13 @@ else if($level_user == 4){
                         <label for="tb_nama_lokasi">Nama Lokasi</label>
                         <input type="text" value="<?=$row->nama_lokasi?>" id="tb_nama_lokasi" name="tb_nama_lokasi" class="form-control">
                     </div>
+
+                    <div class="form-group">
+                        <label for="kapasitas_kapal">Kapasitas Kapal</label>
+                        <label class="text-muted text-sm d-block">Jumlah bibit yang dapat diangkut kapal dalam satu perjalanan</label>
+                        <input type="number" id="kapasitas_kapal" name="kapasitas_kapal" class="form-control" value="<?=$row->kapasitas_kapal?>">
+                    </div>
+
                     <div class="form-group">
                         <label for="num_luas_lokasi">Estimasi Luas Titik Total (ha)</label>
                         <input type="number" value="<?=$row->luas_lokasi?>"  id="num_luas_lokasi" name="num_luas_lokasi" class="form-control">

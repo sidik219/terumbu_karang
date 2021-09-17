@@ -229,7 +229,8 @@ $row = $stmt->fetchAll();
                                 <a href="edit_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 <a href="hapus.php?type=lokasi&id_lokasi=<?=$rowitem->id_lokasi?>" class="far fa-trash-alt btn btn-act"></a>
                                 <?php } ?>
-                                <a href="kelola_harga_terumbu.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="btn btn-act text-dark mt-3"><i class="fas fa-money-bill-alt text-success"></i> Kelola Harga & Biaya Operasional</a>
+                                <a href="kelola_harga_terumbu.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="btn btn-act text-dark mt-3"><i class="fas fa-money-bill-alt text-success"></i> Kelola Harga Patokan Terumbu</a>
+                                <br><a href="kelola_biaya_operasional.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="btn btn-act text-dark mt-3"><i class="fas fa-money-bill-alt text-info"></i> Kelola Biaya Operasional</a>
                                 <?php if(($_SESSION['level_user'] == 4)){ ?>
                                 <a href="atur_pengelola_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="mr-3 btn btn-act"><i class="fas fa-id-badge"></i> Atur Pengelola</a>
                                 <?php } ?>

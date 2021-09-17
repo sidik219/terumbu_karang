@@ -183,3 +183,15 @@ elseif ($type == 'pengeluaran'){
     $stmt->execute(['id_pengeluaran' => $id_pengeluaran]);
     header('Location: kelola_laporan_wisata.php?id_reservasi='.$id_reservasi.'&status=deletesuccess');
 }
+elseif ($type == 'biaya_operasional'){
+    $id_biaya_operasional = $_GET['id_biaya_operasional'];
+    $id_lokasi = $_GET['id_lokasi'];
+
+
+    $sql = 'DELETE FROM t_biaya_operasional
+            WHERE id_biaya_operasional = :id_biaya_operasional';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_biaya_operasional' => $id_biaya_operasional]);
+    header('Location: kelola_biaya_operasional.php?id_lokasi='.$id_lokasi.'status=deletesuccess');
+}
