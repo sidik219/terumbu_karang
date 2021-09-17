@@ -6,7 +6,13 @@ if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-$sqlviewlokasi = 'SELECT * FROM t_lokasi
+$query_kelola = ' ';
+if($_SESSION['level_user'] == 3){
+    $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+    $query_kelola = ' AND id_lokasi = '. $id_lokasi;
+}
+
+$sqlviewlokasi = 'SELECT * FROM t_lokasi WHERE 1 '.$query_kelola.' 
                         ORDER BY id_lokasi';
         $stmt = $pdo->prepare($sqlviewlokasi);
         $stmt->execute();

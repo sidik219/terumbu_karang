@@ -105,8 +105,9 @@ function alertCabutLabel($dob, $slabel){
                     foreach($_POST['id_detail_donasi'] as $id_detail_donasi_value){
                     $id_detail_donasi = $id_detail_donasi_value;
                     $randomstring = substr(md5(rand()), 0, 7);
-
+                    
                     $kondisi_terumbu = $_POST['kondisi'][$i];
+                    $ukuran_terumbu = $_POST['ukuran_terumbu'][$i];
                     $punya_foto_lama = ($_POST['oldpic'][$i] != '');
 
 
@@ -132,11 +133,12 @@ function alertCabutLabel($dob, $slabel){
 
 
                     $sqlhistorydonasi = "INSERT INTO t_history_pemeliharaan
-                                (id_detail_donasi, kondisi_terumbu , foto_pemeliharaan , tanggal_pemeliharaan, id_pemeliharaan )
-                                VALUES (:id_detail_donasi, :kondisi_terumbu, :foto_pemeliharaan, :tanggal_pemeliharaan, :id_pemeliharaan) ";
+                                (id_detail_donasi, kondisi_terumbu, ukuran_terumbu, foto_pemeliharaan , tanggal_pemeliharaan, id_pemeliharaan )
+                                VALUES (:id_detail_donasi, :kondisi_terumbu, :ukuran_terumbu, :foto_pemeliharaan, :tanggal_pemeliharaan, :id_pemeliharaan) ";
 
                     $stmt = $pdo->prepare($sqlhistorydonasi);
-                    $stmt->execute(['kondisi_terumbu' => $kondisi_terumbu, 'foto_pemeliharaan' => $foto_pemeliharaan, 'id_detail_donasi' => $id_detail_donasi, 'tanggal_pemeliharaan' => $tanggal_pemeliharaan, 'id_pemeliharaan' => $id_pemeliharaan ]);
+                    $stmt->execute(['kondisi_terumbu' => $kondisi_terumbu, 'foto_pemeliharaan' => $foto_pemeliharaan, 'ukuran_terumbu' => $ukuran_terumbu,
+                    'id_detail_donasi' => $id_detail_donasi, 'tanggal_pemeliharaan' => $tanggal_pemeliharaan, 'id_pemeliharaan' => $id_pemeliharaan ]);
 
                   $i++;//index increment
 
@@ -212,14 +214,12 @@ function alertCabutLabel($dob, $slabel){
             <!-- END OF NAVBAR -->
 
             <!-- TOP SIDEBAR -->
-            <aside class="main-sidebar sidebar-dark-primary elevation-4">
-                <!-- BRAND LOGO (TOP)-->
-                <a href="dashboard_admin.php" class="brand-link">
-                    <img src="dist/img/KKPlogo.png"  class="brand-image img-circle elevation-3" style="opacity: .8">
-                    <!-- BRAND TEXT (TOP) -->
-                    <span class="brand-text font-weight-bold">GoKarang</span>
-                </a>
-                <!-- END OF TOP SIDEBAR -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- BRAND LOGO (TOP)-->
+            <a href="dashboard_admin.php" class="brand-link">
+                <?= $logo_website ?>
+            </a>
+            <!-- END OF TOP SIDEBAR -->
 
                 <!-- SIDEBAR -->
                 <div class="sidebar">
@@ -357,7 +357,7 @@ function alertCabutLabel($dob, $slabel){
 
                                                 $stmt = $pdo->prepare($sqlviewhistoryitems);
                                                 $stmt->execute(['id_detail_donasi' => $isi->id_detail_donasi, 'id_pemeliharaan' =>$id_pemeliharaan]);
-                                                $rowhistory = $stmt->fetchAll();
+                                                $rowhistory = $stmt->fetch();
 
 
                                                 ?>
@@ -384,12 +384,20 @@ function alertCabutLabel($dob, $slabel){
                                                         <!-- <input type="text" id="tb_kondisi" name="kondisi[]" class="form-control" placeholder="Deskripsi singkat..." value="<?php //echo empty($rowhistory[0]->kondisi_terumbu) ? '' : $rowhistory[0]->kondisi_terumbu; ?>" required> -->
                                                           <select class="form-control" id="tb_nama_jenis" name="kondisi[]" required>
                                                             <option value="" disabled>--Pilih Kondisi--</option>
-                                                            <option value="Sangat Baik" <?php if(!empty($rowhistory[0]->kondisi_terumbu)){if($rowhistory[0]->kondisi_terumbu == "Sangat Baik") echo ' selected ';}?>>Sangat Baik</option>
-                                                            <option value="Baik"<?php if(!empty($rowhistory[0]->kondisi_terumbu)){if($rowhistory[0]->kondisi_terumbu == "Baik") echo ' selected ';}?>>Baik</option>
-                                                            <option value="Rusak"<?php if(!empty($rowhistory[0]->kondisi_terumbu)){if($rowhistory[0]->kondisi_terumbu == "Rusak") echo ' selected ';}?>>Rusak</option>
-                                                            <option value="Mati"<?php if(!empty($rowhistory[0]->kondisi_terumbu)){if($rowhistory[0]->kondisi_terumbu == "Mati") echo ' selected ';}?>>Mati</option>
+                                                            <option value="Sangat Baik" <?php if(!empty($rowhistory->kondisi_terumbu)){if($rowhistory>kondisi_terumbu == "Sangat Baik") echo ' selected ';}?>>Sangat Baik</option>
+                                                            <option value="Baik"<?php if(!empty($rowhistory->kondisi_terumbu)){if($rowhistory->kondisi_terumbu == "Baik") echo ' selected ';}?>>Baik</option>
+                                                            <option value="Rusak"<?php if(!empty($rowhistory->kondisi_terumbu)){if($rowhistory->kondisi_terumbu == "Rusak") echo ' selected ';}?>>Rusak</option>
+                                                            <option value="Mati"<?php if(!empty($rowhistory->kondisi_terumbu)){if($rowhistory->kondisi_terumbu == "Mati") echo ' selected ';}?>>Mati</option>
                                                           </select>
                                                     </div>
+                                                </div>
+
+                                                <div class="col form-group">
+                                                <label for="tb_nama_jenis">Ukuran Terumbu (meter persegi)</label>
+                                                    <div class="row">
+                                                        <div class="col-6"><input type="number" step="0.01" id="ukuran_terumbu" name="ukuran_terumbu[]" value=<?php if(!empty($rowhistory->ukuran_terumbu)){ echo $rowhistory->ukuran_terumbu;}?> class="form-control number-input" required/></div>
+                                                        <div class="col-2">m²</div>
+                                                    </div>                                                   
                                                 </div>
 
                                                 <div class="col-12 mt-1">
@@ -408,8 +416,8 @@ function alertCabutLabel($dob, $slabel){
                                                     </div>
                                                     <div class="form-group">
                                                         <img class="preview-images rounded" id="preview<?=$isi->id_detail_donasi?>"  width="100px" src="#" alt="Preview Gambar"/>
-                                                        <img id="oldpic<?=$isi->id_detail_donasi?>" src="<?php echo empty($rowhistory[0]->foto_pemeliharaan) ? '' : $rowhistory[0]->foto_pemeliharaan?>" width="100px">
-                                                        <input type="hidden" name="oldpic[]" class="form-control" value="<?php echo empty($rowhistory[0]->foto_pemeliharaan) ? '' : $rowhistory[0]->foto_pemeliharaan ?>">
+                                                        <img id="oldpic<?=$isi->id_detail_donasi?>" src="<?php echo empty($rowhistory->foto_pemeliharaan) ? '' : $rowhistory->foto_pemeliharaan?>" width="100px">
+                                                        <input type="hidden" name="oldpic[]" class="form-control" value="<?php echo empty($rowhistory->foto_pemeliharaan) ? '' : $rowhistory->foto_pemeliharaan ?>">
 
                                                     </div>
                                                 </div>

@@ -393,7 +393,11 @@ function ageCalculator($dob){
                                                         <div class="col">
                                                             <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-heartbeat"></i> Kondisi</span>
                                                           <br> <?php echo empty($history->kondisi_terumbu) ? '<span class="text-small text-muted">Belum ada laporan</span>' : $history->kondisi_terumbu; ?>
-                                                          </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <span class="font-weight-bold"><i class="nav-icon text-info fas fas fa-ruler-combined"></i> Ukuran</span>
+                                                          <br> <?php echo empty($history->ukuran_terumbu) ? '<span class="text-small text-muted">Belum ada laporan</span>' : $history->ukuran_terumbu.' m²'; ?>
+                                                        </div>
                                                       </div>
 
                                                       <div class="col-lg-6">
