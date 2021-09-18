@@ -80,7 +80,7 @@ function alertCabutLabel($dob, $slabel){
                       $tanggal_pemeliharaan_terakhir = $rowbatch->tanggal_penanaman;
                     }
                     else{
-                      $tanggal_pemeliharaan_terakhir = $date ('Y-m-d H:i:s', time());
+                      $tanggal_pemeliharaan_terakhir = date('Y-m-d H:i:s', time());
                     }
 
 
