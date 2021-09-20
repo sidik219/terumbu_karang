@@ -86,6 +86,11 @@ $rowasuransi = $stmt->fetchAll();
                         <div class="col">
                             <h4><span class="align-middle font-weight-bold">Kelola Asuransi</span></h4>
                             
+                            <!-- Fitur Next -->
+                            <a class="btn btn-success" href="kelola_kerjasama.php" style="margin-bottom: 10px;">
+                            <i class="fas fa-arrow-left"></i> Kembali</a>
+                            <a class="btn btn-success" href="kelola_wisata.php" style="margin-bottom: 10px;">
+                            Selanjutnya <i class="fas fa-arrow-right"></i></a>
                         </div>
                         <div class="col">
                             <a class="btn btn-primary float-right" href="input_asuransi.php" role="button">Input Data Baru (+)</a>
@@ -132,7 +137,9 @@ $rowasuransi = $stmt->fetchAll();
                               <td><?=$asuransi->biaya_asuransi?></td>
                               <td>
                                 <a href="edit_asuransi.php?id_asuransi=<?=$asuransi->id_asuransi?>" class="fas fa-edit mr-3 btn btn-act"></a>
-                                <a href="hapus.php?type=asuransi&id_asuransi=<?=$asuransi->id_asuransi?>" class="far fa-trash-alt btn btn-act"></a>
+                                <a  onclick="return konfirmasiHapusAsuransi(event)"
+                                    href="hapus.php?type=asuransi&id_asuransi=<?=$asuransi->id_asuransi?>" 
+                                    class="far fa-trash-alt btn btn-act"></a>
                               </td>
                             </tr>
                           <?php } ?>
@@ -170,6 +177,23 @@ $rowasuransi = $stmt->fetchAll();
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
+    <!-- Konfirmasi Hapus -->
+    <script>
+        function konfirmasiHapusAsuransi(event){
+        jawab = true
+        jawab = confirm('Yakin ingin menghapus? Data Asuransi akan hilang permanen!')
+
+        if (jawab){
+            // alert('Lanjut.')
+            return true
+        }
+        else{
+            event.preventDefault()
+            return false
+
+        }
+    }
+    </script>
 
 </div>
 

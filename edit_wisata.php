@@ -271,21 +271,37 @@ include 'hak_akses.php';
                             }
                         </script>
                     </div>
-
+                    
+                    <!-- Alternatif dah biar cpt wkwk :V -->
                     <div class="form-group">
                         <label for="status_aktif">Status</label><br>
+                            <?php if ($rowpaket->status_aktif == "Aktif") { ?>
                             <div class="form-check form-check-inline">
-                                <input type="radio" id="rb_status_aktif" name="status_aktif" value="<?=$rowpaket->status_aktif?>" class="form-check-input">
+                                <input checked type="radio" id="rb_status_aktif" name="status_aktif" value="<?= $rowpaket->status_aktif ?>" class="form-check-input">
                                 <label class="form-check-label" for="rb_status_aktif" style="color: green">
                                     Aktif
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input checked type="radio" id="rb_status_tidak_aktif" name="status_aktif" value="<?=$rowpaket->status_aktif?> " class="form-check-input">
+                                <input type="radio" id="rb_status_tidak_aktif" name="status_aktif" value="Tidak Aktif" class="form-check-input">
                                 <label class="form-check-label" for="rb_status_tidak_aktif" style="color: gray">
                                     Tidak Aktif
                                 </label>
                             </div>
+                            <?php } elseif ($rowpaket->status_aktif == "Tidak Aktif") { ?>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" id="rb_status_aktif" name="status_aktif" value="Aktif" class="form-check-input">
+                                <label class="form-check-label" for="rb_status_aktif" style="color: green">
+                                    Aktif
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input checked type="radio" id="rb_status_tidak_aktif" name="status_aktif" value="<?= $rowpaket->status_aktif ?>" class="form-check-input">
+                                <label class="form-check-label" for="rb_status_tidak_aktif" style="color: gray">
+                                    Tidak Aktif
+                                </label>
+                            </div>
+                            <?php } ?>
                     </div>
 
                     <p align="center">

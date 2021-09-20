@@ -480,4 +480,67 @@ if ($_GET['type'] == 'wisata'){
             </tr>
         </tbody>
     </table>
+<?php } elseif ($_GET['type'] == 'all_reservasi') {
+
+    header("Content-type: application/vnd-ms-excel");
+    header("Content-Disposition: attachment; filename=laporan_pengeluaran_wisata.xls");
+    
+    $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
+                  LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                  LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                  LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                  ORDER BY id_reservasi DESC';
+    $stmt = $pdo->prepare($sqlviewreservasi);
+    $stmt->execute();
+    $rowReservasi = $stmt->fetchAll();
+    
+    ?>
+
+    <!-- Select Data Reservasi Untuk Laporan Pengeluaran Berdasarkan ID -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th scope="col">ID Reservasi</th>
+                <th scope="col">Nama User</th>
+                <th scope="col">Nama Lokasi</th>
+                <th scope="col">Tanggal Reservasi</th>
+                <th scope="col">Status Reservasi</th>
+                <th scope="col">Nama Paket Wisata</th>
+                <th scope="col">Jumlah Peserta</th>
+                <th scope="col">Jumlah Donasi</th>
+                <th scope="col">Total (Rp.)</th>
+                <th scope="col">Keterangan</th>
+                <th scope="col">No HP</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            foreach ($rowReservasi as $reservasi) { 
+            $truedate = strtotime($reservasi->update_terakhir);
+            $reservasidate = strtotime($reservasi->tgl_reservasi);
+            ?>
+            <tr>
+                <th scope="row"><?=$reservasi->id_reservasi?></th>
+                <td><?=$reservasi->nama_user?></td>
+                <td><?=$reservasi->nama_lokasi?></td>
+                <td>
+                    <?=strftime('%A, %d %B %Y', $reservasidate);?>
+                </td>
+                <td>
+                    <?=$reservasi->nama_status_reservasi_wisata?>
+                    <br><small class="text-muted">Update Terakhir:
+                    <br><?=strftime('%A, %d %B %Y', $truedate);?></small>
+                </td>
+                <td><?=$reservasi->nama_paket_wisata?></td>
+                <td><?=$reservasi->jumlah_peserta?></td>
+                <td>Rp. <?=number_format($reservasi->jumlah_donasi, 0)?></td>
+                <td>Rp. <?=number_format($reservasi->total, 0)?></td>
+                <td><?=$reservasi->keterangan?></td>
+                <td><?=$reservasi->no_hp?></td>
+            </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+
 <?php } ?>

@@ -85,7 +85,10 @@ $rowpengadaan = $stmt->fetchAll();
                 <div class="row">
                         <div class="col">
                             <h4><span class="align-middle font-weight-bold">Kelola Pengadaan Fasilitas</span></h4>
-                            
+
+                            <!-- Fitur Next -->
+                            <a class="btn btn-success" href="kelola_kerjasama.php" style="margin-bottom: 10px;">
+                            Selanjutnya <i class="fas fa-arrow-right"></i></a>
                         </div>
                         <div class="col">
                             <a class="btn btn-primary float-right" href="input_pengadaan_fasilitas.php" role="button">Input Data Baru (+)</a>
@@ -140,7 +143,8 @@ $rowpengadaan = $stmt->fetchAll();
                                 </td>
                                 <td>
                                     <a href="edit_pengadaan_fasilitas.php?id_pengadaan=<?=$pengadaan->id_pengadaan?>" class="fas fa-edit mr-3 btn btn-act"></a>
-                                    <a href="hapus.php?type=pengadaan_fasilitas&id_pengadaan=<?=$pengadaan->id_pengadaan?>" class="far fa-trash-alt btn btn-act"></a>
+                                    <a  onclick="return konfirmasiHapusPengadaan(event)" 
+                                        href="hapus.php?type=pengadaan_fasilitas&id_pengadaan=<?=$pengadaan->id_pengadaan?>" class="far fa-trash-alt btn btn-act"></a>
                                 </td>
                             </tr>
                           <?php } ?>
@@ -178,6 +182,23 @@ $rowpengadaan = $stmt->fetchAll();
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
+    <!-- Konfirmasi Hapus -->
+    <script>
+        function konfirmasiHapusPengadaan(event){
+        jawab = true
+        jawab = confirm('Yakin ingin menghapus? Data pengadaan akan hilang permanen!')
+
+        if (jawab){
+            // alert('Lanjut.')
+            return true
+        }
+        else{
+            event.preventDefault()
+            return false
+
+        }
+    }
+    </script>
 
 </div>
 

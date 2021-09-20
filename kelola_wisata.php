@@ -117,6 +117,10 @@ $row = $stmt->fetchAll();
                         <div class="col">
                             <h4><span class="align-middle font-weight-bold">Kelola Wisata</span></h4>
                             
+                            <!-- Fitur Next -->
+                            <a class="btn btn-success" href="kelola_asuransi.php" style="margin-bottom: 10px;">
+                            <i class="fas fa-arrow-left"></i> Kembali</a>
+
                             <!-- Cetak Laporan Wisata -->
                             <a class="btn btn-success" href="laporan_wisata.php?type=wisata" style="margin-bottom: 10px;">
                             <i class="fas fa-file-excel"></i> Laporan Data Wisata</a>
@@ -163,7 +167,9 @@ $row = $stmt->fetchAll();
                               <td><?=$rowitem->status_aktif?></td>
                               <td>
                                 <a href="edit_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>" class="fas fa-edit mr-3 btn btn-act"></a>
-                                <a href="hapus.php?type=paket_wisata&id_paket_wisata=<?=$rowitem->id_paket_wisata?>" class="far fa-trash-alt btn btn-act"></a>
+                                <a  onclick="return konfirmasiHapusPaket(event)"
+                                    href="hapus.php?type=paket_wisata&id_paket_wisata=<?=$rowitem->id_paket_wisata?>" 
+                                    class="far fa-trash-alt btn btn-act"></a>
                               </td>
                             </tr>
 
@@ -353,6 +359,23 @@ $row = $stmt->fetchAll();
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
+    <!-- Konfirmasi Hapus -->
+    <script>
+        function konfirmasiHapusPaket(event){
+        jawab = true
+        jawab = confirm('Yakin ingin menghapus? Data Paket Wisata akan hilang permanen!')
+
+        if (jawab){
+            // alert('Lanjut.')
+            return true
+        }
+        else{
+            event.preventDefault()
+            return false
+
+        }
+    }
+    </script>
 </div>
 
 </body>
