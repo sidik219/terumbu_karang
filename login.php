@@ -5,7 +5,7 @@ if (isset($_POST['login'])) {
     $username   = $_POST['tbusername'];
     $password   = $_POST['tbpassword'];
 
-    $sql  = "SELECT username, password, id_user, level_user FROM t_user WHERE username=:username";
+    $sql  = "SELECT username, password, id_user, level_user, email, nama_user FROM t_user WHERE username=:username";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['username' => $username]);
     $row = $stmt->fetch();
@@ -16,6 +16,8 @@ if (isset($_POST['login'])) {
                 $_SESSION['id_user']        = $row->id_user;
                 $_SESSION['username']        = $row->username;
                 $_SESSION['level_user']     = $row->level_user;
+                $_SESSION['email']     = $row->email;
+                $_SESSION['nama_user']     = $row->nama_user;
                 header('Location: dashboard_user.php?pesan=login_berhasil');
 
             } elseif ($row->level_user == "2") {

@@ -1,10 +1,11 @@
 <?php include 'build/config/connection.php';
 
+
 if (isset($_POST['register'])) {
     $nama_user    = $_POST['tb_nama_user'];
     $jk           = $_POST['rb_jenis_kelamin'];
     $email        = $_POST['tb_email'];
-    $no_hp        = $_POST['num_nomer_hp'];
+    $no_hp        = '+62'.substr($_POST['num_nomer_hp'], 1);
     $username     = $_POST['tb_username'];
     $no_ktp         = $_POST['num_ktp_user'];
     $password       = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
@@ -51,6 +52,15 @@ if (isset($_POST['register'])) {
         if ($affectedrows == '0') {
             echo "Failed !";
         } else {
+            include 'email_handler.php'; //PHPMailer
+            $subjek = 'Registrasi Akun Donatur GoKarang';
+            $pesan = '
+                Terima kasih telah mendaftar sebagai donatur di GoKarang!
+                <br>Username anda adalah: '.$username.'
+                <br>Ayo buat donasi pertama anda sekarang!
+                <br><a href="https://tkjb.or.id/login.php">Ayo Donasi!</a>
+            ';
+            smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
             header('Location: login.php?pesan=registrasi_berhasil');
         }
     }
@@ -176,8 +186,9 @@ if (isset($_POST['register'])) {
                 </div>
                 <div class="form-group">
                     <label for="num_nomer_hp" class="font-weight-bold">Nomor Handphone</label>
-                    <input type="tel" id="num_nomer_hp" name="num_nomer_hp" class="form-control" required placeholder="Format No : 0812-1234-1234" pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}">
-                    <p class="small">Masukan No Sesuai Format</p>
+                    <input type="tel" id="num_nomer_hp" name="num_nomer_hp" class="form-control" required placeholder="Format : 08123456789">
+                    <!-- placeholder="Format No : 0812-1234-1234" pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}" -->
+                    <!-- <p class="small">Masukan No Sesuai Format</p> -->
                 </div>
                 <div class="form-group">
                     <label for="tb_alamat_user" class="font-weight-bold">Alamat</label>

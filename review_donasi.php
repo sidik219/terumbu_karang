@@ -155,7 +155,7 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
             <form action="" method="POST">
             <div class="mb-3">
               <label for="nama_donatur">Nama Pemilik Rekening</label>
-              <input type="text" class="form-control data_donatur" id="nama_donatur" name="nama_donatur" required>
+              <input type="text" class="form-control data_donatur" value="<?=$_SESSION['nama_user']?>" id="nama_donatur" name="nama_donatur" required>
             </div>
             <div class="mb-3">
               <label for="no_rekening_donatur">Nomor Rekening</label>
