@@ -9,11 +9,15 @@ if (isset($_POST['register'])) {
     $no_ktp         = $_POST['num_ktp_user'];
     $password       = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
     $tanggal_lahir  = $_POST['date_tanggal_lahir'];
-    $alamat         = $_POST['tb_alamat_user'];
-    $aktivasi_user  = 1;
+    $alamat         = $_POST['tb_alamat_user'];    
     $randomstring = substr(md5(rand()), 0, 7);
     $level_user = $_POST['rb_level_user'];
+    $aktivasi_user  = 0;
+    if($level_user == 4){
+        $aktivasi_user  = 1;
+    }
     $organisasi_user = $_POST['tb_organisasi_user'];
+    $token_aktivasi_user = substr(md5(rand()), 0, 32);
 
     // Verifikasi Username Sudah terdaftar
     $result = mysqli_query($conn, "SELECT username FROM t_user WHERE username = '$username'");
@@ -42,11 +46,16 @@ if (isset($_POST['register'])) {
         }
         //---Foto user upload end
 
-        $sql = 'INSERT INTO t_user (nama_user, organisasi_user, jk, email, no_hp, alamat, no_ktp, fotokopi_ktp, tanggal_lahir, foto_user, level_user, aktivasi_user, username, password )
-        VALUES (:nama_user, :organisasi_user, :jk, :email, :no_hp, :alamat, :no_ktp, :fotokopi_ktp, :tanggal_lahir, :foto_user, :level_user, :aktivasi_user, :username, :password)';
+        $sql = 'INSERT INTO t_user (nama_user, organisasi_user, jk, email, no_hp, alamat, 
+        no_ktp, fotokopi_ktp, tanggal_lahir, foto_user, level_user, aktivasi_user, username, password, token_aktivasi_user )
+        VALUES (:nama_user, :organisasi_user, :jk, :email, :no_hp, :alamat, :no_ktp, :fotokopi_ktp, 
+        :tanggal_lahir, :foto_user, :level_user, :aktivasi_user, :username, :password, :token_aktivasi_user)';
 
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(['nama_user' => $nama_user, 'organisasi_user' => $organisasi_user, 'jk' => $jk, 'email' => $email, 'no_hp' => $no_hp, 'alamat' => $alamat, 'no_ktp' => $no_ktp, 'fotokopi_ktp' => $fotokopi_ktp, 'tanggal_lahir' => $tanggal_lahir, 'foto_user' => $foto_user, 'level_user' => $level_user, 'aktivasi_user' => $aktivasi_user, 'username' => $username, 'password' => $password]);
+        $stmt->execute(['nama_user' => $nama_user, 'organisasi_user' => $organisasi_user, 'jk' => $jk, 'email' => $email, 
+        'no_hp' => $no_hp, 'alamat' => $alamat, 'no_ktp' => $no_ktp, 'fotokopi_ktp' => $fotokopi_ktp, 'tanggal_lahir' => $tanggal_lahir, 
+        'foto_user' => $foto_user, 'level_user' => $level_user, 
+        'aktivasi_user' => $aktivasi_user, 'username' => $username, 'password' => $password, 'token_aktivasi_user' => $token_aktivasi_user]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
@@ -59,12 +68,12 @@ if (isset($_POST['register'])) {
             }
         
             include 'email_handler.php'; //PHPMailer
-            $subjek = 'Registrasi Akun Pengelola '.$tingkat_kelola.' GoKarang';
+            $subjek = 'Konfirmasi Registrasi Akun Pengelola '.$tingkat_kelola.' GoKarang';
             $pesan = '
                 Terima kasih telah mendaftar sebagai Pengelola '.$tingkat_kelola.' di GoKarang!
                 <br>Username anda adalah: '.$username.'
-                <br>Akun anda akan segera diverifikasi dan diberi hak akses oleh Administrator.
-                <br><a href="https://tkjb.or.id/login.php">Masuk ke GoKarang</a>
+                <br>Harap klik link di bawah agar akun anda segera diverifikasi dan diberi hak akses oleh Administrator:
+                <br><a href="https://tkjb.or.id/aktivasi_user.php?token_aktivasi_user='.$token_aktivasi_user.'">Konfirmasi Akun Anda</a>
             ';
             smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
             header('Location: login.php?pesan=registrasi_berhasil');

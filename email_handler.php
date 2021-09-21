@@ -11,7 +11,7 @@ function smtpmailer($to, $from, $from_name, $subject, $body)
         $mail->Host = 'mail.tkjb.or.id';
         $mail->Port = 587;  
         $mail->Username = 'noreply-gokarang@tkjb.or.id';
-        $mail->Password = '&loXl]uR(dh1';   
+        $mail->Password = '6-nvNrzIaF6Y';   
    
    //   $path = 'reseller.pdf';
    //   $mail->AddAttachment($path);
@@ -35,12 +35,13 @@ function smtpmailer($to, $from, $from_name, $subject, $body)
             return $error;
         }
     }
-    
+    // $token_aktivasi_user = substr(md5(rand()), 0, 32);
     // $penerima   = 'feisalar1@gmail.com';
     $pengirim = 'noreply-gokarang@tkjb.or.id';
     $nama_pengirim = 'GoKarang Administrator';
     // $subjek = 'PHPMailer Test Email';
-    // $pesan = 'Terima kasih telah berdonasi dengan GoKarang.<br><a href="https://tkjb.or.id/login.php">Ayo Donasi!</a>';
+    // $pesan = 'Terima kasih telah berdonasi dengan GoKarang.
+    // <br><a href="https://tkjb.or.id/aktivasi_user.php?token_aktivasi='.$token_aktivasi_user.'">Konfirmasi Akun Anda</a>';
 
     // $penerima   = $_SESSION['email'];
     // $pengirim = 'noreply-gokarang@tkjb.or.id';

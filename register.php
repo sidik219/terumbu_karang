@@ -12,8 +12,9 @@ if (isset($_POST['register'])) {
     $tanggal_lahir  = $_POST['date_tanggal_lahir'];
     $alamat         = $_POST['tb_alamat_user'];
     $level_user     = 1;
-    $aktivasi_user  = 1;
+    $aktivasi_user  = 0;
     $randomstring = substr(md5(rand()), 0, 7);
+    $token_aktivasi_user = substr(md5(rand()), 0, 32);
 
     // Verifikasi Username Sudah terdaftar
     $result = mysqli_query($conn, "SELECT username FROM t_user WHERE username = '$username'");
@@ -42,23 +43,25 @@ if (isset($_POST['register'])) {
         }
         //---Foto user upload end
 
-        $sql = 'INSERT INTO t_user (nama_user, jk, email, no_hp, alamat, no_ktp, fotokopi_ktp, tanggal_lahir, foto_user, level_user, aktivasi_user, username, password )
-        VALUES (:nama_user, :jk, :email, :no_hp, :alamat, :no_ktp, :fotokopi_ktp, :tanggal_lahir, :foto_user, :level_user, :aktivasi_user, :username, :password)';
+        $sql = 'INSERT INTO t_user (nama_user, jk, email, no_hp, alamat, no_ktp, fotokopi_ktp, tanggal_lahir, foto_user, level_user, aktivasi_user, username, password, token_aktivasi_user )
+        VALUES (:nama_user, :jk, :email, :no_hp, :alamat, :no_ktp, :fotokopi_ktp, :tanggal_lahir, :foto_user, :level_user, :aktivasi_user, :username, :password, :token_aktivasi_user)';
 
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(['nama_user' => $nama_user, 'jk' => $jk, 'email' => $email, 'no_hp' => $no_hp, 'alamat' => $alamat, 'no_ktp' => $no_ktp, 'fotokopi_ktp' => $fotokopi_ktp, 'tanggal_lahir' => $tanggal_lahir, 'foto_user' => $foto_user, 'level_user' => $level_user, 'aktivasi_user' => $aktivasi_user, 'username' => $username, 'password' => $password]);
+        $stmt->execute(['nama_user' => $nama_user, 'jk' => $jk, 'email' => $email, 'no_hp' => $no_hp, 'alamat' => $alamat, 'no_ktp' => $no_ktp,
+         'fotokopi_ktp' => $fotokopi_ktp, 'tanggal_lahir' => $tanggal_lahir, 'foto_user' => $foto_user, 
+         'level_user' => $level_user, 'aktivasi_user' => $aktivasi_user, 'username' => $username, 'password' => $password, 'token_aktivasi_user' => $token_aktivasi_user]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
             echo "Failed !";
         } else {
             include 'email_handler.php'; //PHPMailer
-            $subjek = 'Registrasi Akun Donatur GoKarang';
+            $subjek = 'Konfirmasi Registrasi Akun Donatur GoKarang';
             $pesan = '
                 Terima kasih telah mendaftar sebagai donatur di GoKarang!
-                <br>Username anda adalah: '.$username.'
-                <br>Ayo buat donasi pertama anda sekarang!
-                <br><a href="https://tkjb.or.id/login.php">Ayo Donasi!</a>
+                <br>Username anda: '.$username.'
+                <br>Ayo mulai buat donasi pertama anda dengan konfirmasi email anda:
+                <br><a href="https://tkjb.or.id/aktivasi_user.php?token_aktivasi_user='.$token_aktivasi_user.'">Konfirmasi Akun Anda</a>
             ';
             smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
             header('Location: login.php?pesan=registrasi_berhasil');

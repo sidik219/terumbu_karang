@@ -5,13 +5,17 @@ if (isset($_POST['login'])) {
     $username   = $_POST['tbusername'];
     $password   = $_POST['tbpassword'];
 
-    $sql  = "SELECT username, password, id_user, level_user, email, nama_user FROM t_user WHERE username=:username";
+    $sql  = "SELECT username, password, id_user, level_user, email, nama_user, aktivasi_user FROM t_user WHERE username=:username";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['username' => $username]);
     $row = $stmt->fetch();
 
     if (!empty($row)) {
-        if (password_verify($password, $row->password)) {
+        if($row->aktivasi_user != 1){
+              header('Location: login.php?pesan=belum_konfirmasi_email');
+              return 0;
+        }
+        if (password_verify($password, $row->password)) {          
             if ($row->level_user == "1") {
                 $_SESSION['id_user']        = $row->id_user;
                 $_SESSION['username']        = $row->username;
@@ -113,7 +117,7 @@ if (isset($_POST['login'])) {
                 if(!empty($_GET['pesan'])){
                   if($_GET['pesan'] == 'registrasi_berhasil'){
                   echo '<div class="alert alert-success" role="alert">
-                          Pendaftaran berhasil! Silahkan Log In.
+                          Pendaftaran berhasil! Harap konfirmasi email anda untuk melanjutkan.
                       </div>';
                     }
                   else if($_GET['pesan'] == 'akun_belum_diberi_akses'){
@@ -121,13 +125,22 @@ if (isset($_POST['login'])) {
                           Akun anda dalam tahap verifikasi oleh Pengelola Pusat. Harap tunggu beberapa saat. Terima kasih.
                       </div>';
                     }
-                  else{
-                    {
-                  echo '<div class="alert alert-warning" role="alert">
+                    else if ($_GET['pesan'] == 'belum_konfirmasi_email'){
+                      echo '<div class="alert alert-primary" role="alert">
+                          Harap konfirmasi email anda terlebih dahulu. Terima kasih.
+                      </div>';
+                    }
+                    else if ($_GET['pesan'] == 'aktivasi_berhasil'){
+                      echo '<div class="alert alert-success" role="alert">
+                          Konfirmasi Email berhasil! Silahkan Log In. Terima kasih.
+                      </div>';
+                    }
+                  else{                    
+                      echo '<div class="alert alert-warning" role="alert">
                           Username atau password salah.
-                      </div>';}
+                      </div>';
                   }
-                  }
+                }
                 ?>
 
     					<div class="wrap-input100 validate-input">
