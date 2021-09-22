@@ -42,36 +42,27 @@ else if($level_user == 4){
 if(isset($_GET['id_status_reservasi_wisata'])){
   $id_status_reservasi_wisata = $_GET['id_status_reservasi_wisata'];
 
-    if($id_status_reservasi_wisata == 1){ //reservasi baru
-        $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
-                    LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
-                    LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
-                    LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-                    LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                    WHERE t_reservasi_wisata.id_status_reservasi_wisata = 1 '.$extra_query_k_lok.'
-                    ORDER BY id_reservasi DESC';
-    }
-    elseif($id_status_reservasi_wisata == 2){ //reservasi bermasalah
-        $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
-                    LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
-                    LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
-                    LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-                    LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                    WHERE t_reservasi_wisata.id_status_reservasi_wisata = 2 '.$extra_query_k_lok.'
-                    ORDER BY id_reservasi DESC';
-    }
-    elseif($id_status_reservasi_wisata == 3){ //reservasi bermasalah
-        $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
-                    LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
-                    LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
-                    LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-                    LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                    WHERE t_reservasi_wisata.id_status_reservasi_wisata = 3 '.$extra_query_k_lok.'
-                    ORDER BY id_reservasi DESC';
-    }
-        $stmt = $pdo->prepare($sqlviewreservasi);
-        $stmt->execute();
-        $row = $stmt->fetchAll();
+  if($id_status_reservasi_wisata == 1){ //reservasi baru
+    $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
+                  LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                  LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                  LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                  WHERE t_reservasi_wisata.id_status_reservasi_wisata = 1 '.$extra_query_k_lok.'
+                  ORDER BY id_reservasi DESC';
+  }
+  elseif($id_status_reservasi_wisata == 3){ //reservasi bermasalah
+    $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
+                  LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                  LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                  LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                  WHERE t_reservasi_wisata.id_status_reservasi_wisata = 3 '.$extra_query_k_lok.'
+                  ORDER BY id_reservasi DESC';
+  }
+    $stmt = $pdo->prepare($sqlviewreservasi);
+    $stmt->execute();
+    $row = $stmt->fetchAll();
 }
 else{//reservasi umum
     $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
@@ -194,22 +185,15 @@ function alertPembayaran($dob){
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <a class="dropdown-item" href="kelola_reservasi_wisata.php">Tampilkan Semua</a>
                                 <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=1">Reservasi Wisata Baru</a>
-                                <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=2">Reservasi Wisata Lama</a>
                                 <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=3">Reservasi Bermasalah</a>
                             </div>
                         </div>
-
-                        <div class="dropdown show" style="margin-top: 0.5rem;">
-                            <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Pilih Cetak Laporan
-                            </a>
-
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="laporan_wisata.php?type=all_pengeluaran">
-                                <i class="far fa-file-excel btn-success"></i> Laporan Seluruh Pengeluaran</a>
-                                <a class="dropdown-item" href="laporan_wisata.php?type=all_reservasi">
-                                <i class="far fa-file-excel btn-success"></i> Laporan Reservasi</a>
-                            </div>
+                        <div>
+                            <a 
+                            class="btn btn-success" 
+                            href="laporan_wisata.php?type=all_pengeluaran"
+                            style="margin-top: 1rem;">
+                            <i class="fas fa-file-excel"></i> Cetak Seluruh Laporan Pengeluaran</a>
                         </div>
                     </div>
                 </div>

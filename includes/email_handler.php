@@ -1,5 +1,5 @@
 <?php
-require "PHPMailer/PHPMailerAutoload.php";
+require dirname(__FILE__)."/../PHPMailer/PHPMailerAutoload.php";
 
 function smtpmailer($to, $from, $from_name, $subject, $body)
     {
@@ -11,7 +11,7 @@ function smtpmailer($to, $from, $from_name, $subject, $body)
         $mail->Host = 'mail.tkjb.or.id';
         $mail->Port = 587;  
         $mail->Username = 'noreply-gokarang@tkjb.or.id';
-        $mail->Password = '6-nvNrzIaF6Y';   
+        $mail->Password = 'eRbCqj&vTaHl';   
    
    //   $path = 'reseller.pdf';
    //   $mail->AddAttachment($path);
