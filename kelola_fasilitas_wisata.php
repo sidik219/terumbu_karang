@@ -129,7 +129,7 @@ function ageCalculator($dob){
                     <i class="fas fa-file-excel"></i> Laporan Pengeluaran Fasilitas</a>
 
                     <a class="btn btn-outline-primary" href="input_fasilitas_wisata.php" style="margin-top: 5px; margin-bottom: 5px;">
-                    Selanjutnya Input Wisata <i class="fas fa-angle-right"></i></a>
+                    Selanjutnya Input Fasilitas <i class="fas fa-angle-right"></i></a>
                     </div>
 
                     <table class="table table-striped table-responsive-sm">
