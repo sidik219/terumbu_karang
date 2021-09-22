@@ -18,18 +18,11 @@ if (isset($_POST['register'])) {
 
     // Verifikasi Username Sudah terdaftar
     $result = mysqli_query($conn, "SELECT username FROM t_user WHERE username = '$username'");
-    $result_email = mysqli_query($conn, "SELECT email FROM t_user WHERE email = '$email'");
     // var_dump($result);
     // die;
-    if (mysqli_fetch_assoc($result) && mysqli_fetch_assoc($result_email)) {
-        header('location: register.php?pesan=Username_Email_Telah_Terdaftar');
-    }
-    else if (mysqli_fetch_assoc($result)) {
+    if (mysqli_fetch_assoc($result)) {
         header('location: register.php?pesan=Username_Telah_Terdaftar');
-    }else  if (mysqli_fetch_assoc($result_email)) {
-        header('location: register.php?pesan=Email_Telah_Terdaftar');
-    }
-    else {
+    } else {
         //Fotokopi KTP upload
         if (isset($_FILES['image_uploads1'])) {
             $target_dir     = "images/ktp/";
@@ -62,10 +55,10 @@ if (isset($_POST['register'])) {
         if ($affectedrows == '0') {
             echo "Failed !";
         } else {
-            include 'includes/email_handler.php'; //PHPMailer
+            include 'email_handler.php'; //PHPMailer
             $subjek = 'Konfirmasi Registrasi Akun Donatur GoKarang';
-            $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
-                <br>Terima kasih telah mendaftar sebagai donatur di GoKarang!
+            $pesan = '
+                Terima kasih telah mendaftar sebagai donatur di GoKarang!
                 <br>Username anda: '.$username.'
                 <br>Ayo mulai buat donasi pertama anda dengan konfirmasi email anda:
                 <br><a href="https://tkjb.or.id/aktivasi_user.php?token_aktivasi_user='.$token_aktivasi_user.'">Konfirmasi Akun Anda</a>
@@ -169,16 +162,6 @@ if (isset($_POST['register'])) {
             if ($_GET['pesan'] == 'Username_Telah_Terdaftar') {
                 echo '<div class="alert alert-warning" role="alert">
                           Username Sudah Terdaftar.
-                      </div>';
-            }
-            else if ($_GET['pesan'] == 'Email_Telah_Terdaftar') {
-                echo '<div class="alert alert-warning" role="alert">
-                          Email Sudah Terdaftar. Lupa password? <a href="request_password_reset.php">Reset Password</a>
-                      </div>';
-            }
-            else if ($_GET['pesan'] == 'Username_Email_Telah_Terdaftar') {
-                echo '<div class="alert alert-warning" role="alert">
-                          Username dan Email Sudah Terdaftar. Lupa password? <a href="request_password_reset.php">Reset Password</a>
                       </div>';
             }
         }

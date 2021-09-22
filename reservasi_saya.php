@@ -164,6 +164,16 @@ function alertPembayaran($dob){
                     }
                 ?>
 
+                <?php if(count($row) == 0 ) { ?>
+                    <div class="row text-center">
+                        <div class="col">
+                            <img src="images/reservasi-wisata.png" class="" width="25%"/>
+                            <br> Buatlah reservasi wisata pertama Anda!
+                            <br> <a class="btn btn-primary" href="map.php?aksi=wisata" role="button" style="margin-top: 0.5rem;">Ayo Reservasi!</a>
+                        </div>
+                    </div>
+                <?php } ?>
+
                 <?php if($_SESSION['level_user'] == '1') { ?>
                     <div>
                         <?php foreach ($row as $rowitem) {

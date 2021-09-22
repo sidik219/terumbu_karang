@@ -128,6 +128,8 @@ $rowkerjasama = $stmt->fetchAll();
                             <th scope="col">Nama Fasilitas</th>
                             <th scope="col">Status Kerjasama</th>
                             <th scope="col">Pembagian Kerjasama</th>
+                            <th scope="col">Biaya Fasilitas</th>
+                            <th scope="col">Pembagian Hasil</th>
                             <th scope="col">Aksi</th>
                             </tr>
                           </thead>
@@ -146,6 +148,8 @@ $rowkerjasama = $stmt->fetchAll();
                                     <?php } ?>
                                 </td>
                                 <td><?=$persentasi?>%</td>
+                                <td>Rp. <?=number_format($kerjasama->biaya_kerjasama, 0)?></td>
+                                <td>Rp. <?=number_format($kerjasama->pembagian_hasil, 0)?></td>
                                 <td>
                                     <a href="edit_kerjasama.php?id_kerjasama=<?=$kerjasama->id_kerjasama?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                     <a  onclick="return konfirmasiHapusKerjasama(event)"
