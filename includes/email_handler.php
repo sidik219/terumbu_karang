@@ -1,5 +1,12 @@
 <?php
-require dirname(__FILE__)."/../PHPMailer/PHPMailerAutoload.php";
+// require dirname(__FILE__)."/../PHPMailer/PHPMailerAutoload.php";
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require dirname(__FILE__).'/../PHPMailer/src/Exception.php';
+require dirname(__FILE__).'/../PHPMailer/src/PHPMailer.php';
+require dirname(__FILE__).'/../PHPMailer/src/SMTP.php';
 
 function smtpmailer($to, $from, $from_name, $subject, $body)
     {

@@ -79,6 +79,16 @@ if(isset($_SESSION['data_donasi'])){
       $username = $_SESSION['username'];
       $nama_user = $_SESSION['nama_user'];
 
+      function alertPembayaran($batas_hari_pembayaran){ 
+        $today   = new DateTime('today');
+
+        $tglbatas = $today->add(new DateInterval('P'.$batas_hari_pembayaran.'D'));
+        $tglbatas_formatted = strftime('%A, %e %B %Y pukul %R', $tglbatas->getTimeStamp() );
+        $batas_waktu_pesan = '<br><b>Batas pembayaran:</b><br>'. $tglbatas_formatted;
+
+        return  $batas_waktu_pesan;
+      }
+
       $subjek = 'Informasi Pembayaran Donasi Terumbu Karang GoKarang';
       $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
           <br>Yth. '.$nama_user.'
@@ -91,8 +101,7 @@ if(isset($_SESSION['data_donasi'])){
           <br>
           <br>Terumbu karang pilihan:'.$list_terumbu.'
           <br>
-          <br>Username anda: '.$username.'
-          <br>Harap upload bukti pembayaran donasi (format gambar .JPG) di link berikut:
+          <br>Harap upload bukti pembayaran donasi (format gambar .JPG) sebelum '.alertPembayaran().' di link berikut:
           <br><a href="https://tkjb.or.id/edit_donasi_saya.php?id_donasi='.$id_donasi.'">Upload Bukti Pembayaran</a>
       ';
       
