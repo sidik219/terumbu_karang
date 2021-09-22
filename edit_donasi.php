@@ -11,6 +11,7 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
     $defaultpic = "images/image_default.jpg";
     $status_donasi = "Menunggu Konfirmasi oleh Pengelola Lokasi";
 
+    //Query data donasi dan info donatur dan rekening bersama pilihan
     $sql = 'SELECT * FROM t_donasi
     LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
     LEFT JOIN t_user ON t_donasi.id_user = t_user.id_user
@@ -25,6 +26,26 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
     $stmt = $pdo->prepare($sqlstatus);
     $stmt->execute();
     $rowstatus = $stmt->fetchAll();
+
+    //Query daftar terumbu pesanan
+     $sqlterumbu = 'SELECT * FROM t_donasi
+    LEFT JOIN t_detail_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
+    LEFT JOIN t_terumbu_karang ON t_detail_donasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang
+    WHERE t_donasi.id_donasi = :id_donasi';
+
+    $stmt = $pdo->prepare($sqlterumbu);
+    $stmt->execute(['id_donasi' => $id_donasi]);
+    $rowterumbu = $stmt->fetchAll();
+
+    $listterumbu = '';
+    foreach($rowterumbu as $terumbu){
+        $listterumbu .= '<br>'.$terumbu->nama_terumbu_karang.' x'.$terumbu->jumlah_terumbu;
+    }
+
+    $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank WHERE id_rekening_bank = :id_rekening_bersama';
+    $stmt = $pdo->prepare($sqlviewrekeningbersama);
+    $stmt->execute(['id_rekening_bersama' => $rowitem->id_rekening_bersama]);
+    $rowrekening = $stmt->fetch();
 
 
 
@@ -83,6 +104,66 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
         $stmt->execute(['id_donasi' => $id_donasi, 'id_status_donasi' => 3, 'update_terakhir' => $tanggal_update_status]);
 
         $affectedrows = $stmt->rowCount();
+
+        //Kirim email untuk Pengelola Lokasi
+            include 'includes/email_handler.php'; //PHPMailer
+            $sqlviewpengelolawilayah = 'SELECT * FROM t_lokasi 
+                                    LEFT JOIN t_pengelola_lokasi ON t_pengelola_lokasi.id_lokasi = t_lokasi.id_lokasi
+                                    WHERE t_lokasi.id_lokasi = :id_lokasi';
+            $stmt = $pdo->prepare($sqlviewpengelolawilayah);
+            $stmt->execute(['id_lokasi' => $rowitem->id_lokasi]);
+            $rowpengelola = $stmt->fetchAll();
+
+            foreach($rowpengelola as $pengelola){
+            $sqlviewdatauser = 'SELECT * FROM t_user 
+                                WHERE id_user = :id_user';
+            $stmt = $pdo->prepare($sqlviewdatauser);
+            $stmt->execute(['id_user' => $pengelola->id_user]);
+            $datauser = $stmt->fetch();
+
+            $email = $datauser->email;
+            $username = $datauser->username;
+            $nama_user = $datauser->nama_user;
+
+            $subjek = 'Donasi Baru di Lokasi Anda (ID Donasi : '.$rowitem->id_donasi.' ) - GoKarang';
+            $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+            <br>Yth. '.$nama_user.'
+            <br>Ada donasi baru masuk pada lokasi Anda, '.$pengelola->nama_lokasi.'
+            <br>Berikut rincian donasi baru tersebut:
+            <br>ID Donasi: '.$rowitem->id_donasi.'
+            <br>Bank Donatur: '.$rowitem->bank_donatur.'
+            <br>Nomor Rekening Donatur: '.$rowitem->nomor_rekening_donatur.'
+            <br>Nama Rekening Donatur: '.$rowitem->nama_donatur.'
+            <br>          
+            <br>Bank Tujuan Pembayaran: '.$rowrekening->nama_bank.'
+            <br>Nomor Rekening Tujuan: '.$rowrekening->nomor_rekening.'
+            <br>Nama Rekening Tujuan: '.$rowrekening->nama_pemilik_rekening.'
+            <br>Nominal pembayaran: Rp. '.number_format($rowitem->nominal, 0).'
+            <br>
+            <br>Terumbu Karang Pilihan: '.$listterumbu.'
+            <br>Harap segera lakukan pengadaan bibit dan upload bukti pengadaan bibit pada link berikut:
+            <br><a href="https://tkjb.or.id/kelola_pengadaan_bibit.php?id_donasi='.$id_donasi.'">Upload Bukti Pengadaan Bibit</a>
+        ';
+        
+        smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+        }
+
+
+        //Kirim email untuk Donatur           
+            $subjek = 'Bukti Donasi Telah Diverifikasi (ID Donasi : '.$rowitem->id_donasi.' ) - GoKarang';
+            $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+            <br>Yth. '.$rowitem->nama_donatur.'
+            <br>Bukti donasi anda telah diverifikasi dan bibit akan disemai oleh pihak pengelola '.$rowitem->nama_lokasi.'
+            <br>Proses penyemaian memerlukan waktu hingga beberapa minggu. Saat terumbu karang anda akan ditransplantasi ke laut, kami akan menginfokan kepada anda melalui email.
+            <br>
+            <br>Terumbu Karang Pilihan: '.$listterumbu.'
+            <br>
+            <br>Anda dapat memantau perkembangan terumbu karang anda secara berkala pada link berikut:
+            <br><a href="https://tkjb.or.id/donasi_saya.php">Lihat Donasi Saya</a>
+        ';
+        
+        smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+            
         header("Refresh: 0");
 
         // if ($affectedrows == '0') {
@@ -91,7 +172,8 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
         //     //echo "HAHAHAAHA GREAT SUCCESSS !";
         //     header("Location: kelola_donasi.php?status=updatesuccess");
         //     }
-        }
+        
+    }
 
         if(isset($_POST['submit_tolak'])){
           $sqldonasi = "UPDATE t_donasi

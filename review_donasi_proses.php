@@ -138,7 +138,7 @@ if(isset($_SESSION['data_donasi'])){
           <br>
           <br>Terumbu karang pilihan:'.$list_terumbu.'
           <br>Harap verifikasi bukti donasi di link berikut jika donatur sudah mengupload bukti pembayaran:
-          <br><a href="https://tkjb.or.id/edit_donasi.php?id_donasi='.$id_donasi.'">Upload Bukti Pembayaran</a>
+          <br><a href="https://tkjb.or.id/edit_donasi.php?id_donasi='.$id_donasi.'">Verifikasi Bukti Pembayaran</a>
           <br>
           <br>Jika donatur belum mengupload bukti donasi dalam '.$pengelola->batas_hari_pembayaran.' hari, maka donasi dapat dibatalkan.
       ';

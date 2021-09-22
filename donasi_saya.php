@@ -43,6 +43,34 @@ function ageCalculator($dob){
         }
     }
 
+    function ageCalculatorTanpaLalu($dob){
+        $birthdate = new DateTime($dob);
+        $today   = new DateTime('today');
+        $ag = $birthdate->diff($today)->y;
+        $mn = $birthdate->diff($today)->m;
+        $dy = $birthdate->diff($today)->d;
+        if ($dy == 0)
+        {
+            return "Hari ini";
+        }
+        if ($dy == 1)
+        {
+            return "1 Hari";
+        }
+        if ($mn == 0)
+        {
+            return "$dy Hari";
+        }
+        elseif ($ag == 0)
+        {
+            return "$mn Bulan  $dy Hari";
+        }
+        else
+        {
+            return "$ag Tahun $mn Bulan $dy Hari";
+        }
+    }
+
     function ageCalculatorFuture($dob){
         $birthdate = new DateTime($dob);
         $today   = new DateTime('today');
@@ -273,7 +301,7 @@ function ageCalculator($dob){
                                       </div>
 
 
-                                    <?php if ($rowitem->id_status_donasi >= 3 && $rowitem->id_status_donasi < 6) { ?>
+                                    <?php if ($rowitem->id_status_donasi >= 3 && $rowitem->id_status_donasi < 6 && $rowitem->tanggal_penanaman != NULL) { ?>
                                       <div class="mb-3">
                                           <span class="font-weight-bold"><i class="nav-icon text-success fas fas fa-calendar-alt"></i> Tanggal Penanaman</span>
                                           <br><?=strftime('%A, %e %B %Y', strtotime($rowitem->tanggal_penanaman))?>
@@ -383,12 +411,12 @@ function ageCalculator($dob){
                                                         </div>
                                                         <div class="col mb-2">
                                                           <span class="font-weight-bold"><i class="nav-icon text-pink fas fa-birthday-cake"></i> Umur Terumbu Karang </span>
-                                                          <br> <span><?=$rowitem->tanggal_penanaman > time() ? 'Bibit belum ditanam' : ageCalculator($rowitem->tanggal_penanaman)?></span>
+                                                          <br> <span><?=$rowitem->tanggal_penanaman > time() ? 'Bibit belum ditanam' : ageCalculatorTanpaLalu($rowitem->tanggal_penanaman)?></span>
                                                         </div>
                                                         <div class="col mb-2">
                                                           <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-calendar-alt"></i> Pemeliharaan Terkini</span>
                                                           <br> <span><?=strftime('%A, %e %B %Y', $peliharadate).' <br>
-                                                          <small class="text-muted">('.ageCalculator($history->tanggal_pemeliharaan).' yang lalu)</small>'?></span>
+                                                          <small class="text-muted">('.ageCalculator($history->tanggal_pemeliharaan).')</small>'?></span>
                                                         </div>
                                                         <div class="col">
                                                             <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-heartbeat"></i> Kondisi</span>
