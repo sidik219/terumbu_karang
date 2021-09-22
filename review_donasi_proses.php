@@ -74,6 +74,7 @@ if(isset($_SESSION['data_donasi'])){
         $stmt->execute(['id_lokasi' => $id_lokasi, 'id_terumbu_karang' => $id_terumbu_karang , 'jumlah_terumbu' => 0]);
 
       }
+      //Kirim email untuk Donatur
       include 'includes/email_handler.php'; //PHPMailer
       $email = $_SESSION['email'];
       $username = $_SESSION['username'];
@@ -89,14 +90,63 @@ if(isset($_SESSION['data_donasi'])){
           <br>Nama Rekening: '.$rekening->nama_pemilik_rekening.'
           <br>Nominal pembayaran: Rp. '.number_format($nominal, 0).'
           <br>
+          <br>Bank Anda: '.$bank_donatur.'
+          <br>Nomor Rekening Anda: '.$nomor_rekening_donatur.'
+          <br>Nama Rekening Anda: '.$nama_donatur.'
+          <br>
           <br>Terumbu karang pilihan:'.$list_terumbu.'
           <br>Harap upload bukti pembayaran donasi (format gambar .JPG) di link berikut:
           <br><a href="https://tkjb.or.id/edit_donasi_saya.php?id_donasi='.$id_donasi.'">Upload Bukti Pembayaran</a>
       ';
       
       smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
-      header("Location:donasi_saya.php?status=addsuccess");
 
+      //Kirim email untuk Pengelola Wilayah
+      
+      $sqlviewpengelolawilayah = 'SELECT * FROM t_lokasi 
+                                  LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                                  LEFT JOIN t_pengelola_wilayah ON t_pengelola_wilayah.id_wilayah = t_lokasi.id_wilayah
+                                  WHERE id_lokasi = :id_lokasi';
+        $stmt = $pdo->prepare($sqlviewpengelolawilayah);
+        $stmt->execute(['id_lokasi' => $id_lokasi]);
+        $rowpengelola = $stmt->fetchAll();
+
+        foreach($rowpengelola as $pengelola){
+          $sqlviewdatauser = 'SELECT * FROM t_user 
+                              WHERE id_user = :id_user';
+          $stmt = $pdo->prepare($sqlviewdatauser);
+          $stmt->execute(['id_user' => $pengelola->id_user]);
+          $datauser = $stmt->fetch();
+
+          $email = $datauser->email;
+          $username = $datauser->username;
+          $nama_user = $datauser->nama_user;
+
+          $subjek = 'Donasi Baru - Terumbu Karang GoKarang';
+          $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+          <br>Yth. '.$nama_user.'
+          <br>Wilayah anda menerima donasi baru pada lokasi '.$pengelola->nama_lokasi.'
+          <br>Berikut rincian donasi baru tersebut:
+          <br>Bank Donatur: '.$bank_donatur.'
+          <br>Nomor Rekening Donatur: '.$nomor_rekening_donatur.'
+          <br>Nama Rekening Donatur: '.$nama_donatur.'
+          <br>          
+          <br>Bank Tujuan Pembayaran: '.$rekening->nama_bank.'
+          <br>Nomor Rekening Tujuan: '.$rekening->nomor_rekening.'
+          <br>Nama Rekening Tujuan: '.$rekening->nama_pemilik_rekening.'
+          <br>Nominal pembayaran: Rp. '.number_format($nominal, 0).'
+          <br>
+          <br>Terumbu karang pilihan:'.$list_terumbu.'
+          <br>Harap verifikasi bukti donasi di link berikut jika donatur sudah mengupload bukti pembayaran:
+          <br><a href="https://tkjb.or.id/edit_donasi.php?id_donasi='.$id_donasi.'">Upload Bukti Pembayaran</a>
+          <br>
+          <br>Jika donatur belum mengupload bukti donasi dalam '.$pengelola->batas_hari_pembayaran.' hari, maka donasi dapat dibatalkan.
+      ';
+      
+      smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+      } 
+
+      header("Location:donasi_saya.php?status=addsuccess");
 }
 else{
   header("Location:map.php?status=nodata");
