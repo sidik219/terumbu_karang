@@ -138,7 +138,7 @@ if ($_POST['type'] == 'load_tk' && !empty($_POST["id_jenis"])) {
 
 
 <?php
-//Load Daftar detail lokasi berdasarkan id_jenis untuk reservasi wisata
+//Load Daftar detail lokasi berdasarkan id_jenis
 if ($_POST['type'] == 'load_detail_lokasi' && !empty($_POST["id_jenis"])) {
     $id_jenis = $_POST["id_jenis"];
     $sqlviewdetaillokasi = 'SELECT * FROM t_detail_lokasi
@@ -154,7 +154,7 @@ if ($_POST['type'] == 'load_detail_lokasi' && !empty($_POST["id_jenis"])) {
     <option value="1" selected>Tidak Donasi</option>
     <?php foreach ($rowdetail as $detail) { ?>
     <option value="<?php echo $detail->id_terumbu_karang.' - '.$detail->harga_patokan_lokasi; ?>">
-        <?php echo $detail->nama_terumbu_karang?></option>
+        <?php echo $detail->nama_terumbu_karang.' - '.$detail->harga_patokan_lokasi?></option>
 
 <?php
     }

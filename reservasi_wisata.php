@@ -14,23 +14,11 @@ $id_paket_wisata = $_GET['id_paket_wisata'];
 $id_status_reservasi_wisata = 1;
 $keterangan = '-';
 
-// Rekening Bersama
-$sqlviewlokasi = 'SELECT * FROM t_lokasi
-                WHERE id_lokasi = :id_lokasi';
-
-$stmt = $pdo->prepare($sqlviewlokasi);
-$stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
-$rowlokasi = $stmt->fetch();
-
-$id_wilayah = $rowlokasi->id_wilayah;
-
-$sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank WHERE id_wilayah = :id_wilayah';
-
+$sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank';
 $stmt = $pdo->prepare($sqlviewrekeningbersama);
-$stmt->execute(['id_wilayah' => $id_wilayah]);
-$rowrekening = $stmt->fetchAll();
+$stmt->execute();
+$rowrekening = $stmt->fetch();
 
-// Paket Wisata
 $sqldetailpaket = 'SELECT * FROM tb_paket_wisata
                 LEFT JOIN t_lokasi ON tb_paket_wisata.id_lokasi = t_lokasi.id_lokasi
                 LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
@@ -52,17 +40,16 @@ if (isset($_POST['submit'])) {
         $nomor_rekening_donatur = $_POST['no_rekening_donatur'];
         $pesan                  = $_POST['pesan'];
         $id_paket_wisata        = $_POST['id_paket_wisata'];
-        $id_rekening_bersama    = $_POST['id_rekening_bersama'];
 
         //var_dump($jumlah_donasi); exit();
         $tanggal_sekarang = date('Y-m-d H:i:s', time());
 
         $sqlreservasi = "INSERT INTO t_reservasi_wisata (id_user, id_lokasi, tgl_reservasi, jumlah_peserta,
                                             jumlah_donasi, total, id_status_reservasi_wisata, keterangan,
-                                            nama_donatur, bank_donatur, nomor_rekening_donatur, pesan, update_terakhir, id_paket_wisata, id_rekening_bersama)
+                                            nama_donatur, bank_donatur, nomor_rekening_donatur, pesan, update_terakhir, id_paket_wisata)
                                 VALUES (:id_user, :id_lokasi, :tgl_reservasi, :jumlah_peserta,
                                             :jumlah_donasi, :total, :id_status_reservasi_wisata, :keterangan,
-                                            :nama_donatur, :bank_donatur, :nomor_rekening_donatur, :pesan, :update_terakhir, :id_paket_wisata, :id_rekening_bersama)";
+                                            :nama_donatur, :bank_donatur, :nomor_rekening_donatur, :pesan, :update_terakhir, :id_paket_wisata)";
 
         $stmt = $pdo->prepare($sqlreservasi);
         $stmt->execute([
@@ -79,8 +66,7 @@ if (isset($_POST['submit'])) {
             'nomor_rekening_donatur' => $nomor_rekening_donatur,
             'pesan' => $pesan,
             'update_terakhir' => $tanggal_sekarang,
-            'id_paket_wisata' => $id_paket_wisata,
-            'id_rekening_bersama' => $id_rekening_bersama
+            'id_paket_wisata' => $id_paket_wisata
         ]);
 
         $affectedrows = $stmt->rowCount();
@@ -88,57 +74,56 @@ if (isset($_POST['submit'])) {
             //echo "HAHAHAAHA INSERT FAILED !";
         } else {
             //echo "HAHAHAAHA GREAT SUCCESSS !";
-            header("Location: reservasi_saya.php?status=addsuccess");
-            // $last_id_reservasi = $pdo->lastInsertId();
+            //header("Location: reservasi_saya.php?status=addsuccess");
+            $last_id_reservasi = $pdo->lastInsertId();
         }
 
         // Jika wisata sekaligus donasi
-        // $i = 0;
-        // foreach ($_POST['nominal'] as $nominal) {
-        //     $id_status_donasi       = 1; //ok
-        //     $nominal                = $_POST['nominal'][$i]; //ok
-        //     $nama_donatur           = $_POST['nama_donatur']; //ok
-        //     $bank_donatur           = $_POST['nama_bank_donatur']; //ok
-        //     $nomor_rekening_donatur = $_POST['no_rekening_donatur']; //ok
-        //     $id_lokasi              = $_POST['id_lokasi']; //ok
-        //     $pesan                  = $_POST['pesan']; //ok
-        //     $id_rekening_bersama    = $_POST['id_rekening_bersama']; //ok
-        //     $tanggal_donasi         = date('Y-m-d H:i:s', time()); //ok
+        $i = 0;
+        foreach ($_POST['nominal'] as $nominal) {
+            $id_user                = 1; //ok
+            $id_status_donasi       = 1; //ok
+            $nominal                = $_POST['nominal'][$i]; //ok
+            $nama_donatur           = $_POST['nama_donatur'][$i]; //ok
+            $nomor_rekening_donatur = $_POST['no_rekening_donatur'][$i]; //ok
+            $bank_donatur           = $_POST['nama_bank_donatur'][$i]; //ok
+            $id_lokasi              = $_POST['id_lokasi'][$i]; //ok
+            $pesan                  = $_POST['pesan'][$i]; //ok
+            $tanggal_donasi         = date('Y-m-d H:i:s', time()); //ok
 
-        //     $sqlinsertdonasi = "INSERT INTO t_donasi
-        //                                 (id_user, nominal, tanggal_donasi, id_status_donasi,
-        //                                 id_lokasi, nama_donatur, nomor_rekening_donatur, bank_donatur,
-        //                                 pesan, update_terakhir, id_rekening_bersama)
-        //                             VALUES (:id_user, :nominal, :tanggal_donasi, :id_status_donasi,
-        //                                     :id_lokasi,  :nama_donatur, :nomor_rekening_donatur, :bank_donatur,
-        //                                     :pesan, :update_terakhir, :id_rekening_bersama)";
+            $sqlinsertdonasi = "INSERT INTO t_donasi
+                                        (id_user, nominal, tanggal_donasi, id_status_donasi,
+                                        id_lokasi, nama_donatur, nomor_rekening_donatur, bank_donatur,
+                                        pesan, update_terakhir)
+                                    VALUES (:id_user, :nominal, :tanggal_donasi, :id_status_donasi,
+                                            :id_lokasi,  :nama_donatur, :nomor_rekening_donatur, :bank_donatur,
+                                            :pesan, :update_terakhir)";
 
-        //     $stmt = $pdo->prepare($sqlinsertdonasi);
-        //     $stmt->execute([
-        //         'id_user'                   => $id_user,
-        //         'nominal'                   => $nominal,
-        //         'id_lokasi'                 => $id_lokasi,
-        //         'id_status_donasi'          => $id_status_donasi,
-        //         'pesan'                     => $pesan,
-        //         'nama_donatur'              => $nama_donatur,
-        //         'bank_donatur'              => $bank_donatur,
-        //         'nomor_rekening_donatur'    => $nomor_rekening_donatur,
-        //         'tanggal_donasi'            => $tanggal_donasi,
-        //         'update_terakhir'           => $tanggal_donasi,
-        //         'id_rekening_bersama'       => $id_rekening_bersama
-        //     ]);
+            $stmt = $pdo->prepare($sqlinsertdonasi);
+            $stmt->execute([
+                'id_user'                   => $id_user,
+                'nominal'                   => $nominal,
+                'id_lokasi'                 => $id_lokasi,
+                'id_status_donasi'          => $id_status_donasi,
+                'pesan'                     => $pesan,
+                'nama_donatur'              => $nama_donatur,
+                'bank_donatur'              => $bank_donatur,
+                'nomor_rekening_donatur'    => $nomor_rekening_donatur,
+                'tanggal_donasi'            => $tanggal_donasi,
+                'update_terakhir'           => $tanggal_donasi
+            ]);
 
-        //     $affectedrows = $stmt->rowCount();
-        //     if ($affectedrows == '0') {
-        //         //echo "HAHAHAAHA INSERT FAILED !";
-        //     } else {
-        //         //echo "HAHAHAAHA GREAT SUCCESSS !";
-        //         header("Location: reservasi_saya.php?status=addsuccess");
-        //     }
-        //     $i++;
-        // }
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+                //echo "HAHAHAAHA INSERT FAILED !";
+            } else {
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                header("Location: reservasi_saya.php?status=addsuccess");
+            }
+            $i++;
+        }
     } else {
-        echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
+        echo '<script>alert("Harap pilih paket donasi yang akan ditambahkan")</script>';
     }
 }
 ?>
@@ -211,216 +196,242 @@ if (isset($_POST['submit'])) {
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+
+            <!-- /.content-header -->
             <?php if ($_SESSION['level_user'] == '1') { ?>
                 <!-- Main content -->
                 <section class="content">
                     <div class="container">
-                        <a class="btn btn-warning btn-back mt-3" href="#" onclick="history.back()">
-                            <i class="fas fa-angle-left"></i> Kembali Pilih
-                        </a>
-                        <h4 class="pt-3 mb-3">
-                            <span class="font-weight-bold">Review Informasi Reservasi Wisata</span>
-                        </h4>
-
-                        <!-- Row -->
+                        <br>
+                        <a class="btn btn-warning btn-back" href="#" onclick="history.back()"><i class="fas fa-angle-left"></i> Kembali Pilih</a><br>
+                        <h4 class="pt-3 mb-3"><span class="font-weight-bold">Review Informasi Reservasi Wisata</span></h4>
                         <div class="row">
-                            <!-- Notif -->
+
                             <?php
                             if (!empty($_GET['status'])) {
                                 if ($_GET['status'] == 'review_reservasi') {
                                     echo '<div class="alert alert-success" role="alert">
-                                            Cek kembali reservasi wisata anda, 
-                                            agar tidak terjadi kesalahan dalam menginputan data.
-                                            </div>';
+                            Cek kembali reservasi wisata anda, supaya tidak terjadi kesalahan dalam menginputan data
+                            </div>';
                                 }
                             }
                             ?>
 
-                            <!-- Div-1 -->
                             <div class="col-md-4 order-md-2 mb-4">
                                 <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="text-muted"><i class="fas fa-suitcase-rolling"></i> Reservasi Wisata Anda</span>
+                                    <span class="text-muted"><i class="fas fa-dollar-sign"></i> Total Reservasi Wisata Anda</span>
                                     <span id="badge-jumlah" class="badge badge-secondary badge-pill"></span>
                                 </h4>
 
-                                <!-- Form -->
                                 <form action="" method="POST">
                                     <?php foreach ($rowwisata as $rowitem) { ?>
-                                    <ul class="list-group mb-3" id="keranjangancestor">
-                                        <!-- Paket Wisata -->
-                                        <div class="card" style="width: 20.5rem; margin-bottom: 20px;">
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item card-reservasi">
-                                                    <!-- Nama paket wisata -->
-                                                    <input 
-                                                        type="text" 
-                                                        value="<?= $rowitem->nama_paket_wisata ?>" 
-                                                        class="list-group-item deskripsi-paket" 
-                                                        style="background: transparent;
-                                                                border: none;
-                                                                color: #fff;
-                                                                font-weight: bold;
-                                                                width: 100%;"
-                                                        disabled
-                                                    >
-                                                </li>
-                                                <input 
-                                                    type="text" 
-                                                    id="deskripsi_wisata" 
-                                                    name="deskripsi_wisata" 
-                                                    value="Peserta: " 
-                                                    class="list-group-item paket-wisata" 
-                                                    disabled
-                                                >
-                                            </ul>
-                                        </div>
+                                        <ul class="list-group mb-3" id="keranjangancestor">
+                                            <!-- Paket Wisata -->
+                                            <div class="card" style="width: 20.5rem; margin-bottom: 20px;">
+                                                <ul class="list-group list-group-flush">
+                                                    <li class="list-group-item card-reservasi">
+                                                        <!-- Nama paket wisata -->
+                                                        <input type="text" value="<?= $rowitem->nama_paket_wisata ?>" class="list-group-item deskripsi-paket" style="background: transparent;
+                            border: none;
+                            color: #fff;
+                            font-weight: bold;" disabled>
+                                                    </li>
+                                                    <input type="text" id="deskripsi_wisata" name="deskripsi_wisata" value="Peserta: " class="list-group-item paket-wisata" disabled>
+                                                </ul>
+                                            </div>
 
-                                        <!-- Paket Donasi -->
-                                        <!-- Sementara Dihapus Dulu -->
+                                            <!-- Paket Donasi -->
+                                            <div class="card" style="width: 20.5rem;">
+                                                <ul class="list-group list-group-flush">
+                                                    <li class="list-group-item card-reservasi">Paket Donasi : </li>
 
-                                        <!-- Total -->
-                                        <div class="card" style="width: 20.5rem;">
-                                            <ul class="list-group list-group-flush">
-                                                <label class="list-group-item card-reservasi">Total : </label>
-                                                <input type="hidden" id="total" name="total" value="" class="list-group-item" style="color: gray;" readonly>
-                                                <input type="text" id="total_reservasi" name="total_reservasi" value="" class="list-group-item" style="color: gray;" readonly>
-                                            </ul>
-                                        </div>
+                                                    <!-- Jenis Terumbu Karang -->
+                                                    <label class="keterangan-paket-donasi">Jenis Terumbu Karang</label>
+                                                    <select class="form-control" id="dd_id_wilayah" onchange="load_detail_lokasi(this.value); myFunction2();">
+                                                        <option value="1" selected disabled>Pilih Jenis Terumbu Karang:</option>
+                                                        <option value="1">Tidak Donasi</option>
 
-                                        <!-- Link Untuk Ke Halaman Donasi Terumbu Karang -->
-                                        <!-- <a class="btn btn-primary btn-lg btn-block mb-4" href="pilih_terumbu_karang.php?id_lokasi=#" style="color: white; width: 20.5rem;">
-                                            Ayo Donasi Terumbu Karang
-                                        </a> -->
-                                    </ul>
-                                <!-- Form extend -->
+                                                        <?php
+                                                        $sqlviewjenis = 'SELECT * FROM t_jenis_terumbu_karang';
+                                                        $stmt = $pdo->prepare($sqlviewjenis);
+                                                        $stmt->execute();
+                                                        $rowjenis = $stmt->fetchAll();
+
+                                                        foreach ($rowjenis as $jenis) { ?>
+                                                            <option value="<?= $jenis->id_jenis ?>">
+                                                                ID <?= $jenis->id_jenis ?> - <?= $jenis->nama_jenis ?>
+                                                            </option>
+                                                        <?php } ?>
+
+                                                    </select>
+
+                                                    <!-- Terumbu Karang -->
+                                                    <label class="keterangan-paket-donasi">Terumbu Karang</label>
+                                                    <select class="form-control" id="id_tk" name="dd_id_tk" onchange="myFunction()">
+                                                        <option value="1" selected disabled>Pilih Terumbu Karang:</option>
+                                                    </select>
+
+                                                    <!-- Info Paket Donasi -->
+                                                    <span class="keterangan-paket-donasi">
+                                                        *Harap Transfer sesuai dengan nominal tunai <br> *Paket Donasi =
+                                                        Sekalian melakukan donasi terumbu karang
+                                                        di Lokasi <br>
+                                                        <b style="color: #17a2b8;"><?= $rowitem->nama_lokasi ?></b>
+                                                    </span>
+
+                                                    <!-- Hiiden Output Jenis Terumbu Karang [data insert donasi] -->
+                                                    <input type="hidden" id="jenis_tk" name="jenis_tk" value="" class="list-group-item paket-wisata" readonly>
+                                                    <!-- Hiiden Output Terumbu Karang -->
+                                                    <input type="hidden" id="terumbu_karang" name="terumbu_karang" value="" class="list-group-item paket-wisata" disabled>
+                                                    <!-- Hiiden Hasil Split Terumbu Karang [data insert donasi] -->
+                                                    <input type="hidden" id="split_tk" name="split_tk" value="" class="list-group-item paket-wisata" readonly>
+                                                    <!-- Hiiden Hasil Split Harga Patokan Terumbu Karang [data insert donasi] -->
+                                                    <input type="hidden" id="nominal" name="nominal[]" value="" class="list-group-item paket-wisata" readonly>
+
+                                                    <!-- Output Hasil Split Harga Patokan Terumbu Karang [data insert wisata] -->
+                                                    <input type="text" id="split_harga_tk" name="split_harga_tk" value="" class="list-group-item" style="color: gray;" readonly>
+
+                                                </ul>
+                                            </div>
+
+                                            <!-- Total -->
+                                            <div class="card" style="width: 20.5rem;">
+                                                <ul class="list-group list-group-flush">
+                                                    <label class="list-group-item card-reservasi">Total : </label>
+                                                    <input type="hidden" id="total" name="total" value="" class="list-group-item" style="color: gray;" readonly>
+                                                    <input type="text" id="total_reservasi" name="total_reservasi" value="" class="list-group-item" style="color: gray;" readonly>
+                                                </ul>
+                                            </div>
+
+                                            <!-- Link Untuk Ke Halaman Donasi Terumbu Karang -->
+                                            <a class="btn btn-primary btn-lg btn-block mb-4" href="pilih_terumbu_karang.php?id_lokasi=<?= $rowitem->id_lokasi ?>" style="color: white; width: 20.5rem;">
+                                                Ayo Donasi Terumbu Karang
+                                            </a>
+                                        </ul>
                             </div>
 
-                            <!-- Div-2 -->
                             <div class="col-md-8 order-md-1 card">
-                                <!-- Area Input Data -->
-                                <h4 class="card-header pl-0">Data Reservasi Wisata</h4>
+                                <h4 class="mb-3 card-header pl-0">Data Reservasi Wisata</h4>
+
                                 <div class="form-group">
+                                    <label for="id_user"></label>
                                     <input type="hidden" id="id_paket_wisata" name="id_paket_wisata" value="<?= $rowitem->id_paket_wisata ?>" class="form-control">
                                 </div>
+
                                 <div class="form-group">
                                     <label for="id_lokasi">ID Lokasi</label>
                                     <input type="hidden" id="id_lokasi" name="id_lokasi" value="<?= $rowitem->id_lokasi ?>" class="form-control">
                                     <input type="text" id="nama_lokasi" name="nama_lokasi" value="<?= $rowitem->nama_lokasi ?>" class="form-control" readonly>
                                 </div>
+
                                 <div class="form-group">
                                     <label for="tgl_reservasi">Tanggal Reservasi</label>
                                     <input type="date" id="tgl_reservasi" name="tgl_reservasi" class="form-control" required>
                                 </div>
+
+
                                 <div class="form-group">
                                     <label for="jumlah_peserta">Jumlah Peserta</label>
                                     <input type="number" id="jumlah_peserta" name="jumlah_peserta" value="1" min="1" max='200' oninput="myFunction()" class="form-control" required>
                                 </div>
-                                <!-- End Area Input Data -->
 
                                 <!-- Paket Wisata -->
-                                <div class="output">
-                                    <p class="btn btn-blue btn-primary" onclick="toggleDetail()">
-                                        <i class="icon fas fa-chevron-down"></i>
-                                        Rincian Data Reservasi Wisata
-                                    </p>
-                                    <div class="detail-toggle" id="main-toggle">
-                                        <div class="" style="width:100%;">
-                                            <div class="">
-                                                <h4 class="card-header mb-2 pl-0">Rincian <?= $rowitem->nama_paket_wisata ?>,<br> Lokasi
-                                                    <span class="text-info font-weight-bolder"> <?= $rowitem->nama_lokasi ?></span>
-                                                </h4>
-                                            </div>
-                                        </div>
-                                        <!-- Wisata -->
-                                        <div class="row">
-                                            <div class="col">
-                                                <h5>
-                                                    <span class="font-weight-bold">
-                                                        <i class="text-info fas fa-luggage-cart"></i> Wisata
-                                                    </span>
-                                                </h5>
-                                            </div>
-                                        </div><p>
-                                        <div class="row">
-                                            <div class="col">
-                                                <!-- Select Wisata -->
-                                                <?php
-                                                $sqlpaketSelect = 'SELECT * FROM t_wisata
-                                                LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                                                WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
+                                <div class="" style="width:100%;">
+                                    <div class="">
+                                        <h4 class="card-header mb-2 pl-0">Rincian <?= $rowitem->nama_paket_wisata ?>,<br> Lokasi
+                                            <span class="text-info font-weight-bolder"> <?= $rowitem->nama_lokasi ?></span>
+                                        </h4>
+                                    </div>
+                                </div>
 
-                                                $stmt = $pdo->prepare($sqlpaketSelect);
-                                                $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                                                $rowWisata = $stmt->fetchAll();
-
-                                                foreach ($rowWisata as $wisata) { ?>
-                                                    <span class="font-weight-bold">
-                                                        <i class="text-info fas fa-arrow-circle-right"></i> 
-                                                        <?= $wisata->judul_wisata ?>
-                                                    </span><br>
-                                                <?php } ?>
-                                            </div>
-                                        </div><p>
-                                        <!-- Fasilitas Wisata -->
-                                        <div class="row">
-                                            <div class="col">
-                                                <h5>
-                                                    <span class="font-weight-bold">
-                                                    <i class="text-info fas fa-cubes"></i> Fasilitas Wisata
-                                                    </span>
-                                                </h5>
-                                            </div>
-                                        </div><p>
-                                        <div class="row">
-                                            <div class="col">
-                                                <?php
-                                                $sqlviewpaket = 'SELECT * FROM tb_fasilitas_wisata
-                                                LEFT JOIN t_pengadaan_fasilitas ON tb_fasilitas_wisata.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
-                                                LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
-                                                LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                                                WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
-                                                AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
-
-                                                $stmt = $pdo->prepare($sqlviewpaket);
-                                                $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                                                $rowfasilitas = $stmt->fetchAll();
-
-                                                foreach ($rowfasilitas as $allfasilitas) { ?>
-                                                    <span class="font-weight-bold">
-                                                        <i class="text-info fas fa-arrow-circle-right"></i> 
-                                                        <?= $allfasilitas->pengadaan_fasilitas ?>
-                                                    </span><br>
-                                                <?php } ?>
-                                            </div>
-                                        </div><p>
-                                        <!-- Asuransi -->
-                                        <div class="row">
-                                            <div class="col">
-                                                <h5>
-                                                    <span class="font-weight-bold">
-                                                        <i class="text-warning fas fa-heartbeat"></i> Asuransi
-                                                    </span>
-                                                </h5>
-                                            </div>
-                                        </div><p>
-                                        <div class="row">
-                                            <div class="col">
-                                                <span class="font-weight-bold">
-                                                    Rp. <?= number_format($rowitem->biaya_asuransi, 0) ?>
-                                                </span><br>
-                                            </div>
-                                        </div><p>
-                                        <!-- Total Pembayaran -->
-                                        <hr class="mb-2" />
+                                <!-- Wisata -->
+                                <div class="row">
+                                    <div class="col">
+                                        <h5><span class="font-weight-bold">
+                                                <i class="text-info fas fa-luggage-cart"></i>
+                                                Wisata</h5>
+                                    </div>
+                                </div>
+                                <p>
+                                <div class="row">
+                                    <div class="col">
+                                        <!-- Select Wisata -->
                                         <?php
-                                        $sqlviewpaket = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_fasilitas, biaya_asuransi
-                                        FROM tb_fasilitas_wisata
-                                        LEFT JOIN t_pengadaan_fasilitas ON tb_fasilitas_wisata.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
-                                        LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
+                                        $sqlpaketSelect = 'SELECT * FROM t_wisata
                                         LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                                        LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
-                                        WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
-                                        AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
+                                        WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
+
+                                        $stmt = $pdo->prepare($sqlpaketSelect);
+                                        $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                        $rowWisata = $stmt->fetchAll();
+
+                                        foreach ($rowWisata as $wisata) { ?>
+                                            <span class="font-weight-bold">
+                                                <i class="text-info fas fa-arrow-circle-right"></i> <?= $wisata->judul_wisata ?></span><br>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <p>
+
+                                    <!-- Fasilitas Wisata -->
+                                <div class="row">
+                                    <div class="col">
+                                        <h5><span class="font-weight-bold">
+                                                <i class="text-info fas fa-cubes"></i>
+                                                Fasilitas Wisata</h5>
+                                    </div>
+                                </div>
+                                <p>
+                                <div class="row">
+                                    <div class="col">
+                                        <?php
+                                        $sqlviewpaket = 'SELECT * FROM tb_fasilitas_wisata
+                                    LEFT JOIN t_pengadaan_fasilitas ON tb_fasilitas_wisata.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                                    LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
+                                    LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                    WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                    AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
+
+                                        $stmt = $pdo->prepare($sqlviewpaket);
+                                        $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                        $rowfasilitas = $stmt->fetchAll();
+
+                                        foreach ($rowfasilitas as $allfasilitas) { ?>
+                                            <span class="font-weight-bold">
+                                                <i class="text-info fas fa-arrow-circle-right"></i> <?= $allfasilitas->pengadaan_fasilitas ?></span><br>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <p>
+
+                                    <!-- Asuransi -->
+                                <div class="row">
+                                    <div class="col">
+                                        <h5><span class="font-weight-bold">
+                                                <i class="text-warning fas fa-heartbeat"></i>
+                                                Asuransi</h5>
+                                    </div>
+                                </div>
+                                <p>
+                                <div class="row">
+                                    <div class="col">
+                                        <span class="font-weight-bold">
+                                            Rp. <?= number_format($rowitem->biaya_asuransi, 0) ?></span><br>
+                                    </div>
+                                </div>
+                                <p>
+
+                                    <hr class="mb-2" />
+                                    <?php
+                                        $sqlviewpaket = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_fasilitas, biaya_asuransi
+                                FROM tb_fasilitas_wisata
+                                LEFT JOIN t_pengadaan_fasilitas ON tb_fasilitas_wisata.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                                LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
+                                LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
+                                WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
                                         $stmt = $pdo->prepare($sqlviewpaket);
                                         $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
@@ -428,113 +439,106 @@ if (isset($_POST['submit'])) {
 
                                         foreach ($rowfasilitas as $fasilitas) {
 
-                                        // Menjumlahkan biaya asuransi dan biaya paket wisata
-                                        $asuransi       = $fasilitas->biaya_asuransi;
-                                        $wisata         = $fasilitas->total_biaya_fasilitas;
-                                        $total_paket    = $asuransi + $wisata; ?>
+                                            // Menjumlahkan biaya asuransi dan biaya paket wisata
+                                            $asuransi       = $fasilitas->biaya_asuransi;
+                                            $wisata         = $fasilitas->total_biaya_fasilitas;
+                                            $total_paket    = $asuransi + $wisata;
 
-                                        <div class="row">
-                                            <div class="col">
-                                                <span class="font-weight-bold">
-                                                    <i class="text-success fas fa-money-bill-wave"></i> Total Paket Wisata:
-                                                </span>
-                                            </div>
-                                            <div class="col-lg-8  mb-2">
-                                                <span class="font-weight-bold">
-                                                    <input type="hidden" id="total_paket_wisata" value="<?= $total_paket ?>">
-                                                    Rp. <input value="<?= number_format($total_paket, 0) ?>" class="paket-wisata font-weight-bold" disabled>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <?php } ?>
-                                        <hr class="mb-2" />
+                                    ?>
+                                <div class="row">
+                                    <div class="col">
+                                        <span class="font-weight-bold">
+                                            <i class="text-success fas fa-money-bill-wave"></i>
+                                            Total Paket Wisata:</span>
+                                    </div>
+                                    <div class="col-lg-8  mb-2">
+                                        <span class="font-weight-bold">
+                                            <input type="hidden" id="total_paket_wisata" value="<?= $total_paket ?>">
+                                            Rp. <input value="<?= number_format($total_paket, 0) ?>" class="paket-wisata font-weight-bold" disabled></span>
                                     </div>
                                 </div>
+                            <?php } ?>
+                            <hr class="mb-2" />
 
-                                <!-- Form Input Data Rekening Wisatawan -->
-                                <?php if ($id_user > 0) { ?>
-                                    <h4 class="mb-3 card-header pl-0">Data Rekening Wisatawan</h4>
-                                    <div class="mb-3">
-                                        <label for="nama_donatur">Nama Pemilik Rekening</label>
-                                        <input type="text" class="form-control data_donatur" id="nama_donatur" name="nama_donatur" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="no_rekening_donatur">Nomor Rekening</label>
-                                        <input type="number" class="form-control data_donatur" id="no_rekening_donatur" name="no_rekening_donatur" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="nama_bank_donatur">Nama Bank</label>
-                                        <input type="text" class="form-control data_donatur" id="nama_bank_donatur" name="nama_bank_donatur" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <!-- Pesan/Ekspresi -->
-                                        <label>
-                                            Pesan/Ekspresi di Terumbu Karang
-                                            <!-- <small style="color: red;">Isi jika melakukan donasi</small> -->
-                                        </label>
-                                        <input type="text" id="pesan" name="pesan" value="-" class="form-control" required>
-                                    </div>
-                                <?php } ?>
+                            <!-- Paket Donasi -->
+                            <?php if ($id_user > 0) { ?>
+                                <div class="output">
 
-                                <!-- Metode Pembayaran -->
-                                <div class="" style="width:100%;">
-                                    <div class="">
-                                        <h4 class="card-header mb-2 pl-0">Metode Pembayaran</h4>
-                                        <span class="">Pilihan untuk lokasi :</span> 
-                                        <span class="text-info font-weight-bolder"> <?= $rowitem->nama_lokasi ?></span>
-                                        
-                                        <?php foreach($rowrekening as $rekening) {?>
-                                        <div class="d-block my-4">
-                                            <div class="rounded p-sm-4 pt-2 shadow-sm border">
-                                                <div class="custom-control custom-radio">
-                                                    <input id="id_rekening<?=$rekening->id_rekening_bank?>" onchange="updateData(this.value)" name="id_rekening_bersama" type="radio" value="<?=$rekening->id_rekening_bank?>" class="custom-control-input" required>
-                                                    <label class="custom-control-label " for="id_rekening<?=$rekening->id_rekening_bank?>">Bank Transfer - <span class=""><?=$rekening->nama_bank?> (Konfirmasi Manual)</label>
-                                                </div>
-                                                <hr class="mb-1"/>
-                                                <div class="pl-2">
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <span class="font-weight-bold">Nama Rekening Pengelola
-                                                        </div>
-                                                        <div class="col-lg-8 mb-2">
-                                                            <span class=""><?=$rekening->nama_pemilik_rekening?></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <span class="font-weight-bold">Nomor Rekening Pengelola  </span>
-                                                        </div>
-                                                        <div class="col-lg-8  mb-2">
-                                                            <span class=""><?=$rekening->nomor_rekening?></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mb-2">
-                                                        <div class="col">
-                                                            <span class="font-weight-bold">Bank Pengelola  </span>
-                                                        </div>
-                                                        <div class="col-lg-8  mb-2">
-                                                            <span class=""><?=$rekening->nama_bank?></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <p class="btn btn-blue btn-primary" onclick="toggleDetail()">
+                                        <i class="icon fas fa-chevron-down"></i>
+                                        Isi Rincian Data Rekening Reservasi Wisata
+                                    </p>
+                                    <div class="detail-toggle" id="main-toggle">
+                                        <h4 class="mb-3 card-header pl-0">Data Rekening Wisatawan</h4>
+                                        <div class="mb-3">
+                                            <label for="nama_donatur">Nama Pemilik Rekening</label>
+                                            <input type="text" class="form-control data_donatur" id="nama_donatur" name="nama_donatur">
                                         </div>
-                                        <?php } ?>
-
-                                        <p class="text-muted">
-                                            <i class="fas fa-info-circle"></i> 
-                                            Harap upload bukti transfer di halaman "Reservasi Saya" setelah menekan tombol Buat Reservasi Wisata.
-                                        </p>
-                                        <button type="submit" name="submit" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4">Buat Reservasi Wisata</button>
+                                        <div class="mb-3">
+                                            <label for="no_rekening_donatur">Nomor Rekening</label>
+                                            <input type="number" class="form-control data_donatur" id="no_rekening_donatur" name="no_rekening_donatur">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="nama_bank_donatur">Nama Bank</label>
+                                            <input type="text" class="form-control data_donatur" id="nama_bank_donatur" name="nama_bank_donatur">
+                                        </div>
+                                        <div class="mb-3">
+                                            <!-- Pesan/Ekspresi -->
+                                            <label>Pesan/Ekspresi di Terumbu Karang,
+                                                <small style="color: red;">Isi jika melakukan donasi</small></label>
+                                            <input type="text" id="pesan" name="pesan" value="-" class="form-control">
+                                        </div>
                                     </div>
+
                                 </div>
-                                <!-- End Foreach -->
+                            <?php } ?>
+
+                            <!-- Metode Pembayaran -->
+                            <div class="" style="width:100%;">
+                                <div class="">
+                                    <h4 class="card-header mb-2 pl-0">Metode Pembayaran</h4>
+                                    <span class="">Pilihan untuk lokasi :</span> <span class="text-info font-weight-bolder"> <?= $rowitem->nama_lokasi ?></span>
+                                    <div class="d-block my-3">
+                                        <div class="custom-control custom-radio">
+                                            <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+                                            <label class="custom-control-label  mb-2" for="credit">Bank Transfer (Konfirmasi Manual)</label>
+                                            <p class="text-muted">Harap upload bukti transfer agar reservasi wisata segera diproses pengelola lokasi.</p>
+                                        </div>
+                                    </div>
+                                    <hr class="mb-2" />
+                                    <div class="row">
+                                        <div class="col">
+                                            <span class="font-weight-bold">
+                                                <i class="fas fa-user-tie"></i> Nama Rekening Pengelola</span>
+                                        </div>
+                                        <div class="col-lg-6 mb-2">
+                                            <span class=""><?= $rowrekening->nama_pemilik_rekening ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <span class="font-weight-bold">
+                                                <i class="text-warning fas fa-university"></i> Nomor Rekening Pengelola</span>
+                                        </div>
+                                        <div class="col-lg-6  mb-2">
+                                            <span class=""><?= $rowrekening->nomor_rekening ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col">
+                                            <span class="font-weight-bold">
+                                                <i class="text-info fas fa-hashtag"></i> Bank Pengelola</span>
+                                        </div>
+                                        <div class="col-lg-6  mb-2">
+                                            <span class=""><?= $rowrekening->nama_bank ?></span>
+                                        </div>
+                                    </div>
+                                    <button type="submit" name="submit" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4">Buat Reservasi Wisata</button>
                                 <?php } ?>
-                                <!-- End Form -->
                                 </form>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                            <!-- /.container-fluid -->
                 </section>
             <?php } ?>
             <!-- /.content -->
@@ -574,24 +578,24 @@ if (isset($_POST['submit'])) {
         function myFunction() {
             var jumlah_peserta = document.getElementById("jumlah_peserta").value;
             var paket_wisata = document.getElementById("total_paket_wisata").value;
-            //var id_tk = document.getElementById("id_tk").value; //data terumbu karang
-            //var nominal = document.getElementById("id_tk").value; //data nominal terumbu karang
+            var id_tk = document.getElementById("id_tk").value; //data terumbu karang
+            var nominal = document.getElementById("id_tk").value; //data nominal terumbu karang
 
             var deskripsi = jumlah_peserta;
             var reservasi = jumlah_peserta * paket_wisata; //5 x 750.000 = 3.750.000
             var total_reservasi = reservasi;
-            // var terumbu_karang = id_tk;
-            // var hasil_split = nominal.split("-");
-            // var split_tk = hasil_split[0];
-            // var split_harga_tk = hasil_split[1];
+            var terumbu_karang = id_tk;
+            var hasil_split = nominal.split("-");
+            var split_tk = hasil_split[0];
+            var split_harga_tk = hasil_split[1];
 
-            // if (id_tk == 1) {
-            //     var jenis_tk = null;
-            //     var split_harga_tk = null;
-            //     var hasil = total_reservasi;
-            // } else {
-            //     var hasil = parseInt(total_reservasi) + parseInt(split_harga_tk);
-            // }
+            if (id_tk == 1) {
+                var jenis_tk = null;
+                var split_harga_tk = null;
+                var hasil = total_reservasi;
+            } else {
+                var hasil = parseInt(total_reservasi) + parseInt(split_harga_tk);
+            }
 
             // Format untuk number.
             var formatter = new Intl.NumberFormat('id-ID', {
@@ -600,44 +604,45 @@ if (isset($_POST['submit'])) {
             });
 
             document.getElementById("deskripsi_wisata").value = "Peserta: " + deskripsi;
-            // document.getElementById("terumbu_karang").value = terumbu_karang;
-            // document.getElementById("split_tk").value = split_tk;
-            // document.getElementById("split_harga_tk").value = split_harga_tk;
-            // document.getElementById("nominal").value = split_harga_tk;
-            document.getElementById("total").value = total_reservasi; //total dari total_reservasi * donasi
-            document.getElementById("total_reservasi").value = formatter.format(total_reservasi); //total dari total_reservasi * donasi
+            document.getElementById("terumbu_karang").value = terumbu_karang;
+            document.getElementById("split_tk").value = split_tk;
+            document.getElementById("split_harga_tk").value = split_harga_tk;
+            document.getElementById("nominal").value = split_harga_tk;
+            document.getElementById("total").value = hasil; //total dari total_reservasi * donasi
+            document.getElementById("total_reservasi").value = formatter.format(hasil); //total dari total_reservasi * donasi
+            //document.write(harga_tk);
         }
 
-        // Jenis Terumbu Karang
-        // function myFunction2() {
-        //     var id_jenis = document.getElementById("dd_id_wilayah").value; //data jenis terumbu karang
+        //Jenis Terumbu Karang
+        function myFunction2() {
+            var id_jenis = document.getElementById("dd_id_wilayah").value; //data jenis terumbu karang
 
-        //     if (id_jenis == 1) {
-        //         var jenis = null;
-        //     } else {
-        //         var jenis = id_jenis;
-        //     }
+            if (id_jenis == 1) {
+                var jenis = null;
+            } else {
+                var jenis = id_jenis;
+            }
 
-        //     document.getElementById("jenis_tk").value = jenis;
-        // }
+            document.getElementById("jenis_tk").value = jenis;
+        }
 
-        // function load_detail_lokasi(id_jenis) {
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "list_populate.php",
-        //         data: {
-        //             id_jenis: id_jenis,
-        //             type: 'load_detail_lokasi'
-        //         },
-        //         beforeSend: function() {
-        //             $("#id_tk").addClass("loader");
-        //         },
-        //         success: function(data) {
-        //             $("#id_tk").html(data);
-        //             $("#id_tk").removeClass("loader");
-        //         }
-        //     });
-        // }
+        function load_detail_lokasi(id_jenis) {
+            $.ajax({
+                type: "POST",
+                url: "list_populate.php",
+                data: {
+                    id_jenis: id_jenis,
+                    type: 'load_detail_lokasi'
+                },
+                beforeSend: function() {
+                    $("#id_tk").addClass("loader");
+                },
+                success: function(data) {
+                    $("#id_tk").html(data);
+                    $("#id_tk").removeClass("loader");
+                }
+            });
+        }
     </script>
 
     <!-- Get value selected untuk menampilkan ke input -->
