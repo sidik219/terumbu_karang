@@ -7,29 +7,37 @@ $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
 if (isset($_POST['submit'])) {
-    $i = 0;
-    foreach ($_POST['nama_fasilitas'] as $nama_fasilitas) {
-        $id_pengadaan           = $_POST['nama_fasilitas'][$i];
-        $status_kerjasama       = $_POST['status_kerjasama'][$i];
-        $pembagian_kerjasama    = $_POST['pembagian_kerjasama'][$i];
+    $id_pengadaan           = $_POST['nama_fasilitas'];
+    $status_kerjasama       = $_POST['status_kerjasama'];
+    $pembagian_kerjasama    = $_POST['pembagian_kerjasama'];
+    $biaya_kerjasama        = $_POST['biaya_kerjasama'];
+    $pembagian_hasil        = $_POST['pembagian_hasil'];
 
-        $sqlkerjasama = "INSERT INTO t_kerjasama (id_pengadaan, status_kerjasama, pembagian_kerjasama)
-                                    VALUES (:id_pengadaan, :status_kerjasama, :pembagian_kerjasama)";
+    $sqlkerjasama = "INSERT INTO t_kerjasama (id_pengadaan, 
+                                            status_kerjasama, 
+                                            pembagian_kerjasama, 
+                                            biaya_kerjasama, 
+                                            pembagian_hasil)
+                                VALUES (:id_pengadaan, 
+                                        :status_kerjasama, 
+                                        :pembagian_kerjasama, 
+                                        :biaya_kerjasama, 
+                                        :pembagian_hasil)";
 
-        $stmt = $pdo->prepare($sqlkerjasama);
-        $stmt->execute(['id_pengadaan'   => $id_pengadaan,
-                        'status_kerjasama'  => $status_kerjasama,
-                        'pembagian_kerjasama'  => $pembagian_kerjasama]);
+    $stmt = $pdo->prepare($sqlkerjasama);
+    $stmt->execute(['id_pengadaan'   => $id_pengadaan,
+                    'status_kerjasama'  => $status_kerjasama,
+                    'pembagian_kerjasama'  => $pembagian_kerjasama,
+                    'biaya_kerjasama'  => $biaya_kerjasama,
+                    'pembagian_hasil'  => $pembagian_hasil]);
 
-        $affectedrows = $stmt->rowCount();
-        if ($affectedrows == '0') {
-            header("Location: input_kerjasama.php?status=insertfailed");
-        } else {
-            //echo "HAHAHAAHA GREAT SUCCESSS !";
-            header("Location: kelola_kerjasama.php?status=addsuccess");
-        }
-        $i++;
-    } //End Foreach
+    $affectedrows = $stmt->rowCount();
+    if ($affectedrows == '0') {
+        header("Location: input_kerjasama.php?status=insertfailed");
+    } else {
+        //echo "HAHAHAAHA GREAT SUCCESSS !";
+        header("Location: kelola_kerjasama.php?status=addsuccess");
+    }
 }
 ?>
 
@@ -125,60 +133,10 @@ if (isset($_POST['submit'])) {
                     <form action="" enctype="multipart/form-data" method="POST">
 
                     <div class="form-group field_wrapper">
-                        <label for="paket_wisata">Kerjasama Fasilitas</label><br>
-                        <div class="form-group fieldGroup">
-                            <div class="input-group">
-                                <select class="form-control" name="nama_fasilitas[]" id="exampleFormControlSelect1">
-                                    <option selected disabled>Fasilitas Wisata:</option>
-                                    <?php
-                                    $sqlpengadaan = 'SELECT * FROM t_pengadaan_fasilitas
-                                                        ORDER BY id_pengadaan DESC';
-                                    $stmt = $pdo->prepare($sqlpengadaan);
-                                    $stmt->execute();
-                                    $rowpengadaan = $stmt->fetchAll();
-
-                                    foreach ($rowpengadaan as $pengadaan) { ?>
-                                    <option value="<?=$pengadaan->id_pengadaan?>">
-                                        <?=$pengadaan->pengadaan_fasilitas?>
-                                    </option>
-                                    <?php } ?>
-                                </select>
-                                <select class="form-control" name="status_kerjasama[]" id="exampleFormControlSelect1">
-                                    <option selected disabled>Status Kerjasama:</option>
-                                    <option value="Tidak Melakukan Kerjasama">Tidak Melakukan Kerjasama</option>
-                                    <option value="Melakukan Kerjasama">Melakukan Kerjasama</option>
-                                </select>
-                                <select class="form-control" name="pembagian_kerjasama[]" id="exampleFormControlSelect1">
-                                    <option selected disabled>Pembagian Kerjasama:</option>
-                                    <option value="0">0%</option>
-                                    <option value="0.1">10%</option>
-                                    <option value="0.2">20%</option>
-                                    <option value="0.3">30%</option>
-                                    <option value="0.4">40%</option>
-                                    <option value="0.5">50%</option>
-                                    <option value="0.6">60%</option>
-                                    <option value="0.7">70%</option>
-                                    <option value="0.8">80%</option>
-                                    <option value="0.9">90%</option>
-                                </select>
-                                <div class="input-group-addon">
-                                    <a href="javascript:void(0)" class="btn btn-success addMore">
-                                        <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Kerjasama
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p align="center">
-                    <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
-                    </form><br><br>
-
-                    <!-- copy of input fields group -->
-                    <div class="form-group fieldGroupCopy" style="display: none;">
-                        <div class="input-group">
-                            <select class="form-control" name="nama_fasilitas[]" id="exampleFormControlSelect1">
-                                <option selected disabled>Fasilitas Wisata:</option>
+                        <div class="form-group">
+                            <label for="nama_fasilitas">Fasilitas Wisata</label>
+                            <select class="form-control" name="nama_fasilitas" id="exampleFormControlSelect1">
+                                <option selected disabled>Pilih Fasilitas Wisata:</option>
                                 <?php
                                 $sqlpengadaan = 'SELECT * FROM t_pengadaan_fasilitas
                                                     ORDER BY id_pengadaan DESC';
@@ -192,13 +150,19 @@ if (isset($_POST['submit'])) {
                                 </option>
                                 <?php } ?>
                             </select>
-                            <select class="form-control" name="status_kerjasama[]" id="exampleFormControlSelect1">
-                                <option selected disabled>Status Kerjasama:</option>
+                        </div>
+                        <div class="form-group">
+                            <label for="status_kerjasama">Status Kerjasama</label>
+                            <select class="form-control" name="status_kerjasama" id="exampleFormControlSelect1">
+                                <option selected disabled>Pilih Status Kerjasama:</option>
                                 <option value="Tidak Melakukan Kerjasama">Tidak Melakukan Kerjasama</option>
                                 <option value="Melakukan Kerjasama">Melakukan Kerjasama</option>
                             </select>
-                            <select class="form-control" name="pembagian_kerjasama[]" id="exampleFormControlSelect1">
-                                <option selected disabled>Pembagian Kerjasama:</option>
+                        </div>
+                        <div class="form-group">
+                            <label for="pembagian_kerjasama">Pembagian Kerjasama</label>
+                            <select class="form-control" name="pembagian_kerjasama" id="persentase" onchange="myPersentase();">
+                                <option selected disabled>Pilih Pembagian Kerjasama:</option>
                                 <option value="0">0%</option>
                                 <option value="0.1">10%</option>
                                 <option value="0.2">20%</option>
@@ -210,13 +174,23 @@ if (isset($_POST['submit'])) {
                                 <option value="0.8">80%</option>
                                 <option value="0.9">90%</option>
                             </select>
-                            <div class="input-group-addon">
-                                <a href="javascript:void(0)" class="btn btn-danger remove">
-                                    <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Kerjasama
-                                </a>
-                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="biaya_kerjasama">Biaya Fasilitas</label>
+                            <input type="number" id="biaya_kerjasama" name="biaya_kerjasama" class="form-control" onchange="myPersentase();" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pembagian_hasil">Pembagian Hasil</label>
+                            <!-- Output for display in form -->
+                            <input type="text" id="hasil" class="form-control" required readonly>
+                            <!-- Hidden Output insert to DB -->
+                            <input type="hidden" id="pembagian_hasil" name="pembagian_hasil" value="" class="form-control" required>
                         </div>
                     </div>
+
+                    <p align="center">
+                    <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
+                    </form><br><br>
 
             </section>
             <!-- /.Left col -->
@@ -249,25 +223,23 @@ if (isset($_POST['submit'])) {
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
     <script>
-        $(document).ready(function(){
-        //group add limit
-        var maxGroup = 3;
+        function myPersentase() {
+            var persentase = document.getElementById("persentase").value;
+            var biaya_kerjasama = document.getElementById("biaya_kerjasama").value;
 
-        //add more fields group
-        $(".addMore").click(function(){
-            if($('body').find('.fieldGroup').length < maxGroup){
-                var fieldHTML = '<div class="form-group fieldGroup">'+$(".fieldGroupCopy").html()+'</div>';
-                $('body').find('.fieldGroup:last').after(fieldHTML);
-            }else{
-                alert('Maksimal '+maxGroup+' Kerjasama fasilitas yang boleh dibuat.');
-            }
-        });
+            var pembagian = parseFloat(persentase) * biaya_kerjasama;
+            var hasil = pembagian;
+            console.log(hasil);
 
-        //remove fields group
-        $("body").on("click",".remove",function(){
-            $(this).parents(".fieldGroup").remove();
-        });
-    });
+            // Format untuk number.
+            var formatter = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+            });
+
+            document.getElementById("hasil").value = formatter.format(hasil); //Untuk Ditampilkan
+            document.getElementById("pembagian_hasil").value = hasil; //Untuk insert ke DB
+        }
     </script>
 
 </div>
