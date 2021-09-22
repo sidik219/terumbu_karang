@@ -18,6 +18,11 @@ if(isset($_SESSION['data_donasi'])){
   $tanggal_donasi = date ('Y-m-d H:i:s', time());
   $id_rekening_bersama = $keranjang->id_rekening_bersama;
 
+  $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank WHERE id_rekening_bank = :id_rekening_bank';
+    $stmt = $pdo->prepare($sqlviewrekeningbersama);
+    $stmt->execute(['id_rekening_bank' => $id_rekening_bersama]);
+    $rekening = $stmt->fetch();
+
   $sqlinsertdonasi = "INSERT INTO t_donasi
         (id_user, nominal, deskripsi_donasi, id_lokasi, id_status_donasi, pesan, nama_donatur, bank_donatur, nomor_rekening_donatur, tanggal_donasi, update_terakhir, id_rekening_bersama)
         VALUES (:id_user, :nominal, :deskripsi_donasi, :id_lokasi, :id_status_donasi,
@@ -38,10 +43,19 @@ if(isset($_SESSION['data_donasi'])){
 
     }
 
+    $list_terumbu = '';
+
     foreach ($keranjang->keranjang as $isi){
         $id_terumbu_karang = $isi->id_tk;
         $jumlah_terumbu = $isi->jumlah_tk;
         $id_donasi = $last_id;
+
+        $sqlviewrekeningbersama = 'SELECT * FROM t_terumbu_karang WHERE id_terumbu_karang = :id_terumbu_karang';
+        $stmt = $pdo->prepare($sqlviewrekeningbersama);
+        $stmt->execute(['id_terumbu_karang' => $id_terumbu_karang]);
+        $terumbu = $stmt->fetch();
+
+        $list_terumbu .= '<br>'.$terumbu->nama_terumbu_karang.' x'.$jumlah_terumbu;
 
         $sqlinsertdetaildonasi = "INSERT INTO t_detail_donasi
         (id_donasi, id_terumbu_karang, jumlah_terumbu)
@@ -60,12 +74,30 @@ if(isset($_SESSION['data_donasi'])){
         $stmt->execute(['id_lokasi' => $id_lokasi, 'id_terumbu_karang' => $id_terumbu_karang , 'jumlah_terumbu' => 0]);
 
       }
+      include 'includes/email_handler.php'; //PHPMailer
+      $email = $_SESSION['email'];
+      $username = $_SESSION['username'];
+      $nama_user = $_SESSION['nama_user'];
+
+      $subjek = 'Informasi Pembayaran Donasi Terumbu Karang GoKarang';
+      $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+          <br>Yth. '.$nama_user.'
+          <br>Terima kasih telah membuat donasi terumbu karang di GoKarang!
+          <br>Berikut rincian donasi anda:          
+          <br>Bank Tujuan Pembayaran: '.$rekening->nama_bank.'
+          <br>Nomor Rekening: '.$rekening->nomor_rekening.'
+          <br>Nama Rekening: '.$rekening->nama_pemilik_rekening.'
+          <br>Nominal pembayaran: Rp. '.number_format($nominal, 0).'
+          <br>
+          <br>Terumbu karang pilihan:'.$list_terumbu.'
+          <br>
+          <br>Username anda: '.$username.'
+          <br>Harap upload bukti pembayaran donasi (format gambar .JPG) di link berikut:
+          <br><a href="https://tkjb.or.id/edit_donasi_saya.php?id_donasi='.$id_donasi.'">Upload Bukti Pembayaran</a>
+      ';
+      
+      smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
       header("Location:donasi_saya.php?status=addsuccess");
-
-
-
-
-
 
 }
 else{
