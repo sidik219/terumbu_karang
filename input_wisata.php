@@ -154,7 +154,7 @@ if (isset($_POST['submit'])) {
                 </div>
                 <div align="right">
                     <a class="btn btn-outline-primary" href="input_paket_wisata.php">
-                    Selanjutnya Fasilitas Wisata <i class="fas fa-angle-right"></i></a>
+                    Selanjutnya Input Paket Wisata <i class="fas fa-angle-right"></i></a>
                 </div>
                 <!-- /.container-fluid -->
             </div>

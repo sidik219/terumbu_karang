@@ -1,7 +1,7 @@
 <?php include 'build/config/connection.php';
 session_start();
-if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
-  header('location: login.php?status=restrictedaccess');
+if (!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)) {
+    header('location: login.php?status=restrictedaccess');
 }
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
@@ -16,8 +16,10 @@ if (isset($_POST['submit'])) {
                                     VALUES (:pengadaan_fasilitas, :status_pengadaan)";
 
         $stmt = $pdo->prepare($sqlpengadaan);
-        $stmt->execute(['pengadaan_fasilitas'   => $pengadaan_fasilitas,
-                        'status_pengadaan'  => $status_pengadaan]);
+        $stmt->execute([
+            'pengadaan_fasilitas'   => $pengadaan_fasilitas,
+            'status_pengadaan'  => $status_pengadaan
+        ]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
@@ -33,16 +35,17 @@ if (isset($_POST['submit'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Kelola Pengadaan Fasilitas - GoKarang</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
-        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-        <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
-        <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/style-card.css">
@@ -70,9 +73,9 @@ if (isset($_POST['submit'])) {
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Akun Saya</a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">Edit Profil</a>
+                        <a class="dropdown-item" href="logout.php">Logout</a>
                 </li>
             </ul>
         </nav>
@@ -90,8 +93,9 @@ if (isset($_POST['submit'])) {
             <div class="sidebar">
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
-                   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php print_sidebar(basename(__FILE__), $_SESSION['level_user'])?> <!-- Print sidebar -->
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <?php print_sidebar(basename(__FILE__), $_SESSION['level_user']) ?>
+                        <!-- Print sidebar -->
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -104,52 +108,56 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="kelola_pengadaan_fasilitas.php">< Kembali</a><br><br>
-                    <h4><span class="align-middle font-weight-bold">Input Data Pengadaan Fasilitas</span></h4>
-                    <ul class="app-breadcrumb breadcrumb" style="margin-bottom: 20px;">
-                        <li class="breadcrumb-item">
-                            <a href="kelola_pengadaan_fasilitas.php" class="non">Kelola Pengadaan Fasilitas</a></li>
-                        <li class="breadcrumb-item">
-                            <a href="input_pengadaan_fasilitas.php" class="tanda">Input Pengadaan Fasilitas</a></li>
-                    </ul>
+                    <a class="btn btn-outline-primary" href="kelola_pengadaan_fasilitas.php">
+                        < Kembali</a><br><br>
+                            <h4><span class="align-middle font-weight-bold">Input Data Pengadaan Fasilitas</span></h4>
+                            <ul class="app-breadcrumb breadcrumb" style="margin-bottom: 20px;">
+                                <li class="breadcrumb-item">
+                                    <a href="kelola_pengadaan_fasilitas.php" class="non">Kelola Pengadaan Fasilitas</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="input_pengadaan_fasilitas.php" class="tanda">Input Pengadaan Fasilitas</a>
+                                </li>
+                            </ul>
                 </div>
                 <!-- /.container-fluid -->
             </div>
             <!-- /.content-header -->
-
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
 
-                    <div class="form-group field_wrapper">
-                        <label for="paket_wisata">Pengadaan Fasilitas</label><br>
-                        <div class="form-group fieldGroup">
-                            <div class="input-group">
-                                <input type="text" name="pengadaan_fasilitas[]" min="0" class="form-control" placeholder="Pengadaan Fasilitas"/>
-                                <select class="form-control" name="status_pengadaan[]" id="exampleFormControlSelect1">
-                                    <option selected disabled>Status Pengadaan:</option>
-                                    <option value="Baik">Baik</option>
-                                    <option value="Rusak">Rusak</option>
-                                    <option value="Hilang">Hilang</option>
-                                </select>
-                                <div class="input-group-addon">
-                                    <a href="javascript:void(0)" class="btn btn-success addMore">
-                                        <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Pengadaan
-                                    </a>
+                        <div class="form-group field_wrapper">
+                            <label for="paket_wisata">Pengadaan Fasilitas</label><br>
+                            <p class="small">Inputan Pengadaan Fasilitas Maksimal 3</p>
+                            <div class="form-group fieldGroup">
+                                <div class="input-group">
+                                    <input type="text" name="pengadaan_fasilitas[]" min="0" class="form-control" placeholder="Pengadaan Fasilitas" />
+                                    <select class="form-control" name="status_pengadaan[]" id="exampleFormControlSelect1">
+                                        <option selected disabled>Status Pengadaan:</option>
+                                        <option value="Baik">Baik</option>
+                                        <option value="Rusak">Rusak</option>
+                                        <option value="Hilang">Hilang</option>
+                                    </select>
+                                    <div class="input-group-addon">
+                                        <a href="javascript:void(0)" class="btn btn-success addMore">
+                                            <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Pengadaan
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <p align="center">
-                    <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
+                        <p align="center">
+                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button>
+                        </p>
                     </form><br><br>
 
                     <!-- copy of input fields group -->
                     <div class="form-group fieldGroupCopy" style="display: none;">
                         <div class="input-group">
-                            <input type="text" name="pengadaan_fasilitas[]" min="0" class="form-control" placeholder="Pengadaan Fasilitas"/>
+                            <input type="text" name="pengadaan_fasilitas[]" min="0" class="form-control" placeholder="Pengadaan Fasilitas" />
                             <select class="form-control" name="status_pengadaan[]" id="exampleFormControlSelect1">
                                 <option selected disabled>Status Pengadaan:</option>
                                 <option value="Baik">Baik</option>
@@ -166,12 +174,12 @@ if (isset($_POST['submit'])) {
 
             </section>
             <!-- /.Left col -->
-            </div>
-            <!-- /.row (main row) -->
         </div>
-        <!-- /.container-fluid -->
-        </section>
-        <!-- /.content -->
+        <!-- /.row (main row) -->
+    </div>
+    <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
 
@@ -181,43 +189,44 @@ if (isset($_POST['submit'])) {
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
+        <!-- Control sidebar content goes here -->
     </aside>
     <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
-<div>
-    <!-- jQuery -->
-    <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- overlayScrollbars -->
-    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.js"></script>
-    <script>
-        $(document).ready(function(){
-        //group add limit
-        var maxGroup = 3;
+    <div>
+        <!-- jQuery -->
+        <!-- Bootstrap 4 -->
+        <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- overlayScrollbars -->
+        <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="dist/js/adminlte.js"></script>
+        <script>
+            $(document).ready(function() {
+                //group add limit
+                var maxGroup = 3;
 
-        //add more fields group
-        $(".addMore").click(function(){
-            if($('body').find('.fieldGroup').length < maxGroup){
-                var fieldHTML = '<div class="form-group fieldGroup">'+$(".fieldGroupCopy").html()+'</div>';
-                $('body').find('.fieldGroup:last').after(fieldHTML);
-            }else{
-                alert('Maksimal '+maxGroup+' Pengadaan fasilitas yang boleh dibuat.');
-            }
-        });
+                //add more fields group
+                $(".addMore").click(function() {
+                    if ($('body').find('.fieldGroup').length < maxGroup) {
+                        var fieldHTML = '<div class="form-group fieldGroup">' + $(".fieldGroupCopy").html() + '</div>';
+                        $('body').find('.fieldGroup:last').after(fieldHTML);
+                    } else {
+                        alert('Maksimal ' + maxGroup + ' Pengadaan fasilitas yang boleh dibuat.');
+                    }
+                });
 
-        //remove fields group
-        $("body").on("click",".remove",function(){
-            $(this).parents(".fieldGroup").remove();
-        });
-    });
-    </script>
+                //remove fields group
+                $("body").on("click", ".remove", function() {
+                    $(this).parents(".fieldGroup").remove();
+                });
+            });
+        </script>
 
-</div>
-<!-- Import Trumbowyg font size JS at the end of <body>... -->
-<script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
+    </div>
+    <!-- Import Trumbowyg font size JS at the end of <body>... -->
+    <script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
 </body>
+
 </html>

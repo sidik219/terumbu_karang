@@ -39,8 +39,8 @@ else if($level_user == 4){
   $extra_query_k_titik = "  ";
 }
 
-if(isset($_GET['id_status_reservasi_wisata'])){
-  $id_status_reservasi_wisata = $_GET['id_status_reservasi_wisata'];
+if (isset($_GET['id_status_reservasi_wisata'])) {
+    $id_status_reservasi_wisata = $_GET['id_status_reservasi_wisata'];
 
     if($id_status_reservasi_wisata == 1){ //reservasi baru
         $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
@@ -51,7 +51,7 @@ if(isset($_GET['id_status_reservasi_wisata'])){
                     WHERE t_reservasi_wisata.id_status_reservasi_wisata = 1 '.$extra_query_k_lok.'
                     ORDER BY id_reservasi DESC';
     }
-    elseif($id_status_reservasi_wisata == 2){ //reservasi bermasalah
+    elseif($id_status_reservasi_wisata == 2){ //reservasi Lama
         $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
                     LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                     LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
@@ -72,13 +72,13 @@ if(isset($_GET['id_status_reservasi_wisata'])){
         $stmt = $pdo->prepare($sqlviewreservasi);
         $stmt->execute();
         $row = $stmt->fetchAll();
-}
-else{//reservasi umum
+} else {
     $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
-                  LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
-                  LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
-                  LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-                  LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata '.$extra_query_noand_where_k_reservasi.'
+                    LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                    LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                    LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                    LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                    WHERE t_reservasi_wisata.id_status_reservasi_wisata = 1 '.$extra_query_k_lok.'
                   ORDER BY id_reservasi DESC';
     $stmt = $pdo->prepare($sqlviewreservasi);
     $stmt->execute();
@@ -192,10 +192,10 @@ function alertPembayaran($dob){
                             </a>
 
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="kelola_reservasi_wisata.php">Tampilkan Semua</a>
+                                <!-- <a class="dropdown-item" href="kelola_reservasi_wisata.php">Tampilkan Semua</a> -->
                                 <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=1">Reservasi Wisata Baru</a>
                                 <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=2">Reservasi Wisata Lama</a>
-                                <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=3">Reservasi Bermasalah</a>
+                                <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=3">Reservasi Wisata Bermasalah</a>
                             </div>
                         </div>
 
