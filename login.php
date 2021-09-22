@@ -10,12 +10,12 @@ if (isset($_POST['login'])) {
     $stmt->execute(['username' => $username]);
     $row = $stmt->fetch();
 
-    if (!empty($row)) {        
-        if (password_verify($password, $row->password)) {          
-          if($row->aktivasi_user != 1){
+    if (!empty($row)) {
+        if($row->aktivasi_user != 1){
               header('Location: login.php?pesan=belum_konfirmasi_email');
               return 0;
         }
+        if (password_verify($password, $row->password)) {          
             if ($row->level_user == "1") {
                 $_SESSION['id_user']        = $row->id_user;
                 $_SESSION['username']        = $row->username;
@@ -135,16 +135,6 @@ if (isset($_POST['login'])) {
                           Konfirmasi Email berhasil! Silahkan Log In. Terima kasih.
                       </div>';
                     }
-                    else if ($_GET['pesan'] == 'request_password_reset_berhasil'){
-                      echo '<div class="alert alert-success" role="alert">
-                          Email konfirmasi Reset Password telah dikirim. Terima kasih.
-                      </div>';
-                    }
-                    else if ($_GET['pesan'] == 'reset_password_berhasil'){
-                      echo '<div class="alert alert-success" role="alert">
-                          Password anda berhasil diperbarui. Silahkan Log In.
-                      </div>';
-                    }
                   else{                    
                       echo '<div class="alert alert-warning" role="alert">
                           Username atau password salah.
@@ -167,20 +157,13 @@ if (isset($_POST['login'])) {
 
     					<div class="container-login100-form-btn m-t-20">
     						<button type="submit" name="login" class="login100-form-btn">
-    							Log In
+    							Login
     						</button>
               </div>
 
 
                         <br>
     					<div class="text-center">
-              <span class="txt1">
-    							Lupa password?
-    						</span>
-                <a href="request_password_reset.php" class="txt2 hov1">
-    							Reset Password
-                </a><br><br>
-
     						<span class="txt1">
     							Belum punya akun donatur?
     						</span>
