@@ -1,5 +1,4 @@
 <?php
-
 include 'build/config/connection.php';
 session_start();
 if(isset($_SESSION['data_donasi'])){
@@ -32,7 +31,8 @@ if(isset($_SESSION['data_donasi'])){
     $stmt = $pdo->prepare($sqlinsertdonasi);
     $stmt->execute(['id_user' => $id_user, 'nominal' => $nominal , 'deskripsi_donasi' => $deskripsi_donasi,
     'id_lokasi' => $id_lokasi , 'id_status_donasi' => $id_status_donasi, 'pesan' => $pesan ,
-    'nama_donatur' => $nama_donatur, 'bank_donatur' => $bank_donatur, 'nomor_rekening_donatur' => $nomor_rekening_donatur, 'tanggal_donasi' => $tanggal_donasi, 'update_terakhir' => $tanggal_donasi, 'id_rekening_bersama' => $id_rekening_bersama]);
+    'nama_donatur' => $nama_donatur, 'bank_donatur' => $bank_donatur, 'nomor_rekening_donatur' => $nomor_rekening_donatur, 
+    'tanggal_donasi' => $tanggal_donasi, 'update_terakhir' => $tanggal_donasi, 'id_rekening_bersama' => $id_rekening_bersama]);
 
     $affectedrows = $stmt->rowCount();
     if ($affectedrows == '0') {
@@ -83,15 +83,13 @@ if(isset($_SESSION['data_donasi'])){
       $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
           <br>Yth. '.$nama_user.'
           <br>Terima kasih telah membuat donasi terumbu karang di GoKarang!
-          <br>Berikut rincian donasi anda:          
+          <br>Berikut rincian tujuan pembayaran donasi anda:          
           <br>Bank Tujuan Pembayaran: '.$rekening->nama_bank.'
           <br>Nomor Rekening: '.$rekening->nomor_rekening.'
           <br>Nama Rekening: '.$rekening->nama_pemilik_rekening.'
           <br>Nominal pembayaran: Rp. '.number_format($nominal, 0).'
           <br>
           <br>Terumbu karang pilihan:'.$list_terumbu.'
-          <br>
-          <br>Username anda: '.$username.'
           <br>Harap upload bukti pembayaran donasi (format gambar .JPG) di link berikut:
           <br><a href="https://tkjb.or.id/edit_donasi_saya.php?id_donasi='.$id_donasi.'">Upload Bukti Pembayaran</a>
       ';

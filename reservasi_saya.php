@@ -185,7 +185,7 @@ function alertPembayaran($dob){
                                 <div class="row">
                                     <div class="col-12 mb-3">
                                         <span class="badge badge-pill badge-primary mr-2"> ID Reservasi <?=$rowitem->id_reservasi?> </span>
-                                            <?php echo empty($rowitem->id_paket_wisata) ? '' : '<span class="badge badge-pill badge-success mr-2"> Paket Wisata  - '.$rowitem->nama_paket_wisata.'</span>';?>
+                                            <?php echo empty($rowitem->id_paket_wisata) ? '' : '<span class="badge badge-pill badge-info mr-2"> Paket Wisata  - '.$rowitem->nama_paket_wisata.'</span>';?>
                                         </span>
                                     </div>
 
@@ -221,21 +221,37 @@ function alertPembayaran($dob){
                                             <br><?=$rowitem->jumlah_peserta?><br>
                                         </div>
                                         <div class="mb-3">
-                                            <span class="font-weight-bold"><i class="nav-icon text-warning fas fas fa-list-alt"></i> Status Reservasi</span>
-                                            <br><?=$rowitem->nama_status_reservasi_wisata?>
+                                            <span class="font-weight-bold"><i class="nav-icon text-warning fas fas fa-list-alt"></i> Status Reservasi</span><br>
+                                            <?php 
+                                            if ($rowitem->id_status_reservasi_wisata == 2) { ?>
+                                                <!-- Pembayaran Telah di Konfirmasi -->
+                                                <span class="badge badge-pill badge-success">
+                                                    <?=$rowitem->nama_status_reservasi_wisata?>
+                                                </span>
+                                            <?php } elseif ($rowitem->id_status_reservasi_wisata == 3) { ?>
+                                                <!-- Pembayaran Tidak Sesuai -->
+                                                <span class="badge badge-pill badge-danger">
+                                                    <?=$rowitem->nama_status_reservasi_wisata?>
+                                                </span>
+                                            <?php } else { ?>
+                                                <!-- Menunggu Konfirmasi Pembayaran -->
+                                                <span class="badge badge-pill badge-warning">
+                                                    <?=$rowitem->nama_status_reservasi_wisata?>
+                                                </span>
+                                            <?php } ?>
 
-                                                <?php
-                                                    if ($rowitem->id_status_reservasi_wisata == 2) {
-                                                        //Pembayaran Telah di Konfirmasi
-                                                        echo ($rowitem->id_status_reservasi_wisata <= 3) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo" style="display: none;"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : '';
-                                                    } else if ($rowitem->id_status_reservasi_wisata == 3) {
-                                                        //Pembayaran Tidak Sesuai
-                                                        echo ($rowitem->id_status_reservasi_wisata <= 3) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : '';
-                                                    } else {
-                                                        //Menunggu Konfirmasi Pembayaran
-                                                        echo ($rowitem->id_status_reservasi_wisata <= 3) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : '';
-                                                    }
-                                                ?>
+                                            <?php
+                                                if ($rowitem->id_status_reservasi_wisata == 2) {
+                                                    //Pembayaran Telah di Konfirmasi
+                                                    echo ($rowitem->id_status_reservasi_wisata <= 3) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo" style="display: none;"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : '';
+                                                } else if ($rowitem->id_status_reservasi_wisata == 3) {
+                                                    //Pembayaran Tidak Sesuai
+                                                    echo ($rowitem->id_status_reservasi_wisata <= 3) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : '';
+                                                } else {
+                                                    //Menunggu Konfirmasi Pembayaran
+                                                    echo ($rowitem->id_status_reservasi_wisata <= 3) ? '<a href="edit_reservasi_saya.php?id_reservasi='.$rowitem->id_reservasi.'" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Reservasi Wisata</a>' : '';
+                                                }
+                                            ?>
 
                                             <br><small class="text-muted"><b>Update Terakhir</b>
                                             <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($rowitem->update_terakhir).' yang lalu)';?></small>

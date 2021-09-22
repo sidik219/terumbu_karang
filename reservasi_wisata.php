@@ -45,7 +45,7 @@ if (isset($_POST['submit'])) {
         $id_lokasi              = $_POST['id_lokasi'];
         $tgl_reservasi          = $_POST['tgl_reservasi'];
         $jumlah_peserta         = $_POST['jumlah_peserta'];
-        $jumlah_donasi          = $_POST['split_harga_tk'];
+        // $jumlah_donasi          = $_POST['split_harga_tk'];
         $total                  = $_POST['total'];
         $nama_donatur           = $_POST['nama_donatur'];
         $bank_donatur           = $_POST['nama_bank_donatur'];
@@ -58,10 +58,10 @@ if (isset($_POST['submit'])) {
         $tanggal_sekarang = date('Y-m-d H:i:s', time());
 
         $sqlreservasi = "INSERT INTO t_reservasi_wisata (id_user, id_lokasi, tgl_reservasi, jumlah_peserta,
-                                            jumlah_donasi, total, id_status_reservasi_wisata, keterangan,
+                                            total, id_status_reservasi_wisata, keterangan,
                                             nama_donatur, bank_donatur, nomor_rekening_donatur, pesan, update_terakhir, id_paket_wisata, id_rekening_bersama)
                                 VALUES (:id_user, :id_lokasi, :tgl_reservasi, :jumlah_peserta,
-                                            :jumlah_donasi, :total, :id_status_reservasi_wisata, :keterangan,
+                                            :total, :id_status_reservasi_wisata, :keterangan,
                                             :nama_donatur, :bank_donatur, :nomor_rekening_donatur, :pesan, :update_terakhir, :id_paket_wisata, :id_rekening_bersama)";
 
         $stmt = $pdo->prepare($sqlreservasi);
@@ -70,7 +70,7 @@ if (isset($_POST['submit'])) {
             'id_lokasi' => $id_lokasi,
             'tgl_reservasi' => $tgl_reservasi,
             'jumlah_peserta' => $jumlah_peserta,
-            'jumlah_donasi' => $jumlah_donasi,
+            // 'jumlah_donasi' => $jumlah_donasi,
             'total' => $total,
             'id_status_reservasi_wisata' => $id_status_reservasi_wisata,
             'keterangan' => $keterangan,

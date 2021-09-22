@@ -287,7 +287,7 @@ function ageCalculator($dob){
                                             <?php
                                             $tgldonasi = new DateTime($rowitem->tanggal_donasi);
                                             $today   = new DateTime('today');
-                                            if (($tgldonasi->diff($today))->d > 3 && ($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4) && ($rowitem->id_status_donasi == 1)) { ?>
+                                            if (($tgldonasi->diff($today))->d > $rowitem->batas_hari_pembayaran && ($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4) && ($rowitem->id_status_donasi == 1)) { ?>
                                                 <!--Tombol batalkan donasi -->
                                                <a onclick="return konfirmasiBatalDonasi(event)" href="hapus.php?type=batalkan_donasi&id_donasi=<?=$rowitem->id_donasi?>" class="btn btn-sm btn-danger userinfo">
                                                     <i class="fas fa-times"></i> Batalkan Donasi</a>
