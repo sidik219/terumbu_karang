@@ -141,7 +141,28 @@ $rowpaket = $stmt->fetchAll();
                             <div class="col-md-4" style="text-align: left;">
                                 <div class="card card-pilihan mb-4 shadow-sm">
                                     <a href="detail_lokasi_wisata.php?id_paket_wisata=<?= $rowitem->id_paket_wisata ?>">
-                                        <img class="card-img-top img-paket-wisata" src="<?= $rowitem->foto_wisata ?>">
+                                        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                                            <div class="carousel-inner">
+                                                <div class="carousel-item active">
+                                                    <img class="card-img-top d-block w-60" src="<?=$rowitem->foto_wisata?>" alt="">
+                                                </div>
+                                                <!-- Select Wisata -->
+                                                <?php
+                                                $sqlpaketSelect = 'SELECT * FROM t_wisata
+                                                                LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                                                WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
+
+                                                $stmt = $pdo->prepare($sqlpaketSelect);
+                                                $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                                $rowWisata = $stmt->fetchAll();
+
+                                                foreach ($rowWisata as $wisata) { ?>
+                                                <div class="carousel-item">
+                                                    <img class="card-img-top d-block w-60" src="<?=$wisata->image_wisata?>" alt="">
+                                                </div>
+                                                <?php } ?>
+                                            </div>
+                                        </div>
                                     </a>
                                     <div class="card-body" style="font-weight: bold;">
                                         <p>
@@ -172,9 +193,10 @@ $rowpaket = $stmt->fetchAll();
                                             <!-- Biaya Paket Kalkulasi Dari Biaya Fasilitas -->
                                             <div class="card card-body">
                                                 <?php
-                                                $sqlviewfasilitas = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_fasilitas, biaya_asuransi
+                                                $sqlviewfasilitas = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_kerjasama, biaya_asuransi
                                                             FROM tb_fasilitas_wisata 
-                                                            LEFT JOIN t_pengadaan_fasilitas ON tb_fasilitas_wisata.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                                                            LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
+                                                            LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
                                                             LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
                                                             LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                                                             LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
