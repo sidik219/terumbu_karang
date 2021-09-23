@@ -17,15 +17,28 @@ if (isset($_POST['submit'])) {
     if ($_POST['submit'] == 'Simpan') {
         $judul_wisata               = $_POST['judul_wisata'];
         $deskripsi_wisata           = $_POST['deskripsi_wisata'];
+        $randomstring               = substr(md5(rand()), 0, 7);
+
+        //Image upload
+        if($_FILES["image_uploads"]["size"] == 0) {
+            $image_wisata = "images/image_default.jpg";
+        }
+        else if (isset($_FILES['image_uploads'])) {
+            $target_dir  = "images/foto_wisata/";
+            $image_wisata = $target_dir .'WIS_'.$randomstring. '.jpg';
+            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $image_wisata);
+        }
+        //---image upload end
 
         //Insert t_wisata
         $sqlwisata = "INSERT INTO t_wisata
-                            (judul_wisata, deskripsi_wisata)
-                            VALUES (:judul_wisata, :deskripsi_wisata)";
+                            (judul_wisata, deskripsi_wisata, image_wisata)
+                            VALUES (:judul_wisata, :deskripsi_wisata, :image_wisata)";
 
         $stmt = $pdo->prepare($sqlwisata);
         $stmt->execute(['judul_wisata'      => $judul_wisata,
-                        'deskripsi_wisata'  => $deskripsi_wisata
+                        'deskripsi_wisata'  => $deskripsi_wisata,
+                        'image_wisata'  => $image_wisata
                         ]);
 
         $affectedrows = $stmt->rowCount();

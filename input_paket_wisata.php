@@ -35,8 +35,8 @@ if (isset($_POST['submit'])) {
             $foto_wisata = "images/image_default.jpg";
         }
         else if (isset($_FILES['image_uploads'])) {
-            $target_dir  = "images/foto_wisata/";
-            $foto_wisata = $target_dir .'WIS_'.$randomstring. '.jpg';
+            $target_dir  = "images/foto_paket_wisata/";
+            $foto_wisata = $target_dir .'PAW_'.$randomstring. '.jpg';
             move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wisata);
         }
         //---image upload end
