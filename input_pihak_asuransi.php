@@ -7,28 +7,33 @@ $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
 if (isset($_POST['submit'])) {
-    $nama_asuransi      = $_POST['nama_asuransi'];
-    $biaya_asuransi     = $_POST['biaya_asuransi'];
-    $pihak_asuransi     = $_POST['nama_pihak'];
-
+    $nama_perusahaan_asuransi      = $_POST['nama_perusahaan_asuransi'];
+    $alamat_asuransi     = $_POST['alamat_asuransi'];
+    $notlp_asuransi     = $_POST['notlp_asuransi'];
+    // var_dump($_POST);
+    // die;
     //Insert t_asuransi
-    $sqlasuransi = "INSERT INTO t_asuransi
-                        (nama_asuransi, biaya_asuransi,id_perusahaan)
-                        VALUES (:nama_asuransi, :biaya_asuransi,:id_perusahaan)";
-
+    // INSERT INTO `t_perusahaan_asuransi` (`id_perusahaan`, `nama_perusahaan_asuransi`, `alamat_asuransi`, `notlp_asuransi`) VALUES (NULL, 'asd', 'asd', '4321');
+    $sqlasuransi = "INSERT INTO `t_perusahaan_asuransi` (`id_perusahaan`, `nama_perusahaan_asuransi`, `alamat_asuransi`, `notlp_asuransi`)
+     VALUES (NULL,'$nama_perusahaan_asuransi','$alamat_asuransi','$notlp_asuransi')";
     $stmt = $pdo->prepare($sqlasuransi);
-    $stmt->execute([
-        'nama_asuransi'      => $nama_asuransi,
-        'biaya_asuransi'  => $biaya_asuransi,
-        'id_perusahaan' => $pihak_asuransi
-    ]);
+    // var_dump(
+    $stmt->execute(
+        //     [
+        //     'nama_perusahaan_asuransi' => $nama_perusahaan_asuransi,
+        //     'alamat_asuransi'  => $alamat_asuransi,
+        //     'notlp_asuransi' => $notlp_asuransi
+        // ]
+    );
+    // );
+    // die;
 
     $affectedrows = $stmt->rowCount();
     if ($affectedrows == '0') {
         header("Location: input_asuransi.php?status=insertfailed");
     } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
-        header("Location: kelola_asuransi.php?status=addsuccess");
+        header("Location: input_asuransi.php?status=addsuccess");
     }
 }
 ?>
@@ -108,28 +113,17 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col">
-                                <h4><span class="align-middle font-weight-bold">Input Asuransi</span></h4>
-                            </div>
-                            <div class="col">
-                                <a class="btn btn-success float-right" href="input_pihak_asuransi.php" style="margin-bottom: 10px;">
-                                    <i class="fas fa-arrow-left"></i> Kembali</a>
-                            </div>
+                    <div class="row">
+                        <div class="col">
+                            <h4><span class="align-middle font-weight-bold">Input Data Perusahaan Asuransi</span></h4>
+                        </div>
+                        <div class="col">
+                            <a class="btn btn-success float-right" href="input_asuransi.php" style="margin-bottom: 10px;">
+                                Selanjutnya <i class="fas fa-arrow-right"></i></a>
+                            <a class="btn btn-success float-right mr-1" href="kelola_asuransi.php" style="margin-bottom: 10px;">
+                                <i class="fas fa-arrow-left"></i> Kembali</a>
                         </div>
                     </div>
-                    <!-- <a class="btn btn-outline-primary" href="kelola_asuransi.php">
-                        < Kembali</a><br><br>
-                            <h4><span class="align-middle font-weight-bold">Input Data Asuransi</span></h4>
-                            <ul class="app-breadcrumb breadcrumb" style="margin-bottom: 20px;">
-                                <li class="breadcrumb-item">
-                                    <a href="kelola_asuransi.php" class="non">Kelola Asuransi</a>
-                                </li>
-                                <li class="breadcrumb-item">
-                                    <a href="input_asuransi.php" class="tanda">Input Asuransi</a>
-                                </li>
-                            </ul> -->
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -138,52 +132,23 @@ if (isset($_POST['submit'])) {
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <?php
-                    if (!empty($_GET['status'])) {
-                        if ($_GET['status'] == 'updatesuccess') {
-                            echo '<div class="alert alert-success" role="alert">
-                                        Data Asuransi berhasil diupdate!
-                                        </div>';
-                        } else if ($_GET['status'] == 'addsuccess') {
-                            echo '<div class="alert alert-success" role="alert">
-                                        Perusahaan Asuransi berhasil ditambahkan!
-                                        </div>';
-                        } else if ($_GET['status'] == 'deletesuccess') {
-                            echo '<div class="alert alert-success" role="alert">
-                                        Data Asuransi berhasil dihapus!
-                                        </div>';
-                        }
-                    }
-                    ?>
+
                     <form action="" enctype="multipart/form-data" method="POST">
-                        <div class="form-group">
-                            <label for="nama_asuransi">Nama Asuransi</label><br>
-                            <input type="text" id="nama_asuransi" name="nama_asuransi" class="form-control" required>
-                            <small style="color: red;">*Jika nama asuransi tidak tahu bisa dikosongkan dengan (-)</small>
-                        </div>
+                        <h3 class="my-4">Detail Asuransi</h3>
 
                         <div class="form-group">
-                            <label for="biaya_asuransi">Biaya Asuransi</label>
-                            <input type="number" id="biaya_asuransi" name="biaya_asuransi" class="form-control" required>
+                            <label for="nama_perusahaan_asuransi">Perusahaan Asuransi</label>
+                            <input type="text" id="nama_perusahaan_asuransi" name="nama_perusahaan_asuransi" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label for="nama_pihak">Pihak Asuransi</label>
-                            <select class="form-control" name="nama_pihak" id="exampleFormControlSelect1">
-                                <option selected disabled>Pilih Pihak Asuransi:</option>
-                                <?php
-                                $sqlpengadaan = 'SELECT * FROM t_perusahaan_asuransi
-                                                    ORDER BY id_perusahaan DESC';
-                                $stmt = $pdo->prepare($sqlpengadaan);
-                                $stmt->execute();
-                                $rowpengadaan = $stmt->fetchAll();
-
-                                foreach ($rowpengadaan as $pengadaan) { ?>
-                                    <option value="<?= $pengadaan->id_perusahaan ?>">
-                                        <?= $pengadaan->nama_perusahaan_asuransi ?>
-                                    </option>
-                                <?php } ?>
-                            </select>
+                            <label for="alamat_asuransi">Alamat Asuransi</label>
+                            <input type="text" id="alamat_asuransi" name="alamat_asuransi" class="form-control" required>
                         </div>
+                        <div class="form-group">
+                            <label for="notlp_asuransi">No Telp Asuransi</label>
+                            <input type="tel" id="notlp_asuransi" name="notlp_asuransi" class="form-control" required>
+                        </div>
+                        <p class="small">Lewati Jika Dengan Perusahaan Asuransi Yang Sama</p>
                         <p align="center">
                             <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button>
                         </p>
