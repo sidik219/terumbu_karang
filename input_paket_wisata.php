@@ -238,8 +238,8 @@ if (isset($_POST['submit'])) {
                                     <option selected disabled>Pilih Wisata:</option>
                                     <?php
                                     $sqlviewwisata = 'SELECT * FROM t_wisata
-                                                        ORDER BY id_wisata 
-                                                        DESC LIMIT 3';
+                                                        WHERE id_paket_wisata IS NULL
+                                                        ORDER BY id_wisata';
                                     $stmt = $pdo->prepare($sqlviewwisata);
                                     $stmt->execute();
                                     $rowwisata = $stmt->fetchAll();
@@ -348,8 +348,8 @@ if (isset($_POST['submit'])) {
                                 <option selected disabled>Pilih Wisata:</option>
                                 <?php
                                 $sqlviewwisata = 'SELECT * FROM t_wisata
-                                                    ORDER BY id_wisata 
-                                                    DESC LIMIT 3';
+                                                    WHERE id_paket_wisata IS NULL
+                                                    ORDER BY id_wisata';
                                 $stmt = $pdo->prepare($sqlviewwisata);
                                 $stmt->execute();
                                 $rowwisata = $stmt->fetchAll();

@@ -375,7 +375,8 @@ if (isset($_POST['submit'])) {
                                             <div class="col">
                                                 <?php
                                                 $sqlviewpaket = 'SELECT * FROM tb_fasilitas_wisata
-                                                LEFT JOIN t_pengadaan_fasilitas ON tb_fasilitas_wisata.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                                                 LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
+                                                LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
                                                 LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
                                                 LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                                                 WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
@@ -413,9 +414,10 @@ if (isset($_POST['submit'])) {
                                         <!-- Total Pembayaran -->
                                         <hr class="mb-2" />
                                         <?php
-                                        $sqlviewpaket = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_fasilitas, biaya_asuransi
+                                        $sqlviewpaket = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_kerjasama, biaya_asuransi
                                         FROM tb_fasilitas_wisata
-                                        LEFT JOIN t_pengadaan_fasilitas ON tb_fasilitas_wisata.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                                        LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
+                                        LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
                                         LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
                                         LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                                         LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi

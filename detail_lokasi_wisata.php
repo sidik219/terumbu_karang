@@ -105,7 +105,36 @@ include 'hak_akses.php';
                         foreach ($rowwisata as $rowitem) { ?>
                         <div class="row card-donasi p-2 m-0">
                             <div class="col-6 text-center">
-                                <img class="w-50" src="<?=$rowitem->foto_wisata?>">
+                                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active">
+                                            <img class="d-block w-60" src="<?=$rowitem->foto_wisata?>" alt="">
+                                        </div>
+                                        <!-- Select Wisata -->
+                                        <?php
+                                        $sqlpaketSelect = 'SELECT * FROM t_wisata
+                                                        LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                                        WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
+
+                                        $stmt = $pdo->prepare($sqlpaketSelect);
+                                        $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                        $rowWisata = $stmt->fetchAll();
+
+                                        foreach ($rowWisata as $wisata) { ?>
+                                        <div class="carousel-item">
+                                            <img class="d-block w-60" src="<?=$wisata->image_wisata?>" alt="">
+                                        </div>
+                                        <?php } ?>
+                                    </div>
+                                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </div>
                             </div>
                             <div class="col">
                                 <div class="row p-2">
@@ -161,7 +190,8 @@ include 'hak_akses.php';
                                                 <!-- Select Fasilitas -->
                                                     <?php
                                                     $sqlviewfasilitas = 'SELECT * FROM tb_fasilitas_wisata
-                                                                        LEFT JOIN t_pengadaan_fasilitas ON tb_fasilitas_wisata.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                                                                        LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
+                                                                        LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
                                                                         LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
                                                                         LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                                                                         WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
@@ -189,9 +219,10 @@ include 'hak_akses.php';
                                 </p></div>
 
                                 <?php
-                                $sqlviewfasilitas = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_fasilitas, biaya_asuransi
+                                $sqlviewfasilitas = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_kerjasama, biaya_asuransi
                                                     FROM tb_fasilitas_wisata
-                                                    LEFT JOIN t_pengadaan_fasilitas ON tb_fasilitas_wisata.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                                                    LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
+                                                    LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
                                                     LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
                                                     LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                                                     LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
