@@ -12,18 +12,16 @@ if (isset($_POST['submit'])) {
         //var_dump($_POST['nama_fasilitas']);var_dump($_POST['biaya_fasilitas']);exit();
         $i = 0;
         foreach ($_POST['nama_fasilitas'] as $nama_fasilitas) {
-            $id_pengadaan       = $_POST['nama_fasilitas'][$i];
-            $biaya_fasilitas    = $_POST['biaya_fasilitas'][$i];
-            $id_wisata          = $_POST['id_wisata'];
+            $id_kerjasama   = $_POST['nama_fasilitas'][$i];
+            $id_wisata      = $_POST['id_wisata'];
 
             $tanggal_sekarang = date ('Y-m-d H:i:s', time());
 
-            $sqlinsertfasilitas = "INSERT INTO tb_fasilitas_wisata (id_pengadaan, biaya_fasilitas, id_wisata, update_terakhir)
-                                        VALUES (:id_pengadaan, :biaya_fasilitas, :id_wisata, :update_terakhir)";
+            $sqlinsertfasilitas = "INSERT INTO tb_fasilitas_wisata (id_kerjasama, id_wisata, update_terakhir)
+                                        VALUES (:id_kerjasama, :id_wisata, :update_terakhir)";
 
             $stmt = $pdo->prepare($sqlinsertfasilitas);
-            $stmt->execute(['id_pengadaan' => $id_pengadaan,
-                            'biaya_fasilitas' => $biaya_fasilitas,
+            $stmt->execute(['id_kerjasama' => $id_kerjasama,
                             'id_wisata' => $id_wisata,
                             'update_terakhir' => $tanggal_sekarang
                             ]);
@@ -33,7 +31,7 @@ if (isset($_POST['submit'])) {
                 header("Location: input_fasilitas_wisata.php?status=insertfailed");
             } else {
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: input_fasilitas_wisata.php?status=addsuccess");
+                header("Location: kelola_fasilitas_wisata.php?status=addsuccess");
             }
             $i++;
         } //End Foreach
@@ -129,7 +127,7 @@ if (isset($_POST['submit'])) {
                 </div>
                 <div align="right">
                     <a class="btn btn-outline-primary" href="input_wisata.php">
-                    Selanjutnya Paket Wisata <i class="fas fa-angle-right"></i></a>
+                    Selanjutnya Input Wisata <i class="fas fa-angle-right"></i></a>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -140,13 +138,9 @@ if (isset($_POST['submit'])) {
                 <div class="container-fluid">
                     <?php
                         if(!empty($_GET['status'])) {
-                            if($_GET['status'] == 'updatesuccess') {
+                            if($_GET['status'] == 'insertfailed') {
                                 echo '<div class="alert alert-success" role="alert">
-                                        Update bukti pembayaran reservasi wisata berhasil!
-                                        </div>'; }
-                            else if($_GET['status'] == 'addsuccess') {
-                                echo '<div class="alert alert-success" role="alert">
-                                        Input data fasilitas wisata berhasil ditambahkan!
+                                        Input data fasilitas wisata gagal ditambahkan!
                                         </div>'; }
                         }
                     ?>
@@ -159,19 +153,20 @@ if (isset($_POST['submit'])) {
                                 <select class="form-control" name="nama_fasilitas[]" id="exampleFormControlSelect1">
                                     <option selected disabled>Fasilitas Wisata:</option>
                                     <?php
-                                    $sqlpengadaan = 'SELECT * FROM t_pengadaan_fasilitas
-                                                        ORDER BY id_pengadaan DESC';
-                                    $stmt = $pdo->prepare($sqlpengadaan);
+                                    $sqlkerjasama = 'SELECT * FROM t_kerjasama
+                                                        LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                                                        ORDER BY id_kerjasama DESC';
+                                    $stmt = $pdo->prepare($sqlkerjasama);
                                     $stmt->execute();
-                                    $rowpengadaan = $stmt->fetchAll();
+                                    $rowKerjasama = $stmt->fetchAll();
 
-                                    foreach ($rowpengadaan as $pengadaan) { ?>
-                                    <option value="<?=$pengadaan->id_pengadaan?>">
-                                        <?=$pengadaan->pengadaan_fasilitas?>
+                                    foreach ($rowKerjasama as $kerjasama) { ?>
+                                    <option value="<?=$kerjasama->id_kerjasama.' - '.$kerjasama->biaya_kerjasama?>">
+                                        <?=$kerjasama->pengadaan_fasilitas?>
                                     </option>
                                     <?php } ?>
                                 </select>
-                                <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/>
+                                <!-- <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/> -->
                                 <div class="input-group-addon">
                                     <a href="javascript:void(0)" class="btn btn-success addMore">
                                         <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Fasilitas
@@ -191,19 +186,20 @@ if (isset($_POST['submit'])) {
                             <select class="form-control" name="nama_fasilitas[]" id="exampleFormControlSelect1">
                                 <option selected disabled>Fasilitas Wisata:</option>
                                 <?php
-                                $sqlpengadaan = 'SELECT * FROM t_pengadaan_fasilitas
-                                                    ORDER BY id_pengadaan DESC';
-                                $stmt = $pdo->prepare($sqlpengadaan);
+                                $sqlkerjasama = 'SELECT * FROM t_kerjasama
+                                                    LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                                                    ORDER BY id_kerjasama DESC';
+                                $stmt = $pdo->prepare($sqlkerjasama);
                                 $stmt->execute();
-                                $rowpengadaan = $stmt->fetchAll();
+                                $rowKerjasama = $stmt->fetchAll();
 
-                                foreach ($rowpengadaan as $pengadaan) { ?>
-                                <option value="<?=$pengadaan->id_pengadaan?>">
-                                    <?=$pengadaan->pengadaan_fasilitas?>
+                                foreach ($rowKerjasama as $kerjasama) { ?>
+                                <option value="<?=$kerjasama->id_kerjasama.' - '.$kerjasama->biaya_kerjasama?>">
+                                    <?=$kerjasama->pengadaan_fasilitas?>
                                 </option>
                                 <?php } ?>
                             </select>
-                            <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/>
+                            <!-- <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/> -->
                             <div class="input-group-addon">
                                 <a href="javascript:void(0)" class="btn btn-danger remove">
                                     <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Fasilitas

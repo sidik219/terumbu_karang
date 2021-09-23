@@ -7,7 +7,8 @@ $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
 $sqlviewfasilitas = 'SELECT * FROM tb_fasilitas_wisata
-                    LEFT JOIN t_pengadaan_fasilitas ON tb_fasilitas_wisata.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                    LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
+                    LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
                     ORDER BY id_fasilitas_wisata DESC';
 $stmt = $pdo->prepare($sqlviewfasilitas);
 $stmt->execute();
@@ -146,9 +147,10 @@ function ageCalculator($dob){
                                 <th scope="col">ID Fasilitas</th>
                                 <th scope="col">Nama Fasilitas</th>
                                 <th scope="col">Biaya Fasilitas</th>
+                                <th scope="col">Status Kerjasama</th>
                                 <th scope="col">Status Pengadaan</th>
                                 <th scope="col">Update Terakhir</th>
-                                <th scope="col">Aksi</th>
+                                <!-- <th scope="col">Aksi</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -157,7 +159,14 @@ function ageCalculator($dob){
                             <tr>
                                 <th scope="row"><?=$fasilitas->id_fasilitas_wisata?></th>
                                 <td><?=$fasilitas->pengadaan_fasilitas?></td>
-                                <td>Rp. <?=number_format($fasilitas->biaya_fasilitas, 0)?></td>
+                                <td>Rp. <?=number_format($fasilitas->biaya_kerjasama, 0)?></td>
+                                <td>
+                                    <?php if ($fasilitas->status_kerjasama == "Melakukan Kerjasama") { ?>
+                                        <span class="badge badge-pill badge-success"><?=$fasilitas->status_kerjasama?></span>
+                                    <?php } elseif ($fasilitas->status_kerjasama == "Tidak Melakukan Kerjasama") { ?>
+                                        <span class="badge badge-pill badge-warning"><?=$fasilitas->status_kerjasama?></span>
+                                    <?php } ?>
+                                </td>
                                 <td>
                                     <?php if ($fasilitas->status_pengadaan == "Baik") { ?>
                                         <span class="badge badge-pill badge-success"><?=$fasilitas->status_pengadaan?></span>
@@ -165,14 +174,15 @@ function ageCalculator($dob){
                                         <span class="badge badge-pill badge-warning"><?=$fasilitas->status_pengadaan?></span>
                                     <?php } elseif ($fasilitas->status_pengadaan == "Hilang") { ?>
                                         <span class="badge badge-pill badge-danger"><?=$fasilitas->status_pengadaan?></span>
-                                    <?php } ?></td>
+                                    <?php } ?>
+                                </td>
                                 <td>
                                     <small class="text-muted"><b>Update Terakhir</b>
                                     <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($fasilitas->update_terakhir).' yang lalu)';?></small>
                                 </td>
-                                <td>
+                                <!-- <td>
                                     <a href="edit_fasilitas_wisata.php?id_fasilitas_wisata=<?=$fasilitas->id_fasilitas_wisata?>" class="fas fa-edit mr-3 btn btn-act"></a>
-                                </td>
+                                </td> -->
                             </tr>
                             <?php } ?>
                         </tbody>

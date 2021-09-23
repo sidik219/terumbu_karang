@@ -248,6 +248,16 @@ include 'hak_akses.php';
                         <script>
                             const actualBtn = document.getElementById('image_uploads');
                             const fileChosen = document.getElementById('file-input-label');
+                            
+                            //Validasi Size Upload Image
+                            var uploadField = document.getElementById("image_uploads");
+
+                            uploadField.onchange = function() {
+                                if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                    alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                    this.value = "";
+                                };
+                            };
 
                             actualBtn.addEventListener('change', function(){
                             fileChosen.innerHTML = '<b>File dipilih :</b> '+this.files[0].name

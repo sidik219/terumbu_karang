@@ -227,8 +227,10 @@ $row = $stmt->fetchAll();
                                                 Biaya Wisata
                                             </div>
                                             <?php
-                                            $sqlviewpaket = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas, biaya_asuransi
-                                                                FROM tb_fasilitas_wisata 
+                                            $sqlviewpaket = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, biaya_asuransi
+                                                                FROM tb_fasilitas_wisata
+                                                                LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
+                                                                LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
                                                                 LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
                                                                 LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                                                                 LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
@@ -251,21 +253,6 @@ $row = $stmt->fetchAll();
                                                 <i class="text-success fas fa-money-bill-wave"></i>
                                                 Rp. <?=number_format($total_paket, 0)?>
                                             </div>
-
-                                                <!-- Asuransi -->
-                                                <?php
-                                                $sqlviewwisata = 'SELECT biaya_asuransi FROM tb_paket_wisata
-                                                                LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
-                                                                WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
-
-                                                $stmt = $pdo->prepare($sqlviewwisata);
-                                                $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                                                $rowasuransi = $stmt->fetchAll();
-
-                                                foreach ($rowasuransi as $asuransi) { ?>
-                                                <!-- Hidden Output -->
-                                                <input type="hidden" id="by_asuransi" value="<?=$asuransi->biaya_asuransi?>">
-                                                <?php } ?>
                                             <?php } ?>
                                         </div>
 
@@ -301,7 +288,8 @@ $row = $stmt->fetchAll();
                                             <div class="col isi">
                                                 <?php
                                                 $sqlviewpaket = 'SELECT * FROM tb_fasilitas_wisata
-                                                                    LEFT JOIN t_pengadaan_fasilitas ON tb_fasilitas_wisata.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                                                                    LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
+                                                                    LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
                                                                     LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
                                                                     LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                                                                     WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
