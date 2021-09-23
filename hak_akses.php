@@ -1,7 +1,6 @@
 <?php
 //!!!!!!!!!!! -----------  Include file ini setelah session_start()  !!!!!!!!
 //!!!!!!!!!!! -----------  Include file ini setelah session_start()  !!!!!!!!
-
 if (!$_SESSION['level_user'])  { //Belum log in
     header('location: login.php?status=restrictedaccess');
 }

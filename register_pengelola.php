@@ -21,11 +21,18 @@ if (isset($_POST['register'])) {
 
     // Verifikasi Username Sudah terdaftar
     $result = mysqli_query($conn, "SELECT username FROM t_user WHERE username = '$username'");
+    $result_email = mysqli_query($conn, "SELECT email FROM t_user WHERE email = '$email'");
     // var_dump($result);
     // die;
-    if (mysqli_fetch_assoc($result)) {
-        header('location: register.php?pesan=Username_Telah_Terdaftar');
-    } else {
+    if (mysqli_fetch_assoc($result) && mysqli_fetch_assoc($result_email)) {
+        header('location: register_pengelola.php?pesan=Username_Email_Telah_Terdaftar');
+    }
+    else if (mysqli_fetch_assoc($result)) {
+        header('location: register_pengelola.php?pesan=Username_Telah_Terdaftar');
+    }else  if (mysqli_fetch_assoc($result_email)) {
+        header('location: register_pengelola.php?pesan=Email_Telah_Terdaftar');
+    }
+    else {
         //Fotokopi KTP upload
         if (isset($_FILES['image_uploads1'])) {
             $target_dir     = "images/ktp/";
@@ -174,6 +181,16 @@ if (isset($_POST['register'])) {
             if ($_GET['pesan'] == 'Username_Telah_Terdaftar') {
                 echo '<div class="alert alert-warning" role="alert">
                           Username Sudah Terdaftar.
+                      </div>';
+            }
+            else if ($_GET['pesan'] == 'Email_Telah_Terdaftar') {
+                echo '<div class="alert alert-warning" role="alert">
+                          Email Sudah Terdaftar. Lupa password? <a href="request_password_reset.php">Reset Password</a>
+                      </div>';
+            }
+            else if ($_GET['pesan'] == 'Username_Email_Telah_Terdaftar') {
+                echo '<div class="alert alert-warning" role="alert">
+                          Username dan Email Sudah Terdaftar. Lupa password? <a href="request_password_reset.php">Reset Password</a>
                       </div>';
             }
         }

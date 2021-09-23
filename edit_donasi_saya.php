@@ -1,7 +1,9 @@
 <?php include 'build/config/connection.php';
 session_start();
 $url_sekarang = basename(__FILE__);
+
 include 'hak_akses.php';
+
 
     $id_donasi = $_GET['id_donasi'];
     $defaultpic = "images/image_default.jpg";
@@ -14,6 +16,10 @@ include 'hak_akses.php';
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['id_donasi' => $id_donasi]);
     $rowitem = $stmt->fetch();
+
+    if($rowitem->id_user != $_SESSION['id_user']){
+        header("Location: donasi_saya.php");
+    }
 
     $id_rekening_bersama = $rowitem->id_rekening_bersama;
 
@@ -60,6 +66,48 @@ include 'hak_akses.php';
         header("Location: donasi_saya.php?status=nochange");
         } else {
             //echo "HAHAHAAHA GREAT SUCCESSS !";
+
+                    //Kirim email untuk Pengelola Wilayah
+                    include 'includes/email_handler.php'; //PHPMailer
+                    $sqlviewpengelolawilayah = 'SELECT * FROM t_lokasi 
+                                            LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                                            LEFT JOIN t_pengelola_wilayah ON t_pengelola_wilayah.id_wilayah = t_lokasi.id_wilayah
+                                            WHERE id_lokasi = :id_lokasi';
+                    $stmt = $pdo->prepare($sqlviewpengelolawilayah);
+                    $stmt->execute(['id_lokasi' => $rowitem->id_lokasi]);
+                    $rowpengelola = $stmt->fetchAll();
+
+                    foreach($rowpengelola as $pengelola){
+                    $sqlviewdatauser = 'SELECT * FROM t_user 
+                                        WHERE id_user = :id_user';
+                    $stmt = $pdo->prepare($sqlviewdatauser);
+                    $stmt->execute(['id_user' => $pengelola->id_user]);
+                    $datauser = $stmt->fetch();
+
+                    $email = $datauser->email;
+                    $username = $datauser->username;
+                    $nama_user = $datauser->nama_user;
+
+                    $subjek = 'Bukti Donasi Perlu Verifikasi (ID Donasi : '.$id_donasi.' ) - GoKarang';
+                    $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+                    <br>Yth. '.$nama_user.'
+                    <br>Harap verifikasi bukti donasi baru pada lokasi '.$pengelola->nama_lokasi.'
+                    <br>Berikut rincian donasi baru tersebut:
+                    <br>Bank Donatur: '.$rowitem->bank_donatur.'
+                    <br>Nomor Rekening Donatur: '.$rowitem->nomor_rekening_donatur.'
+                    <br>Nama Rekening Donatur: '.$rowitem->nama_donatur.'
+                    <br>          
+                    <br>Bank Tujuan Pembayaran: '.$rowrekening->nama_bank.'
+                    <br>Nomor Rekening Tujuan: '.$rowrekening->nomor_rekening.'
+                    <br>Nama Rekening Tujuan: '.$rowrekening->nama_pemilik_rekening.'
+                    <br>Nominal pembayaran: Rp. '.number_format($rowitem->nominal, 0).'
+                    <br>
+                    <br>Harap segera verifikasi bukti donasi di link berikut:
+                    <br><a href="https://tkjb.or.id/edit_donasi.php?id_donasi='.$id_donasi.'">Verifikasi Bukti Pembayaran</a>
+                ';
+                
+                smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+                } 
             header("Location: donasi_saya.php?status=updatesuccess");
             }
         }
