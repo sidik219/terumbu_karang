@@ -220,7 +220,7 @@ function ageCalculator($dob){
 
                     <!-- Cetak Laporan Fasilitas -->
                     <a class="btn btn-success" href="laporan_wisata.php?type=pengeluaran&id_reservasi=<?=$id_reservasi?>">
-                    <i class="fas fa-file-excel"></i> Cetak Laporan Pengeluaran</a>
+                    <i class="fas fa-file-excel"></i> Cetak Laporan Pengeluaran PerID</a>
 
                     <!-- Select Data Reservasi Untuk Laporan Pengeluaran Berdasarkan ID -->
                     <table class="table table-striped table-responsive-sm">

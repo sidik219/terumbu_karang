@@ -7,6 +7,7 @@ include 'hak_akses.php';
     $defaultpic = "images/image_default.jpg";
     $id_status_reservasi_wisata = 1;
 
+    // Reservasi Wisata
     $sql = 'SELECT * FROM t_reservasi_wisata, t_user, t_lokasi
     WHERE id_reservasi = :id_reservasi
     AND t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi';
@@ -14,6 +15,15 @@ include 'hak_akses.php';
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['id_reservasi' => $id_reservasi]);
     $rowitem = $stmt->fetch();
+    
+    // Rekening Bersama
+    $id_rekening_bersama = $rowitem->id_rekening_bersama;
+
+    $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank WHERE id_rekening_bank = :id_rekening_bersama';
+
+    $stmt = $pdo->prepare($sqlviewrekeningbersama);
+    $stmt->execute(['id_rekening_bersama' => $id_rekening_bersama]);
+    $rowrekening = $stmt->fetch();
 
     if (isset($_POST['submit'])) {
         $randomstring = substr(md5(rand()), 0, 7);
@@ -22,8 +32,7 @@ include 'hak_akses.php';
         if($_FILES["image_uploads"]["size"] == 0) {
             $bukti_reservasi = $rowitem->bukti_reservasi;
             $pic = "&none=";
-        }
-        else if (isset($_FILES['image_uploads'])) {
+        }else if (isset($_FILES['image_uploads'])) {
             if (($rowitem->bukti_reservasi == $defaultpic) || (!$rowitem->bukti_reservasi)){
                 $target_dir  = "images/bukti_reservasi/";
                 $bukti_reservasi = $target_dir .'BKTDNS_'.$randomstring. '.jpg';
@@ -267,26 +276,26 @@ include 'hak_akses.php';
 
                                         <div class="row">
                                             <div class="col">
-                                                <span class="font-weight-bold"><i class="fas fa-user-tie"></i> Nama Rekening Pengelola
+                                                <span class="font-weight-bold"><i class="fas fa-user-tie"></i> Nama Rekening Pengelola</span>
                                             </div>
                                             <div class="col-lg-8 mb-2">
-                                                <span class=""><?=$rowitem->nama_rekening?></span>
+                                                <span class=""><?=$rowrekening->nama_pemilik_rekening?></span>
                                             </div>
                                         </div>
                                         <div class="row mb-2">
                                             <div class="col">
-                                                <span class="font-weight-bold"><i class="text-warning fas fa-university"></i> Bank Pengelola  </span>
+                                                <span class="font-weight-bold"><i class="text-warning fas fa-university"></i> Nama Bank Pengelola</span>
                                             </div>
                                             <div class="col-lg-8  mb-2">
-                                                <span class=""><?=$rowitem->nama_bank?></span>
+                                                <span class=""><?=$rowrekening->nama_bank?></span>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col">
-                                                <span class="font-weight-bold"><i class="text-info fas fa-hashtag"></i> Nomor Rekening Pengelola  </span>
+                                                <span class="font-weight-bold"><i class="text-info fas fa-hashtag"></i> Nomor Rekening Pengelola</span>
                                             </div>
                                             <div class="col-lg-8  mb-2">
-                                                <span class=""><?=$rowitem->nomor_rekening?></span>
+                                                <span class=""><?=$rowrekening->nomor_rekening?></span>
                                             </div>
                                         </div>
 
@@ -304,7 +313,7 @@ include 'hak_akses.php';
                                         <i class="fas fa-camera"></i> Upload File
                                     </label>
                                 <div>
-                                    <input type='file'  class='form-control d-none' id='image_uploads'
+                                    <input type='file' class='form-control d-none' id='image_uploads'
                                         name='image_uploads' accept='.jpg, .jpeg, .png, .pdf' onchange="readURL(this);">
                             </div>
                         </div>
@@ -328,6 +337,16 @@ include 'hak_akses.php';
                                 const actualBtn = document.getElementById('image_uploads');
 
                                 const fileChosen = document.getElementById('file-input-label');
+
+                                //Validasi Size Upload Image
+                                var uploadField = document.getElementById("image_uploads");
+
+                                uploadField.onchange = function() {
+                                    if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                        alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                        this.value = "";
+                                    };
+                                };
 
                                 actualBtn.addEventListener('change', function(){
                                 fileChosen.innerHTML = '<b>File dipilih :</b> '+this.files[0].name
@@ -390,7 +409,6 @@ include 'hak_akses.php';
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-
 
 </body>
 </html>

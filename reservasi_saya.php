@@ -240,6 +240,10 @@ function alertPembayaran($dob){
                                                 </span>
                                             <?php } ?>
 
+                                            <br><small class="text-muted"><b>Update Terakhir</b>
+                                            <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($rowitem->update_terakhir).' yang lalu)';?></small>
+                                        </div>
+                                        <div class="mb-3">
                                             <?php
                                                 if ($rowitem->id_status_reservasi_wisata == 2) {
                                                     //Pembayaran Telah di Konfirmasi
@@ -253,10 +257,6 @@ function alertPembayaran($dob){
                                                 }
                                             ?>
 
-                                            <br><small class="text-muted"><b>Update Terakhir</b>
-                                            <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($rowitem->update_terakhir).' yang lalu)';?></small>
-                                        </div>
-                                        <div class="mb-3">
                                             <?php if ($rowitem->id_status_reservasi_wisata == 2) { ?>
                                                 <!-- Invoice Reservasi Wisata -->
                                                 <a href="invoice_wisata.php?id_reservasi=<?=$rowitem->id_reservasi?>" class="btn btn-sm btn-primary userinfo">
@@ -275,7 +275,7 @@ function alertPembayaran($dob){
                                                 class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a>
                                         </div>
                                         <div class="mb-3">
-                                            <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-phone"></i> No HP Pengelola Lokasi</span>
+                                            <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-phone"></i> No Kontak Pengelola</span>
                                             <br><?=$rowitem->kontak_lokasi?><br>
                                         </div>
                                     </div>

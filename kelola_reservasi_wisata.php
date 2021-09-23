@@ -186,7 +186,7 @@ function alertPembayaran($dob){
                 </div>
                 <div class="row">
                     <div class="col flex">
-                        <div class="dropdown show">
+                        <div class="dropdown show ml-2">
                             <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Pilih Kategori
                             </a>
@@ -199,17 +199,51 @@ function alertPembayaran($dob){
                             </div>
                         </div>
 
-                        <div class="dropdown show" style="margin-top: 0.5rem;">
+                        <div class="dropdown show mt-2 ml-2">
                             <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Pilih Cetak Laporan
                             </a>
 
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <label class="ml-2">Laporan Reservasi :</label>
+                                <a class="dropdown-item" href="laporan_wisata.php?type=all_reservasi">
+                                <i class="far fa-file-excel btn-success"></i> Laporan Reservasi Wisata</a>
+                                <hr><label class="ml-2">Laporan Pengeluaran :</label>
+                                <!-- Perpriode -->
+                                <a class="dropdown-item" href="laporan_wisata.php?type=laporan_perhari">
+                                <i class="far fa-file-excel btn-success"></i> Laporan Pengeluaran Priode</a>
                                 <a class="dropdown-item" href="laporan_wisata.php?type=all_pengeluaran">
                                 <i class="far fa-file-excel btn-success"></i> Laporan Seluruh Pengeluaran</a>
-                                <a class="dropdown-item" href="laporan_wisata.php?type=all_reservasi">
-                                <i class="far fa-file-excel btn-success"></i> Laporan Reservasi</a>
+                                <!-- Perhari -->
+                                <!-- <a class="dropdown-item" href="laporan_wisata.php?type=laporan_perhari">
+                                <i class="far fa-file-excel btn-success"></i> Laporan Pengeluaran Perhari</a> -->
+                                <!-- Perminggu -->
+                                <!-- <a class="dropdown-item" href="laporan_wisata.php?type=laporan_perminggu">
+                                <i class="far fa-file-excel btn-success"></i> Laporan Pengeluaran Perminggu</a> -->
+                                <!-- Perbulan -->
+                                <!-- <a class="dropdown-item" href="laporan_wisata.php?type=laporan_perbulan">
+                                <i class="far fa-file-excel btn-success"></i> Laporan Pengeluaran Perbulan</a> -->
+                                <!-- Pertahun-->
+                                <!-- <a class="dropdown-item" href="laporan_wisata.php?type=laporan_pertahun">
+                                <i class="far fa-file-excel btn-success"></i> Laporan Pengeluaran Pertahun</a> -->
                             </div>
+                        </div>
+
+                        <!-- Laporan Pengeluaran Priode -->
+                        <div class="mt-4 ml-2">
+                            <label for="">Cetak Laporan Pengeluaran Perpriode</label>
+                            <div class="input-group">
+                                <div class="form-group mb-2">
+                                    <input type="date" name="tgl_awal" value="" class="form-control form-control-sm tgl_awal" placeholder="Tanggal Awal">
+                                </div>
+                                <div class="ml-2 mr-2">
+                                    <span class="input-group-addon">s/d</span>
+                                </div>
+                                <div class="form-group mb-2">
+                                    <input type="date" name="tgl_akhir" value="" class="form-control form-control-sm tgl_akhir" placeholder="Tanggal Akhir">
+                                </div>
+                            </div>
+                            <button type="submit" name="filter" value="true" class="btn btn-primary mt-2">Tampilkan</button>
                         </div>
                     </div>
                 </div>
@@ -275,6 +309,24 @@ function alertPembayaran($dob){
                                     href="kelola_laporan_wisata.php?id_reservasi=<?=$rowitem->id_reservasi?>"
                                     style="margin-top: 1rem;">
                                     <i class="fas fa-file-excel"></i> Kelola Laporan</a>
+                                    <!-- Status Laporan -->
+                                    <?php 
+                                    if ($rowitem->id_status_reservasi_wisata == 2) { ?>
+                                        <!-- Kelola Laporan Lama -->
+                                        <span class="badge badge-pill badge-info mt-2">
+                                            Laporan Pengeluaran <br> Sudah Dibuat
+                                        </span>
+                                    <?php } elseif ($rowitem->id_status_reservasi_wisata == 3) { ?>
+                                        <!-- Kelola Laporan Bermasalah -->
+                                        <span class="badge badge-pill badge-danger mt-2">
+                                            Laporan Pengeluaran <br> Belum Dibuat. <br> Dikarenakan Reservasi Bermasalah.
+                                        </span>
+                                    <?php } else { ?>
+                                        <!-- Kelola Laporan Baru -->
+                                        <span class="badge badge-pill badge-warning mt-2">
+                                            Laporan Pengeluaran <br> Belum Dibuat
+                                        </span>
+                                    <?php } ?>
                                 </td>
                           </tr>
                           <tr>

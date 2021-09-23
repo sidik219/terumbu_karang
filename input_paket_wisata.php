@@ -76,11 +76,11 @@ if (isset($_POST['submit'])) {
             $last_paket_wisata_id = $pdo->lastInsertId();
         }
 
-        //var_dump($_POST['nama_paket']);exit();
+        //var_dump($_POST['nama_wisata']);exit();
         $i = 0;
-        foreach ($_POST['nama_paket'] as $nama_paket) {
+        foreach ($_POST['nama_wisata'] as $nama_wisata) {
             $id_paket_wisata   = $last_paket_wisata_id; //tb_paket_wisata
-            $id_wisata         = $_POST['nama_paket'][$i]; //t_wisata
+            $id_wisata         = $_POST['nama_wisata'][$i]; //t_wisata
 
             //Update dan set id_paket_wisata ke wisata pilihan
             $sqlupdatewisata = "UPDATE t_wisata
@@ -209,7 +209,9 @@ if (isset($_POST['submit'])) {
                     <select id="id_lokasi" name="id_lokasi" class="form-control" required>
                             <option value="">Pilih Lokasi</option>
                         <?php foreach ($rowlokasi as $lokasi) {  ?>
-                            <option value="<?=$lokasi->id_lokasi?>">ID <?=$lokasi->id_lokasi?> - <?=$lokasi->nama_lokasi?></option>
+                            <option value="<?=$lokasi->id_lokasi?>">
+                                ID <?=$lokasi->id_lokasi?> - <?=$lokasi->nama_lokasi?>
+                            </option>
                         <?php } ?>
                     </select>
                     </div>
@@ -220,9 +222,41 @@ if (isset($_POST['submit'])) {
                     <select id="id_asuransi" name="id_asuransi" class="form-control" required>
                             <option value="">Pilih Asuransi</option>
                         <?php foreach ($rowasuransi as $asuransi) {  ?>
-                            <option value="<?=$asuransi->id_asuransi?>">ID <?=$asuransi->id_asuransi?> - <?=$asuransi->biaya_asuransi?></option>
+                            <option value="<?=$asuransi->id_asuransi?>">
+                                ID <?=$asuransi->id_asuransi?> - <?=$asuransi->biaya_asuransi?>
+                            </option>
                         <?php } ?>
                     </select>
+                    </div>
+                    
+                    <!-- Wisata -->
+                    <div class="form-group field_wrapper">
+                        <label for="paket_wisata">ID Wisata</label><br>
+                        <div class="form-group fieldGroup">
+                            <div class="input-group">
+                                <select class="form-control" name="nama_wisata[]" id="exampleFormControlSelect1">
+                                    <option selected disabled>Pilih Wisata:</option>
+                                    <?php
+                                    $sqlviewwisata = 'SELECT * FROM t_wisata
+                                                        ORDER BY id_wisata 
+                                                        DESC LIMIT 3';
+                                    $stmt = $pdo->prepare($sqlviewwisata);
+                                    $stmt->execute();
+                                    $rowwisata = $stmt->fetchAll();
+
+                                    foreach ($rowwisata as $wisata) { ?>
+                                    <option value="<?=$wisata->id_wisata?>">
+                                        ID <?=$wisata->id_wisata?> - <?=$wisata->judul_wisata?>
+                                    </option>
+                                    <?php } ?>
+                                </select>
+                                <div class="input-group-addon">
+                                    <a href="javascript:void(0)" class="btn btn-success addMore">
+                                        <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Wisata
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -244,38 +278,9 @@ if (isset($_POST['submit'])) {
                     </script>
                     </div>
 
-                    <div class="form-group field_wrapper">
-                        <label for="paket_wisata">Paket Wisata</label><br>
-                        <div class="form-group fieldGroup">
-                            <div class="input-group">
-                                <select class="form-control" name="nama_paket[]" id="exampleFormControlSelect1">
-                                    <option selected disabled>Pilih Paket Wisata:</option>
-                                    <?php
-                                    $sqlviewwisata = 'SELECT * FROM t_wisata
-                                                        ORDER BY id_wisata 
-                                                        DESC LIMIT 3';
-                                    $stmt = $pdo->prepare($sqlviewwisata);
-                                    $stmt->execute();
-                                    $rowwisata = $stmt->fetchAll();
-
-                                    foreach ($rowwisata as $paket) { ?>
-                                    <option value="<?=$paket->id_wisata?>">
-                                        <?=$paket->judul_wisata?>
-                                    </option>
-                                    <?php } ?>
-                                </select>
-                                <div class="input-group-addon">
-                                    <a href="javascript:void(0)" class="btn btn-success addMore">
-                                        <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Paket
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class='form-group' id='fotowilayah'>
                         <div>
-                            <label for='image_uploads'>Upload Foto Wisata</label>
+                            <label for='image_uploads'>Upload Foto Paket Wisata</label>
                             <input type='file'  class='form-control' id='image_uploads'
                                 name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
                         </div>
@@ -285,6 +290,16 @@ if (isset($_POST['submit'])) {
                         <img id="preview"  width="100px" src="#" alt="Preview Gambar"/>
 
                         <script>
+                            //Validasi Size Upload Image
+                            var uploadField = document.getElementById("image_uploads");
+
+                            uploadField.onchange = function() {
+                                if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                    alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                    this.value = "";
+                                };
+                            };
+
                             window.onload = function() {
                             document.getElementById('preview').style.display = 'none';
                             };
@@ -314,7 +329,7 @@ if (isset($_POST['submit'])) {
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input checked type="radio" id="rb_status_tidak_aktif" name="rb_status_wisata" value="Tidak Aktif " class="form-check-input">
+                                <input type="radio" id="rb_status_tidak_aktif" name="rb_status_wisata" value="Tidak Aktif " class="form-check-input">
                                 <label class="form-check-label" for="rb_status_tidak_aktif" style="color: gray">
                                     Tidak Aktif
                                 </label>
@@ -329,24 +344,25 @@ if (isset($_POST['submit'])) {
                     <!-- copy of input fields group -->
                     <div class="form-group fieldGroupCopy" style="display: none;">
                         <div class="input-group">
-                            <select class="form-control" name="nama_paket[]" id="exampleFormControlSelect1">
-                                <option selected disabled>Pilih Paket Wisata:</option>
+                            <select class="form-control" name="nama_wisata[]" id="exampleFormControlSelect1">
+                                <option selected disabled>Pilih Wisata:</option>
                                 <?php
                                 $sqlviewwisata = 'SELECT * FROM t_wisata
-                                                    ORDER BY id_wisata DESC';
+                                                    ORDER BY id_wisata 
+                                                    DESC LIMIT 3';
                                 $stmt = $pdo->prepare($sqlviewwisata);
                                 $stmt->execute();
                                 $rowwisata = $stmt->fetchAll();
 
-                                foreach ($rowwisata as $paket) { ?>
-                                <option value="<?=$paket->id_wisata?>">
-                                    <?=$paket->judul_wisata?>
+                                foreach ($rowwisata as $wisata) { ?>
+                                <option value="<?=$wisata->id_wisata?>">
+                                    ID <?=$wisata->id_wisata?> - <?=$wisata->judul_wisata?>
                                 </option>
                                 <?php } ?>
                             </select>
                             <div class="input-group-addon">
                                 <a href="javascript:void(0)" class="btn btn-danger remove">
-                                    <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Paket
+                                    <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Wisata
                                 </a>
                             </div>
                         </div>

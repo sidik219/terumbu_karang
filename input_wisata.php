@@ -15,8 +15,8 @@ $sqlfasilitaswisata= 'SELECT * FROM tb_fasilitas_wisata
 
 if (isset($_POST['submit'])) {
     if ($_POST['submit'] == 'Simpan') {
-        $judul_wisata               = $_POST['tb_judul_wisata'];
-        $deskripsi_wisata           = $_POST['tb_deskripsi_wisata'];
+        $judul_wisata               = $_POST['judul_wisata'];
+        $deskripsi_wisata           = $_POST['deskripsi_wisata'];
 
         //Insert t_wisata
         $sqlwisata = "INSERT INTO t_wisata
@@ -182,13 +182,55 @@ if (isset($_POST['submit'])) {
                     <?php } ?>
 
                     <div class="form-group">
-                        <label for="tb_judul_wisata">Judul Wisata</label>
-                        <input type="text" id="tb_judul_wisata" name="tb_judul_wisata" class="form-control" required>
+                        <label for="judul_wisata">Judul Wisata</label>
+                        <input type="text" id="judul_wisata" name="judul_wisata" class="form-control" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="tb_deskripsi_wisata">Deskripsi Singkat Wisata</label>
-                        <input type="text" id="tb_deskripsi_wisata" name="tb_deskripsi_wisata" class="form-control" required>
+                        <label for="deskripsi_wisata">Deskripsi Wisata</label>
+                        <input type="text" id="deskripsi_wisata" name="deskripsi_wisata" class="form-control" required>
+                    </div>
+
+                    <div class='form-group'>
+                        <div>
+                            <label for='image_uploads'>Upload Foto Wisata</label>
+                            <input type='file'  class='form-control' id='image_uploads'
+                                name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <img id="preview"  width="100px" src="#" alt="Preview Gambar"/>
+
+                        <script>
+                            //Validasi Size Upload Image
+                            var uploadField = document.getElementById("image_uploads");
+
+                            uploadField.onchange = function() {
+                                if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                    alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                    this.value = "";
+                                };
+                            };
+
+                            window.onload = function() {
+                            document.getElementById('preview').style.display = 'none';
+                            };
+                            function readURL(input) {
+                                if (input.files && input.files[0]) {
+                                    var reader = new FileReader();
+
+                                    reader.onload = function (e) {
+                                        $('#preview')
+                                            .attr('src', e.target.result)
+                                            .width(200);
+                                            document.getElementById('preview').style.display = 'block';
+                                    };
+
+                                    reader.readAsDataURL(input.files[0]);
+                                }
+                            }
+                        </script>
                     </div>
 
                     <!-- <div class="form-group field_wrapper">

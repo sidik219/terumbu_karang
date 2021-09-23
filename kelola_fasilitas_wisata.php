@@ -123,6 +123,14 @@ function ageCalculator($dob){
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+                    <?php
+                        if(!empty($_GET['status'])) {
+                            if($_GET['status'] == 'addsuccess') {
+                                echo '<div class="alert alert-success" role="alert">
+                                        Input data fasilitas wisata berhasil ditambahkan!
+                                        </div>'; }
+                        }
+                    ?>
                     <div align="right">
                     <!-- Cetak Laporan Fasilitas -->
                     <a class="btn btn-success" href="laporan_wisata.php?type=fasilitas">
