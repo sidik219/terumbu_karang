@@ -246,53 +246,40 @@ if (isset($_POST['submit'])) {
                                 <!-- Form -->
                                 <form action="" method="POST">
                                     <?php foreach ($rowwisata as $rowitem) { ?>
-                                    <ul class="list-group mb-3" id="keranjangancestor">
-                                        <!-- Paket Wisata -->
-                                        <div class="card" style="width: 20.5rem; margin-bottom: 20px;">
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item card-reservasi">
-                                                    <!-- Nama paket wisata -->
-                                                    <input 
-                                                        type="text" 
-                                                        value="<?= $rowitem->nama_paket_wisata ?>" 
-                                                        class="list-group-item deskripsi-paket" 
-                                                        style="background: transparent;
+                                        <ul class="list-group mb-3" id="keranjangancestor">
+                                            <!-- Paket Wisata -->
+                                            <div class="card" style="width: 20.5rem; margin-bottom: 20px;">
+                                                <ul class="list-group list-group-flush">
+                                                    <li class="list-group-item card-reservasi">
+                                                        <!-- Nama paket wisata -->
+                                                        <input type="text" value="<?= $rowitem->nama_paket_wisata ?>" class="list-group-item deskripsi-paket" style="background: transparent;
                                                                 border: none;
                                                                 color: #fff;
                                                                 font-weight: bold;
-                                                                width: 100%;"
-                                                        disabled
-                                                    >
-                                                </li>
-                                                <input 
-                                                    type="text" 
-                                                    id="deskripsi_wisata" 
-                                                    name="deskripsi_wisata" 
-                                                    value="Peserta: " 
-                                                    class="list-group-item paket-wisata" 
-                                                    disabled
-                                                >
-                                            </ul>
-                                        </div>
+                                                                width: 100%;" disabled>
+                                                    </li>
+                                                    <input type="text" id="deskripsi_wisata" name="deskripsi_wisata" value="Peserta: " class="list-group-item paket-wisata" disabled>
+                                                </ul>
+                                            </div>
 
-                                        <!-- Paket Donasi -->
-                                        <!-- Sementara Dihapus Dulu -->
+                                            <!-- Paket Donasi -->
+                                            <!-- Sementara Dihapus Dulu -->
 
-                                        <!-- Total -->
-                                        <div class="card" style="width: 20.5rem;">
-                                            <ul class="list-group list-group-flush">
-                                                <label class="list-group-item card-reservasi">Total : </label>
-                                                <input type="hidden" id="total" name="total" value="" class="list-group-item" style="color: gray;" readonly>
-                                                <input type="text" id="total_reservasi" name="total_reservasi" value="" class="list-group-item" style="color: gray;" readonly>
-                                            </ul>
-                                        </div>
+                                            <!-- Total -->
+                                            <div class="card" style="width: 20.5rem;">
+                                                <ul class="list-group list-group-flush">
+                                                    <label class="list-group-item card-reservasi">Total : </label>
+                                                    <input type="hidden" id="total" name="total" value="" class="list-group-item" style="color: gray;" readonly>
+                                                    <input type="text" id="total_reservasi" name="total_reservasi" value="" class="list-group-item" style="color: gray;" readonly>
+                                                </ul>
+                                            </div>
 
-                                        <!-- Link Untuk Ke Halaman Donasi Terumbu Karang -->
-                                        <!-- <a class="btn btn-primary btn-lg btn-block mb-4" href="pilih_terumbu_karang.php?id_lokasi=#" style="color: white; width: 20.5rem;">
+                                            <!-- Link Untuk Ke Halaman Donasi Terumbu Karang -->
+                                            <!-- <a class="btn btn-primary btn-lg btn-block mb-4" href="pilih_terumbu_karang.php?id_lokasi=#" style="color: white; width: 20.5rem;">
                                             Ayo Donasi Terumbu Karang
                                         </a> -->
-                                    </ul>
-                                <!-- Form extend -->
+                                        </ul>
+                                        <!-- Form extend -->
                             </div>
 
                             <!-- Div-2 -->
@@ -309,7 +296,7 @@ if (isset($_POST['submit'])) {
                                 </div>
                                 <div class="form-group">
                                     <label for="tgl_reservasi">Tanggal Reservasi</label>
-                                    <input type="date" id="tgl_reservasi" name="tgl_reservasi" class="form-control" required>
+                                    <input type="date" id="tgl_reservasi" name="tgl_reservasi" class="form-control" max="<?= $rowitem->tgl_akhir_pemesanan; ?>" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah_peserta">Jumlah Peserta</label>
@@ -340,7 +327,8 @@ if (isset($_POST['submit'])) {
                                                     </span>
                                                 </h5>
                                             </div>
-                                        </div><p>
+                                        </div>
+                                        <p>
                                         <div class="row">
                                             <div class="col">
                                                 <!-- Select Wisata -->
@@ -355,22 +343,24 @@ if (isset($_POST['submit'])) {
 
                                                 foreach ($rowWisata as $wisata) { ?>
                                                     <span class="font-weight-bold">
-                                                        <i class="text-info fas fa-arrow-circle-right"></i> 
+                                                        <i class="text-info fas fa-arrow-circle-right"></i>
                                                         <?= $wisata->judul_wisata ?>
                                                     </span><br>
                                                 <?php } ?>
                                             </div>
-                                        </div><p>
-                                        <!-- Fasilitas Wisata -->
+                                        </div>
+                                        <p>
+                                            <!-- Fasilitas Wisata -->
                                         <div class="row">
                                             <div class="col">
                                                 <h5>
                                                     <span class="font-weight-bold">
-                                                    <i class="text-info fas fa-cubes"></i> Fasilitas Wisata
+                                                        <i class="text-info fas fa-cubes"></i> Fasilitas Wisata
                                                     </span>
                                                 </h5>
                                             </div>
-                                        </div><p>
+                                        </div>
+                                        <p>
                                         <div class="row">
                                             <div class="col">
                                                 <?php
@@ -388,13 +378,14 @@ if (isset($_POST['submit'])) {
 
                                                 foreach ($rowfasilitas as $allfasilitas) { ?>
                                                     <span class="font-weight-bold">
-                                                        <i class="text-info fas fa-arrow-circle-right"></i> 
+                                                        <i class="text-info fas fa-arrow-circle-right"></i>
                                                         <?= $allfasilitas->pengadaan_fasilitas ?>
                                                     </span><br>
                                                 <?php } ?>
                                             </div>
-                                        </div><p>
-                                        <!-- Asuransi -->
+                                        </div>
+                                        <p>
+                                            <!-- Asuransi -->
                                         <div class="row">
                                             <div class="col">
                                                 <h5>
@@ -403,18 +394,20 @@ if (isset($_POST['submit'])) {
                                                     </span>
                                                 </h5>
                                             </div>
-                                        </div><p>
+                                        </div>
+                                        <p>
                                         <div class="row">
                                             <div class="col">
                                                 <span class="font-weight-bold">
                                                     Rp. <?= number_format($rowitem->biaya_asuransi, 0) ?>
                                                 </span><br>
                                             </div>
-                                        </div><p>
-                                        <!-- Total Pembayaran -->
-                                        <hr class="mb-2" />
-                                        <?php
-                                        $sqlviewpaket = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_kerjasama, biaya_asuransi
+                                        </div>
+                                        <p>
+                                            <!-- Total Pembayaran -->
+                                            <hr class="mb-2" />
+                                            <?php
+                                            $sqlviewpaket = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_kerjasama, biaya_asuransi
                                         FROM tb_fasilitas_wisata
                                         LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
                                         LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
@@ -424,16 +417,16 @@ if (isset($_POST['submit'])) {
                                         WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
                                         AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
-                                        $stmt = $pdo->prepare($sqlviewpaket);
-                                        $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                                        $rowfasilitas = $stmt->fetchAll();
+                                            $stmt = $pdo->prepare($sqlviewpaket);
+                                            $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                            $rowfasilitas = $stmt->fetchAll();
 
-                                        foreach ($rowfasilitas as $fasilitas) {
+                                            foreach ($rowfasilitas as $fasilitas) {
 
-                                        // Menjumlahkan biaya asuransi dan biaya paket wisata
-                                        $asuransi       = $fasilitas->biaya_asuransi;
-                                        $wisata         = $fasilitas->total_biaya_fasilitas;
-                                        $total_paket    = $asuransi + $wisata; ?>
+                                                // Menjumlahkan biaya asuransi dan biaya paket wisata
+                                                $asuransi       = $fasilitas->biaya_asuransi;
+                                                $wisata         = $fasilitas->total_biaya_fasilitas;
+                                                $total_paket    = $asuransi + $wisata; ?>
 
                                         <div class="row">
                                             <div class="col">
@@ -448,8 +441,8 @@ if (isset($_POST['submit'])) {
                                                 </span>
                                             </div>
                                         </div>
-                                        <?php } ?>
-                                        <hr class="mb-2" />
+                                    <?php } ?>
+                                    <hr class="mb-2" />
                                     </div>
                                 </div>
 
@@ -482,58 +475,58 @@ if (isset($_POST['submit'])) {
                                 <div class="" style="width:100%;">
                                     <div class="">
                                         <h4 class="card-header mb-2 pl-0">Metode Pembayaran</h4>
-                                        <span class="">Pilihan untuk lokasi :</span> 
+                                        <span class="">Pilihan untuk lokasi :</span>
                                         <span class="text-info font-weight-bolder"> <?= $rowitem->nama_lokasi ?></span>
-                                        
-                                        <?php foreach($rowrekening as $rekening) {?>
-                                        <div class="d-block my-4">
-                                            <div class="rounded p-sm-4 pt-2 shadow-sm border">
-                                                <div class="custom-control custom-radio">
-                                                    <input id="id_rekening<?=$rekening->id_rekening_bank?>" onchange="updateData(this.value)" name="id_rekening_bersama" type="radio" value="<?=$rekening->id_rekening_bank?>" class="custom-control-input" required>
-                                                    <label class="custom-control-label " for="id_rekening<?=$rekening->id_rekening_bank?>">Bank Transfer - <span class=""><?=$rekening->nama_bank?> (Konfirmasi Manual)</label>
-                                                </div>
-                                                <hr class="mb-1"/>
-                                                <div class="pl-2">
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <span class="font-weight-bold">Nama Rekening Pengelola
-                                                        </div>
-                                                        <div class="col-lg-8 mb-2">
-                                                            <span class=""><?=$rekening->nama_pemilik_rekening?></span>
-                                                        </div>
+
+                                        <?php foreach ($rowrekening as $rekening) { ?>
+                                            <div class="d-block my-4">
+                                                <div class="rounded p-sm-4 pt-2 shadow-sm border">
+                                                    <div class="custom-control custom-radio">
+                                                        <input id="id_rekening<?= $rekening->id_rekening_bank ?>" onchange="updateData(this.value)" name="id_rekening_bersama" type="radio" value="<?= $rekening->id_rekening_bank ?>" class="custom-control-input" required>
+                                                        <label class="custom-control-label " for="id_rekening<?= $rekening->id_rekening_bank ?>">Bank Transfer - <span class=""><?= $rekening->nama_bank ?> (Konfirmasi Manual)</label>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <span class="font-weight-bold">Nomor Rekening Pengelola  </span>
+                                                    <hr class="mb-1" />
+                                                    <div class="pl-2">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <span class="font-weight-bold">Nama Rekening Pengelola
+                                                            </div>
+                                                            <div class="col-lg-8 mb-2">
+                                                                <span class=""><?= $rekening->nama_pemilik_rekening ?></span>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-lg-8  mb-2">
-                                                            <span class=""><?=$rekening->nomor_rekening?></span>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <span class="font-weight-bold">Nomor Rekening Pengelola </span>
+                                                            </div>
+                                                            <div class="col-lg-8  mb-2">
+                                                                <span class=""><?= $rekening->nomor_rekening ?></span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row mb-2">
-                                                        <div class="col">
-                                                            <span class="font-weight-bold">Bank Pengelola  </span>
-                                                        </div>
-                                                        <div class="col-lg-8  mb-2">
-                                                            <span class=""><?=$rekening->nama_bank?></span>
+                                                        <div class="row mb-2">
+                                                            <div class="col">
+                                                                <span class="font-weight-bold">Bank Pengelola </span>
+                                                            </div>
+                                                            <div class="col-lg-8  mb-2">
+                                                                <span class=""><?= $rekening->nama_bank ?></span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         <?php } ?>
 
                                         <p class="text-muted">
-                                            <i class="fas fa-info-circle"></i> 
+                                            <i class="fas fa-info-circle"></i>
                                             Harap upload bukti transfer di halaman "Reservasi Saya" setelah menekan tombol Buat Reservasi Wisata.
                                         </p>
                                         <button type="submit" name="submit" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4">Buat Reservasi Wisata</button>
                                     </div>
                                 </div>
                                 <!-- End Foreach -->
-                                <?php } ?>
-                                <!-- End Form -->
-                                </form>
+                            <?php } ?>
+                            <!-- End Form -->
+                            </form>
                             </div>
                         </div>
                     </div>
@@ -567,10 +560,12 @@ if (isset($_POST['submit'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <!-- Pembatasan Date Reservasi -->
+
     <script>
         var today = new Date().toISOString().split('T')[0];
         document.getElementsByName("tgl_reservasi")[0].setAttribute('min', today);
     </script>
+
     <!--(づ｡◕‿‿◕｡)づ pika pika pikachu (づ｡◕‿‿◕｡)づ-->
     <script>
         function myFunction() {
