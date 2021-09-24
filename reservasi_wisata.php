@@ -105,7 +105,7 @@ if (isset($_POST['submit'])) {
             $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
                 <br>Yth. '.$nama_user.'
                 <br>Terima kasih telah membuat reservasi wisata di GoKarang!
-                <br>Paket wisata: '.$rowwisata->nama_paket_wisata.'
+                <br>Paket wisata: '.$rowwisata[0]->nama_paket_wisata.'
                 <br>Lokasi wisata: '.$rowlokasi->nama_lokasi.'
                 <br>Tanggal reservasi: '.$tgl_reservasi.'
                 <br>Jumlah peserta: '.$jumlah_peserta.'
@@ -129,7 +129,7 @@ if (isset($_POST['submit'])) {
             
             $sqlviewpengelolalokasi = 'SELECT * FROM t_lokasi 
                                         LEFT JOIN t_pengelola_lokasi ON t_pengelola_lokasi.id_lokasi = t_lokasi.id_lokasi
-                                        WHERE id_lokasi = :id_lokasi';
+                                        WHERE t_lokasi.id_lokasi = :id_lokasi';
                 $stmt = $pdo->prepare($sqlviewpengelolalokasi);
                 $stmt->execute(['id_lokasi' => $id_lokasi]);
                 $rowpengelola = $stmt->fetchAll();
@@ -149,6 +149,10 @@ if (isset($_POST['submit'])) {
                 $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
                 <br>Yth. '.$nama_user.'
                 <br>Anda menerima reservasi wisata baru pada lokasi '.$pengelola->nama_lokasi.'
+                <br>Paket wisata: '.$rowwisata[0]->nama_paket_wisata.'
+                <br>Lokasi wisata: '.$rowlokasi->nama_lokasi.'
+                <br>Tanggal reservasi: '.$tgl_reservasi.'
+                <br>Jumlah peserta: '.$jumlah_peserta.'
                 <br>Berikut rincian reservasi wisata baru tersebut:
                 <br>Bank Wisatawan: '.$bank_donatur.'
                 <br>Nomor Rekening wisatawan: '.$nomor_rekening_donatur.'
