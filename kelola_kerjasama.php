@@ -153,9 +153,15 @@ $rowkerjasama = $stmt->fetchAll();
                                         <td><?= $kerjasama->pengadaan_fasilitas ?></td>
                                         <td>
                                             <?php if ($kerjasama->status_kerjasama == "Melakukan Kerjasama") { ?>
-                                                <span class="badge badge-pill badge-success"><?= $kerjasama->status_kerjasama ?></span>
+                                                <span class="badge badge-pill badge-success">
+                                                    <?= $kerjasama->status_kerjasama ?>
+                                                </span>
                                             <?php } elseif ($kerjasama->status_kerjasama == "Tidak Melakukan Kerjasama") { ?>
-                                                <span class="badge badge-pill badge-warning"><?= $kerjasama->status_kerjasama ?></span>
+                                                <p style="font-size: 14px;">
+                                                    <span class="badge badge-pill badge-warning">
+                                                        <?= $kerjasama->status_kerjasama ?>
+                                                    </span>
+                                                </p>
                                             <?php } ?>
                                         </td>
                                         <td><?= $persentasi ?>%</td>

@@ -27,6 +27,8 @@ if (isset($_POST['submit'])) {
         $nama_paket_wisata          = $_POST['tb_nama_paket_wisata'];
         $deskripsi_paket_wisata     = $_POST['tb_deskripsi_paket_wisata'];
         $deskripsi_panjang_wisata   = $_POST['deskripsi_panjang_wisata'];
+        $tgl_pemesanan              = $_POST['tgl_pemesanan'];
+        $tgl_akhir_pemesanan        = $_POST['tgl_akhir_pemesanan'];
         $status_aktif               = $_POST['rb_status_wisata'];
         $randomstring               = substr(md5(rand()), 0, 7);
 
@@ -47,14 +49,18 @@ if (isset($_POST['submit'])) {
                             id_asuransi,
                             nama_paket_wisata, 
                             deskripsi_paket_wisata, 
-                            deskripsi_panjang_wisata, 
+                            deskripsi_panjang_wisata,
+                            tgl_pemesanan, 
+                            tgl_akhir_pemesanan, 
                             foto_wisata, 
                             status_aktif)
                             VALUES (:id_lokasi, 
                             :id_asuransi,
                             :nama_paket_wisata, 
                             :deskripsi_paket_wisata, 
-                            :deskripsi_panjang_wisata, 
+                            :deskripsi_panjang_wisata,
+                            :tgl_pemesanan, 
+                            :tgl_akhir_pemesanan, 
                             :foto_wisata, 
                             :status_aktif)";
 
@@ -64,6 +70,8 @@ if (isset($_POST['submit'])) {
                         'nama_paket_wisata' => $nama_paket_wisata,
                         'deskripsi_paket_wisata' => $deskripsi_paket_wisata,
                         'deskripsi_panjang_wisata' => $deskripsi_panjang_wisata,
+                        'tgl_pemesanan' => $tgl_pemesanan,
+                        'tgl_akhir_pemesanan' => $tgl_akhir_pemesanan,
                         'foto_wisata' => $foto_wisata,
                         'status_aktif' => $status_aktif
                         ]);
@@ -273,9 +281,23 @@ if (isset($_POST['submit'])) {
                     <div class="form-group">
                         <label for="isi_artikel">Deskripsi Lengkap Paket Wisata:</label>
                         <textarea id="deskripsi_lengkap_wisata" name="deskripsi_panjang_wisata" required></textarea>
-                    <script>
-                            $('#deskripsi_lengkap_wisata').trumbowyg();
-                    </script>
+                        <script>
+                                $('#deskripsi_lengkap_wisata').trumbowyg();
+                        </script>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tgl_pemesanan">Batas Pemesanan</label>
+                        <div class="d-flex flex-row bd-highlight mb-3">
+                            <div class="p-2 bd-highlight">
+                                <label for="tgl_pemesanan">Tanggal Awal</label>
+                                <input type="date" id="tgl_pemesanan" name="tgl_pemesanan" class="form-control" required>
+                            </div>
+                            <div class="p-2 bd-highlight">
+                                <label for="tgl_pemesanan">Tanggal Akhir</label>
+                                <input type="date" id="tgl_akhir_pemesanan" name="tgl_akhir_pemesanan" class="form-control" required>
+                            </div>
+                        </div>
                     </div>
 
                     <div class='form-group' id='fotowilayah'>
@@ -400,7 +422,11 @@ if (isset($_POST['submit'])) {
     <script src="dist/js/adminlte.js"></script>
 
     <!-- jQuery library -->
-
+    <!-- Pembatasan Date Pemesanan -->
+    <script>
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementsByName("tgl_pemesanan")[0].setAttribute('min', today);
+    </script>
     <script>
         $(document).ready(function(){
         //group add limit

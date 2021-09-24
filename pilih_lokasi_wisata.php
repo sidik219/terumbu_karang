@@ -118,7 +118,7 @@ include 'hak_akses.php';
                                     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                                         <div class="carousel-inner">
                                             <div class="carousel-item active">
-                                                <img class="card-img-top d-block w-60" src="<?=$rowitem->foto_wisata?>" alt="">
+                                                <img class="card-img-top d-block w-60" src="<?=$rowitem->foto_wisata?>" height="300px" alt="">
                                             </div>
                                             <!-- Select Wisata -->
                                             <?php
@@ -132,7 +132,7 @@ include 'hak_akses.php';
 
                                             foreach ($rowWisata as $wisata) { ?>
                                             <div class="carousel-item">
-                                                <img class="card-img-top d-block w-60" src="<?=$wisata->image_wisata?>" alt="">
+                                                <img class="card-img-top d-block w-60" src="<?=$wisata->image_wisata?>" height="300px" alt="">
                                             </div>
                                             <?php } ?>
                                         </div>
@@ -145,6 +145,35 @@ include 'hak_akses.php';
                                     <div>
                                         <!-- Select Wisata -->
                                         <div class="card card-body" style="text-align: left;">
+                                            
+                                            <!-- Batas Pemesanan -->
+                                            <div>
+                                                <label>Batas Pemesanan:</label>
+                                                <h5>
+                                                    <?php
+                                                    // tanggal sekarang
+                                                    $tgl_sekarang = date("Y-m-d");
+                                                    // tanggal pembuatan batas pemesanan paket wisata
+                                                    $tgl_awal = $rowitem->tgl_pemesanan;
+                                                    // tanggal berakhir pembuatan batas pemesanan paket wisata
+                                                    $tgl_akhir = $rowitem->tgl_akhir_pemesanan;
+                                                    // jangka waktu + 365 hari
+                                                    $jangka_waktu = strtotime(strtotime($tgl_akhir), strtotime($tgl_awal));
+                                                    //tanggal expired
+                                                    $tgl_exp = date("Y-m-d",$jangka_waktu);
+
+                                                    if ($tgl_sekarang >= $tgl_exp) { ?>
+                                                        <span class="badge badge-pill badge-danger">
+                                                            <i class="fas fa-tag"></i> Sudah Tidak Berlaku.
+                                                        </span>
+                                                    <?php } else { ?>
+                                                        <span class="badge badge-pill badge-success">
+                                                            <i class="fas fa-tag"></i> Masih dalam jangka waktu.
+                                                        </span>
+                                                    <?php }?>
+                                                </h5>
+                                            </div>
+
                                             <ol style="margin-left: 1rem;">
                                             <?php
                                             $sqlpaketSelect = 'SELECT * FROM t_wisata
@@ -156,7 +185,39 @@ include 'hak_akses.php';
                                             $rowWisata = $stmt->fetchAll();
 
                                             foreach ($rowWisata as $wisata) { ?>
-                                                <li><?=$wisata->judul_wisata?></li>
+                                                <!-- Judul Wisata -->
+                                                <hr class="mr-4">
+                                                <h5 class="mt-4 mb-4 text-justify">
+                                                    Wisata:
+                                                    <span class="badge badge-pill badge-warning">
+                                                        <?=$wisata->judul_wisata?>
+                                                    </span>
+                                                </h5>
+                                                <hr class="mr-4">
+
+                                                <!-- Deskripsi Wisata -->
+                                                <li><?=$wisata->deskripsi_wisata?></li>
+
+                                                    <!-- Select Fasilitas -->
+                                                    <?php
+                                                    $sqlviewfasilitas = 'SELECT * FROM tb_fasilitas_wisata
+                                                                        LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
+                                                                        LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                                                                        LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
+                                                                        LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                                                        WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                                                        AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata
+                                                                        AND t_wisata.id_wisata = :id_wisata';
+
+                                                    $stmt = $pdo->prepare($sqlviewfasilitas);
+                                                    $stmt->execute(['id_wisata' => $wisata->id_wisata,
+                                                                    'id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                                    $rowfasilitas = $stmt->fetchAll();
+
+                                                    foreach ($rowfasilitas as $allfasilitas) { ?> 
+                                                    <i class="text-info fas fa-arrow-circle-right"></i>                 
+                                                    <?=$allfasilitas->pengadaan_fasilitas?><br>
+                                                    <?php } ?>
                                             <?php } ?>
                                             </ol>
                                         </div>

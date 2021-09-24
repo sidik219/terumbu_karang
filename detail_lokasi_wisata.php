@@ -187,7 +187,7 @@ include 'hak_akses.php';
                                             <div class="divTableRow">
                                                 <div class="divTableCell-1">
 
-                                                <!-- Select Fasilitas -->
+                                                    <!-- Select Fasilitas -->
                                                     <?php
                                                     $sqlviewfasilitas = 'SELECT * FROM tb_fasilitas_wisata
                                                                         LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
