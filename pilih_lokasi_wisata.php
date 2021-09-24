@@ -173,7 +173,8 @@ include 'hak_akses.php';
                                                     <?php }?>
                                                 </h5>
                                             </div>
-
+                                            
+                                            <!-- Wisata -->
                                             <ol style="margin-left: 1rem;">
                                             <?php
                                             $sqlpaketSelect = 'SELECT * FROM t_wisata
@@ -197,7 +198,6 @@ include 'hak_akses.php';
                                                 <hr class="mr-4">
                                                 
                                                 <!-- Judul Wisata -->
-                                                <label></label>
                                                 <li>Wisata: 
                                                     <span class="badge badge-pill badge-info">
                                                         <?=$wisata->judul_wisata?>

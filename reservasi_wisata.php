@@ -318,16 +318,6 @@ if (isset($_POST['submit'])) {
                                                 </h4>
                                             </div>
                                         </div>
-                                        <!-- Wisata -->
-                                        <div class="row">
-                                            <div class="col">
-                                                <h5>
-                                                    <span class="font-weight-bold">
-                                                        <i class="text-info fas fa-luggage-cart"></i> Wisata
-                                                    </span>
-                                                </h5>
-                                            </div>
-                                        </div>
                                         <p>
                                         <div class="row">
                                             <div class="col">
@@ -342,72 +332,62 @@ if (isset($_POST['submit'])) {
                                                 $rowWisata = $stmt->fetchAll();
 
                                                 foreach ($rowWisata as $wisata) { ?>
-                                                    <span class="font-weight-bold">
-                                                        <i class="text-info fas fa-arrow-circle-right"></i>
-                                                        <?= $wisata->judul_wisata ?>
+                                                    <h5 class="mt-4 mb-4">
+                                                        <div class="text-justify">
+                                                            <span class="badge badge-pill badge-warning">
+                                                                <?=$wisata->deskripsi_wisata?>
+                                                            </span>
+                                                        </div>
+                                                    </h5>
+
+                                                    <!-- Judul Wisata -->
+                                                    <i class="text-info fas fa-luggage-cart"></i>Wisata: 
+                                                    <span class="badge badge-pill badge-info">
+                                                        <?=$wisata->judul_wisata?>
                                                     </span><br>
+
+                                                    <!-- Fasilitas Wisata -->
+                                                    <?php
+                                                    $sqlviewfasilitas = 'SELECT * FROM tb_fasilitas_wisata
+                                                                        LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
+                                                                        LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                                                                        LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
+                                                                        LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                                                        WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                                                        AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata
+                                                                        AND t_wisata.id_wisata = :id_wisata';
+
+                                                    $stmt = $pdo->prepare($sqlviewfasilitas);
+                                                    $stmt->execute(['id_wisata' => $wisata->id_wisata,
+                                                                    'id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                                    $rowfasilitas = $stmt->fetchAll();
+
+                                                    foreach ($rowfasilitas as $allfasilitas) { ?> 
+                                                    <i class="text-info fas fa-arrow-circle-right"></i>                 
+                                                    <?=$allfasilitas->pengadaan_fasilitas?><br>
+                                                    <?php } ?>
                                                 <?php } ?>
                                             </div>
                                         </div>
                                         <p>
-                                            <!-- Fasilitas Wisata -->
-                                        <div class="row">
-                                            <div class="col">
-                                                <h5>
-                                                    <span class="font-weight-bold">
-                                                        <i class="text-info fas fa-cubes"></i> Fasilitas Wisata
-                                                    </span>
-                                                </h5>
-                                            </div>
-                                        </div>
-                                        <p>
-                                        <div class="row">
-                                            <div class="col">
-                                                <?php
-                                                $sqlviewpaket = 'SELECT * FROM tb_fasilitas_wisata
-                                                 LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
-                                                LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
-                                                LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
-                                                LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                                                WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
-                                                AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
-
-                                                $stmt = $pdo->prepare($sqlviewpaket);
-                                                $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                                                $rowfasilitas = $stmt->fetchAll();
-
-                                                foreach ($rowfasilitas as $allfasilitas) { ?>
-                                                    <span class="font-weight-bold">
-                                                        <i class="text-info fas fa-arrow-circle-right"></i>
-                                                        <?= $allfasilitas->pengadaan_fasilitas ?>
-                                                    </span><br>
-                                                <?php } ?>
-                                            </div>
-                                        </div>
-                                        <p>
-                                            <!-- Asuransi -->
-                                        <div class="row">
-                                            <div class="col">
-                                                <h5>
-                                                    <span class="font-weight-bold">
-                                                        <i class="text-warning fas fa-heartbeat"></i> Asuransi
-                                                    </span>
-                                                </h5>
-                                            </div>
-                                        </div>
-                                        <p>
+                                        <!-- Asuransi -->
                                         <div class="row">
                                             <div class="col">
                                                 <span class="font-weight-bold">
+                                                    <i class="text-danger fas fa-heartbeat"></i> Asuransi:
+                                                </span>
+                                            </div>
+                                            <div class="col-lg-8  mb-2">
+                                                <span class="font-weight-bold">
                                                     Rp. <?= number_format($rowitem->biaya_asuransi, 0) ?>
-                                                </span><br>
+                                                </span>
                                             </div>
                                         </div>
                                         <p>
-                                            <!-- Total Pembayaran -->
-                                            <hr class="mb-2" />
-                                            <?php
-                                            $sqlviewpaket = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_kerjasama, biaya_asuransi
+                                        <!-- Total Pembayaran -->
+                                        <hr class="mb-2" />
+                                        <?php
+                                        $sqlviewpaket = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_kerjasama, biaya_asuransi
                                         FROM tb_fasilitas_wisata
                                         LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
                                         LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
@@ -417,16 +397,16 @@ if (isset($_POST['submit'])) {
                                         WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
                                         AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
-                                            $stmt = $pdo->prepare($sqlviewpaket);
-                                            $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                                            $rowfasilitas = $stmt->fetchAll();
+                                        $stmt = $pdo->prepare($sqlviewpaket);
+                                        $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                        $rowfasilitas = $stmt->fetchAll();
 
-                                            foreach ($rowfasilitas as $fasilitas) {
+                                        foreach ($rowfasilitas as $fasilitas) {
 
-                                                // Menjumlahkan biaya asuransi dan biaya paket wisata
-                                                $asuransi       = $fasilitas->biaya_asuransi;
-                                                $wisata         = $fasilitas->total_biaya_fasilitas;
-                                                $total_paket    = $asuransi + $wisata; ?>
+                                        // Menjumlahkan biaya asuransi dan biaya paket wisata
+                                        $asuransi       = $fasilitas->biaya_asuransi;
+                                        $wisata         = $fasilitas->total_biaya_fasilitas;
+                                        $total_paket    = $asuransi + $wisata; ?>
 
                                         <div class="row">
                                             <div class="col">
