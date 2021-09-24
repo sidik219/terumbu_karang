@@ -185,18 +185,24 @@ include 'hak_akses.php';
                                             $rowWisata = $stmt->fetchAll();
 
                                             foreach ($rowWisata as $wisata) { ?>
-                                                <!-- Judul Wisata -->
+                                                <!-- Deskripsi Wisata -->
                                                 <hr class="mr-4">
-                                                <h5 class="mt-4 mb-4 text-justify">
-                                                    Wisata:
-                                                    <span class="badge badge-pill badge-warning">
-                                                        <?=$wisata->judul_wisata?>
-                                                    </span>
+                                                <h5 class="mt-4 mb-4">
+                                                    <div class="text-justify">
+                                                        <span class="badge badge-pill badge-warning">
+                                                            <?=$wisata->deskripsi_wisata?>
+                                                        </span>
+                                                    </div>
                                                 </h5>
                                                 <hr class="mr-4">
-
-                                                <!-- Deskripsi Wisata -->
-                                                <li><?=$wisata->deskripsi_wisata?></li>
+                                                
+                                                <!-- Judul Wisata -->
+                                                <label></label>
+                                                <li>Wisata: 
+                                                    <span class="badge badge-pill badge-info">
+                                                        <?=$wisata->judul_wisata?>
+                                                    </span>
+                                                </li>
 
                                                     <!-- Select Fasilitas -->
                                                     <?php
@@ -252,8 +258,24 @@ include 'hak_akses.php';
                                         </div>
                                     </div>
                                     <p>
-                                    <a class="btn btn-primary-paket btn-lg-paket btn-paket btn-block mb-4" href="detail_lokasi_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>">
-                                    Rincian Reservasi</a>
+                                    <?php
+                                    // tanggal sekarang
+                                    $tgl_sekarang = date("Y-m-d");
+                                    // tanggal pembuatan batas pemesanan paket wisata
+                                    $tgl_awal = $rowitem->tgl_pemesanan;
+                                    // tanggal berakhir pembuatan batas pemesanan paket wisata
+                                    $tgl_akhir = $rowitem->tgl_akhir_pemesanan;
+                                    // jangka waktu + 365 hari
+                                    $jangka_waktu = strtotime(strtotime($tgl_akhir), strtotime($tgl_awal));
+                                    //tanggal expired
+                                    $tgl_exp = date("Y-m-d",$jangka_waktu);
+
+                                    if ($tgl_sekarang >= $tgl_exp) { ?>
+                                        Rincian Reservasi Ditutup
+                                    <?php } else { ?>
+                                        <a class="btn btn-primary-paket btn-lg-paket btn-paket btn-block mb-4" href="detail_lokasi_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>">
+                                        Rincian Reservasi</a>
+                                    <?php }?>
                                 </div>
                             </div>
                         </div>

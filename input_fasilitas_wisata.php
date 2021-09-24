@@ -178,7 +178,13 @@ if (isset($_POST['submit'])) {
 
                     <p align="center">
                     <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
-                    </form><br><br>
+                    </form>
+
+                    <!-- Keterangan -->
+                    <div>
+                        <label for="">Keterangan:</label><br>
+                        <small>* Tambah Fasilitas Hanya Bisa Membuat 3</small>
+                    </div>
 
                     <!-- copy of input fields group -->
                     <div class="form-group fieldGroupCopy" style="display: none;">

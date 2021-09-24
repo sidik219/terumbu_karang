@@ -199,18 +199,21 @@ $rowpaket = $stmt->fetchAll();
                                                         $rowWisata = $stmt->fetchAll();
 
                                                         foreach ($rowWisata as $wisata) { ?>
-                                                            <!-- Judul Wisata -->
+                                                            <!-- Deskripsi Wisata -->
                                                             <hr class="mr-4">
                                                             <h5 class="mt-4 mb-4 text-justify">
-                                                                Wisata:
                                                                 <span class="badge badge-pill badge-warning">
-                                                                    <?= $wisata->judul_wisata ?>
+                                                                    <?= $wisata->deskripsi_wisata ?>
                                                                 </span>
                                                             </h5>
                                                             <hr class="mr-4">
 
-                                                            <!-- Deskripsi Wisata -->
-                                                            <li><?= $wisata->deskripsi_wisata ?></li>
+                                                            <!-- Judul Wisata -->
+                                                            <li>Wisata: 
+                                                                <span class="badge badge-pill badge-info">
+                                                                    <?=$wisata->judul_wisata?>
+                                                                </span>
+                                                            </li>
 
                                                             <!-- Select Fasilitas -->
                                                             <?php

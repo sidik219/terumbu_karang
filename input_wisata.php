@@ -16,7 +16,6 @@ $sqlfasilitaswisata= 'SELECT * FROM tb_fasilitas_wisata
 if (isset($_POST['submit'])) {
     if ($_POST['submit'] == 'Simpan') {
         $judul_wisata               = $_POST['judul_wisata'];
-        $deskripsi_wisata           = $_POST['deskripsi_wisata'];
         $randomstring               = substr(md5(rand()), 0, 7);
 
         //Image upload
@@ -32,12 +31,11 @@ if (isset($_POST['submit'])) {
 
         //Insert t_wisata
         $sqlwisata = "INSERT INTO t_wisata
-                            (judul_wisata, deskripsi_wisata, image_wisata)
-                            VALUES (:judul_wisata, :deskripsi_wisata, :image_wisata)";
+                            (judul_wisata, image_wisata)
+                            VALUES (:judul_wisata, :image_wisata)";
 
         $stmt = $pdo->prepare($sqlwisata);
         $stmt->execute(['judul_wisata'      => $judul_wisata,
-                        'deskripsi_wisata'  => $deskripsi_wisata,
                         'image_wisata'  => $image_wisata
                         ]);
 
@@ -196,13 +194,13 @@ if (isset($_POST['submit'])) {
 
                     <div class="form-group">
                         <label for="judul_wisata">Judul Wisata</label>
-                        <input type="text" id="judul_wisata" name="judul_wisata" class="form-control" required>
+                        <input type="text" id="judul_wisata" name="judul_wisata" class="form-control" Placeholder="Judul Wisata" required>
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="deskripsi_wisata">Deskripsi Wisata</label>
                         <input type="text" id="deskripsi_wisata" name="deskripsi_wisata" class="form-control" required>
-                    </div>
+                    </div> -->
 
                     <div class='form-group'>
                         <div>
@@ -263,7 +261,15 @@ if (isset($_POST['submit'])) {
 
                     <p align="center">
                     <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
-                    </form><br><br>
+                    </form>
+                    
+                    <!-- Keterangan -->
+                    <div>
+                        <label for="">Keterangan:</label><br>
+                        <small><b>Contoh Pengisian:</b></small><br>
+                        <small>* Judul Wisata: Wisata Diving</small><br>
+                        <small>* Upload Foto Wisata: "Foto tentang wisata tersebut"</small>
+                    </div>
 
                     <!-- copy of input fields group -->
                     <!-- <div class="form-group fieldGroupCopy" style="display: none;">
