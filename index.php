@@ -1,3 +1,13 @@
+<?php include 'build/config/connection.php';
+// session_start();
+$url_sekarang = basename(__FILE__);
+// include 'hak_akses.php';
+
+$stmt = $pdo->prepare('SELECT * From t_konten_wilayah');
+$stmt->execute();
+// $stmt->execute(array(0));
+$rowKonten = $stmt->fetchAll();
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -94,13 +104,47 @@
             <!-- Header Container -->
             <div class="header-tkjb">
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
+                <!-- <ol class="carousel-indicators">
                     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                </ol>
+                </ol> -->
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
+                    <?php
+                    foreach ($rowKonten as $wilayah) { ?>
+                    <div 
+                        class="carousel-item 
+                        <?php 
+                            if ($wilayah->status_konten_wilayah == "Donasi Sekarang") {
+                              echo "active";  
+                            } else {
+                                echo " ";
+                            }
+                        ?>">
+                        <img class="d-block w-100" src="<?=$wilayah->foto_konten_wilayah?>" alt="">
+                        <div class="carousel-caption  d-md-block">
+                            <h3><?= $wilayah->judul_konten_wilayah ?></h3><br>
+                            <p><?= $wilayah->deskripsi_konten_wilayah ?></p><br>
+                            <?php 
+                            if ($wilayah->status_konten_wilayah == "Donasi Sekarang") { ?>
+                            <a href="konten-donasi.php" class="btn btn-link-slide" role="button" aria-pressed="true">
+                                <?= $wilayah->status_konten_wilayah ?>
+                            </a>
+                            <?php } elseif ($wilayah->status_konten_wilayah == "Wisata Sekarang") { ?>
+                            <a href="konten-wisata.php" class="btn btn-link-slide" role="button" aria-pressed="true">
+                                <?= $wilayah->status_konten_wilayah ?>
+                            </a>
+                            <?php } elseif ($wilayah->status_konten_wilayah == "Coralmaps") { ?>
+                            <a href="coralmaps.php" class="btn btn-link-slide" role="button" aria-pressed="true">
+                                <?= $wilayah->status_konten_wilayah ?>
+                            </a>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <?php } ?>
+
+                    <!-- Konten Statis -->
+                    <!-- <div class="carousel-item active">
                         <img class="d-block w-100" src="images/home-slide1-darken.jpg" alt="First slide">
                         <div class="carousel-caption  d-md-block">
                             <h3>BANTU PULIHKAN RUMAH MEREKA</h3><br>
@@ -133,7 +177,7 @@
                                 Coralmaps
                             </a>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>

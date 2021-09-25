@@ -1,57 +1,106 @@
 <?php include 'build/config/connection.php';
 session_start();
-if (!($_SESSION['level_user'] == 3)) {
-    header('location: login.php?status=restrictedaccess');
+if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
+  header('location: login.php?status=restrictedaccess');
 }
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
-$id_konten = $_GET['id_titik'];
-$sqlviewtitik = 'SELECT * from t_konten';
-$stmt = $pdo->prepare($sqlviewtitik);
-$stmt->execute();
-$row = $stmt->fetchAll();
 
+$id_konten_wilayah = $_GET['id_konten_wilayah'];
+$defaultpic = "images/image_default.jpg";
+
+// Asuransi
+$sqlviewkonten = 'SELECT * FROM t_konten_wilayah
+                    ORDER BY id_konten_wilayah ASC';
+$stmt = $pdo->prepare($sqlviewkonten);
+$stmt->execute();
+$rowKonten = $stmt->fetchAll();
+
+$sqleditkonten = 'SELECT * FROM t_konten_wilayah
+                    WHERE id_konten_wilayah = :id_konten_wilayah';
+
+$stmt = $pdo->prepare($sqleditkonten);
+$stmt->execute(['id_konten_wilayah' => $id_konten_wilayah]);
+$konten = $stmt->fetch();
+        
+// Jarak
+// 
+// Jarak
 if (isset($_POST['submit'])) {
-    $fasilitas_masuk = $_POST['fasilitas_biaya'];
-    $fasilitas_luar_biaya = $_POST['fasilitas_luar_biaya'];
-    $syarat_ketentuan = $_POST['syarat_ketentuan'];
-    $sqlkonten = " UPDATE t_konten SET sdh_biaya = ' $fasilitas_masuk ', blm_biaya=' $fasilitas_luar_biaya ',   sk=' $syarat_ketentuan ' where t_konten.id_konten = $id_konten ";
-    $stmt = $pdo->prepare($sqlkonten);
-    $stmt->execute();
+    $judul_konten_wilayah       = $_POST['judul_konten_wilayah'];
+    $deskripsi_konten_wilayah   = $_POST['deskripsi_konten_wilayah'];
+    $status_konten_wilayah      = $_POST['status_konten_wilayah'];
+    $tanggal_sekarang           = date('Y-m-d H:i:s', time());
+
+    $randomstring = substr(md5(rand()), 0, 7);
+
+    //Image upload
+    if($_FILES["image_uploads"]["size"] == 0) {
+        $foto_konten_wilayah = $konten->foto_konten_wilayah;
+        $pic = "&none=";
+    }
+    else if (isset($_FILES['image_uploads'])) {
+        if (($konten->foto_konten_wilayah == $defaultpic) || (!$konten->foto_konten_wilayah)){
+            $target_dir  = "images/foto_konten/wilayah";
+            $foto_konten_wilayah = $target_dir .'WIS_'.$randomstring. '.jpg';
+            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_konten_wilayah);
+            $pic = "&new=";
+        }
+        else if (isset($konten->foto_konten_wilayah)){
+            $foto_konten_wilayah = $konten->foto_konten_wilayah;
+            unlink($konten->foto_konten_wilayah);
+            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $konten->foto_konten_wilayah);
+            $pic = "&replace=";
+        }
+    }
+    //---image upload end
+    
+    $sqlpaket = "UPDATE t_konten_wilayah
+                    SET judul_konten_wilayah = :judul_konten_wilayah,
+                        deskripsi_konten_wilayah = :deskripsi_konten_wilayah,
+                        status_konten_wilayah = :status_konten_wilayah,
+                        update_terakhir = :update_terakhir
+                    WHERE id_konten_wilayah = :id_konten_wilayah";
+
+    $stmt = $pdo->prepare($sqlpaket);
+    $stmt->execute(['judul_konten_wilayah' => $judul_konten_wilayah,
+                    'deskripsi_konten_wilayah' => $deskripsi_konten_wilayah,
+                    'status_konten_wilayah' => $status_konten_wilayah,
+                    'update_terakhir' => $tanggal_sekarang,
+                    'id_konten_wilayah' => $id_konten_wilayah
+                    ]);
+
     $affectedrows = $stmt->rowCount();
     if ($affectedrows == '0') {
-        header("Location: kelola_konten.php?status=nochange");
+        header("Location: edit_konten.php?status=insertfailed");
     } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
         header("Location: kelola_konten.php?status=updatesuccess");
     }
 }
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>Kelola Wisata - GoKarang</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+        <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+        <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/style-card.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="js/trumbowyg/dist/ui/trumbowyg.min.css">
-    <script src="js/trumbowyg/dist/trumbowyg.js"></script>
-    <!-- Favicon -->
-    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
+    <script src="js/trumbowyg/dist/trumbowyg.min.js"></script>
 
+    <!-- Favicon -->
+    <?= $favicon ?>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -69,9 +118,9 @@ if (isset($_POST['submit'])) {
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Akun Saya</a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">Edit Profil</a>
-                        <a class="dropdown-item" href="logout.php">Logout</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="#">Edit Profil</a>
+                            <a class="dropdown-item" href="logout.php">Logout</a>
                 </li>
             </ul>
         </nav>
@@ -89,9 +138,8 @@ if (isset($_POST['submit'])) {
             <div class="sidebar">
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <?php print_sidebar(basename(__FILE__), $_SESSION['level_user']) ?>
-                        <!-- Print sidebar -->
+                   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <?php print_sidebar(basename(__FILE__), $_SESSION['level_user'])?> <!-- Print sidebar -->
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -104,10 +152,8 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="kelola_konten.php">
-                        < Kembali</a><br><br>
-                            <h4><span class="align-middle font-weight-bold">Edit Kelola Konten</span></h4>
-                            <p>Halaman Input Ini untuk pada halaman depan website</p>
+                    <a class="btn btn-outline-primary" href="kelola_konten.php">< Kembali</a><br><br>
+                    <h4><span class="align-middle font-weight-bold">Edit Data Konten</span></h4>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -117,134 +163,129 @@ if (isset($_POST['submit'])) {
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
-                        <?php foreach ($row as $row) : ?>
-                            <div class="form-group pb-3">
-                                <label for="fasilitas_biaya">
-                                    <h5><b>Fasilitas Sudah Termasuk Biaya:</b> </h5>
-                                </label>
 
-                                <textarea id="fasilitas_biaya" name="fasilitas_biaya" required><?= $row->sdh_biaya; ?></textarea>
-                                <script>
-                                    $('#fasilitas_biaya').trumbowyg();
-                                </script>
-                            </div>
+                    <div class="form-group">
+                        <label for="judul_konten_wilayah">Judul Konten</label>
+                        <input type="text" id="judul_konten_wilayah" name="judul_konten_wilayah" value="<?=$konten->judul_konten_wilayah?>" class="form-control" placeholder="Judul Konten" required>
+                    </div>
 
-                            <div class="form-group pb-3">
-                                <label for="fasilitas_luar_biaya">
-                                    <h5><b>Fasilitas Belum Termasuk Biaya:</b></h5>
-                                </label>
+                    <div class="form-group">
+                        <label for="deskripsi_konten_wilayah">Deskripsi Konten</label>
+                        <input type="text" id="deskripsi_konten_wilayah" name="deskripsi_konten_wilayah" value="<?=$konten->deskripsi_konten_wilayah?>" class="form-control" placeholder="Deskripsi Konten" required>
+                    </div>
 
-                                <textarea id="fasilitas_luar_biaya" name="fasilitas_luar_biaya" required><?= $row->blm_biaya; ?></textarea>
-                                <script>
-                                    $('#fasilitas_luar_biaya').trumbowyg();
-                                </script>
-                            </div>
+                    <!-- Lokasi -->
+                    <div class="form-group">
+                    <label for="status_konten_wilayah">Status Konten</label>
+                    <select id="status_konten_wilayah" name="status_konten_wilayah" class="form-control" required>
+                        <option value="">Pilih Status</option>
+                        <?php foreach ($rowKonten as $status) {  ?>
+                        <option <?php if($status->id_konten_wilayah == $konten->id_konten_wilayah) echo 'selected'; ?> value="<?=$status->id_konten_wilayah?>"><?=$status->status_konten_wilayah?></option>
+                        <?php } ?>
+                    </select>
+                    </div>
 
-                            <div class="form-group pb-3">
-                                <label for="syarat_ketentuan">
-                                    <h5><b>Syarat & Ketentuan:</b></h5>
-                                </label>
-
-                                <textarea id="syarat_ketentuan" name="syarat_ketentuan" required><?= $row->sk; ?></textarea>
-                                <script>
-                                    $('#syarat_ketentuan').trumbowyg();
-                                </script>
-                            </div>
-                        <?php endforeach ?>
-                        <p align="center">
-                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button>
-                        </p>
-                    </form>
-                    <br><br>
-
-                    <!-- copy of input fields group -->
-                    <div class="form-group fieldGroupCopy" style="display: none;">
-                        <div class="input-group">
-                            <select class="form-control" name="nama_wisata[]" id="exampleFormControlSelect1">
-                                <option selected disabled>Pilih Wisata:</option>
-                                <?php
-                                $sqlviewwisata = 'SELECT * FROM t_wisata
-                                                    WHERE id_paket_wisata IS NULL
-                                                    ORDER BY id_wisata';
-                                $stmt = $pdo->prepare($sqlviewwisata);
-                                $stmt->execute();
-                                $rowwisata = $stmt->fetchAll();
-
-                                foreach ($rowwisata as $wisata) { ?>
-                                    <option value="<?= $wisata->id_wisata ?>">
-                                        ID <?= $wisata->id_wisata ?> - <?= $wisata->judul_wisata ?>
-                                    </option>
-                                <?php } ?>
-                            </select>
-                            <div class="input-group-addon">
-                                <a href="javascript:void(0)" class="btn btn-danger remove">
-                                    <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Wisata
-                                </a>
-                            </div>
+                    <div class='form-group' id='fotowilayah'>
+                        <div>
+                            <label for='image_uploads'>Upload Foto Konten</label>
+                            <input type='file'  class='form-control' id='image_uploads'
+                                name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <img id="preview" src="#"  width="100px" alt="Preview Gambar"/>
+                            <a href="<?=$konten->foto_konten_wilayah?>" data-toggle="lightbox">
+                            <img class="img-fluid" id="oldpic" src="<?=$konten->foto_konten_wilayah?>" width="20%" <?php if($konten->foto_konten_wilayah == NULL) echo "style='display: none;'"; ?>></a>
+                        <br>
+
+                        <small class="text-muted">
+                            <?php if($konten->foto_konten_wilayah == NULL){
+                                echo "Bukti transfer belum diupload<br>Format .jpg .jpeg .png";
+                            }else{
+                                echo "Klik gambar untuk memperbesar";
+                            }
+
+                            ?>
+                        </small>
+
+                        <script>
+                            const actualBtn = document.getElementById('image_uploads');
+                            const fileChosen = document.getElementById('file-input-label');
+                            
+                            //Validasi Size Upload Image
+                            var uploadField = document.getElementById("image_uploads");
+
+                            uploadField.onchange = function() {
+                                if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                    alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                    this.value = "";
+                                };
+                            };
+
+                            actualBtn.addEventListener('change', function(){
+                            fileChosen.innerHTML = '<b>File dipilih :</b> '+this.files[0].name
+                            })
+                            window.onload = function() {
+                            document.getElementById('preview').style.display = 'none';
+                            };
+                            function readURL(input) {
+                                if (input.files && input.files[0]) {
+                                    var reader = new FileReader();
+                                    document.getElementById('oldpic').style.display = 'none';
+                                    reader.onload = function (e) {
+                                        $('#preview')
+                                            .attr('src', e.target.result)
+                                            .width(200);
+                                            document.getElementById('preview').style.display = 'block';
+                                    };
+
+                                    reader.readAsDataURL(input.files[0]);
+                                }
+                            }
+                        </script>
+                    </div>
+
+                    <p align="center">
+                    <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
+                    </form><br><br>
+
             </section>
             <!-- /.Left col -->
+            </div>
+            <!-- /.row (main row) -->
         </div>
-        <!-- /.row (main row) -->
-    </div>
-    <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
+        <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
 
     <footer class="main-footer">
-        <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
+        <?= $footer ?>
     </footer>
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
+    <!-- Control sidebar content goes here -->
     </aside>
     <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
-    <div>
-        <!-- jQuery -->
-        <!-- Bootstrap 4 -->
-        <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <!-- overlayScrollbars -->
-        <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-        <!-- AdminLTE App -->
-        <script src="dist/js/adminlte.js"></script>
+<div>
+    <!-- jQuery -->
+    <script src="plugins/jquery/jquery.min.js"></script>
 
-        <!-- jQuery library -->
-        <!-- Pembatasan Date Pemesanan -->
-        <script>
-            var today = new Date().toISOString().split('T')[0];
-            document.getElementsByName("tgl_pemesanan")[0].setAttribute('min', today);
-        </script>
-        <script>
-            $(document).ready(function() {
-                //group add limit
-                var maxGroup = 3;
+    <!-- Bootstrap 4 -->
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-                //add more fields group
-                $(".addMore").click(function() {
-                    if ($('body').find('.fieldGroup').length < maxGroup) {
-                        var fieldHTML = '<div class="form-group fieldGroup">' + $(".fieldGroupCopy").html() + '</div>';
-                        $('body').find('.fieldGroup:last').after(fieldHTML);
-                    } else {
-                        alert('Maksimal ' + maxGroup + ' paket wisata yang boleh dibuat.');
-                    }
-                });
+    <!-- overlayScrollbars -->
+    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    
+    <!-- AdminLTE App -->
+    <script src="dist/js/adminlte.js"></script>
 
-                //remove fields group
-                $("body").on("click", ".remove", function() {
-                    $(this).parents(".fieldGroup").remove();
-                });
-            });
-        </script>
-    </div>
-    <!-- Import Trumbowyg font size JS at the end of <body>... -->
-    <script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
+</div>
+
 </body>
-
 </html>

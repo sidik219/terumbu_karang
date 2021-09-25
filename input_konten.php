@@ -1,63 +1,79 @@
 <?php include 'build/config/connection.php';
 session_start();
-if (!($_SESSION['level_user'] == 3)) {
-    header('location: login.php?status=restrictedaccess');
+if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
+  header('location: login.php?status=restrictedaccess');
 }
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
 if (isset($_POST['submit'])) {
-    if ($_POST['submit'] == 'Simpan') {
-        $fasilitas_masuk = $_POST['fasilitas_masuk'];
-        $fasilitas_luar_biaya = $_POST['fasilitas_luar_biaya'];
-        $syarat_ketentuan = $_POST['syarat_ketentuan'];
+    $judul_konten_wilayah       = $_POST['judul_konten_wilayah'];
+    $deskripsi_konten_wilayah   = $_POST['deskripsi_konten_wilayah'];
+    $status_konten_wilayah      = $_POST['status_konten_wilayah'];
+    $tanggal_sekarang           = date('Y-m-d H:i:s', time());
+    $randomstring               = substr(md5(rand()), 0, 7);
 
-        //Insert t_wisata
-        $sqlpaketwisata = "INSERT INTO `t_konten` ( `sdh_biaya`, `blm_biaya`, `sk`) VALUES ( '$fasilitas_masuk','$fasilitas_luar_biaya','$syarat_ketentuan')";
+    //Image upload
+    if($_FILES["image_uploads"]["size"] == 0) {
+        $foto_konten_wilayah = "images/image_default.jpg";
+    }
+    else if (isset($_FILES['image_uploads'])) {
+        $target_dir  = "images/foto_konten/wilayah/";
+        $foto_konten_wilayah = $target_dir .'PAW_'.$randomstring. '.jpg';
+        move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_konten_wilayah);
+    }
+    //---image upload end
 
+    $sqlinsertkonten = "INSERT INTO t_konten_wilayah (judul_konten_wilayah, 
+                                                        deskripsi_konten_wilayah, 
+                                                        foto_konten_wilayah, 
+                                                        status_konten_wilayah,
+                                                        update_terakhir)
+                                        VALUES (:judul_konten_wilayah, 
+                                                :deskripsi_konten_wilayah, 
+                                                :foto_konten_wilayah,
+                                                :status_konten_wilayah,
+                                                :update_terakhir)";
 
-        $stmt = $pdo->prepare($sqlpaketwisata);
-        $stmt->execute([
-            // 'sdh_biaya' => $fasilitas_masuk,
-            // 'blm_biaya' => $fasilitas_luar_biaya,
-            // 'sk' => $syarat_ketentuan
-        ]);
-        $affectedrows = $stmt->rowCount();
-        if ($affectedrows == '0') {
-            header("Location: kelola_konten.php?status=insertfailed");
-        } else {
-            //echo "HAHAHAAHA GREAT SUCCESSS !";
-            header("Location: kelola_konten.php?status=addsuccess");
-        }
+    $stmt = $pdo->prepare($sqlinsertkonten);
+    $stmt->execute(['judul_konten_wilayah' => $judul_konten_wilayah,
+                    'deskripsi_konten_wilayah' => $deskripsi_konten_wilayah,
+                    'foto_konten_wilayah' => $foto_konten_wilayah,
+                    'status_konten_wilayah' => $status_konten_wilayah,
+                    'update_terakhir' => $tanggal_sekarang
+                    ]);
+
+    $affectedrows = $stmt->rowCount();
+    if ($affectedrows == '0') {
+        header("Location: input_konten.php?status=insertfailed");
     } else {
-        echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
+        //echo "HAHAHAAHA GREAT SUCCESSS !";
+        header("Location: kelola_konten.php?status=addsuccess");
     }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>Kelola Wisata - GoKarang</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+        <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+        <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/style-card.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="js/trumbowyg/dist/ui/trumbowyg.min.css">
-    <script src="js/trumbowyg/dist/trumbowyg.js"></script>
-    <!-- Favicon -->
-    <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
+    <script src="js/trumbowyg/dist/trumbowyg.min.js"></script>
 
+    <!-- Favicon -->
+    <?= $favicon ?>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -75,9 +91,9 @@ if (isset($_POST['submit'])) {
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Akun Saya</a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">Edit Profil</a>
-                        <a class="dropdown-item" href="logout.php">Logout</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="#">Edit Profil</a>
+                            <a class="dropdown-item" href="logout.php">Logout</a>
                 </li>
             </ul>
         </nav>
@@ -95,9 +111,8 @@ if (isset($_POST['submit'])) {
             <div class="sidebar">
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <?php print_sidebar(basename(__FILE__), $_SESSION['level_user']) ?>
-                        <!-- Print sidebar -->
+                   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <?php print_sidebar(basename(__FILE__), $_SESSION['level_user'])?> <!-- Print sidebar -->
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -110,8 +125,8 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <h4><span class="align-middle font-weight-bold">Input Kelola Konten</span></h4>
-                    <p>Halaman Input Ini untuk pada halaman depan website</p>
+                    <a class="btn btn-outline-primary" href="kelola_konten.php">< Kembali</a><br><br>
+                    <h4><span class="align-middle font-weight-bold">Input Data Konten</span></h4>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -120,109 +135,106 @@ if (isset($_POST['submit'])) {
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-
                     <form action="" enctype="multipart/form-data" method="POST">
 
-                        <div class="form-group pb-3">
-                            <label for="fasilitas_masuk">
-                                <h5><b>Fasilitas Sudah Termasuk Biaya:</b> </h5>
-                            </label>
+                    <div class="form-group">
+                        <label for="judul_konten_wilayah">Judul Konten</label>
+                        <input type="text" id="judul_konten_wilayah" name="judul_konten_wilayah" class="form-control" placeholder="Judul Konten" required>
+                    </div>
 
-                            <textarea id="fasilitas_masuk" name="fasilitas_masuk" required></textarea>
-                            <script>
-                                $('#fasilitas_masuk').trumbowyg();
-                            </script>
+                    <div class="form-group">
+                        <label for="deskripsi_konten_wilayah">Deskripsi Konten</label>
+                        <input type="text" id="deskripsi_konten_wilayah" name="deskripsi_konten_wilayah" class="form-control" placeholder="Deskripsi Konten" required>
+                    </div>
+
+                    <!-- Lokasi -->
+                    <div class="form-group">
+                        <label for="status_konten_wilayah">Status Konten</label>
+                        <input type="text" id="status_konten_wilayah" name="status_konten_wilayah" class="form-control" placeholder="Status Konten" required>
+                    </div>
+
+                    <div class='form-group'>
+                        <div>
+                            <label for='image_uploads'>Upload Foto Konten</label>
+                            <input type='file'  class='form-control' id='image_uploads'
+                                name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
                         </div>
+                    </div>
 
-                        <div class="form-group pb-3">
-                            <label for="fasilitas_luar_biaya">
-                                <h5><b>Fasilitas Belum Termasuk Biaya:</b></h5>
-                            </label>
+                    <div class="form-group">
+                        <img id="preview"  width="100px" src="#" alt="Preview Gambar"/>
 
-                            <textarea id="fasilitas_luar_biaya" name="fasilitas_luar_biaya" required></textarea>
-                            <script>
-                                $('#fasilitas_luar_biaya').trumbowyg();
-                            </script>
-                        </div>
+                        <script>
+                            //Validasi Size Upload Image
+                            var uploadField = document.getElementById("image_uploads");
 
-                        <div class="form-group pb-3">
-                            <label for="syarat_ketentuan">
-                                <h5><b>Syarat & Ketentuan:</b></h5>
-                            </label>
+                            uploadField.onchange = function() {
+                                if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                    alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                    this.value = "";
+                                };
+                            };
 
-                            <textarea id="syarat_ketentuan" name="syarat_ketentuan" required></textarea>
-                            <script>
-                                $('#syarat_ketentuan').trumbowyg();
-                            </script>
-                        </div>
+                            window.onload = function() {
+                            document.getElementById('preview').style.display = 'none';
+                            };
+                            function readURL(input) {
+                                if (input.files && input.files[0]) {
+                                    var reader = new FileReader();
 
-                        <p align="center">
-                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button>
-                        </p>
-                    </form>
-                    <br><br>
+                                    reader.onload = function (e) {
+                                        $('#preview')
+                                            .attr('src', e.target.result)
+                                            .width(200);
+                                            document.getElementById('preview').style.display = 'block';
+                                    };
+
+                                    reader.readAsDataURL(input.files[0]);
+                                }
+                            }
+                        </script>
+                    </div>
+
+                    <p align="center">
+                    <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
+                    </form><br><br>
 
             </section>
             <!-- /.Left col -->
+            </div>
+            <!-- /.row (main row) -->
         </div>
-        <!-- /.row (main row) -->
-    </div>
-    <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
+        <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
 
     <footer class="main-footer">
-        <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
+        <?= $footer ?>
     </footer>
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
+    <!-- Control sidebar content goes here -->
     </aside>
     <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
-    <div>
-        <!-- jQuery -->
-        <!-- Bootstrap 4 -->
-        <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <!-- overlayScrollbars -->
-        <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-        <!-- AdminLTE App -->
-        <script src="dist/js/adminlte.js"></script>
+<div>
+    <!-- jQuery -->
+    <script src="plugins/jquery/jquery.min.js"></script>
 
-        <!-- jQuery library -->
-        <!-- Pembatasan Date Pemesanan -->
-        <script>
-            var today = new Date().toISOString().split('T')[0];
-            document.getElementsByName("tgl_pemesanan")[0].setAttribute('min', today);
-        </script>
-        <script>
-            $(document).ready(function() {
-                //group add limit
-                var maxGroup = 3;
+    <!-- Bootstrap 4 -->
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-                //add more fields group
-                $(".addMore").click(function() {
-                    if ($('body').find('.fieldGroup').length < maxGroup) {
-                        var fieldHTML = '<div class="form-group fieldGroup">' + $(".fieldGroupCopy").html() + '</div>';
-                        $('body').find('.fieldGroup:last').after(fieldHTML);
-                    } else {
-                        alert('Maksimal ' + maxGroup + ' paket wisata yang boleh dibuat.');
-                    }
-                });
+    <!-- overlayScrollbars -->
+    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    
+    <!-- AdminLTE App -->
+    <script src="dist/js/adminlte.js"></script>
 
-                //remove fields group
-                $("body").on("click", ".remove", function() {
-                    $(this).parents(".fieldGroup").remove();
-                });
-            });
-        </script>
-    </div>
-    <!-- Import Trumbowyg font size JS at the end of <body>... -->
-    <script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
+</div>
+
 </body>
-
 </html>
