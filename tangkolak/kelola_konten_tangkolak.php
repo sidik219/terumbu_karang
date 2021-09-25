@@ -1,10 +1,10 @@
-<?php include 'build/config/connection.php';
+<?php include '../build/config/connection.php';
 session_start();
-if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
-  header('location: login.php?status=restrictedaccess');
+if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
+  header('location: ../login.php?status=restrictedaccess');
 }
 $url_sekarang = basename(__FILE__);
-include 'hak_akses.php';
+include '../hak_akses.php';
 
 $level_user = $_SESSION['level_user'];
 
@@ -28,7 +28,7 @@ else if($level_user == 4){
   $join_wilayah = "  ";
 }
 
-$sqlviewkonten = 'SELECT * FROM t_konten_wilayah ORDER BY id_konten_wilayah DESC';
+$sqlviewkonten = 'SELECT * FROM t_konten_lokasi ORDER BY id_konten_lokasi DESC';
 
 $stmt = $pdo->prepare($sqlviewkonten);
 $stmt->execute();
@@ -62,13 +62,13 @@ function ageCalculator($dob){
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
-        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+        <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-        <link rel="stylesheet" href="dist/css/adminlte.min.css">
+        <link rel="stylesheet" href="../dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
-        <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+        <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
     <!-- Favicon -->
     <?= $favicon ?>
 </head>
@@ -90,7 +90,7 @@ function ageCalculator($dob){
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Akun Saya</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>
+                            <a class="dropdown-item" href="../logout.php">Logout</a>
                 </li>
             </ul>
         </nav>
@@ -99,8 +99,8 @@ function ageCalculator($dob){
         <!-- TOP SIDEBAR -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
-            <a href="dashboard_admin.php" class="brand-link">
-                <?= $logo_website ?>
+            <a href="../dashboard_admin.php" class="brand-link">
+                <?= $logo_website_tangkolak ?>
             </a>
             <!-- END OF TOP SIDEBAR -->
 
@@ -127,7 +127,7 @@ function ageCalculator($dob){
                             <h4><span class="align-middle font-weight-bold">Kelola Konten</span></h4>
                         </div>
                         <div class="col">
-                            <a class="btn btn-primary float-right" href="input_konten.php" role="button">Input Data Baru (+)</a>
+                            <a class="btn btn-primary float-right" href="input_konten_tangkolak.php" role="button">Input Data Baru (+)</a>
                         </div>
                     </div>
                 <!-- /.container-fluid -->
@@ -165,20 +165,20 @@ function ageCalculator($dob){
                             </tr>
                           </thead>
                           <tbody>
-                          <?php foreach ($rowKonten as $wilayah) { 
-                            $truedate = strtotime($wilayah->update_terakhir); ?>
+                          <?php foreach ($rowKonten as $lokasi) { 
+                            $truedate = strtotime($lokasi->update_terakhir); ?>
                             <tr>
-                              <th scope="row"><?=$wilayah->id_konten_wilayah?></th>
-                              <td><?=$wilayah->judul_konten_wilayah?></td>
-                              <td><?=$wilayah->status_konten_wilayah?></td>
+                              <th scope="row"><?=$lokasi->id_konten_lokasi?></th>
+                              <td><?=$lokasi->judul_konten_lokasi?></td>
+                              <td><?=$lokasi->status_konten_lokasi?></td>
                               <td>
                                 <small class="text-muted"><b>Update Terakhir</b>
-                                <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($wilayah->update_terakhir).' yang lalu)';?></small>
+                                <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($lokasi->update_terakhir).' yang lalu)';?></small>
                             </td>
                               <td>
-                                <a href="edit_konten.php?id_konten_wilayah=<?=$wilayah->id_konten_wilayah?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                                <a href="edit_konten_tangkolak.php?id_konten_lokasi=<?=$lokasi->id_konten_lokasi?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 <a  onclick="return konfirmasiHapusKonten(event)"
-                                    href="hapus.php?type=konten_wilayah&id_konten_wilayah=<?=$wilayah->id_konten_wilayah?>" 
+                                    href="../hapus.php?type=konten_lokasi&id_konten_lokasi=<?=$lokasi->id_konten_lokasi?>" 
                                     class="far fa-trash-alt btn btn-act"></a>
                               </td>
                             </tr>
@@ -188,16 +188,16 @@ function ageCalculator($dob){
                                 <!--collapse start -->
                                 <div class="row  m-0">
                                     <table>
-                                    <div class="col-12 cell detailcollapser<?=$wilayah->id_konten_wilayah?>"
+                                    <div class="col-12 cell detailcollapser<?=$lokasi->id_konten_lokasi?>"
                                         data-toggle="collapse"
-                                        data-target=".cell<?=$wilayah->id_konten_wilayah?>, .contentall<?=$wilayah->id_konten_wilayah?>">
-                                        <p class="fielddetail<?=$wilayah->id_konten_wilayah?> btn btn-act">
+                                        data-target=".cell<?=$lokasi->id_konten_lokasi?>, .contentall<?=$lokasi->id_konten_lokasi?>">
+                                        <p class="fielddetail<?=$lokasi->id_konten_lokasi?> btn btn-act">
                                             <i class="icon fas fa-chevron-down"></i>
                                             Rincian Konten</p>
                                     </div>
 
                                     <!-- Data Untuk Wisata -->
-                                    <div class="col-12 cell<?=$wilayah->id_konten_wilayah?> collapse contentall<?=$wilayah->id_konten_wilayah?> border rounded shadow-sm p-3">
+                                    <div class="col-12 cell<?=$lokasi->id_konten_lokasi?> collapse contentall<?=$lokasi->id_konten_lokasi?> border rounded shadow-sm p-3">
                                         <!-- paket -->
                                         <div class="row  mb-3">
                                             <div class="col-md-3 kolom font-weight-bold">
@@ -205,7 +205,7 @@ function ageCalculator($dob){
                                             </div>
                                             
                                             <div class="col isi">
-                                                <?=$wilayah->deskripsi_konten_wilayah?>
+                                                <?=$lokasi->deskripsi_konten_lokasi?>
                                             </div>
                                         </div>
 
@@ -215,7 +215,7 @@ function ageCalculator($dob){
                                             </div>
                                             
                                             <div class="col isi">
-                                                <img src="<?=$wilayah->foto_konten_wilayah?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
+                                                <img src="<?=$lokasi->foto_konten_lokasi?>?<?php if ($status='nochange'){echo time();}?>" width="100px">
                                             </div>
                                         </div>
                                     </div>
@@ -253,13 +253,13 @@ function ageCalculator($dob){
     <!-- ./wrapper -->
 <div>
     <!-- jQuery -->
-    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="../plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- overlayScrollbars -->
-    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.js"></script>
+    <script src="../dist/js/adminlte.js"></script>
     <!-- Konfirmasi Hapus -->
     <script>
         function konfirmasiHapusKonten(event){
