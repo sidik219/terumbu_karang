@@ -4,20 +4,40 @@ if (isset($_POST['register'])) {
     $nama_user    = $_POST['tb_nama_user'];
     $jk           = $_POST['rb_jenis_kelamin'];
     $email        = $_POST['tb_email'];
-    $no_hp        = '+62'.substr($_POST['num_nomer_hp'], 1);
+    $no_hp        = '+62' . substr($_POST['num_nomer_hp'], 1);
     $username     = $_POST['tb_username'];
     $no_ktp         = $_POST['num_ktp_user'];
     $password       = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
     $tanggal_lahir  = $_POST['date_tanggal_lahir'];
-    $alamat         = $_POST['tb_alamat_user'];    
+    $alamat         = $_POST['tb_alamat_user'];
     $randomstring = substr(md5(rand()), 0, 7);
     $level_user = $_POST['rb_level_user'];
     $aktivasi_user  = 0;
-    if($level_user == 4){
+    if ($level_user == 4) {
         $aktivasi_user  = 1;
     }
     $organisasi_user = $_POST['tb_organisasi_user'];
     $token_aktivasi_user = substr(md5(rand()), 0, 32);
+
+    $pasaman = $_POST['pws'];
+    $usaman = $_POST['upass'];
+    // var_dump($pasaman, $usaman);
+    // die;
+    //verifikasi pass lebih dari 6 kurang dari 8
+    $lenghtpass = strlen($_POST['pwd']);
+    // var_dump($lenghtpass);
+    // die;
+    if ($lenghtpass < 6 || $lenghtpass > 8 && $pasaman == "k") {
+        header('location: register.php?pesan=Tidak_valid');
+        return false;
+    }
+
+    //verivikasi username lebih dari 6 kurang dari 8
+    $lenghtuser = strlen($_POST['tb_username']);
+    if ($lenghtuser < 6 || $lenghtuser > 8 && $usaman == "k") {
+        header('location: register.php?pesan=Tidak_valid');
+        return false;
+    }
 
     // Verifikasi Username Sudah terdaftar
     $result = mysqli_query($conn, "SELECT username FROM t_user WHERE username = '$username'");
@@ -26,13 +46,11 @@ if (isset($_POST['register'])) {
     // die;
     if (mysqli_fetch_assoc($result) && mysqli_fetch_assoc($result_email)) {
         header('location: register_pengelola.php?pesan=Username_Email_Telah_Terdaftar');
-    }
-    else if (mysqli_fetch_assoc($result)) {
+    } else if (mysqli_fetch_assoc($result)) {
         header('location: register_pengelola.php?pesan=Username_Telah_Terdaftar');
-    }else  if (mysqli_fetch_assoc($result_email)) {
+    } else  if (mysqli_fetch_assoc($result_email)) {
         header('location: register_pengelola.php?pesan=Email_Telah_Terdaftar');
-    }
-    else {
+    } else {
         //Fotokopi KTP upload
         if (isset($_FILES['image_uploads1'])) {
             $target_dir     = "images/ktp/";
@@ -59,28 +77,31 @@ if (isset($_POST['register'])) {
         :tanggal_lahir, :foto_user, :level_user, :aktivasi_user, :username, :password, :token_aktivasi_user)';
 
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(['nama_user' => $nama_user, 'organisasi_user' => $organisasi_user, 'jk' => $jk, 'email' => $email, 
-        'no_hp' => $no_hp, 'alamat' => $alamat, 'no_ktp' => $no_ktp, 'fotokopi_ktp' => $fotokopi_ktp, 'tanggal_lahir' => $tanggal_lahir, 
-        'foto_user' => $foto_user, 'level_user' => $level_user, 
-        'aktivasi_user' => $aktivasi_user, 'username' => $username, 'password' => $password, 'token_aktivasi_user' => $token_aktivasi_user]);
+        $stmt->execute([
+            'nama_user' => $nama_user, 'organisasi_user' => $organisasi_user, 'jk' => $jk, 'email' => $email,
+            'no_hp' => $no_hp, 'alamat' => $alamat, 'no_ktp' => $no_ktp, 'fotokopi_ktp' => $fotokopi_ktp, 'tanggal_lahir' => $tanggal_lahir,
+            'foto_user' => $foto_user, 'level_user' => $level_user,
+            'aktivasi_user' => $aktivasi_user, 'username' => $username, 'password' => $password, 'token_aktivasi_user' => $token_aktivasi_user
+        ]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
             echo "Failed !";
         } else {
-            if($level_user == 2){
+            if ($level_user == 2) {
                 $tingkat_kelola = 'Wilayah';
-            }if($level_user == 3){
+            }
+            if ($level_user == 3) {
                 $tingkat_kelola = 'Lokasi';
             }
-        
+
             include 'includes/email_handler.php'; //PHPMailer
-            $subjek = 'Konfirmasi Registrasi Akun Pengelola '.$tingkat_kelola.' GoKarang';
+            $subjek = 'Konfirmasi Registrasi Akun Pengelola ' . $tingkat_kelola . ' GoKarang';
             $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
-                <br>Terima kasih telah mendaftar sebagai Pengelola '.$tingkat_kelola.' di GoKarang!
-                <br>Username anda adalah: '.$username.'
+                <br>Terima kasih telah mendaftar sebagai Pengelola ' . $tingkat_kelola . ' di GoKarang!
+                <br>Username anda adalah: ' . $username . '
                 <br>Harap klik link di bawah agar akun anda segera diverifikasi dan diberi hak akses oleh Administrator:
-                <br><a href="https://tkjb.or.id/aktivasi_user.php?token_aktivasi_user='.$token_aktivasi_user.'">Konfirmasi Akun Anda</a>
+                <br><a href="https://tkjb.or.id/aktivasi_user.php?token_aktivasi_user=' . $token_aktivasi_user . '">Konfirmasi Akun Anda</a>
             ';
             smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
             header('Location: login.php?pesan=registrasi_berhasil');
@@ -182,20 +203,22 @@ if (isset($_POST['register'])) {
                 echo '<div class="alert alert-warning" role="alert">
                           Username Sudah Terdaftar.
                       </div>';
-            }
-            else if ($_GET['pesan'] == 'Email_Telah_Terdaftar') {
+            } else if ($_GET['pesan'] == 'Email_Telah_Terdaftar') {
                 echo '<div class="alert alert-warning" role="alert">
                           Email Sudah Terdaftar. Lupa password? <a href="request_password_reset.php">Reset Password</a>
                       </div>';
-            }
-            else if ($_GET['pesan'] == 'Username_Email_Telah_Terdaftar') {
+            } else if ($_GET['pesan'] == 'Username_Email_Telah_Terdaftar') {
                 echo '<div class="alert alert-warning" role="alert">
                           Username dan Email Sudah Terdaftar. Lupa password? <a href="request_password_reset.php">Reset Password</a>
+                      </div>';
+            } else if ($_GET['pesan'] == 'Tidak_valid') {
+                echo '<div class="alert alert-warning" role="alert">
+                          Username Atau Password Belum Sesuai</a>
                       </div>';
             }
         }
         ?>
-        <form action="" enctype="multipart/form-data" method="POST">
+        <form action="" enctype="multipart/form-data" method="POST" name="form1">
             <div class="form-group">
                 <div class="form-group">
                     <label for="tb_nama_user" class="font-weight-bold">Nama Lengkap</label>
@@ -270,12 +293,44 @@ if (isset($_POST['register'])) {
 
                 <div class="form-group">
                     <label for="tb_username" class="font-weight-bold">Username</label>
-                    <input type="text" id="tb_username" name="tb_username" class="form-control" required>
+                    <input type="text" id="tb_username" name="tb_username" class="form-control" required onkeyup="allLetter(document.form1.tb_username)">
+                    <input type="hidden" id="upass" name="upass">
+                    <div class="small" id="result" name="upass">username berisi 6 hingga 8 karakter yang berisi setidaknya satu digit angka, satu huruf besar, dan satu huruf kecil</div>
                 </div>
+                <script>
+                    function allLetter(uname) {
+                        var letters = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,8}$/;
+                        if (uname.value.match(letters)) {
+                            document.getElementById('result').innerHTML = 'Sudah Sesuai &#10003;'
+
+                            // return true;
+                        } else {
+                            document.getElementById('result').innerHTML = 'Belum Sesuai &#10539;'
+                            document.getElementById('upass').value = "k";
+                            // return false;
+                        }
+                    }
+                </script>
                 <div class="form-group">
                     <label for="pwd" class="font-weight-bold">Password</label>
-                    <input type="password" id="pwd" name="pwd" class="form-control" required>
+                    <input type="password" id="pwd" name="pwd" class="form-control" onkeyup="CheckPassword(document.form1.pwd);" required>
+                    <input type="hidden" name="pws" id="pws">
+                    <p class="small" id="cpass" name="cpass">kata sandi berisi 6 hingga 8 karakter yang berisi setidaknya satu digit angka, satu huruf besar, dan satu huruf kecil</p>
                 </div>
+                <script>
+                    function CheckPassword(inputtxt) {
+                        var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,8}$/;
+                        if (inputtxt.value.match(passw)) {
+                            document.getElementById('cpass').innerHTML = 'Sudah Sesuai &#10003;';
+
+                            // return true;
+                        } else {
+                            document.getElementById('cpass').innerHTML = 'Belum Sesuai &#10539;';
+                            document.getElementById('pws').value = "k";
+                            // return false;
+                        }
+                    }
+                </script>
                 <br>
                 <p align="center">
                     <button type="submit" name="register" class="btn btn-submit">Daftar</button>

@@ -15,6 +15,26 @@ if (isset($_POST['register'])) {
     $level_user = 4;
     $organisasi_user = $_POST['tb_organisasi_user'];
 
+    $pasaman = $_POST['pws'];
+    $usaman = $_POST['upass'];
+    // var_dump($pasaman, $usaman);
+    // die;
+    //verifikasi pass lebih dari 6 kurang dari 8
+    $lenghtpass = strlen($_POST['pwd']);
+    // var_dump($lenghtpass);
+    // die;
+    if ($lenghtpass < 6 || $lenghtpass > 8 && $pasaman == "k") {
+        header('location: register.php?pesan=Tidak_valid');
+        return false;
+    }
+
+    //verivikasi username lebih dari 6 kurang dari 8
+    $lenghtuser = strlen($_POST['tb_username']);
+    if ($lenghtuser < 6 || $lenghtuser > 8 && $usaman == "k") {
+        header('location: register.php?pesan=Tidak_valid');
+        return false;
+    }
+
     // Verifikasi Username Sudah terdaftar
     $result = mysqli_query($conn, "SELECT username FROM t_user WHERE username = '$username'");
     // var_dump($result);
@@ -151,10 +171,14 @@ if (isset($_POST['register'])) {
                 echo '<div class="alert alert-warning" role="alert">
                           Username Sudah Terdaftar.
                       </div>';
+            } else if ($_GET['pesan'] == 'Tidak_valid') {
+                echo '<div class="alert alert-warning" role="alert">
+                          Username Atau Password Belum Sesuai</a>
+                      </div>';
             }
         }
         ?>
-        <form action="" enctype="multipart/form-data" method="POST">
+        <form action="" enctype="multipart/form-data" method="POST" name="form1">
             <div class="form-group">
                 <div class="form-group">
                     <label for="tb_nama_user" class="font-weight-bold">Nama Lengkap</label>
@@ -188,8 +212,7 @@ if (isset($_POST['register'])) {
                 </div>
                 <div class="form-group">
                     <label for="num_nomer_hp" class="font-weight-bold">Nomor Handphone</label>
-                    <input type="tel" id="num_nomer_hp" name="num_nomer_hp" class="form-control" required placeholder="Format No : 0812-1234-1234" pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}">
-                    <p class="small">Masukan No Sesuai Format</p>
+                    <input type="tel" id="num_nomer_hp" name="num_nomer_hp" class="form-control" required placeholder="Format No : 0812-1234-1234">
                 </div>
                 <div class="form-group">
                     <label for="tb_alamat_user" class="font-weight-bold">Alamat</label>
@@ -224,12 +247,44 @@ if (isset($_POST['register'])) {
 
                 <div class="form-group">
                     <label for="tb_username" class="font-weight-bold">Username</label>
-                    <input type="text" id="tb_username" name="tb_username" class="form-control" required>
+                    <input type="text" id="tb_username" name="tb_username" class="form-control" required onkeyup="allLetter(document.form1.tb_username)">
+                    <input type="hidden" id="upass" name="upass">
+                    <div class="small" id="result" name="upass">username berisi 6 hingga 8 karakter yang berisi setidaknya satu digit angka, satu huruf besar, dan satu huruf kecil</div>
                 </div>
+                <script>
+                    function allLetter(uname) {
+                        var letters = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,8}$/;
+                        if (uname.value.match(letters)) {
+                            document.getElementById('result').innerHTML = 'Sudah Sesuai &#10003;'
+
+                            // return true;
+                        } else {
+                            document.getElementById('result').innerHTML = 'Belum Sesuai &#10539;'
+                            document.getElementById('upass').value = "k";
+                            // return false;
+                        }
+                    }
+                </script>
                 <div class="form-group">
                     <label for="pwd" class="font-weight-bold">Password</label>
-                    <input type="password" id="pwd" name="pwd" class="form-control" required>
+                    <input type="password" id="pwd" name="pwd" class="form-control" onkeyup="CheckPassword(document.form1.pwd);" required>
+                    <input type="hidden" name="pws" id="pws">
+                    <p class="small" id="cpass" name="cpass">kata sandi berisi 6 hingga 8 karakter yang berisi setidaknya satu digit angka, satu huruf besar, dan satu huruf kecil</p>
                 </div>
+                <script>
+                    function CheckPassword(inputtxt) {
+                        var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,8}$/;
+                        if (inputtxt.value.match(passw)) {
+                            document.getElementById('cpass').innerHTML = 'Sudah Sesuai &#10003;';
+
+                            // return true;
+                        } else {
+                            document.getElementById('cpass').innerHTML = 'Belum Sesuai &#10539;';
+                            document.getElementById('pws').value = "k";
+                            // return false;
+                        }
+                    }
+                </script>
                 <br>
                 <p align="center">
                     <button type="submit" name="register" class="btn btn-submit">Daftar</button>
