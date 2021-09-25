@@ -1,31 +1,14 @@
 <?php include 'build/config/connection.php';
 // session_start();
 $url_sekarang = basename(__FILE__);
-// include 'hak_akses.php';
-
-// else{
-//     $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
-// }
-
-// if ($_GET['id_lokasi']) {
-//     $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
-// } else if (!$_GET['id_lokasi' && !$_SESSION['id_lokasi']]) {
-//     header("Location: map.php?aksi=wisata");
-// }
-
-// $sqlpaket = 'SELECT * FROM tb_paket_wisata
-// LEFT JOIN t_lokasi ON tb_paket_wisata.id_lokasi = t_lokasi.id_lokasi
-// WHERE tb_paket_wisata.id_lokasi > :1';
-
-
-// $stmt = $pdo->prepare($sqlpaket, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
-// $stmt->execute(array(':id_lokasi' > 1));
-// $rowpaket = $stmt->fetchAll();
 
 $stmt = $pdo->prepare('SELECT * From tb_paket_wisata LEFT JOIN t_lokasi ON tb_paket_wisata.id_lokasi = t_lokasi.id_lokasi and tb_paket_wisata.id_lokasi > 0');
 $stmt->execute();
-// $stmt->execute(array(0));
 $rowpaket = $stmt->fetchAll();
+
+$stmt = $pdo->prepare('SELECT * FROM t_konten');
+$stmt->execute();
+$rowkonten = $stmt->fetchAll();
 ?>
 
 <html lang="en">
@@ -277,79 +260,86 @@ $rowpaket = $stmt->fetchAll();
                     <?php }
                     } ?>
                 </div>
-                <!-- <div class="row">
-                    <div class="col-md-4">
-                        <div class="card card-pilihan mb-4 shadow-sm">
-                            <a href="">
-                                <img class="card-img-top berita-img" width="100%" src="images/tangkolak.jpg">
-                            </a>
-                            <div class="card-body">
-                                <p>
-                                <h5 class="max-length">Pantai Tangkolak</h5>
-                                </p>
-                                <p class="max-length1">Karawang</p>
-                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="tangkolak/index.php" target="_blank">Lihat Detail</a>
+                <div class="container-fluid pt-4 ">
+                    <span class="">
+                        <h2 class="card-header">Ketentuan Wisata</h2>
+                    </span>
+                    <div class="row card-body">
+                        <?php foreach ($rowkonten as $row) : ?>
+                            <div class="col-sm  pt-3 ">
+                                <h2 class="border-bottom">Fasilitas Sudah Termasuk Biaya :</h2>
+                                <div class="p-1">
+                                    <?php if ($row->sdh_biaya == null) : ?>
+                                        <p>Tidak Ada data</p>
+                                    <?php else : ?>
+                                        <?= $row->sdh_biaya; ?>
+                                    <?php endif ?>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card card-pilihan mb-4 shadow-sm">
-                            <a href="">
-                                <img class="card-img-top berita-img" width="100%" src="images/Pulau-Biawak-Indramayu.jpg">
-                            </a>
-                            <div class="card-body card-body-costom">
-                                <p>
-                                <h5 class="max-length">Pulau Biawak</h5>
-                                </p>
-                                <p class="max-length1">Indramayu</p>
-                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="" target="_blank">Lihat Detail</a>
+                            <div class="col-sm  pt-3">
+                                <h2 class="border-bottom">Fasilitas Belum Termasuk Biaya :</h2>
+                                <div class="p-1">
+                                    <?php if ($row->blm_biaya == null) : ?>
+                                        <p>Tidak Ada data</p>
+                                    <?php else : ?>
+                                        <?= $row->blm_biaya; ?>
+                                    <?php endif ?>
+                                </div>
                             </div>
-                        </div>
+                            <div class="col-sm-12  pt-3">
+                                <h2 class="border-bottom">Syarat dan Ketentuan</h2>
+                                <div class="p-1">
+                                    <?php if ($row->sk == null) : ?>
+                                        <p>Tidak Ada data</p>
+                                    <?php else : ?>
+                                        <?= $row->sk; ?>
+                                    <?php endif ?>
+                                </div>
+                            </div>
                     </div>
-
-                </div> -->
-            </div>
-
-
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <section id="footer">
-        <div class="row">
-            <div class="blogo col-xs-12 col-sm-12 col-md-12 col-lg-4">
-                <a href="#"><img src="images/gokarang.png" id="footer-logo" alt="Tangkolak Footer Logo"></a>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 cr-tkjb">
-                <div class="cpt text-light text-center">
-                    <p>© 2021 - Terumbu Karang Jawa Barat</p>
+                <?php endforeach ?>
                 </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
-                <div class="ftaw text-light text-center">
-                    <a href="#" target="_blank"><i class="fa fa-phone-square-alt"></i></a>
-                    <a href="#" target="_blank"><i class="fas fa-envelope-square"></i></a>
-                    <a href="#" target="_blank"><i class="fa fa-facebook-square"></i></a>
-                    <a href="#" target="_blank"><i class="fa fa-instagram"></i></a>
-                </div>
+
+
             </div>
         </div>
-    </section>
-    <!-- End Footer -->
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-    <!-- Leaflet Marker Cluster -->
-    <script src="dist/js/leaflet.markercluster-src.js"></script>
-    <!-- Leaflet panel layer JS-->
-    <script src="dist/js/leaflet-panel-layers.js"></script>
-    <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-    <script src="dist/js/leaflet.ajax.js"></script>
-    <!-- Leaflet Map -->
-    <?php include 'dist/js/leaflet_map.php'; ?>
-    <!-- Bootstrap JS & JQuery -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+        <!-- Footer -->
+        <section id="footer">
+            <div class="row">
+                <div class="blogo col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                    <a href="#"><img src="images/gokarang.png" id="footer-logo" alt="Tangkolak Footer Logo"></a>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 cr-tkjb">
+                    <div class="cpt text-light text-center">
+                        <p>© 2021 - Terumbu Karang Jawa Barat</p>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                    <div class="ftaw text-light text-center">
+                        <a href="#" target="_blank"><i class="fa fa-phone-square-alt"></i></a>
+                        <a href="#" target="_blank"><i class="fas fa-envelope-square"></i></a>
+                        <a href="#" target="_blank"><i class="fa fa-facebook-square"></i></a>
+                        <a href="#" target="_blank"><i class="fa fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Footer -->
+        <!-- Leaflet JS -->
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+        <!-- Leaflet Marker Cluster -->
+        <script src="dist/js/leaflet.markercluster-src.js"></script>
+        <!-- Leaflet panel layer JS-->
+        <script src="dist/js/leaflet-panel-layers.js"></script>
+        <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
+        <script src="dist/js/leaflet.ajax.js"></script>
+        <!-- Leaflet Map -->
+        <?php include 'dist/js/leaflet_map.php'; ?>
+        <!-- Bootstrap JS & JQuery -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 
 </html>
