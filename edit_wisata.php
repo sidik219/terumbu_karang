@@ -191,9 +191,9 @@ include 'hak_akses.php';
                     <div class="form-group">
                     <label for="id_lokasi">ID Lokasi</label>
                     <select id="id_lokasi" name="id_lokasi" class="form-control" required>
-                            <option value="">Pilih Lokasi</option>
-                            <?php foreach ($rowlokasi as $lokasi) {  ?>
-                            <option <?php if($lokasi->id_lokasi == $rowpaket->id_lokasi) echo 'selected'; ?> value="<?=$lokasi->id_lokasi?>">ID <?=$lokasi->id_lokasi?> - <?=$lokasi->nama_lokasi?></option>
+                        <option value="">Pilih Lokasi</option>
+                        <?php foreach ($rowlokasi as $lokasi) {  ?>
+                        <option <?php if($lokasi->id_lokasi == $rowpaket->id_lokasi) echo 'selected'; ?> value="<?=$lokasi->id_lokasi?>">ID <?=$lokasi->id_lokasi?> - <?=$lokasi->nama_lokasi?></option>
                         <?php } ?>
                     </select>
                     </div>
@@ -202,9 +202,9 @@ include 'hak_akses.php';
                     <div class="form-group">
                     <label for="id_asuransi">ID Asuransi</label>
                     <select id="id_asuransi" name="id_asuransi" class="form-control" required>
-                            <option value="">Pilih Asuransi</option>
-                            <?php foreach ($rowasuransi as $asuransi) {  ?>
-                            <option <?php if($asuransi->id_asuransi == $rowpaket->id_asuransi) echo 'selected'; ?> value="<?=$asuransi->id_asuransi?>">ID <?=$asuransi->id_asuransi?> - <?=$asuransi->biaya_asuransi?></option>
+                        <option value="">Pilih Asuransi</option>
+                        <?php foreach ($rowasuransi as $asuransi) {  ?>
+                        <option <?php if($asuransi->id_asuransi == $rowpaket->id_asuransi) echo 'selected'; ?> value="<?=$asuransi->id_asuransi?>">ID <?=$asuransi->id_asuransi?> - <?=$asuransi->biaya_asuransi?></option>
                         <?php } ?>
                     </select>
                     </div>

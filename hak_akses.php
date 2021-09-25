@@ -275,6 +275,13 @@ else{
                     </a>
                 </li>
 
+                <li class="nav-item"> <!-- Lokasi -->
+                    <a href="kelola_konten.php" class="nav-link '.(('kelola_konten.php' == $url_sekarang) || ('edit_konten.php'  == $url_sekarang) || ('input_konten.php'  == $url_sekarang) ? ' active ' : '').' ">
+                        <i class="nav-icon fas fa-book"></i>
+                        <p> Kelola Konten </p>
+                    </a>
+                </li>
+
                 <li class="nav-item"> <!-- Pusat & Wilayah -->
                     <a href="kelola_rekening_bersama.php" class="nav-link '.('kelola_rekening_bersama.php' == $url_sekarang ? ' active ' : '').' ">
                         <i class="nav-icon fas fa-money-check-alt"></i>
