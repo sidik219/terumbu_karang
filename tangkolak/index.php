@@ -1,3 +1,13 @@
+<?php include '../build/config/connection.php';
+// session_start();
+$url_sekarang = basename(__FILE__);
+// include 'hak_akses.php';
+
+$stmt = $pdo->prepare('SELECT * From t_konten_lokasi');
+$stmt->execute();
+// $stmt->execute(array(0));
+$rowKonten = $stmt->fetchAll();
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -87,13 +97,44 @@
             <!-- Header Container -->
             <div class="header-tkjb">
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
+                <!-- <ol class="carousel-indicators">
                     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                </ol>
+                </ol> -->
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
+                    <?php foreach ($rowKonten as $lokasi) { ?>
+                    <div class="carousel-item 
+                        <?php 
+                            if ($lokasi->status_konten_lokasi == "Wisata Bahari") {
+                              echo "active";  
+                            } else {
+                                echo " ";
+                            }
+                        ?>">
+                        <img class="d-block w-100" src="<?=$lokasi->foto_konten_lokasi?>" alt="">
+                        <div class="carousel-caption  d-md-block">
+                            <h3><?= $lokasi->judul_konten_lokasi ?></h3><br>
+                            <p><?= $lokasi->deskripsi_konten_lokasi ?></p><br>
+                            <?php 
+                            if ($lokasi->status_konten_lokasi == "Wisata Bahari") { ?>
+                            <a href="wisata_tangkolak.php" class="btn btn-link-slide" role="button" aria-pressed="true">
+                                <?= $lokasi->status_konten_lokasi ?>
+                            </a>
+                            <?php } elseif ($lokasi->status_konten_lokasi == "Paket Wisata") { ?>
+                            <a href="paket_wisata.php" class="btn btn-link-slide" role="button" aria-pressed="true">
+                                <?= $lokasi->status_konten_lokasi ?>
+                            </a>
+                            <?php } elseif ($lokasi->status_konten_lokasi == "Terumbu Karang") { ?>
+                            <a href="terumbu_karang.php" class="btn btn-link-slide" role="button" aria-pressed="true">
+                                <?= $lokasi->status_konten_lokasi ?>
+                            </a>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <?php } ?>
+
+                    <!-- <div class="carousel-item active">
                     <img class="d-block w-100" src="img/banner1.jpg" alt="First slide">
                     </div>
                     <div class="carousel-item">
@@ -101,7 +142,7 @@
                     </div>
                     <div class="carousel-item">
                     <img class="d-block w-100" src="img/banner1.jpg" alt="Third slide">
-                    </div>
+                    </div> -->
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>

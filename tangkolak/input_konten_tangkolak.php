@@ -1,54 +1,54 @@
-<?php include 'build/config/connection.php';
+<?php include '../build/config/connection.php';
 session_start();
-if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
-  header('location: login.php?status=restrictedaccess');
+if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
+  header('location: ../login.php?status=restrictedaccess');
 }
 $url_sekarang = basename(__FILE__);
-include 'hak_akses.php';
+include '../hak_akses.php';
 
 if (isset($_POST['submit'])) {
-    $judul_konten_wilayah       = $_POST['judul_konten_wilayah'];
-    $deskripsi_konten_wilayah   = $_POST['deskripsi_konten_wilayah'];
-    $status_konten_wilayah      = $_POST['status_konten_wilayah'];
+    $judul_konten_lokasi       = $_POST['judul_konten_lokasi'];
+    $deskripsi_konten_lokasi   = $_POST['deskripsi_konten_lokasi'];
+    $status_konten_lokasi      = $_POST['status_konten_lokasi'];
     $tanggal_sekarang           = date('Y-m-d H:i:s', time());
     $randomstring               = substr(md5(rand()), 0, 7);
 
     //Image upload
     if($_FILES["image_uploads"]["size"] == 0) {
-        $foto_konten_wilayah = "images/image_default.jpg";
+        $foto_konten_lokasi = "images/image_default.jpg";
     }
     else if (isset($_FILES['image_uploads'])) {
-        $target_dir  = "images/foto_konten/wilayah/";
-        $foto_konten_wilayah = $target_dir .'PAW_'.$randomstring. '.jpg';
-        move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_konten_wilayah);
+        $target_dir  = "img/foto_konten/lokasi/";
+        $foto_konten_lokasi = $target_dir .'PAW_'.$randomstring. '.jpg';
+        move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_konten_lokasi);
     }
     //---image upload end
 
-    $sqlinsertkonten = "INSERT INTO t_konten_wilayah (judul_konten_wilayah, 
-                                                        deskripsi_konten_wilayah, 
-                                                        foto_konten_wilayah, 
-                                                        status_konten_wilayah,
+    $sqlinsertkonten = "INSERT INTO t_konten_lokasi (judul_konten_lokasi, 
+                                                        deskripsi_konten_lokasi, 
+                                                        foto_konten_lokasi, 
+                                                        status_konten_lokasi,
                                                         update_terakhir)
-                                        VALUES (:judul_konten_wilayah, 
-                                                :deskripsi_konten_wilayah, 
-                                                :foto_konten_wilayah,
-                                                :status_konten_wilayah,
+                                        VALUES (:judul_konten_lokasi, 
+                                                :deskripsi_konten_lokasi, 
+                                                :foto_konten_lokasi,
+                                                :status_konten_lokasi,
                                                 :update_terakhir)";
 
     $stmt = $pdo->prepare($sqlinsertkonten);
-    $stmt->execute(['judul_konten_wilayah' => $judul_konten_wilayah,
-                    'deskripsi_konten_wilayah' => $deskripsi_konten_wilayah,
-                    'foto_konten_wilayah' => $foto_konten_wilayah,
-                    'status_konten_wilayah' => $status_konten_wilayah,
+    $stmt->execute(['judul_konten_lokasi' => $judul_konten_lokasi,
+                    'deskripsi_konten_lokasi' => $deskripsi_konten_lokasi,
+                    'foto_konten_lokasi' => $foto_konten_lokasi,
+                    'status_konten_lokasi' => $status_konten_lokasi,
                     'update_terakhir' => $tanggal_sekarang
                     ]);
 
     $affectedrows = $stmt->rowCount();
     if ($affectedrows == '0') {
-        header("Location: input_konten.php?status=insertfailed");
+        header("Location: input_konten_tangkolak.php?status=insertfailed");
     } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
-        header("Location: kelola_konten.php?status=addsuccess");
+        header("Location: kelola_konten_tangkolak.php?status=addsuccess");
     }
 }
 ?>
@@ -60,17 +60,17 @@ if (isset($_POST['submit'])) {
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
-        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+        <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-        <link rel="stylesheet" href="dist/css/adminlte.min.css">
+        <link rel="stylesheet" href="../dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
-        <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+        <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="js/trumbowyg/dist/ui/trumbowyg.min.css">
-    <script src="js/trumbowyg/dist/trumbowyg.min.js"></script>
+    <link rel="stylesheet" href="../js/trumbowyg/dist/ui/trumbowyg.min.css">
+    <script src="../js/trumbowyg/dist/trumbowyg.min.js"></script>
 
     <!-- Favicon -->
     <?= $favicon ?>
@@ -93,7 +93,7 @@ if (isset($_POST['submit'])) {
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Akun Saya</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>
+                            <a class="dropdown-item" href="../logout.php">Logout</a>
                 </li>
             </ul>
         </nav>
@@ -102,8 +102,8 @@ if (isset($_POST['submit'])) {
         <!-- TOP SIDEBAR -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
-            <a href="dashboard_admin.php" class="brand-link">
-                <?= $logo_website ?>
+            <a href="../dashboard_admin.php" class="brand-link">
+                <?= $logo_website_tangkolak ?>
             </a>
             <!-- END OF TOP SIDEBAR -->
 
@@ -125,7 +125,7 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="kelola_konten.php">< Kembali</a><br><br>
+                    <a class="btn btn-outline-primary" href="kelola_konten_tangkolak.php">< Kembali</a><br><br>
                     <h4><span class="align-middle font-weight-bold">Input Data Konten</span></h4>
                 </div>
                 <!-- /.container-fluid -->
@@ -138,19 +138,19 @@ if (isset($_POST['submit'])) {
                     <form action="" enctype="multipart/form-data" method="POST">
 
                     <div class="form-group">
-                        <label for="judul_konten_wilayah">Judul Konten</label>
-                        <input type="text" id="judul_konten_wilayah" name="judul_konten_wilayah" class="form-control" placeholder="Judul Konten" required>
+                        <label for="judul_konten_lokasi">Judul Konten</label>
+                        <input type="text" id="judul_konten_lokasi" name="judul_konten_lokasi" class="form-control" placeholder="Judul Konten" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="deskripsi_konten_wilayah">Deskripsi Konten</label>
-                        <input type="text" id="deskripsi_konten_wilayah" name="deskripsi_konten_wilayah" class="form-control" placeholder="Deskripsi Konten" required>
+                        <label for="deskripsi_konten_lokasi">Deskripsi Konten</label>
+                        <input type="text" id="deskripsi_konten_lokasi" name="deskripsi_konten_lokasi" class="form-control" placeholder="Deskripsi Konten" required>
                     </div>
 
                     <!-- Lokasi -->
                     <div class="form-group">
-                        <label for="status_konten_wilayah">Status Konten</label>
-                        <input type="text" id="status_konten_wilayah" name="status_konten_wilayah" class="form-control" placeholder="Status Konten" required>
+                        <label for="status_konten_lokasi">Status Konten</label>
+                        <input type="text" id="status_konten_lokasi" name="status_konten_lokasi" class="form-control" placeholder="Status Konten" required>
                     </div>
 
                     <div class='form-group'>
@@ -223,16 +223,16 @@ if (isset($_POST['submit'])) {
     <!-- ./wrapper -->
 <div>
     <!-- jQuery -->
-    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="../plugins/jquery/jquery.min.js"></script>
 
     <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- overlayScrollbars -->
-    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     
     <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.js"></script>
+    <script src="../dist/js/adminlte.js"></script>
 
 </div>
 

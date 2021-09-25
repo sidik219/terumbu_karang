@@ -201,7 +201,7 @@ elseif ($type == 'biaya_operasional'){
     $stmt->execute(['id_biaya_operasional' => $id_biaya_operasional]);
     header('Location: kelola_biaya_operasional.php?id_lokasi='.$id_lokasi.'status=deletesuccess');
 }
-elseif ($type == 'konten'){
+elseif ($type == 'konten_wilayah'){
     $id_konten_wilayah = $_GET['id_konten_wilayah'];
     $sql = 'DELETE FROM t_konten_wilayah
             WHERE id_konten_wilayah = :id_konten_wilayah';
@@ -209,4 +209,13 @@ elseif ($type == 'konten'){
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['id_konten_wilayah' => $id_konten_wilayah]);
     header('Location: kelola_konten.php?status=deletesuccess');
+}
+elseif ($type == 'konten_lokasi'){
+    $id_konten_lokasi = $_GET['id_konten_lokasi'];
+    $sql = 'DELETE FROM t_konten_lokasi
+            WHERE id_konten_lokasi = :id_konten_lokasi';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_konten_lokasi' => $id_konten_lokasi]);
+    header('Location: tangkolak/kelola_konten_tangkolak.php?status=deletesuccess');
 }
