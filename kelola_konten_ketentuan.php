@@ -108,7 +108,7 @@ $row = $stmt->fetchAll();
                         <div class="col">
                             <?php if ($row == null) {
                             ?>
-                                <a class="btn btn-primary float-right" href="input_konten.php" role="button">Input Data Baru (+)</a>
+                                <a class="btn btn-primary float-right" href="input_konten_ketentuan.php" role="button">Input Data Baru (+)</a>
                             <?php }
                             ?>
                         </div>
@@ -140,7 +140,7 @@ $row = $stmt->fetchAll();
                                     <td class="max-length2"><?= $rowitem->blm_biaya ?></td>
                                     <td class="max-length2" colspan="2"><?= $rowitem->sk ?></td>
                                     <td>
-                                        <a href="edit_konten.php?id_titik=<?= $rowitem->id_konten ?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                                        <a href="edit_konten_ketentuan.php?id_titik=<?= $rowitem->id_konten ?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                     </td>
                                 </tr>
                             <?php } ?>

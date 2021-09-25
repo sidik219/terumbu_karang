@@ -20,10 +20,10 @@ if (isset($_POST['submit'])) {
     $stmt->execute();
     $affectedrows = $stmt->rowCount();
     if ($affectedrows == '0') {
-        header("Location: kelola_konten.php?status=nochange");
+        header("Location: kelola_konten_Ketentuan.php?status=nochange");
     } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
-        header("Location: kelola_konten.php?status=updatesuccess");
+        header("Location: kelola_konten_Ketentuan.php?status=updatesuccess");
     }
 }
 ?>
@@ -154,35 +154,6 @@ if (isset($_POST['submit'])) {
                             <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button>
                         </p>
                     </form>
-                    <br><br>
-
-                    <!-- copy of input fields group -->
-                    <div class="form-group fieldGroupCopy" style="display: none;">
-                        <div class="input-group">
-                            <select class="form-control" name="nama_wisata[]" id="exampleFormControlSelect1">
-                                <option selected disabled>Pilih Wisata:</option>
-                                <?php
-                                $sqlviewwisata = 'SELECT * FROM t_wisata
-                                                    WHERE id_paket_wisata IS NULL
-                                                    ORDER BY id_wisata';
-                                $stmt = $pdo->prepare($sqlviewwisata);
-                                $stmt->execute();
-                                $rowwisata = $stmt->fetchAll();
-
-                                foreach ($rowwisata as $wisata) { ?>
-                                    <option value="<?= $wisata->id_wisata ?>">
-                                        ID <?= $wisata->id_wisata ?> - <?= $wisata->judul_wisata ?>
-                                    </option>
-                                <?php } ?>
-                            </select>
-                            <div class="input-group-addon">
-                                <a href="javascript:void(0)" class="btn btn-danger remove">
-                                    <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Wisata
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
             </section>
             <!-- /.Left col -->
         </div>

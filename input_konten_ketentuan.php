@@ -24,10 +24,10 @@ if (isset($_POST['submit'])) {
         ]);
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
-            header("Location: kelola_konten.php?status=insertfailed");
+            header("Location: kelola_konten_ketentuan.php?status=insertfailed");
         } else {
             //echo "HAHAHAAHA GREAT SUCCESSS !";
-            header("Location: kelola_konten.php?status=addsuccess");
+            header("Location: kelola_konten_ketentuan.php?status=addsuccess");
         }
     } else {
         echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
