@@ -169,13 +169,10 @@
 
                             <!-- Team item-->
                             <div class="col-xl-3 col-sm-6 mb-5">
-                                <div class="bg-white rounded shadow-sm py-5 px-4"><img src="" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
-                                    <h5 class="mb-0">Nama</h5><span class="small text-uppercase text-muted">Pengembang</span>
+                                <div class="bg-white rounded shadow-sm py-5 px-4"><img src="images/about_us/IMG_SDK2190.jpg" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                                    <h5 class="mb-0">Sidik Mulyana</h5><span class="small text-uppercase text-muted">Pengembang</span>
                                     <ul class="social mb-0 list-inline mt-3">
-                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-facebook-f"></i></a></li>
-                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-twitter"></i></a></li>
-                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-instagram"></i></a></li>
-                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-linkedin"></i></a></li>
+                                        <li class="list-inline-item"><a href="https://web.facebook.com/C.Ber.MG/" class="social-link" target="_blank"><i class="fa fa-facebook-f"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
