@@ -17,13 +17,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/b41ecad032.js" crossorigin="anonymous"></script>
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <!--Leaflet panel layer CSS-->
-    <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
-    <!-- Leaflet Marker Cluster CSS -->
-    <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-    <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
+    <style>
+        .social-link {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            border-radius: 50%;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .social-link:hover,
+        .social-link:focus {
+            background: #ddd;
+            text-decoration: none;
+            color: #555;
+        }
+    </style>
 </head>
 
 <body>
@@ -61,8 +75,8 @@
                             <li class="nav-item ">
                                 <a class="nav-link " href="coralpedia.php">Coralpedia</a>
                             </li>
-                            <li class="nav-item active  teks-biru">
-                                <a class="nav-link current" href="coralmaps.php">Coralmaps</a>
+                            <li class="nav-item ">
+                                <a class="nav-link " href="coralmaps.php">Coralmaps</a>
                             </li>
                             <li class="nav-item ">
                                 <a class="nav-link " href="konten-wisata.php">Info Wisata</a>
@@ -76,6 +90,7 @@
                                     <a class="dropdown-item" href="#">Pulau Biawak</a>
                                 </div>
                             </li>
+
                         </ul>
                         <!-- END Navbar Menu -->
                         <!-- Navbar Button & Link Action Mobile Version-->
@@ -100,29 +115,93 @@
             </div>
             <!-- END Navbar Container -->
 
-            <section id="benefit">
-                <div class="container">
-                    <div class="starter-title">
-                        <h1 class="mb-5">Coralmaps</h1><br>
-                    </div>
-                    <div class="row">
-                        <div>
-                            <label>Keterangan Icon:</label>
+            <!-- Header Container -->
+            <div class="header-tkjb">
+                <div class="bg-light">
+                    <div class="container py-5 pt-5">
+                        <div class="row mb-4">
+                            <div class="col-lg-5">
+                                <h2 class="display-4 font-weight-light">Tim Pengembang</h2>
+                                <p class="font-italic text-muted">Nama-Nama Tim Pengembang Aplikasi GoKarang</p>
+                            </div>
                         </div>
-                        <div>
-                            <img src="images/foto_lokasi/icon_lokasi/icon_lokasi.png" style="width: 35px;">:
-                            <label>Lokasi Pantai </label>
-                            <img src="images/kumpulan_icon/cluster.png" style="width: 35px;">:
-                            <label>Pengelompokan Pantai Berdekatan </label>
-                            <img src="images/kumpulan_icon/geo_wilayah1.png" style="width: 35px;">:
-                            <label>Wilayah Aktif </label>
-                            <img src="images/kumpulan_icon/geo_wilayah2.png" style="width: 35px;">:
-                            <label>Wilayah Tidak Aktif </label>
+
+                        <div class="row text-center justify-content-md-center">
+                            <!-- Team item-->
+                            <div class="col-xl-3 col-sm-6 mb-5">
+                                <div class="bg-white rounded shadow-sm py-5 px-4"><img src="" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                                    <h5 class="mb-0">Nama</h5><span class="small text-uppercase text-muted">Pengembang</span>
+                                    <ul class="social mb-0 list-inline mt-3">
+                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-facebook-f"></i></a></li>
+                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-twitter"></i></a></li>
+                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-instagram"></i></a></li>
+                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-linkedin"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- End-->
+                            <div class="col-xl-3 col-sm-6 mb-5">
+                                <div class="bg-white rounded shadow-sm py-5 px-4"><img src="" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                                    <h5 class="mb-0">Nama</h5><span class="small text-uppercase text-muted">Pengembang</span>
+                                    <ul class="social mb-0 list-inline mt-3">
+                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-facebook-f"></i></a></li>
+                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-twitter"></i></a></li>
+                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-instagram"></i></a></li>
+                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-linkedin"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- End-->
+
+                            <!-- Team item-->
+                            <div class="col-xl-3 col-sm-6 mb-5">
+                                <div class="bg-white rounded shadow-sm py-5 px-4"><img src="" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                                    <h5 class="mb-0">Nama</h5><span class="small text-uppercase text-muted">Pengembang</span>
+                                    <ul class="social mb-0 list-inline mt-3">
+                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-facebook-f"></i></a></li>
+                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-twitter"></i></a></li>
+                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-instagram"></i></a></li>
+                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-linkedin"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- End-->
+
+                            <!-- Team item-->
+                            <div class="col-xl-3 col-sm-6 mb-5">
+                                <div class="bg-white rounded shadow-sm py-5 px-4"><img src="" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                                    <h5 class="mb-0">Nama</h5><span class="small text-uppercase text-muted">Pengembang</span>
+                                    <ul class="social mb-0 list-inline mt-3">
+                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-facebook-f"></i></a></li>
+                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-twitter"></i></a></li>
+                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-instagram"></i></a></li>
+                                        <li class="list-inline-item"><a href="#" class="social-link"><i class="fa fa-linkedin"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- End-->
+
+                            <!-- Team item-->
+                            <!-- <div class="row"> -->
+
+                            <div class="col-xl-3 col-sm-6 mb-5">
+                                <div class="bg-white rounded shadow-sm py-5 px-4"><img src="images/about_us/IMG_0660.jpg" alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+                                    <h5 class="mb-0">Nabil Fadhiilah</h5><span class="small text-uppercase text-muted">Pengembang</span>
+                                    <ul class="social mb-0 list-inline mt-3">
+
+                                        <li class="list-inline-item"><a href="https://www.instagram.com/bilnbl13/" class="social-link"><i class="fa fa-instagram"></i></a></li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- </div> -->
+                            <!-- End-->
+
                         </div>
-                        <div id="mapid" style="height: 640px; width: 100%; margin-top: 20px;"></div>
                     </div>
                 </div>
-            </section>
+            </div>
+            <!-- END OF BODY CONTAINER -->
         </div>
     </div>
 
@@ -130,7 +209,7 @@
     <section id="footer">
         <div class="row">
             <div class="blogo col-xs-12 col-sm-12 col-md-12 col-lg-4">
-                <a href="#"><img src="images/gokarang.png" id="footer-logo" alt="Tangkolak Footer Logo"></a>
+                <a href="#"><img src="images/gokarang.png" id="footer-logo"></a>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 cr-tkjb">
                 <div class="cpt text-light text-center">
@@ -153,16 +232,6 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-    <!-- Leaflet Marker Cluster -->
-    <script src="dist/js/leaflet.markercluster-src.js"></script>
-    <!-- Leaflet panel layer JS-->
-    <script src="dist/js/leaflet-panel-layers.js"></script>
-    <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-    <script src="dist/js/leaflet.ajax.js"></script>
-    <!-- Leaflet Map -->
-    <?php include 'dist/js/leaflet_map.php'; ?>
 </body>
 
 </html>

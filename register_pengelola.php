@@ -351,7 +351,7 @@ if (isset($_POST['register'])) {
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                     <div class="cpt text-light text-center">
-                        <p><strong>Copyright &copy; <?= date("Y") ?> </strong> GoKarang</p>
+                        <p><a href="about_us.php" style="text-decoration: none !important; color:white; "><strong>Copyright &copy; <?= date("Y") ?> </strong> GoKarang</a></p>
                     </div>
                 </div>
 

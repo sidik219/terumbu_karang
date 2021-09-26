@@ -24,7 +24,8 @@ if (!$_SESSION['level_user']) { //Belum log in
 
     //Footer dinamis
     $tahun = date("Y");
-    $footer = "<strong>Copyright &copy; $tahun </strong> GoKarang";
+
+    $footer = "<a href='about_us.php' style='text-decoration: none !important; color:grey;'><strong>Copyright &copy; $tahun </strong> GoKarang</a>";
 
 
     function cek_url_aktif($nav_url, $nama_file_php)

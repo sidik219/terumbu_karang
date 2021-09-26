@@ -312,7 +312,7 @@ $rowkonten = $stmt->fetchAll();
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 cr-tkjb">
                     <div class="cpt text-light text-center">
-                        <p>© 2021 - Terumbu Karang Jawa Barat</p>
+                        <p><a href="about_us.php" style="text-decoration: none !important; color:white; ">© 2021 - Terumbu Karang Jawa Barat</a></p>
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
