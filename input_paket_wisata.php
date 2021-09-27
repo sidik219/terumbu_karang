@@ -421,6 +421,10 @@ if (isset($_POST['submit'])) {
         document.getElementsByName("tgl_pemesanan")[0].setAttribute('min', today);
     </script>
     <script>
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementsByName("tgl_akhir_pemesanan")[0].setAttribute('min', today);
+    </script>
+    <script>
         $(document).ready(function(){
         //group add limit
         var maxGroup = 3;
