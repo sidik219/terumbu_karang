@@ -1,10 +1,10 @@
-<?php include '../build/config/connection.php';
+<?php include 'build/config/connection.php';
 session_start();
 if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
-  header('location: ../login.php?status=restrictedaccess');
+  header('location: login.php?status=restrictedaccess');
 }
 $url_sekarang = basename(__FILE__);
-include '../hak_akses.php';
+include 'hak_akses.php';
 
 $id_konten_lokasi = $_GET['id_konten_lokasi'];
 $defaultpic = "img/image_default.jpg";
@@ -41,7 +41,7 @@ if (isset($_POST['submit'])) {
     }
     else if (isset($_FILES['image_uploads'])) {
         if (($konten->foto_konten_lokasi == $defaultpic) || (!$konten->foto_konten_lokasi)){
-            $target_dir  = "img/foto_konten/lokasi/";
+            $target_dir  = "tangkolak/img/foto_konten/lokasi/";
             $foto_konten_lokasi = $target_dir .'WIS_'.$randomstring. '.jpg';
             move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_konten_lokasi);
             $pic = "&new=";
@@ -87,17 +87,17 @@ if (isset($_POST['submit'])) {
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
-        <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-        <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+        <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
-        <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+        <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="../js/trumbowyg/dist/ui/trumbowyg.min.css">
-    <script src="../js/trumbowyg/dist/trumbowyg.min.js"></script>
+    <link rel="stylesheet" href="js/trumbowyg/dist/ui/trumbowyg.min.css">
+    <script src="js/trumbowyg/dist/trumbowyg.min.js"></script>
 
     <!-- Favicon -->
     <?= $favicon ?>
@@ -120,7 +120,7 @@ if (isset($_POST['submit'])) {
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Akun Saya</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="../logout.php">Logout</a>
+                            <a class="dropdown-item" href="logout.php">Logout</a>
                 </li>
             </ul>
         </nav>
@@ -129,8 +129,8 @@ if (isset($_POST['submit'])) {
         <!-- TOP SIDEBAR -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
-            <a href="../dashboard_admin.php" class="brand-link">
-                <?= $logo_website_tangkolak ?>
+            <a href="dashboard_admin.php" class="brand-link">
+                <?= $logo_website ?>
             </a>
             <!-- END OF TOP SIDEBAR -->
 
@@ -274,16 +274,16 @@ if (isset($_POST['submit'])) {
     <!-- ./wrapper -->
 <div>
     <!-- jQuery -->
-    <script src="../plugins/jquery/jquery.min.js"></script>
+    <script src="plugins/jquery/jquery.min.js"></script>
 
     <!-- Bootstrap 4 -->
-    <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- overlayScrollbars -->
-    <script src="../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     
     <!-- AdminLTE App -->
-    <script src="../dist/js/adminlte.js"></script>
+    <script src="dist/js/adminlte.js"></script>
 
 </div>
 

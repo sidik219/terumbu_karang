@@ -1,10 +1,10 @@
-<?php include '../build/config/connection.php';
+<?php include 'build/config/connection.php';
 session_start();
 if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
-  header('location: ../login.php?status=restrictedaccess');
+  header('location: login.php?status=restrictedaccess');
 }
 $url_sekarang = basename(__FILE__);
-include '../hak_akses.php';
+include 'hak_akses.php';
 
 $level_user = $_SESSION['level_user'];
 
@@ -62,13 +62,13 @@ function ageCalculator($dob){
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
-        <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-        <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+        <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
-        <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+        <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Favicon -->
     <?= $favicon ?>
 </head>
@@ -90,7 +90,7 @@ function ageCalculator($dob){
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Akun Saya</a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="../logout.php">Logout</a>
+                            <a class="dropdown-item" href="logout.php">Logout</a>
                 </li>
             </ul>
         </nav>
@@ -99,8 +99,8 @@ function ageCalculator($dob){
         <!-- TOP SIDEBAR -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- BRAND LOGO (TOP)-->
-            <a href="../dashboard_admin.php" class="brand-link">
-                <?= $logo_website_tangkolak ?>
+            <a href="dashboard_admin.php" class="brand-link">
+                <?= $logo_website ?>
             </a>
             <!-- END OF TOP SIDEBAR -->
 
@@ -178,7 +178,7 @@ function ageCalculator($dob){
                               <td>
                                 <a href="edit_konten_tangkolak.php?id_konten_lokasi=<?=$lokasi->id_konten_lokasi?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 <a  onclick="return konfirmasiHapusKonten(event)"
-                                    href="../hapus.php?type=konten_lokasi&id_konten_lokasi=<?=$lokasi->id_konten_lokasi?>" 
+                                    href="hapus.php?type=konten_lokasi&id_konten_lokasi=<?=$lokasi->id_konten_lokasi?>" 
                                     class="far fa-trash-alt btn btn-act"></a>
                               </td>
                             </tr>
@@ -253,13 +253,13 @@ function ageCalculator($dob){
     <!-- ./wrapper -->
 <div>
     <!-- jQuery -->
-    <script src="../plugins/jquery/jquery.min.js"></script>
+    <script src="plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
-    <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- overlayScrollbars -->
-    <script src="../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="../dist/js/adminlte.js"></script>
+    <script src="dist/js/adminlte.js"></script>
     <!-- Konfirmasi Hapus -->
     <script>
         function konfirmasiHapusKonten(event){
