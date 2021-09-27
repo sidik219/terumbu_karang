@@ -80,7 +80,7 @@ if(isset($_SESSION['data_donasi'])){
       $username = $_SESSION['username'];
       $nama_user = $_SESSION['nama_user'];
 
-      $subjek = 'Informasi Pembayaran Donasi Terumbu Karang GoKarang';
+      $subjek = 'Informasi Pembayaran Donasi Terumbu Karang (ID Donasi: '.$id_donasi.') - GoKarang';
       $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
           <br>Yth. '.$nama_user.'
           <br>Terima kasih telah membuat donasi terumbu karang di GoKarang!
@@ -122,7 +122,7 @@ if(isset($_SESSION['data_donasi'])){
           $username = $datauser->username;
           $nama_user = $datauser->nama_user;
 
-          $subjek = 'Donasi Baru - Terumbu Karang GoKarang';
+          $subjek = 'Donasi Baru (ID Donasi: '.$id_donasi.') - Terumbu Karang GoKarang';
           $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
           <br>Yth. '.$nama_user.'
           <br>Wilayah anda menerima donasi baru pada lokasi '.$pengelola->nama_lokasi.'

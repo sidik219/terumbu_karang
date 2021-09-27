@@ -188,7 +188,22 @@ if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
         header("Location: kelola_donasi.php?status=nochange");
         } else {
             //echo "HAHAHAAHA GREAT SUCCESSS !";
-            header("Location: kelola_donasi.php?status=updatesuccess");
+            //Kirim email untuk Donatur           
+            $subjek = 'Bukti Donasi tidak Sesuai (ID Donasi : '.$rowitem->id_donasi.' ) - GoKarang';
+            $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+            <br>Yth. '.$rowitem->nama_donatur.'
+            <br>Bukti donasi anda tidak sesuai dan telah ditolak oleh pihak pengelola.
+            <br>
+            <br>Harap upload ulang bukti pembayaran donasi pada link berikut:
+            <br><a href=""https://tkjb.or.id/edit_donasi.php?id_donasi='.$id_donasi.'">Upload Ulang Bukti Pembayaran Donasi</a>
+            <br>
+            <br>Jika bukti sudah diverifikasi, kami akan menginfokan kepada anda melalui email.
+        ';
+        
+        smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+            
+        header("Refresh: 0");
+        
             }
         }
 ?>
