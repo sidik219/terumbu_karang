@@ -112,7 +112,7 @@ $rowKonten = $stmt->fetchAll();
                                 echo " ";
                             }
                         ?>">
-                        <img class="d-block w-100" src="<?=$lokasi->foto_konten_lokasi?>" alt="">
+                        <img class="d-block w-100" src="../<?=$lokasi->foto_konten_lokasi?>" alt="">
                         <div class="carousel-caption  d-md-block">
                             <h3><?= $lokasi->judul_konten_lokasi ?></h3><br>
                             <p><?= $lokasi->deskripsi_konten_lokasi ?></p><br>

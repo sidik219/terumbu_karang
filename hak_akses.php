@@ -13,10 +13,6 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <!-- BRAND TEXT (TOP) -->
                 <span class="brand-text"><span class="text-orange">Go</span><span>Karang<span></span>';
 
-    $logo_website_tangkolak = '<img src="../' . $file_gambar_logo . '"  class="brand-image">
-                <!-- BRAND TEXT (TOP) -->
-                <span class="brand-text"><span class="text-orange">Go</span><span>Karang<span></span>';
-
     //Format logo lama
     // $logo_website = '<img src="'.$file_gambar_logo.'"  class="brand-image img-circle elevation-3" style="opacity: .8">
     //               <!-- BRAND TEXT (TOP) -->
@@ -350,7 +346,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 </li>
 
                 <li class="nav-item"> <!-- Konten Lokasi -->
-                    <a href="tangkolak/kelola_konten_tangkolak.php" class="nav-link ' . (('tangkolak/kelola_konten_tangkolak.php' == $url_sekarang) || ('tangkolak/edit_konten_tangkolak.php'  == $url_sekarang) || ('tangkolak/input_konten_tangkolak.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                    <a href="kelola_konten_tangkolak.php" class="nav-link ' . (('kelola_konten_tangkolak.php' == $url_sekarang) || ('edit_konten_tangkolak.php'  == $url_sekarang) || ('input_konten_tangkolak.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-book"></i>
                         <p> Kelola Konten </p>
                     </a>

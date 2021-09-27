@@ -217,5 +217,5 @@ elseif ($type == 'konten_lokasi'){
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['id_konten_lokasi' => $id_konten_lokasi]);
-    header('Location: tangkolak/kelola_konten_tangkolak.php?status=deletesuccess');
+    header('Location: kelola_konten_tangkolak.php?status=deletesuccess');
 }
