@@ -379,6 +379,9 @@ function ageCalculator($dob){
                                         <?php
                                             echo $rowitem->pesan;
                                         ?>
+                                        <button type="button" class="btn btn-success mb-2">
+                                            <a href="cetak_pesan_donasi.php?id_donasi=<?=$rowitem->id_donasi?>" style="color: #fff;">Cetak Ekspresi/Pesan</a>
+                                        </button>
                                     </div>
                                 </div>
 
