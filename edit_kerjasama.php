@@ -14,7 +14,7 @@ $sqlkerjasama = 'SELECT * FROM t_kerjasama
 
 $stmt = $pdo->prepare($sqlkerjasama);
 $stmt->execute(['id_kerjasama' => $id_kerjasama]);
-$kerjasama = $stmt->fetch();
+$rowkerjasama = $stmt->fetch();
 
 if (isset($_POST['submit'])) {
     $id_pengadaan           = $_POST['nama_fasilitas'];
@@ -156,9 +156,7 @@ if (isset($_POST['submit'])) {
                                     $rowpengadaan = $stmt->fetchAll();
 
                                     foreach ($rowpengadaan as $pengadaan) { ?>
-                                        <option value="<?= $pengadaan->id_pengadaan ?>" <?php if ($pengadaan->id_pengadaan == $kerjasama->id_pengadaan) {
-                                                                                            echo " selected";
-                                                                                        } ?>>
+                                        <option value="<?= $pengadaan->id_pengadaan ?>" <?php if ($pengadaan->id_pengadaan == $rowkerjasama->id_pengadaan) { echo " selected"; } ?>>
                                             <?= $pengadaan->pengadaan_fasilitas ?>
                                         </option>
                                     <?php } ?>
@@ -174,7 +172,7 @@ if (isset($_POST['submit'])) {
                             </div>
                             <div class="form-group">
                                 <label for="Pihak_Ketiga">Nama Pihak Ketiga</label>
-                                <input type="text" id="Pihak_Ketiga" name="Pihak_Ketiga" class="form-control" required value="<?= $kerjasama->Pihak_Ketiga ?>">
+                                <input type="text" id="Pihak_Ketiga" name="Pihak_Ketiga" class="form-control" required value="<?= $rowkerjasama->pihak_ketiga ?>">
                             </div>
                             <div class="form-group">
                                 <label for="pembagian_kerjasama">Pembagian Kerjasama</label>
@@ -194,7 +192,7 @@ if (isset($_POST['submit'])) {
                             </div>
                             <div class="form-group">
                                 <label for="biaya_kerjasama">Biaya Fasilitas</label>
-                                <input type="number" id="biaya_kerjasama" name="biaya_kerjasama" value="<?= $kerjasama->biaya_kerjasama ?>" class="form-control" onchange="myPersentase();" required>
+                                <input type="number" id="biaya_kerjasama" name="biaya_kerjasama" value="<?= $rowkerjasama->biaya_kerjasama ?>" class="form-control" onchange="myPersentase();" required>
                             </div>
                             <div class="form-group">
                                 <label for="pembagian_hasil">Pembagian Hasil</label>

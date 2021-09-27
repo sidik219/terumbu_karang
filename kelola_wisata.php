@@ -153,7 +153,6 @@ $row = $stmt->fetchAll();
                             <tr>
                             <th scope="col">ID Paket Wisata</th>
                             <th scope="col">Nama Paket Wisata</th>
-                            <th scope="col">Deskripsi Paket Wisata</th>
                             <th scope="col">Status Paket</th>
                             <th scope="col">Batas Pemesanan</th>
                             <th scope="col">Aksi</th>
@@ -168,7 +167,6 @@ $row = $stmt->fetchAll();
                             <tr>
                               <th scope="row"><?=$rowitem->id_paket_wisata?></th>
                               <td><?=$rowitem->nama_paket_wisata?></td>
-                              <td><?=$rowitem->deskripsi_paket_wisata?></td>
                               <td><?=$rowitem->status_aktif?></td>
                               <td>
                                   <h5>
@@ -222,16 +220,6 @@ $row = $stmt->fetchAll();
 
                                     <!-- Data Untuk Wisata -->
                                     <div class="col-12 cell<?=$rowitem->id_paket_wisata?> collapse contentall<?=$rowitem->id_paket_wisata?> border rounded shadow-sm p-3">
-                                        <!-- paket -->
-                                        <div class="row  mb-3">
-                                            <div class="col-md-3 kolom font-weight-bold">
-                                                Deskripsi Lengkap
-                                            </div>
-                                            
-                                            <div class="col isi">
-                                                <?=$rowitem->deskripsi_panjang_wisata?>
-                                            </div>
-                                        </div>
 
                                         <div class="row  mb-3">
                                             <div class="col-md-3 kolom font-weight-bold">
