@@ -151,7 +151,7 @@ if (isset($_POST['submit'])) {  // SUBMIT QUERIES ------------------!
       }
     }
   }
-  header("Location: kelola_batch.php?status=updatesuccess");
+  header("Location: kelola_batch.php?status=updatesuccess&id_status_batch=1");
 }
 
 ?>
@@ -311,7 +311,10 @@ if (isset($_POST['submit'])) {  // SUBMIT QUERIES ------------------!
                 <input type="date" id="date_penanaman" name="date_penanaman" value="<?= $rowbatch->tanggal_penanaman ?>" class="form-control" required>
               </div>
             </div>
-
+            <script>
+              var today = new Date().toISOString().split('T')[0];
+              document.getElementsByName("date_penanaman")[0].setAttribute('min', today);
+            </script>
 
             <label class="mt-4" for="dd_id_donasi">Donasi baru yang dapat Ditambahkan</label>
             <div id="daftardonasi">
