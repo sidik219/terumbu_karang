@@ -91,7 +91,7 @@ if (isset($_POST['submit'])) {
                 header("Location: kelola_pemeliharaan.php?status=insertfailed");
             } else {
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: kelola_pemeliharaan.php?status=addsuccess");
+                header("Location: kelola_pemeliharaan.php?status=addsuccess&id_status_pemeliharaan=1");
             }
         }
     } else {
