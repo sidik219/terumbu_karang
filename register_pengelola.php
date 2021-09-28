@@ -27,14 +27,14 @@ if (isset($_POST['register'])) {
     $lenghtpass = strlen($_POST['pwd']);
     // var_dump($lenghtpass);
     // die;
-    if ($lenghtpass < 6 || $lenghtpass > 8 && $pasaman == "k") {
+    if ($lenghtpass < 6 || $lenghtpass > 32 && $pasaman == "k") {
         header('location: register.php?pesan=Tidak_valid');
         return false;
     }
 
     //verivikasi username lebih dari 6 kurang dari 8
     $lenghtuser = strlen($_POST['tb_username']);
-    if ($lenghtuser < 6 || $lenghtuser > 8 && $usaman == "k") {
+    if ($lenghtuser < 6 || $lenghtuser > 16 && $usaman == "k") {
         header('location: register.php?pesan=Tidak_valid');
         return false;
     }
@@ -84,6 +84,8 @@ if (isset($_POST['register'])) {
             'aktivasi_user' => $aktivasi_user, 'username' => $username, 'password' => $password, 'token_aktivasi_user' => $token_aktivasi_user
         ]);
 
+        $id_user_terakhir = $pdo->lastInsertId();
+
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
             echo "Failed !";
@@ -95,6 +97,8 @@ if (isset($_POST['register'])) {
                 $tingkat_kelola = 'Lokasi';
             }
 
+            //Email untuk calon pengelola wilayah/lokasi
+
             include 'includes/email_handler.php'; //PHPMailer
             $subjek = 'Konfirmasi Registrasi Akun Pengelola ' . $tingkat_kelola . ' GoKarang';
             $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
@@ -104,6 +108,39 @@ if (isset($_POST['register'])) {
                 <br><a href="https://tkjb.or.id/aktivasi_user.php?token_aktivasi_user=' . $token_aktivasi_user . '">Konfirmasi Akun Anda</a>
             ';
             smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+
+            if($level_user == 2){
+                //Query semua user pengelola pusat
+                $sqluserpusat = 'SELECT email FROM t_user WHERE level_user=4';
+                $stmt = $pdo->prepare($sqluserpusat);
+                $stmt->execute();
+                $rowuserpusat = $stmt->fetchAll();
+
+                foreach($rowuserpusat as $userpusat){
+                    //Email untuk pengelola pusat bahwa ada calon pengelola wilayah baru
+                    $email = $userpusat->email;
+
+                    $subjek = 'Verifikasi Registrasi Akun Pengelola ' . $tingkat_kelola . ' Baru - GoKarang';
+                    $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+                        <br>Akun Pengelola ' . $tingkat_kelola . ' dengan rincian:
+                        <br>Nama: ' . $nama_user . '
+                        <br>Organisasi: ' . $organisasi_user . '
+                        <br>No. Handphone: ' . $no_hp . '
+                        <br>Email: ' . $email . '
+                        <br>Alamat: ' . $alamat . '
+                        <br>Username: ' . $username . '
+                        <br>telah mendaftarkan diri sebagai Pengelola Wilayah. 
+                        <br>Jika akun ini dikenal dan valid, harap pilih wilayah yang akan diberikan hak pengelolaan di:
+                        <br><a href="https://tkjb.or.id/kelola_wilayah.php">Atur Pengelola Wilayah</a>
+                        <br>
+                        <br>Jika akun calon pengelola tersebut dipastikan tidak dikenal, klik link berikut untuk menghapus akun tersebut:
+                        <br><a href="https://tkjb.or.id/hapus.php?type=hapus_user_pengelola_wilayah_baru&id_user='.$id_user_terakhir.'">Hapus Akun Pengelola Tidak Dikenal</a>
+                    ';
+                    smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+                }                
+            }
+            
+
             header('Location: login.php?pesan=registrasi_berhasil');
         }
     }

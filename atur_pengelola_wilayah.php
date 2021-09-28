@@ -46,6 +46,39 @@ if (isset($_POST['submit'])) {
     $stmt = $pdo->prepare($sqlinsertkandidat);
     $stmt->execute(['id_wilayah' => $id_wilayah, 'id_user' => $id_user]);
     // header("Refresh: 0");
+
+    //Kirim email untuk Pengelola Wilayah
+            include 'includes/email_handler.php'; //PHPMailer         
+            
+            $sqlviewpengelolawilayah = 'SELECT * FROM t_user, t_wilayah, t_pengelola_wilayah 
+                                        WHERE t_pengelola_wilayah.id_wilayah = :id_wilayah';
+            $stmt = $pdo->prepare($sqlviewpengelolawilayah);
+            $stmt->execute(['id_wilayah' => $id_wilayah]);
+            $pengelola = $stmt->fetch();
+
+            $sqlviewdatauser = 'SELECT * FROM t_user 
+                                WHERE id_user = :id_user';
+            $stmt = $pdo->prepare($sqlviewdatauser);
+            $stmt->execute(['id_user' => $id_user]);
+            $datauser = $stmt->fetch();
+
+            $email = $datauser->email;
+            $nama_user = $datauser->nama_user;
+
+            $subjek = 'Pemberian Hak Akses Pengelola Wilayah pada '.$pengelola->nama_wilayah.' - GoKarang';
+            $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+            <br>Yth. '.$nama_user.'
+            <br>Anda telah ditunjuk sebagai Pengelola Wilayah pada wilayah '.$pengelola->nama_wilayah.' (ID Wilayah: '.$pengelola->id_wilayah.')
+            <br>Anda bertugas untuk mengawasi donasi yang masuk, mengelola rekening bersama wilayah, serta mengawasi pengadaan bibit terumbu karang hingga pemeliharaan oleh Pengelola Lokasi,
+            <br>input dan edit data lokasi (pantai), serta mengatur user Pengelola Lokasi.
+            <br>
+            <br>Anda dapat mulai mengelola Wilayah anda dengan Log In melalui link berikut:
+            <br><a href="https://tkjb.or.id/login.php">Log In GoKarang</a>
+            <br>
+            <br>Selamat bergabung di GoKarang dan terima kasih atas kerjasamanya.
+        ';
+        
+        smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
     header("location: atur_pengelola_wilayah.php?id_wilayah=$id_wilayah&status=addsuccess");
 }
 ?>
@@ -138,11 +171,11 @@ if (isset($_POST['submit'])) {
                         if (!empty($_GET['status'])) {
                             if ($_GET['status'] == 'addsuccess') {
                                 echo '<div class="alert alert-success" role="alert">
-                            User Baru Berhasil Ditambahkan Pada Lokasi
+                            User Baru Berhasil Ditambahkan pada Wilayah
                             </div>';
                             } else if ($_GET['status'] == 'deletesuccess') {
                                 echo '<div class="alert alert-success" role="alert">
-                            User Dihapus Dari Lokasi
+                            User Dihapus dari Wilayah
                             </div>';
                             }
                         }

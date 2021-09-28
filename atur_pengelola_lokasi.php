@@ -44,6 +44,40 @@ if (isset($_POST['submit'])) {
                             VALUES (:id_lokasi, :id_user)';
     $stmt = $pdo->prepare($sqlinsertkandidat);
     $stmt->execute(['id_lokasi' => $id_lokasi, 'id_user' => $id_user]);
+
+    //Kirim email untuk Pengelola lokasi
+            include 'includes/email_handler.php'; //PHPMailer         
+            
+            $sqlviewpengelolalokasi = 'SELECT * FROM t_user, t_pengelola_lokasi, t_lokasi 
+                                        WHERE t_pengelola_lokasi.id_lokasi = :id_lokasi';
+            $stmt = $pdo->prepare($sqlviewpengelolalokasi);
+            $stmt->execute(['id_lokasi' => $id_lokasi]);
+            $pengelola = $stmt->fetch();
+
+            $sqlviewdatauser = 'SELECT * FROM t_user 
+                                WHERE id_user = :id_user';
+            $stmt = $pdo->prepare($sqlviewdatauser);
+            $stmt->execute(['id_user' => $id_user]);
+            $datauser = $stmt->fetch();
+
+            $email = $datauser->email;
+            $username = $datauser->username;
+            $nama_user = $datauser->nama_user;
+
+            $subjek = 'Pemberian Hak Akses Pengelola Lokasi pada '.$pengelola->nama_lokasi.' - GoKarang';
+            $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+            <br>Yth. '.$nama_user.'
+            <br>Anda telah ditunjuk sebagai Pengelola Lokasi pada lokasi '.$pengelola->nama_lokasi.' (ID Lokasi: '.$pengelola->id_lokasi.')
+            <br>Anda bertugas untuk menangani bibit terumbu karang yang dipilih donatur mulai dari pengadaan bibit, penyemaian, penanaman, hingga pemeliharaan berkala di laut,
+            <br>Mengelola Reservasi Wisata yang masuk, Paket Wisata beserta fasilitas yang disediakan, pengadaan fasilitas wisata, kerja sama pihak ke tiga, dan asuransi wisata.
+            <br>
+            <br>Anda dapat mulai mengelola lokasi anda dengan Log In melalui link berikut:
+            <br><a href="https://tkjb.or.id/login.php">Log In GoKarang</a>
+            <br>
+            <br>Selamat bergabung di GoKarang dan terima kasih atas kerjasamanya.
+        ';
+        
+        smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
     // header("Refresh: 0");
     header("location: atur_pengelola_lokasi.php?id_lokasi=$id_lokasi&status=addsuccess");
 }
