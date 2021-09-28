@@ -219,3 +219,13 @@ elseif ($type == 'konten_lokasi'){
     $stmt->execute(['id_konten_lokasi' => $id_konten_lokasi]);
     header('Location: kelola_konten_tangkolak.php?status=deletesuccess');
 }
+elseif ($type == 'hapus_user_pengelola_wilayah_baru'){
+    $id_user = $_GET['id_user'];
+
+    $sql = 'DELETE FROM t_user
+            WHERE id_user = :id_user';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_user' => $id_user]);
+    header('Location: dashboard_admin_pusat.php?status=deletesuccess');
+}

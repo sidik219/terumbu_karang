@@ -24,14 +24,14 @@ if (isset($_POST['register'])) {
     $lenghtpass = strlen($_POST['pwd']);
     // var_dump($lenghtpass);
     // die;
-    if ($lenghtpass < 6 || $lenghtpass > 8 && $pasaman == "k") {
+    if ($lenghtpass < 6 || $lenghtpass > 32 && $pasaman == "k") {
         header('location: register.php?pesan=Tidak_valid');
         return false;
     }
 
     //verivikasi username lebih dari 6 kurang dari 8
     $lenghtuser = strlen($_POST['tb_username']);
-    if ($lenghtuser < 6 || $lenghtuser > 8 && $usaman == "k") {
+    if ($lenghtuser < 6 || $lenghtuser > 16 && $usaman == "k") {
         header('location: register.php?pesan=Tidak_valid');
         return false;
     }
