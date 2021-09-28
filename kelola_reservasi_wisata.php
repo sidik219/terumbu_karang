@@ -209,11 +209,11 @@ function alertPembayaran($dob){
                                 <a class="dropdown-item" href="laporan_wisata.php?type=all_reservasi">
                                 <i class="far fa-file-excel btn-success"></i> Laporan Reservasi Wisata</a>
                                 <hr><label class="ml-2">Laporan Pengeluaran :</label>
+                                <a class="dropdown-item" href="laporan_wisata.php?type=all_pengeluaran">
+                                <i class="far fa-file-excel btn-success"></i> Laporan Seluruh Pengeluaran</a>
                                 <!-- Perpriode -->
                                 <a class="dropdown-item" href="laporan_wisata.php?type=laporan_perhari">
                                 <i class="far fa-file-excel btn-success"></i> Laporan Pengeluaran Priode</a>
-                                <a class="dropdown-item" href="laporan_wisata.php?type=all_pengeluaran">
-                                <i class="far fa-file-excel btn-success"></i> Laporan Seluruh Pengeluaran</a>
                                 <!-- Perhari -->
                                 <!-- <a class="dropdown-item" href="laporan_wisata.php?type=laporan_perhari">
                                 <i class="far fa-file-excel btn-success"></i> Laporan Pengeluaran Perhari</a> -->
@@ -314,7 +314,7 @@ function alertPembayaran($dob){
                                     if ($rowitem->id_status_reservasi_wisata == 2) { ?>
                                         <!-- Kelola Laporan Lama -->
                                         <span class="badge badge-pill badge-info mt-2">
-                                            Laporan Pengeluaran <br> Sudah Dibuat
+                                            Cek Kembali <br> Laporan Pengeluaran
                                         </span>
                                     <?php } elseif ($rowitem->id_status_reservasi_wisata == 3) { ?>
                                         <!-- Kelola Laporan Bermasalah -->

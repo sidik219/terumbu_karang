@@ -165,44 +165,44 @@ $row = $stmt->fetchAll();
                             $akhirdate = strtotime($rowitem->tgl_akhir_pemesanan);
                             ?>
                             <tr>
-                              <th scope="row"><?=$rowitem->id_paket_wisata?></th>
-                              <td><?=$rowitem->nama_paket_wisata?></td>
-                              <td><?=$rowitem->status_aktif?></td>
-                              <td>
-                                  <h5>
-                                    <?php
-                                    // tanggal sekarang
-                                    $tgl_sekarang = date("Y-m-d");
-                                    // tanggal pembuatan batas pemesanan paket wisata
-                                    $tgl_awal = $rowitem->tgl_pemesanan;
-                                    // tanggal berakhir pembuatan batas pemesanan paket wisata
-                                    $tgl_akhir = $rowitem->tgl_akhir_pemesanan;
-                                    // jangka waktu + 365 hari
-                                    $jangka_waktu = strtotime(strtotime($tgl_akhir), strtotime($tgl_awal));
-                                    //tanggal expired
-                                    $tgl_exp = date("Y-m-d",$jangka_waktu);
+                                <th scope="row"><?=$rowitem->id_paket_wisata?></th>
+                                <td><?=$rowitem->nama_paket_wisata?></td>
+                                <td><?=$rowitem->status_aktif?></td>
+                                <td>
+                                    <h5>
+                                        <?php
+                                        // tanggal sekarang
+                                        $tgl_sekarang = date("Y-m-d");
+                                        // tanggal pembuatan batas pemesanan paket wisata
+                                        $tgl_awal = $rowitem->tgl_pemesanan;
+                                        // tanggal berakhir pembuatan batas pemesanan paket wisata
+                                        $tgl_akhir = $rowitem->tgl_akhir_pemesanan;
+                                        // jangka waktu + 365 hari
+                                        $jangka_waktu = strtotime($tgl_akhir, strtotime($tgl_awal));
+                                        //tanggal expired
+                                        $tgl_exp = date("Y-m-d",$jangka_waktu);
 
-                                    if ($tgl_sekarang >= $tgl_exp) { ?>
-                                        <small>
-                                            <span class="badge badge-pill badge-danger">
-                                                <i class="fas fa-tag"></i> Sudah Tidak Berlaku.
-                                            </span>
-                                        </small>
-                                    <?php } else { ?>
-                                        <small>
-                                            <span class="badge badge-pill badge-success">
-                                                <i class="fas fa-tag"></i> Masih dalam jangka waktu.
-                                            </span>
-                                        </small>
-                                    <?php }?>
-                                </h5>
-                              </td>
-                              <td>
-                                <a href="edit_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>" class="fas fa-edit mr-3 btn btn-act"></a>
-                                <a  onclick="return konfirmasiHapusPaket(event)"
-                                    href="hapus.php?type=paket_wisata&id_paket_wisata=<?=$rowitem->id_paket_wisata?>" 
-                                    class="far fa-trash-alt btn btn-act"></a>
-                              </td>
+                                        if ($tgl_sekarang >= $tgl_exp) { ?>
+                                            <small>
+                                                <span class="badge badge-pill badge-danger">
+                                                    <i class="fas fa-tag"></i> Sudah Tidak Berlaku.
+                                                </span>
+                                            </small>
+                                        <?php } else { ?>
+                                            <small>
+                                                <span class="badge badge-pill badge-success">
+                                                    <i class="fas fa-tag"></i> Masih dalam jangka waktu.
+                                                </span>
+                                            </small>
+                                        <?php }?>
+                                    </h5>
+                                </td>
+                                <td>
+                                    <a href="edit_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                                    <a  onclick="return konfirmasiHapusPaket(event)"
+                                        href="hapus.php?type=paket_wisata&id_paket_wisata=<?=$rowitem->id_paket_wisata?>" 
+                                        class="far fa-trash-alt btn btn-act"></a>
+                                </td>
                             </tr>
 
                             <tr>
@@ -352,7 +352,7 @@ $row = $stmt->fetchAll();
                                                         // tanggal berakhir pembuatan batas pemesanan paket wisata
                                                         $tgl_akhir = $rowitem->tgl_akhir_pemesanan;
                                                         // jangka waktu + 365 hari
-                                                        $jangka_waktu = strtotime(strtotime($tgl_akhir), strtotime($tgl_awal));
+                                                        $jangka_waktu = strtotime($tgl_akhir, strtotime($tgl_awal));
                                                         //tanggal expired
                                                         $tgl_exp = date("Y-m-d",$jangka_waktu);
 

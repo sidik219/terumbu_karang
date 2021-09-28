@@ -3,7 +3,7 @@ include 'build/config/connection.php';
 session_start();
 
 if ($_GET['type'] == 'wisata'){
-
+    // Laporan Data Wisata
     header("Content-type: application/vnd-ms-excel");
     header("Content-Disposition: attachment; filename=laporan_data_wisata.xls");
 
@@ -33,40 +33,13 @@ if ($_GET['type'] == 'wisata'){
     $join_wilayah = "  ";
     }
 
-    // Tampil all data wisata
-    // $sqlviewwisata = 'SELECT * FROM t_wisata
-    //                     LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-    //                     LEFT JOIN t_lokasi ON t_wisata.id_lokasi = t_lokasi.id_lokasi '.$join_wilayah.'
-    //                     WHERE  '.$extra_query_noand.'
-    //                     ORDER BY id_wisata ASC';
-    // $stmt = $pdo->prepare($sqlviewwisata);
-    // $stmt->execute();
-    // $rowwisata = $stmt->fetchAll();
-
     // Tampil all data Paket Wisata
     $sqlviewpaket = 'SELECT * FROM tb_paket_wisata
-                    ORDER BY id_paket_wisata DESC';
+                    LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
+                    ORDER BY id_paket_wisata ASC';
     $stmt = $pdo->prepare($sqlviewpaket);
     $stmt->execute();
     $rowpaket = $stmt->fetchAll();
-
-    // =====================================================================================================
-
-    // Tampil all data fasilitas
-    $sqlviewfasilitas = 'SELECT * FROM tb_fasilitas_wisata
-                            LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
-                            ORDER BY id_fasilitas_wisata ASC';
-
-    $stmt = $pdo->prepare($sqlviewfasilitas);
-    $stmt->execute();
-    $rowfasilitas = $stmt->fetchAll();
-
-    // Tampil untuk total biaya fasilitas
-    $sqlviewfasilitas = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas FROM tb_fasilitas_wisata';
-
-    $stmt = $pdo->prepare($sqlviewfasilitas);
-    $stmt->execute();
-    $totalfasilitas = $stmt->fetchAll();
 
     function ageCalculator($dob){
         $birthdate = new DateTime($dob);
@@ -90,39 +63,88 @@ if ($_GET['type'] == 'wisata'){
     ?>
 
     <!-- Table Wisata -->
-    <h3>Laporan Data Wisata</h3>
     <table border="1">
-        <thead style="background: #cccccc;">
+        <thead>
             <tr>
+                <th scope="col" colspan="9">LAPORAN DATA WISATA</th>
+            </tr>
+            <tr>
+                <th scope="col">No</th>
                 <th scope="col">ID Paket Wisata</th>
-                <th scope="col">ID Lokasi</th>
                 <th scope="col">Nama Paket Wisata</th>
-                <th scope="col">Deskripsi Wisata</th>
-                <th scope="col">Deskripsi Lengkap</th>
-                <th scope="col">Wisata</th>
+                <th scope="col">Status Paket</th>
+                <th scope="col">Batas Pemesanan</th>
+                <th scope="col">Asuransi</th>
                 <th scope="col">Biaya Wisata</th>
-                <th scope="col">Status Wisata</th>
+                <th scope="col">Wisata</th>
+                <th scope="col">Fasilitas Wisata</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($rowpaket as $paket) { ?>
+            <?php 
+            $no = 1;
+            $sum_asuransi = 0;
+            $sum_fasilitas = 0;
+            
+            foreach ($rowpaket as $paket) { 
+            $awaldate = strtotime($paket->tgl_pemesanan);
+            $akhirdate = strtotime($paket->tgl_akhir_pemesanan);?>
             <tr>
-                <th scope="row">
-                    <?=$paket->id_paket_wisata?>
-                </th>
-                <th scope="row">
-                    <?=$paket->id_lokasi?>
-                </th>
-                <th style="font-weight: normal; text-align: left;">
-                    <?=$paket->nama_paket_wisata?>
-                </th>
-                <th style="font-weight: normal; text-align: left;">
-                    <?=$paket->deskripsi_paket_wisata?>
-                </th>
-                <th style="font-weight: normal; text-align: left;">
-                    <?=$paket->deskripsi_panjang_wisata?>
-                </th>
-                <th style="font-weight: normal; text-align: left;">
+                <th><?=$no?></th>
+                <th scope="row"><?=$paket->id_paket_wisata?></th>
+                <td><?=$paket->nama_paket_wisata?></td>
+                <td><?=$paket->status_aktif?></td>
+                <td>
+                    <?php
+                    // tanggal sekarang
+                    $tgl_sekarang = date("Y-m-d");
+                    // tanggal pembuatan batas pemesanan paket wisata
+                    $tgl_awal = $paket->tgl_pemesanan;
+                    // tanggal berakhir pembuatan batas pemesanan paket wisata
+                    $tgl_akhir = $paket->tgl_akhir_pemesanan;
+                    // jangka waktu + 365 hari
+                    $jangka_waktu = strtotime(strtotime($tgl_akhir), strtotime($tgl_awal));
+                    //tanggal expired
+                    $tgl_exp = date("Y-m-d",$jangka_waktu);
+
+                    if ($tgl_sekarang >= $tgl_exp) { ?>
+                        Sudah Tidak Berlaku.
+                    <?php } else { ?>
+                        Masih dalam jangka waktu.
+                    <?php }?>
+                </td>
+                <td>Rp. <?=number_format($paket->biaya_asuransi, 0)?></td>
+                <td>
+                    <?php
+                    $sqlviewpaket = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, biaya_asuransi
+                                        FROM tb_fasilitas_wisata
+                                        LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
+                                        LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                                        LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
+                                        LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                        LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
+                                        WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                        AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
+                                        
+                    $stmt = $pdo->prepare($sqlviewpaket);
+                    $stmt->execute(['id_paket_wisata' => $paket->id_paket_wisata]);
+                    $rowfasilitas = $stmt->fetchAll();
+
+                    foreach ($rowfasilitas as $fasilitas) { 
+                    
+                    // Menjumlahkan biaya asuransi dan biaya paket wisata
+                    $asuransi       = $fasilitas->biaya_asuransi;
+                    $wisata         = $fasilitas->total_biaya_fasilitas;
+                    $total_paket    = $asuransi + $wisata;
+
+                    // total sum
+                    $sum_asuransi+= $fasilitas->biaya_asuransi;
+                    $sum_fasilitas+= $fasilitas->total_biaya_fasilitas;
+                    ?>
+                    Rp. <?=number_format($total_paket, 0)?>
+                    <?php } ?>
+                </td>
+                <td>
                     <?php
                     $sqlviewwisata = 'SELECT * FROM t_wisata
                                     LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
@@ -135,94 +157,65 @@ if ($_GET['type'] == 'wisata'){
                     $rowwisata = $stmt->fetchAll();
 
                     foreach ($rowwisata as $wisata) { ?>
-                    <?=$wisata->judul_wisata?>
+                    <?=$wisata->judul_wisata?><br>
                     <?php } ?>
-                </th>
-                
-                <?php
-                $sqlviewpaket = 'SELECT SUM(biaya_fasilitas) 
-                                AS total_biaya_fasilitas, nama_fasilitas, biaya_fasilitas 
-                                FROM tb_fasilitas_wisata 
-                                LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
-                                LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                                WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
-                                AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
-
-                $stmt = $pdo->prepare($sqlviewpaket);
-                $stmt->execute(['id_paket_wisata' => $paket->id_paket_wisata]);
-                $sumfasilitas = $stmt->fetchAll();
-
-                foreach ($sumfasilitas as $fasilitas) { ?>
-                <th style="font-weight: normal; text-align: left;">
-                    Rp. <?=number_format($fasilitas->total_biaya_fasilitas, 0)?></th>
-                <?php } ?>
-
-                <th style="font-weight: normal; text-align: left;">
-                    <?=$paket->status_aktif?></th>
-            </tr>
-            <?php } ?>
-        </tbody>
-    </table>
-
-    <br>
-    <!-- Table Fasilitas Wisata -->
-    <h3>Laporan Data Fasilitas Wisata</h3>
-    <table border="1">
-        <thead style="background: #cccccc;">
-            <tr>
-                <th scope="col">ID Fasilitas</th>
-                <th scope="col">Nama Fasilitas</th>
-                <th scope="col">Biaya Fasilitas</th>
-                <th scope="col">Update Terakhir</th>
-                <th scope="col">Wisata</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($rowfasilitas as $fasilitas) { 
-                $truedate = strtotime($fasilitas->update_terakhir); ?>
-            <tr>
-                <th scope="row">
-                    <?=$fasilitas->id_fasilitas_wisata?></th>
-                <th style="font-weight: normal; text-align: left;">
-                    <?=$fasilitas->nama_fasilitas?></th>
-                <th style="font-weight: normal;">
-                    Rp. <?=number_format($fasilitas->biaya_fasilitas, 0)?></th>
-                <td>
-                    <small class="text-muted"><b>Update Terakhir</b>
-                    <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($fasilitas->update_terakhir).' yang lalu)';?></small>
                 </td>
-                <th style="font-weight: normal;">
-                    <?=$fasilitas->judul_wisata?></th>
+                <td>
+                    <?php
+                    $sqlviewpaket = 'SELECT * FROM tb_fasilitas_wisata
+                                        LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
+                                        LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                                        LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
+                                        LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                        WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                        AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
+
+                    $stmt = $pdo->prepare($sqlviewpaket);
+                    $stmt->execute(['id_paket_wisata' => $paket->id_paket_wisata]);
+                    $rowfasilitas = $stmt->fetchAll();
+
+                    foreach ($rowfasilitas as $fasilitas) { ?>
+                    <?=$fasilitas->pengadaan_fasilitas?><br>
+                    <?php } ?>
+                </td>
             </tr>
-            <?php } ?>
+            <?php $no++; } ?>
         </tbody>
-        <tfoot style="background: #cccccc;">
-            <?php foreach ($totalfasilitas as $fasilitas) { ?>
+        <tfoot>
+            <!-- Hasil -->
+            <?php 
+            $asuransi       = $sum_asuransi;
+            $fasilitas      = $sum_fasilitas;
+            $total_wisata   = $asuransi + $fasilitas;
+            ?>
             <tr>
-                <th colspan="2">Total Biaya Fasilitas</th>
-                <th colspan="3">
-                    Rp. <?=number_format($fasilitas->total_biaya_fasilitas, 0)?>
+                <th colspan="8">Total Biaya Wisata</th>
+                <th>
+                    Rp. <?=number_format($total_wisata, 0)?>
                 </th>
             </tr>
-            <?php } ?>
         </tfoot>
     </table>
 
 <?php } elseif ($_GET['type'] == 'fasilitas') {
-
+    // Laporan Data Fasilitas Wisata
     header("Content-type: application/vnd-ms-excel");
-    header("Content-Disposition: attachment; filename=laporan_pengeluaran_fasilitas_wisata.xls");
+    header("Content-Disposition: attachment; filename=laporan_data_fasilitas_wisata.xls");
 
     // Tampil all data fasilitas
     $sqlviewfasilitas = 'SELECT * FROM tb_fasilitas_wisata
-                            ORDER BY id_fasilitas_wisata ASC';
+                        LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
+                        LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                        ORDER BY id_fasilitas_wisata ASC';
 
     $stmt = $pdo->prepare($sqlviewfasilitas);
     $stmt->execute();
     $rowfasilitas = $stmt->fetchAll();
 
     // Tampil untuk total biaya fasilitas
-    $sqlviewfasilitas = 'SELECT SUM(biaya_fasilitas) AS total_biaya_fasilitas FROM tb_fasilitas_wisata';
+    $sqlviewfasilitas = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas FROM tb_fasilitas_wisata
+                        LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
+                        LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan';
 
     $stmt = $pdo->prepare($sqlviewfasilitas);
     $stmt->execute();
@@ -252,34 +245,56 @@ if ($_GET['type'] == 'wisata'){
     <table border="1">
         <thead>
             <tr>
+                <th scope="col" colspan="7">LAPORAN DATA FASILITAS WISATA</th>
+            </tr>
+            <tr>
+                <th scope="col">No</th>
                 <th scope="col">ID Fasilitas</th>
                 <th scope="col">Nama Fasilitas</th>
                 <th scope="col">Biaya Fasilitas</th>
+                <th scope="col">Status Kerjasama</th>
+                <th scope="col">Status Pengadaan</th>
                 <th scope="col">Update Terakhir</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($rowfasilitas as $fasilitas) { 
-                $truedate = strtotime($fasilitas->update_terakhir); ?>
+            <?php
+            $no = 1;
+            foreach ($rowfasilitas as $fasilitas) { 
+            $truedate = strtotime($fasilitas->update_terakhir); ?>
             <tr>
-                <th scope="row">
-                    <?=$fasilitas->id_fasilitas_wisata?></th>
-                <th style="font-weight: normal; text-align: left;">
-                    <?=$fasilitas->nama_fasilitas?></th>
-                <th style="font-weight: normal;">
-                    Rp. <?=number_format($fasilitas->biaya_fasilitas, 0)?></th>
+                <th><?=$no?></th>
+                <th scope="row"><?=$fasilitas->id_fasilitas_wisata?></th>
+                <td><?=$fasilitas->pengadaan_fasilitas?></td>
+                <td>Rp. <?=number_format($fasilitas->biaya_kerjasama, 0)?></td>
+                <td>
+                    <?php if ($fasilitas->status_kerjasama == "Melakukan Kerjasama") { ?>
+                        <span class="badge badge-pill badge-success"><?=$fasilitas->status_kerjasama?></span>
+                    <?php } elseif ($fasilitas->status_kerjasama == "Tidak Melakukan Kerjasama") { ?>
+                        <span class="badge badge-pill badge-warning"><?=$fasilitas->status_kerjasama?></span>
+                    <?php } ?>
+                </td>
+                <td>
+                    <?php if ($fasilitas->status_pengadaan == "Baik") { ?>
+                        <span class="badge badge-pill badge-success"><?=$fasilitas->status_pengadaan?></span>
+                    <?php } elseif ($fasilitas->status_pengadaan == "Rusak") { ?>
+                        <span class="badge badge-pill badge-warning"><?=$fasilitas->status_pengadaan?></span>
+                    <?php } elseif ($fasilitas->status_pengadaan == "Hilang") { ?>
+                        <span class="badge badge-pill badge-danger"><?=$fasilitas->status_pengadaan?></span>
+                    <?php } ?>
+                </td>
                 <td>
                     <small class="text-muted"><b>Update Terakhir</b>
                     <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($fasilitas->update_terakhir).' yang lalu)';?></small>
                 </td>
             </tr>
-            <?php } ?>
+            <?php $no++; } ?>
         </tbody>
         <tfoot>
             <?php foreach ($sumfasilitas as $fasilitas) { ?>
             <tr>
-                <th colspan="2">Total Biaya Fasilitas</th>
-                <th colspan="2">
+                <th colspan="6">Total Biaya Fasilitas</th>
+                <th>
                     Rp. <?=number_format($fasilitas->total_biaya_fasilitas, 0)?>
                 </th>
             </tr>
@@ -288,9 +303,9 @@ if ($_GET['type'] == 'wisata'){
     </table>
 
 <?php } elseif ($_GET['type'] == 'all_pengeluaran') {
-
+    // Laporan Pengeluaran
     header("Content-type: application/vnd-ms-excel");
-    header("Content-Disposition: attachment; filename=laporan_keseluruhan_pengeluaran_wisata.xls");
+    header("Content-Disposition: attachment; filename=laporan_pengeluaran_wisata.xls");
     
     $sqlreservasi = 'SELECT SUM(total) AS sum_paket FROM t_reservasi_wisata';
 
@@ -301,7 +316,7 @@ if ($_GET['type'] == 'wisata'){
     // Select Data Pengeluaran Berdasarkan ID Reservasi
     $sqlpengeluaran = 'SELECT * FROM t_laporan_pengeluaran
                         LEFT JOIN t_reservasi_wisata ON t_laporan_pengeluaran.id_reservasi = t_reservasi_wisata.id_reservasi
-                        ORDER BY id_pengeluaran DESC';
+                        ORDER BY id_pengeluaran ASC';
 
     $stmt = $pdo->prepare($sqlpengeluaran);
     $stmt->execute();
@@ -332,6 +347,10 @@ if ($_GET['type'] == 'wisata'){
     <table border="1">
         <thead>
             <tr>
+                <th scope="col" colspan="6">LAPORAN SELURUH PENGELUARAN WISATA</th>
+            </tr>
+            <tr>
+                <th scope="col">No</th>
                 <th scope="col">ID Pengeluaran</th>
                 <th scope="col">ID Reservasi</th>
                 <th scope="col">Nama Pengeluaran</th>
@@ -341,6 +360,7 @@ if ($_GET['type'] == 'wisata'){
         </thead>
         <tbody>
             <?php
+            $no = 1;
             $sum_paket = 0;
             $sum_pengeluaran = 0;
 
@@ -351,6 +371,7 @@ if ($_GET['type'] == 'wisata'){
             // var_dump($sum);
             ?>
             <tr>
+                <th><?=$no?></th>
                 <th scope="row"><?=$pengeluaran->id_pengeluaran?></th>
                 <td><?=$pengeluaran->id_reservasi?></td>
                 <td><?=$pengeluaran->nama_pengeluaran?></td>
@@ -360,7 +381,7 @@ if ($_GET['type'] == 'wisata'){
                     <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($pengeluaran->update_terakhir).' yang lalu)';?></small>
                 </td>
             </tr>
-            <?php } ?>
+            <?php $no++; } ?>
 
             <!-- Hasil -->
             <?php 
@@ -368,24 +389,24 @@ if ($_GET['type'] == 'wisata'){
             $total_saldo = $total_paket - $sum_pengeluaran;
             ?>
             <tr>
-                <th scope="row" colspan="4" style="text-align: right;">Biaya Pemasukan:</th>
+                <th scope="row" colspan="5" style="text-align: right;">Biaya Pemasukan:</th>
                 <td>Rp. <?=number_format($total_paket, 0)?></td>
             </tr>
             <tr>
-                <th scope="row" colspan="4" style="text-align: right;">Biaya Pengeluaran:</th>
+                <th scope="row" colspan="5" style="text-align: right;">Biaya Pengeluaran:</th>
                 <td>Rp. <?=number_format($sum_pengeluaran, 0)?></td>
             </tr>
             <tr>
-                <th scope="row" colspan="4" style="text-align: right;">Total Sisa Biaya:</th>
+                <th scope="row" colspan="5" style="text-align: right;">Total Sisa Biaya:</th>
                 <td>Rp. <?=number_format($total_saldo, 0)?></td>
             </tr>
         </tbody>
     </table>
 
 <?php } elseif ($_GET['type'] == 'pengeluaran') {
-
+    // Laporan Laba Rugi
     header("Content-type: application/vnd-ms-excel");
-    header("Content-Disposition: attachment; filename=laporan_pengeluaran_wisata.xls");
+    header("Content-Disposition: attachment; filename=laporan_laba_rugi.xls");
 
     // GET ID Reservasi
     $id_reservasi = $_GET['id_reservasi'];
@@ -401,7 +422,7 @@ if ($_GET['type'] == 'wisata'){
     $sqlpengeluaran = 'SELECT * FROM t_laporan_pengeluaran
                         LEFT JOIN t_reservasi_wisata ON t_laporan_pengeluaran.id_reservasi = t_reservasi_wisata.id_reservasi
                         WHERE t_reservasi_wisata.id_reservasi = :id_reservasi
-                        ORDER BY id_pengeluaran DESC';
+                        ORDER BY id_pengeluaran ASC';
 
     $stmt = $pdo->prepare($sqlpengeluaran);
     $stmt->execute(['id_reservasi' => $id_reservasi]);
@@ -427,10 +448,14 @@ if ($_GET['type'] == 'wisata'){
         }
     }
     ?>
-    <!-- Select Data Reservasi Untuk Laporan Pengeluaran Berdasarkan ID -->
+
     <table border="1">
         <thead>
             <tr>
+                <th scope="col" colspan="6">LAPORAN LABA RUGI</th>
+            </tr>
+            <tr>
+                <th scope="col">No</th>
                 <th scope="col">ID Pengeluaran</th>
                 <th scope="col">ID Reservasi</th>
                 <th scope="col">Nama Pengeluaran</th>
@@ -440,6 +465,7 @@ if ($_GET['type'] == 'wisata'){
         </thead>
         <tbody>
             <?php
+            $no = 1;
             $sum_paket = 0;
             $sum_pengeluaran = 0;
 
@@ -450,6 +476,7 @@ if ($_GET['type'] == 'wisata'){
             // var_dump($sum);
             ?>
             <tr>
+                <th><?=$no?></th>
                 <th scope="row"><?=$pengeluaran->id_pengeluaran?></th>
                 <td><?=$pengeluaran->id_reservasi?></td>
                 <td><?=$pengeluaran->nama_pengeluaran?></td>
@@ -459,7 +486,7 @@ if ($_GET['type'] == 'wisata'){
                     <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($pengeluaran->update_terakhir).' yang lalu)';?></small>
                 </td>
             </tr>
-            <?php } ?>
+            <?php $no++; } ?>
 
             <!-- Hasil -->
             <?php 
@@ -467,23 +494,23 @@ if ($_GET['type'] == 'wisata'){
             $total_saldo = $sum_paket - $sum_pengeluaran;
             ?>
             <tr>
-                <th scope="row" colspan="4" style="text-align: right;">Biaya Reservasi:</th>
+                <th scope="row" colspan="5" style="text-align: right;">Biaya Reservasi:</th>
                 <td>Rp. <?=number_format($reservasi->total, 0)?></td>
             </tr>
             <tr>
-                <th scope="row" colspan="4" style="text-align: right;">Biaya Pengeluaran:</th>
+                <th scope="row" colspan="5" style="text-align: right;">Biaya Pengeluaran:</th>
                 <td>Rp. <?=number_format($sum_pengeluaran, 0)?></td>
             </tr>
             <tr>
-                <th scope="row" colspan="4" style="text-align: right;">Total Sisa Biaya:</th>
+                <th scope="row" colspan="5" style="text-align: right;">Total Sisa Biaya:</th>
                 <td>Rp. <?=number_format($total_saldo, 0)?></td>
             </tr>
         </tbody>
     </table>
 <?php } elseif ($_GET['type'] == 'all_reservasi') {
-
+    // Laporan Reservasi Wisata
     header("Content-type: application/vnd-ms-excel");
-    header("Content-Disposition: attachment; filename=laporan_pengeluaran_wisata.xls");
+    header("Content-Disposition: attachment; filename=laporan_reservasi_wisata.xls");
     
     $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
                   LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
@@ -491,17 +518,20 @@ if ($_GET['type'] == 'wisata'){
                   LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                   LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                   WHERE t_reservasi_wisata.id_status_reservasi_wisata = 2 
-                  ORDER BY id_reservasi DESC';
+                  ORDER BY id_reservasi ASC';
     $stmt = $pdo->prepare($sqlviewreservasi);
     $stmt->execute();
     $rowReservasi = $stmt->fetchAll();
     
     ?>
 
-    <!-- Select Data Reservasi Untuk Laporan Pengeluaran Berdasarkan ID -->
     <table border="1">
         <thead>
             <tr>
+                <th scope="col" colspan="12">LAPORAN RESERVASI WISATA</th>
+            </tr>
+            <tr>
+                <th scope="col">No</th>
                 <th scope="col">ID Reservasi</th>
                 <th scope="col">Nama User</th>
                 <th scope="col">Nama Lokasi</th>
@@ -517,11 +547,13 @@ if ($_GET['type'] == 'wisata'){
         </thead>
         <tbody>
             <?php
+            $no = 1;
             foreach ($rowReservasi as $reservasi) { 
             $truedate = strtotime($reservasi->update_terakhir);
             $reservasidate = strtotime($reservasi->tgl_reservasi);
             ?>
             <tr>
+                <th><?=$no?></th>
                 <th scope="row"><?=$reservasi->id_reservasi?></th>
                 <td><?=$reservasi->nama_user?></td>
                 <td><?=$reservasi->nama_lokasi?></td>
@@ -540,7 +572,7 @@ if ($_GET['type'] == 'wisata'){
                 <td><?=$reservasi->keterangan?></td>
                 <td><?=$reservasi->no_hp?></td>
             </tr>
-            <?php } ?>
+            <?php $no++; } ?>
         </tbody>
     </table>
 
