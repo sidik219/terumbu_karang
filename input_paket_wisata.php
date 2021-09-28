@@ -24,9 +24,7 @@ if (isset($_POST['submit'])) {
     if ($_POST['submit'] == 'Simpan') {
         $id_lokasi                  = $_POST['id_lokasi'];
         $id_asuransi                = $_POST['id_asuransi'];
-        $nama_paket_wisata          = $_POST['tb_nama_paket_wisata'];
-        $deskripsi_paket_wisata     = $_POST['tb_deskripsi_paket_wisata'];
-        $deskripsi_panjang_wisata   = $_POST['deskripsi_panjang_wisata'];
+        $nama_paket_wisata          = $_POST['nama_paket_wisata'];
         $tgl_pemesanan              = $_POST['tgl_pemesanan'];
         $tgl_akhir_pemesanan        = $_POST['tgl_akhir_pemesanan'];
         $status_aktif               = $_POST['rb_status_wisata'];
@@ -47,18 +45,14 @@ if (isset($_POST['submit'])) {
         $sqlpaketwisata = "INSERT INTO tb_paket_wisata
                             (id_lokasi,
                             id_asuransi,
-                            nama_paket_wisata, 
-                            deskripsi_paket_wisata, 
-                            deskripsi_panjang_wisata,
+                            nama_paket_wisata,
                             tgl_pemesanan, 
                             tgl_akhir_pemesanan, 
                             foto_wisata, 
                             status_aktif)
                             VALUES (:id_lokasi, 
                             :id_asuransi,
-                            :nama_paket_wisata, 
-                            :deskripsi_paket_wisata, 
-                            :deskripsi_panjang_wisata,
+                            :nama_paket_wisata,
                             :tgl_pemesanan, 
                             :tgl_akhir_pemesanan, 
                             :foto_wisata, 
@@ -68,8 +62,6 @@ if (isset($_POST['submit'])) {
         $stmt->execute(['id_lokasi' => $id_lokasi,
                         'id_asuransi' => $id_asuransi,
                         'nama_paket_wisata' => $nama_paket_wisata,
-                        'deskripsi_paket_wisata' => $deskripsi_paket_wisata,
-                        'deskripsi_panjang_wisata' => $deskripsi_panjang_wisata,
                         'tgl_pemesanan' => $tgl_pemesanan,
                         'tgl_akhir_pemesanan' => $tgl_akhir_pemesanan,
                         'foto_wisata' => $foto_wisata,
@@ -89,14 +81,17 @@ if (isset($_POST['submit'])) {
         foreach ($_POST['nama_wisata'] as $nama_wisata) {
             $id_paket_wisata   = $last_paket_wisata_id; //tb_paket_wisata
             $id_wisata         = $_POST['nama_wisata'][$i]; //t_wisata
+            $deskripsi_wisata  = $_POST['deskripsi_wisata'][$i]; //t_wisata
 
             //Update dan set id_paket_wisata ke wisata pilihan
             $sqlupdatewisata = "UPDATE t_wisata
-                                SET id_paket_wisata = :id_paket_wisata
+                                SET id_paket_wisata = :id_paket_wisata,
+                                    deskripsi_wisata = :deskripsi_wisata
                                 WHERE id_wisata = :id_wisata";
 
             $stmt = $pdo->prepare($sqlupdatewisata);
             $stmt->execute(['id_wisata' => $id_wisata, 
+                            'deskripsi_wisata' => $deskripsi_wisata, 
                             'id_paket_wisata' => $id_paket_wisata]);
 
             $affectedrows = $stmt->rowCount();
@@ -258,6 +253,7 @@ if (isset($_POST['submit'])) {
                                     </option>
                                     <?php } ?>
                                 </select>
+                                <input type="text" name="deskripsi_wisata[]" min="0" class="form-control" placeholder="Hari" />
                                 <div class="input-group-addon">
                                     <a href="javascript:void(0)" class="btn btn-success addMore">
                                         <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Wisata
@@ -267,23 +263,19 @@ if (isset($_POST['submit'])) {
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="tb_nama_paket_wisata">Nama Paket Wisata</label>
-                        <input type="text" id="tb_nama_paket_wisata" name="tb_nama_paket_wisata" class="form-control" required>
+                    <!-- Keterangan -->
+                    <div class="mb-4">
+                        <label for="">Keterangan:</label><br>
+                        <small><b>Contoh Pengisian:</b></small><br>
+                        <small>* Pilih Wisata: Wisata Diving dst</small><br>
+                        <small>* Hari: Hari Pertama dst</small><br>
+                        <small style="color: red;">* Hanya bisa satu wisata, untuk perhari</small><br>
+                        <small style="color: red;">* Untuk menambahkan wisata baru, harus input fasilitas terlebih dahulu</small>
                     </div>
 
                     <div class="form-group">
-                        <label for="tb_deskripsi_paket_wisata">Deskripsi Paket Wisata</label>
-                        <input type="text" id="tb_deskripsi_paket_wisata" name="tb_deskripsi_paket_wisata" class="form-control" required>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="isi_artikel">Deskripsi Lengkap Paket Wisata:</label>
-                        <textarea id="deskripsi_lengkap_wisata" name="deskripsi_panjang_wisata" required></textarea>
-                        <script>
-                                $('#deskripsi_lengkap_wisata').trumbowyg();
-                        </script>
+                        <label for="nama_paket_wisata">Nama Paket Wisata</label>
+                        <input type="text" id="nama_paket_wisata" name="nama_paket_wisata" class="form-control" required>
                     </div>
 
                     <div class="form-group">
@@ -294,7 +286,7 @@ if (isset($_POST['submit'])) {
                                 <input type="date" id="tgl_pemesanan" name="tgl_pemesanan" class="form-control" required>
                             </div>
                             <div class="p-2 bd-highlight">
-                                <label for="tgl_pemesanan">Tanggal Akhir</label>
+                                <label for="tgl_akhir_pemesanan">Tanggal Akhir</label>
                                 <input type="date" id="tgl_akhir_pemesanan" name="tgl_akhir_pemesanan" class="form-control" required>
                             </div>
                         </div>
@@ -382,6 +374,7 @@ if (isset($_POST['submit'])) {
                                 </option>
                                 <?php } ?>
                             </select>
+                            <input type="text" name="deskripsi_wisata[]" min="0" class="form-control" placeholder="Hari" />
                             <div class="input-group-addon">
                                 <a href="javascript:void(0)" class="btn btn-danger remove">
                                     <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Wisata
@@ -426,6 +419,10 @@ if (isset($_POST['submit'])) {
     <script>
         var today = new Date().toISOString().split('T')[0];
         document.getElementsByName("tgl_pemesanan")[0].setAttribute('min', today);
+    </script>
+    <script>
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementsByName("tgl_akhir_pemesanan")[0].setAttribute('min', today);
     </script>
     <script>
         $(document).ready(function(){

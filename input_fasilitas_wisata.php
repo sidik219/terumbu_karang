@@ -162,7 +162,7 @@ if (isset($_POST['submit'])) {
 
                                     foreach ($rowKerjasama as $kerjasama) { ?>
                                     <option value="<?=$kerjasama->id_kerjasama.' - '.$kerjasama->biaya_kerjasama?>">
-                                        <?=$kerjasama->pengadaan_fasilitas?>
+                                        <?=$kerjasama->pengadaan_fasilitas?> - <?=$kerjasama->status_kerjasama?>
                                     </option>
                                     <?php } ?>
                                 </select>
@@ -178,7 +178,13 @@ if (isset($_POST['submit'])) {
 
                     <p align="center">
                     <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
-                    </form><br><br>
+                    </form>
+
+                    <!-- Keterangan -->
+                    <div>
+                        <label for="">Keterangan:</label><br>
+                        <small>* Max Fasilitas Wisata Yang Dibuat Harus 3</small>
+                    </div>
 
                     <!-- copy of input fields group -->
                     <div class="form-group fieldGroupCopy" style="display: none;">
@@ -195,7 +201,7 @@ if (isset($_POST['submit'])) {
 
                                 foreach ($rowKerjasama as $kerjasama) { ?>
                                 <option value="<?=$kerjasama->id_kerjasama.' - '.$kerjasama->biaya_kerjasama?>">
-                                    <?=$kerjasama->pengadaan_fasilitas?>
+                                    <?=$kerjasama->pengadaan_fasilitas?> - <?=$kerjasama->status_kerjasama?>
                                 </option>
                                 <?php } ?>
                             </select>

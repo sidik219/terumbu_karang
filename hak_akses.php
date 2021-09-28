@@ -251,7 +251,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <li class="nav-item"> <!-- Lokasi -->
                     <a href="kelola_kerjasama.php" class="nav-link ' . (('kelola_kerjasama.php' == $url_sekarang) || ('edit_kerjasama.php'  == $url_sekarang) || ('input_kerjasama.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-handshake"></i>
-                        <p> Kelola Kerjsama </p>
+                        <p> Kelola Kerjasama </p>
                     </a>
                 </li>
 

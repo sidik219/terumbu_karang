@@ -110,15 +110,15 @@ $rowkerjasama = $stmt->fetchAll();
                         if (!empty($_GET['status'])) {
                             if ($_GET['status'] == 'updatesuccess') {
                                 echo '<div class="alert alert-success" role="alert">
-                                        Data Pengadaan Fasilitas berhasil diupdate!
+                                        Data Kerjasama Fasilitas berhasil diupdate!
                                         </div>';
                             } else if ($_GET['status'] == 'addsuccess') {
                                 echo '<div class="alert alert-success" role="alert">
-                                        Data Pengadaan Fasilitas berhasil ditambahkan!
+                                        Data Kerjasama Fasilitas berhasil ditambahkan!
                                         </div>';
                             } else if ($_GET['status'] == 'deletesuccess') {
                                 echo '<div class="alert alert-success" role="alert">
-                                        Data Pengadaan Fasilitas berhasil dihapus!
+                                        Data Kerjasama Fasilitas berhasil dihapus!
                                         </div>';
                             }
                         }
@@ -145,8 +145,8 @@ $rowkerjasama = $stmt->fetchAll();
                                         <th scope="row"><?= $kerjasama->id_kerjasama ?></th>
                                         <?php if ($kerjasama->status_kerjasama == "Tidak Melakukan Kerjasama") : ?>
                                             <td>Tidak Ada Pihak Ketiga</td>
-                                        <?php elseif ($kerjasama->Pihak_Ketiga != null) : ?>
-                                            <td><?= $kerjasama->Pihak_Ketiga ?></td>
+                                        <?php elseif ($kerjasama->pihak_ketiga != null) : ?>
+                                            <td><?= $kerjasama->pihak_ketiga ?></td>
                                         <?php else : ?>
                                             <td>Data Kosong</td>
                                         <?php endif ?>

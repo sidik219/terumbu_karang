@@ -7,9 +7,9 @@ $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
 if (isset($_POST['submit'])) {
-    $nama_asuransi      = $_POST['nama_asuransi'];
-    $biaya_asuransi     = $_POST['biaya_asuransi'];
-    $pihak_asuransi     = $_POST['nama_pihak'];
+    $nama_asuransi  = $_POST['nama_asuransi'];
+    $biaya_asuransi = $_POST['biaya_asuransi'];
+    $id_perusahaan  = $_POST['nama_pihak'];
 
     //Insert t_asuransi
     $sqlasuransi = "INSERT INTO t_asuransi
@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
     $stmt->execute([
         'nama_asuransi'      => $nama_asuransi,
         'biaya_asuransi'  => $biaya_asuransi,
-        'id_perusahaan' => $pihak_asuransi
+        'id_perusahaan' => $id_perusahaan
     ]);
 
     $affectedrows = $stmt->rowCount();
@@ -119,17 +119,6 @@ if (isset($_POST['submit'])) {
                             </div>
                         </div>
                     </div>
-                    <!-- <a class="btn btn-outline-primary" href="kelola_asuransi.php">
-                        < Kembali</a><br><br>
-                            <h4><span class="align-middle font-weight-bold">Input Data Asuransi</span></h4>
-                            <ul class="app-breadcrumb breadcrumb" style="margin-bottom: 20px;">
-                                <li class="breadcrumb-item">
-                                    <a href="kelola_asuransi.php" class="non">Kelola Asuransi</a>
-                                </li>
-                                <li class="breadcrumb-item">
-                                    <a href="input_asuransi.php" class="tanda">Input Asuransi</a>
-                                </li>
-                            </ul> -->
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -138,23 +127,6 @@ if (isset($_POST['submit'])) {
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <?php
-                    if (!empty($_GET['status'])) {
-                        if ($_GET['status'] == 'updatesuccess') {
-                            echo '<div class="alert alert-success" role="alert">
-                                        Data Asuransi berhasil diupdate!
-                                        </div>';
-                        } else if ($_GET['status'] == 'addsuccess') {
-                            echo '<div class="alert alert-success" role="alert">
-                                        Perusahaan Asuransi berhasil ditambahkan!
-                                        </div>';
-                        } else if ($_GET['status'] == 'deletesuccess') {
-                            echo '<div class="alert alert-success" role="alert">
-                                        Data Asuransi berhasil dihapus!
-                                        </div>';
-                        }
-                    }
-                    ?>
                     <form action="" enctype="multipart/form-data" method="POST">
                         <div class="form-group">
                             <label for="nama_asuransi">Nama Asuransi</label><br>

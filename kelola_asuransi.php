@@ -8,8 +8,9 @@ include 'hak_akses.php';
 
 $level_user = $_SESSION['level_user'];
 
-$sqlviewasuransi = 'SELECT * FROM t_asuransi INNER JOIN t_perusahaan_asuransi ON t_perusahaan_asuransi.id_perusahaan = t_asuransi.id_perusahaan
-                ORDER BY id_asuransi ASC';
+$sqlviewasuransi = 'SELECT * FROM t_asuransi 
+                INNER JOIN t_perusahaan_asuransi ON t_perusahaan_asuransi.id_perusahaan = t_asuransi.id_perusahaan
+                ORDER BY id_asuransi DESC';
 $stmt = $pdo->prepare($sqlviewasuransi);
 $stmt->execute();
 $rowasuransi = $stmt->fetchAll();

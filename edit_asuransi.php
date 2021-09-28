@@ -16,18 +16,21 @@ $stmt->execute(['id_asuransi' => $id_asuransi]);
 $asuransi = $stmt->fetch();
 
 if (isset($_POST['submit'])) {
-    $nama_asuransi      = $_POST['nama_asuransi'];
-    $biaya_asuransi     = $_POST['biaya_asuransi'];
+    $nama_asuransi  = $_POST['nama_asuransi'];
+    $biaya_asuransi = $_POST['biaya_asuransi'];
+    $id_perusahaan  = $_POST['nama_pihak'];
 
     //Insert t_asuransi
     $sqlasuransi = "UPDATE t_asuransi
                     SET nama_asuransi = :nama_asuransi, 
-                        biaya_asuransi = :biaya_asuransi
+                        biaya_asuransi = :biaya_asuransi,
+                        id_perusahaan = :id_perusahaan
                     WHERE id_asuransi = :id_asuransi";
 
     $stmt = $pdo->prepare($sqlasuransi);
     $stmt->execute(['nama_asuransi'      => $nama_asuransi,
                     'biaya_asuransi'  => $biaya_asuransi,
+                    'id_perusahaan'  => $id_perusahaan,
                     'id_asuransi'  => $id_asuransi
                     ]);
     
@@ -135,6 +138,23 @@ if (isset($_POST['submit'])) {
                     <div class="form-group">
                         <label for="biaya_asuransi">Biaya Asuransi</label>
                         <input type="number" name="biaya_asuransi" value="<?=$asuransi->biaya_asuransi?>" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nama_pihak">Pihak Asuransi</label>
+                        <select class="form-control" name="nama_pihak" id="exampleFormControlSelect1">
+                            <option selected disabled>Pilih Pihak Asuransi:</option>
+                            <?php
+                            $sqlpihak = 'SELECT * FROM t_perusahaan_asuransi
+                                                ORDER BY id_perusahaan DESC';
+                            $stmt = $pdo->prepare($sqlpihak);
+                            $stmt->execute();
+                            $rowpihak = $stmt->fetchAll();
+
+                            foreach ($rowpihak as $perusahaan) { ?>
+                                <option <?php if($perusahaan->id_perusahaan == $asuransi->id_perusahaan) echo 'selected'; ?> value="<?= $perusahaan->id_perusahaan ?>">ID <?=$perusahaan->id_perusahaan?> - <?=$perusahaan->nama_perusahaan_asuransi?></option>
+                            <?php } ?>
+                        </select>
                     </div>
 
                     <p align="center">

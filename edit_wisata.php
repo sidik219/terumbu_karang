@@ -38,8 +38,6 @@ include 'hak_akses.php';
             $id_lokasi                  = $_POST['id_lokasi'];
             $id_asuransi                = $_POST['id_asuransi'];
             $nama_paket_wisata          = $_POST['nama_paket_wisata'];
-            $deskripsi_paket_wisata     = $_POST['deskripsi_paket_wisata'];
-            $deskripsi_panjang_wisata   = $_POST['deskripsi_panjang_wisata'];
             $tgl_pemesanan              = $_POST['tgl_pemesanan'];
             $tgl_akhir_pemesanan        = $_POST['tgl_akhir_pemesanan'];
             $status_aktif               = $_POST['status_aktif'];
@@ -53,7 +51,7 @@ include 'hak_akses.php';
             }
             else if (isset($_FILES['image_uploads'])) {
                 if (($rowpaket->foto_wisata == $defaultpic) || (!$rowpaket->foto_wisata)){
-                    $target_dir  = "images/foto_wisata/";
+                    $target_dir  = "images/foto_paket_wisata/";
                     $foto_wisata = $target_dir .'WIS_'.$randomstring. '.jpg';
                     move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wisata);
                     $pic = "&new=";
@@ -71,8 +69,6 @@ include 'hak_akses.php';
                             SET id_lokasi = :id_lokasi,
                                 id_asuransi = :id_asuransi,
                                 nama_paket_wisata = :nama_paket_wisata,
-                                deskripsi_paket_wisata = :deskripsi_paket_wisata,
-                                deskripsi_panjang_wisata = :deskripsi_panjang_wisata,
                                 tgl_pemesanan = :tgl_pemesanan,
                                 tgl_akhir_pemesanan = :tgl_akhir_pemesanan,
                                 foto_wisata = :foto_wisata,
@@ -83,8 +79,6 @@ include 'hak_akses.php';
             $stmt->execute(['id_lokasi' => $id_lokasi,
                             'id_asuransi' => $id_asuransi,
                             'nama_paket_wisata' => $nama_paket_wisata,
-                            'deskripsi_paket_wisata' => $deskripsi_paket_wisata,
-                            'deskripsi_panjang_wisata' => $deskripsi_panjang_wisata,
                             'tgl_pemesanan' => $tgl_pemesanan,
                             'tgl_akhir_pemesanan' => $tgl_akhir_pemesanan,
                             'foto_wisata' => $foto_wisata,
@@ -212,19 +206,6 @@ include 'hak_akses.php';
                     <div class="form-group">
                         <label for="nama_paket_wisata">Nama Paket Wisata</label>
                         <input type="text" id="nama_paket_wisata" name="nama_paket_wisata" value="<?=$rowpaket->nama_paket_wisata?>" class="form-control" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="deskripsi_paket_wisata">Deskripsi Paket Wisata</label>
-                        <input type="text" id="deskripsi_paket_wisata" name="deskripsi_paket_wisata" value="<?=$rowpaket->deskripsi_paket_wisata?>" class="form-control" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="isi_artikel">Deskripsi Lengkap Wisata:</label>
-                        <textarea id="deskripsi_panjang_wisata" name="deskripsi_panjang_wisata" placeholder="Di isi jika perlu" required></textarea>
-                        <script>
-                                $('#deskripsi_panjang_wisata').trumbowyg();
-                        </script>
                     </div>
 
                     <div class="form-group">
@@ -372,6 +353,16 @@ include 'hak_akses.php';
     
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
+
+    <!-- Pembatasan Date Pemesanan -->
+    <script>
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementsByName("tgl_pemesanan")[0].setAttribute('min', today);
+    </script>
+    <script>
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementsByName("tgl_akhir_pemesanan")[0].setAttribute('min', today);
+    </script>
 
 </div>
 

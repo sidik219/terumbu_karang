@@ -83,10 +83,93 @@ if (isset($_POST['submit'])) {
             'id_rekening_bersama' => $id_rekening_bersama
         ]);
 
+        $id_reservasi_terakhir = $pdo->lastInsertId();
+
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
             //echo "HAHAHAAHA INSERT FAILED !";
         } else {
+            $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank WHERE id_rekening_bank = :id_rekening_bank';
+            $stmt = $pdo->prepare($sqlviewrekeningbersama);
+            $stmt->execute(['id_rekening_bank' => $id_rekening_bersama]);
+            $rekening = $stmt->fetch();
+
+            //Kirim email untuk Donatur
+            include 'includes/email_handler.php'; //PHPMailer
+            $email = $_SESSION['email'];
+            $username = $_SESSION['username'];
+            $nama_user = $_SESSION['nama_user'];
+
+            $subjek = 'Informasi Pembayaran Reservasi Wisata (ID Reservasi: '.$id_reservasi_terakhir.') - GoKarang';
+            $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+                <br>Yth. '.$nama_user.'
+                <br>Terima kasih telah membuat reservasi wisata di GoKarang!
+                <br>Paket wisata: '.$rowwisata->nama_paket_wisata.'
+                <br>Paket wisata: '.$rowwisata[0]->nama_paket_wisata.'
+                <br>Tanggal reservasi: '.$tgl_reservasi.'
+                <br>Jumlah peserta: '.$jumlah_peserta.'
+                <br>Berikut rincian tujuan pembayaran wisata anda:          
+                <br>Bank Tujuan Pembayaran: '.$rekening->nama_bank.'
+                <br>Nomor Rekening: '.$rekening->nomor_rekening.'
+                <br>Nama Rekening: '.$rekening->nama_pemilik_rekening.'
+                <br>Nominal pembayaran: Rp. '.number_format($total, 0).'
+                <br>
+                <br>Bank Anda: '.$bank_donatur.'
+                <br>Nomor Rekening Anda: '.$nomor_rekening_donatur.'
+                <br>Nama Rekening Anda: '.$nama_donatur.'
+                <br>
+                <br>Harap upload bukti pembayaran reservasi (format gambar .JPG) di link berikut:
+                <br><a href="https://tkjb.or.id/edit_reservasi_saya.php?id_reservasi='.$id_reservasi_terakhir.'">Upload Bukti Pembayaran</a>
+            ';
+            
+            smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+
+            //Kirim email untuk Pengelola lokasi
+            
+            $sqlviewpengelolalokasi = 'SELECT * FROM t_lokasi 
+                                        LEFT JOIN t_pengelola_lokasi ON t_pengelola_lokasi.id_lokasi = t_lokasi.id_lokasi
+                                        WHERE t_lokasi.id_lokasi = :id_lokasi';
+                $stmt = $pdo->prepare($sqlviewpengelolalokasi);
+                $stmt->execute(['id_lokasi' => $id_lokasi]);
+                $rowpengelola = $stmt->fetchAll();
+
+                foreach($rowpengelola as $pengelola){
+                $sqlviewdatauser = 'SELECT * FROM t_user 
+                                    WHERE id_user = :id_user';
+                $stmt = $pdo->prepare($sqlviewdatauser);
+                $stmt->execute(['id_user' => $pengelola->id_user]);
+                $datauser = $stmt->fetch();
+
+                $email = $datauser->email;
+                $username = $datauser->username;
+                $nama_user = $datauser->nama_user;
+
+                $subjek = 'Reservasi Wisata Baru (ID Reservasi: '.$id_reservasi_terakhir.') - GoKarang';
+                $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+                <br>Yth. '.$nama_user.'
+                <br>Anda menerima reservasi wisata baru pada lokasi '.$pengelola->nama_lokasi.'
+                <br>Paket wisata: '.$rowwisata[0]->nama_paket_wisata.'
+                <br>Lokasi wisata: '.$rowlokasi->nama_lokasi.'
+                <br>Tanggal reservasi: '.$tgl_reservasi.'
+                <br>Jumlah peserta: '.$jumlah_peserta.'
+                <br>Berikut rincian reservasi wisata baru tersebut:
+                <br>Bank Wisatawan: '.$bank_donatur.'
+                <br>Nomor Rekening wisatawan: '.$nomor_rekening_donatur.'
+                <br>Nama Rekening wisatawan: '.$nama_donatur.'
+                <br>          
+                <br>Bank Tujuan Pembayaran: '.$rekening->nama_bank.'
+                <br>Nomor Rekening Tujuan: '.$rekening->nomor_rekening.'
+                <br>Nama Rekening Tujuan: '.$rekening->nama_pemilik_rekening.'
+                <br>Nominal pembayaran: Rp. '.number_format($total, 0).'
+                <br>
+                <br>Harap verifikasi bukti pembayaran wisata di link berikut jika wisatawan sudah mengupload bukti pembayaran:
+                <br><a href="https://tkjb.or.id/edit_reservasi_wisata.php?id_reservasi='.$id_reservasi_terakhir.'">Verifikasi Bukti Pembayaran</a>
+                <br>
+                <br>Jika donatur belum mengupload bukti pembayaran wisata dalam '.$pengelola->batas_hari_pembayaran.' hari, maka reservasi dapat dibatalkan.
+            ';
+            
+            smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+            } 
             //echo "HAHAHAAHA GREAT SUCCESSS !";
             header("Location: reservasi_saya.php?status=addsuccess");
             // $last_id_reservasi = $pdo->lastInsertId();

@@ -16,7 +16,6 @@ $sqlfasilitaswisata= 'SELECT * FROM tb_fasilitas_wisata
 if (isset($_POST['submit'])) {
     if ($_POST['submit'] == 'Simpan') {
         $judul_wisata               = $_POST['judul_wisata'];
-        $deskripsi_wisata           = $_POST['deskripsi_wisata'];
         $randomstring               = substr(md5(rand()), 0, 7);
 
         //Image upload
@@ -32,12 +31,11 @@ if (isset($_POST['submit'])) {
 
         //Insert t_wisata
         $sqlwisata = "INSERT INTO t_wisata
-                            (judul_wisata, deskripsi_wisata, image_wisata)
-                            VALUES (:judul_wisata, :deskripsi_wisata, :image_wisata)";
+                            (judul_wisata, image_wisata)
+                            VALUES (:judul_wisata, :image_wisata)";
 
         $stmt = $pdo->prepare($sqlwisata);
         $stmt->execute(['judul_wisata'      => $judul_wisata,
-                        'deskripsi_wisata'  => $deskripsi_wisata,
                         'image_wisata'  => $image_wisata
                         ]);
 
@@ -180,11 +178,11 @@ if (isset($_POST['submit'])) {
                         if(!empty($_GET['status'])) {
                             if($_GET['status'] == 'updatesuccess') {
                                 echo '<div class="alert alert-success" role="alert">
-                                        Update bukti pembayaran reservasi wisata berhasil!
+                                        Input data wisata gagal ditambahkan!
                                         </div>'; }
                             else if($_GET['status'] == 'addsuccess') {
                                 echo '<div class="alert alert-success" role="alert">
-                                        Input data wisata dan fasilitas wisata berhasil ditambahkan!
+                                        Input data wisata berhasil ditambahkan!
                                         </div>'; }
                         }
                     ?>
@@ -196,12 +194,7 @@ if (isset($_POST['submit'])) {
 
                     <div class="form-group">
                         <label for="judul_wisata">Judul Wisata</label>
-                        <input type="text" id="judul_wisata" name="judul_wisata" class="form-control" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="deskripsi_wisata">Deskripsi Wisata</label>
-                        <input type="text" id="deskripsi_wisata" name="deskripsi_wisata" class="form-control" required>
+                        <input type="text" id="judul_wisata" name="judul_wisata" class="form-control" Placeholder="Judul Wisata" required>
                     </div>
 
                     <div class='form-group'>
@@ -246,37 +239,17 @@ if (isset($_POST['submit'])) {
                         </script>
                     </div>
 
-                    <!-- <div class="form-group field_wrapper">
-                        <label for="paket_wisata">Fasilitas Wisata</label><br>
-                        <div class="form-group fieldGroup">
-                            <div class="input-group">
-                                <input type="text" name="nama_fasilitas[]" class="form-control" placeholder="Nama Fasilitas"/>
-                                <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/>
-                                <div class="input-group-addon">
-                                    <a href="javascript:void(0)" class="btn btn-success addMore">
-                                        <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Fasilitas
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-
                     <p align="center">
                     <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
-                    </form><br><br>
-
-                    <!-- copy of input fields group -->
-                    <!-- <div class="form-group fieldGroupCopy" style="display: none;">
-                        <div class="input-group">
-                            <input type="text" name="nama_fasilitas[]" class="form-control" placeholder="Nama Fasilitas"/>
-                            <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/>
-                            <div class="input-group-addon">
-                                <a href="javascript:void(0)" class="btn btn-danger remove">
-                                    <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Fasilitas
-                                </a>
-                            </div>
-                        </div>
-                    </div> -->
+                    </form>
+                    
+                    <!-- Keterangan -->
+                    <div>
+                        <label for="">Keterangan:</label><br>
+                        <small><b>Contoh Pengisian:</b></small><br>
+                        <small>* Judul Wisata: Wisata Diving</small><br>
+                        <small>* Upload Foto Wisata: "Foto tentang wisata tersebut"</small>
+                    </div>
 
             </section>
             <!-- /.Left col -->
@@ -308,30 +281,6 @@ if (isset($_POST['submit'])) {
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-
-    <!-- jQuery library -->
-
-    <!-- <script>
-        $(document).ready(function(){
-        //group add limit
-        var maxGroup = 50;
-
-        //add more fields group
-        $(".addMore").click(function(){
-            if($('body').find('.fieldGroup').length < maxGroup){
-                var fieldHTML = '<div class="form-group fieldGroup">'+$(".fieldGroupCopy").html()+'</div>';
-                $('body').find('.fieldGroup:last').after(fieldHTML);
-            }else{
-                alert('Maksimal '+maxGroup+' group yang boleh dibuat.');
-            }
-        });
-
-        //remove fields group
-        $("body").on("click",".remove",function(){
-            $(this).parents(".fieldGroup").remove();
-        });
-    });
-    </script> -->
 </div>
 <!-- Import Trumbowyg font size JS at the end of <body>... -->
 <script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
