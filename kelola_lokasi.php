@@ -222,18 +222,19 @@ $row = $stmt->fetchAll();
                             <th scope="row"><?=$rowitem->id_lokasi?></th>
                             <td><?=$rowitem->id_wilayah?> - <?=$rowitem->nama_wilayah?></td>
                             <td><?=$rowitem->nama_lokasi?><br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?=$rowitem->latitude_lokasi?>,<?=$rowitem->longitude_lokasi?>&z=8"
-                                                                                                                                      class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a></td>
+                                 class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a></td>
                             <td><?=number_format($rowitem->total_titik).' / '.number_format($rowitem->total_lokasi).' ha<br>'.number_format($rowitem->persentase_sebaran, 1).'% ( '.$kondisi_wilayah.' )'?></td>
                             <td class="text-right">
                                 <?php if(($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){ ?>
                                 <a href="edit_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 <a href="hapus.php?type=lokasi&id_lokasi=<?=$rowitem->id_lokasi?>" class="far fa-trash-alt btn btn-act"></a>
                                 <?php } ?>
-                                <a href="kelola_harga_terumbu.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="btn btn-act text-dark mt-3"><i class="fas fa-money-bill-alt text-success"></i> Kelola Harga Patokan Terumbu</a>
-                                <br><a href="kelola_biaya_operasional.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="btn btn-act text-dark mt-3"><i class="fas fa-money-bill-alt text-info"></i> Kelola Biaya Operasional</a>
-                                <?php if(($_SESSION['level_user'] == 4)){ ?>
+                                <?php if(($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){ ?>
                                 <a href="atur_pengelola_lokasi.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="mr-3 btn btn-act"><i class="fas fa-id-badge"></i> Atur Pengelola</a>
                                 <?php } ?>
+                                <a href="kelola_harga_terumbu.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="btn btn-act text-dark mt-3"><i class="fas fa-money-bill-alt text-success"></i> Kelola Harga Patokan Terumbu</a>
+                                <br><a href="kelola_biaya_operasional.php?id_lokasi=<?=$rowitem->id_lokasi?>" class="btn btn-act text-dark mt-3"><i class="fas fa-money-bill-alt text-info"></i> Kelola Biaya Operasional</a>
+                                
                                 </td>
                             </tr>
 
