@@ -190,29 +190,35 @@ $rowpaket = $stmt->fetchAll();
                                                             $rowWisata = $stmt->fetchAll();
 
                                                             foreach ($rowWisata as $wisata) { ?>
-                                                                <!-- Judul Wisata -->
-                                                                <hr class="mr-4">
-                                                                <h5 class="mt-4 mb-4 text-justify">
-                                                                    Wisata:
-                                                                    <span class="badge badge-pill badge-warning">
-                                                                        <?= $wisata->judul_wisata ?>
-                                                                    </span>
+                                                                <!-- Deskripsi Wisata -->
+                                                                <hr class="mt-4 mr-4">
+                                                                <h5 class="mb-4">
+                                                                    <div class="deskripsi-paket">
+                                                                        <span class="badge badge-pill badge-warning">
+                                                                            <?= $wisata->deskripsi_wisata ?>
+                                                                        </span>
+                                                                    </div>
                                                                 </h5>
                                                                 <hr class="mr-4">
 
-                                                                <!-- Deskripsi Wisata -->
-                                                                <li><?= $wisata->deskripsi_wisata ?></li>
+                                                                <!-- Judul Wisata -->
+                                                                <label></label>
+                                                                <li>Wisata:
+                                                                    <span class="badge badge-pill badge-info">
+                                                                        <?= $wisata->judul_wisata ?>
+                                                                    </span>
+                                                                </li>
 
                                                                 <!-- Select Fasilitas -->
                                                                 <?php
                                                                 $sqlviewfasilitas = 'SELECT * FROM tb_fasilitas_wisata
-                                                                        LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
-                                                                        LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
-                                                                        LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
-                                                                        LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                                                                        WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
-                                                                        AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata
-                                                                        AND t_wisata.id_wisata = :id_wisata';
+                                                                    LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
+                                                                    LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                                                                    LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
+                                                                    LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                                                    WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                                                                    AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata
+                                                                    AND t_wisata.id_wisata = :id_wisata';
 
                                                                 $stmt = $pdo->prepare($sqlviewfasilitas);
                                                                 $stmt->execute([
@@ -229,10 +235,18 @@ $rowpaket = $stmt->fetchAll();
                                                         </ol>
                                                     </div>
 
-                                                    <!-- Biaya Paket Kalkulasi Dari Biaya Fasilitas -->
-                                                    <div class="card card-body">
-                                                        <?php
-                                                        $sqlviewfasilitas = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_kerjasama, biaya_asuransi
+                                                    foreach ($rowfasilitas as $allfasilitas) { ?>
+                                                    <i class="text-info fas fa-arrow-circle-right"></i>
+                                                    <?= $allfasilitas->pengadaan_fasilitas ?><br>
+                                                <?php } ?>
+                                            <?php } ?>
+                                            </ol>
+                                                </div>
+
+                                                <!-- Biaya Paket Kalkulasi Dari Biaya Fasilitas -->
+                                                <div class="card card-body">
+                                                    <?php
+                                                    $sqlviewfasilitas = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_kerjasama, biaya_asuransi
                                                             FROM tb_fasilitas_wisata 
                                                             LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
                                                             LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
@@ -242,69 +256,87 @@ $rowpaket = $stmt->fetchAll();
                                                             WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
                                                             AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
-                                                        $stmt = $pdo->prepare($sqlviewfasilitas);
-                                                        $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                                                        $rowfasilitas = $stmt->fetchAll();
+                                                    $stmt = $pdo->prepare($sqlviewfasilitas);
+                                                    $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                                    $rowfasilitas = $stmt->fetchAll();
 
-                                                        foreach ($rowfasilitas as $fasilitas) {
+                                                    foreach ($rowfasilitas as $fasilitas) {
 
-                                                            // Menjumlahkan biaya asuransi dan biaya paket wisata
-                                                            $asuransi       = $fasilitas->biaya_asuransi;
-                                                            $wisata         = $fasilitas->total_biaya_fasilitas;
-                                                            $total_paket    = $asuransi + $wisata;
+                                                        // Menjumlahkan biaya asuransi dan biaya paket wisata
+                                                        $asuransi       = $fasilitas->biaya_asuransi;
+                                                        $wisata         = $fasilitas->total_biaya_fasilitas;
+                                                        $total_paket    = $asuransi + $wisata;
 
-                                                        ?>
-                                                            Rp. <?= number_format($total_paket, 0) ?>
-                                                        <?php } ?>
-                                                    </div>
+                                                    ?>
+                                                        Rp. <?= number_format($total_paket, 0) ?>
+                                                    <?php } ?>
                                                 </div>
-                                                <p>
-                                                    <a class="btn btn-primary-paket btn-lg-paket btn-paket btn-block mb-4" href="detail_lokasi_wisata.php?id_paket_wisata=<?= $rowitem->id_paket_wisata ?>">
-                                                        Rincian Reservasi</a>
                                             </div>
+                                            <p>
+                                                <a class="btn btn-primary-paket btn-lg-paket btn-paket btn-block mb-4" href="detail_lokasi_wisata.php?id_paket_wisata=<?= $rowitem->id_paket_wisata ?>">
+                                                    Rincian Reservasi</a>
                                         </div>
                                     </div>
-                                <?php } ?>
-                            <?php } ?>
                         </div>
+                        <?php
+                        // tanggal sekarang
+                        $tgl_sekarang = date("Y-m-d");
+                        // tanggal pembuatan batas pemesanan paket wisata
+                        $tgl_awal = $rowitem->tgl_pemesanan;
+                        // tanggal berakhir pembuatan batas pemesanan paket wisata
+                        $tgl_akhir = $rowitem->tgl_akhir_pemesanan;
+                        // jangka waktu + 365 hari
+                        $jangka_waktu = strtotime(strtotime($tgl_akhir), strtotime($tgl_awal));
+                        //tanggal expired
+                        $tgl_exp = date("Y-m-d", $jangka_waktu);
+
+                        if ($tgl_sekarang >= $tgl_exp) { ?>
+                            Rincian Reservasi Ditutup
+                        <?php } else { ?>
+                            <a class="btn btn-primary-paket btn-lg-paket btn-paket btn-block mb-4" href="detail_lokasi_wisata.php?id_paket_wisata=<?= $rowitem->id_paket_wisata ?>">
+                                Rincian Reservasi</a>
+                        <?php } ?>
                     </div>
-                <?php } ?>
-            </section>
-            <!-- /.Left col -->
         </div>
-        <!-- /.row (main row) -->
     </div>
-    <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
+<?php } ?>
+</section>
+<!-- /.Left col -->
+</div>
+<!-- /.row (main row) -->
+</div>
+<!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
 
-    <footer class="main-footer">
-        <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
-    </footer>
+<footer class="main-footer">
+    <strong>Copyright &copy; 2020 .</strong> Terumbu Karang Jawa Barat
+</footer>
 
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
-    </div>
-    <!-- ./wrapper -->
+<!-- Control Sidebar -->
+<aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+</aside>
+<!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
 
-    <!-- jQuery -->
-    <script src="plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- overlayScrollbars -->
-    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.js"></script>
-    <script>
-        $('.carousel').carousel({
-            interval: 2000
-        })
-    </script>
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.js"></script>
+<script>
+    $('.carousel').carousel({
+        interval: 2000
+    })
+</script>
 
 </body>
 
