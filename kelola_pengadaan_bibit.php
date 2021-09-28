@@ -283,13 +283,8 @@ if (isset($_POST['submit_tolak_bibit'])) {
                                     <label for="file_bukti_donasi">Bukti Donasi</label>
                                     <hr class="m-0">
                                     <div class='form-group' id='buktidonasi'>
-                                        <!-- <div>
-                            <input type='file'  class='form-control' id='image_uploads'
-                                name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
-                        </div> -->
                                     </div>
                                     <div class="form-group">
-                                        <!-- <img id="preview" src="#"  width="100px" alt="Preview Gambar"/> -->
                                         <a href="<?= $rowitem->bukti_donasi ?>" data-toggle="lightbox"><img class="img-fluid" id="oldpic" src="<?= $rowitem->bukti_donasi ?>" width="50%" <?php if ($rowitem->bukti_donasi == NULL) echo " style='display:none;'"; ?>></a>
                                         <br>
                                         <small class="text-muted">
@@ -301,12 +296,6 @@ if (isset($_POST['submit_tolak_bibit'])) {
 
                                             ?>
                                         </small>
-                                        <!-- <script>
-                            window.onload = function() {
-                            document.getElementById('preview').style.display = 'none';
-                            };
-                            
-                        </script> -->
                                     </div>
 
                                     <?php
@@ -315,17 +304,12 @@ if (isset($_POST['submit_tolak_bibit'])) {
                                             <form name="submit_terima" method="POST">
                                                 <button type="submit" name="submit_terima" value="terima" class="btn btn-success rounded-pill mt-2"><i class="fas fa-check-circle"></i> Terima</button></p>
                                             </form>
-
                                             <form name="submit_tolak" method="POST">
                                                 <button type="submit" name="submit_tolak" value="tolak" class="btn btn-danger rounded-pill mt-2"><i class="fas fa-times-circle"></i> Tolak</button></p>
                                             </form>
                                     <?php }
                                     } ?>
-
                                 </div>
-
-
-
                                 <p align="center">
                                     <!-- <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p> -->
                     </form>
@@ -335,10 +319,7 @@ if (isset($_POST['submit_tolak_bibit'])) {
                 <div class="col-lg-9 border rounded bg-white p-0">
                     <h5 class="card-header mb-1 font-weight-bold"><i class="text-danger fas fa-disease"></i> Terumbu Karang Pilihan</h5><br />
                     <?php
-                    $sqlviewisi = 'SELECT jumlah_terumbu, nama_terumbu_karang, foto_terumbu_karang FROM t_detail_donasi
-                                              LEFT JOIN t_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
-                                              LEFT JOIN t_terumbu_karang ON t_detail_donasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang
-                                              WHERE t_detail_donasi.id_donasi = :id_donasi';
+                    $sqlviewisi = 'SELECT jumlah_terumbu, nama_terumbu_karang, foto_terumbu_karang FROM t_detail_donasi LEFT JOIN t_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi LEFT JOIN t_terumbu_karang ON t_detail_donasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang WHERE t_detail_donasi.id_donasi = :id_donasi';
                     $stmt = $pdo->prepare($sqlviewisi);
                     $stmt->execute(['id_donasi' => $rowitem->id_donasi]);
                     $rowisi = $stmt->fetchAll();
@@ -376,7 +357,38 @@ if (isset($_POST['submit_tolak_bibit'])) {
                                     <img id="preview_pembelian" width="100px" alt="Preview Gambar" />
                                 </div>
                             </div>
+                            <script>
+                                const actualBtn = document.getElementById('image_uploads');
 
+                                const fileChosen = document.getElementById('file-input-label');
+
+                                actualBtn.addEventListener('change', function() {
+                                    fileChosen.innerHTML = '<b>File dipilih :</b> ' + this.files[0].name
+                                })
+                                window.onload = function() {
+                                    document.getElementById('preview_pembelian').style.display = 'none';
+                                };
+
+                                function readURL(input) {
+                                    if (input.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                        alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                        input.value = "";
+                                    };
+                                    if (input.files && input.files[0]) {
+                                        var reader = new FileReader();
+                                        document.getElementById('oldpicpembelian').style.display = 'none';
+                                        reader.onload = function(e) {
+                                            $('#preview_pembelian')
+                                                .attr('src', e.target.result)
+                                                .addClass('text-center')
+                                                .width(200);
+                                            document.getElementById('preview_pembelian').style.display = 'block';
+                                        };
+
+                                        reader.readAsDataURL(input.files[0]);
+                                    }
+                                }
+                            </script>
                         <?php } ?>
                         <div class="form-group">
                             <img id="preview_pembelian" src="#" class="<?= $rowitem->bukti_pengadaan_bibit == NULL ? 'd-none' : '' ?>" width="100px" alt="Preview Gambar" />
@@ -393,38 +405,11 @@ if (isset($_POST['submit_tolak_bibit'])) {
                             </small>
                             <p class="mb-1 font-weight-bold"> Tanggal Pembelian</p>
                             <?php if ($rowitem->tgl_pembelian_bibit == null) : ?>
-                                <input type="date" name="tgl_pembelian_bibit" id="tgl_pembelian_bibit"></input>
+                                <input type="date" name="tgl_pembelian_bibit" id="tgl_pembelian_bibit" required></input>
                             <?php else : ?>
                                 <p><?= $rowitem->tgl_pembelian_bibit; ?></p>
                             <?php endif ?>
-                            <script>
-                                const actualBtn = document.getElementById('image_uploads');
 
-                                const fileChosen = document.getElementById('file-input-label');
-
-                                actualBtn.addEventListener('change', function() {
-                                    fileChosen.innerHTML = '<b>File dipilih :</b> ' + this.files[0].name
-                                })
-                                window.onload = function() {
-                                    document.getElementById('preview_pembelian').style.display = 'none';
-                                };
-
-                                function readURL(input) {
-                                    if (input.files && input.files[0]) {
-                                        var reader = new FileReader();
-                                        document.getElementById('oldpicpembelian').style.display = 'none';
-                                        reader.onload = function(e) {
-                                            $('#preview_pembelian')
-                                                .attr('src', e.target.result)
-                                                .addClass('text-center')
-                                                .width(200);
-                                            document.getElementById('preview_pembelian').style.display = 'block';
-                                        };
-
-                                        reader.readAsDataURL(input.files[0]);
-                                    }
-                                }
-                            </script>
                         </div>
 
                     </div>

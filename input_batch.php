@@ -85,7 +85,7 @@ if (isset($_POST['submit'])) {
         header("Location: kelola_batch.php?status=insertfailed");
       } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
-        header("Location: kelola_batch.php?status=addsuccess");
+        header("Location: kelola_batch.php?status=addsuccess&id_status_batch=1");
       }
     }
   } else {

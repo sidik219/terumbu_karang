@@ -158,7 +158,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 </li>
 
                 <li class="nav-item">
-                    <a href="donasi_saya.php" class="nav-link ' . ('donasi_saya.php' == $url_sekarang ? ' active ' : '') . ' ">
+                    <a href="donasi_saya.php" class="nav-link ' . (('donasi_saya.php' == $url_sekarang) || ('edit_donasi_saya.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-hand-holding-usd"></i>
                         <p> Donasi Saya </p>
                     </a>
@@ -221,7 +221,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 </li>
 
                 <li class="nav-item"> <!-- Wilayah Lokasi Pusat -->
-                    <a href="kelola_donasi.php" class="nav-link ' . (('kelola_donasi.php' == $url_sekarang) || ('edit_donasi.php'  == $url_sekarang || 'kelola_pengadaan_bibit.php' == $url_sekarang) ? ' active ' : '') . ' ">
+                    <a href="kelola_donasi.php" class="nav-link ' . (('kelola_donasi.php' == $url_sekarang) || ('edit_donasi.php'  == $url_sekarang) || ('kelola_pengadaan_bibit.php' == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-hand-holding-usd"></i>
                         <p> Kelola Donasi </p>
                     </a>
