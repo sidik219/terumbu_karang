@@ -108,7 +108,7 @@ include 'hak_akses.php';
                                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                                     <div class="carousel-inner">
                                         <div class="carousel-item active">
-                                            <img class="d-block w-60" src="<?=$rowitem->foto_wisata?>" alt="">
+                                            <img class="d-block w-60 foto-reservasi" src="<?=$rowitem->foto_wisata?>" alt="">
                                         </div>
                                         <!-- Select Wisata -->
                                         <?php
@@ -122,7 +122,7 @@ include 'hak_akses.php';
 
                                         foreach ($rowWisata as $wisata) { ?>
                                         <div class="carousel-item">
-                                            <img class="d-block w-60" src="<?=$wisata->image_wisata?>" alt="">
+                                            <img class="d-block w-60 foto-reservasi" src="<?=$wisata->image_wisata?>" alt="">
                                         </div>
                                         <?php } ?>
                                     </div>
@@ -142,16 +142,14 @@ include 'hak_akses.php';
 
                                 <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-danger fas fa-map-marker-alt"></i>
-                                    <b>Alamat:</b> <?=$rowitem->deskripsi_lokasi?>
+                                    <label>Alamat:</label> <?=$rowitem->deskripsi_lokasi?>
                                 </p></div>
                                 <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-primary fas fa-umbrella-beach"></i>
-                                    <b>Nama Lokasi:</b> <?=$rowitem->nama_lokasi?>
+                                    <label>Nama Lokasi:</label> <?=$rowitem->nama_lokasi?>
                                 </p></div>
 
                                 <div class="row p-2 border-bottom"><p class="">
-                                    <i class="text-info fas fa-luggage-cart"></i>
-                                    <label>Wisata:</label>
                                     <div class="divTable">
                                         <div class="divTableBody">
                                             <div class="divTableRow">
@@ -168,25 +166,22 @@ include 'hak_akses.php';
                                                 $rowWisata = $stmt->fetchAll();
 
                                                 foreach ($rowWisata as $wisata) { ?>
-                                                    <i class="text-info fas fa-arrow-circle-right"></i>   
-                                                    <?=$wisata->judul_wisata?><br>
-                                                <?php } ?>
-                                                </div>
-                                                <div class="divTableCell-2">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </p></div>
+                                                    <!-- Deskripsi Wisata -->
+                                                    <h5 class="mt-4 mb-4">
+                                                        <div class="">
+                                                            <span class="badge badge-pill badge-warning">
+                                                                <?=$wisata->deskripsi_wisata?>
+                                                            </span>
+                                                        </div>
+                                                    </h5>
 
-                                <div class="row p-2 border-bottom"><p class="">
-                                    <i class="text-info fas fa-cubes"></i>
-                                    <label>Fasilitas Wisata:</label>
-                                    <div class="divTable">
-                                        <div class="divTableBody">
-                                            <div class="divTableRow">
-                                                <div class="divTableCell-1">
-
+                                                    <!-- Judul Wisata -->
+                                                    <i class="text-info fas fa-luggage-cart"></i>
+                                                    <label>Wisata:</label>
+                                                    <span class="badge badge-pill badge-info">
+                                                        <?=$wisata->judul_wisata?>
+                                                    </span><br>
+                                                    
                                                     <!-- Select Fasilitas -->
                                                     <?php
                                                     $sqlviewfasilitas = 'SELECT * FROM tb_fasilitas_wisata
@@ -195,27 +190,33 @@ include 'hak_akses.php';
                                                                         LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
                                                                         LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                                                                         WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
-                                                                        AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
+                                                                        AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata
+                                                                        AND t_wisata.id_wisata = :id_wisata';
 
                                                     $stmt = $pdo->prepare($sqlviewfasilitas);
-                                                    $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                                    $stmt->execute(['id_wisata' => $wisata->id_wisata,
+                                                                    'id_paket_wisata' => $rowitem->id_paket_wisata]);
                                                     $rowfasilitas = $stmt->fetchAll();
 
                                                     foreach ($rowfasilitas as $allfasilitas) { ?> 
                                                     <i class="text-info fas fa-arrow-circle-right"></i>                 
                                                     <?=$allfasilitas->pengadaan_fasilitas?><br>
                                                     <?php } ?>
+                                                <?php } ?>
                                                 </div>
-                                                <div class="divTableCell-2">
-                                                </div>
+                                                <div class="divTableCell-2"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </p></div>
 
                                 <div class="row p-2 border-bottom"><p class="">
-                                    <i class="text-warning fas fa-heartbeat"></i>
-                                    <b>Asuransi:</b><br> Rp. <?=number_format($rowitem->biaya_asuransi, 0)?>
+                                    <i class="text-danger fas fa-heartbeat"></i>
+                                    <label>Asuransi:</label>
+                                    <span class="badge badge-pill badge-info">
+                                        <?=$rowitem->nama_asuransi?>
+                                    </span><br>
+                                    Rp. <?=number_format($rowitem->biaya_asuransi, 0)?>
                                 </p></div>
 
                                 <?php
@@ -249,17 +250,13 @@ include 'hak_akses.php';
                                 </p></div>
                                 <?php } ?>
 
-                                <div class="row p-2 border-bottom"><p class="">
-                                    <i class="text-warning far fa-bookmark"></i>
-                                    <b>Deskripsi:</b> <?=$rowitem->deskripsi_paket_wisata?>
-                                </p></div>
                                 <div class="row"><a class="btn btn-primary-paket btn-lg-paket btn-paket btn-block mb-1"
                                 href="reservasi_wisata.php?id_paket_wisata=<?=$rowitem->id_paket_wisata?>_&status=review_reservasi">Wisata Sekarang</a></div>
 
                             </div>
                         </div>
 
-                        <div class="row mt-0">
+                        <!-- <div class="row mt-0">
                             <div class="col p-3 shadow rounded"><b class="text-lg"><i class="text-primary nav-icon fas fa-info-circle"></i> Tentang Paket Wisata ini</b><br>
                             <?php
                                 if($rowitem->deskripsi_panjang_wisata == NULL){
@@ -270,7 +267,7 @@ include 'hak_akses.php';
                                 }
                             ?>
                             </div>
-                        </div>
+                        </div> -->
                     <?php  } ?>
                 </div>
             <?php } ?>
