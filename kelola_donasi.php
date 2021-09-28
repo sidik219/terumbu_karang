@@ -73,7 +73,10 @@ if (isset($_GET['id_status_donasi'])) {
     $row = $stmt->fetchAll();
 }
 
-
+$sqlstatus = 'SELECT * FROM t_status_donasi';
+$stmt = $pdo->prepare($sqlstatus);
+$stmt->execute();
+$rowstatus = $stmt->fetchAll();
 
 
 function ageCalculator($dob)
@@ -246,6 +249,29 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                         </div>
                     </div>
 
+<!-- <ul class="progress-indicator">
+            <li class="completed">
+                <span class="bubble"></span>
+                Step 1. <br><small>(complete)</small>
+            </li>
+            <li class="completed">
+                <span class="bubble"></span>
+                Step 2. <br><small>(complete)</small>
+            </li>
+            <li class="active">
+                <span class="bubble"></span>
+                Step 3. <br><small>(active)</small>
+            </li>
+            <li>
+                <span class="bubble"></span>
+                Step 4.
+            </li>
+            <li>
+                <span class="bubble"></span>
+                Step 5.
+            </li>
+        </ul> -->
+    
 
                     <table class="table table-striped table-responsive-sm">
                         <thead>
@@ -317,14 +343,36 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                 </tr>
 
                                 <tr>
-                                    <td colspan="5">
-                                        <!--collapse start -->
-                                        <div class="row  m-0">
-                                            <div class="col-12 cell detailcollapser<?= $rowitem->id_donasi ?>" data-toggle="collapse" data-target=".cell<?= $rowitem->id_donasi ?>, .contentall<?= $rowitem->id_donasi ?>">
+                                    <td colspan="6">
+                                        <!--collapse start & Progress bar steps-->
+                                        <div class="row  m-0 row-collapse">
+                                            <div class="col-3 cell detailcollapser<?= $rowitem->id_donasi ?>" data-toggle="collapse" data-target=".cell<?= $rowitem->id_donasi ?>, .contentall<?= $rowitem->id_donasi ?>">
                                                 <p class="fielddetail<?= $rowitem->id_donasi ?> btn btn-act">
                                                     <i class="icon fas fa-chevron-down"></i>
                                                     Rincian Donasi
                                                 </p>
+                                            </div>
+                                            <div class="col-9">
+                                                <ul class="progress-indicator">
+                                                <?php foreach($rowstatus as $status){ $id_status_donasi = $rowitem->id_status_donasi;?>
+                                                <li class="<?php 
+                                                if($id_status_donasi == $status->id_status_donasi) 
+                                                    echo ' active ';
+                                                else if ($id_status_donasi > $status->id_status_donasi) 
+                                                    echo ' completed ';
+                                                else
+                                                    echo '  ';
+                                                ?>">
+                                                    <span class="bubble"></span>
+                                                    <?=$status->nama_status_donasi ?> 
+                                                    <br><small class="font-weight-bold">
+                                                        <?php if($id_status_donasi == $status->id_status_donasi) 
+                                                            echo '(Aktif)';
+                                                        ?>
+                                                    </small>
+                                                </li>
+                                                <?php } ?>
+                                        </ul>
                                             </div>
                                             <div class="col-12 cell<?= $rowitem->id_donasi ?> collapse contentall<?= $rowitem->id_donasi ?>    border rounded shadow-sm p-3">
                                                 <div class="row mb-3  border-bottom">

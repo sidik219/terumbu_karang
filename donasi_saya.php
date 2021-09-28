@@ -37,6 +37,11 @@ function ageCalculator($dob)
     }
 }
 
+$sqlstatus = 'SELECT * FROM t_status_donasi';
+$stmt = $pdo->prepare($sqlstatus);
+$stmt->execute();
+$rowstatus = $stmt->fetchAll();
+
 function ageCalculatorTanpaLalu($dob)
 {
     $birthdate = new DateTime($dob);
@@ -316,8 +321,32 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                     </div>
 
 
-
                                 </div><!-- First Row -->
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <ul class="progress-indicator shadow-sm">
+                                                <?php foreach($rowstatus as $status){ $id_status_donasi = $rowitem->id_status_donasi;?>
+                                                <li class="<?php 
+                                                if($id_status_donasi == $status->id_status_donasi) 
+                                                    echo ' active ';
+                                                else if ($id_status_donasi > $status->id_status_donasi) 
+                                                    echo ' completed ';
+                                                else
+                                                    echo '  ';
+                                                ?>">
+                                                    <span class="bubble"></span>
+                                                    <?=$status->nama_status_donasi ?> 
+                                                    <br><small class="font-weight-bold">
+                                                        <?php if($id_status_donasi == $status->id_status_donasi) 
+                                                            echo '(Aktif)';
+                                                        ?>
+                                                    </small>
+                                                </li>
+                                                <?php } ?>
+                                        </ul>
+                                    </div>
+                                </div>
 
 
                                 <p class=" btn btn-blue btn-primary" onclick="toggleDetail()">
