@@ -1,7 +1,7 @@
 <?php include 'build/config/connection.php';
 session_start();
-if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
-  header('location: login.php?status=restrictedaccess');
+if (!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)) {
+    header('location: login.php?status=restrictedaccess');
 }
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
@@ -33,18 +33,19 @@ if (isset($_POST['submit'])) {
             $id_reservasi       = $_POST['id_reservasi'];
             $nama_pengeluaran   = $_POST['nama_pengeluaran'][$i];
             $biaya_pengeluaran  = $_POST['biaya_pengeluaran'][$i];
-            $tanggal_sekarang   = date ('Y-m-d H:i:s', time());
+            $tanggal_sekarang   = date('Y-m-d H:i:s', time());
 
             //Insert t_kerjasama
             $sqlpengeluaran = "INSERT INTO t_laporan_pengeluaran (id_reservasi, nama_pengeluaran, biaya_pengeluaran, update_terakhir)
                                                 VALUES (:id_reservasi, :nama_pengeluaran, :biaya_pengeluaran, :update_terakhir)";
 
             $stmt = $pdo->prepare($sqlpengeluaran);
-            $stmt->execute(['id_reservasi' => $id_reservasi,
-                            'nama_pengeluaran' => $nama_pengeluaran,
-                            'biaya_pengeluaran' => $biaya_pengeluaran,
-                            'update_terakhir' => $tanggal_sekarang
-                            ]);
+            $stmt->execute([
+                'id_reservasi' => $id_reservasi,
+                'nama_pengeluaran' => $nama_pengeluaran,
+                'biaya_pengeluaran' => $biaya_pengeluaran,
+                'update_terakhir' => $tanggal_sekarang
+            ]);
 
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
@@ -52,7 +53,7 @@ if (isset($_POST['submit'])) {
             } else {
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
                 // echo "<meta http-equiv='refresh' content='0'>";
-                header('Location: kelola_laporan_wisata.php?id_reservasi='.$id_reservasi.'&status=addsuccess');
+                header('Location: kelola_laporan_wisata.php?id_reservasi=' . $id_reservasi . '&status=addsuccess');
             }
             $i++;
         } //End Foreach
@@ -61,22 +62,18 @@ if (isset($_POST['submit'])) {
     }
 }
 
-function ageCalculator($dob){
+function ageCalculator($dob)
+{
     $birthdate = new DateTime($dob);
     $today   = new DateTime('today');
     $ag = $birthdate->diff($today)->y;
     $mn = $birthdate->diff($today)->m;
     $dy = $birthdate->diff($today)->d;
-    if ($mn == 0)
-    {
+    if ($mn == 0) {
         return "$dy Hari";
-    }
-    elseif ($ag == 0)
-    {
+    } elseif ($ag == 0) {
         return "$mn Bulan  $dy Hari";
-    }
-    else
-    {
+    } else {
         return "$ag Tahun $mn Bulan $dy Hari";
     }
 }
@@ -84,16 +81,17 @@ function ageCalculator($dob){
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Kelola Laporan Pengeluaran Wisata - GoKarang</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
-        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-        <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
-        <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/style-card.css">
@@ -121,9 +119,9 @@ function ageCalculator($dob){
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Akun Saya</a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">Edit Profil</a>
+                        <a class="dropdown-item" href="logout.php">Logout</a>
                 </li>
             </ul>
         </nav>
@@ -141,8 +139,9 @@ function ageCalculator($dob){
             <div class="sidebar">
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
-                   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php print_sidebar(basename(__FILE__), $_SESSION['level_user'])?> <!-- Print sidebar -->
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <?php print_sidebar(basename(__FILE__), $_SESSION['level_user']) ?>
+                        <!-- Print sidebar -->
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -155,8 +154,9 @@ function ageCalculator($dob){
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="kelola_reservasi_wisata.php">< Kembali</a><br><br>
-                    <h4><span class="align-middle font-weight-bold">Kelola Laporan Pengeluaran Wisata</span></h4>
+                    <a class="btn btn-outline-primary" href="kelola_reservasi_wisata.php">
+                        < Kembali</a><br><br>
+                            <h4><span class="align-middle font-weight-bold">Kelola Laporan Pengeluaran Wisata</span></h4>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -166,50 +166,52 @@ function ageCalculator($dob){
             <section class="content">
                 <div class="container-fluid">
                     <?php
-                        if(!empty($_GET['status'])) {
-                            if($_GET['status'] == 'updatesuccess') {
-                                echo '<div class="alert alert-success" role="alert">
+                    if (!empty($_GET['status'])) {
+                        if ($_GET['status'] == 'updatesuccess') {
+                            echo '<div class="alert alert-success" role="alert">
                                         Update Laporan Pengeluaran berhasil!
-                                        </div>'; }
-                            else if($_GET['status'] == 'addsuccess') {
-                                echo '<div class="alert alert-success" role="alert">
+                                        </div>';
+                        } else if ($_GET['status'] == 'addsuccess') {
+                            echo '<div class="alert alert-success" role="alert">
                                         Data Laporan Pengeluaran berhasil ditambahkan!
-                                        </div>'; }
-                            else if($_GET['status'] == 'deletesuccess') {
-                                echo '<div class="alert alert-success" role="alert">
+                                        </div>';
+                        } else if ($_GET['status'] == 'deletesuccess') {
+                            echo '<div class="alert alert-success" role="alert">
                                         Data Laporan Pengeluaran berhasil dihapus!
-                                        </div>'; }
+                                        </div>';
                         }
+                    }
                     ?>
 
                     <form action="" enctype="multipart/form-data" method="POST">
-                    <!-- Hidden Input -->
-                    <input type="hidden" name="id_reservasi" value="<?=$reservasi->id_reservasi?>">
+                        <!-- Hidden Input -->
+                        <input type="hidden" name="id_reservasi" value="<?= $reservasi->id_reservasi ?>">
 
-                    <div class="form-group field_wrapper">
-                        <label for="paket_wisata">Nama Pengeluaran</label><br>
-                        <div class="form-group fieldGroup">
-                            <div class="input-group">
-                                <input type="text" name="nama_pengeluaran[]" min="0" class="form-control" placeholder="Nama Pengeluaran"/>
-                                <input type="number" name="biaya_pengeluaran[]" min="0" class="form-control" placeholder="Biaya Pengeluaran"/>
-                                <div class="input-group-addon">
-                                    <a href="javascript:void(0)" class="btn btn-success addMore">
-                                        <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Pengeluaran
-                                    </a>
+                        <div class="form-group field_wrapper">
+                            <label for="paket_wisata">Nama Pengeluaran</label><br>
+                            <div class="form-group fieldGroup">
+                                <div class="input-group">
+                                    <input type="text" name="nama_pengeluaran[]" min="0" class="form-control" placeholder="Nama Pengeluaran" required />
+                                    <input type="number" name="biaya_pengeluaran[]" min="0" class="form-control" placeholder="Biaya Pengeluaran" required />
+                                    <div class="input-group-addon">
+                                        <a href="javascript:void(0)" class="btn btn-success addMore">
+                                            <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Pengeluaran
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <p align="center">
-                    <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
+                        <p align="center">
+                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button>
+                        </p>
                     </form><br><br>
 
                     <!-- copy of input fields group -->
                     <div class="form-group fieldGroupCopy" style="display: none;">
                         <div class="input-group">
-                            <input type="text" name="nama_pengeluaran[]" min="0" class="form-control" placeholder="Nama Pengeluaran"/>
-                            <input type="number" name="biaya_pengeluaran[]" min="0" class="form-control" placeholder="Biaya Pengeluaran"/>
+                            <input type="text" name="nama_pengeluaran[]" min="0" class="form-control" placeholder="Nama Pengeluaran" />
+                            <input type="number" name="biaya_pengeluaran[]" min="0" class="form-control" placeholder="Biaya Pengeluaran" />
                             <div class="input-group-addon">
                                 <a href="javascript:void(0)" class="btn btn-danger remove">
                                     <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Pengeluaran
@@ -219,8 +221,8 @@ function ageCalculator($dob){
                     </div>
 
                     <!-- Cetak Laporan Fasilitas -->
-                    <a class="btn btn-success" href="laporan_wisata.php?type=pengeluaran&id_reservasi=<?=$id_reservasi?>">
-                    <i class="fas fa-file-excel"></i> Cetak Laporan Laba Rugi</a>
+                    <a class="btn btn-success" href="laporan_wisata.php?type=pengeluaran&id_reservasi=<?= $id_reservasi ?>">
+                        <i class="fas fa-file-excel"></i> Cetak Laporan Laba Rugi</a>
 
                     <!-- Select Data Reservasi Untuk Laporan Pengeluaran Berdasarkan ID -->
                     <table class="table table-striped table-responsive-sm">
@@ -239,55 +241,55 @@ function ageCalculator($dob){
                             $sum_paket = 0;
                             $sum_pengeluaran = 0;
 
-                            foreach ($rowPengeluaran as $pengeluaran) { 
-                            $truedate = strtotime($pengeluaran->update_terakhir);
-                            
-                            $sum_pengeluaran+= $pengeluaran->biaya_pengeluaran;
-                            // var_dump($sum);
+                            foreach ($rowPengeluaran as $pengeluaran) {
+                                $truedate = strtotime($pengeluaran->update_terakhir);
+
+                                $sum_pengeluaran += $pengeluaran->biaya_pengeluaran;
+                                // var_dump($sum);
                             ?>
-                            <tr>
-                                <th scope="row"><?=$pengeluaran->id_pengeluaran?></th>
-                                <td><?=$pengeluaran->id_reservasi?></td>
-                                <td><?=$pengeluaran->nama_pengeluaran?></td>
-                                <td>Rp. <?=number_format($pengeluaran->biaya_pengeluaran, 0)?></td>
-                                <td>
-                                    <small class="text-muted"><b>Update Terakhir</b>
-                                    <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($pengeluaran->update_terakhir).' yang lalu)';?></small>
-                                </td>
-                                <td>
-                                    <a href="hapus.php?type=pengeluaran&id_pengeluaran=<?=$pengeluaran->id_pengeluaran?>&id_reservasi=<?=$id_reservasi?>" class="far fa-trash-alt btn btn-act"></a>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <th scope="row"><?= $pengeluaran->id_pengeluaran ?></th>
+                                    <td><?= $pengeluaran->id_reservasi ?></td>
+                                    <td><?= $pengeluaran->nama_pengeluaran ?></td>
+                                    <td>Rp. <?= number_format($pengeluaran->biaya_pengeluaran, 0) ?></td>
+                                    <td>
+                                        <small class="text-muted"><b>Update Terakhir</b>
+                                            <br><?= strftime('%A, %d %B %Y', $truedate) . '<br> (' . ageCalculator($pengeluaran->update_terakhir) . ' yang lalu)'; ?></small>
+                                    </td>
+                                    <td>
+                                        <a href="hapus.php?type=pengeluaran&id_pengeluaran=<?= $pengeluaran->id_pengeluaran ?>&id_reservasi=<?= $id_reservasi ?>" class="far fa-trash-alt btn btn-act"></a>
+                                    </td>
+                                </tr>
                             <?php } ?>
 
                             <!-- Hasil -->
-                            <?php 
+                            <?php
                             $sum_paket = $reservasi->total; // get data dari DB t_reservasi_wisata
                             $total_saldo = $sum_paket - $sum_pengeluaran;
                             ?>
                             <tr>
                                 <th scope="row" colspan="5" style="text-align: right;">Biaya Reservasi:</th>
-                                <td>Rp. <?=number_format($reservasi->total, 0)?></td>
+                                <td>Rp. <?= number_format($reservasi->total, 0) ?></td>
                             </tr>
                             <tr>
                                 <th scope="row" colspan="5" style="text-align: right;">Biaya Pengeluaran:</th>
-                                <td>Rp. <?=number_format($sum_pengeluaran, 0)?></td>
+                                <td>Rp. <?= number_format($sum_pengeluaran, 0) ?></td>
                             </tr>
                             <tr>
                                 <th scope="row" colspan="5" style="text-align: right;">Total Sisa Biaya:</th>
-                                <td>Rp. <?=number_format($total_saldo, 0)?></td>
+                                <td>Rp. <?= number_format($total_saldo, 0) ?></td>
                             </tr>
                         </tbody>
                     </table>
 
             </section>
             <!-- /.Left col -->
-            </div>
-            <!-- /.row (main row) -->
         </div>
-        <!-- /.container-fluid -->
-        </section>
-        <!-- /.content -->
+        <!-- /.row (main row) -->
+    </div>
+    <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
 
@@ -297,44 +299,45 @@ function ageCalculator($dob){
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
+        <!-- Control sidebar content goes here -->
     </aside>
     <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
-<div>
-    <!-- jQuery -->
-    <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- overlayScrollbars -->
-    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.js"></script>
+    <div>
+        <!-- jQuery -->
+        <!-- Bootstrap 4 -->
+        <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- overlayScrollbars -->
+        <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="dist/js/adminlte.js"></script>
 
-    <script>
-        $(document).ready(function(){
-        //group add limit
-        var maxGroup = 3;
+        <script>
+            $(document).ready(function() {
+                //group add limit
+                var maxGroup = 3;
 
-        //add more fields group
-        $(".addMore").click(function(){
-            if($('body').find('.fieldGroup').length < maxGroup){
-                var fieldHTML = '<div class="form-group fieldGroup">'+$(".fieldGroupCopy").html()+'</div>';
-                $('body').find('.fieldGroup:last').after(fieldHTML);
-            }else{
-                alert('Maksimal '+maxGroup+' Data Pengeluaran wisata yang boleh dibuat.');
-            }
-        });
+                //add more fields group
+                $(".addMore").click(function() {
+                    if ($('body').find('.fieldGroup').length < maxGroup) {
+                        var fieldHTML = '<div class="form-group fieldGroup">' + $(".fieldGroupCopy").html() + '</div>';
+                        $('body').find('.fieldGroup:last').after(fieldHTML);
+                    } else {
+                        alert('Maksimal ' + maxGroup + ' Data Pengeluaran wisata yang boleh dibuat.');
+                    }
+                });
 
-        //remove fields group
-        $("body").on("click",".remove",function(){
-            $(this).parents(".fieldGroup").remove();
-        });
-    });
-    </script>
+                //remove fields group
+                $("body").on("click", ".remove", function() {
+                    $(this).parents(".fieldGroup").remove();
+                });
+            });
+        </script>
 
-</div>
-<!-- Import Trumbowyg font size JS at the end of <body>... -->
-<script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
+    </div>
+    <!-- Import Trumbowyg font size JS at the end of <body>... -->
+    <script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
 </body>
+
 </html>
