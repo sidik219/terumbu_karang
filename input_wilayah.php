@@ -1,7 +1,7 @@
 <?php include 'build/config/connection.php';
 session_start();
-if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
-  header('location: login.php?status=restrictedaccess');
+if (!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)) {
+    header('location: login.php?status=restrictedaccess');
 }
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
@@ -9,12 +9,12 @@ include 'hak_akses.php';
 $sqlviewwilayah = 'SELECT * FROM t_user
                     WHERE level_user = 2
                     ORDER BY nama_user';
-        $stmt = $pdo->prepare($sqlviewwilayah);
-        $stmt->execute();
-        $row = $stmt->fetchAll();
+$stmt = $pdo->prepare($sqlviewwilayah);
+$stmt->execute();
+$row = $stmt->fetchAll();
 
 if (isset($_POST['submit'])) {
-    if($_POST['submit'] == 'Simpan'){
+    if ($_POST['submit'] == 'Simpan') {
         $nama_wilayah        = $_POST['tbnama_wilayah'];
         $deskripsi_wilayah     = $_POST['txtdeskripsi_wilayah'];
         $alamat_kantor_wilayah = $_POST['alamat_kantor_wilayah'];
@@ -24,12 +24,11 @@ if (isset($_POST['submit'])) {
         $randomstring = substr(md5(rand()), 0, 7);
 
         //Image upload
-        if($_FILES["image_uploads"]["size"] == 0) {
+        if ($_FILES["image_uploads"]["size"] == 0) {
             $foto_wilayah = "images/image_default.jpg";
-        }
-        else if (isset($_FILES['image_uploads'])) {
+        } else if (isset($_FILES['image_uploads'])) {
             $target_dir  = "images/foto_wilayah/";
-            $foto_wilayah = $target_dir .'WIL_'.$randomstring. '.jpg';
+            $foto_wilayah = $target_dir . 'WIL_' . $randomstring . '.jpg';
             move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_wilayah);
         }
 
@@ -40,8 +39,10 @@ if (isset($_POST['submit'])) {
                         VALUES (:nama_wilayah, :deskripsi_wilayah, :foto_wilayah, :id_user_pengelola, :sisi_pantai, :alamat_kantor_wilayah, :kontak_wilayah)";
 
         $stmt = $pdo->prepare($sqlwilayah);
-        $stmt->execute(['nama_wilayah' => $nama_wilayah, 'deskripsi_wilayah' => $deskripsi_wilayah, 'foto_wilayah' => $foto_wilayah, 'id_user_pengelola' => $id_user_pengelola, 'sisi_pantai' => $sisi_pantai,
-        'alamat_kantor_wilayah' => $alamat_kantor_wilayah, 'kontak_wilayah' => $kontak_wilayah]);
+        $stmt->execute([
+            'nama_wilayah' => $nama_wilayah, 'deskripsi_wilayah' => $deskripsi_wilayah, 'foto_wilayah' => $foto_wilayah, 'id_user_pengelola' => $id_user_pengelola, 'sisi_pantai' => $sisi_pantai,
+            'alamat_kantor_wilayah' => $alamat_kantor_wilayah, 'kontak_wilayah' => $kontak_wilayah
+        ]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
@@ -49,22 +50,23 @@ if (isset($_POST['submit'])) {
         } else {
             //echo "HAHAHAAHA GREAT SUCCESSS !";
             header("Location: kelola_wilayah.php?status=addsuccess");
-            }
         }
     }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Kelola Wilayah - GoKarang</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
-        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-        <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
-        <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Favicon -->
@@ -86,9 +88,9 @@ if (isset($_POST['submit'])) {
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Akun Saya</a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">Edit Profil</a>
+                        <a class="dropdown-item" href="logout.php">Logout</a>
                 </li>
             </ul>
         </nav>
@@ -106,8 +108,9 @@ if (isset($_POST['submit'])) {
             <div class="sidebar">
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
-                   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php print_sidebar(basename(__FILE__), $_SESSION['level_user'])?> <!-- Print sidebar -->
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <?php print_sidebar(basename(__FILE__), $_SESSION['level_user']) ?>
+                        <!-- Print sidebar -->
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -120,8 +123,9 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                  <a class="btn btn-outline-primary" href="kelola_wilayah.php">< Kembali</a><br><br>
-                  <h3>Input Data Wilayah</h3>
+                    <a class="btn btn-outline-primary" href="kelola_wilayah.php">
+                        < Kembali</a><br><br>
+                            <h3>Input Data Wilayah</h3>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -132,82 +136,87 @@ if (isset($_POST['submit'])) {
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST" name="addWilayah">
 
-                          <div class="form-group">
-                                <label for="nama_wilayah">Nama Wilayah</label>
-                                <input type="text" class="form-control" name="tbnama_wilayah" id="#" required>
-                          </div>
+                        <div class="form-group">
+                            <label for="nama_wilayah">Nama Wilayah</label>
+                            <input type="text" class="form-control" name="tbnama_wilayah" id="#" required>
+                        </div>
 
-                          <div class="form-group">
-                                <label for="alamat_kantor_wilayah">Alamat Kantor Wilayah</label>
-                                <input type="text" class="form-control" name="alamat_kantor_wilayah" id="alamat_kantor_wilayah" required>
-                          </div>
+                        <div class="form-group">
+                            <label for="alamat_kantor_wilayah">Alamat Kantor Wilayah</label>
+                            <input type="text" class="form-control" name="alamat_kantor_wilayah" id="alamat_kantor_wilayah" required>
+                        </div>
 
-                          <div class="form-group">
-                                <label for="kontak_wilayah">Kontak Wilayah</label>
-                                <input type="text" class="form-control" name="kontak_wilayah" id="kontak_wilayah" placeholder="Nomor yang bisa dihubungi" required>
-                          </div>
+                        <div class="form-group">
+                            <label for="kontak_wilayah">Kontak Wilayah</label>
+                            <input type="text" class="form-control" name="kontak_wilayah" id="kontak_wilayah" placeholder="Nomor yang bisa dihubungi" required>
+                        </div>
 
-                          <div class="form-group">
-                                <label for="nama_wilayah">Deskripsi Wilayah</label>
-                                <input type="text" class="form-control" name="txtdeskripsi_wilayah" id="#" placeholder="Deskripsi singkat">
-                          </div>
+                        <div class="form-group">
+                            <label for="nama_wilayah">Deskripsi Wilayah</label>
+                            <input type="text" class="form-control" name="txtdeskripsi_wilayah" id="#" placeholder="Deskripsi singkat">
+                        </div>
 
-                                        <div class='form-group' id='fotowilayah'>
-                                            <div>
-                                                <label for='image_uploads'>Upload Foto Wilayah</label>
-                                                <input type='file'  class='form-control' id='image_uploads'
-                                                    name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
-                                            </div>
-                                        </div>
+                        <div class='form-group' id='fotowilayah'>
+                            <div>
+                                <label for='image_uploads'>Upload Foto Wilayah</label>
+                                <input type='file' class='form-control' id='image_uploads' name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
+                            </div>
+                        </div>
 
-                                        <div class="form-group">
-                                            <img id="preview"  width="100px" src="#" alt="Preview Gambar"/>
+                        <div class="form-group">
+                            <img id="preview" width="100px" src="#" alt="Preview Gambar" />
 
-                                            <script>
-                                                window.onload = function() {
-                                                document.getElementById('preview').style.display = 'none';
-                                                };
-                                                function readURL(input) {
-                                                    if (input.files && input.files[0]) {
-                                                        var reader = new FileReader();
+                            <script>
+                                window.onload = function() {
+                                    document.getElementById('preview').style.display = 'none';
+                                };
 
-                                                        reader.onload = function (e) {
-                                                            $('#preview')
-                                                                .attr('src', e.target.result)
-                                                                .width(200);
-                                                                document.getElementById('preview').style.display = 'block';
-                                                        };
+                                function readURL(input) {
+                                    if (input.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                        alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                        input.value = "";
+                                    };
+                                    if (input.files && input.files[0]) {
+                                        var reader = new FileReader();
 
-                                                        reader.readAsDataURL(input.files[0]);
-                                                    }
-                                                }
-                                            </script>
-                                        </div>
+                                        reader.onload = function(e) {
+                                            $('#preview')
+                                                .attr('src', e.target.result)
+                                                .width(200);
+                                            document.getElementById('preview').style.display = 'block';
+                                        };
 
-                                        <div class="form-group">
-                        <label for="dd_id_jenis">Sisi Pantai</label>
-                        <select id="dd_id_jenis" name="sisi_pantai" class="form-control" required>
-                        <option value="">-- Pilih Sisi Pantai --</option>
-                            <option value="Pantai Utara">Pantai Utara</option>
-                            <option value="Pantai Selatan">Pantai Selatan</option>
-                        </select>
-                    </div>
+                                        reader.readAsDataURL(input.files[0]);
+                                    }
+                                }
+                            </script>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dd_id_jenis">Sisi Pantai</label>
+                            <select id="dd_id_jenis" name="sisi_pantai" class="form-control" required>
+                                <option value="">-- Pilih Sisi Pantai --</option>
+                                <option value="Pantai Utara">Pantai Utara</option>
+                                <option value="Pantai Selatan">Pantai Selatan</option>
+                            </select>
+                        </div>
 
 
 
 
-                          <p align="center">
-                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
+                        <p align="center">
+                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button>
+                        </p>
                     </form>
-            <br><a href="input_lokasi.php">Lanjut isi data lokasi ></a>
+                    <br><a href="input_lokasi.php">Lanjut isi data lokasi ></a>
             </section>
             <!-- /.Left col -->
-            </div>
-            <!-- /.row (main row) -->
         </div>
-        <!-- /.container-fluid -->
-        </section>
-        <!-- /.content -->
+        <!-- /.row (main row) -->
+    </div>
+    <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
     <br>
@@ -217,7 +226,7 @@ if (isset($_POST['submit'])) {
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
+        <!-- Control sidebar content goes here -->
     </aside>
     <!-- /.control-sidebar -->
     </div>
@@ -233,4 +242,5 @@ if (isset($_POST['submit'])) {
     <script src="dist/js/adminlte.js"></script>
 
 </body>
+
 </html>
