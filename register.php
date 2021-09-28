@@ -267,18 +267,22 @@ if (isset($_POST['register'])) {
                     <label for="tb_username" class="font-weight-bold">Username</label>
                     <input type="text" id="tb_username" name="tb_username" class="form-control" required onkeyup="allLetter(document.form1.tb_username)">
                     <input type="hidden" id="upass" name="upass">
-                    <div class="small" id="result" name="upass">username berisi 6 hingga 8 karakter yang berisi setidaknya satu digit angka, satu huruf besar, dan satu huruf kecil</div>
+                    <div class="small text-warning font-weight-bold" id="result" name="upass">Belum Sesuai &#10539;</div>
+                    <div class="small" id="hint" name="upass">username berisi 6 hingga 16 karakter yang berisi huruf kecil, angka, atau underscore ( _ )</div>
                 </div>
                 <script>
                     function allLetter(uname) {
-                        var letters = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,8}$/;
+                        var letters = /^[a-z0-9_]{6,16}$/;
                         if (uname.value.match(letters)) {
-                            document.getElementById('result').innerHTML = 'Sudah Sesuai &#10003;'
+                            document.getElementById('result').innerHTML = '<span class="text-success font-weight-bold">Sudah Sesuai &#10003;</span>'
+                            $('#hint').fadeOut(500);
+
 
                             // return true;
                         } else {
-                            document.getElementById('result').innerHTML = 'Belum Sesuai &#10539;'
+                            document.getElementById('result').innerHTML = '<span class="text-warning font-weight-bold">Belum Sesuai &#10539;</span>'
                             document.getElementById('upass').value = "k";
+                            $('#hint').fadeIn(500);
                             // return false;
                         }
                     }
@@ -287,18 +291,22 @@ if (isset($_POST['register'])) {
                     <label for="pwd" class="font-weight-bold">Password</label>
                     <input type="password" id="pwd" name="pwd" class="form-control" onkeyup="CheckPassword(document.form1.pwd);" required>
                     <input type="hidden" name="pws" id="pws">
-                    <p class="small" id="cpass" name="cpass">kata sandi berisi 6 hingga 8 karakter yang berisi setidaknya satu digit angka, satu huruf besar, dan satu huruf kecil</p>
+                    <div class="small text-warning font-weight-bold" id="cpass" name="cpass">Belum Sesuai &#10539;</div>
+                    <div class="small" id="hintpass" name="cpass">kata sandi berisi 6 hingga 32 karakter yang berisi setidaknya satu digit angka, satu huruf besar, dan satu huruf kecil</div>
                 </div>
                 <script>
                     function CheckPassword(inputtxt) {
-                        var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,8}$/;
+                        var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,32}$/;
                         if (inputtxt.value.match(passw)) {
-                            document.getElementById('cpass').innerHTML = 'Sudah Sesuai &#10003;';
+                            document.getElementById('cpass').innerHTML = '<span class="text-success font-weight-bold">Sudah Sesuai &#10003;</span>';
+                            $('#hintpass').fadeOut(500);
+
 
                             // return true;
                         } else {
-                            document.getElementById('cpass').innerHTML = 'Belum Sesuai &#10539;';
+                            document.getElementById('cpass').innerHTML = '<span class="text-warning font-weight-bold">Belum Sesuai &#10539;</span>';
                             document.getElementById('pws').value = "k";
+                            $('#hintpass').fadeIn(500);
                             // return false;
                         }
                     }
@@ -338,7 +346,7 @@ if (isset($_POST['register'])) {
     ================================================== -->
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <!-- Scrollspy -->
