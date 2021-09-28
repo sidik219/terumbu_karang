@@ -1,7 +1,7 @@
 <?php
 session_start();
-if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
-  header('location: login.php?status=restrictedaccess');
+if (!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)) {
+    header('location: login.php?status=restrictedaccess');
 }
 include 'build/config/connection.php';
 
@@ -10,101 +10,102 @@ include 'hak_akses.php';
 
 $level_user = $_SESSION['level_user'];
 
-if($level_user == 2){
-  $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+if ($level_user == 2) {
+    $id_wilayah = $_SESSION['id_wilayah_dikelola'];
 
-  $sqlviewwilayah = 'SELECT * FROM t_wilayah
+    $sqlviewwilayah = 'SELECT * FROM t_wilayah
                     WHERE id_wilayah = :id_wilayah
                     ORDER BY nama_wilayah';
-        $stmt = $pdo->prepare($sqlviewwilayah);
-        $stmt->execute(['id_wilayah' => $id_wilayah]);
-        $row = $stmt->fetchAll();
-}
-else if($level_user == 4){
-   $sqlviewwilayah = 'SELECT * FROM t_wilayah
+    $stmt = $pdo->prepare($sqlviewwilayah);
+    $stmt->execute(['id_wilayah' => $id_wilayah]);
+    $row = $stmt->fetchAll();
+} else if ($level_user == 4) {
+    $sqlviewwilayah = 'SELECT * FROM t_wilayah
                     ORDER BY nama_wilayah';
-        $stmt = $pdo->prepare($sqlviewwilayah);
-        $stmt->execute();
-        $row = $stmt->fetchAll();
+    $stmt = $pdo->prepare($sqlviewwilayah);
+    $stmt->execute();
+    $row = $stmt->fetchAll();
 }
 
 
 
 
-    if (isset($_POST['submit'])) {
-        if($_POST['submit'] == 'Simpan'){
-            $id_wilayah = $_POST['dd_id_wilayah'];
-            $nama_lokasi        = $_POST['tb_nama_lokasi'];
-            $luas_lokasi        = $_POST['num_luas_lokasi'];
-            $deskripsi_lokasi     = $_POST['tb_deskripsi_lokasi'];
-            $id_user_pengelola     = 1;
-            $kontak_lokasi     = $_POST['num_kontak_lokasi'];
-            $nama_bank     = $_POST['tb_nama_bank'];
-            $nama_rekening     = $_POST['tb_nama_rekening'];
-            $nomor_rekening     = $_POST['num_nomor_rekening'];
-            $longitude        = $_POST['tb_longitude'];
-            $latitude        = $_POST['tb_latitude'];
-            $batas_hari_pembayaran = $_POST['num_batas_hari_pembayaran'];
-            $randomstring = substr(md5(rand()), 0, 7);
-            $kapasitas_kapal = $_POST['kapasitas_kapal'];
+if (isset($_POST['submit'])) {
+    if ($_POST['submit'] == 'Simpan') {
+        $id_wilayah = $_POST['dd_id_wilayah'];
+        $nama_lokasi        = $_POST['tb_nama_lokasi'];
+        $luas_lokasi        = $_POST['num_luas_lokasi'];
+        $deskripsi_lokasi     = $_POST['tb_deskripsi_lokasi'];
+        $id_user_pengelola     = 1;
+        $kontak_lokasi     = $_POST['num_kontak_lokasi'];
+        $nama_bank     = $_POST['tb_nama_bank'];
+        $nama_rekening     = $_POST['tb_nama_rekening'];
+        $nomor_rekening     = $_POST['num_nomor_rekening'];
+        $longitude        = $_POST['tb_longitude'];
+        $latitude        = $_POST['tb_latitude'];
+        $batas_hari_pembayaran = $_POST['num_batas_hari_pembayaran'];
+        $randomstring = substr(md5(rand()), 0, 7);
+        $kapasitas_kapal = $_POST['kapasitas_kapal'];
 
-            //Image upload
-            if($_FILES["image_uploads"]["size"] == 0) {
-                $foto_lokasi = "images/image_default.jpg";
-            }
-            else if (isset($_FILES['image_uploads'])) {
-                $target_dir  = "images/foto_lokasi/";
-                $foto_lokasi = $target_dir .'LOK_'.$randomstring. '.jpg';
-                move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_lokasi);
-            }
+        //Image upload
+        if ($_FILES["image_uploads"]["size"] == 0) {
+            $foto_lokasi = "images/image_default.jpg";
+        } else if (isset($_FILES['image_uploads'])) {
+            $target_dir  = "images/foto_lokasi/";
+            $foto_lokasi = $target_dir . 'LOK_' . $randomstring . '.jpg';
+            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_lokasi);
+        }
 
-            //---image upload end
+        //---image upload end
 
-            $sqllokasi = "INSERT INTO t_lokasi
+        $sqllokasi = "INSERT INTO t_lokasi
                             (id_wilayah, nama_lokasi, deskripsi_lokasi, foto_lokasi, luas_lokasi, id_user_pengelola, kapasitas_kapal,
                             kontak_lokasi, nama_bank, nama_rekening, nomor_rekening, longitude, latitude, batas_hari_pembayaran)
                             VALUES (:id_wilayah, :nama_lokasi, :deskripsi_lokasi, :foto_lokasi, :luas_lokasi, :kapasitas_kapal,
                             :id_user_pengelola, :kontak_lokasi, :nama_bank, :nama_rekening, :nomor_rekening, :longitude, :latitude, :batas_hari_pembayaran)";
 
-            $stmt = $pdo->prepare($sqllokasi);
-            $stmt->execute(['id_wilayah' => $id_wilayah, 'nama_lokasi' => $nama_lokasi,
+        $stmt = $pdo->prepare($sqllokasi);
+        $stmt->execute([
+            'id_wilayah' => $id_wilayah, 'nama_lokasi' => $nama_lokasi,
             'deskripsi_lokasi' => $deskripsi_lokasi, 'foto_lokasi' => $foto_lokasi,
             'luas_lokasi' => $luas_lokasi, 'id_user_pengelola' => $id_user_pengelola,
-            'kontak_lokasi' => $kontak_lokasi,'nama_bank' => $nama_bank, 'kapasitas_kapal' => $kapasitas_kapal,
-            'nama_rekening' => $nama_rekening,'nomor_rekening' => $nomor_rekening, 'longitude' => $longitude, 'latitude' => $latitude, 'batas_hari_pembayaran' => $batas_hari_pembayaran]);
+            'kontak_lokasi' => $kontak_lokasi, 'nama_bank' => $nama_bank, 'kapasitas_kapal' => $kapasitas_kapal,
+            'nama_rekening' => $nama_rekening, 'nomor_rekening' => $nomor_rekening, 'longitude' => $longitude, 'latitude' => $latitude, 'batas_hari_pembayaran' => $batas_hari_pembayaran
+        ]);
 
 
-            $last_lokasi_id = $pdo->lastInsertId();            
+        $last_lokasi_id = $pdo->lastInsertId();
 
-            $sqltitik = "INSERT INTO t_titik
+        $sqltitik = "INSERT INTO t_titik
                             (id_lokasi, luas_titik, longitude, latitude, kondisi_titik, keterangan_titik, id_zona_titik)
                             VALUES ($last_lokasi_id, 0, 0,
                             0, 'Cukup', '-', 5)";
-             $stmt = $pdo->prepare($sqltitik);
-            $stmt->execute();
+        $stmt = $pdo->prepare($sqltitik);
+        $stmt->execute();
 
-            $affectedrows = $stmt->rowCount();
-            if ($affectedrows == '0') {
+        $affectedrows = $stmt->rowCount();
+        if ($affectedrows == '0') {
             //echo "HAHAHAAHA INSERT FAILED !";
-            } else {
-                //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: kelola_lokasi.php?status=addsuccess");
-                }
-            }
+        } else {
+            //echo "HAHAHAAHA GREAT SUCCESSS !";
+            header("Location: kelola_lokasi.php?status=addsuccess");
         }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Kelola Lokasi - Terumbu Karang</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
-        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-        <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
-        <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Favicon -->
@@ -126,9 +127,9 @@ else if($level_user == 4){
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Akun Saya</a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">Edit Profil</a>
+                        <a class="dropdown-item" href="logout.php">Logout</a>
                 </li>
             </ul>
         </nav>
@@ -146,8 +147,9 @@ else if($level_user == 4){
             <div class="sidebar">
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
-                   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php print_sidebar(basename(__FILE__), $_SESSION['level_user'])?> <!-- Print sidebar -->
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <?php print_sidebar(basename(__FILE__), $_SESSION['level_user']) ?>
+                        <!-- Print sidebar -->
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -159,10 +161,11 @@ else if($level_user == 4){
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <div class="content-header">
-                    <div class="container-fluid">
-                        <a class="btn btn-outline-primary" href="kelola_lokasi.php">< Kembali</a><br><br>
-                        <h4><span class="align-middle font-weight-bold">Input Data Lokasi</span></h4>
-                    </div>
+                <div class="container-fluid">
+                    <a class="btn btn-outline-primary" href="kelola_lokasi.php">
+                        < Kembali</a><br><br>
+                            <h4><span class="align-middle font-weight-bold">Input Data Lokasi</span></h4>
+                </div>
                 <!-- /.container-fluid -->
             </div>
             <!-- /.content-header -->
@@ -171,114 +174,119 @@ else if($level_user == 4){
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
-                    <div class="form-group">
-                        <label for="dd_id_wilayah">ID Wilayah</label>
-                        <select id="dd_id_wilayah" name="dd_id_wilayah" class="form-control">
-                            <?php foreach ($row as $rowitem) {
-                            ?>
-                            <option value="<?=$rowitem->id_wilayah?>">ID <?=$rowitem->id_wilayah?> - <?=$rowitem->nama_wilayah?></option>
+                        <div class="form-group">
+                            <label for="dd_id_wilayah">ID Wilayah</label>
+                            <select id="dd_id_wilayah" name="dd_id_wilayah" class="form-control">
+                                <?php foreach ($row as $rowitem) {
+                                ?>
+                                    <option value="<?= $rowitem->id_wilayah ?>">ID <?= $rowitem->id_wilayah ?> - <?= $rowitem->nama_wilayah ?></option>
 
-                            <?php } ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="tb_nama_lokasi">Nama Lokasi</label>
-                        <input type="text" id="tb_nama_lokasi" name="tb_nama_lokasi" class="form-control">
-                    </div>
-                    
-                     <div class="form-group">
-                        <label for="kapasitas_kapal">Kapasitas Kapal</label>
-                        <label class="text-muted text-sm d-block">Jumlah bibit yang dapat diangkut kapal dalam satu perjalanan</label>
-                        <input type="number" id="kapasitas_kapal" name="kapasitas_kapal" class="form-control">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="num_luas_lokasi">Estimasi Luas Titik Total (ha)</label>
-                        <input type="number" id="num_luas_lokasi" name="num_luas_lokasi" class="form-control">
-                    </div>
-                    <div class='form-group' id='fotowilayah'>
-                        <div>
-                            <label for='image_uploads'>Upload Foto Lokasi</label>
-                            <input type='file'  class='form-control' id='image_uploads'
-                                name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
+                                <?php } ?>
+                            </select>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <img id="preview"  width="100px" src="#" alt="Preview Gambar"/>
+                        <div class="form-group">
+                            <label for="tb_nama_lokasi">Nama Lokasi</label>
+                            <input type="text" id="tb_nama_lokasi" name="tb_nama_lokasi" class="form-control" required>
+                        </div>
 
-                        <script>
-                            window.onload = function() {
-                            document.getElementById('preview').style.display = 'none';
-                            };
-                            function readURL(input) {
-                                if (input.files && input.files[0]) {
-                                    var reader = new FileReader();
+                        <div class="form-group">
+                            <label for="kapasitas_kapal">Kapasitas Kapal</label>
+                            <label class="text-muted text-sm d-block">Jumlah bibit yang dapat diangkut kapal dalam satu perjalanan</label>
+                            <input type="number" min="50" id="kapasitas_kapal" name="kapasitas_kapal" class="form-control" placeholder="Minimal 50 Bibit Per-kapal" required>
+                        </div>
 
-                                    reader.onload = function (e) {
-                                        $('#preview')
-                                            .attr('src', e.target.result)
-                                            .width(200);
-                                            document.getElementById('preview').style.display = 'block';
+                        <div class="form-group">
+                            <label for="num_luas_lokasi">Estimasi Luas Titik Total (ha)</label>
+                            <input type="number" id="num_luas_lokasi" name="num_luas_lokasi" class="form-control" required>
+                        </div>
+                        <div class='form-group' id='fotowilayah'>
+                            <div>
+                                <label for='image_uploads'>Upload Foto Lokasi</label>
+                                <input type='file' class='form-control' id='image_uploads' name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <img id="preview" width="100px" src="#" alt="Preview Gambar" />
+
+                            <script>
+                                window.onload = function() {
+                                    document.getElementById('preview').style.display = 'none';
+                                };
+
+                                function readURL(input) {
+                                    if (input.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                        alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                        input.value = "";
                                     };
+                                    if (input.files && input.files[0]) {
+                                        var reader = new FileReader();
 
-                                    reader.readAsDataURL(input.files[0]);
+                                        reader.onload = function(e) {
+                                            $('#preview')
+                                                .attr('src', e.target.result)
+                                                .width(200);
+                                            document.getElementById('preview').style.display = 'block';
+                                        };
+
+                                        reader.readAsDataURL(input.files[0]);
+                                    }
                                 }
-                            }
-                        </script>
-                    </div>
-                    <div class="form-group">
-                        <label for="tb_deskripsi_lokasi">Deskripsi</label>
-                        <input type="text" id="tb_deskripsi_lokasi" name="tb_deskripsi_lokasi" class="form-control">
-                    </div>
+                            </script>
+                        </div>
+                        <div class="form-group">
+                            <label for="tb_deskripsi_lokasi">Deskripsi</label>
+                            <input type="text" id="tb_deskripsi_lokasi" name="tb_deskripsi_lokasi" class="form-control" required>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="num_kontak_lokasi">Kontak Lokasi</label>
-                        <input type="number" id="num_kontak_lokasi" name="num_kontak_lokasi" class="form-control number-input">
-                    </div>
-                    <div class="form-group">
-                        <label for="tb_nama_bank">Nama Bank</label>
-                        <input type="text" id="tb_nama_bank" name="tb_nama_bank" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="tb_nama_rekening">Nama Rekening</label>
-                        <input type="text" id="tb_nama_rekening" name="tb_nama_rekening" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="num_nomor_rekening">Nomor Rekening</label>
-                        <input type="number" id="num_nomor_rekening" name="num_nomor_rekening" class="form-control number-input">
-                    </div>
-                    <label for="tblongitude">Koordinat Lokasi (Diperlukan agar lokasi muncul di peta)</label>
-                    <div class="col-12 border rounded p-3 bg-light mb-2">
-                              <div class="form-group">
+                        <div class="form-group">
+                            <label for="num_kontak_lokasi">Kontak Lokasi</label>
+                            <input type="number" id="num_kontak_lokasi" name="num_kontak_lokasi" class="form-control number-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tb_nama_bank">Nama Bank</label>
+                            <input type="text" id="tb_nama_bank" name="tb_nama_bank" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tb_nama_rekening">Nama Rekening</label>
+                            <input type="text" id="tb_nama_rekening" name="tb_nama_rekening" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="num_nomor_rekening">Nomor Rekening</label>
+                            <input type="number" id="num_nomor_rekening" name="num_nomor_rekening" class="form-control number-input" required>
+                        </div>
+                        <label for="tblongitude">Koordinat Lokasi (Diperlukan agar lokasi muncul di peta)</label>
+                        <div class="col-12 border rounded p-3 bg-light mb-2">
+                            <div class="form-group">
                                 <label for="tblatitude">Latitude</label>
-                        <input type="text" name="tb_latitude" class="form-control number-input number-input" id="tblatitude" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="tblongitude">Longitude</label>
-                        <input type="text" name="tb_longitude" class="form-control number-input number-input" id="tblongitude" required>
-                    </div>
-                    <button class="btn btn-act mb-1" onclick="getCoordinates()"><i class="nav-icon fas fa-map-marked-alt"></i> Deteksi Lokasi Anda</button><br>
-                    <span class="" id="akurasi"></span><br>
-                    <span class="text-muted small"> (Perlu izin browser)</span>
-                    </div>
-                    <div class="form-group">
-                        <label for="num_batas_hari_pembayaran">Batas Pembayaran Donasi (Hari)</label>
-                        <input type="number" value="3"  id="num_batas_hari_pembayaran" name="num_batas_hari_pembayaran" class="form-control number-input">
-                    </div>
-                    <br>
-                    <p align="center">
-                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
+                                <input type="text" name="tb_latitude" class="form-control number-input number-input" id="tblatitude" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="tblongitude">Longitude</label>
+                                <input type="text" name="tb_longitude" class="form-control number-input number-input" id="tblongitude" required>
+                            </div>
+                            <button class="btn btn-act mb-1" onclick="getCoordinates()"><i class="nav-icon fas fa-map-marked-alt"></i> Deteksi Lokasi Anda</button><br>
+                            <span class="" id="akurasi"></span><br>
+                            <span class="text-muted small"> (Perlu izin browser)</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="num_batas_hari_pembayaran">Batas Pembayaran Donasi (Hari)</label>
+                            <input type="number" value="3" id="num_batas_hari_pembayaran" name="num_batas_hari_pembayaran" class="form-control number-input">
+                        </div>
+                        <br>
+                        <p align="center">
+                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button>
+                        </p>
                     </form>
-            <br><br>
+                    <br><br>
 
             </section>
             <!-- /.Left col -->
-            </div>
-            <!-- /.row (main row) -->
         </div>
-        <!-- /.container-fluid -->
-        </section>
-        <!-- /.content -->
+        <!-- /.row (main row) -->
+    </div>
+    <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
     <br><br>
@@ -288,7 +296,7 @@ else if($level_user == 4){
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
+        <!-- Control sidebar content goes here -->
     </aside>
     <!-- /.control-sidebar -->
     </div>
@@ -304,34 +312,35 @@ else if($level_user == 4){
     <script src="dist/js/adminlte.js"></script>
 
     <script>
-function getCoordinates(){
-      event.preventDefault()
-      var options = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0
-};
+        function getCoordinates() {
+            event.preventDefault()
+            var options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            };
 
-function success(pos) {
+            function success(pos) {
 
-  var crd = pos.coords;
+                var crd = pos.coords;
 
-  console.log('Your current position is:');
-  console.log(`Latitude : ${crd.latitude}`);
-  document.getElementById('tblatitude').value = crd.latitude
-  console.log(`Longitude: ${crd.longitude}`);
-  document.getElementById('tblongitude').value = crd.longitude
-  console.log();
-  document.getElementById('akurasi').innerHTML = `Akurasi: ${crd.accuracy} meter`
-}
+                console.log('Your current position is:');
+                console.log(`Latitude : ${crd.latitude}`);
+                document.getElementById('tblatitude').value = crd.latitude
+                console.log(`Longitude: ${crd.longitude}`);
+                document.getElementById('tblongitude').value = crd.longitude
+                console.log();
+                document.getElementById('akurasi').innerHTML = `Akurasi: ${crd.accuracy} meter`
+            }
 
-function error(err) {
-  console.warn(`ERROR(${err.code}): ${err.message}`);
-}
+            function error(err) {
+                console.warn(`ERROR(${err.code}): ${err.message}`);
+            }
 
-navigator.geolocation.getCurrentPosition(success, error, options);
-    }
+            navigator.geolocation.getCurrentPosition(success, error, options);
+        }
     </script>
 
 </body>
+
 </html>

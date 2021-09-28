@@ -16,9 +16,6 @@ if ($_SESSION['level_user'] == 4) {
 $stmt = $pdo->prepare($sqlviewrekeningbersama);
 $stmt->execute(['id_wilayah' => $id_wilayah]);
 $rowdetail = $stmt->fetchAll();
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -106,7 +103,15 @@ $rowdetail = $stmt->fetchAll();
             <div class="col text-center">
               <span onclick="//addDocInput()" data-toggle="modal" data-target=".tambah-modal" class="btn btn-blue btn btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah Rekening</span>
             </div>
-
+            <?php
+            if (!empty($_GET['status'])) {
+              if ($_GET['status'] == 'deletesuccess') {
+                echo '<div class="alert alert-success" role="alert">
+                            Rekening Bersama Terhapus!
+                            </div>';
+              }
+            }
+            ?>
             <table class="table table-striped table-responsive-sm">
               <thead>
                 <tr>
@@ -130,13 +135,28 @@ $rowdetail = $stmt->fetchAll();
                     <td><?= $rowitem->nama_wilayah . " (ID " . $rowitem->id_wilayah . ")" ?></td>
                     <td class="">
                       <a href="#" onclick='loadRekening(this.dataset.id_rekening_bank)' data-nama_jenis='<?= $rowitem->nama_pemilik_rekening ?>' data-id_rekening_bank='<?= $rowitem->id_rekening_bank ?>' data-nomor_rekening='<?= $rowitem->nomor_rekening ?>' class="fas fa-edit mr-3 btn btn-act"></a>
-                      <a href="hapus.php?type=rekening_bersama&id_rekening_bank=<?= $rowitem->id_rekening_bank ?>" class="far fa-trash-alt btn btn-act"></a>
+                      <a onclick="return konfirmasiHapusPengadaan(event)" href="hapus.php?type=rekening_bersama&id_rekening_bank=<?= $rowitem->id_rekening_bank ?>" onclick="verivikasi()" class="far fa-trash-alt btn btn-act"></a>
                     </td>
                   </tr>
                 <?php } ?>
               </tbody>
             </table>
 
+            <script>
+              function konfirmasiHapusPengadaan(event) {
+                jawab = true
+                jawab = confirm('Yakin ingin menghapus? Data pengadaan akan hilang permanen!')
+
+                if (jawab) {
+                  // alert('Lanjut.')
+                  return true
+                } else {
+                  event.preventDefault()
+                  return false
+
+                }
+              }
+            </script>
             <!-- data-toggle="modal" data-target=".edit-modal" -->
 
 
@@ -286,15 +306,11 @@ $rowdetail = $stmt->fetchAll();
     function simpanRekening() {
       // $(document).ready(function() {
       //   $('#submit').click(function() {
-      var value = document.getElementById('nama_pemilik_rekening').value;
-      var value = document.getElementById('nomor_rekening').value;
-      var value = document.getElementById('nama_bank').value;
-      if (value === '' && value === '' && value === '') {
+      var value1 = document.getElementById('nama_pemilik_rekening').value;
+      var value2 = document.getElementById('nomor_rekening').value;
+      var value3 = document.getElementById('nama_bank').value;
+      if (value1 === '' || value2 === '' || value3 === '') {
         alert('Semua Data harus Terisi');
-        // } else if (value === '') {
-        //   alert('Nama Rekening tidak boleh kosong');
-        // } else if (value === '') {
-        //   alert('Nomor Rekening Tidak boleh Kosong asd');
       } else {
         var isiform = $('#tambah_form').serialize();
         $.ajax({

@@ -189,13 +189,27 @@ if (isset($_POST['submit'])) {
                                         <td>-</td>
                                         <td><?= $rowuser->organisasi_user ?></td>
                                         <td class="">
-                                            <a href="hapus.php?type=user_p_wilayah&id_wilayah=<?= $id_wilayah ?>&id_user=<?= $rowuser->id_user ?>" class="far fa-trash-alt btn btn-act"></a>
+                                            <a onclick="return konfirmasiHapusPengadaan(event)" href="hapus.php?type=user_p_wilayah&id_wilayah=<?= $id_wilayah ?>&id_user=<?= $rowuser->id_user ?>" class="far fa-trash-alt btn btn-act"></a>
                                         </td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
                         </table>
+                        <script>
+                            function konfirmasiHapusPengadaan(event) {
+                                jawab = true
+                                jawab = confirm('Yakin ingin menghapus? Data pengadaan akan hilang permanen!')
 
+                                if (jawab) {
+                                    // alert('Lanjut.')
+                                    return true
+                                } else {
+                                    event.preventDefault()
+                                    return false
+
+                                }
+                            }
+                        </script>
 
 
                         <br><br>
