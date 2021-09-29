@@ -12,6 +12,12 @@ if (!$_SESSION['level_user']) {
 
 $defaultpic = "images/image_default.jpg";
 
+// Status Reservasi
+$sqlstatus = 'SELECT * FROM tb_status_reservasi_wisata';
+$stmt = $pdo->prepare($sqlstatus);
+$stmt->execute();
+$rowstatus = $stmt->fetchAll();
+
 $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
                 LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                 LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
@@ -287,6 +293,35 @@ function alertPembayaran($dob)
                                         </div>
                                     </div>
                                     <!-- First Row -->
+
+                                    <div class="row mt-5 mb-5">
+                                        <div class="col-12">
+                                            <ul class="progress-indicator shadow-sm">
+                                                <?php 
+                                                foreach ($rowstatus as $status) { 
+                                                $id_status_reservasi_wisata = $rowitem->id_status_reservasi_wisata;
+                                                ?>
+                                                <li class="<?php 
+                                                if($id_status_reservasi_wisata == $status->id_status_reservasi_wisata) 
+                                                    echo ' active ';
+                                                else if ($id_status_reservasi_wisata > $status->id_status_reservasi_wisata) 
+                                                    echo ' completed ';
+                                                else
+                                                    echo '  ';
+                                                ?>">
+                                                    <span class="bubble"></span>
+                                                    <?=$status->nama_status_reservasi_wisata ?> 
+                                                    <br><small class="font-weight-bold">
+                                                        <?php 
+                                                        if($id_status_reservasi_wisata == $status->id_status_reservasi_wisata) 
+                                                            echo '(Aktif)';
+                                                        ?>
+                                                    </small>
+                                                </li>
+                                                <?php } ?>
+                                            </ul>
+                                        </div>
+                                    </div>
 
                                     <?php if ($rowitem->id_status_reservasi_wisata == 2) { ?>
                                         <p class=" btn btn-blue btn-primary" onclick="toggleDetail()">

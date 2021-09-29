@@ -337,17 +337,17 @@ if (isset($_POST['submit'])) {
                                             </small>
 
                                             <script>
-                                                //Validasi Size Upload Image
-
                                                 window.onload = function() {
                                                     document.getElementById('preview').style.display = 'none';
                                                 };
 
                                                 function readURL(input) {
+                                                    //Validasi Size Upload Image
                                                     if (input.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
                                                         alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
                                                         input.value = "";
                                                     };
+                                                    
                                                     if (input.files && input.files[0]) {
                                                         var reader = new FileReader();
 

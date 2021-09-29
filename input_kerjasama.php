@@ -173,6 +173,7 @@ if (isset($_POST['submit'])) {
                             <div class="form-group">
                                 <label for="Pihak_Ketiga">Nama Pihak Ketiga</label>
                                 <input type="text" id="Pihak_Ketiga" name="Pihak_Ketiga" class="form-control" required>
+                                <small style="color: red;">*Jika tidak melakukan kerjasama, maka nama pihak ketiga bisa dikosongkan dengan (-)</small>
                             </div>
                             <div class="form-group">
                                 <label for="pembagian_kerjasama">Pembagian Kerjasama</label>
