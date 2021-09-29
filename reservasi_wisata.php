@@ -56,11 +56,12 @@ if (isset($_POST['submit'])) {
 
         //var_dump($jumlah_donasi); exit();
         $tanggal_sekarang = date('Y-m-d H:i:s', time());
+        $tanggal_pesan = date('Y-m-d', time());
 
-        $sqlreservasi = "INSERT INTO t_reservasi_wisata (id_user, id_lokasi, tgl_reservasi, jumlah_peserta,
+        $sqlreservasi = "INSERT INTO t_reservasi_wisata (id_user, id_lokasi, tgl_reservasi,tanggal_pesan, jumlah_peserta,
                                             total, id_status_reservasi_wisata, keterangan,
                                             nama_donatur, bank_donatur, nomor_rekening_donatur, pesan, update_terakhir, id_paket_wisata, id_rekening_bersama)
-                                VALUES (:id_user, :id_lokasi, :tgl_reservasi, :jumlah_peserta,
+                                VALUES (:id_user, :id_lokasi, :tgl_reservasi,:tanggal_pesan, :jumlah_peserta,
                                             :total, :id_status_reservasi_wisata, :keterangan,
                                             :nama_donatur, :bank_donatur, :nomor_rekening_donatur, :pesan, :update_terakhir, :id_paket_wisata, :id_rekening_bersama)";
 
@@ -69,6 +70,7 @@ if (isset($_POST['submit'])) {
             'id_user' => $id_user,
             'id_lokasi' => $id_lokasi,
             'tgl_reservasi' => $tgl_reservasi,
+            'tanggal_pesan' => $tanggal_pesan,
             'jumlah_peserta' => $jumlah_peserta,
             // 'jumlah_donasi' => $jumlah_donasi,
             'total' => $total,
@@ -100,40 +102,40 @@ if (isset($_POST['submit'])) {
             $username = $_SESSION['username'];
             $nama_user = $_SESSION['nama_user'];
 
-            $subjek = 'Informasi Pembayaran Reservasi Wisata (ID Reservasi: '.$id_reservasi_terakhir.') - GoKarang';
+            $subjek = 'Informasi Pembayaran Reservasi Wisata (ID Reservasi: ' . $id_reservasi_terakhir . ') - GoKarang';
             $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
-                <br>Yth. '.$nama_user.'
+                <br>Yth. ' . $nama_user . '
                 <br>Terima kasih telah membuat reservasi wisata di GoKarang!
-                <br>Paket wisata: '.$rowwisata->nama_paket_wisata.'
-                <br>Paket wisata: '.$rowwisata[0]->nama_paket_wisata.'
-                <br>Tanggal reservasi: '.$tgl_reservasi.'
-                <br>Jumlah peserta: '.$jumlah_peserta.'
+                <br>Paket wisata: ' . $rowwisata->nama_paket_wisata . '
+                <br>Paket wisata: ' . $rowwisata[0]->nama_paket_wisata . '
+                <br>Tanggal reservasi: ' . $tgl_reservasi . '
+                <br>Jumlah peserta: ' . $jumlah_peserta . '
                 <br>Berikut rincian tujuan pembayaran wisata anda:          
-                <br>Bank Tujuan Pembayaran: '.$rekening->nama_bank.'
-                <br>Nomor Rekening: '.$rekening->nomor_rekening.'
-                <br>Nama Rekening: '.$rekening->nama_pemilik_rekening.'
-                <br>Nominal pembayaran: Rp. '.number_format($total, 0).'
+                <br>Bank Tujuan Pembayaran: ' . $rekening->nama_bank . '
+                <br>Nomor Rekening: ' . $rekening->nomor_rekening . '
+                <br>Nama Rekening: ' . $rekening->nama_pemilik_rekening . '
+                <br>Nominal pembayaran: Rp. ' . number_format($total, 0) . '
                 <br>
-                <br>Bank Anda: '.$bank_donatur.'
-                <br>Nomor Rekening Anda: '.$nomor_rekening_donatur.'
-                <br>Nama Rekening Anda: '.$nama_donatur.'
+                <br>Bank Anda: ' . $bank_donatur . '
+                <br>Nomor Rekening Anda: ' . $nomor_rekening_donatur . '
+                <br>Nama Rekening Anda: ' . $nama_donatur . '
                 <br>
                 <br>Harap upload bukti pembayaran reservasi (format gambar .JPG) di link berikut:
-                <br><a href="https://tkjb.or.id/edit_reservasi_saya.php?id_reservasi='.$id_reservasi_terakhir.'">Upload Bukti Pembayaran</a>
+                <br><a href="https://tkjb.or.id/edit_reservasi_saya.php?id_reservasi=' . $id_reservasi_terakhir . '">Upload Bukti Pembayaran</a>
             ';
-            
+
             smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
 
             //Kirim email untuk Pengelola lokasi
-            
+
             $sqlviewpengelolalokasi = 'SELECT * FROM t_lokasi 
                                         LEFT JOIN t_pengelola_lokasi ON t_pengelola_lokasi.id_lokasi = t_lokasi.id_lokasi
                                         WHERE t_lokasi.id_lokasi = :id_lokasi';
-                $stmt = $pdo->prepare($sqlviewpengelolalokasi);
-                $stmt->execute(['id_lokasi' => $id_lokasi]);
-                $rowpengelola = $stmt->fetchAll();
+            $stmt = $pdo->prepare($sqlviewpengelolalokasi);
+            $stmt->execute(['id_lokasi' => $id_lokasi]);
+            $rowpengelola = $stmt->fetchAll();
 
-                foreach($rowpengelola as $pengelola){
+            foreach ($rowpengelola as $pengelola) {
                 $sqlviewdatauser = 'SELECT * FROM t_user 
                                     WHERE id_user = :id_user';
                 $stmt = $pdo->prepare($sqlviewdatauser);
@@ -144,32 +146,32 @@ if (isset($_POST['submit'])) {
                 $username = $datauser->username;
                 $nama_user = $datauser->nama_user;
 
-                $subjek = 'Reservasi Wisata Baru (ID Reservasi: '.$id_reservasi_terakhir.') - GoKarang';
+                $subjek = 'Reservasi Wisata Baru (ID Reservasi: ' . $id_reservasi_terakhir . ') - GoKarang';
                 $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
-                <br>Yth. '.$nama_user.'
-                <br>Anda menerima reservasi wisata baru pada lokasi '.$pengelola->nama_lokasi.'
-                <br>Paket wisata: '.$rowwisata[0]->nama_paket_wisata.'
-                <br>Lokasi wisata: '.$rowlokasi->nama_lokasi.'
-                <br>Tanggal reservasi: '.$tgl_reservasi.'
-                <br>Jumlah peserta: '.$jumlah_peserta.'
+                <br>Yth. ' . $nama_user . '
+                <br>Anda menerima reservasi wisata baru pada lokasi ' . $pengelola->nama_lokasi . '
+                <br>Paket wisata: ' . $rowwisata[0]->nama_paket_wisata . '
+                <br>Lokasi wisata: ' . $rowlokasi->nama_lokasi . '
+                <br>Tanggal reservasi: ' . $tgl_reservasi . '
+                <br>Jumlah peserta: ' . $jumlah_peserta . '
                 <br>Berikut rincian reservasi wisata baru tersebut:
-                <br>Bank Wisatawan: '.$bank_donatur.'
-                <br>Nomor Rekening wisatawan: '.$nomor_rekening_donatur.'
-                <br>Nama Rekening wisatawan: '.$nama_donatur.'
+                <br>Bank Wisatawan: ' . $bank_donatur . '
+                <br>Nomor Rekening wisatawan: ' . $nomor_rekening_donatur . '
+                <br>Nama Rekening wisatawan: ' . $nama_donatur . '
                 <br>          
-                <br>Bank Tujuan Pembayaran: '.$rekening->nama_bank.'
-                <br>Nomor Rekening Tujuan: '.$rekening->nomor_rekening.'
-                <br>Nama Rekening Tujuan: '.$rekening->nama_pemilik_rekening.'
-                <br>Nominal pembayaran: Rp. '.number_format($total, 0).'
+                <br>Bank Tujuan Pembayaran: ' . $rekening->nama_bank . '
+                <br>Nomor Rekening Tujuan: ' . $rekening->nomor_rekening . '
+                <br>Nama Rekening Tujuan: ' . $rekening->nama_pemilik_rekening . '
+                <br>Nominal pembayaran: Rp. ' . number_format($total, 0) . '
                 <br>
                 <br>Harap verifikasi bukti pembayaran wisata di link berikut jika wisatawan sudah mengupload bukti pembayaran:
-                <br><a href="https://tkjb.or.id/edit_reservasi_wisata.php?id_reservasi='.$id_reservasi_terakhir.'">Verifikasi Bukti Pembayaran</a>
+                <br><a href="https://tkjb.or.id/edit_reservasi_wisata.php?id_reservasi=' . $id_reservasi_terakhir . '">Verifikasi Bukti Pembayaran</a>
                 <br>
-                <br>Jika donatur belum mengupload bukti pembayaran wisata dalam '.$pengelola->batas_hari_pembayaran.' hari, maka reservasi dapat dibatalkan.
+                <br>Jika donatur belum mengupload bukti pembayaran wisata dalam ' . $pengelola->batas_hari_pembayaran . ' hari, maka reservasi dapat dibatalkan.
             ';
-            
-            smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
-            } 
+
+                smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+            }
             //echo "HAHAHAAHA GREAT SUCCESSS !";
             header("Location: reservasi_saya.php?status=addsuccess");
             // $last_id_reservasi = $pdo->lastInsertId();
@@ -418,7 +420,7 @@ if (isset($_POST['submit'])) {
                                                     <h5 class="mt-4 mb-4">
                                                         <div class="">
                                                             <span class="badge badge-pill badge-warning">
-                                                                <?=$wisata->deskripsi_wisata?>
+                                                                <?= $wisata->deskripsi_wisata ?>
                                                             </span>
                                                         </div>
                                                     </h5>
@@ -427,9 +429,9 @@ if (isset($_POST['submit'])) {
                                                     <i class="text-info fas fa-luggage-cart"></i>
                                                     <label>Wisata:</label>
                                                     <span class="badge badge-pill badge-info">
-                                                        <?=$wisata->judul_wisata?>
+                                                        <?= $wisata->judul_wisata ?>
                                                     </span><br>
-                                                    
+
                                                     <!-- Select Fasilitas -->
                                                     <?php
                                                     $sqlviewfasilitas = 'SELECT * FROM tb_fasilitas_wisata
@@ -442,39 +444,41 @@ if (isset($_POST['submit'])) {
                                                                         AND t_wisata.id_wisata = :id_wisata';
 
                                                     $stmt = $pdo->prepare($sqlviewfasilitas);
-                                                    $stmt->execute(['id_wisata' => $wisata->id_wisata,
-                                                                    'id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                                    $stmt->execute([
+                                                        'id_wisata' => $wisata->id_wisata,
+                                                        'id_paket_wisata' => $rowitem->id_paket_wisata
+                                                    ]);
                                                     $rowfasilitas = $stmt->fetchAll();
 
-                                                    foreach ($rowfasilitas as $allfasilitas) { ?> 
-                                                    <i class="text-info fas fa-arrow-circle-right"></i>                 
-                                                    <?=$allfasilitas->pengadaan_fasilitas?><br>
+                                                    foreach ($rowfasilitas as $allfasilitas) { ?>
+                                                        <i class="text-info fas fa-arrow-circle-right"></i>
+                                                        <?= $allfasilitas->pengadaan_fasilitas ?><br>
                                                     <?php } ?>
                                                 <?php } ?>
                                             </div>
                                         </div>
                                         <p>
-                                        <!-- Asuransi -->
-                                        <hr class="mb-2" />
+                                            <!-- Asuransi -->
+                                            <hr class="mb-2" />
                                         <div class="row">
                                             <div class="col">
                                                 <i class="text-danger fas fa-heartbeat"></i>
                                                 <label>Asuransi:</label>
                                                 <span class="badge badge-pill badge-info">
-                                                    <?=$rowitem->nama_asuransi?>
+                                                    <?= $rowitem->nama_asuransi ?>
                                                 </span>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col">
-                                                Rp. <?=number_format($rowitem->biaya_asuransi, 0)?>
+                                                Rp. <?= number_format($rowitem->biaya_asuransi, 0) ?>
                                             </div>
                                         </div>
                                         <p>
-                                        <!-- Total Pembayaran -->
-                                        <hr class="mb-2" />
-                                        <?php
-                                        $sqlviewpaket = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_kerjasama, biaya_asuransi
+                                            <!-- Total Pembayaran -->
+                                            <hr class="mb-2" />
+                                            <?php
+                                            $sqlviewpaket = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_kerjasama, biaya_asuransi
                                         FROM tb_fasilitas_wisata
                                         LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
                                         LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
@@ -484,18 +488,18 @@ if (isset($_POST['submit'])) {
                                         WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
                                         AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
-                                        $stmt = $pdo->prepare($sqlviewpaket);
-                                        $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                                        $rowfasilitas = $stmt->fetchAll();
+                                            $stmt = $pdo->prepare($sqlviewpaket);
+                                            $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                            $rowfasilitas = $stmt->fetchAll();
 
-                                        foreach ($rowfasilitas as $fasilitas) {
+                                            foreach ($rowfasilitas as $fasilitas) {
 
-                                            // Menjumlahkan biaya asuransi dan biaya paket wisata
-                                            $asuransi       = $fasilitas->biaya_asuransi;
-                                            $wisata         = $fasilitas->total_biaya_fasilitas;
-                                            $total_paket    = $asuransi + $wisata; ?>
-                                        
-                                        <!-- Biaya Paket Kalkulasi Dari Biaya Fasilitas -->
+                                                // Menjumlahkan biaya asuransi dan biaya paket wisata
+                                                $asuransi       = $fasilitas->biaya_asuransi;
+                                                $wisata         = $fasilitas->total_biaya_fasilitas;
+                                                $total_paket    = $asuransi + $wisata; ?>
+
+                                                <!-- Biaya Paket Kalkulasi Dari Biaya Fasilitas -->
                                         <div class="row p-2 border-bottom">
                                             <p class="">
                                                 <i class="text-success fas fa-money-bill-wave"></i>

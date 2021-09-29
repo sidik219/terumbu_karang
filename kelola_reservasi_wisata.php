@@ -79,6 +79,8 @@ if (isset($_GET['id_status_reservasi_wisata'])) {
     $stmt = $pdo->prepare($sqlviewreservasi);
     $stmt->execute();
     $row = $stmt->fetchAll();
+    // var_dump($row);
+    // die;
 }
 
 function alertPembayaran($dob)
@@ -288,15 +290,15 @@ function alertPembayaran($dob)
                                     <td>
                                         <?= strftime('%A, %d %B %Y', $reservasidate); ?><br>
                                         <?php if ($rowitem->id_status_reservasi_wisata == 1) {
-                                            echo alertPembayaran($rowitem->tgl_reservasi);
+                                            echo alertPembayaran($rowitem->tanggal_pesan);
                                         } ?>
 
                                         <div class="mb-3">
                                             <?php
-                                            $tglreservasi = new DateTime($rowitem->tgl_reservasi);
+                                            $tanggal_pesan = new DateTime($rowitem->tanggal_pesan);
                                             $today   = new DateTime('today');
 
-                                            if (($tglreservasi->diff($today))->d > 3 && ($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4) && ($rowitem->id_status_reservasi_wisata == 1)) { ?>
+                                            if (($tanggal_pesan->diff($today))->d > 3 && ($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4) && ($rowitem->id_status_reservasi_wisata == 1)) { ?>
                                                 <!--Tombol batalkan donasi -->
                                                 <a onclick="return konfirmasiBatalReservasi(event)" href="hapus.php?type=batalkan_reservasi&id_reservasi=<?= $rowitem->id_reservasi ?>" class="btn btn-sm btn-danger userinfo">
                                                     <i class="fas fa-times"></i> Batalkan Reservasi
