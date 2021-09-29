@@ -275,7 +275,7 @@ if (isset($_POST['submit'])) {  // SUBMIT QUERIES ------------------!
 
               </div>
 
-              <button type="submit" name="submit" value="Simpan" class="btn btn-primary btn-blue mt-2">Update Status</button></p>
+              <!-- <button type="submit" name="submit" value="Simpan" class="btn btn-primary btn-blue mt-2">Update Status</button></p> -->
 
             </div>
 
@@ -344,19 +344,15 @@ if (isset($_POST['submit'])) {  // SUBMIT QUERIES ------------------!
                   ID <span class="id_donasi"><?= $detailbatch->id_donasi ?></span> -
                   <span class="nama_donatur"><?= $detailbatch->nama_donatur ?></span> || Jumlah : <span class="jumlah"><?= $detailbatch->jumlah_bibit_donasi ?></span>
                   <a data-id='<?= $detailbatch->id_donasi ?>' class="btn btn-sm btn-outline-primary userinfo">Rincian></a>
-                  <button type="button" class="btn donasitambah" onclick="hapusPilihan(this)"><i class="nav-icon fas fa-times-circle text-danger"></i></button>
+                  <!-- <button type="button" class="btn donasitambah" onclick="hapusPilihan(this)"><i class="nav-icon fas fa-times-circle text-danger"></i></button> -->
                   <input type='hidden' name='id_donasi[]' value='<?= $detailbatch->id_donasi ?>'>
                 </div>
               <?php
               } ?>
             </div>
-
-
-
-
             <br>
             <p align="center">
-              <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button>
+              <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Perbaharui Batch</button>
             </p>
           </form>
           <br><br>
@@ -446,12 +442,12 @@ if (isset($_POST['submit'])) {  // SUBMIT QUERIES ------------------!
     }
 
     function cekJumlahBibit(event) {
-      jmlbibitbatch = $('#jumlah_bibit').text()
-      kapasitas_kapal = parseInt($('#kapasitas_kapal').text())
+      // jmlbibitbatch = $('#jumlah_bibit').text()
+      // kapasitas_kapal = parseInt($('#kapasitas_kapal').text())
       jawab = true
-      if (jmlbibitbatch < kapasitas_kapal) {
-        jawab = confirm('Jumlah bibit kurang dari ' + kapasitas_kapal + '. Tetap buat batch?')
-      }
+      // if (jmlbibitbatch < kapasitas_kapal) {
+      //   jawab = confirm('Jumlah bibit kurang dari ' + kapasitas_kapal + '. Tetap buat batch?')
+      // }
 
       if (jawab) {
         // alert('Lanjut.')
