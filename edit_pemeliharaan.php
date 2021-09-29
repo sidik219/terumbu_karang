@@ -366,6 +366,15 @@ function ageCalculator($dob)
                                                                     $stmt->execute(['id_detail_donasi' => $isi->id_detail_donasi, 'id_pemeliharaan' => $id_pemeliharaan]);
                                                                     $rowhistory = $stmt->fetch();
 
+                                                                    //Cek apa ada history mati
+
+                                                                    $sqlcekmati = 'SELECT * FROM t_history_pemeliharaan
+                                                                      WHERE t_history_pemeliharaan.id_detail_donasi = :id_detail_donasi AND kondisi_terumbu = "Mati"';
+
+                                                                    $stmt = $pdo->prepare($sqlcekmati);
+                                                                    $stmt->execute(['id_detail_donasi' => $isi->id_detail_donasi]);
+                                                                    $cekmati = $stmt->fetch();
+
 
                                                                 ?>
                                                                     <div class="row  mb-3 p-3 border rounded shadow-sm bg-white border-info">
@@ -391,7 +400,8 @@ function ageCalculator($dob)
                                                                                 <label for="tb_nama_jenis">Kondisi / Keterangan</label>
                                                                                 <!-- <input type="text" id="tb_kondisi" name="kondisi[]" class="form-control" placeholder="Deskripsi singkat..." value="<?php //echo empty($rowhistory[0]->kondisi_terumbu) ? '' : $rowhistory[0]->kondisi_terumbu; 
                                                                                                                                                                                                         ?>" required> -->
-                                                                                <select class="form-control" id="tb_nama_jenis" name="kondisi[]" required>
+                                                                                <select class="form-control" id="tb_nama_jenis" name="kondisi[]" <?php if($cekmati) echo ' disabled ' ?>;
+                                                                                                            ?> required>
                                                                                     <option value="" disabled>--Pilih Kondisi--</option>
                                                                                     <option value="Sangat Baik" <?php if (!empty($rowhistory->kondisi_terumbu)) {
                                                                                                                     if ($rowhistory->kondisi_terumbu == "Sangat Baik") echo ' selected ';
@@ -403,7 +413,7 @@ function ageCalculator($dob)
                                                                                                                 if ($rowhistory->kondisi_terumbu == "Rusak") echo ' selected ';
                                                                                                             } ?>>Rusak</option>
                                                                                     <option value="Mati" <?php if (!empty($rowhistory->kondisi_terumbu)) {
-                                                                                                                if ($rowhistory->kondisi_terumbu == "Mati") echo ' selected ';
+                                                                                                                if ($rowhistory->kondisi_terumbu == "Mati") echo ' selected';
                                                                                                             } ?>>Mati</option>
                                                                                 </select>
                                                                             </div>
@@ -414,12 +424,13 @@ function ageCalculator($dob)
                                                                             <div class="row">
                                                                                 <div class="col-6"><input type="number" step="0.01" id="ukuran_terumbu" name="ukuran_terumbu[]" value=<?php if (!empty($rowhistory->ukuran_terumbu)) {
                                                                                                                                                                                             echo $rowhistory->ukuran_terumbu;
-                                                                                                                                                                                        } ?> class="form-control number-input" required /></div>
+                                                                                                                                                                                        } ?> class="form-control number-input" <?php if($cekmati) echo ' disabled ' ?>
+                                                                                                            required /></div>
                                                                                 <div class="col-2">m²</div>
                                                                             </div>
                                                                         </div>
 
-                                                                        <div class="col-12 mt-1">
+                                                                        <div class="col-12 mt-1 <?php if($cekmati) echo ' d-none ' ?>">
 
                                                                             <div class='form-group' id='fototk<?= $isi->id_detail_donasi ?>'>
                                                                                 <div>
