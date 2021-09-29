@@ -248,7 +248,7 @@ function ageCalculator($dob)
                   </td>
                   <td>
                     <a href="edit_pemeliharaan.php?id_pemeliharaan=<?= $pemeliharaan->id_pemeliharaan ?>" class="fas fa-edit mr-3 btn btn-act"></a>
-                    <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
+                    <!-- <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button> -->
                   </td>
                 </tr>
                 <tr>
