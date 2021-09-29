@@ -593,7 +593,129 @@ if ($_POST['type'] == 'load_rincian_donasi' && !empty($_POST["id_donasi"])) {
 
 <!-- END RINCIAN DONASI MODAL -->
 
+<?php
+//filter tabel laporan donasi 
+if ($_POST['type'] == 'load_laporan_donasi' && !empty($_POST["start"])) {
+    $level_user = $_POST['level_user'];
+
+    $id_wilayah = $_POST['id_wilayah_dikelola'];
+
+    $id_lokasi = $_POST['id_lokasi_dikelola'];
+    
+    $start = $_POST["start"];
+    $end = $_POST["end"];
+
+if($level_user == 2){
+  $extra_query = " AND t_lokasi.id_wilayah = $id_wilayah ";
+  $extra_query_noand = " t_lokasi.id_wilayah = $id_wilayah ";
+}
+else if($level_user == 3){
+  $extra_query = " AND t_lokasi.id_lokasi = $id_lokasi ";
+  $extra_query_noand = " t_lokasi.id_lokasi = $id_lokasi ";
+}
+else if($level_user == 4){
+  $extra_query = "  ";
+  $extra_query_noand = " 1 ";
+}
+
+//Sortir berdasarkan nominal donasi
 
 
+ //umum
+  $sqlviewdonasi = 'SELECT * FROM t_donasi
+                  LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi 
+                  LEFT JOIN t_status_pengadaan_bibit ON t_donasi.id_status_pengadaan_bibit = t_status_pengadaan_bibit.id_status_pengadaan_bibit
+                  WHERE  '.$extra_query_noand.' AND t_donasi.id_status_pengadaan_bibit = 4 AND tanggal_donasi BETWEEN "'.$start.'" AND "'.$end.'"';
+
+  $stmt = $pdo->prepare($sqlviewdonasi);
+  $stmt->execute();
+  $row = $stmt->fetchAll();
+
+  $sqlhitungtotal = 'SELECT COUNT(t_donasi.id_donasi) AS total_donasi, SUM(t_donasi.nominal) AS total_nominal FROM t_donasi
+                  LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
+                  LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi 
+                  LEFT JOIN t_status_pengadaan_bibit ON t_donasi.id_status_pengadaan_bibit = t_status_pengadaan_bibit.id_status_pengadaan_bibit
+                  WHERE  '.$extra_query_noand.' AND t_donasi.id_status_pengadaan_bibit = 4 AND tanggal_donasi BETWEEN "'.$start.'" AND "'.$end.'"';
+
+  $stmt = $pdo->prepare($sqlhitungtotal);
+  $stmt->execute();
+  $rowtotal = $stmt->fetch();
+
+
+
+
+
+
+?>
+    <table id="tabel_laporan_donasi" class="table table-striped table-responsive-sm">
+                     <thead>
+                            <tr>
+                                <th scope="col">ID Donasi</th>
+                                <th scope="col">Lokasi</th>
+                                <th scope="col">Nominal</th>
+                                <th scope="col">Nama Donatur</th>
+                                <th scope="col">Tanggal Donasi</th>
+                                <th class="print-hide" scope="col">Aksi</th>
+                            </tr>
+                          </thead>
+                    <tbody id="tbody_laporan_donasi">
+                        <?php
+                          foreach ($row as $rowitem) {
+                            $truedate = strtotime($rowitem->update_terakhir);
+                            $donasidate = strtotime($rowitem->tanggal_donasi);
+                          ?>
+                          <tr class="row_donasi">
+                              <th scope="row"><?=$rowitem->id_donasi?>
+                                  <?php echo empty($rowitem->id_batch) ? '' : '<br><span class="badge badge-pill badge-info mr-2"> ID Batch '.$rowitem->id_batch.'</span>';?>
+                              </th>
+                              <td><?= $rowitem->nama_lokasi ?></td>
+                              <td class="nominal">Rp. <?=number_format($rowitem->nominal, 0)?></td>
+                              <td><?= $rowitem->nama_donatur ?></td>
+                              <td><?=strftime('%A, %e %B %Y', $donasidate);?> <br>  <?php if($rowitem->id_status_donasi == 1){
+                                              echo alertPembayaran($rowitem->tanggal_donasi);
+                                          }  ?> 
+                                          
+                                          
+                                         
+                             </td>
+                            
+                              <td  class="print-hide">
+                                <a data-id='<?=$rowitem->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo p-1">Rincian></a>
+                                
+                              </td>
+
+                          </tr>
+
+                          
+                            <?php //$index++;
+                            } ?>
+                    </tbody>                    
+                  </table>
+                
+                <hr class="m-0"/>
+                <hr class="m-0"/>
+                   <table class="table table-striped table-responsive-sm">
+                     <thead>
+                            <tr>
+                                <th scope="col">Total: <?= $rowtotal->total_donasi ?> Donasi</th>
+                                <th scope="col"></th>
+                                <th scope="col">Rp. <?=  number_format($rowtotal->total_nominal, 0)?></th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>                                
+                            </tr>
+                          </thead>
+                   </table>
+
+                   <script>       
+                   $(function() {
+                    $("#tabel_laporan_donasi").tablesorter();
+                    });
+                </script>
+
+<?php
+    
+}
+?>
 
 

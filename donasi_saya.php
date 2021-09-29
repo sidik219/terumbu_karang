@@ -42,6 +42,10 @@ $stmt = $pdo->prepare($sqlstatus);
 $stmt->execute();
 $rowstatus = $stmt->fetchAll();
 
+function isMobile() {
+    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+}
+
 function ageCalculatorTanpaLalu($dob)
 {
     $birthdate = new DateTime($dob);
@@ -233,7 +237,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                             $donasidate = strtotime($rowitem->tanggal_donasi);
                         ?>
                             <div class="blue-container border rounded shadow-sm mb-4 p-4">
-                                <div class="row">
+                                <div class="row mb-3 rounded p-3 shadow-sm">
                                     <!-- First row -->
 
                                     <div class="col-12 mb-3">
@@ -264,8 +268,8 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                             <?php if ($rowitem->id_status_donasi >= 3 && $rowitem->id_status_donasi < 6) { ?>
                                                 <!-- Invoice -->
                                                 <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-file-invoice"></i> Invoice Donasi</span>
-                                                <a href="invoice_donasi.php?id_donasi=<?= $rowitem->id_donasi ?>" class="btn btn-sm btn-primary userinfo">
-                                                    <i class="fas fa-file-invoice"></i> Download Inovice Donasi Terumbu Karang</a>
+                                                <br><a href="invoice_donasi.php?id_donasi=<?= $rowitem->id_donasi ?>" class="btn btn-primary text-sm btn-sm userinfo">
+                                                    <i class="fas fa-file-invoice"></i> Download Inovice Donasi</a>
                                             <?php } ?>
                                         </div>
 
@@ -324,8 +328,8 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                 </div><!-- First Row -->
 
                                 <div class="row">
-                                    <div class="col-12">
-                                        <ul class="progress-indicator shadow-sm">
+                                    <div class="col-12 p-0">
+                                        <ul class="progress-indicator <?= (isMobile()) ? ' stacked ' : '' ?> shadow-sm">
                                                 <?php foreach($rowstatus as $status){ $id_status_donasi = $rowitem->id_status_donasi;?>
                                                 <li class="<?php 
                                                 if($id_status_donasi == $status->id_status_donasi) 
@@ -335,14 +339,17 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                                 else
                                                     echo '  ';
                                                 ?>">
-                                                    <span class="bubble"></span>
-                                                    <?=$status->nama_status_donasi ?> 
-                                                    <br><small class="font-weight-bold">
-                                                        <?php if($id_status_donasi == $status->id_status_donasi) 
-                                                            echo '(Aktif)';
-                                                        ?>
-                                                    </small>
+                                                <span class="bubble"></span>
+                                                    <span class=" <?= (isMobile()) ? ' stacked-text ' : '' ?> ">                                                        
+                                                        <?=$status->nama_status_donasi ?> 
+                                                        <br><small class="font-weight-bold">
+                                                            <?php if($id_status_donasi == $status->id_status_donasi) 
+                                                                echo '(Aktif)';
+                                                            ?>
+                                                        </small>
+                                                    </span>
                                                 </li>
+                                                
                                                 <?php } ?>
                                         </ul>
                                     </div>
