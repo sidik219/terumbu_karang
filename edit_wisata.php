@@ -23,6 +23,15 @@ include 'hak_akses.php';
         $stmt->execute();
         $rowasuransi = $stmt->fetchAll();
 
+        // Wisata
+        // $sqlviewwisata = 'SELECT * FROM t_wisata
+        //                 LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+        //                 WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+        //                 ORDER BY id_wisata ASC';
+        // $stmt = $pdo->prepare($sqlviewwisata);
+        // $stmt->execute(['id_paket_wisata' => $id_paket_wisata]);
+        // $rowwisata = $stmt->fetchAll();
+
         // Paket Wisata
         $sqleditpaket = 'SELECT * FROM tb_paket_wisata
                         WHERE id_paket_wisata = :id_paket_wisata';
@@ -92,7 +101,39 @@ include 'hak_akses.php';
             } else {
                 //echo "HAHAHAAHA GREAT SUCCESSS !";
                 header("Location: kelola_wisata.php?status=updatesuccess");
+                // $last_paket_wisata_id = $pdo->lastInsertId();
             }
+
+            //var_dump($_POST['nama_wisata']);exit();
+            // $i = 0;
+            // foreach ($_POST['nama_wisata'] as $nama_wisata) {
+            //     $id_paket_wisata   = $last_paket_wisata_id; //tb_paket_wisata
+            //     $id_wisata         = $_POST['nama_wisata'][$i]; //t_wisata
+            //     $judul_wisata      = $_POST['judul_wisata'][$i]; //t_wisata
+            //     $deskripsi_wisata  = $_POST['deskripsi_wisata'][$i]; //t_wisata
+
+            //     //Update dan set id_paket_wisata ke wisata pilihan
+            //     $sqlupdatewisata = "UPDATE t_wisata
+            //                         SET id_paket_wisata = :id_paket_wisata,
+            //                             judul_wisata = :judul_wisata,
+            //                             deskripsi_wisata = :deskripsi_wisata
+            //                         WHERE id_wisata = :id_wisata";
+
+            //     $stmt = $pdo->prepare($sqlupdatewisata);
+            //     $stmt->execute(['id_wisata' => $id_wisata, 
+            //                     'judul_wisata' => $judul_wisata,
+            //                     'deskripsi_wisata' => $deskripsi_wisata, 
+            //                     'id_paket_wisata' => $id_paket_wisata]);
+
+            //     $affectedrows = $stmt->rowCount();
+            //     if ($affectedrows == '0') {
+            //         header("Location: kelola_wisata.php?status=insertfailed");
+            //     } else {
+            //         //echo "HAHAHAAHA GREAT SUCCESSS !";
+            //         header("Location: kelola_wisata.php?status=updatesuccess");
+            //     }
+            //     $i++;
+            // } //End Foreach
         }
 
 ?>
@@ -185,7 +226,7 @@ include 'hak_akses.php';
                     <div class="form-group">
                     <label for="id_lokasi">ID Lokasi</label>
                     <select id="id_lokasi" name="id_lokasi" class="form-control" required>
-                            <option value="">Pilih Lokasi</option>
+                            <option value="" disabled>Pilih Lokasi</option>
                             <?php foreach ($rowlokasi as $lokasi) {  ?>
                             <option <?php if($lokasi->id_lokasi == $rowpaket->id_lokasi) echo 'selected'; ?> value="<?=$lokasi->id_lokasi?>">ID <?=$lokasi->id_lokasi?> - <?=$lokasi->nama_lokasi?></option>
                         <?php } ?>
@@ -196,12 +237,40 @@ include 'hak_akses.php';
                     <div class="form-group">
                     <label for="id_asuransi">ID Asuransi</label>
                     <select id="id_asuransi" name="id_asuransi" class="form-control" required>
-                            <option value="">Pilih Asuransi</option>
+                            <option value="" disabled>Pilih Asuransi</option>
                             <?php foreach ($rowasuransi as $asuransi) {  ?>
                             <option <?php if($asuransi->id_asuransi == $rowpaket->id_asuransi) echo 'selected'; ?> value="<?=$asuransi->id_asuransi?>">ID <?=$asuransi->id_asuransi?> - <?=$asuransi->biaya_asuransi?></option>
                         <?php } ?>
                     </select>
                     </div>
+
+                    <!-- Wisata -->
+                    <!-- <div class="form-group field_wrapper">
+                        <label for="paket_wisata">ID Wisata</label><br>
+                        foreach ($rowwisata as $wisata) {
+                        <div class="form-group fieldGroup">
+                            <div class="input-group"> -->
+                                <!-- Id Wisata -->
+                                <!-- <input type="hidden" name="nama_wisata[]" value="$wisata->id_wisata" class="form-control" placeholder="Hari" required/> -->
+                                <!-- Judul Wisata -->
+                                <!-- <input type="text" name="judul_wisata[]" value="$wisata->judul_wisata" class="form-control" placeholder="Hari" required/> -->
+                                <!-- Deskripsi Wisata -->
+                                <!-- <input type="text" name="deskripsi_wisata[]" value="$wisata->deskripsi_wisata" class="form-control" placeholder="Hari" required/> -->
+                            <!-- </div>
+                        </div>
+                        }
+                    </div> -->
+
+                    <!-- Keterangan -->
+                    <!-- <div class="mb-4">
+                        <label for="">Keterangan:</label><br>
+                        <small><b>Contoh Pengisian:</b></small><br>
+                        <small>* Pilih Wisata: Wisata Diving dst</small><br>
+                        <small>* Hari: Hari Pertama dst</small><br>
+                        <small style="color: red;">* Hanya bisa satu wisata, untuk perhari</small><br>
+                        <small style="color: red;">* Untuk menambahkan wisata baru, harus input fasilitas terlebih dahulu</small><br>
+                        <small style="color: red;">* Belum Bisa menambahkan wisata baru, pada saat edit wisata</small>
+                    </div> -->
 
                     <div class="form-group">
                         <label for="nama_paket_wisata">Nama Paket Wisata</label>
@@ -249,16 +318,6 @@ include 'hak_akses.php';
                         <script>
                             const actualBtn = document.getElementById('image_uploads');
                             const fileChosen = document.getElementById('file-input-label');
-                            
-                            //Validasi Size Upload Image
-                            var uploadField = document.getElementById("image_uploads");
-
-                            uploadField.onchange = function() {
-                                if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
-                                    alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
-                                    this.value = "";
-                                };
-                            };
 
                             actualBtn.addEventListener('change', function(){
                             fileChosen.innerHTML = '<b>File dipilih :</b> '+this.files[0].name
@@ -266,7 +325,18 @@ include 'hak_akses.php';
                             window.onload = function() {
                             document.getElementById('preview').style.display = 'none';
                             };
+
                             function readURL(input) {
+                                //Validasi Size Upload Image
+                                var uploadField = document.getElementById("image_uploads");
+
+                                uploadField.onchange = function() {
+                                    if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                        alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                        this.value = "";
+                                    };
+                                };
+
                                 if (input.files && input.files[0]) {
                                     var reader = new FileReader();
                                     document.getElementById('oldpic').style.display = 'none';
@@ -288,27 +358,27 @@ include 'hak_akses.php';
                         <label for="status_aktif">Status</label><br>
                             <?php if ($rowpaket->status_aktif == "Aktif") { ?>
                             <div class="form-check form-check-inline">
-                                <input checked type="radio" id="rb_status_aktif" name="status_aktif" value="<?= $rowpaket->status_aktif ?>" class="form-check-input">
-                                <label class="form-check-label" for="rb_status_aktif" style="color: green">
+                                <input checked type="radio" id="status_aktif" name="status_aktif" value="<?= $rowpaket->status_aktif ?>" class="form-check-input">
+                                <label class="form-check-label" for="status_aktif" style="color: green">
                                     Aktif
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input type="radio" id="rb_status_tidak_aktif" name="status_aktif" value="Tidak Aktif" class="form-check-input">
-                                <label class="form-check-label" for="rb_status_tidak_aktif" style="color: gray">
+                                <input type="radio" id="status_tidak_aktif" name="status_aktif" value="Tidak Aktif" class="form-check-input">
+                                <label class="form-check-label" for="status_tidak_aktif" style="color: gray">
                                     Tidak Aktif
                                 </label>
                             </div>
                             <?php } elseif ($rowpaket->status_aktif == "Tidak Aktif") { ?>
                             <div class="form-check form-check-inline">
-                                <input type="radio" id="rb_status_aktif" name="status_aktif" value="Aktif" class="form-check-input">
-                                <label class="form-check-label" for="rb_status_aktif" style="color: green">
+                                <input type="radio" id="status_aktif" name="status_aktif" value="Aktif" class="form-check-input">
+                                <label class="form-check-label" for="status_aktif" style="color: green">
                                     Aktif
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input checked type="radio" id="rb_status_tidak_aktif" name="status_aktif" value="<?= $rowpaket->status_aktif ?>" class="form-check-input">
-                                <label class="form-check-label" for="rb_status_tidak_aktif" style="color: gray">
+                                <input checked type="radio" id="status_tidak_aktif" name="status_aktif" value="<?= $rowpaket->status_aktif ?>" class="form-check-input">
+                                <label class="form-check-label" for="status_tidak_aktif" style="color: gray">
                                     Tidak Aktif
                                 </label>
                             </div>

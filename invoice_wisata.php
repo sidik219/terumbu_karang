@@ -104,13 +104,25 @@ class myPDF extends FPDF{
             $this->Line(10, 55, 286, 55); //Line Tengah
 
             $this->Ln(10);
-            $this->Cell(55, 5, 'Nama Rekening Pengelola', 0, 0);
-            $this->Cell(117, 5, ': '.$rowitem->nama_rekening, 0, 1);
-            $this->Cell(55, 5, 'Bank Pengelola', 0, 0);
-            $this->Cell(117, 5, ': '.$rowitem->nama_bank, 0, 1);
-            $this->Cell(55, 5, 'Nomor Rekening Pengelola ', 0, 0);
-            $this->Cell(117, 5, ': '.$rowitem->nomor_rekening, 0, 1);
+            // Rekening Bersama
+            $id_rekening_bersama = $rowitem->id_rekening_bersama;
 
+            $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank 
+                                        WHERE id_rekening_bank = :id_rekening_bersama';
+
+            $stmt = $pdo->prepare($sqlviewrekeningbersama);
+            $stmt->execute(['id_rekening_bersama' => $id_rekening_bersama]);
+            $rowrekening = $stmt->fetchAll();
+
+            foreach ($rowrekening as $rekening) {
+            $this->Cell(55, 5, 'Nama Rekening Pengelola', 0, 0);
+            $this->Cell(117, 5, ': '.$rekening->nama_pemilik_rekening, 0, 1);
+            $this->Cell(55, 5, 'Nama Bank Pengelola', 0, 0);
+            $this->Cell(117, 5, ': '.$rekening->nama_bank, 0, 1);
+            $this->Cell(55, 5, 'Nomor Rekening Pengelola ', 0, 0);
+            $this->Cell(117, 5, ': '.$rekening->nomor_rekening, 0, 1);
+            }
+            
             $this->Line(10, 85, 286, 85); //Line Bawah
 
             $this->Ln(10);
