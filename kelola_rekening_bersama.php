@@ -5,17 +5,23 @@ if (!($_SESSION['level_user'] == 4 || $_SESSION['level_user'] == 2)) {
 }
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
-
+// var_dump($_SESSION);
+// die;
 if ($_SESSION['level_user'] == 4) {
+  // $id_wilayah = ' NOT NULL';
   $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_rekening_bank.id_wilayah';
-  $id_wilayah = ' NOT NULL';
+  $stmt = $pdo->prepare($sqlviewrekeningbersama);
+  // $stmt->execute(['id_wilayah' => $id_wilayah]);
+  $stmt->execute();
+  $rowdetail = $stmt->fetchAll();
 } else {
   $id_wilayah = $_SESSION['id_wilayah_dikelola'];
   $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_rekening_bank.id_wilayah WHERE t_rekening_bank.id_wilayah = :id_wilayah';
+  $stmt = $pdo->prepare($sqlviewrekeningbersama);
+  $stmt->execute(['id_wilayah' => $id_wilayah]);
+  // $stmt->execute();
+  $rowdetail = $stmt->fetchAll();
 }
-$stmt = $pdo->prepare($sqlviewrekeningbersama);
-$stmt->execute(['id_wilayah' => $id_wilayah]);
-$rowdetail = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -89,7 +95,8 @@ $rowdetail = $stmt->fetchAll();
       <div class="content-header pb-0">
         <div class="container-fluid">
           <a href="kelola_lokasi.php"><button class="btn btn-warning btn-back mb-2" type="button"><i class="fas fa-angle-left"></i> Kembali</button></a>
-          <h4><span class="align-middle font-weight-bold">Kelola Rekening Bersama</span></h4>
+          <?php if (!($_SESSION['level_user'] == 4)) : ?>
+            <h4><span class="align-middle font-weight-bold">Kelola Rekening Bersama</span></h4>
         </div>
         <!-- /.container-fluid -->
       </div>
@@ -103,6 +110,19 @@ $rowdetail = $stmt->fetchAll();
             <div class="col text-center">
               <span onclick="//addDocInput()" data-toggle="modal" data-target=".tambah-modal" class="btn btn-blue btn btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah Rekening</span>
             </div>
+          <?php else : ?>
+            <h4><span class="align-middle font-weight-bold">Daftar Rekening Bersama</span></h4>
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+          <div class="container-fluid">
+            <div class="terumbu-karang form-group mt-0">
+              <label class="text-muted text-sm d-block mt-0">rekening yang digunakan sebagai metode pembayaran donasi dan reservasi wisata</label>
+            <?php endif ?>
             <?php
             if (!empty($_GET['status'])) {
               if ($_GET['status'] == 'deletesuccess') {
@@ -120,7 +140,7 @@ $rowdetail = $stmt->fetchAll();
                   <th scope="col">Nomor Rekening</th>
                   <th scope="col">Bank</th>
                   <th scope="col">Wilayah</th>
-                  <th class="" scope="col">Aksi</th>
+                  <th scope="col">Aksi</th>
                 </tr>
               </thead>
               <tbody id="tbody-append">
@@ -133,10 +153,12 @@ $rowdetail = $stmt->fetchAll();
                     <td><?= $rowitem->nomor_rekening ?></td>
                     <td><?= $rowitem->nama_bank ?></td>
                     <td><?= $rowitem->nama_wilayah . " (ID " . $rowitem->id_wilayah . ")" ?></td>
-                    <td class="">
-                      <a href="#" onclick='loadRekening(this.dataset.id_rekening_bank)' data-nama_jenis='<?= $rowitem->nama_pemilik_rekening ?>' data-id_rekening_bank='<?= $rowitem->id_rekening_bank ?>' data-nomor_rekening='<?= $rowitem->nomor_rekening ?>' class="fas fa-edit mr-3 btn btn-act"></a>
-                      <a onclick="return konfirmasiHapusPengadaan(event)" href="hapus.php?type=rekening_bersama&id_rekening_bank=<?= $rowitem->id_rekening_bank ?>" onclick="verivikasi()" class="far fa-trash-alt btn btn-act"></a>
-                    </td>
+                    <?php if (!($_SESSION['level_user'] == 4)) : ?>
+                      <td class="">
+                        <a href="#" onclick='loadRekening(this.dataset.id_rekening_bank)' data-nama_jenis='<?= $rowitem->nama_pemilik_rekening ?>' data-id_rekening_bank='<?= $rowitem->id_rekening_bank ?>' data-nomor_rekening='<?= $rowitem->nomor_rekening ?>' class="fas fa-edit mr-3 btn btn-act"></a>
+                        <a onclick="return konfirmasiHapusPengadaan(event)" href="hapus.php?type=rekening_bersama&id_rekening_bank=<?= $rowitem->id_rekening_bank ?>" onclick="verivikasi()" class="far fa-trash-alt btn btn-act"></a>
+                      </td>
+                    <?php endif ?>
                   </tr>
                 <?php } ?>
               </tbody>
@@ -163,8 +185,8 @@ $rowdetail = $stmt->fetchAll();
             <!-- BUTTON SUBMIT -->
 
 
-      </section>
-      <!-- /.Left col -->
+        </section>
+        <!-- /.Left col -->
     </div>
     <!-- /.row (main row) -->
   </div>
