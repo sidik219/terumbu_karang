@@ -84,15 +84,49 @@ if (isset($_POST['submit'])) {
 
 
             $sqlinsertdetailpemeliharaan = "UPDATE t_batch
-                                                    SET tanggal_pemeliharaan_terakhir = :tanggal_pemeliharaan_terakhir
+                                                    SET tanggal_pemeliharaan_terakhir = :tanggal_pemeliharaan_terakhir, 
+                                                        jumlah_pemeliharaan_batch = jumlah_pemeliharaan_batch + 1
                                                     WHERE id_batch = :id_batch";
 
             $stmt = $pdo->prepare($sqlinsertdetailpemeliharaan);
             $stmt->execute(['tanggal_pemeliharaan_terakhir' => $tanggal_pemeliharaan_terakhir, 'id_batch' => $id_batch]);
+
+
+            //Tambah 1 jumlah pemeliharaan donasi dalam detail_batch
+            $sqlviewdetailbatch = 'SELECT * FROM t_donasi
+                                    LEFT JOIN t_detail_batch ON t_donasi.id_batch = t_detail_batch.id_batch
+                                    WHERE t_donasi.id_batch = :id_batch
+                                    AND t_donasi.id_donasi = t_detail_batch.id_donasi';
+            $stmt = $pdo->prepare($sqlviewdetailbatch);
+            $stmt->execute(['id_batch' => $id_batch]);
+            $rowdetailbatch = $stmt->fetchAll();
+
+            foreach ($rowdetailbatch as $detailbatch) {
+                $jumlah_pemeliharaan = $detailbatch->jumlah_pemeliharaan + 1;
+
+                $sqldonasi = "UPDATE t_donasi
+                        SET jumlah_pemeliharaan = jumlah_pemeliharaan + 1
+                        WHERE id_donasi = :id_donasi";
+
+                $stmt = $pdo->prepare($sqldonasi);
+                $stmt->execute(['id_donasi' => $detailbatch->id_donasi]);
+
+                if($jumlah_pemeliharaan > 4){
+                    $sqldonasi = "UPDATE t_donasi
+                        SET id_status_donasi = 6
+                        WHERE id_donasi = :id_donasi";
+
+                $stmt = $pdo->prepare($sqldonasi);
+                $stmt->execute(['id_donasi' => $detailbatch->id_donasi]);
+                }
+            }
         } //END UPDATE DATA TIAP BATCH
 
+        
+
+
         $sqlhapushistorydonasi = 'DELETE FROM t_history_pemeliharaan
-                                              WHERE id_pemeliharaan = :id_pemeliharaan';
+                                WHERE id_pemeliharaan = :id_pemeliharaan';
 
         $stmt = $pdo->prepare($sqlhapushistorydonasi);
         $stmt->execute(['id_pemeliharaan' => $id_pemeliharaan]);
@@ -129,7 +163,14 @@ if (isset($_POST['submit'])) {
                 }
             } //---image upload end
 
+            //Hapus entry pemeliharaan id_detail_donasi sebelumnya
+            $sql = 'DELETE FROM t_history_pemeliharaan
+            WHERE id_detail_donasi = :id_detail_donasi';
 
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_detail_donasi' => $id_detail_donasi]);
+
+            //Insert entry pemeliharaan 
             $sqlhistorydonasi = "INSERT INTO t_history_pemeliharaan
                                 (id_detail_donasi, kondisi_terumbu, ukuran_terumbu, foto_pemeliharaan , tanggal_pemeliharaan, id_pemeliharaan )
                                 VALUES (:id_detail_donasi, :kondisi_terumbu, :ukuran_terumbu, :foto_pemeliharaan, :tanggal_pemeliharaan, :id_pemeliharaan) ";
@@ -400,8 +441,7 @@ function ageCalculator($dob)
                                                                                 <label for="tb_nama_jenis">Kondisi / Keterangan</label>
                                                                                 <!-- <input type="text" id="tb_kondisi" name="kondisi[]" class="form-control" placeholder="Deskripsi singkat..." value="<?php //echo empty($rowhistory[0]->kondisi_terumbu) ? '' : $rowhistory[0]->kondisi_terumbu; 
                                                                                                                                                                                                         ?>" required> -->
-                                                                                <select class="form-control" id="tb_nama_jenis" name="kondisi[]" <?php if($cekmati) echo ' disabled ' ?>;
-                                                                                                            ?> required>
+                                                                                <select class="form-control" id="tb_nama_jenis" name="kondisi[]" <?php if($cekmati) echo ' disabled ' ?> required>
                                                                                     <option value="" disabled>--Pilih Kondisi--</option>
                                                                                     <option value="Sangat Baik" <?php if (!empty($rowhistory->kondisi_terumbu)) {
                                                                                                                     if ($rowhistory->kondisi_terumbu == "Sangat Baik") echo ' selected ';

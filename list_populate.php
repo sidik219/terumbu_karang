@@ -219,13 +219,13 @@ if ($_POST['type'] == 'load_donasi' && !empty($_POST["id_lokasi"])) {
 //Load Daftar Batch berdasarkan id_lokasi
 if ($_POST['type'] == 'load_batch' && !empty($_POST["id_lokasi"])) {
     $id_lokasi = $_POST["id_lokasi"];
-    $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
+    $sqlviewbatch = 'SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman, jumlah_pemeliharaan_batch,
                       t_batch.update_status_batch_terakhir, t_batch.tanggal_pemeliharaan_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, status_cabut_label
                       FROM t_batch
                       LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
                       LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
                       LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch
-                      WHERE t_batch.id_lokasi = :id_lokasi AND status_cabut_label != 1
+                      WHERE t_batch.id_lokasi = :id_lokasi AND status_cabut_label != 1 AND jumlah_pemeliharaan_batch < 4
                       ORDER BY tanggal_pemeliharaan_terakhir';
     $stmt = $pdo->prepare($sqlviewbatch);
     $stmt->execute(['id_lokasi' => $_POST['id_lokasi']]);

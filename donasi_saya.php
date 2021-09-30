@@ -265,7 +265,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                         </div>
 
                                         <div class="mb-3">
-                                            <?php if ($rowitem->id_status_donasi >= 3 && $rowitem->id_status_donasi < 6) { ?>
+                                            <?php if ($rowitem->id_status_donasi >= 3 && $rowitem->id_status_donasi < 7) { ?>
                                                 <!-- Invoice -->
                                                 <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-file-invoice"></i> Invoice Donasi</span>
                                                 <br><a href="invoice_donasi.php?id_donasi=<?= $rowitem->id_donasi ?>" class="btn btn-primary text-sm btn-sm userinfo">
@@ -288,7 +288,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                             <br>
                                             <p class="badge badge-warning"><?= $rowitem->nama_status_donasi ?></p>
 
-                                            <?php echo ($rowitem->id_status_donasi <= 2 || $rowitem->id_status_donasi == 6) ? '<a href="edit_donasi_saya.php?id_donasi=' . $rowitem->id_donasi . '" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Donasi</a>' : ''; ?>
+                                            <?php echo ($rowitem->id_status_donasi <= 2 || $rowitem->id_status_donasi == 7) ? '<a href="edit_donasi_saya.php?id_donasi=' . $rowitem->id_donasi . '" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Donasi</a>' : ''; ?>
 
                                             <br><small class="text-muted"><b>Update Terakhir</b>
                                                 <br><?= strftime('%A, %e %B %Y', $truedate) . '<br> (' . ageCalculator($rowitem->update_terakhir) . ')'; ?></small>
@@ -296,7 +296,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                         </div>
 
 
-                                        <?php if ($rowitem->id_status_donasi >= 3 && $rowitem->id_status_donasi < 6 && $rowitem->tanggal_penanaman != NULL) { ?>
+                                        <?php if ($rowitem->id_status_donasi >= 3 && $rowitem->id_status_donasi < 7 && $rowitem->tanggal_penanaman != NULL) { ?>
                                             <div class="mb-3">
                                                 <span class="font-weight-bold"><i class="nav-icon text-success fas fas fa-calendar-alt"></i> Tanggal Penanaman</span>
                                                 <br><?= strftime('%A, %e %B %Y', strtotime($rowitem->tanggal_penanaman)) ?>
@@ -328,9 +328,11 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                 </div><!-- First Row -->
 
                                 <div class="row">
-                                    <div class="col-12 p-0">
+                                    <div class="col-12 p-0 <?php if($rowitem->id_status_donasi == 7) {echo ' d-none ';} ?>">
                                         <ul class="progress-indicator <?= (isMobile()) ? ' stacked ' : '' ?> shadow-sm">
-                                                <?php foreach($rowstatus as $status){ $id_status_donasi = $rowitem->id_status_donasi;?>
+                                                <?php foreach($rowstatus as $status){ 
+                                                    $id_status_donasi = $rowitem->id_status_donasi;  
+                                                    if($status->id_status_donasi != 7){ ?>
                                                 <li class="<?php 
                                                 if($id_status_donasi == $status->id_status_donasi) 
                                                     echo ' active ';
@@ -341,16 +343,29 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                                 ?>">
                                                 <span class="bubble"></span>
                                                     <span class=" <?= (isMobile()) ? ' stacked-text ' : '' ?> ">                                                        
-                                                        <?=$status->nama_status_donasi ?> 
+                                                        <?=$status->nama_status_donasi?> 
                                                         <br><small class="font-weight-bold">
-                                                            <?php if($id_status_donasi == $status->id_status_donasi) 
-                                                                echo '(Aktif)';
+                                                        
+                                                            <?php 
+                                                            if ($id_status_donasi == $status->id_status_donasi){
+                                                                if($id_status_donasi == 5){
+                                                                    if($id_status_donasi == $status->id_status_donasi && $rowitem->jumlah_pemeliharaan == 0) 
+                                                                        echo '(Persiapan tahap pemeliharaan)';
+                                                                    else if($id_status_donasi == $status->id_status_donasi && $rowitem->jumlah_pemeliharaan != 0)
+                                                                        echo '(Pemeliharaan ke: '. $rowitem->jumlah_pemeliharaan.')';
+                                                                    }
+                                                                    else
+                                                                        echo ('(Aktif)');
+                                                            
+                                                            }
+                                                            
                                                             ?>
                                                         </small>
                                                     </span>
                                                 </li>
                                                 
-                                                <?php } ?>
+                                                <?php } 
+                                                    } ?>
                                         </ul>
                                     </div>
                                 </div>

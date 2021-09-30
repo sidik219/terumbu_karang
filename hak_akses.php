@@ -304,6 +304,13 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </a>
                 </li>
 
+                   <li class="nav-item"> <!-- Wilayah & Pusat -->
+                    <a href="laporan_kondisi.php" class="nav-link ' . ('laporan_kondisi.php' == $url_sekarang   ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-heartbeat"></i>
+                            <p> Laporan Kondisi </p>
+                    </a>
+                </li>
+
                 <li class="nav-item"> <!-- Wilayah & Pusat -->
                     <a href="kelola_arsip_laporan_sebaran.php" class="nav-link ' . ('kelola_arsip_laporan_sebaran.php' == $url_sekarang || ('edit_arsip_luas_wilayah.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
                             <i class="nav-icon fas fa-history"></i>

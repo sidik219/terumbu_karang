@@ -38,12 +38,12 @@ if (isset($_GET['id_status_donasi'])) {
                   LEFT JOIN t_status_pengadaan_bibit ON t_donasi.id_status_pengadaan_bibit = t_status_pengadaan_bibit.id_status_pengadaan_bibit
                   WHERE t_donasi.id_status_donasi = 2  ' . $extra_query . '
                   ORDER BY id_donasi DESC';
-    } elseif ($id_status_donasi == 6) { //donasi bermasalah
+    } elseif ($id_status_donasi == 7) { //donasi bermasalah
         $sqlviewdonasi = 'SELECT * FROM t_donasi
                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
                   LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
                   LEFT JOIN t_status_pengadaan_bibit ON t_donasi.id_status_pengadaan_bibit = t_status_pengadaan_bibit.id_status_pengadaan_bibit
-                  WHERE t_donasi.id_status_donasi = 6  ' . $extra_query . '
+                  WHERE t_donasi.id_status_donasi = 7  ' . $extra_query . '
                   ORDER BY id_donasi DESC';
     }
     $stmt = $pdo->prepare($sqlviewdonasi);
@@ -243,7 +243,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                     <a class="dropdown-item" href="kelola_donasi.php?id_status_donasi=1">Donasi Baru</a>
                                     <a class="dropdown-item" href="kelola_donasi.php?id_status_donasi=2">Perlu Verifikasi</a>
                                     <a class="dropdown-item" href="kelola_donasi.php?id_batch=isnull">Belum Masuk Batch</a>
-                                    <a class="dropdown-item" href="kelola_donasi.php?id_status_donasi=6">Bermasalah</a>
+                                    <a class="dropdown-item" href="kelola_donasi.php?id_status_donasi=7">Bermasalah</a>
                                 </div>
                             </div>
                         </div>
@@ -343,18 +343,20 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                 </tr>
 
                                 <tr>
-                                    <td colspan="6">
+                                    <td colspan="6 p-0">
                                         <!--collapse start & Progress bar steps-->
-                                        <div class="row  m-0 row-collapse">
-                                            <div class="col-3 cell detailcollapser<?= $rowitem->id_donasi ?>" data-toggle="collapse" data-target=".cell<?= $rowitem->id_donasi ?>, .contentall<?= $rowitem->id_donasi ?>">
+                                        <div class="row  m-0 row-collapse  shadow-sm">
+                                            <div class="col cell detailcollapser<?= $rowitem->id_donasi ?>" data-toggle="collapse" data-target=".cell<?= $rowitem->id_donasi ?>, .contentall<?= $rowitem->id_donasi ?>">
                                                 <p class="fielddetail<?= $rowitem->id_donasi ?> btn btn-act">
                                                     <i class="icon fas fa-chevron-down"></i>
                                                     Rincian Donasi
                                                 </p>
                                             </div>
                                             <div class="col-9">
-                                                <ul class="progress-indicator">
-                                                <?php foreach($rowstatus as $status){ $id_status_donasi = $rowitem->id_status_donasi;?>
+                                                <ul class="progress-indicator"> 
+                                                <?php foreach($rowstatus as $status){ 
+                                                    $id_status_donasi = $rowitem->id_status_donasi;  
+                                                    if($status->id_status_donasi != 7){ ?>
                                                 <li class="<?php 
                                                 if($id_status_donasi == $status->id_status_donasi) 
                                                     echo ' active ';
@@ -363,15 +365,30 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                                 else
                                                     echo '  ';
                                                 ?>">
-                                                    <span class="bubble"></span>
-                                                    <?=$status->nama_status_donasi ?> 
-                                                    <br><small class="font-weight-bold">
-                                                        <?php if($id_status_donasi == $status->id_status_donasi) 
-                                                            echo '(Aktif)';
-                                                        ?>
-                                                    </small>
+                                                <span class="bubble"></span>
+                                                    <span>                                                        
+                                                        <?=$status->nama_status_donasi?> 
+                                                        <br><small class="font-weight-bold">
+                                                            <?php 
+                                                            if ($id_status_donasi == $status->id_status_donasi){
+                                                                if($id_status_donasi == 5){ //dalam tahap pemeliharaan
+                                                                    if($id_status_donasi == $status->id_status_donasi && $rowitem->jumlah_pemeliharaan == 0) //belum pernah pemeliharaan
+                                                                        echo '(Persiapan tahap pemeliharaan)';
+                                                                    else if($id_status_donasi == $status->id_status_donasi && $rowitem->jumlah_pemeliharaan != 0)
+                                                                        echo '(Pemeliharaan ke: '. $rowitem->jumlah_pemeliharaan.')';
+                                                                    }
+                                                                    else
+                                                                        echo ('(Aktif)'); //id status lain
+                                                            
+                                                            }
+                                                            
+                                                            ?>
+                                                        </small>
+                                                    </span>
                                                 </li>
-                                                <?php } ?>
+                                                
+                                                <?php } 
+                                                    } ?>
                                         </ul>
                                             </div>
                                             <div class="col-12 cell<?= $rowitem->id_donasi ?> collapse contentall<?= $rowitem->id_donasi ?>    border rounded shadow-sm p-3">

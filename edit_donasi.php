@@ -181,7 +181,7 @@ if (isset($_POST['submit_tolak'])) {
                         WHERE id_donasi = :id_donasi";
 
     $stmt = $pdo->prepare($sqldonasi);
-    $stmt->execute(['id_donasi' => $id_donasi, 'id_status_donasi' => 6, 'update_terakhir' => $tanggal_update_status]);
+    $stmt->execute(['id_donasi' => $id_donasi, 'id_status_donasi' => 7, 'update_terakhir' => $tanggal_update_status]);
 
     $affectedrows = $stmt->rowCount();
     if ($affectedrows == '0') {
@@ -417,7 +417,7 @@ if (isset($_POST['submit_tolak'])) {
                                         </script>
                                     </div>
 
-                                    <?php if (($rowitem->id_status_donasi == 2) || (($rowitem->id_status_donasi) == 6)) { ?>
+                                    <?php if (($rowitem->id_status_donasi == 2) || (($rowitem->id_status_donasi) == 7)) { ?>
                                         <form name="submit_terima" method="POST">
                                             <button type="submit" name="submit_terima" value="terima" class="btn btn-success rounded-pill mt-2"><i class="fas fa-check-circle"></i> Terima</button></p>
                                         </form>

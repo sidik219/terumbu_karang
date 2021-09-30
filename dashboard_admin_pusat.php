@@ -20,7 +20,7 @@ $sqlviewdonasi = 'SELECT (SELECT COUNT(t_donasi.id_status_donasi)
                 WHERE t_donasi.id_batch IS NULL AND t_donasi.id_status_donasi = 3 ) AS donasi_tanpa_batch,
                 (SELECT COUNT(t_donasi.id_status_donasi)
                                 FROM t_donasi
-                WHERE t_donasi.id_status_donasi = 6) AS donasi_bermasalah';
+                WHERE t_donasi.id_status_donasi = 7) AS donasi_bermasalah';
 $stmt = $pdo->prepare($sqlviewdonasi);
 $stmt->execute();
 $rowdonasi = $stmt->fetch();
@@ -220,7 +220,7 @@ $rowperlupml = $stmt->fetch();
                       <div class="alert dash-danger m-1 border-0" role="alert">
                           <div class="row">
                             <div class="col-7">Donasi Bermasalah <span class="badge text-sm badge-pill badge-danger"><?= $rowdonasi->donasi_bermasalah?></span></div>
-                            <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=6" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
+                            <div class="col text-right"><a href="kelola_donasi.php?id_status_donasi=7" class="btn btn-act text-dark text-decoration-none">Lihat</a></div>
                           </div>
                       </div>
                       </div>
