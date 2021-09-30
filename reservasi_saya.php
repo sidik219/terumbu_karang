@@ -210,7 +210,7 @@ function alertPembayaran($dob)
                                                 <?= strftime('%A, %d %B %Y', $reservasidate); ?><br>
 
                                                 <?php if ($rowitem->id_status_reservasi_wisata == 1) {
-                                                    echo alertPembayaran($rowitem->tgl_reservasi);
+                                                    echo alertPembayaran($rowitem->tanggal_pesan);
                                                 } ?>
                                             </div>
                                             <div class="mb-3">
@@ -297,27 +297,27 @@ function alertPembayaran($dob)
                                     <div class="row mt-5 mb-5">
                                         <div class="col-12">
                                             <ul class="progress-indicator shadow-sm">
-                                                <?php 
-                                                foreach ($rowstatus as $status) { 
-                                                $id_status_reservasi_wisata = $rowitem->id_status_reservasi_wisata;
+                                                <?php
+                                                foreach ($rowstatus as $status) {
+                                                    $id_status_reservasi_wisata = $rowitem->id_status_reservasi_wisata;
                                                 ?>
-                                                <li class="<?php 
-                                                if($id_status_reservasi_wisata == $status->id_status_reservasi_wisata) 
-                                                    echo ' active ';
-                                                else if ($id_status_reservasi_wisata > $status->id_status_reservasi_wisata) 
-                                                    echo ' completed ';
-                                                else
-                                                    echo '  ';
-                                                ?>">
-                                                    <span class="bubble"></span>
-                                                    <?=$status->nama_status_reservasi_wisata ?> 
-                                                    <br><small class="font-weight-bold">
-                                                        <?php 
-                                                        if($id_status_reservasi_wisata == $status->id_status_reservasi_wisata) 
-                                                            echo '(Aktif)';
-                                                        ?>
-                                                    </small>
-                                                </li>
+                                                    <li class="<?php
+                                                                if ($id_status_reservasi_wisata == $status->id_status_reservasi_wisata)
+                                                                    echo ' active ';
+                                                                else if ($id_status_reservasi_wisata > $status->id_status_reservasi_wisata)
+                                                                    echo ' completed ';
+                                                                else
+                                                                    echo '  ';
+                                                                ?>">
+                                                        <span class="bubble"></span>
+                                                        <?= $status->nama_status_reservasi_wisata ?>
+                                                        <br><small class="font-weight-bold">
+                                                            <?php
+                                                            if ($id_status_reservasi_wisata == $status->id_status_reservasi_wisata)
+                                                                echo '(Aktif)';
+                                                            ?>
+                                                        </small>
+                                                    </li>
                                                 <?php } ?>
                                             </ul>
                                         </div>

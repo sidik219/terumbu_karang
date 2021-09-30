@@ -385,7 +385,7 @@ if (isset($_POST['submit'])) {
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah_peserta">Jumlah Peserta</label>
-                                    <input type="number" id="jumlah_peserta" name="jumlah_peserta" value="1" min="1" max='200' oninput="myFunction()" class="form-control" required>
+                                    <input type="number" id="jumlah_peserta" name="jumlah_peserta" min="1" max='200' oninput="myFunction()" class="form-control" required>
                                 </div>
                                 <!-- End Area Input Data -->
 
