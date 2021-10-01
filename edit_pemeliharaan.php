@@ -441,7 +441,7 @@ function ageCalculator($dob)
                                                                                 <label for="tb_nama_jenis">Kondisi / Keterangan</label>
                                                                                 <!-- <input type="text" id="tb_kondisi" name="kondisi[]" class="form-control" placeholder="Deskripsi singkat..." value="<?php //echo empty($rowhistory[0]->kondisi_terumbu) ? '' : $rowhistory[0]->kondisi_terumbu; 
                                                                                                                                                                                                         ?>" required> -->
-                                                                                <select class="form-control" id="tb_nama_jenis" name="kondisi[]" <?php if($cekmati) echo ' disabled ' ?> required>
+                                                                                <select class="form-control" id="tb_nama_jenis" name="kondisi[]" <?php if($cekmati) echo ' readonly ' ?> required>
                                                                                     <option value="" disabled>--Pilih Kondisi--</option>
                                                                                     <option value="Sangat Baik" <?php if (!empty($rowhistory->kondisi_terumbu)) {
                                                                                                                     if ($rowhistory->kondisi_terumbu == "Sangat Baik") echo ' selected ';
@@ -453,7 +453,7 @@ function ageCalculator($dob)
                                                                                                                 if ($rowhistory->kondisi_terumbu == "Rusak") echo ' selected ';
                                                                                                             } ?>>Rusak</option>
                                                                                     <option value="Mati" <?php if (!empty($rowhistory->kondisi_terumbu)) {
-                                                                                                                if ($rowhistory->kondisi_terumbu == "Mati") echo ' selected';
+                                                                                                                if ($rowhistory->kondisi_terumbu == "Mati" || ($cekmati)) echo ' selected';
                                                                                                             } ?>>Mati</option>
                                                                                 </select>
                                                                             </div>
@@ -462,9 +462,9 @@ function ageCalculator($dob)
                                                                         <div class="col form-group">
                                                                             <label for="tb_nama_jenis">Ukuran Terumbu (meter persegi)</label>
                                                                             <div class="row">
-                                                                                <div class="col-6"><input type="number" step="0.01" id="ukuran_terumbu" name="ukuran_terumbu[]" value=<?php if (!empty($rowhistory->ukuran_terumbu)) {
+                                                                                <div class="col-6"><input type="number" step="0.01" id="ukuran_terumbu" name="ukuran_terumbu[]" value="<?php if (!empty($rowhistory->ukuran_terumbu)) {
                                                                                                                                                                                             echo $rowhistory->ukuran_terumbu;
-                                                                                                                                                                                        } ?> class="form-control number-input" <?php if($cekmati) echo ' disabled ' ?>
+                                                                                                                                                                                        } ?>" class="form-control number-input" <?php if($cekmati) echo ' readonly ' ?>
                                                                                                             required /></div>
                                                                                 <div class="col-2">m²</div>
                                                                             </div>

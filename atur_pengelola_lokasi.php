@@ -188,7 +188,7 @@ if (isset($_POST['submit'])) {
                         ?>
 
                         <form method="POST" action="" enctype="multipart/form-data" onSubmit="window.location.reload()">
-                            <label class="text-muted text-sm d-block">Pengelola Lokasi bertugas menangani donasi, wisata, dan memasukkan data luas titik</label>
+                            <label class="text-muted text-sm d-block"><i class="fas text-primary fa-info-circle"></i> Pengelola Lokasi bertugas menangani donasi, wisata, dan memasukkan data luas titik</label>
                             <div class="col">
                                 <div class="mt-3">
                                     <label for="dd_id_wilayah ">User Kandidat</label>

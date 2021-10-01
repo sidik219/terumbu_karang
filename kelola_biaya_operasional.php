@@ -157,7 +157,7 @@ $id_lokasi = $_GET['id_lokasi'];
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                <label class="text-muted text-sm d-block">Tentukan biaya operasional yang dibutuhkan untuk pemeliharaan terumbu karang</label>
+                <label class="text-muted text-sm d-block"><i class="fas text-primary fa-info-circle"></i> Tentukan biaya operasional yang dibutuhkan untuk pemeliharaan terumbu karang</label>
                       <div class="col text-center">
                                 <span onclick="//addDocInput()" data-toggle="modal" data-target=".tambah-modal" class="btn btn-blue btn-sm btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah Biaya Operasional</span>
                               </div>
@@ -196,7 +196,7 @@ $id_lokasi = $_GET['id_lokasi'];
                                 <th scope="col"></th>
                                 <th scope="col">Kapasitas Kapal: <?= $rowbiaya->kapasitas_kapal ?></th>
                                 <th scope="col">
-                                  <a href="edit_lokasi.php?id_lokasi=<?=$id_lokasi?>" class="fas fa-edit mr-3 btn btn-act">Ubah Kapasitas Kapal</a>
+                                  <a href="edit_lokasi.php?id_lokasi=<?=$id_lokasi?>" class="mr-3 btn btn-act"><i class="fas fa-edit"></i> Ubah Kapasitas Kapal</a>
                                </th>
                             </tr>
                           </thead>
@@ -210,7 +210,7 @@ $id_lokasi = $_GET['id_lokasi'];
 
                 <div class="form-group">
                         <label for="num_biaya_pergantian">Biaya Pemeliharaan</label>
-                        <label class="text-muted text-sm d-block">Biaya pemeliharaan akan ditambahkan ke harga patokan terumbu karang 
+                        <label class="text-muted text-sm d-block"><i class="fas text-primary fa-info-circle"></i> Biaya pemeliharaan akan ditambahkan ke harga patokan terumbu karang 
                         untuk menutup biaya operasional. Dihitung dari total biaya operasional dibagi kapasitas kapal</label>
                         <?= ($rowbiaya->kapasitas_kapal >= 1) ? "<label class='text-sm d-block'>Biaya minimum agar Balik Modal : Rp. ".number_format($biaya_rekomendasi)." </label>" : "" ?>
                         <input type="hidden" id="biaya_pergantian_number2" name="biaya_pemeliharaan" value="<?=$rowbiaya->biaya_pemeliharaan?>">

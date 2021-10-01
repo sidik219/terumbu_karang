@@ -181,7 +181,7 @@ if (isset($_POST['submit'])) {
                         }
                         ?>
                         <form method="POST" action="" enctype="multipart/form-data">
-                            <label class="text-muted text-sm d-block">Pengelola Wilayah bertugas memilih pengelola lokasi, menginput dan mengedit data lokasi baru</label>
+                            <label class="text-muted text-sm d-block"><i class="fas text-primary fa-info-circle"></i> Pengelola Wilayah bertugas memilih pengelola lokasi, menginput dan mengedit data lokasi baru</label>
                             <div class="col">
                                 <div class="mt-3">
                                     <label for="dd_id_wilayah ">User Kandidat</label>

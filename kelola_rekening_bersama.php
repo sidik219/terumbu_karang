@@ -106,7 +106,7 @@ if ($_SESSION['level_user'] == 4) {
       <section class="content">
         <div class="container-fluid">
           <div class="terumbu-karang form-group mt-0">
-            <label class="text-muted text-sm d-block mt-0">Tentukan rekening yang digunakan sebagai metode pembayaran donasi dan reservasi wisata</label>
+            <label class="text-muted text-sm d-block mt-0"><i class="fas text-primary fa-info-circle"></i> Tentukan rekening yang digunakan sebagai metode pembayaran donasi dan reservasi wisata</label>
             <div class="col text-center">
               <span onclick="//addDocInput()" data-toggle="modal" data-target=".tambah-modal" class="btn btn-blue btn btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah Rekening</span>
             </div>

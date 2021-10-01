@@ -174,7 +174,7 @@ if (isset($_POST['submit_biaya'])) {
           <div class="terumbu-karang form-group mt-0">
 
             <label for="num_biaya_pergantian  ">Terumbu Karang yang Disediakan</label>
-            <label class="text-muted text-sm d-block">Tentukan Terumbu karang yang dapat dipilih donatur</label>
+            <label class="text-muted text-sm d-block"><i class="fas text-primary fa-info-circle"></i> Tentukan Terumbu karang yang dapat dipilih donatur</label>
             <div class="col text-center">
               <span onclick="//addDocInput()" data-toggle="modal" data-target=".tambah-modal" class="btn btn-blue btn btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah Terumbu</span>
             </div>
