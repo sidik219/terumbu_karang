@@ -139,7 +139,15 @@ $id_lokasi = $_GET['id_lokasi'];
             <!-- Content Header (Page header) -->
             <div class="content-header pb-0">
                 <div class="container-fluid">
-                      <a href="kelola_lokasi.php"><button class="btn btn-warning btn-back mb-1" type="button"><i class="fas fa-angle-left"></i> Kembali</button></a>
+                    <div class="row">
+                    <div class="col">
+                        <a href="kelola_lokasi.php"><button class="btn btn-warning btn-back mb-1" type="button"><i class="fas fa-angle-left"></i> Kembali</button></a>
+                    </div>
+                    <div class="col"><a class="btn btn-outline-success float-right font-weight-bold" href="kelola_harga_terumbu.php?id_lokasi=<?=$id_lokasi?>">
+                        <i class="icon fas fa-chevron-right"></i><i class="icon fas fa-chevron-right"></i> Kelola Pilihan Terumbu Karang yang Disediakan</a>
+                    </div>
+                </div>
+                      
                 <h5><span class="align-middle font-small font-weight-bold">Kelola Biaya Operasional</span></h5>
                 </div>
                 <!-- /.container-fluid -->

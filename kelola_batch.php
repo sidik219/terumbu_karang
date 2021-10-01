@@ -338,9 +338,9 @@ else{
                               </td>
                               <td>
                                 <button type="button" class="btn btn-act">
-                                <a href="edit_batch.php?id_batch=<?=$batch->id_batch?>" class="fas fa-edit"></a>
+                                <a href="edit_batch.php?id_batch=<?=$batch->id_batch?>"><i class="fas fa-edit"></i> Perbarui Data Batch</a>
                                 </button>
-                                <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
+                                <button type="button" class="btn btn-act  float-right"><i class="far fa-trash-alt"></i></button>
                               </td>
                           </tr>
                           <tr>

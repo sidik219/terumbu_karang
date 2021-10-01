@@ -247,7 +247,7 @@ function ageCalculator($dob)
 
                   </td>
                   <td>
-                    <a href="edit_pemeliharaan.php?id_pemeliharaan=<?= $pemeliharaan->id_pemeliharaan ?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                    <a href="edit_pemeliharaan.php?id_pemeliharaan=<?= $pemeliharaan->id_pemeliharaan ?>" class="mr-3 btn btn-act"> <i class="fas fa-edit"></i> Input Kondisi Terumbu saat Pemeliharaan</a>
                     <!-- <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button> -->
                   </td>
                 </tr>

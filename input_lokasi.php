@@ -31,7 +31,7 @@ if ($level_user == 2) {
 
 
 if (isset($_POST['submit'])) {
-    if ($_POST['submit'] == 'Simpan') {
+    if ($_POST['submit'] == 'Simpan' || $_POST['submit'] == 'SimpanLanjut') {
         $id_wilayah = $_POST['dd_id_wilayah'];
         $nama_lokasi        = $_POST['tb_nama_lokasi'];
         $luas_lokasi        = $_POST['num_luas_lokasi'];
@@ -47,6 +47,8 @@ if (isset($_POST['submit'])) {
         $randomstring = substr(md5(rand()), 0, 7);
         $kapasitas_kapal = $_POST['kapasitas_kapal'];
 
+        // echo '<script> alert('.$kapasitas_kapal.');</script>';
+
         //Image upload
         if ($_FILES["image_uploads"]["size"] == 0) {
             $foto_lokasi = "images/image_default.jpg";
@@ -61,8 +63,8 @@ if (isset($_POST['submit'])) {
         $sqllokasi = "INSERT INTO t_lokasi
                             (id_wilayah, nama_lokasi, deskripsi_lokasi, foto_lokasi, luas_lokasi, id_user_pengelola, kapasitas_kapal,
                             kontak_lokasi, nama_bank, nama_rekening, nomor_rekening, longitude, latitude, batas_hari_pembayaran)
-                            VALUES (:id_wilayah, :nama_lokasi, :deskripsi_lokasi, :foto_lokasi, :luas_lokasi, :kapasitas_kapal,
-                            :id_user_pengelola, :kontak_lokasi, :nama_bank, :nama_rekening, :nomor_rekening, :longitude, :latitude, :batas_hari_pembayaran)";
+                            VALUES (:id_wilayah, :nama_lokasi, :deskripsi_lokasi, :foto_lokasi, :luas_lokasi,
+                            :id_user_pengelola, :kapasitas_kapal, :kontak_lokasi, :nama_bank, :nama_rekening, :nomor_rekening, :longitude, :latitude, :batas_hari_pembayaran)";
 
         $stmt = $pdo->prepare($sqllokasi);
         $stmt->execute([
@@ -88,6 +90,10 @@ if (isset($_POST['submit'])) {
             //echo "HAHAHAAHA INSERT FAILED !";
         } else {
             //echo "HAHAHAAHA GREAT SUCCESSS !";
+            if ($_POST['submit'] == 'SimpanLanjut'){
+                header("Location: atur_pengelola_lokasi.php?id_lokasi=$last_lokasi_id");
+                return 1;
+            }
             header("Location: kelola_lokasi.php?status=addsuccess");
         }
     }
@@ -274,7 +280,10 @@ if (isset($_POST['submit'])) {
                         </div>
                         <br>
                         <p align="center">
-                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button>
+                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit mb-3">Simpan</button>
+                            <br>
+                            <button type="submit" name="submit" value="SimpanLanjut" class="btn btn-blue">
+                            <i class="icon fas fa-chevron-right"></i><i class="icon fas fa-chevron-right"></i> Simpan & Lanjut Pilih Calon Pengelola Lokasi</button>
                         </p>
                     </form>
                     <br><br>

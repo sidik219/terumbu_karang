@@ -333,9 +333,9 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                         <button type="button" class="btn btn-act <?php if (!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)) {
                                                                                         echo " d-none ";
                                                                                     } ?>">
-                                            <a href="edit_donasi.php?id_donasi=<?= $rowitem->id_donasi ?>" class="fas fa-edit"></a>
+                                            <a href="edit_donasi.php?id_donasi=<?= $rowitem->id_donasi ?>"><i class="fas fa-edit"></i><?= $level_user == 2 ? ' Verifikasi Bukti Donasi' : '' ?></a>
                                         </button>
-                                        <button type="button" class="btn btn-act <?php if (!($_SESSION['level_user'] == 4)) {
+                                        <button type="button" class="btn btn-act float-right <?php if (!($_SESSION['level_user'] == 4)) {
                                                                                         echo " d-none ";
                                                                                     } ?>"><i class="far fa-trash-alt"></i></button>
                                     </td>

@@ -152,8 +152,15 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="kelola_lokasi.php">
-                        < Kembali</a><br><br>
+                <div class="row">
+                    <div class="col"><a class="btn btn-outline-primary" href="kelola_lokasi.php">
+                        < Kembali</a></div>
+                    <div class="col"><a class="btn btn-outline-success float-right font-weight-bold" href="kelola_biaya_operasional.php?id_lokasi=<?=$id_lokasi?>">
+                        <i class="icon fas fa-chevron-right"></i><i class="icon fas fa-chevron-right"></i> Kelola Biaya Operasional</a>
+                    </div>
+                </div>
+                    
+                    <br><br>
                             <h3>Atur Pengelola Lokasi</h3>
                 </div>
                 <!-- /.container-fluid -->
