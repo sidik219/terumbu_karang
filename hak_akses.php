@@ -145,6 +145,13 @@ if (!$_SESSION['level_user']) { //Belum log in
                         <p> Laporan Donasi</p>
                     </a>
                 </li>
+
+                <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                    <a href="laporan_periode_wisata.php" class="nav-link  ' . ('laporan_periode_wisata.php' == $url_sekarang ? ' active ' : '') . ' ">
+                        <i class="nav-icon fas fa-file-invoice"></i>
+                        <p> Laporan Wisata</p>
+                    </a>
+                </li>
             ';
 
             echo $sidebar;
@@ -206,7 +213,13 @@ if (!$_SESSION['level_user']) { //Belum log in
                         <p> Laporan Donasi</p>
                     </a>
                 </li>
-                  
+
+                <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                    <a href="laporan_periode_wisata.php" class="nav-link  ' . ('laporan_periode_wisata.php' == $url_sekarang ? ' active ' : '') . ' ">
+                        <i class="nav-icon fas fa-file-invoice"></i>
+                        <p> Laporan Wisata</p>
+                    </a>
+                </li>
                 ';
 
             echo $sidebar;
@@ -318,13 +331,19 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </a>
                 </li>
 
+                <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                    <a href="laporan_periode_wisata.php" class="nav-link  ' . ('laporan_periode_wisata.php' == $url_sekarang ? ' active ' : '') . ' ">
+                        <i class="nav-icon fas fa-file-invoice"></i>
+                        <p> Laporan Wisata</p>
+                    </a>
+                </li>
+
                 <li class="nav-item"> <!-- Wilayah & Pusat -->
                     <a href="kelola_arsip_laporan_sebaran.php" class="nav-link ' . ('kelola_arsip_laporan_sebaran.php' == $url_sekarang || ('edit_arsip_luas_wilayah.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
                             <i class="nav-icon fas fa-history"></i>
                             <p> Kelola Arsip Laporan </p>
                     </a>
                 </li>
-
                 ';
 
             echo $sidebar;
@@ -401,6 +420,12 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </a>
                 </li>
 
+                <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                    <a href="laporan_periode_wisata.php" class="nav-link  ' . ('laporan_periode_wisata.php' == $url_sekarang ? ' active ' : '') . ' ">
+                        <i class="nav-icon fas fa-file-invoice"></i>
+                        <p> Laporan Wisata</p>
+                    </a>
+                </li>
                 ';
 
             echo $sidebar;
