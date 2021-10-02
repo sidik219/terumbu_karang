@@ -299,20 +299,60 @@ if ($_GET['type'] == 'wisata') {
     header("Content-type: application/vnd-ms-excel");
     header("Content-Disposition: attachment; filename=laporan_pengeluaran_wisata.xls");
 
-    $sqlreservasi = 'SELECT SUM(total) AS sum_paket FROM t_reservasi_wisata';
+    $url_sekarang = basename(__FILE__);
+    include 'hak_akses.php';
 
-    $stmt = $pdo->prepare($sqlreservasi);
+    $level_user = $_SESSION['level_user'];
+
+    if ($level_user == 2) {
+        $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+        $extra_query = " AND t_lokasi.id_wilayah = $id_wilayah ";
+        $extra_query_noand = " t_lokasi.id_wilayah = $id_wilayah ";
+    } else if ($level_user == 3) {
+        $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+        $extra_query = " AND t_lokasi.id_lokasi = $id_lokasi ";
+        $extra_query_noand = " t_lokasi.id_lokasi = $id_lokasi ";
+    } else if ($level_user == 4) {
+        $extra_query = "  ";
+        $extra_query_noand = " 1 ";
+    }
+
+    // Tinggal GET value tanggal yg sudah diset pada laporan periode wisata
+    $start = date("2021-09-01");
+    $end = date("2021-09-06");
+
+    $sqlviewdonasi = 'SELECT * FROM t_laporan_pengeluaran
+                    LEFT JOIN t_reservasi_wisata ON t_laporan_pengeluaran.id_reservasi = t_reservasi_wisata.id_reservasi
+                    LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                    LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                    LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                    LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                    WHERE  '.$extra_query_noand.'
+                    AND t_reservasi_wisata.id_status_reservasi_wisata = 2
+                    AND tanggal_pesan BETWEEN "'.$start.'" 
+                    AND "'.$end.'"';
+
+    $stmt = $pdo->prepare($sqlviewdonasi);
     $stmt->execute();
-    $reservasi = $stmt->fetch();
+    $row = $stmt->fetchAll();
 
     // Select Data Pengeluaran Berdasarkan ID Reservasi
-    $sqlpengeluaran = 'SELECT * FROM t_laporan_pengeluaran
-                        LEFT JOIN t_reservasi_wisata ON t_laporan_pengeluaran.id_reservasi = t_reservasi_wisata.id_reservasi
-                        ORDER BY id_pengeluaran ASC';
+    $sqlhitungtotal = 'SELECT COUNT(t_laporan_pengeluaran.id_pengeluaran) AS total_reservasi, 
+                            SUM(t_laporan_pengeluaran.biaya_pengeluaran) AS biaya_pengeluaran
+                    FROM t_laporan_pengeluaran
+                    LEFT JOIN t_reservasi_wisata ON t_laporan_pengeluaran.id_reservasi = t_reservasi_wisata.id_reservasi
+                    LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                    LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                    LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                    LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                    WHERE  '.$extra_query_noand.'
+                    AND t_reservasi_wisata.id_status_reservasi_wisata = 2
+                    AND tanggal_pesan BETWEEN "'.$start.'" 
+                    AND "'.$end.'"';
 
-    $stmt = $pdo->prepare($sqlpengeluaran);
+    $stmt = $pdo->prepare($sqlhitungtotal);
     $stmt->execute();
-    $rowPengeluaran = $stmt->fetchAll();
+    $rowtotal = $stmt->fetch();
 
     function ageCalculator($dob)
     {
@@ -335,59 +375,71 @@ if ($_GET['type'] == 'wisata') {
     <table border="1">
         <thead>
             <tr>
-                <th scope="col" colspan="6">LAPORAN SELURUH PENGELUARAN WISATA</th>
+                <th scope="col" colspan="9">LAPORAN SELURUH PENGELUARAN WISATA</th>
             </tr>
             <tr>
                 <th scope="col">No</th>
                 <th scope="col">ID Pengeluaran</th>
                 <th scope="col">ID Reservasi</th>
                 <th scope="col">Nama Pengeluaran</th>
+                <th scope="col">Lokasi</th>
+                <th scope="col">Nama Wisatawan</th>
+                <th scope="col">Tanggal Reservasi</th>
+                <th scope="col">Tanggal Pengeluaran</th>
                 <th scope="col">Biaya Pengeluaran</th>
-                <th scope="col">Update Terakhir</th>
             </tr>
         </thead>
         <tbody>
             <?php
             $no = 1;
-            $sum_paket = 0;
-            $sum_pengeluaran = 0;
+            $pemasukan = 0;
+            $pengeluaran = 0;
 
-            foreach ($rowPengeluaran as $pengeluaran) {
-                $truedate = strtotime($pengeluaran->update_terakhir);
-
-                $sum_pengeluaran += $pengeluaran->biaya_pengeluaran;
-                // var_dump($sum);
+            foreach ($row as $rowitem) {
+            $truedate = strtotime($rowitem->update_terakhir);
+            $reservasidate = strtotime($rowitem->tgl_reservasi);
+            $pemasukan = $rowitem->total;
             ?>
                 <tr>
                     <th><?= $no ?></th>
-                    <th scope="row"><?= $pengeluaran->id_pengeluaran ?></th>
-                    <td><?= $pengeluaran->id_reservasi ?></td>
-                    <td><?= $pengeluaran->nama_pengeluaran ?></td>
-                    <td>Rp. <?= number_format($pengeluaran->biaya_pengeluaran, 0) ?></td>
+                    <th scope="row"><?=$rowitem->id_pengeluaran?></th>
+                    <th><?=$rowitem->id_reservasi?></th>
+                    <td><?=$rowitem->nama_pengeluaran?></td>
+                    <td><?= $rowitem->nama_lokasi ?></td>
+                    <td><?= $rowitem->nama_user ?></td>
+                    <td>
+                        <?=strftime('%A, %e %B %Y', $reservasidate);?><br>
+                        <?php if ($rowitem->id_status_reservasi_wisata == 1) {
+                            echo alertPembayaran($rowitem->tgl_reservasi); } ?> 
+                    </td>
                     <td>
                         <small class="text-muted"><b>Update Terakhir</b>
-                            <br><?= strftime('%A, %d %B %Y', $truedate) . '<br> (' . ageCalculator($pengeluaran->update_terakhir) . ' yang lalu)'; ?></small>
+                        <br><?= strftime('%A, %d %B %Y', $truedate) . '<br> (' . ageCalculator($rowitem->update_terakhir) . ' yang lalu)'; ?></small>
                     </td>
+                    <td class="nominal">Rp. <?=number_format($rowitem->biaya_pengeluaran, 0)?></td>
                 </tr>
             <?php $no++;
             } ?>
 
             <!-- Hasil -->
-            <?php
-            $total_paket = $reservasi->sum_paket; // get data dari DB t_reservasi_wisata
-            $total_saldo = $total_paket - $sum_pengeluaran;
+            <?php 
+            $pengeluaran = $rowtotal->biaya_pengeluaran;
+            $total = $pemasukan - $pengeluaran;
             ?>
             <tr>
-                <th scope="row" colspan="5" style="text-align: right;">Biaya Pemasukan:</th>
-                <td>Rp. <?= number_format($total_paket, 0) ?></td>
+                <th scope="col" colspan="9" style="text-align: left;">Total: <?= $rowtotal->total_reservasi ?> Reservasi</th>
             </tr>
             <tr>
-                <th scope="row" colspan="5" style="text-align: right;">Biaya Pengeluaran:</th>
-                <td>Rp. <?= number_format($sum_pengeluaran, 0) ?></td>
+                <th scope="row" colspan="8" style="text-align: right;">Biaya Pemasukan:</th>
+                <td>Rp. <?= number_format($pemasukan, 0) ?></td>
             </tr>
             <tr>
-                <th scope="row" colspan="5" style="text-align: right;">Total Sisa Biaya:</th>
-                <td>Rp. <?= number_format($total_saldo, 0) ?></td>
+                <th scope="row" colspan="8" style="text-align: right;">Biaya Pengeluaran:</th>
+                <td>Rp. <?= number_format($pengeluaran, 0) ?></td>
+            </tr>
+            <tr>
+                <th scope="row" colspan="8" style="text-align: right;">Total Sisa Biaya:</th>
+                <td>Rp. <?= number_format($total, 0) ?></td>
             </tr>
         </tbody>
     </table>

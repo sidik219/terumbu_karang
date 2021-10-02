@@ -719,3 +719,174 @@ else if($level_user == 4){
 ?>
 
 
+<!-- Laporan Priode Pengeluaran Reservasi Wisata -->
+<?php
+//filter tabel laporan donasi 
+if ($_POST['type'] == 'load_laporan_reservasi' && !empty($_POST["start"])) {
+$level_user = $_POST['level_user'];
+
+$id_wilayah = $_POST['id_wilayah_dikelola'];
+
+$id_lokasi = $_POST['id_lokasi_dikelola'];
+
+$start = $_POST["start"];
+$end = $_POST["end"];
+
+if($level_user == 2){
+  $extra_query = " AND t_lokasi.id_wilayah = $id_wilayah ";
+  $extra_query_noand = " t_lokasi.id_wilayah = $id_wilayah ";
+}
+else if($level_user == 3){
+  $extra_query = " AND t_lokasi.id_lokasi = $id_lokasi ";
+  $extra_query_noand = " t_lokasi.id_lokasi = $id_lokasi ";
+}
+else if($level_user == 4){
+  $extra_query = "  ";
+  $extra_query_noand = " 1 ";
+}
+
+//Sortir berdasarkan nominal donasi
+
+//umum
+$sqlviewdonasi = 'SELECT * FROM t_laporan_pengeluaran
+                LEFT JOIN t_reservasi_wisata ON t_laporan_pengeluaran.id_reservasi = t_reservasi_wisata.id_reservasi
+                LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                WHERE  '.$extra_query_noand.' 
+                AND t_reservasi_wisata.id_status_reservasi_wisata = 2
+                AND tanggal_pesan BETWEEN "'.$start.'" 
+                AND "'.$end.'"';
+
+$stmt = $pdo->prepare($sqlviewdonasi);
+$stmt->execute();
+$row = $stmt->fetchAll();
+
+$sqlhitungtotal = 'SELECT COUNT(t_laporan_pengeluaran.id_pengeluaran) AS total_reservasi, 
+                            SUM(t_laporan_pengeluaran.biaya_pengeluaran) AS biaya_pengeluaran
+                FROM t_laporan_pengeluaran
+                LEFT JOIN t_reservasi_wisata ON t_laporan_pengeluaran.id_reservasi = t_reservasi_wisata.id_reservasi
+                LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                WHERE  '.$extra_query_noand.' 
+                AND t_reservasi_wisata.id_status_reservasi_wisata = 2
+                AND tanggal_pesan BETWEEN "'.$start.'" 
+                AND "'.$end.'"';
+
+$stmt = $pdo->prepare($sqlhitungtotal);
+$stmt->execute();
+$rowtotal = $stmt->fetch();
+
+// Reservasi
+$sqlreservasi = 'SELECT SUM(t_reservasi_wisata.total) AS subtotal
+                FROM t_reservasi_wisata
+                LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                WHERE  '.$extra_query_noand.' 
+                AND t_reservasi_wisata.id_status_reservasi_wisata = 2
+                AND tanggal_pesan BETWEEN "'.$start.'" 
+                AND "'.$end.'"';
+
+$stmt = $pdo->prepare($sqlreservasi);
+$stmt->execute();
+$rowreservasi = $stmt->fetch();
+?>
+
+<table id="tabel_laporan_wisata" class="table table-striped table-responsive-sm">
+    <thead>
+        <tr>
+            <th scope="col">ID Pengeluaran</th>
+            <th scope="col">ID Reservasi</th>
+            <th scope="col">Nama Pengeluaran</th>
+            <th scope="col">Lokasi</th>
+            <th scope="col">Nama Wisatawan</th>
+            <th scope="col">Tanggal Reservasi</th>
+            <th scope="col">Tanggal Pengeluaran</th>
+            <th scope="col">Biaya Pengeluaran</th>
+            <!-- <th class="print-hide" scope="col">Aksi</th> -->
+        </tr>
+    </thead>
+    <tbody id="tbody_laporan_donasi">
+        <?php
+        $pemasukan = 0;
+        $pengeluaran = 0;
+        foreach ($row as $rowitem) {
+        $truedate = strtotime($rowitem->update_terakhir);
+        $reservasidate = strtotime($rowitem->tgl_reservasi);
+        ?>
+        <tr class="row_donasi">
+            <th scope="row"><?=$rowitem->id_pengeluaran?></th>
+            <th><?=$rowitem->id_reservasi?></th>
+            <td><?=$rowitem->nama_pengeluaran?></td>
+            <td><?= $rowitem->nama_lokasi ?></td>
+            <td><?= $rowitem->nama_user ?></td>
+            <td>
+                <?=strftime('%A, %e %B %Y', $reservasidate);?><br>
+                <?php if ($rowitem->id_status_reservasi_wisata == 1) {
+                    echo alertPembayaran($rowitem->tgl_reservasi); } ?> 
+            </td>
+            <td>
+                <small class="text-muted"><b>Update Terakhir</b>
+                <br><?= strftime('%A, %d %B %Y', $truedate) . '<br> (' . ageCalculator($rowitem->update_terakhir) . ' yang lalu)'; ?></small>
+            </td>
+            <td class="nominal">Rp. <?=number_format($rowitem->biaya_pengeluaran, 0)?></td>
+            <!-- <td class="print-hide">
+                <a data-id='$rowitem->id_reservasi' class="btn btn-sm btn-outline-primary userinfo p-1">Rincian></a>
+            </td> -->
+        </tr>
+        <?php //$index++;
+            }
+        ?>
+    </tbody>                    
+</table>
+                
+<hr class="m-0"/>
+<hr class="m-0"/>
+
+<?php 
+$pemasukan = $rowreservasi->subtotal;
+$pengeluaran = $rowtotal->biaya_pengeluaran;
+$total = $pemasukan - $pengeluaran;
+?>
+<table class="table table-striped table-responsive-sm">
+    <thead>
+        <tr>
+            <th scope="col" colspan="5">Total: <?= $rowtotal->total_reservasi ?> Pengeluaran</th>
+            <th scope="col"></th>
+        </tr>
+        <tr>
+            <th scope="col" colspan="5" style="text-align: right;">Biaya Pemasukan:</th>
+            <th scope="col" style="text-align: center;">Rp. <?=number_format($pemasukan, 0)?></th>                                
+        </tr>
+        <tr>
+            <th scope="col" colspan="5" style="text-align: right;">Biaya Pengeluaran:</th>
+            <th scope="col" style="text-align: center;">Rp. <?=number_format($pengeluaran, 0)?></th>                                
+        </tr>
+        <tr>
+            <th scope="col" colspan="5" style="text-align: right;">Total Sisa Biaya:</th>
+            <th scope="col" style="text-align: center;">Rp. <?=number_format($total, 0)?></th>                                
+        </tr>
+    </thead>
+</table>
+
+<script>       
+    $(function() {
+        $("#tabel_laporan_wisata").tablesorter();
+    });
+</script>
+
+<?php } ?>
+
+
+                
+                
+            
+                
+                
+                
+            
