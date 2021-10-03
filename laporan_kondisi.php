@@ -35,7 +35,7 @@ CAST(
     END
 ) AS DECIMAL(10, 2)
 ) AS ukuran_sangat_baik,
-SUM(ukuran_terumbu) AS ukuran_total_lokasi,
+CAST(SUM(ukuran_terumbu) AS DECIMAL(10,2)) AS ukuran_total_lokasi,
 COUNT(t_history_pemeliharaan.id_detail_donasi) AS jumlah_terumbu_total
 FROM
     t_lokasi
@@ -44,6 +44,7 @@ FROM
  	LEFT JOIN t_detail_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
     LEFT JOIN t_history_pemeliharaan ON t_history_pemeliharaan.id_detail_donasi = t_detail_donasi.id_detail_donasi
     
+    WHERE kondisi_terumbu <> "Mati"
     GROUP BY t_wilayah.id_wilayah';
 
 $stmt = $pdo->prepare($sqlviewwilayah);
@@ -216,7 +217,7 @@ CAST(
     END
 ) AS DECIMAL(10, 2)
 ) AS ukuran_sangat_baik,
-SUM(ukuran_terumbu) AS ukuran_total_lokasi,
+CAST(SUM(ukuran_terumbu) AS DECIMAL(10, 2)) AS ukuran_total_lokasi,
 COUNT(t_history_pemeliharaan.id_detail_donasi) AS jumlah_terumbu_total
 FROM
     t_lokasi
@@ -224,8 +225,9 @@ FROM
  	LEFT JOIN t_detail_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
     LEFT JOIN t_history_pemeliharaan ON t_history_pemeliharaan.id_detail_donasi = t_detail_donasi.id_detail_donasi
     
+
     WHERE t_lokasi.id_wilayah = '.$rowitem->id_wilayah.'
-   
+    AND kondisi_terumbu <> "Mati"
    GROUP BY t_lokasi.id_lokasi';
 
                                     $stmt = $pdo->prepare($sql_lokasi);

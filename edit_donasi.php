@@ -3,6 +3,7 @@ session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
+
 if (!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)) {
     header('location: login.php?status=restrictedaccess');
 }
@@ -28,14 +29,17 @@ $stmt->execute();
 $rowstatus = $stmt->fetchAll();
 
 //Query daftar terumbu pesanan
-$sqlterumbu = 'SELECT * FROM t_donasi
+$sqlterumbu = 'SELECT *, email FROM t_donasi
     LEFT JOIN t_detail_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
     LEFT JOIN t_terumbu_karang ON t_detail_donasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang
+    LEFT JOIN t_user ON t_donasi.id_user = t_user.id_user
     WHERE t_donasi.id_donasi = :id_donasi';
 
 $stmt = $pdo->prepare($sqlterumbu);
 $stmt->execute(['id_donasi' => $id_donasi]);
 $rowterumbu = $stmt->fetchAll();
+
+$email_donatur = $rowterumbu[0]->email;
 
 $listterumbu = '';
 foreach ($rowterumbu as $terumbu) {
@@ -46,13 +50,11 @@ $sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank WHERE id_rekening_bank 
 $stmt = $pdo->prepare($sqlviewrekeningbersama);
 $stmt->execute(['id_rekening_bersama' => $rowitem->id_rekening_bersama]);
 $rowrekening = $stmt->fetch();
-
-
-
+$tanggal_update_status = date('Y-m-d H:i:s', time());
 
 if (isset($_POST['submit'])) {
     // $randomstring = substr(md5(rand()), 0, 7);
-
+    
     //Image upload
     // if($_FILES["image_uploads"]["size"] == 0) {
     //     $bukti_donasi = $rowitem->bukti_donasi;
@@ -95,7 +97,7 @@ if (isset($_POST['submit'])) {
 }
 
 if (isset($_POST['submit_terima'])) {
-    $tanggal_update_status = date('Y-m-d H:i:s', time());
+    include 'includes/email_handler.php'; //PHPMailer
     $sqldonasi = "UPDATE t_donasi
                         SET id_status_donasi = :id_status_donasi, update_terakhir = :update_terakhir
                         WHERE id_donasi = :id_donasi";
@@ -106,7 +108,6 @@ if (isset($_POST['submit_terima'])) {
     $affectedrows = $stmt->rowCount();
 
     //Kirim email untuk Pengelola Lokasi
-    include 'includes/email_handler.php'; //PHPMailer
     $sqlviewpengelolawilayah = 'SELECT * FROM t_lokasi 
                                     LEFT JOIN t_pengelola_lokasi ON t_pengelola_lokasi.id_lokasi = t_lokasi.id_lokasi
                                     WHERE t_lokasi.id_lokasi = :id_lokasi';
@@ -149,7 +150,8 @@ if (isset($_POST['submit_terima'])) {
     }
 
 
-    //Kirim email untuk Donatur           
+    //Kirim email untuk Donatur
+               
     $subjek = 'Bukti Donasi Telah Diverifikasi (ID Donasi : ' . $rowitem->id_donasi . ' ) - GoKarang';
     $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
             <br>Yth. ' . $rowitem->nama_donatur . '
@@ -162,7 +164,7 @@ if (isset($_POST['submit_terima'])) {
             <br><a href="https://tkjb.or.id/donasi_saya.php">Lihat Donasi Saya</a>
         ';
 
-    smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+    smtpmailer($email_donatur, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
 
     header("location: kelola_donasi.php?status=updatesuccess");
 
@@ -176,6 +178,8 @@ if (isset($_POST['submit_terima'])) {
 }
 
 if (isset($_POST['submit_tolak'])) {
+    include 'includes/email_handler.php'; //PHPMailer
+
     $sqldonasi = "UPDATE t_donasi
                         SET id_status_donasi = :id_status_donasi, update_terakhir = :update_terakhir
                         WHERE id_donasi = :id_donasi";
@@ -195,12 +199,12 @@ if (isset($_POST['submit_tolak'])) {
             <br>Bukti donasi anda tidak sesuai dan telah ditolak oleh pihak pengelola.
             <br>
             <br>Harap upload ulang bukti pembayaran donasi pada link berikut:
-            <br><a href=""https://tkjb.or.id/edit_donasi.php?id_donasi=' . $id_donasi . '">Upload Ulang Bukti Pembayaran Donasi</a>
+            <br><a href="https://tkjb.or.id/edit_donasi_saya.php?id_donasi=' . $id_donasi . '">Upload Ulang Bukti Pembayaran Donasi</a>
             <br>
             <br>Jika bukti sudah diverifikasi, kami akan menginfokan kepada anda melalui email.
         ';
 
-        smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+        smtpmailer($email_donatur, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
 
         header("Location: kelola_donasi.php?status=updatesuccess");
     }
