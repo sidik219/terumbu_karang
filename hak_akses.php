@@ -372,7 +372,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 </li>
 
                 <li class="nav-item"> <!-- Konten Lokasi -->
-                    <a href="kelola_konten_tangkolak.php" class="nav-link ' . (('kelola_konten_tangkolak.php' == $url_sekarang) || ('edit_konten_tangkolak.php'  == $url_sekarang) || ('input_konten_tangkolak.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                    <a href="kelola_konten_master.php" class="nav-link ' . (('kelola_konten_master.php' == $url_sekarang) || ('kelola_konten_tangkolak.php' == $url_sekarang) || ('edit_konten_tangkolak.php'  == $url_sekarang) || ('input_konten_tangkolak.php'  == $url_sekarang) || 'kelola_konten_ketentuan.php' == $url_sekarang  || ('edit_konten_ketentuan.php' == $url_sekarang)  || ('input_konten_Ketentuan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-book"></i>
                         <p> Kelola Konten </p>
                     </a>
@@ -403,13 +403,6 @@ if (!$_SESSION['level_user']) { //Belum log in
                     <a href="kelola_pemeliharaan.php?id_status_pemeliharaan=1" class="nav-link ' . ('kelola_pemeliharaan.php' == $url_sekarang  || ('edit_pemeliharaan.php' == $url_sekarang)  || ('input_pemeliharaan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                           <i class="nav-icon fas fa-heart"></i>
                           <p> Kelola Pemeliharaan </p>
-                    </a>
-                </li>
-
-                <li class="nav-item"> <!-- Lokasi -->
-                    <a href="kelola_konten_Ketentuan.php" class="nav-link ' . ('kelola_konten_Ketentuan.php' == $url_sekarang  || ('edit_konten_Ketentuan.php' == $url_sekarang)  || ('input_konten_Ketentuan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
-                          <i class="nav-icon far fa-newspaper"></i>
-                          <p> Ketentuan Wisata </p>
                     </a>
                 </li>
 
