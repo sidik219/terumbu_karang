@@ -210,8 +210,8 @@ function ageCalculator($dob)
                     <!-- copy of input fields group -->
                     <div class="form-group fieldGroupCopy" style="display: none;">
                         <div class="input-group">
-                            <input type="text" name="nama_pengeluaran[]" min="0" class="form-control" placeholder="Nama Pengeluaran" />
-                            <input type="number" name="biaya_pengeluaran[]" min="0" class="form-control" placeholder="Biaya Pengeluaran" />
+                            <input type="text" name="nama_pengeluaran[]" min="0" class="form-control" placeholder="Nama Pengeluaran" required/>
+                            <input type="number" name="biaya_pengeluaran[]" min="0" class="form-control" placeholder="Biaya Pengeluaran" required/>
                             <div class="input-group-addon">
                                 <a href="javascript:void(0)" class="btn btn-danger remove">
                                     <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Pengeluaran

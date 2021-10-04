@@ -1,35 +1,35 @@
 <?php include 'build/config/connection.php';
 session_start();
-if (!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)) {
+if (!($_SESSION['level_user'] == 3)) {
     header('location: login.php?status=restrictedaccess');
 }
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
 if (isset($_POST['submit'])) {
-    $i = 0;
-    foreach ($_POST['pengadaan_fasilitas'] as $pengadaan_fasilitas) {
-        $pengadaan_fasilitas    = $_POST['pengadaan_fasilitas'][$i];
-        $status_pengadaan       = $_POST['status_pengadaan'][$i];
+    if ($_POST['submit'] == 'Simpan') {
+        $syarat_ketentuan = $_POST['syarat_ketentuan'];
 
-        $sqlpengadaan = "INSERT INTO t_pengadaan_fasilitas (pengadaan_fasilitas, status_pengadaan)
-                                    VALUES (:pengadaan_fasilitas, :status_pengadaan)";
+        //Insert t_wisata
+        $sqlpaketwisata = "INSERT INTO `t_penjelasan` (`penjelasan`) VALUES ( '$syarat_ketentuan')";
 
-        $stmt = $pdo->prepare($sqlpengadaan);
+
+        $stmt = $pdo->prepare($sqlpaketwisata);
         $stmt->execute([
-            'pengadaan_fasilitas'   => $pengadaan_fasilitas,
-            'status_pengadaan'  => $status_pengadaan
+            // 'sdh_biaya' => $fasilitas_masuk,
+            // 'blm_biaya' => $fasilitas_luar_biaya,
+            // 'sk' => $syarat_ketentuan
         ]);
-
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
-            header("Location: input_pengadaan_fasilitas.php?status=insertfailed");
+            header("Location: kelola_konten_penjelasan.php?status=insertfailed");
         } else {
             //echo "HAHAHAAHA GREAT SUCCESSS !";
-            header("Location: kelola_pengadaan_fasilitas.php?status=addsuccess");
+            header("Location: kelola_konten_penjelasan.php?status=addsuccess");
         }
-        $i++;
-    } //End Foreach
+    } else {
+        echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
+    }
 }
 ?>
 
@@ -37,7 +37,7 @@ if (isset($_POST['submit'])) {
 <html lang="en">
 
 <head>
-    <title>Kelola Pengadaan Fasilitas - GoKarang</title>
+    <title>Kelola Wisata - GoKarang</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -108,69 +108,35 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="kelola_pengadaan_fasilitas.php">
-                        < Kembali</a><br><br>
-                            <h4><span class="align-middle font-weight-bold">Input Data Pengadaan Fasilitas</span></h4>
-                            <ul class="app-breadcrumb breadcrumb" style="margin-bottom: 20px;">
-                                <li class="breadcrumb-item">
-                                    <a href="kelola_pengadaan_fasilitas.php" class="non">Kelola Pengadaan Fasilitas</a>
-                                </li>
-                                <li class="breadcrumb-item">
-                                    <a href="input_pengadaan_fasilitas.php" class="tanda">Input Pengadaan Fasilitas</a>
-                                </li>
-                            </ul>
+                    <h4><span class="align-middle font-weight-bold">Input Kelola Penjelasan</span></h4>
+                    <p>Halaman Input Ini untuk pada halaman depan website</p>
                 </div>
                 <!-- /.container-fluid -->
             </div>
             <!-- /.content-header -->
+
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <form action="" enctype="multipart/form-data" method="POST">
 
-                        <div class="form-group field_wrapper">
-                            <label for="status_pengadaan">Pengadaan Fasilitas</label><br>
-                            <p class="small">Inputan Pengadaan Fasilitas Maksimal 3</p>
-                            <div class="form-group fieldGroup">
-                                <div class="input-group">
-                                    <input required type="text" name="pengadaan_fasilitas[]" min="0" class="form-control" placeholder="Pengadaan Fasilitas" required/>
-                                    <select required class="form-control" name="status_pengadaan[]" id="status_pengadaan" required>
-                                        <option selected disabled>Status Pengadaan:</option>
-                                        <option value="Baik">Baik</option>
-                                        <option value="Rusak">Rusak</option>
-                                        <option value="Hilang">Hilang</option>
-                                    </select>
-                                    <div class="input-group-addon">
-                                        <a href="javascript:void(0)" class="btn btn-success addMore">
-                                            <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Pengadaan
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                    <form action="" enctype="multipart/form-data" method="POST">
+                        <div class="form-group pb-3">
+                            <label for="syarat_ketentuan">
+                                <h5><b>Penejelasan Wisata:</b></h5>
+                                <p class="small">Berikan Tulisan yang menarik wisatawan untuk berwisata</p>
+                            </label>
+
+                            <textarea id="syarat_ketentuan" name="syarat_ketentuan" required></textarea>
+                            <script>
+                                $('#syarat_ketentuan').trumbowyg();
+                            </script>
                         </div>
 
                         <p align="center">
                             <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button>
                         </p>
-                    </form><br><br>
-
-                    <!-- copy of input fields group -->
-                    <div class="form-group fieldGroupCopy" style="display: none;">
-                        <div class="input-group">
-                            <input required type="text" name="pengadaan_fasilitas[]" min="0" class="form-control" placeholder="Pengadaan Fasilitas" required/>
-                            <select required class="form-control" name="status_pengadaan[]" id="status_pengadaan" required>
-                                <option selected disabled>Status Pengadaan:</option>
-                                <option value="Baik">Baik</option>
-                                <option value="Rusak">Rusak</option>
-                                <option value="Hilang">Hilang</option>
-                            </select>
-                            <div class="input-group-addon">
-                                <a href="javascript:void(0)" class="btn btn-danger remove">
-                                    <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Pengadaan
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    </form>
+                    <br><br>
 
             </section>
             <!-- /.Left col -->
@@ -202,6 +168,13 @@ if (isset($_POST['submit'])) {
         <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
         <!-- AdminLTE App -->
         <script src="dist/js/adminlte.js"></script>
+
+        <!-- jQuery library -->
+        <!-- Pembatasan Date Pemesanan -->
+        <script>
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementsByName("tgl_pemesanan")[0].setAttribute('min', today);
+        </script>
         <script>
             $(document).ready(function() {
                 //group add limit
@@ -213,7 +186,7 @@ if (isset($_POST['submit'])) {
                         var fieldHTML = '<div class="form-group fieldGroup">' + $(".fieldGroupCopy").html() + '</div>';
                         $('body').find('.fieldGroup:last').after(fieldHTML);
                     } else {
-                        alert('Maksimal ' + maxGroup + ' Pengadaan fasilitas yang boleh dibuat.');
+                        alert('Maksimal ' + maxGroup + ' paket wisata yang boleh dibuat.');
                     }
                 });
 
@@ -223,10 +196,18 @@ if (isset($_POST['submit'])) {
                 });
             });
         </script>
-
     </div>
     <!-- Import Trumbowyg font size JS at the end of <body>... -->
     <script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
+</body>
+
+</html>
+;
+});
+</script>
+</div>
+<!-- Import Trumbowyg font size JS at the end of <body>... -->
+<script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
 </body>
 
 </html>

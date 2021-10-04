@@ -140,7 +140,7 @@ if (isset($_POST['submit'])) {
                         </div>
                         <div class="form-group">
                             <label for="nama_pihak">Pihak Asuransi</label>
-                            <select class="form-control" name="nama_pihak" id="exampleFormControlSelect1">
+                            <select class="form-control" name="nama_pihak" id="nama_pihak" required>
                                 <option selected disabled>Pilih Pihak Asuransi:</option>
                                 <?php
                                 $sqlpengadaan = 'SELECT * FROM t_perusahaan_asuransi

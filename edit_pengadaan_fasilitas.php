@@ -133,7 +133,7 @@ if (isset($_POST['submit'])) {
 
                     <div class="form-group">
                         <label for="status_pengadaan">Status Pengadaan</label>
-                        <select class="form-control" name="status_pengadaan" id="exampleFormControlSelect1">
+                        <select class="form-control" name="status_pengadaan" id="status_pengadaan" required>
                             <option selected disabled>Status Pengadaan:</option>
                             <option value="Baik">Baik</option>
                             <option value="Rusak">Rusak</option>

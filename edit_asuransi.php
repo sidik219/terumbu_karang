@@ -8,7 +8,9 @@ include 'hak_akses.php';
 
 $id_asuransi = $_GET['id_asuransi'];
 
+// Asuransi
 $sqleditasuransi = 'SELECT * FROM t_asuransi
+                    LEFT JOIN t_perusahaan_asuransi ON t_asuransi.id_perusahaan = t_perusahaan_asuransi.id_perusahaan
                     WHERE id_asuransi = :id_asuransi';
 
 $stmt = $pdo->prepare($sqleditasuransi);
@@ -142,7 +144,7 @@ if (isset($_POST['submit'])) {
 
                     <div class="form-group">
                         <label for="nama_pihak">Pihak Asuransi</label>
-                        <select class="form-control" name="nama_pihak" id="exampleFormControlSelect1">
+                        <select class="form-control" name="nama_pihak" id="nama_pihak" required>
                             <option selected disabled>Pilih Pihak Asuransi:</option>
                             <?php
                             $sqlpihak = 'SELECT * FROM t_perusahaan_asuransi
@@ -156,6 +158,11 @@ if (isset($_POST['submit'])) {
                             <?php } ?>
                         </select>
                     </div>
+
+                    <div class="form-group">
+                        <label for="biaya_asuransi">No Telp Asuransi</label>
+                        <input type="tel" name="biaya_asuransi" value="<?=$asuransi->notlp_asuransi?>" class="form-control" pattern="^[0-9-+\s()]*$" required>
+                    </div
 
                     <p align="center">
                     <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>

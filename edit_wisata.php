@@ -278,7 +278,7 @@ if (isset($_POST['submit'])) {
 
                         <!-- Wisata -->
                         <div class="form-group field_wrapper">
-                            <label for="paket_wisata">ID Wisata</label><br>
+                            <label for="nama_wisata">ID Wisata</label><br>
                             <?php foreach ($rowwisata as $wisata) : ?>
                                 <div class="form-group fieldGroup">
                                     <div class="input-group">

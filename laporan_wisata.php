@@ -97,7 +97,7 @@ if ($_GET['type'] == 'wisata') {
                         // tanggal berakhir pembuatan batas pemesanan paket wisata
                         $tgl_akhir = $paket->tgl_akhir_pemesanan;
                         // jangka waktu + 365 hari
-                        $jangka_waktu = strtotime(strtotime($tgl_akhir), strtotime($tgl_awal));
+                        $jangka_waktu = strtotime($tgl_akhir, strtotime($tgl_awal));
                         //tanggal expired
                         $tgl_exp = date("Y-m-d", $jangka_waktu);
 

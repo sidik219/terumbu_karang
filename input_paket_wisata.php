@@ -234,10 +234,10 @@ if (isset($_POST['submit'])) {
                     
                     <!-- Wisata -->
                     <div class="form-group field_wrapper">
-                        <label for="paket_wisata">ID Wisata</label><br>
+                        <label for="nama_wisata">ID Wisata</label><br>
                         <div class="form-group fieldGroup">
                             <div class="input-group">
-                                <select class="form-control" name="nama_wisata[]" id="exampleFormControlSelect1">
+                                <select class="form-control" name="nama_wisata[]" id="nama_wisata" required>
                                     <option selected disabled>Pilih Wisata:</option>
                                     <?php
                                     $sqlviewwisata = 'SELECT * FROM t_wisata
@@ -270,7 +270,8 @@ if (isset($_POST['submit'])) {
                         <small>* Pilih Wisata: Wisata Diving dst</small><br>
                         <small>* Hari: Hari Pertama dst</small><br>
                         <small style="color: red;">* Hanya bisa satu wisata, untuk perhari</small><br>
-                        <small style="color: red;">* Untuk menambahkan wisata baru, harus input fasilitas terlebih dahulu</small>
+                        <small style="color: red;">* Untuk menambahkan wisata baru, 
+                            harus <a href="input_fasilitas_wisata.php"><b>input fasilitas</b></a> terlebih dahulu</small>
                     </div>
 
                     <div class="form-group">
@@ -359,7 +360,7 @@ if (isset($_POST['submit'])) {
                     <!-- copy of input fields group -->
                     <div class="form-group fieldGroupCopy" style="display: none;">
                         <div class="input-group">
-                            <select class="form-control" name="nama_wisata[]" id="exampleFormControlSelect1">
+                            <select class="form-control" name="nama_wisata[]" id="nama_wisata" required>
                                 <option selected disabled>Pilih Wisata:</option>
                                 <?php
                                 $sqlviewwisata = 'SELECT * FROM t_wisata
