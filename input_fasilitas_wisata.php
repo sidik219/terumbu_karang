@@ -8,7 +8,7 @@ include 'hak_akses.php';
 
 if (isset($_POST['submit'])) {
     if ($_POST['submit'] == 'Simpan') {
-        
+
         //var_dump($_POST['nama_fasilitas']);var_dump($_POST['biaya_fasilitas']);exit();
         $i = 0;
         foreach ($_POST['nama_fasilitas'] as $nama_fasilitas) {
@@ -21,10 +21,11 @@ if (isset($_POST['submit'])) {
                                         VALUES (:id_kerjasama, :id_wisata, :update_terakhir)";
 
             $stmt = $pdo->prepare($sqlinsertfasilitas);
-            $stmt->execute(['id_kerjasama' => $id_kerjasama,
-                            'id_wisata' => $id_wisata,
-                            'update_terakhir' => $tanggal_sekarang
-                            ]);
+            $stmt->execute([
+                'id_kerjasama' => $id_kerjasama,
+                'id_wisata' => $id_wisata,
+                'update_terakhir' => $tanggal_sekarang
+            ]);
 
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
@@ -43,16 +44,17 @@ if (isset($_POST['submit'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Kelola Wisata - GoKarang</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
-        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-        <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
-        <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/style-card.css">
@@ -80,9 +82,9 @@ if (isset($_POST['submit'])) {
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Akun Saya</a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">Edit Profil</a>
+                        <a class="dropdown-item" href="logout.php">Logout</a>
                 </li>
             </ul>
         </nav>
@@ -100,8 +102,9 @@ if (isset($_POST['submit'])) {
             <div class="sidebar">
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
-                   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php print_sidebar(basename(__FILE__), $_SESSION['level_user'])?> <!-- Print sidebar -->
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <?php print_sidebar(basename(__FILE__), $_SESSION['level_user']) ?>
+                        <!-- Print sidebar -->
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -114,20 +117,24 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="kelola_fasilitas_wisata.php">< Kembali</a><br><br>
-                    <h4><span class="align-middle font-weight-bold">Input Data Fasilitas</span></h4>
-                    <ul class="app-breadcrumb breadcrumb" style="margin-bottom: 20px;">
-                        <li class="breadcrumb-item">
-                            <a href="kelola_wisata.php" class="non">Kelola Wisata</a></li>
-                        <li class="breadcrumb-item">
-                            <a href="kelola_fasilitas_wisata.php" class="non">Data Fasilitas Wisata</a></li>
-                        <li class="breadcrumb-item">
-                            <a href="input_fasilitas_wisata.php" class="tanda">Input Fasilitas</a></li>
-                    </ul>
+                    <a class="btn btn-outline-primary" href="kelola_fasilitas_wisata.php">
+                        < Kembali</a><br><br>
+                            <h4><span class="align-middle font-weight-bold">Input Data Fasilitas</span></h4>
+                            <ul class="app-breadcrumb breadcrumb" style="margin-bottom: 20px;">
+                                <li class="breadcrumb-item">
+                                    <a href="kelola_wisata.php" class="non">Kelola Wisata</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="kelola_fasilitas_wisata.php" class="non">Data Fasilitas Wisata</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="input_fasilitas_wisata.php" class="tanda">Input Fasilitas</a>
+                                </li>
+                            </ul>
                 </div>
                 <div align="right">
                     <a class="btn btn-outline-primary" href="input_wisata.php">
-                    Selanjutnya Input Wisata <i class="fas fa-angle-right"></i></a>
+                        Selanjutnya Input Wisata <i class="fas fa-angle-right"></i></a>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -137,48 +144,52 @@ if (isset($_POST['submit'])) {
             <section class="content">
                 <div class="container-fluid">
                     <?php
-                        if(!empty($_GET['status'])) {
-                            if($_GET['status'] == 'insertfailed') {
-                                echo '<div class="alert alert-success" role="alert">
+                    if (!empty($_GET['status'])) {
+                        if ($_GET['status'] == 'insertfailed') {
+                            echo '<div class="alert alert-success" role="alert">
                                         Input data fasilitas wisata gagal ditambahkan!
-                                        </div>'; }
+                                        </div>';
                         }
+                    }
                     ?>
                     <form action="" enctype="multipart/form-data" method="POST">
 
-                    <div class="form-group field_wrapper">
-                        <label for="paket_wisata">Fasilitas Wisata</label><br>
-                        <div class="form-group fieldGroup">
-                            <div class="input-group">
-                                <select class="form-control" name="nama_fasilitas[]" id="exampleFormControlSelect1" required>
-                                    <option selected disabled>Fasilitas Wisata:</option>
-                                    <?php
-                                    $sqlkerjasama = 'SELECT * FROM t_kerjasama
+                        <div class="form-group field_wrapper">
+                            <label for="paket_wisata">Fasilitas Wisata</label><br>
+                            <div class="form-group fieldGroup">
+                                <div class="input-group">
+                                    <select class="form-control" name="nama_fasilitas[]" id="exampleFormControlSelect1" required>
+                                        <option selected disabled>Fasilitas Wisata:</option>
+                                        <?php
+                                        $sqlkerjasama = 'SELECT * FROM t_kerjasama
                                                         LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
                                                         WHERE t_pengadaan_fasilitas.status_pengadaan = "baik"
                                                         ORDER BY id_kerjasama DESC';
-                                    $stmt = $pdo->prepare($sqlkerjasama);
-                                    $stmt->execute();
-                                    $rowKerjasama = $stmt->fetchAll();
+                                        $stmt = $pdo->prepare($sqlkerjasama);
+                                        $stmt->execute();
+                                        $rowKerjasama = $stmt->fetchAll();
 
-                                    foreach ($rowKerjasama as $kerjasama) { ?>
-                                    <option value="<?=$kerjasama->id_kerjasama?>">
-                                        <?=$kerjasama->pengadaan_fasilitas?> - <?=$kerjasama->pihak_ketiga?>
-                                    </option>
-                                    <?php } ?>
-                                </select>
-                                <!-- <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/> -->
-                                <div class="input-group-addon">
-                                    <a href="javascript:void(0)" class="btn btn-success addMore">
-                                        <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Fasilitas
-                                    </a>
+                                        foreach ($rowKerjasama as $kerjasama) { ?>
+                                            <?php if ($kerjasama->status_kerjasama == "Melakukan Kerjasama") : ?>
+                                                <option value="<?= $kerjasama->id_kerjasama ?>"> <?= $kerjasama->pengadaan_fasilitas ?> - <?= $kerjasama->pihak_ketiga ?> </option>
+                                            <?php elseif ($kerjasama->status_kerjasama == "Tidak Melakukan Kerjasama") : ?>
+                                                <option value="<?= $kerjasama->id_kerjasama ?>"> <?= $kerjasama->pengadaan_fasilitas ?> - Tidak Melakukan Kerjasama </option>
+                                            <?php endif ?>
+                                        <?php } ?>
+                                    </select>
+                                    <!-- <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/> -->
+                                    <div class="input-group-addon">
+                                        <a href="javascript:void(0)" class="btn btn-success addMore">
+                                            <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Fasilitas
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <p align="center">
-                    <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
+                        <p align="center">
+                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button>
+                        </p>
                     </form>
 
                     <!-- Keterangan -->
@@ -205,9 +216,11 @@ if (isset($_POST['submit'])) {
                                 $rowKerjasama = $stmt->fetchAll();
 
                                 foreach ($rowKerjasama as $kerjasama) { ?>
-                                <option value="<?=$kerjasama->id_kerjasama?>">
-                                    <?=$kerjasama->pengadaan_fasilitas?> - <?=$kerjasama->status_kerjasama?>
-                                </option>
+                                    <?php if ($kerjasama->status_kerjasama == "Melakukan Kerjasama") : ?>
+                                        <option value="<?= $kerjasama->id_kerjasama ?>"> <?= $kerjasama->pengadaan_fasilitas ?> - <?= $kerjasama->pihak_ketiga ?> </option>
+                                    <?php elseif ($kerjasama->status_kerjasama == "Tidak Melakukan Kerjasama") : ?>
+                                        <option value="<?= $kerjasama->id_kerjasama ?>"> <?= $kerjasama->pengadaan_fasilitas ?> - Tidak Melakukan Kerjasama </option>
+                                    <?php endif ?>
                                 <?php } ?>
                             </select>
                             <!-- <input type="number" name="biaya_fasilitas[]" min="0" class="form-control" placeholder="Biaya Fasilitas"/> -->
@@ -221,12 +234,12 @@ if (isset($_POST['submit'])) {
 
             </section>
             <!-- /.Left col -->
-            </div>
-            <!-- /.row (main row) -->
         </div>
-        <!-- /.container-fluid -->
-        </section>
-        <!-- /.content -->
+        <!-- /.row (main row) -->
+    </div>
+    <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
 
@@ -236,45 +249,46 @@ if (isset($_POST['submit'])) {
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
+        <!-- Control sidebar content goes here -->
     </aside>
     <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
-<div>
-    <!-- jQuery -->
-    <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- overlayScrollbars -->
-    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.js"></script>
+    <div>
+        <!-- jQuery -->
+        <!-- Bootstrap 4 -->
+        <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- overlayScrollbars -->
+        <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="dist/js/adminlte.js"></script>
 
-    <!-- jQuery library -->
+        <!-- jQuery library -->
 
-    <script>
-        $(document).ready(function(){
-        //group add limit
-        var maxGroup = 3;
+        <script>
+            $(document).ready(function() {
+                //group add limit
+                var maxGroup = 3;
 
-        //add more fields group
-        $(".addMore").click(function(){
-            if($('body').find('.fieldGroup').length < maxGroup){
-                var fieldHTML = '<div class="form-group fieldGroup">'+$(".fieldGroupCopy").html()+'</div>';
-                $('body').find('.fieldGroup:last').after(fieldHTML);
-            }else{
-                alert('Maksimal '+maxGroup+' fasilitas wisata yang boleh dibuat.');
-            }
-        });
+                //add more fields group
+                $(".addMore").click(function() {
+                    if ($('body').find('.fieldGroup').length < maxGroup) {
+                        var fieldHTML = '<div class="form-group fieldGroup">' + $(".fieldGroupCopy").html() + '</div>';
+                        $('body').find('.fieldGroup:last').after(fieldHTML);
+                    } else {
+                        alert('Maksimal ' + maxGroup + ' fasilitas wisata yang boleh dibuat.');
+                    }
+                });
 
-        //remove fields group
-        $("body").on("click",".remove",function(){
-            $(this).parents(".fieldGroup").remove();
-        });
-    });
-    </script>
-</div>
-<!-- Import Trumbowyg font size JS at the end of <body>... -->
-<script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
+                //remove fields group
+                $("body").on("click", ".remove", function() {
+                    $(this).parents(".fieldGroup").remove();
+                });
+            });
+        </script>
+    </div>
+    <!-- Import Trumbowyg font size JS at the end of <body>... -->
+    <script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
 </body>
+
 </html>

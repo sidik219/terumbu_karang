@@ -279,14 +279,14 @@ function alertPembayaran($dob)
                                         </div>
 
                                         <div class="col-md mb-3">
-                                            <div class="mb-2">
+                                            <div class="">
                                                 <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-map-marker-alt"></i> Lokasi Reservasi Wisata</span><br>
-                                                <!-- <img height='75px' class="rounded" src=""><br><br> -->
+                                                <img height='75px' class="rounded mb-1" src="<?= $rowitem->foto_lokasi ?>"><br>
                                                 <span class=""><?= "$rowitem->nama_lokasi (ID $rowitem->id_lokasi)"; ?></span>
                                                 <br>
                                                 <a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?= $rowitem->latitude ?>,<?= $rowitem->longitude ?>&z=8" class="btn btn-act mt-2"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a>
                                             </div>
-                                            <div class="mt-5">
+                                            <div class="mt-3">
                                                 <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-phone"></i> No Kontak Pengelola</span>
                                                 <br><?= $rowitem->kontak_lokasi ?><br>
                                             </div>
