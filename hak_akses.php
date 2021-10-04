@@ -5,7 +5,7 @@ if (!$_SESSION['level_user']) { //Belum log in
     header('location: login.php?status=restrictedaccess');
 } else {
     $level_user = $_SESSION['level_user'];
-    
+
     //Logo/branding
     $file_gambar_logo = 'dist/img/gokarang_coral_purple.png';
 
@@ -39,14 +39,14 @@ if (!$_SESSION['level_user']) { //Belum log in
 
     function print_sidebar($url_sekarang, $level)
     {
-        include 'build/config/connection.php';  
+        include 'build/config/connection.php';
         $level_user = $_SESSION['level_user'];
-    
-        if($level_user == 2 || $level_user == 3){
-                //Data notifikasi sidebar pengelola wilayah & lokasi
-                // $level_user = $_SESSION['level_user'];
 
-                if($level_user == 2){
+        if ($level_user == 2 || $level_user == 3) {
+            //Data notifikasi sidebar pengelola wilayah & lokasi
+            // $level_user = $_SESSION['level_user'];
+
+            if ($level_user == 2) {
                 $id_wilayah = $_SESSION['id_wilayah_dikelola'];
                 $extra_query = " AND t_wilayah.id_wilayah = $id_wilayah ";
                 $extra_query_noand = " t_wilayah.id_wilayah = $id_wilayah ";
@@ -59,77 +59,72 @@ if (!$_SESSION['level_user']) { //Belum log in
 
                 $wilayah_join_batch = "   LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_batch.id_lokasi
                                             LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
-
-                }
-                else if($level_user == 3){
+            } else if ($level_user == 3) {
                 $id_lokasi = $_SESSION['id_lokasi_dikelola'];
                 $extra_query = " AND id_lokasi = $id_lokasi ";
                 $extra_query_noand = " id_lokasi = $id_lokasi ";
                 $wilayah_join_donasi = " ";
                 $wilayah_join_reservasi = " ";
                 $wilayah_join_batch = " ";
-                }
-                else if($level_user == 4){
+            } else if ($level_user == 4) {
                 $extra_query = "  ";
                 $extra_query_noand = " 1 = 1 AND  ";
                 $wilayah_join_donasi = " ";
                 $wilayah_join_reservasi = " ";
                 $wilayah_join_batch = " ";
-                }
+            }
 
-                $sqlviewdonasi = 'SELECT (SELECT COUNT(t_donasi.id_status_donasi)
-                                FROM t_donasi '.$wilayah_join_donasi.'
-                                WHERE t_donasi.id_status_donasi = 1 '.$extra_query.') AS donasi_baru,
+            $sqlviewdonasi = 'SELECT (SELECT COUNT(t_donasi.id_status_donasi)
+                                FROM t_donasi ' . $wilayah_join_donasi . '
+                                WHERE t_donasi.id_status_donasi = 1 ' . $extra_query . ') AS donasi_baru,
                                 (SELECT COUNT(t_donasi.id_status_donasi)
-                                                FROM t_donasi '.$wilayah_join_donasi.'
-                                WHERE t_donasi.id_status_donasi = 2 '.$extra_query.') AS donasi_verifikasi,
+                                                FROM t_donasi ' . $wilayah_join_donasi . '
+                                WHERE t_donasi.id_status_donasi = 2 ' . $extra_query . ') AS donasi_verifikasi,
                                 (SELECT COUNT(t_donasi.id_status_donasi)
-                                                FROM t_donasi '.$wilayah_join_donasi.'
-                                WHERE t_donasi.id_batch IS NULL AND t_donasi.id_status_donasi = 3  '.$extra_query.') AS donasi_tanpa_batch,
+                                                FROM t_donasi ' . $wilayah_join_donasi . '
+                                WHERE t_donasi.id_batch IS NULL AND t_donasi.id_status_donasi = 3  ' . $extra_query . ') AS donasi_tanpa_batch,
                                 (SELECT COUNT(t_donasi.id_status_donasi)
-                                                FROM t_donasi '.$wilayah_join_donasi.'
-                                WHERE t_donasi.id_status_donasi = 7 '.$extra_query.') AS donasi_bermasalah';
-                $stmt = $pdo->prepare($sqlviewdonasi);
-                $stmt->execute();
-                $rowdonasi = $stmt->fetch();
+                                                FROM t_donasi ' . $wilayah_join_donasi . '
+                                WHERE t_donasi.id_status_donasi = 7 ' . $extra_query . ') AS donasi_bermasalah';
+            $stmt = $pdo->prepare($sqlviewdonasi);
+            $stmt->execute();
+            $rowdonasi = $stmt->fetch();
 
 
-                $sqlviewreservasi = 'SELECT (SELECT COUNT(t_reservasi_wisata.id_status_reservasi_wisata)
-                                FROM t_reservasi_wisata '.$wilayah_join_reservasi.'
-                                WHERE t_reservasi_wisata.id_status_reservasi_wisata = 1 '.$extra_query.') AS reservasi_baru,
+            $sqlviewreservasi = 'SELECT (SELECT COUNT(t_reservasi_wisata.id_status_reservasi_wisata)
+                                FROM t_reservasi_wisata ' . $wilayah_join_reservasi . '
+                                WHERE t_reservasi_wisata.id_status_reservasi_wisata = 1 ' . $extra_query . ') AS reservasi_baru,
                                 (SELECT COUNT(t_reservasi_wisata.id_status_reservasi_wisata)
-                                                FROM t_reservasi_wisata '.$wilayah_join_reservasi.'
-                                WHERE t_reservasi_wisata.id_status_reservasi_wisata = 3 '.$extra_query.') AS reservasi_bermasalah';
-                $stmt = $pdo->prepare($sqlviewreservasi);
-                $stmt->execute();
-                $rowreservasi = $stmt->fetch();
+                                                FROM t_reservasi_wisata ' . $wilayah_join_reservasi . '
+                                WHERE t_reservasi_wisata.id_status_reservasi_wisata = 3 ' . $extra_query . ') AS reservasi_bermasalah';
+            $stmt = $pdo->prepare($sqlviewreservasi);
+            $stmt->execute();
+            $rowreservasi = $stmt->fetch();
 
 
 
 
-                $sqlviewbatch = 'SELECT (SELECT COUNT(id_status_batch)
-                                FROM t_batch '.$wilayah_join_batch.'
-                                WHERE id_status_batch = 1 '.$extra_query.') AS batch_penyemaian,
+            $sqlviewbatch = 'SELECT (SELECT COUNT(id_status_batch)
+                                FROM t_batch ' . $wilayah_join_batch . '
+                                WHERE id_status_batch = 1 ' . $extra_query . ') AS batch_penyemaian,
                                 (SELECT COUNT(id_status_batch)
-                                FROM t_batch '.$wilayah_join_batch.'
-                                WHERE id_status_batch = 2 '.$extra_query.') AS batch_siap_tanam';
+                                FROM t_batch ' . $wilayah_join_batch . '
+                                WHERE id_status_batch = 2 ' . $extra_query . ') AS batch_siap_tanam';
 
-                $stmt = $pdo->prepare($sqlviewbatch);
-                $stmt->execute();
-                $rowbatch = $stmt->fetch();
+            $stmt = $pdo->prepare($sqlviewbatch);
+            $stmt->execute();
+            $rowbatch = $stmt->fetch();
 
-                $sqlviewpemeliharaan = 'SELECT (SELECT COUNT(*) FROM (SELECT TIMESTAMPDIFF(MONTH, tanggal_pemeliharaan_terakhir, NOW()) AS lama_sejak_pemeliharaan 
-                FROM t_batch  '.$wilayah_join_batch.' WHERE  '.$extra_query_noand.' HAVING lama_sejak_pemeliharaan >= 3) AS jl_pml) AS perlu_pemeliharaan,
-                                        (SELECT COUNT(*) FROM (SELECT TIMESTAMPDIFF(MONTH, `tanggal_penanaman`, NOW()) AS lama_sejak_tanam FROM t_batch  '.$wilayah_join_batch.' 
-                                        WHERE status_cabut_label = 0 '.$extra_query.' HAVING lama_sejak_tanam >= 11) AS jl_pml) AS perlu_cabut_label';
+            $sqlviewpemeliharaan = 'SELECT (SELECT COUNT(*) FROM (SELECT TIMESTAMPDIFF(MONTH, tanggal_pemeliharaan_terakhir, NOW()) AS lama_sejak_pemeliharaan 
+                FROM t_batch  ' . $wilayah_join_batch . ' WHERE  ' . $extra_query_noand . ' HAVING lama_sejak_pemeliharaan >= 3) AS jl_pml) AS perlu_pemeliharaan,
+                                        (SELECT COUNT(*) FROM (SELECT TIMESTAMPDIFF(MONTH, `tanggal_penanaman`, NOW()) AS lama_sejak_tanam FROM t_batch  ' . $wilayah_join_batch . ' 
+                                        WHERE status_cabut_label = 0 ' . $extra_query . ' HAVING lama_sejak_tanam >= 11) AS jl_pml) AS perlu_cabut_label';
 
-                $stmt = $pdo->prepare($sqlviewpemeliharaan);
-                $stmt->execute();
-                $rowperlupml = $stmt->fetch();
-
-        }
-        else if ($level_user == 4){
-                $sqlviewdonasi = 'SELECT (SELECT COUNT(t_donasi.id_status_donasi)
+            $stmt = $pdo->prepare($sqlviewpemeliharaan);
+            $stmt->execute();
+            $rowperlupml = $stmt->fetch();
+        } else if ($level_user == 4) {
+            $sqlviewdonasi = 'SELECT (SELECT COUNT(t_donasi.id_status_donasi)
                 FROM t_donasi
                 WHERE t_donasi.id_status_donasi = 1) AS donasi_baru,
                 (SELECT COUNT(t_donasi.id_status_donasi)
@@ -141,56 +136,55 @@ if (!$_SESSION['level_user']) { //Belum log in
                 (SELECT COUNT(t_donasi.id_status_donasi)
                                 FROM t_donasi
                 WHERE t_donasi.id_status_donasi = 7) AS donasi_bermasalah';
-                $stmt = $pdo->prepare($sqlviewdonasi);
-                $stmt->execute();
-                $rowdonasi = $stmt->fetch();
+            $stmt = $pdo->prepare($sqlviewdonasi);
+            $stmt->execute();
+            $rowdonasi = $stmt->fetch();
 
 
-                $sqlviewreservasi = 'SELECT (SELECT COUNT(t_reservasi_wisata.id_status_reservasi_wisata)
+            $sqlviewreservasi = 'SELECT (SELECT COUNT(t_reservasi_wisata.id_status_reservasi_wisata)
                                 FROM t_reservasi_wisata
                                 WHERE t_reservasi_wisata.id_status_reservasi_wisata = 1) AS reservasi_baru,
                                 (SELECT COUNT(t_reservasi_wisata.id_status_reservasi_wisata)
                                                 FROM t_reservasi_wisata
                                 WHERE t_reservasi_wisata.id_status_reservasi_wisata = 3) AS reservasi_bermasalah';
-                $stmt = $pdo->prepare($sqlviewreservasi);
-                $stmt->execute();
-                $rowreservasi = $stmt->fetch();
+            $stmt = $pdo->prepare($sqlviewreservasi);
+            $stmt->execute();
+            $rowreservasi = $stmt->fetch();
 
 
 
 
-                $sqlviewbatch = 'SELECT (SELECT COUNT(id_status_batch)
+            $sqlviewbatch = 'SELECT (SELECT COUNT(id_status_batch)
                                 FROM t_batch
                                 WHERE id_status_batch = 1) AS batch_penyemaian,
                                 (SELECT COUNT(id_status_batch)
                                 FROM t_batch
                                 WHERE id_status_batch = 2) AS batch_siap_tanam';
 
-                $stmt = $pdo->prepare($sqlviewbatch);
-                $stmt->execute();
-                $rowbatch = $stmt->fetch();
+            $stmt = $pdo->prepare($sqlviewbatch);
+            $stmt->execute();
+            $rowbatch = $stmt->fetch();
 
-                $sqlviewpemeliharaan = 'SELECT (SELECT COUNT(*) FROM (SELECT TIMESTAMPDIFF(MONTH, tanggal_pemeliharaan_terakhir, NOW()) AS lama_sejak_pemeliharaan FROM t_batch HAVING lama_sejak_pemeliharaan >= 3) AS jl_pml) AS perlu_pemeliharaan,
+            $sqlviewpemeliharaan = 'SELECT (SELECT COUNT(*) FROM (SELECT TIMESTAMPDIFF(MONTH, tanggal_pemeliharaan_terakhir, NOW()) AS lama_sejak_pemeliharaan FROM t_batch HAVING lama_sejak_pemeliharaan >= 3) AS jl_pml) AS perlu_pemeliharaan,
                                         (SELECT COUNT(*) FROM (SELECT TIMESTAMPDIFF(MONTH, `tanggal_penanaman`, NOW()) AS lama_sejak_tanam FROM t_batch WHERE status_cabut_label = 0 HAVING lama_sejak_tanam >= 11) AS jl_pml) AS perlu_cabut_label';
 
-                $stmt = $pdo->prepare($sqlviewpemeliharaan);
-                $stmt->execute();
-                $rowperlupml = $stmt->fetch();
+            $stmt = $pdo->prepare($sqlviewpemeliharaan);
+            $stmt->execute();
+            $rowperlupml = $stmt->fetch();
         }
-        
-    if(in_array($level_user, [2,3,4])){
-        //Pill notifikasi per menu
-    $notifikasi_donasi = '<span class="badge text-sm badge-pill badge-info">'.$rowdonasi->donasi_baru.'</span>';
-    $notifikasi_donasi_verifikasi = '<span class="badge text-sm badge-pill badge-info">'.$rowdonasi->donasi_verifikasi.'</span>';
-    $notifikasi_reservasi = '<span class="badge text-sm badge-pill badge-info">'.$rowreservasi->reservasi_baru.'</span>';
-    $notifikasi_batch_penyemaian = '<span class="badge text-sm badge-pill badge-info">'.$rowbatch->batch_penyemaian.'</span>';
-    $notifikasi_pemeliharaan = '<span class="badge text-sm badge-pill badge-info">'.$rowperlupml->perlu_pemeliharaan.'</span>';
 
-    }
-    
+        if (in_array($level_user, [2, 3, 4])) {
+            //Pill notifikasi per menu
+            $notifikasi_donasi = '<span class="badge text-sm badge-pill badge-info">' . $rowdonasi->donasi_baru . '</span>';
+            $notifikasi_donasi_verifikasi = '<span class="badge text-sm badge-pill badge-info">' . $rowdonasi->donasi_verifikasi . '</span>';
+            $notifikasi_reservasi = '<span class="badge text-sm badge-pill badge-info">' . $rowreservasi->reservasi_baru . '</span>';
+            $notifikasi_batch_penyemaian = '<span class="badge text-sm badge-pill badge-info">' . $rowbatch->batch_penyemaian . '</span>';
+            $notifikasi_pemeliharaan = '<span class="badge text-sm badge-pill badge-info">' . $rowperlupml->perlu_pemeliharaan . '</span>';
+        }
 
-    
-    //Data Notifikasi Sidebar End
+
+
+        //Data Notifikasi Sidebar End
 
 
         if ($level == 4) { //sidebar Pusat & debug
@@ -205,14 +199,14 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <li class="nav-item"> <!-- Lokasi -->
                     <a href="kelola_donasi.php" class="nav-link ' . (('kelola_donasi.php' == $url_sekarang) || ('edit_donasi.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-hand-holding-usd"></i>
-                        <p> Kelola Donasi '.$notifikasi_donasi.'</p>
+                        <p> Kelola Donasi ' . $notifikasi_donasi . '</p>
                     </a>
                 </li>
                 
                 <li class="nav-item"> 
                     <a href="kelola_reservasi_wisata.php" class="nav-link ' . (('kelola_reservasi_wisata.php' == $url_sekarang) || ('edit_reservasi_wisata.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-th-list"></i>
-                        <p> Kelola Reservasi '.$notifikasi_reservasi.'</p>
+                        <p> Kelola Reservasi ' . $notifikasi_reservasi . '</p>
                     </a>
                 </li>
 
@@ -392,7 +386,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <li class="nav-item"> <!-- Wilayah Lokasi Pusat -->
                     <a href="kelola_donasi.php" class="nav-link ' . (('kelola_donasi.php' == $url_sekarang) || ('edit_donasi.php'  == $url_sekarang) || ('kelola_pengadaan_bibit.php' == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-hand-holding-usd"></i>
-                        <p> Kelola Donasi  '.$notifikasi_donasi_verifikasi.'</p>
+                        <p> Kelola Donasi  ' . $notifikasi_donasi_verifikasi . '</p>
                     </a>
                 </li>
 
@@ -516,19 +510,19 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <li class="nav-item"> <!-- Lokasi -->
                     <a href="kelola_donasi.php" class="nav-link ' . (('kelola_donasi.php' == $url_sekarang) || ('edit_donasi.php'  == $url_sekarang || 'kelola_pengadaan_bibit.php' == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-hand-holding-usd"></i>
-                        <p> Kelola Donasi '.$notifikasi_donasi.'</p>
+                        <p> Kelola Donasi ' . $notifikasi_donasi . '</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="kelola_reservasi_wisata.php" class="nav-link ' . (('kelola_reservasi_wisata.php' == $url_sekarang) || ('edit_reservasi_wisata.php'  == $url_sekarang) || ('kelola_laporan_paket.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-th-list"></i>
-                        <p> Kelola Reservasi '.$notifikasi_reservasi.'</p>
+                        <p> Kelola Reservasi ' . $notifikasi_reservasi . '</p>
                     </a>
                 </li>
 
                 <li class="nav-item"> <!-- Konten Lokasi -->
-                    <a href="kelola_konten_master.php" class="nav-link ' . (('kelola_konten_master.php' == $url_sekarang) || ('kelola_konten_tangkolak.php' == $url_sekarang) || ('edit_konten_tangkolak.php'  == $url_sekarang) || ('input_konten_tangkolak.php'  == $url_sekarang) || 'kelola_konten_ketentuan.php' == $url_sekarang  || ('edit_konten_ketentuan.php' == $url_sekarang)  || ('input_konten_Ketentuan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                    <a href="kelola_konten_master.php" class="nav-link ' . (('kelola_konten_master.php' == $url_sekarang) || ('kelola_konten_tangkolak.php' == $url_sekarang) || ('edit_konten_tangkolak.php'  == $url_sekarang) || ('input_konten_tangkolak.php'  == $url_sekarang) || ('kelola_konten_ketentuan.php' == $url_sekarang)  || ('edit_konten_ketentuan.php' == $url_sekarang)  || ('input_konten_Ketentuan.php'  == $url_sekarang) || ('kelola_konten_penjelasan.php' == $url_sekarang)  || ('edit_konten_penjelasan.php' == $url_sekarang)  || ('input_konten_penjelasan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-book"></i>
                         <p> Kelola Konten </p>
                     </a>
@@ -551,14 +545,14 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <li class="nav-item"> <!-- Lokasi -->
                     <a href="kelola_batch.php?id_status_batch=1" class="nav-link ' . (('kelola_batch.php' == $url_sekarang) || ('edit_batch.php' == $url_sekarang)  || ('input_batch.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
                           <i class="nav-icon fas fa-boxes"></i>
-                          <p> Kelola Batch '.$notifikasi_batch_penyemaian.'</p>
+                          <p> Kelola Batch ' . $notifikasi_batch_penyemaian . '</p>
                     </a>
                 </li>
 
                 <li class="nav-item"> <!-- Lokasi -->
                     <a href="kelola_pemeliharaan.php?id_status_pemeliharaan=1" class="nav-link ' . ('kelola_pemeliharaan.php' == $url_sekarang  || ('edit_pemeliharaan.php' == $url_sekarang)  || ('input_pemeliharaan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                           <i class="nav-icon fas fa-heart"></i>
-                          <p> Kelola Pemeliharaan '.$notifikasi_pemeliharaan.'</p>
+                          <p> Kelola Pemeliharaan ' . $notifikasi_pemeliharaan . '</p>
                     </a>
                 </li>
 
