@@ -129,12 +129,12 @@ if (isset($_POST['submit'])) {
                     <form action="" enctype="multipart/form-data" method="POST">
 
                         <div class="form-group field_wrapper">
-                            <label for="paket_wisata">Pengadaan Fasilitas</label><br>
+                            <label for="status_pengadaan">Pengadaan Fasilitas</label><br>
                             <p class="small">Inputan Pengadaan Fasilitas Maksimal 3</p>
                             <div class="form-group fieldGroup">
                                 <div class="input-group">
-                                    <input required type="text" name="pengadaan_fasilitas[]" min="0" class="form-control" placeholder="Pengadaan Fasilitas" />
-                                    <select required class="form-control" name="status_pengadaan[]" id="exampleFormControlSelect1">
+                                    <input required type="text" name="pengadaan_fasilitas[]" min="0" class="form-control" placeholder="Pengadaan Fasilitas" required/>
+                                    <select required class="form-control" name="status_pengadaan[]" id="status_pengadaan" required>
                                         <option selected disabled>Status Pengadaan:</option>
                                         <option value="Baik">Baik</option>
                                         <option value="Rusak">Rusak</option>
@@ -157,8 +157,8 @@ if (isset($_POST['submit'])) {
                     <!-- copy of input fields group -->
                     <div class="form-group fieldGroupCopy" style="display: none;">
                         <div class="input-group">
-                            <input required type="text" name="pengadaan_fasilitas[]" min="0" class="form-control" placeholder="Pengadaan Fasilitas" />
-                            <select required class="form-control" name="status_pengadaan[]" id="exampleFormControlSelect1">
+                            <input required type="text" name="pengadaan_fasilitas[]" min="0" class="form-control" placeholder="Pengadaan Fasilitas" required/>
+                            <select required class="form-control" name="status_pengadaan[]" id="status_pengadaan" required>
                                 <option selected disabled>Status Pengadaan:</option>
                                 <option value="Baik">Baik</option>
                                 <option value="Rusak">Rusak</option>

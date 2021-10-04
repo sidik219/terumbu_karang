@@ -269,7 +269,7 @@ function alertPembayaran($dob)
 
                     <div class="row text-center mt-5 mb-5">
                         <div class="col">
-                            <h5 class="mb-0"><span class="align-middle font-weight-bold mb-0">Laporan Periode Pengeluaran Laba Rugi Reservasi Wisata </span></h5>
+                            <h5 class="mb-0"><span class="align-middle font-weight-bold mb-0">Laporan Periode Penghasilan Reservasi Wisata </span></h5>
                             <h5 class="mt-0 font-weight-bold text-muted text-sm">Periode <span id="periode_laporan"></span></h5>
                             
                         </div>

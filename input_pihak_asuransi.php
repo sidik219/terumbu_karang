@@ -146,7 +146,7 @@ if (isset($_POST['submit'])) {
                         </div>
                         <div class="form-group">
                             <label for="notlp_asuransi">No Telp Asuransi</label>
-                            <input type="tel" id="notlp_asuransi" name="notlp_asuransi" class="form-control" required>
+                            <input type="tel" id="notlp_asuransi" name="notlp_asuransi" class="form-control" pattern="^[0-9-+\s()]*$" required>
                         </div>
                         <p class="small">Lewati Jika Dengan Perusahaan Asuransi Yang Sama</p>
                         <p align="center">

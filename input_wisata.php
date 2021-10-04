@@ -254,7 +254,8 @@ if (isset($_POST['submit'])) {
                         <small><b>Contoh Pengisian:</b></small><br>
                         <small>* Judul Wisata: Wisata Diving</small><br>
                         <small>* Upload Foto Wisata: "Foto tentang wisata tersebut"</small><br>
-                        <small style="color: red;">* Untuk menambahkan wisata baru, harus input fasilitas terlebih dahulu</small>
+                        <small style="color: red;">* Untuk menambahkan wisata baru, 
+                        harus <a href="input_fasilitas_wisata.php"><b>input fasilitas</b></a> terlebih dahulu</small>
                     </div>
 
             </section>

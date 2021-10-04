@@ -150,19 +150,20 @@ if (isset($_POST['submit'])) {
                         <label for="paket_wisata">Fasilitas Wisata</label><br>
                         <div class="form-group fieldGroup">
                             <div class="input-group">
-                                <select class="form-control" name="nama_fasilitas[]" id="exampleFormControlSelect1">
+                                <select class="form-control" name="nama_fasilitas[]" id="exampleFormControlSelect1" required>
                                     <option selected disabled>Fasilitas Wisata:</option>
                                     <?php
                                     $sqlkerjasama = 'SELECT * FROM t_kerjasama
                                                         LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                                                        WHERE t_pengadaan_fasilitas.status_pengadaan = "baik"
                                                         ORDER BY id_kerjasama DESC';
                                     $stmt = $pdo->prepare($sqlkerjasama);
                                     $stmt->execute();
                                     $rowKerjasama = $stmt->fetchAll();
 
                                     foreach ($rowKerjasama as $kerjasama) { ?>
-                                    <option value="<?=$kerjasama->id_kerjasama.' - '.$kerjasama->biaya_kerjasama?>">
-                                        <?=$kerjasama->pengadaan_fasilitas?> - <?=$kerjasama->status_kerjasama?>
+                                    <option value="<?=$kerjasama->id_kerjasama?>">
+                                        <?=$kerjasama->pengadaan_fasilitas?> - <?=$kerjasama->pihak_ketiga?>
                                     </option>
                                     <?php } ?>
                                 </select>
@@ -185,24 +186,26 @@ if (isset($_POST['submit'])) {
                         <label for="">Keterangan:</label><br>
                         <small>* Max Fasilitas Wisata Yang Dibuat Harus 3</small><br>
                         <small style="color: red;">* Untuk menambahkan fasilitas baru,
-                        <br> harus input pengadaan terlebih dahulu selanjutnya input kerjasama</small>
+                            <br> harus <a href="input_pengadaan_fasilitas.php"><b>input pengadaan</b></a> terlebih dahulu selanjutnya input kerjasama
+                        </small>
                     </div>
 
                     <!-- copy of input fields group -->
                     <div class="form-group fieldGroupCopy" style="display: none;">
                         <div class="input-group">
-                            <select class="form-control" name="nama_fasilitas[]" id="exampleFormControlSelect1">
+                            <select class="form-control" name="nama_fasilitas[]" id="nama_fasilitas" required>
                                 <option selected disabled>Fasilitas Wisata:</option>
                                 <?php
                                 $sqlkerjasama = 'SELECT * FROM t_kerjasama
                                                     LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                                                    WHERE t_pengadaan_fasilitas.status_pengadaan = "baik"
                                                     ORDER BY id_kerjasama DESC';
                                 $stmt = $pdo->prepare($sqlkerjasama);
                                 $stmt->execute();
                                 $rowKerjasama = $stmt->fetchAll();
 
                                 foreach ($rowKerjasama as $kerjasama) { ?>
-                                <option value="<?=$kerjasama->id_kerjasama.' - '.$kerjasama->biaya_kerjasama?>">
+                                <option value="<?=$kerjasama->id_kerjasama?>">
                                     <?=$kerjasama->pengadaan_fasilitas?> - <?=$kerjasama->status_kerjasama?>
                                 </option>
                                 <?php } ?>
