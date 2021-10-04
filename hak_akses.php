@@ -266,21 +266,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                             <p> Kelola Perizinan </p>
                     </a>
                 </li>
-
-                <li class="nav-item"> <!-- Wilayah -->
-                    <a href="kelola_laporan.php" class="nav-link ' . ('kelola_laporan.php' == $url_sekarang ? ' active ' : '') . ' ">
-                            <i class="nav-icon fas fa-angle-down"></i>
-                            <p> Sebaran Per-Wilayah </p>
-                    </a>
-                </li>
-
-                <li class="nav-item"> <!-- Wilayah -->
-                    <a href="kelola_laporan_baru.php" class="nav-link ' . ('kelola_laporan_baru.php' == $url_sekarang ? ' active ' : '') . ' ">
-                            <i class="nav-icon fas fa-globe-americas"></i>
-                            <p> Laporan Sebaran</p>
-                    </a>
-                </li>                  
-
+                
                 <!--
                 <li class="nav-item">
                     <a href="kelola_user.php" class="nav-link ' . ('kelola_user.php' == $url_sekarang ? ' active ' : '') . ' ">
@@ -288,20 +274,61 @@ if (!$_SESSION['level_user']) { //Belum log in
                             <p> Kelola User </p>
                     </a>
                 </li> -->
+                
 
+                <!-- LAPORAN COLLAPSE START -->        
+        <li class="nav-item '.( in_array($url_sekarang, ['kelola_laporan_baru.php','kelola_laporan.php','laporan_kondisi.php','laporan_donasi.php',
+                                                        'laporan_periode_wisata.php', 'kelola_arsip_laporan_sebaran.php', 'edit_arsip_luas_wilayah.php'])  ? ' active menu-open ' : '').'"> 
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-file-invoice"></i>
+              <p>
+                Kelola Laporan
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview ml-2">
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
-                    <a href="laporan_donasi.php" class="nav-link  ' . ('laporan_donasi.php' == $url_sekarang ? ' active ' : '') . ' ">
-                        <i class="nav-icon fas fa-file-invoice"></i>
-                        <p> Laporan Donasi</p>
-                    </a>
-                </li>
+                        <a href="laporan_donasi.php" class="nav-link  ' . ('laporan_donasi.php' == $url_sekarang ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-file-invoice"></i>
+                            <p> Laporan Donasi</p>
+                        </a>
+                    </li>
 
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                     <a href="laporan_periode_wisata.php" class="nav-link  ' . ('laporan_periode_wisata.php' == $url_sekarang ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-file-invoice"></i>
                         <p> Laporan Wisata</p>
                     </a>
+                </li>   
+
+                    <li class="nav-item"> <!-- Wilayah -->
+                    <a href="kelola_laporan_baru.php" class="nav-link ' . ('kelola_laporan_baru.php' == $url_sekarang ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-globe-americas"></i>
+                            <p> Laporan Sebaran</p>
+                    </a>
                 </li>
+                  
+                <li class="nav-item"> <!-- Wilayah -->
+                    <a href="kelola_laporan.php" class="nav-link ' . ('kelola_laporan.php' == $url_sekarang ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-angle-down"></i>
+                            <p> Sebaran Per-Wilayah </p>
+                    </a>
+                </li>
+
+                   <li class="nav-item"> <!-- Wilayah & Pusat -->
+                    <a href="laporan_kondisi.php" class="nav-link ' . ('laporan_kondisi.php' == $url_sekarang   ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-heartbeat"></i>
+                            <p> Laporan Kondisi </p>
+                    </a>
+                </li>                
+
+                <li class="nav-item"> <!-- Wilayah & Pusat -->
+                    <a href="kelola_arsip_laporan_sebaran.php" class="nav-link ' . ('kelola_arsip_laporan_sebaran.php' == $url_sekarang || ('edit_arsip_luas_wilayah.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-history"></i>
+                            <p> Kelola Arsip Laporan </p>
+                    </a>
+                </li>
+            </ul> <!-- LAPORAN COLLAPSE END -->
             ';
 
             echo $sidebar;
@@ -403,8 +430,34 @@ if (!$_SESSION['level_user']) { //Belum log in
                           <p> Kelola Titik </p>
                     </a>
                 </li>
-                
-                <li class="nav-item"> <!-- Lokasi -->
+
+
+
+                <!-- WISATA COLLAPSE START -->        
+        <li class="nav-item '.( in_array($url_sekarang, ['kelola_wisata.php','edit_wisata.php','kelola_fasilitas_wisata.php','input_wisata.php',
+                                                        'input_fasilitas_wisata.php', 'input_paket_wisata.php', 'edit_arsip_luas_wilayah.php',
+                                                        'kelola_pengadaan_fasilitas.php','edit_pengadaan_fasilitas.php',
+                                                        'input_pengadaan_fasilitas.php','kelola_kerjasama.php','edit_kerjasama.php','input_kerjasama.php','kelola_asuransi.php',
+                                                        'edit_asuransi.php','input_asuransi.php'
+                                                        ])  ? ' active menu-open ' : '').'"> 
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-briefcase"></i>
+              <p>
+                Kelola Pariwisata
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview ml-2">
+                    <li class="nav-item"> 
+                    <a href="kelola_wisata.php" class="nav-link ' . (('kelola_wisata.php' == $url_sekarang) || ('edit_wisata.php'  == $url_sekarang) || 
+                                                    ('kelola_fasilitas_wisata.php'  == $url_sekarang) || ('input_wisata.php'  == $url_sekarang) || 
+                                                    ('input_fasilitas_wisata.php'  == $url_sekarang) || ('input_paket_wisata.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                        <i class="nav-icon fas fa-suitcase"></i>
+                        <p> Kelola Wisata </p>
+                    </a>
+                </li>
+
+                    <li class="nav-item"> <!-- Lokasi -->
                     <a href="kelola_pengadaan_fasilitas.php" class="nav-link ' . (('kelola_pengadaan_fasilitas.php' == $url_sekarang) || ('edit_pengadaan_fasilitas.php'  == $url_sekarang) || ('input_pengadaan_fasilitas.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-truck-loading"></i>
                         <p> Kelola Pengadaan </p>
@@ -425,12 +478,12 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </a>
                 </li>
 
-                <li class="nav-item"> 
-                    <a href="kelola_wisata.php" class="nav-link ' . (('kelola_wisata.php' == $url_sekarang) || ('edit_wisata.php'  == $url_sekarang) || ('kelola_fasilitas_wisata.php'  == $url_sekarang) || ('input_wisata.php'  == $url_sekarang) || ('input_fasilitas_wisata.php'  == $url_sekarang) || ('input_paket_wisata.php'  == $url_sekarang) ? ' active ' : '') . ' ">
-                        <i class="nav-icon fas fa-suitcase"></i>
-                        <p> Kelola Wisata </p>
-                    </a>
-                </li>
+                
+            </ul> <!-- WISATA COLLAPSE END -->
+
+                
+                
+                
 
                 <li class="nav-item"> <!-- Konten Wilayah -->
                     <a href="kelola_konten.php" class="nav-link ' . (('kelola_konten.php' == $url_sekarang) || ('edit_konten.php'  == $url_sekarang) || ('input_konten.php'  == $url_sekarang) ? ' active ' : '') . ' ">
@@ -453,7 +506,32 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </a>
                 </li>
 
-                <li class="nav-item"> <!-- Wilayah -->
+        <!-- LAPORAN COLLAPSE START -->        
+        <li class="nav-item '.( in_array($url_sekarang, ['kelola_laporan_baru.php','kelola_laporan.php','laporan_kondisi.php','laporan_donasi.php',
+                                                        'laporan_periode_wisata.php', 'kelola_arsip_laporan_sebaran.php', 'edit_arsip_luas_wilayah.php'])  ? ' active menu-open ' : '').'"> 
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-file-invoice"></i>
+              <p>
+                Kelola Laporan
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview ml-2">
+                <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                        <a href="laporan_donasi.php" class="nav-link  ' . ('laporan_donasi.php' == $url_sekarang ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-file-invoice"></i>
+                            <p> Laporan Donasi</p>
+                        </a>
+                    </li>
+
+                <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                    <a href="laporan_periode_wisata.php" class="nav-link  ' . ('laporan_periode_wisata.php' == $url_sekarang ? ' active ' : '') . ' ">
+                        <i class="nav-icon fas fa-file-invoice"></i>
+                        <p> Laporan Wisata</p>
+                    </a>
+                </li>   
+
+                    <li class="nav-item"> <!-- Wilayah -->
                     <a href="kelola_laporan_baru.php" class="nav-link ' . ('kelola_laporan_baru.php' == $url_sekarang ? ' active ' : '') . ' ">
                             <i class="nav-icon fas fa-globe-americas"></i>
                             <p> Laporan Sebaran</p>
@@ -472,21 +550,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                             <i class="nav-icon fas fa-heartbeat"></i>
                             <p> Laporan Kondisi </p>
                     </a>
-                </li>
-
-                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
-                    <a href="laporan_donasi.php" class="nav-link  ' . ('laporan_donasi.php' == $url_sekarang ? ' active ' : '') . ' ">
-                        <i class="nav-icon fas fa-file-invoice"></i>
-                        <p> Laporan Donasi</p>
-                    </a>
-                </li>
-
-                <li class="nav-item"> <!-- Wilayah & Lokasi -->
-                    <a href="laporan_periode_wisata.php" class="nav-link  ' . ('laporan_periode_wisata.php' == $url_sekarang ? ' active ' : '') . ' ">
-                        <i class="nav-icon fas fa-file-invoice"></i>
-                        <p> Laporan Wisata</p>
-                    </a>
-                </li>
+                </li>                
 
                 <li class="nav-item"> <!-- Wilayah & Pusat -->
                     <a href="kelola_arsip_laporan_sebaran.php" class="nav-link ' . ('kelola_arsip_laporan_sebaran.php' == $url_sekarang || ('edit_arsip_luas_wilayah.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
@@ -494,6 +558,9 @@ if (!$_SESSION['level_user']) { //Belum log in
                             <p> Kelola Arsip Laporan </p>
                     </a>
                 </li>
+            </ul> <!-- LAPORAN COLLAPSE END -->
+
+                
                 ';
 
             echo $sidebar;
