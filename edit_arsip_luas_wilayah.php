@@ -33,10 +33,11 @@ include 'hak_akses.php';
                 $i = 0;
                 $update_terakhir = date ('Y-m-d H:i:s', time());
                 $tipe_laporan = $_POST['tipe_laporan'];
+                $periode_laporan = $_POST['periode_laporan'];
 
-                $sqlupdatearsip = 'UPDATE t_laporan_sebaran SET update_terakhir = :update_terakhir, tipe_laporan = :tipe_laporan WHERE id_laporan = :id_laporan';
+                $sqlupdatearsip = 'UPDATE t_laporan_sebaran SET update_terakhir = :update_terakhir, tipe_laporan = :tipe_laporan, periode_laporan = :periode_laporan WHERE id_laporan = :id_laporan';
                 $stmt = $pdo->prepare($sqlupdatearsip);
-                $stmt->execute(['update_terakhir' => $update_terakhir, 'id_laporan' => $id_laporan, 'tipe_laporan' => $tipe_laporan]);
+                $stmt->execute(['update_terakhir' => $update_terakhir, 'id_laporan' => $id_laporan, 'tipe_laporan' => $tipe_laporan, 'periode_laporan' => $periode_laporan]);
 
                 foreach($_POST['id_arsip_wilayah'] as $id_arsip){
                   $kurang = $_POST['kurang'][$i];
@@ -45,11 +46,11 @@ include 'hak_akses.php';
                   $sangat_baik = $_POST['sangat_baik'][$i];
 
                   $sqleditarsipwilayah = "UPDATE t_arsip_wilayah
-                            SET kurang = :kurang, cukup = :cukup, baik = :baik, sangat_baik = :sangat_baik
+                            SET kurang = :kurang, cukup = :cukup, baik = :baik, sangat_baik = :sangat_baik, tahun_arsip_wilayah = :tahun_arsip_wilayah
                             WHERE id_arsip_wilayah = :id_arsip_wilayah";
 
                   $stmt = $pdo->prepare($sqleditarsipwilayah);
-                  $stmt->execute(['kurang' => $kurang, 'cukup' => $cukup, 'baik' => $baik, 'sangat_baik' => $sangat_baik, 'id_arsip_wilayah' => $id_arsip]);
+                  $stmt->execute(['kurang' => $kurang, 'cukup' => $cukup, 'baik' => $baik, 'sangat_baik' => $sangat_baik, 'id_arsip_wilayah' => $id_arsip, 'tahun_arsip_wilayah' => $periode_laporan]);
 
                   $i++;
                 }
@@ -149,7 +150,7 @@ include 'hak_akses.php';
                     <thead>
                             <tr>
                                 <th class="text-center align-middle" rowspan="2" scope="col">Kabupaten</th>
-                                <th class="text-center" colspan="4" scope="col"><?=$rowlaporan[0]->tahun_arsip_wilayah?></th>
+                                <th class="text-center" colspan="4" scope="col">Tahun: <input type="number" value="<?=$rowlaporan[0]->tahun_arsip_wilayah?>" name="periode_laporan"></th>
                               <tr>
                                 <th class="text-center" scope="col">Kurang</th><th class="text-center" scope="col">Cukup</th><th class="text-center" scope="col">Baik</th> <th class="text-center" scope="col">Sangat Baik</th>
                               </tr>

@@ -309,12 +309,17 @@
     }
 
     .nav-sidebar>.nav-item>.nav-link.active,
+    .nav-treeview>.nav-item>.nav-link.active,
     .btn-blue {
       background-image: url('../images/sidebaractivebg.jpg') !important;
       background-repeat: no-repeat;
       background-size: cover;
       color: white;
       border-radius: 40px;
+    }
+
+    .nav-treeview>.nav-item>.nav-link{
+      font-size: 0.9rem;
     }
 
     .btn-warning {
@@ -367,6 +372,12 @@
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
+    }
+
+    .sidebar{
+      background-image: url('../images/sidebarbg.jpg');
+      /* background-position: center; 
+      background-size: cover; */  
     }
 
     .navbar-light .navbar-nav .nav-link {
