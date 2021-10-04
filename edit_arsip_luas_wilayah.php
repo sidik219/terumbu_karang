@@ -31,6 +31,7 @@ include 'hak_akses.php';
     if (isset($_POST['submit'])) {
             if($_POST['submit'] == 'Simpan'){
                 $i = 0;
+                
                 $update_terakhir = date ('Y-m-d H:i:s', time());
                 $tipe_laporan = $_POST['tipe_laporan'];
                 $periode_laporan = $_POST['periode_laporan'];

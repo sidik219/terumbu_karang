@@ -17,33 +17,69 @@ include 'hak_akses.php';
 
     if (isset($_POST['submit'])) {
             if($_POST['submit'] == 'Simpan'){
-                $i = 0;
-                $update_terakhir = date ('Y-m-d H:i:s', time());
-                $tipe_laporan = $_POST['tipe_laporan'];
-                $periode_laporan = $_POST['periode_laporan'];
 
-                $sqlupdatearsip = 'UPDATE t_laporan_sebaran SET update_terakhir = :update_terakhir, tipe_laporan = :tipe_laporan, periode_laporan = :periode_laporan WHERE id_laporan = :id_laporan';
-                $stmt = $pdo->prepare($sqlupdatearsip);
-                $stmt->execute(['update_terakhir' => $update_terakhir, 'id_laporan' => $id_laporan, 'tipe_laporan' => $tipe_laporan, 'periode_laporan' => $periode_laporan]);
-
-                foreach($_POST['id_arsip_wilayah'] as $id_arsip){
-                  $kurang = $_POST['kurang'][$i];
-                  $cukup = $_POST['cukup'][$i];
-                  $baik = $_POST['baik'][$i];
-                  $sangat_baik = $_POST['sangat_baik'][$i];
-
-                  $sqleditarsipwilayah = "UPDATE t_arsip_wilayah
-                            SET kurang = :kurang, cukup = :cukup, baik = :baik, sangat_baik = :sangat_baik, tahun_arsip_wilayah = :tahun_arsip_wilayah
-                            WHERE id_arsip_wilayah = :id_arsip_wilayah";
-
-                  $stmt = $pdo->prepare($sqleditarsipwilayah);
-                  $stmt->execute(['kurang' => $kurang, 'cukup' => $cukup, 'baik' => $baik, 'sangat_baik' => $sangat_baik, 'id_arsip_wilayah' => $id_arsip, 'tahun_arsip_wilayah' => $periode_laporan]);
-
-                  $i++;
+                $array_test = [];
+                foreach($_POST['kode_wilayah'] as $kode_test){
+                    array_push($array_test, $kode_test);
                 }
 
-                header("Location: kelola_arsip_laporan_sebaran.php?status=updatesuccess");
+                print_r($array_test);
+
+                echo count(array_unique($_POST['kode_lokasi'])), ' != ', count($_POST['kode_lokasi']);
+
+                if(count(array_unique($_POST['kode_lokasi'])) != count($_POST['kode_lokasi']))
+                    {
+                        header("Location: kelola_kode_wilayah.php?status=kode_duplikat");
+                        return 0;   
+                }else{
+                        $pdo->prepare('TRUNCATE TABLE t_kode_wilayah')->execute(); //Kosongin t_kode_wilayah
+                $pdo->prepare('TRUNCATE TABLE t_kode_lokasi')->execute(); //Kosongin t_kode_lokasi
+
+                $i = 0;
+                $x = 0;
+                $j = 0;
+                foreach($_POST['kode_wilayah'] as $kode_wilayah){ 
+                  $nama_wilayah = $_POST['nama_wilayah'][$i]; 
+                  $kode_wilayah = $_POST['kode_wilayah'][$i]; 
+                  $jumlahlokasiwilayah = $_POST['jumlahlokasiwilayah'][$i]; 
+
+                  $sqlinsertwilayah = "INSERT INTO t_kode_wilayah 
+                            (kode_wilayah, nama_wilayah)
+                            VALUES (:kode_wilayah, :nama_wilayah)";
+
+                  $stmt = $pdo->prepare($sqlinsertwilayah);
+                  $stmt->execute(['kode_wilayah' => $kode_wilayah, 'nama_wilayah' => $nama_wilayah]);
+
+                  foreach($_POST['kode_lokasi'] as $kode_lokasi){
+
+                    $nama_lokasi = $_POST['nama_lokasi'][$x]; 
+                    $kode_lokasi = $_POST['kode_lokasi'][$x]; 
+                    
+
+                    $sqlinsertlokasi = "INSERT INTO t_kode_lokasi 
+                                (kode_lokasi, kode_wilayah, nama_lokasi)
+                                VALUES (:kode_lokasi, :kode_wilayah, :nama_lokasi)";
+
+                    $stmt = $pdo->prepare($sqlinsertlokasi);
+                    $stmt->execute(['kode_lokasi' => $kode_lokasi, 'kode_wilayah' => $kode_wilayah, 'nama_lokasi' => $nama_lokasi]);
+                    $x++; 
+                    $j++;
+
+                    if($j == $jumlahlokasiwilayah){ 
+                        $j = 0;
+                        break;
+                    }
+                }
+
+                  $i++; 
+                }
+
+                header("Location: kelola_kode_wilayah.php?status=updatesuccess");
             }
+                }
+
+                
+                
         }
 ?>
 
@@ -125,6 +161,21 @@ include 'hak_akses.php';
             <!-- Main content -->
             <section class="content">
                     <div class="container-fluid">
+                        <?php
+          if (!empty($_GET['status'])) {
+            if ($_GET['status'] == 'updatesuccess') {
+
+              echo '<div class="alert alert-success" role="alert">
+                          Update data berhasil
+                      </div>';
+            } else if ($_GET['status'] == 'kode_duplikat') {
+              echo '<div class="alert alert-warning" role="alert">
+                          Data Kode tidak boleh ada duplikat! Harap input data kembali.
+                      </div>';
+            
+          }
+        }
+          ?>
                         
                         <p align="center">
                         <button onclick="event.preventDefault(); tambahWilayah();" class="btn btn-blue btn-primary mb-4"><i class="fas fa-plus"></i> Tambah Wilayah</button>
@@ -133,6 +184,10 @@ include 'hak_akses.php';
                     <form action="" id="container-table" enctype="multipart/form-data" method="POST" name="updateWilayah">
                         <?php 
                             foreach($rowwilayah as $wilayah){
+                                $sqllokasi = 'SELECT * FROM t_kode_lokasi WHERE kode_wilayah = :kode_wilayah';
+                                $stmt = $pdo->prepare($sqllokasi);
+                                $stmt->execute(['kode_wilayah' => $wilayah->kode_wilayah]);
+                                $rowlokasi = $stmt->fetchAll();
                         ?>
             <div id="rowwilayah<?=$wilayah->kode_wilayah?>">
              <table class="table table-striped table-bordered DataWilayah">
@@ -141,27 +196,22 @@ include 'hak_akses.php';
                                 <th class="text-center align-middle" >Nama Wilayah: <input class="form-control-sm" type="text" value="<?= $wilayah->nama_wilayah ?>" name="nama_wilayah[]" required></th>
                                 <th class="text-center">Kode Wilayah: <input class="form-control-sm" type="text" value="<?=$wilayah->kode_wilayah?>" name="kode_wilayah[]" required>
                             <button onclick="event.preventDefault(); (()=>$('#rowwilayah<?=$wilayah->kode_wilayah?>').remove())();" class="ml-2 btn text-cyan"><i class="fas fa-times"></i></button></th>
-                              <tr>
+                              <input type="hidden" id="jumlah<?=$wilayah->kode_wilayah?>" value="<?= count($rowlokasi) ?>" name="jumlahlokasiwilayah[]" ><tr>
                                 <th class="text-center" scope="col">Nama Lokasi</th><th class="text-center" scope="col">Kode Lokasi</th>
                               </tr>
                             </tr>
                       </thead>
 
                 <tbody  id="rowlokasi<?=$wilayah->kode_wilayah?>" class="table-hover">
-                <?php
 
-
-                    $sqllokasi = 'SELECT * FROM t_kode_lokasi WHERE kode_wilayah = :kode_wilayah';
-                              $stmt = $pdo->prepare($sqllokasi);
-                              $stmt->execute(['kode_wilayah' => $wilayah->kode_wilayah]);
-                              $rowlokasi = $stmt->fetchAll();
+                <?php                
 
                     foreach ($rowlokasi as $lokasi) {                  
                 ?>
                         <tr>
                             <td class="text-center"><input class="form-control-sm text-center" type="text" value="<?=$lokasi->nama_lokasi?>" name="nama_lokasi[]" required></td>
                             <td class="text-center"><input class="form-control-sm text-center" type="text" value="<?=$lokasi->kode_lokasi?>" name="kode_lokasi[]" required> 
-                                                    <button onclick="event.preventDefault(); (()=>$(this).parent().parent().remove())();" class="ml-2 btn text-cyan"><i class="fas fa-times"></i></button></td>
+                                                    <button onclick="event.preventDefault(); $(this).parent().parent().remove(); $('#jumlah<?=$wilayah->kode_wilayah?>').val(parseInt($('#jumlah<?=$wilayah->kode_wilayah?>').val()) - 1);" class="ml-2 btn text-cyan"><i class="fas fa-times"></i></button></td>
                         </tr>
                 <?php }
                     
@@ -174,7 +224,7 @@ include 'hak_akses.php';
                 <?php
                         echo '<tr>
                             <p align="center">
-                            <button onclick="event.preventDefault(); tambahLokasi(\'rowlokasi'.$wilayah->kode_wilayah.'\');" class="btn btn-sm btn-outline-primary mb-5"><i class="fas fa-plus"></i> Tambah Lokasi</button>
+                            <button onclick="event.preventDefault(); tambahLokasi(\'rowlokasi'.$wilayah->kode_wilayah.'\', \'jumlah'.$wilayah->kode_wilayah.'\');" class="btn btn-sm btn-outline-primary mb-5"><i class="fas fa-plus"></i> Tambah Lokasi</button>
                             </p>
                             </tr>
                         </div>';
@@ -220,13 +270,14 @@ include 'hak_akses.php';
     <script src= "dist/js/adminlte.js"></script>
 
     <script>
-        function tambahLokasi(id_target){        
+        function tambahLokasi(id_target, id_jumlah){        
             var lokasibaru = `<tr>
                             <td class="text-center"><input class="form-control-sm text-center" type="text" value="" name="nama_lokasi[]" required></td>
                             <td class="text-center"><input class="form-control-sm text-center" type="text" value="" name="kode_lokasi[]" required>
-                            <button onclick="event.preventDefault(); (()=>$(this).parent().parent().remove())();" class="ml-2 btn text-cyan"><i class="fas fa-times"></i></button></td>
+                            <button onclick="event.preventDefault(); (()=>$(this).parent().parent().remove())(); $('#${id_jumlah}').val(parseInt($('#${id_jumlah}').val()) - 1);" class="ml-2 btn text-cyan"><i class="fas fa-times"></i></button></td>
                         </tr>`;
             $(lokasibaru).appendTo('#'+id_target);
+            $('#'+id_jumlah).val(parseInt($('#'+id_jumlah).val()) + 1)
         }
 
 
@@ -239,7 +290,7 @@ include 'hak_akses.php';
                     <thead>
                             <tr class="table-active">
                                 <th class="text-center align-middle" >Nama Wilayah: <input class="form-control-sm" type="text"  name="nama_wilayah[]" required></th>
-                                <th class="text-center">Kode Wilayah: <input class="form-control-sm" type="text"  name="kode_wilayah[]" required>
+                                <th class="text-center">Kode Wilayah: <input class="form-control-sm" type="text"  name="kode_wilayah[]" required><input type="hidden" id="jumlah${random_id}" value="1" name="jumlahlokasiwilayah[]" >
                             <button onclick="event.preventDefault(); (()=>$('#rowwilayah${random_id}').remove())();" class="ml-2 btn text-cyan"><i class="fas fa-times"></i></button></th>
                               <tr>
                                 <th class="text-center" scope="col">Nama Lokasi</th><th class="text-center" scope="col">Kode Lokasi</th>
@@ -252,7 +303,7 @@ include 'hak_akses.php';
                         <tr>
                             <td class="text-center"><input class="form-control-sm text-center" type="text"  name="nama_lokasi[]" required></td>
                             <td class="text-center"><input class="form-control-sm text-center" type="text"  name="kode_lokasi[]" required> 
-                                                    <button onclick="event.preventDefault(); (()=>$(this).parent().parent().remove())();" class="ml-2 btn text-cyan"><i class="fas fa-times"></i></button></td>
+                                                    <button onclick="event.preventDefault(); (()=>$(this).parent().parent().remove())(); $('#${random_id}').val(parseInt($('#${random_id}').val()) - 1);" class="ml-2 btn text-cyan"><i class="fas fa-times"></i></button></td>
                         </tr>
                         
                 </tbody>
@@ -261,7 +312,7 @@ include 'hak_akses.php';
                     
                 
                             <p align="center">
-                                <button onclick="event.preventDefault(); tambahLokasi('rowlokasi${random_id}');" class="btn btn-sm btn-outline-primary mb-5"><i class="fas fa-plus"></i> Tambah Lokasi</button>
+                                <button onclick="event.preventDefault(); tambahLokasi('rowlokasi${random_id}', 'jumlah${random_id}');" class="btn btn-sm btn-outline-primary mb-5"><i class="fas fa-plus"></i> Tambah Lokasi</button>
                             </p>
                             
                         </div>;
