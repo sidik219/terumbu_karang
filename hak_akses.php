@@ -197,6 +197,13 @@ if (!$_SESSION['level_user']) { //Belum log in
                 </li>
 
                 <li class="nav-item"> <!-- Lokasi -->
+                    <a href="kelola_kode_wilayah.php" class="nav-link ' . (('kelola_kode_wilayah.php' == $url_sekarang)  ? ' active ' : '') . ' ">
+                        <i class="nav-icon fas fa-list-ol"></i>
+                        <p> Kelola Kode Wilayah </p>
+                    </a>
+                </li>
+
+                <li class="nav-item"> <!-- Lokasi -->
                     <a href="kelola_donasi.php" class="nav-link ' . (('kelola_donasi.php' == $url_sekarang) || ('edit_donasi.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-hand-holding-usd"></i>
                         <p> Kelola Donasi ' . $notifikasi_donasi . '</p>

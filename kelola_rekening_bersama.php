@@ -140,7 +140,7 @@ if ($_SESSION['level_user'] == 4) {
                   <th scope="col">Nomor Rekening</th>
                   <th scope="col">Bank</th>
                   <th scope="col">Wilayah</th>
-                  <th scope="col">Aksi</th>
+                  <?php if (!($_SESSION['level_user'] == 4)) : ?><th scope="col">Aksi</th><?php endif ?>
                 </tr>
               </thead>
               <tbody id="tbody-append">
