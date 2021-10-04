@@ -112,6 +112,9 @@ class myPDF extends FPDF{
             $this->Cell(55, 5, 'No HP Pengelola Lokasi', 0, 0);
             $this->Cell(117, 5, ': '.$rowitem->kontak_lokasi, 0, 1);
 
+            // TTD Digital
+            $this->Image($rowitem->ttd_digital, 245, 129, -450); //Logo, Kiri-Atas,Kanan-Bawah
+
             //$this->SetTextColor(0, 0, 0);
             $this->Line(234, 170, 286, 170); //Line TTD
 
