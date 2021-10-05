@@ -1,0 +1,173 @@
+            <!-- Head -->
+            <div class="header-tkjb">
+
+                <div class="terumbu-karang-tangkolak">
+                    <h2>Kondisi Terumbu Karang Tangkolak</h2>
+                    <div class="row ">
+
+                        <div class="col-md-12 col-lg-6 p-5 text-center  tabel-status-tangkolak">
+                            <?php
+                            foreach ($rowwilayah as $rowitem) {
+                                $total_luas_lokasi = 0;
+                                $total_persentase_sebaran = 0;
+                            ?>
+                                <?php
+                                $sql_lokasi = 'SELECT *, SUM(luas_titik) AS total_titik,
+                            COUNT(id_titik) AS jumlah_titik,
+                            SUM(luas_lokasi)  / COUNT(id_titik) AS total_lokasi,
+                            (SUM(t_titik.luas_titik) / (SUM(t_lokasi.luas_lokasi) / COUNT(t_titik.id_titik)) ) * 100 AS persentase_sebaran
+
+                            FROM `t_titik`, t_lokasi, t_wilayah
+                            WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
+                            AND t_titik.id_lokasi = 5
+                            AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                            AND t_lokasi.id_wilayah = 34
+                            AND t_lokasi.id_wilayah = ' . $rowitem->id_wilayah . '
+                            GROUP BY t_lokasi.id_lokasi
+                            ORDER BY persentase_sebaran DESC';
+
+                                $stmt = $pdo->prepare($sql_lokasi);
+                                $stmt->execute();
+                                $rowlokasi = $stmt->fetchAll();
+
+                                $kurang = 0;
+                                $cukup = 0;
+                                $baik = 0;
+                                $sangat_baik = 0;
+                                $kurang_luas = 0;
+                                $cukup_luas = 0;
+                                $baik_luas = 0;
+                                $sangat_baik_luas = 0;
+
+                                foreach ($rowlokasi as $lokasi) {
+                                    $ps = $lokasi->persentase_sebaran;
+
+                                    if ($ps >= 0 && $ps < 25) {
+                                        $kondisi_lokasi = 'Kurang';
+                                        $kurang_luas += $lokasi->total_titik;
+                                    } else if ($ps >= 25 && $ps < 50) {
+                                        $kondisi_lokasi = 'Cukup';
+                                        $cukup_luas += $lokasi->total_titik;
+                                    } else if ($ps >= 50 && $ps < 75) {
+                                        $kondisi_lokasi = 'Baik';
+                                        $baik_luas += $lokasi->total_titik;
+                                    } else {
+                                        $kondisi_lokasi = 'Sangat Baik';
+                                        $sangat_baik_luas += $lokasi->total_titik;
+                                    }
+                                ?>
+
+                                    <div class="row justify-content-center ">
+                                        <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                            <b>Nama Lokasi</b>
+                                        </div>
+                                        <div class="col-sm-4 border border-dark py-1" style="color:green;">
+                                            <b><?= $lokasi->nama_lokasi ?></b>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center ">
+                                        <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                            <b>Persentase Sebaran</b>
+                                        </div>
+                                        <div class="col-sm-4 border border-dark py-1" style="color:green;">
+                                            <b><?= number_format($lokasi->persentase_sebaran, 1) . '%' ?></b>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                            <b> Estimasi Total Luas Titik</b>
+                                        </div>
+                                        <div class="col-sm-4 border border-dark py-1">
+                                            <?= number_format($lokasi->total_titik) . ' ha' ?>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                            <b>Total Luas Titik Terdata</b>
+                                        </div>
+                                        <div class="col-sm-4 border border-dark py-1">
+                                            <?= number_format($lokasi->total_lokasi) . ' ha' ?>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                            <b>Jumlah Titik Terdata</b>
+                                        </div>
+                                        <div class="col-sm-4 border border-dark py-1 ">
+                                            <?= $lokasi->jumlah_titik ?>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                            <b>Status</b>
+                                        </div>
+                                        <div class="col-sm-4 border border-dark py-1" style="color:green;">
+                                            <?= $kondisi_lokasi ?>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            <?php } ?>
+                        </div>
+
+
+                        <div class="col-md-12 col-lg-6 p-5 text-center tabel-kondisi-tangkolak ">
+                            <!-- <div class="row justify-content-center">
+                                <div class="col-sm-10 border border-dark py-1 top-col-bg">
+                                <b>     Kondisi Titik</b>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                    Sangat Baik
+                                </div>
+                                <div class="col-sm-4 border border-dark py-1">
+                                    1
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                    Baik
+                                </div>
+                                <div class="col-sm-4 border border-dark py-1">
+                                    2
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                    Cukup
+                                </div>
+                                <div class="col-sm-4 border border-dark py-1">
+                                    2
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-6 border border-dark py-1 top-col-bg">
+                                    Kurang
+                                </div>
+                                <div class="col-sm-4 border border-dark py-1">
+                                    2
+                                </div>
+                            </div> -->
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="d-flex justify-content-center">
+                                            <select class="form-select btn btn-info btn-sm" aria-label="Default select example">
+                                                <option selected disabled>Pilih Tahun:</option>
+                                                <option value="2020">2021</option>
+                                                <option value="2021">2022</option>
+                                                <option value="2022">2023</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="titik" width="100%" height="100%"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- End Head -->
