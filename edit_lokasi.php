@@ -41,6 +41,11 @@ $stmt = $pdo->prepare($sqlviewwilayah);
 $stmt->execute();
 $row2 = $stmt->fetchAll();
 
+$sqlviewkodelokasi = 'SELECT * FROM t_kode_lokasi';
+$stmt = $pdo->prepare($sqlviewkodelokasi);
+$stmt->execute();
+$rowkodelokasi = $stmt->fetchAll();
+
 $sqlviewpengelola = 'SELECT * FROM t_user
                     WHERE level_user = 3
                     ORDER BY nama_user';
@@ -64,6 +69,7 @@ if (isset($_POST['submit'])) {
         $randomstring = substr(md5(rand()), 0, 7);
         $batas_hari_pembayaran = $_POST['num_batas_hari_pembayaran'];
         $kapasitas_kapal = $_POST['kapasitas_kapal'];
+        $kode_lokasi = $_POST['kode_lokasi'];
 
         //Image upload
         if ($_FILES["image_uploads"]["size"] == 0) {
@@ -84,7 +90,7 @@ if (isset($_POST['submit'])) {
 
         $sqllokasi = "UPDATE t_lokasi
                         SET id_wilayah = :id_wilayah, nama_lokasi=:nama_lokasi, deskripsi_lokasi=:deskripsi_lokasi, foto_lokasi = :foto_lokasi,
-                        luas_lokasi=:luas_lokasi, id_user_pengelola=:id_user_pengelola, kapasitas_kapal = :kapasitas_kapal,
+                        luas_lokasi=:luas_lokasi, id_user_pengelola=:id_user_pengelola, kapasitas_kapal = :kapasitas_kapal, kode_lokasi = :kode_lokasi,
                         kontak_lokasi=:kontak_lokasi, nama_bank=:nama_bank, nama_rekening=:nama_rekening, nomor_rekening=:nomor_rekening, longitude=:longitude, latitude=:latitude, batas_hari_pembayaran =:batas_hari_pembayaran
 
                         WHERE id_lokasi = :id_lokasi";
@@ -95,7 +101,7 @@ if (isset($_POST['submit'])) {
             'deskripsi_lokasi' => $deskripsi_lokasi,
             'luas_lokasi' => $luas_lokasi, 'id_user_pengelola' => $id_user_pengelola,
             'kontak_lokasi' => $kontak_lokasi, 'nama_bank' => $nama_bank, 'kapasitas_kapal' => $kapasitas_kapal,
-            'nama_rekening' => $nama_rekening, 'nomor_rekening' => $nomor_rekening, 'id_lokasi' => $id_lokasi,
+            'nama_rekening' => $nama_rekening, 'nomor_rekening' => $nomor_rekening, 'id_lokasi' => $id_lokasi, 'kode_lokasi' => $kode_lokasi,
             'foto_lokasi' => $foto_lokasi, 'longitude' => $longitude, 'latitude' => $latitude, 'batas_hari_pembayaran' => $batas_hari_pembayaran
         ]);
 
@@ -193,7 +199,7 @@ if (isset($_POST['submit'])) {
                     <form action="" enctype="multipart/form-data" method="POST">
                         <div class="form-group">
                             <label for="dd_id_wilayah">ID Wilayah</label>
-                            <select id="dd_id_wilayah" name="dd_id_wilayah" class="form-control">
+                            <select id="dd_id_wilayah" name="dd_id_wilayah" class="form-control" onchange="loadKodeLokasi(this.value);">
                                 <?php foreach ($row2 as $rowitem2) {
                                 ?>
                                     <option value="<?= $rowitem2->id_wilayah ?>" <?php if ($rowitem2->id_wilayah == $row->id_wilayah) {
@@ -207,6 +213,17 @@ if (isset($_POST['submit'])) {
                         <div class="form-group">
                             <label for="tb_nama_lokasi">Nama Lokasi</label>
                             <input type="text" value="<?= $row->nama_lokasi ?>" id="tb_nama_lokasi" name="tb_nama_lokasi" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dd_kode_lokasi">Kode Lokasi</label>
+                            <select id="dd_kode_lokasi" name="kode_lokasi" class="form-control" required>
+                                <?php foreach ($rowkodelokasi as $kodelokasi) {
+                                ?>
+                                    <option value="<?= $kodelokasi->kode_lokasi ?>" <?= $kodelokasi->kode_lokasi == $row->kode_lokasi ? ' selected ' : ''; ?>> <?= $kodelokasi->kode_lokasi ?> - <?= $kodelokasi->nama_lokasi ?></option>
+
+                                <?php } ?>
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -337,6 +354,25 @@ if (isset($_POST['submit'])) {
     <script src="dist/js/adminlte.js"></script>
 
     <script>
+        function loadKodeLokasi(id_wilayah){
+      $.ajax({
+        type: "POST",
+        url: "list_populate.php",
+        data:{
+            id_wilayah: id_wilayah,
+            type: 'load_kode_lokasi'
+        },
+        beforeSend: function() {
+          $("#dd_kode_lokasi").addClass("loader");
+        },
+        success: function(data){
+          $("#dd_kode_lokasi").html(data);
+          $("#dd_kode_lokasi").removeClass("loader");
+        }
+      });
+    }
+
+
         function getCoordinates() {
             event.preventDefault()
             var options = {

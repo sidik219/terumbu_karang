@@ -17,23 +17,13 @@ include 'hak_akses.php';
 
     if (isset($_POST['submit'])) {
             if($_POST['submit'] == 'Simpan'){
-
-                $array_test = [];
-                foreach($_POST['kode_wilayah'] as $kode_test){
-                    array_push($array_test, $kode_test);
-                }
-
-                print_r($array_test);
-
-                echo count(array_unique($_POST['kode_lokasi'])), ' != ', count($_POST['kode_lokasi']);
-
                 if(count(array_unique($_POST['kode_lokasi'])) != count($_POST['kode_lokasi']))
                     {
                         header("Location: kelola_kode_wilayah.php?status=kode_duplikat");
                         return 0;   
                 }else{
                         $pdo->prepare('TRUNCATE TABLE t_kode_wilayah')->execute(); //Kosongin t_kode_wilayah
-                $pdo->prepare('TRUNCATE TABLE t_kode_lokasi')->execute(); //Kosongin t_kode_lokasi
+                        $pdo->prepare('TRUNCATE TABLE t_kode_lokasi')->execute(); //Kosongin t_kode_lokasi
 
                 $i = 0;
                 $x = 0;

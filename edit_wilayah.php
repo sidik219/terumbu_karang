@@ -16,6 +16,10 @@ include 'hak_akses.php';
         $stmt->execute();
         $row = $stmt->fetchAll();
 
+$stmt = $pdo->prepare('SELECT * FROM t_kode_wilayah');
+$stmt->execute();
+$rowkodewilayah = $stmt->fetchAll();
+
 
     $sql = 'SELECT * FROM t_wilayah WHERE id_wilayah = :id_wilayah';
 
@@ -31,6 +35,7 @@ include 'hak_akses.php';
                 $alamat_kantor_wilayah = $_POST['alamat_kantor_wilayah'];
                 $kontak_wilayah = $_POST['kontak_wilayah'];
                 $sisi_pantai = $_POST['sisi_pantai'];
+                $kode_wilayah = $_POST['kode_wilayah'];
 
                 //Image upload
             if($_FILES["image_uploads"]["size"] == 0) {
@@ -57,7 +62,7 @@ include 'hak_akses.php';
 
                 $sqleditwilayah = "UPDATE t_wilayah
                             SET nama_wilayah = :nama_wilayah,
-                            deskripsi_wilayah = :deskripsi_wilayah, foto_wilayah = :foto_wilayah,
+                            deskripsi_wilayah = :deskripsi_wilayah, foto_wilayah = :foto_wilayah, kode_wilayah = :kode_wilayah,
                             id_user_pengelola = :id_user_pengelola, alamat_kantor_wilayah = :alamat_kantor_wilayah, kontak_wilayah = :kontak_wilayah, sisi_pantai = :sisi_pantai
                             WHERE id_wilayah = :id_wilayah";
 
@@ -66,7 +71,7 @@ include 'hak_akses.php';
                 'deskripsi_wilayah' => $deskripsi_wilayah,
                 'foto_wilayah' => $foto_wilayah, 'id_wilayah' => $id_wilayah,
                 'id_user_pengelola' => $id_user_pengelola, 'sisi_pantai' => $sisi_pantai,
-                'alamat_kantor_wilayah' => $alamat_kantor_wilayah, 'kontak_wilayah' => $kontak_wilayah]);
+                'alamat_kantor_wilayah' => $alamat_kantor_wilayah, 'kontak_wilayah' => $kontak_wilayah, 'kode_wilayah' => $kode_wilayah]);
 
                 $affectedrows = $stmt->rowCount();
                 if ($affectedrows == '0') {
@@ -162,6 +167,17 @@ include 'hak_akses.php';
                                 <label for="nama_wilayah">Nama Wilayah</label>
                                 <input type="text" value="<?=$rowitem->nama_wilayah?>" class="form-control" name="tbnama_wilayah" id="nama_wilayah" placeholder="Nama Kota/Kabupaten" required>
                           </div>
+
+                          <div class="form-group">
+                            <label for="dd_kode_wilayah">Kode Wilayah</label>
+                            <select id="dd_kode_wilayah" name="kode_wilayah" class="form-control" required>
+                                <?php foreach ($rowkodewilayah as $kodewilayah) {
+                                ?>
+                                    <option <?php if ($rowitem->kode_wilayah == $kodewilayah->kode_wilayah) {echo " selected";} ?> value="<?= $kodewilayah->kode_wilayah ?>"> <?= $kodewilayah->kode_wilayah ?> - <?= $kodewilayah->nama_wilayah ?></option>
+
+                                <?php } ?>
+                            </select>
+                        </div>
 
                           <div class="form-group">
                                 <label for="alamat_kantor_wilayah">Alamat Kantor Wilayah</label>

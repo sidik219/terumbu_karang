@@ -882,6 +882,35 @@ $total = $pemasukan - $pengeluaran;
 
 <?php } ?>
 
+<?php
+
+
+
+
+    //Load Kode Lokasi
+if ($_POST['type'] == 'load_kode_lokasi' && !empty($_POST["id_wilayah"])) {
+    $id_wilayah = $_POST["id_wilayah"];
+    $daftarkodelokasi = 'SELECT * FROM t_kode_lokasi
+                        LEFT JOIN t_wilayah ON t_kode_lokasi.kode_wilayah = t_wilayah.kode_wilayah
+                        WHERE id_wilayah = :id_wilayah';
+        $stmt = $pdo->prepare($daftarkodelokasi);
+        $stmt->execute(['id_wilayah' => $id_wilayah]);
+        $rowkodelokasi = $stmt->fetchAll();
+        
+        if(count($rowkodelokasi) == 0){
+           echo '<option value="">-- Wilayah Belum Input Kode Lokasi --</option>';
+        }
+
+        foreach ($rowkodelokasi as $kodelokasi) {
+            ?>
+        <option value="<?= $kodelokasi->kode_lokasi ?>"> <?= $kodelokasi->kode_lokasi ?> - <?= $kodelokasi->nama_lokasi ?></option>
+    <?php
+        }
+    }
+    ?>
+
+
+
 
                 
                 

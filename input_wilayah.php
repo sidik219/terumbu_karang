@@ -13,6 +13,10 @@ $stmt = $pdo->prepare($sqlviewwilayah);
 $stmt->execute();
 $row = $stmt->fetchAll();
 
+$stmt = $pdo->prepare('SELECT * FROM t_kode_wilayah');
+$stmt->execute();
+$rowkodewilayah = $stmt->fetchAll();
+
 if (isset($_POST['submit'])) {
     if ($_POST['submit'] == 'Simpan') {
         $nama_wilayah        = $_POST['tbnama_wilayah'];
@@ -22,6 +26,7 @@ if (isset($_POST['submit'])) {
         $sisi_pantai = $_POST['sisi_pantai'];
         $id_user_pengelola     = 1;
         $randomstring = substr(md5(rand()), 0, 7);
+        $kode_wilayah = $_POST['kode_wilayah'];
 
         //Image upload
         if ($_FILES["image_uploads"]["size"] == 0) {
@@ -35,13 +40,13 @@ if (isset($_POST['submit'])) {
         //---image upload end
 
         $sqlwilayah = "INSERT INTO t_wilayah
-                        (nama_wilayah, deskripsi_wilayah, foto_wilayah, id_user_pengelola, sisi_pantai, alamat_kantor_wilayah, kontak_wilayah)
-                        VALUES (:nama_wilayah, :deskripsi_wilayah, :foto_wilayah, :id_user_pengelola, :sisi_pantai, :alamat_kantor_wilayah, :kontak_wilayah)";
+                        (nama_wilayah, deskripsi_wilayah, foto_wilayah, id_user_pengelola, sisi_pantai, alamat_kantor_wilayah, kontak_wilayah, kode_wilayah)
+                        VALUES (:nama_wilayah, :deskripsi_wilayah, :foto_wilayah, :id_user_pengelola, :sisi_pantai, :alamat_kantor_wilayah, :kontak_wilayah. :kode_wilayah)";
 
         $stmt = $pdo->prepare($sqlwilayah);
         $stmt->execute([
             'nama_wilayah' => $nama_wilayah, 'deskripsi_wilayah' => $deskripsi_wilayah, 'foto_wilayah' => $foto_wilayah, 'id_user_pengelola' => $id_user_pengelola, 'sisi_pantai' => $sisi_pantai,
-            'alamat_kantor_wilayah' => $alamat_kantor_wilayah, 'kontak_wilayah' => $kontak_wilayah
+            'alamat_kantor_wilayah' => $alamat_kantor_wilayah, 'kontak_wilayah' => $kontak_wilayah, 'kode_wilayah' => $kode_wilayah 
         ]);
 
         $affectedrows = $stmt->rowCount();
@@ -139,6 +144,17 @@ if (isset($_POST['submit'])) {
                         <div class="form-group">
                             <label for="nama_wilayah">Nama Wilayah</label>
                             <input type="text" class="form-control" name="tbnama_wilayah" id="#" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dd_kode_wilayah">Kode Wilayah</label>
+                            <select id="dd_kode_wilayah" name="kode_wilayah" class="form-control" required>
+                                <?php foreach ($rowkodewilayah as $kodewilayah) {
+                                ?>
+                                    <option value="<?= $kodewilayah->kode_wilayah ?>"> <?= $kodewilayah->kode_wilayah ?> - <?= $kodewilayah->nama_wilayah ?></option>
+
+                                <?php } ?>
+                            </select>
                         </div>
 
                         <div class="form-group">
