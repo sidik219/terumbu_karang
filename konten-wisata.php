@@ -13,7 +13,16 @@ $rowkonten = $stmt->fetchAll();
 $stmt = $pdo->prepare('SELECT * FROM t_penjelasan');
 $stmt->execute();
 $rowkontet = $stmt->fetchAll();
-// var_dump($rowkontet);
+
+$sqlpaketSelect = 'SELECT * FROM t_wisata
+LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+WHERE tb_paket_wisata.status_aktif = "Aktif"';
+
+$stmt = $pdo->prepare($sqlpaketSelect);
+$stmt->execute();
+$rowWisata = $stmt->fetchAll();
+
+// var_dump($rowWisata);
 // die;
 ?>
 
@@ -139,19 +148,32 @@ $rowkontet = $stmt->fetchAll();
                         <h2 class="border-bottom">Penjelasan Wisata</h2>
                     </span>
                     <div class="row card-body">
-                        <?php foreach ($rowkontet as $a) : ?>
+                        <?php foreach ($rowWisata as $wisata) : ?>
 
-                            <div class="col-sm-12  pt-3">
-                                <div class="p-1">
-                                    <?php if ($a->penjelasan == null) : ?>
-                                        <p>Tidak Ada data</p>
-                                    <?php else : ?>
-                                        <p><?= $a->penjelasan ?></p>
-                                    <?php endif ?>
+                            <div class="col-md-4">
+                                <div class="card card-pilihan mb-4 shadow-sm">
+                                    <a href="">
+                                        <img class="card-img-top berita-img" width="100%" src="<?= $wisata->image_wisata ?>">
+                                    </a>
+                                    <div class="card-body">
+                                        <p>
+                                        <h5 class="max-length">Wisata <?= $wisata->judul_wisata ?></h5>
+                                        </p>
+                                        <p class="max-length2"></p>
+                                        <div class="collapse" id="collapseExample<?= $wisata->id_wisata ?>">
+                                            <div class="card card-body">
+                                                <?= $wisata->deskripsi_wisata ?>
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <a class="btn btn-primary btn-sm btn-block mb-4 btn-kata-media2" data-toggle="collapse" href="#collapseExample<?= $wisata->id_wisata ?>" role="button" aria-expanded="false" aria-controls="collapseExample"> Lihat Detail</a>
+                                            <!-- <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="paket_wisata.php" target="_blank">Lihat Paket Wisata</a> -->
+                                    </div>
                                 </div>
                             </div>
+
+                        <?php endforeach ?>
                     </div>
-                <?php endforeach ?>
                 </div>
 
                 <div class="container-fluid pt-4">
