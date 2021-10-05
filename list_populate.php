@@ -747,14 +747,13 @@ else if($level_user == 4){
 
 //Sortir berdasarkan nominal donasi
 
-//umum
-$sqlviewdonasi = 'SELECT * FROM t_laporan_pengeluaran
-                LEFT JOIN t_reservasi_wisata ON t_laporan_pengeluaran.id_reservasi = t_reservasi_wisata.id_reservasi
+// Header Reservasi Wisata
+$sqlviewdonasi = 'SELECT * FROM t_reservasi_wisata
                 LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                 LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                 LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                 LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                WHERE  '.$extra_query_noand.' 
+                WHERE '.$extra_query_noand.' 
                 AND t_reservasi_wisata.id_status_reservasi_wisata = 2
                 AND tanggal_pesan BETWEEN "'.$start.'" 
                 AND "'.$end.'"';
@@ -763,15 +762,15 @@ $stmt = $pdo->prepare($sqlviewdonasi);
 $stmt->execute();
 $row = $stmt->fetchAll();
 
-$sqlhitungtotal = 'SELECT COUNT(t_laporan_pengeluaran.id_pengeluaran) AS total_reservasi, 
-                            SUM(t_laporan_pengeluaran.biaya_pengeluaran) AS biaya_pengeluaran
+// Pengeluaran
+$sqlhitungtotal = 'SELECT SUM(t_laporan_pengeluaran.biaya_pengeluaran) AS biaya_pengeluaran
                 FROM t_laporan_pengeluaran
                 LEFT JOIN t_reservasi_wisata ON t_laporan_pengeluaran.id_reservasi = t_reservasi_wisata.id_reservasi
                 LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                 LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                 LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                 LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                WHERE  '.$extra_query_noand.' 
+                WHERE '.$extra_query_noand.' 
                 AND t_reservasi_wisata.id_status_reservasi_wisata = 2
                 AND tanggal_pesan BETWEEN "'.$start.'" 
                 AND "'.$end.'"';
@@ -781,13 +780,14 @@ $stmt->execute();
 $rowtotal = $stmt->fetch();
 
 // Reservasi
-$sqlreservasi = 'SELECT SUM(t_reservasi_wisata.total) AS subtotal
+$sqlreservasi = 'SELECT COUNT(t_reservasi_wisata.id_reservasi) AS total_reservasi, 
+                        SUM(t_reservasi_wisata.total) AS subtotal
                 FROM t_reservasi_wisata
                 LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                 LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                 LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                 LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                WHERE  '.$extra_query_noand.' 
+                WHERE '.$extra_query_noand.' 
                 AND t_reservasi_wisata.id_status_reservasi_wisata = 2
                 AND tanggal_pesan BETWEEN "'.$start.'" 
                 AND "'.$end.'"';
@@ -800,29 +800,29 @@ $rowreservasi = $stmt->fetch();
 <table id="tabel_laporan_wisata" class="table table-striped table-responsive-sm">
     <thead>
         <tr>
-            <th scope="col">ID Pengeluaran</th>
+            <th scope="col">No</th>
             <th scope="col">ID Reservasi</th>
-            <th scope="col">Nama Pengeluaran</th>
             <th scope="col">Lokasi</th>
             <th scope="col">Nama Wisatawan</th>
             <th scope="col">Tanggal Reservasi</th>
-            <th scope="col">Tanggal Pengeluaran</th>
+            <!-- <th scope="col">Tanggal Pengeluaran</th> -->
+            <th scope="col">Jumlah Pemasukan</th>
             <th scope="col">Biaya Pengeluaran</th>
             <!-- <th class="print-hide" scope="col">Aksi</th> -->
         </tr>
     </thead>
     <tbody id="tbody_laporan_donasi">
         <?php
+        $no = 1;
         $pemasukan = 0;
         $pengeluaran = 0;
+        $sum_pemasukan = 0;
         foreach ($row as $rowitem) {
-        $truedate = strtotime($rowitem->update_terakhir);
         $reservasidate = strtotime($rowitem->tgl_reservasi);
         ?>
         <tr class="row_donasi">
-            <th scope="row"><?=$rowitem->id_pengeluaran?></th>
-            <th><?=$rowitem->id_reservasi?></th>
-            <td><?=$rowitem->nama_pengeluaran?></td>
+            <th scope="row"><?= $no ?></th>
+            <td><?=$rowitem->id_reservasi?></td>
             <td><?= $rowitem->nama_lokasi ?></td>
             <td><?= $rowitem->nama_user ?></td>
             <td>
@@ -830,16 +830,42 @@ $rowreservasi = $stmt->fetch();
                 <?php if ($rowitem->id_status_reservasi_wisata == 1) {
                     echo alertPembayaran($rowitem->tgl_reservasi); } ?> 
             </td>
-            <td>
-                <small class="text-muted"><b>Update Terakhir</b>
-                <br><?= strftime('%A, %d %B %Y', $truedate) . '<br> (' . ageCalculator($rowitem->update_terakhir) . ' yang lalu)'; ?></small>
-            </td>
-            <td class="nominal">Rp. <?=number_format($rowitem->biaya_pengeluaran, 0)?></td>
-            <!-- <td class="print-hide">
-                <a data-id='$rowitem->id_reservasi' class="btn btn-sm btn-outline-primary userinfo p-1">Rincian></a>
+            <!-- <td>
+                26-10-1997
             </td> -->
+            
+            <!-- Reservasi Pemasukan -->
+            <td class="nominal">Rp. <?=number_format($rowitem->total, 0)?></td>
+
+            <!-- Pengeluaran Biaya -->
+            <?php 
+            $sqlviewdonasi = 'SELECT SUM(t_laporan_pengeluaran.biaya_pengeluaran) AS biaya_pengeluaran
+                            FROM t_laporan_pengeluaran
+                            LEFT JOIN t_reservasi_wisata ON t_laporan_pengeluaran.id_reservasi = t_reservasi_wisata.id_reservasi
+                            LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                            LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                            LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                            LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                            WHERE '.$extra_query_noand.' 
+                            AND t_reservasi_wisata.id_status_reservasi_wisata = 2
+                            AND tanggal_pesan BETWEEN "'.$start.'" 
+                            AND "'.$end.'"
+                            AND t_reservasi_wisata.id_reservasi = :id_reservasi';
+
+            $stmt = $pdo->prepare($sqlviewdonasi);
+            $stmt->execute(['id_reservasi' => $rowitem->id_reservasi]);
+            $row = $stmt->fetchAll();
+            
+            $sum_pengeluaran = 0;
+
+            foreach ($row as $pengeluaran) { 
+
+            $sum_pengeluaran += $pengeluaran->biaya_pengeluaran;
+            ?>
+            <td class="nominal">Rp. <?=number_format($sum_pengeluaran, 0)?></td>
+            <?php } ?>
         </tr>
-        <?php //$index++;
+        <?php $no++;
             }
         ?>
     </tbody>                    
@@ -848,29 +874,44 @@ $rowreservasi = $stmt->fetch();
 <hr class="m-0"/>
 <hr class="m-0"/>
 
-<?php 
+<?php
+// $pemasukan = 15000;
+// $pengeluaran = 16000;
 $pemasukan = $rowreservasi->subtotal;
 $pengeluaran = $rowtotal->biaya_pengeluaran;
-$total = $pemasukan - $pengeluaran;
+// $total = $pemasukan - $pengeluaran;
 ?>
 <table class="table table-striped table-responsive-sm">
     <thead>
         <tr>
-            <th scope="col" colspan="5">Total: <?= $rowtotal->total_reservasi ?> Pengeluaran</th>
+            <th scope="col" colspan="5">Total: <?= $rowreservasi->total_reservasi ?> Pengeluaran</th>
             <th scope="col"></th>
         </tr>
         <tr>
-            <th scope="col" colspan="5" style="text-align: right;">Biaya Pemasukan:</th>
+            <th scope="col" colspan="5" style="text-align: right;">Total Jumlah Pemasukan:</th>
             <th scope="col" style="text-align: center;">Rp. <?=number_format($pemasukan, 0)?></th>                                
         </tr>
         <tr>
-            <th scope="col" colspan="5" style="text-align: right;">Biaya Pengeluaran:</th>
+            <th scope="col" colspan="5" style="text-align: right;">Total Biaya Pengeluaran:</th>
             <th scope="col" style="text-align: center;">Rp. <?=number_format($pengeluaran, 0)?></th>                                
         </tr>
-        <tr>
-            <th scope="col" colspan="5" style="text-align: right;">Total Sisa Biaya:</th>
-            <th scope="col" style="text-align: center;">Rp. <?=number_format($total, 0)?></th>                                
+
+        <!-- Untung Rugi -->
+        <?php if ($pemasukan > $pengeluaran) {
+	    $laba = $pemasukan - $pengeluaran; ?>
+        <tr> <!-- Untung -->
+            <th scope="col" colspan="5" style="text-align: right;"><i class="text-success fas fa-plus"></i> LABA:</th>
+            <th scope="col" style="text-align: center;">Rp. <?=number_format($laba, 0)?></th>                                
         </tr>
+        <?php } elseif ($pengeluaran > $pemasukan) { 
+        $rugi = $pengeluaran - $pemasukan; ?>
+        <tr> <!-- Rugi -->
+            <th scope="col" colspan="5" style="text-align: right;"><i class="text-danger fas fa-minus"></i> RUGI:</th>
+            <th scope="col" style="text-align: center;">Rp. <?=number_format($rugi, 0)?></th>                                
+        </tr>
+        <?php } else { ?>
+            <th scope="col" colspan="5" style="text-align: right;">Tidak laba tidak rugi</th>
+        <?php } ?>
     </thead>
 </table>
 

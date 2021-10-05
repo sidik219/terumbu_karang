@@ -432,7 +432,7 @@ function alertPembayaran($dob)
         var element = document.getElementById('clientPrintContent');
         var opt = {
             margin:       [1.5,2,2,2],
-            filename:     `Laporan_Laba_Rugi_Reservasi_Wisata_GoKarang_periode-${periode_laporan}_diunduh-pada${dateTime}.pdf`,
+            filename:     `Laporan_Penghasilan_Reservasi_Wisata_GoKarang_periode-${periode_laporan}_diunduh-pada${dateTime}.pdf`,
             image:        { type: 'jpeg', quality: 0.95 },
             html2canvas:  { scale: 2 },
             jsPDF:        { unit: 'cm', format: 'a4', orientation: 'landscape' }
