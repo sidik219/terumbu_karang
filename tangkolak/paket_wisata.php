@@ -55,13 +55,13 @@ $rowpaket = $stmt->fetchAll();
                      <!-- Navbar Menu -->
                      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                         <li class="nav-item ">
-                            <a class="nav-link " href="index.php" onclick="window.history.go(-1); return false;">Beranda</a>
+                            <a class="nav-link " href="index.php">Beranda</a>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link " href="wisata_tangkolak.php" onclick="window.history.go(-1); return false;">Wisata Bahari</a>
+                            <a class="nav-link " href="wisata_tangkolak.php">Wisata Bahari</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link current" href="paket_wisata.php" onclick="window.history.go(-0); return false;">Paket Wisata</a>
+                            <a class="nav-link current" href="paket_wisata.php">Paket Wisata</a>
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link " href="terumbu_karang.php">Terumbu Karang Tangkolak</a>
