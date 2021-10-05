@@ -1,3 +1,15 @@
+<?php include '../build/config/connection.php';
+$url_sekarang = basename(__FILE__);
+
+// Get Lokasi Berdasarkan Kode Lokasi
+$sqlpaket = 'SELECT * FROM tb_paket_wisata
+            LEFT JOIN t_lokasi ON tb_paket_wisata.id_lokasi = t_lokasi.id_lokasi
+            WHERE t_lokasi.kode_lokasi = "KARA001"';
+
+$stmt = $pdo->prepare($sqlpaket);
+$stmt->execute();
+$rowpaket = $stmt->fetchAll();
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -85,80 +97,90 @@
     <div class="informational">
         <div class="informational-container">
             <div class="wisata-media">
-                 <h2> Wisata Tangkolak </h2>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="card card-pilihan mb-4 shadow-sm">
-                                    <a href="">
-                                        <img class="card-img-top berita-img" width="100%" src="img/bmkt-tangkolak.jpg">
-                                        
-                                    </a>
-                                    <div class="card-body">
-                                            <p > <h5 class="max-length">Diving BMKT</h5></p>
-                                            <p class="max-length2">Selami Kapal Karam VOC disini</p>
-                                            <div class="collapse" id="collapseExample2">
-                                                    <div class="card card-body">
-                                                    Perairan tangkolak dikenal sebagai kuburan bagi kapal-kapal Kongsi Dagang atau perusahaan Hindia Timur Belanda (Vereenigde Oostindische Compagnie atau VOC) yang tenggelam ratusan tahun lalu.
-                                                    </div>
-                                                </div>
-                                                <p>
-                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media2" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                                        Lihat Detail
-                                                </a> 
-                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="paket_wisata.php" target="_blank">Lihat Paket Wisata</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card card-pilihan mb-4 shadow-sm">
-                                    <a href="">
-                                        <img class="card-img-top berita-img" width="100%" src="img/news2.jpg">
-                                        
-                                    </a>
-                                    <div class="card-body">
-                                            <p > <h5 class="max-length">Karang Sendulang</h5></p>
-                                            <p class="max-length2">Titik terumbu karang terbesar di Tangkolak</p>
-                                            <div class="collapse" id="collapseExample3">
-                                                    <div class="card card-body">
-                                                    Untuk sampai titik ini,traveler bisa menggunakan perahu dari Pantai Tangkolak. Menempuh jarak 15 Km atau satu jam pelayaran. 
-                                                    </div>
-                                                </div>
-                                                <p>
-                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media2" data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                                        Lihat Detail
-                                                </a> 
-                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="paket_wisata.php" target="_blank">Lihat Paket Wisata</a>
-                                        </div>
-                                    </div>
-                                </div>
+                <h2> Wisata Tangkolak </h2>
+                <div class="row">
+                <?php foreach ($rowpaket as $rowitem) { ?>
+                    <?php
+                    $sqlpaketSelect = 'SELECT * FROM t_wisata
+                                        LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                                        WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
 
-                                <div class="col-md-4">
-                                    <div class="card card-pilihan mb-4 shadow-sm">
-                                    <a href="">
-                                        <img class="card-img-top berita-img" width="100%" src="img/magrove.png">
-                                        
-                                    </a>
-                                    <div class="card-body">
-                                            <p > <h5 class="max-length">Hutan Mangrove</h5></p>
-                                            <p class="max-length2">Mangrove terbaik di karawang</p>
-                                            <div class="collapse" id="collapseExample1">
-                                                    <div class="card card-body">
-                                                    Nikmati suasana sejuk dari hutan mangrove seluas 20 hektar dengan panjang jelajah 2 km
-                                                    </div>
-                                                </div>
-                                                <p>
-                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media2" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                                        Lihat Detail
-                                                </a> 
-                                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="paket_wisata.php" target="_blank">Lihat Paket Wisata</a>
-                                        </div>
+                    $stmt = $pdo->prepare($sqlpaketSelect);
+                    $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                    $rowWisata = $stmt->fetchAll();
+
+                    foreach ($rowWisata as $wisata) { 
+                    ?>
+                    <div class="col-md-4">
+                        <div class="card card-pilihan mb-4 shadow-sm">
+                            <a href="">
+                                <img class="card-img-top berita-img" width="100%" src="../<?= $wisata->image_wisata ?>">
+                            </a>
+                            <div class="card-body">
+                                <p><h5 class="max-length"><?= $wisata->judul_wisata ?></h5></p>
+                                <p class="max-length2"></p>
+                                <div class="collapse" id="collapseExample<?= $wisata->id_wisata ?>">
+                                    <div class="card card-body">
+                                    <?= $wisata->deskripsi_wisata ?>
                                     </div>
                                 </div>
+                                <p>
+                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media2" data-toggle="collapse" href="#collapseExample<?= $wisata->id_wisata ?>" role="button" aria-expanded="false" aria-controls="collapseExample"> Lihat Detail</a> 
+                                <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="paket_wisata.php" target="_blank">Lihat Paket Wisata</a>
                             </div>
-            </div>  
-          
+                        </div>
+                    </div>
+                    <?php } ?>
+                <?php } ?>
 
+                    <!-- Data Statis -->
+                    <!-- <div class="col-md-4">
+                        <div class="card card-pilihan mb-4 shadow-sm">
+                        <a href="">
+                            <img class="card-img-top berita-img" width="100%" src="img/news2.jpg">
+                            
+                        </a>
+                        <div class="card-body">
+                                <p > <h5 class="max-length">Karang Sendulang</h5></p>
+                                <p class="max-length2">Titik terumbu karang terbesar di Tangkolak</p>
+                                <div class="collapse" id="collapseExample3">
+                                        <div class="card card-body">
+                                        Untuk sampai titik ini,traveler bisa menggunakan perahu dari Pantai Tangkolak. Menempuh jarak 15 Km atau satu jam pelayaran. 
+                                        </div>
+                                    </div>
+                                    <p>
+                                    <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media2" data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                            Lihat Detail
+                                    </a> 
+                                    <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="paket_wisata.php" target="_blank">Lihat Paket Wisata</a>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="col-md-4">
+                        <div class="card card-pilihan mb-4 shadow-sm">
+                        <a href="">
+                            <img class="card-img-top berita-img" width="100%" src="img/magrove.png">
+                            
+                        </a>
+                        <div class="card-body">
+                                <p > <h5 class="max-length">Hutan Mangrove</h5></p>
+                                <p class="max-length2">Mangrove terbaik di karawang</p>
+                                <div class="collapse" id="collapseExample1">
+                                        <div class="card card-body">
+                                        Nikmati suasana sejuk dari hutan mangrove seluas 20 hektar dengan panjang jelajah 2 km
+                                        </div>
+                                    </div>
+                                    <p>
+                                    <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media2" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                            Lihat Detail
+                                    </a> 
+                                    <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="paket_wisata.php" target="_blank">Lihat Paket Wisata</a>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
         </div>
     </div>
         <!-- End Konten -->

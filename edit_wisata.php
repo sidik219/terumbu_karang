@@ -56,6 +56,7 @@ if (isset($_POST['submit'])) {
 
     $id_wisata = $_POST["nama_wisata"];
     $judul_wisata = $_POST["judul_wisata"];
+    $jadwal_wisata = $_POST["jadwal_wisata"];
     $deskripsi_wisata = $_POST["deskripsi_wisata"];
 
     $hitung = count($id_wisata);
@@ -66,6 +67,7 @@ if (isset($_POST['submit'])) {
         $sqlupdatewisata = "UPDATE t_wisata
         SET id_paket_wisata = :id_paket_wisata,
             judul_wisata = :judul_wisata,
+            jadwal_wisata = :jadwal_wisata,
             deskripsi_wisata = :deskripsi_wisata
         WHERE id_wisata = :id_wisata";
 
@@ -73,6 +75,7 @@ if (isset($_POST['submit'])) {
         $stmt->execute([
             'id_wisata' => $id_wisata[$x],
             'judul_wisata' => $judul_wisata[$x],
+            'jadwal_wisata' => $jadwal_wisata[$x],
             'deskripsi_wisata' => $deskripsi_wisata[$x],
             'id_paket_wisata' => $id_paket_wisata
         ]);
@@ -137,12 +140,14 @@ if (isset($_POST['submit'])) {
     //     $id_paket_wisata   = $last_paket_wisata_id; //tb_paket_wisata
     //     $id_wisata         = $_POST['nama_wisata'][$i]; //t_wisata
     //     $judul_wisata      = $_POST['judul_wisata'][$i]; //t_wisata
+    //     $jadwal_wisata     = $_POST['jadwal_wisata'][$i]; //t_wisata
     //     $deskripsi_wisata  = $_POST['deskripsi_wisata'][$i]; //t_wisata
 
     //     //Update dan set id_paket_wisata ke wisata pilihan
     $sqlupdatewisata = "UPDATE t_wisata
                             SET id_paket_wisata = :id_paket_wisata,
                                 judul_wisata = :judul_wisata,
+                                jadwal_wisata = :jadwal_wisata,
                                 deskripsi_wisata = :deskripsi_wisata
                             WHERE id_wisata = :id_wisata";
 
@@ -150,6 +155,7 @@ if (isset($_POST['submit'])) {
     $stmt->execute([
         'id_wisata' => $id_wisata,
         'judul_wisata' => $judul_wisata,
+        'jadwal_wisata' => $jadwal_wisata,
         'deskripsi_wisata' => $deskripsi_wisata,
         'id_paket_wisata' => $id_paket_wisata
     ]);
@@ -281,11 +287,13 @@ if (isset($_POST['submit'])) {
                             <label for="nama_wisata">ID Wisata</label><br>
                             <?php foreach ($rowwisata as $wisata) : ?>
                                 <div class="form-group fieldGroup">
-                                    <div class="input-group">
+                                    <div class="flex-column">
                                         <!-- Id Wisata -->
                                         <input type="hidden" name="nama_wisata[]" value="<?= $wisata->id_wisata ?>" class="form-control" placeholder="Hari" required />
                                         <!-- Judul Wisata -->
-                                        <input type="text" name="judul_wisata[]" value="<?= $wisata->judul_wisata ?>" class="form-control" placeholder="Hari" required />
+                                        <input type="text" name="judul_wisata[]" value="<?= $wisata->judul_wisata ?>" class="form-control mb-2" placeholder="Hari" required />
+                                        <!-- Jadwal Wisata -->
+                                        <input type="text" name="jadwal_wisata[]" value="<?= $wisata->jadwal_wisata ?>" class="form-control mb-2" placeholder="Hari" required />
                                         <!-- Deskripsi Wisata -->
                                         <input type="text" name="deskripsi_wisata[]" value="<?= $wisata->deskripsi_wisata ?>" class="form-control" placeholder="Hari" required />
                                     </div>

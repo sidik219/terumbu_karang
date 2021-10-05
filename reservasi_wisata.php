@@ -337,11 +337,13 @@ if (isset($_POST['submit'])) {
                                                 <ul class="list-group list-group-flush">
                                                     <li class="list-group-item card-reservasi">
                                                         <!-- Nama paket wisata -->
-                                                        <input type="text" value="<?= $rowitem->nama_paket_wisata ?>" class="list-group-item deskripsi-paket" style="background: transparent;
+                                                        <input type="text" value="<?= $rowitem->nama_paket_wisata ?>" class="list-group-item deskripsi-paket" 
+                                                        style="background: transparent;
                                                                 border: none;
                                                                 color: #fff;
                                                                 font-weight: bold;
-                                                                width: 100%;" disabled>
+                                                                width: 100%;
+                                                                padding: 1rem;" disabled>
                                                     </li>
                                                     <input type="text" id="deskripsi_wisata" name="deskripsi_wisata" value="Peserta: " class="list-group-item paket-wisata" disabled>
                                                 </ul>
@@ -420,7 +422,7 @@ if (isset($_POST['submit'])) {
                                                     <h5 class="mt-4 mb-4">
                                                         <div class="">
                                                             <span class="badge badge-pill badge-warning">
-                                                                <?= $wisata->deskripsi_wisata ?>
+                                                                <?= $wisata->jadwal_wisata ?>
                                                             </span>
                                                         </div>
                                                     </h5>

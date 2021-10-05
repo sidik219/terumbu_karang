@@ -190,7 +190,7 @@ include 'hak_akses.php';
                                                 <h5 class="mb-4">
                                                     <div class="deskripsi-paket">
                                                         <span class="badge badge-pill badge-warning">
-                                                            <?=$wisata->deskripsi_wisata?>
+                                                            <?=$wisata->jadwal_wisata?>
                                                         </span>
                                                     </div>
                                                 </h5>

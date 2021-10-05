@@ -170,7 +170,7 @@ include 'hak_akses.php';
                                                     <h5 class="mt-4 mb-4">
                                                         <div class="">
                                                             <span class="badge badge-pill badge-warning">
-                                                                <?=$wisata->deskripsi_wisata?>
+                                                                <?=$wisata->jadwal_wisata?>
                                                             </span>
                                                         </div>
                                                     </h5>

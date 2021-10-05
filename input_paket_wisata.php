@@ -81,16 +81,19 @@ if (isset($_POST['submit'])) {
         foreach ($_POST['nama_wisata'] as $nama_wisata) {
             $id_paket_wisata   = $last_paket_wisata_id; //tb_paket_wisata
             $id_wisata         = $_POST['nama_wisata'][$i]; //t_wisata
+            $jadwal_wisata     = $_POST['jadwal_wisata'][$i]; //t_wisata
             $deskripsi_wisata  = $_POST['deskripsi_wisata'][$i]; //t_wisata
 
             //Update dan set id_paket_wisata ke wisata pilihan
             $sqlupdatewisata = "UPDATE t_wisata
                                 SET id_paket_wisata = :id_paket_wisata,
+                                    jadwal_wisata = :jadwal_wisata,
                                     deskripsi_wisata = :deskripsi_wisata
                                 WHERE id_wisata = :id_wisata";
 
             $stmt = $pdo->prepare($sqlupdatewisata);
-            $stmt->execute(['id_wisata' => $id_wisata, 
+            $stmt->execute(['id_wisata' => $id_wisata,
+                            'jadwal_wisata' => $jadwal_wisata, 
                             'deskripsi_wisata' => $deskripsi_wisata, 
                             'id_paket_wisata' => $id_paket_wisata]);
 
@@ -236,8 +239,8 @@ if (isset($_POST['submit'])) {
                     <div class="form-group field_wrapper">
                         <label for="nama_wisata">ID Wisata</label><br>
                         <div class="form-group fieldGroup">
-                            <div class="input-group">
-                                <select class="form-control" name="nama_wisata[]" id="nama_wisata" required>
+                            <div class="flex-column">
+                                <select class="form-control mb-2" name="nama_wisata[]" id="nama_wisata" required>
                                     <option selected disabled>Pilih Wisata:</option>
                                     <?php
                                     $sqlviewwisata = 'SELECT * FROM t_wisata
@@ -253,8 +256,9 @@ if (isset($_POST['submit'])) {
                                     </option>
                                     <?php } ?>
                                 </select>
-                                <input type="text" name="deskripsi_wisata[]" min="0" class="form-control" placeholder="Hari" />
-                                <div class="input-group-addon">
+                                <input type="text" name="jadwal_wisata[]" class="form-control mb-2" placeholder="Hari" required/>
+                                <input type="text" name="deskripsi_wisata[]" class="form-control mb-2" placeholder="Deskripsi Wisata" required/>
+                                <div class="d-flex align-items-end flex-column">
                                     <a href="javascript:void(0)" class="btn btn-success addMore">
                                         <span class="fas fas fa-plus" aria-hidden="true"></span> Tambah Wisata
                                     </a>
@@ -359,8 +363,8 @@ if (isset($_POST['submit'])) {
 
                     <!-- copy of input fields group -->
                     <div class="form-group fieldGroupCopy" style="display: none;">
-                        <div class="input-group">
-                            <select class="form-control" name="nama_wisata[]" id="nama_wisata" required>
+                        <div class="flex-column">
+                            <select class="form-control mb-2" name="nama_wisata[]" id="nama_wisata" required>
                                 <option selected disabled>Pilih Wisata:</option>
                                 <?php
                                 $sqlviewwisata = 'SELECT * FROM t_wisata
@@ -376,8 +380,9 @@ if (isset($_POST['submit'])) {
                                 </option>
                                 <?php } ?>
                             </select>
-                            <input type="text" name="deskripsi_wisata[]" min="0" class="form-control" placeholder="Hari" />
-                            <div class="input-group-addon">
+                            <input type="text" name="jadwal_wisata[]" class="form-control mb-2" placeholder="Hari" required/>
+                            <input type="text" name="deskripsi_wisata[]" class="form-control mb-2" placeholder="Deskripsi Wisata" required/>
+                            <div class="d-flex align-items-end flex-column">
                                 <a href="javascript:void(0)" class="btn btn-danger remove">
                                     <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Wisata
                                 </a>
@@ -437,7 +442,7 @@ if (isset($_POST['submit'])) {
                 var fieldHTML = '<div class="form-group fieldGroup">'+$(".fieldGroupCopy").html()+'</div>';
                 $('body').find('.fieldGroup:last').after(fieldHTML);
             }else{
-                alert('Maksimal '+maxGroup+' paket wisata yang boleh dibuat.');
+                alert('Maksimal '+maxGroup+' wisata yang boleh dibuat.');
             }
         });
 
