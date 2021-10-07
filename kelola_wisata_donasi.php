@@ -53,15 +53,17 @@ if (isset($_POST['submit'])) {
                         WHERE id_lokasi = :id_lokasi";
 
     $stmt = $pdo->prepare($sqlupdatewisata);
-    $stmt->execute(['id_lokasi' => $id_lokasi,
-                    'harga_donasi' => $harga_donasi]);
+    $stmt->execute([
+        'id_lokasi' => $id_lokasi,
+        'harga_donasi' => $harga_donasi
+    ]);
 
     $affectedrows = $stmt->rowCount();
     if ($affectedrows == '0') {
         header("Location: kelola_wisata_donasi.php?status=insertfailed");
     } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
-        header("Location: kelola_wisata_donasi.php?status=addsuccess");
+        header("Location: kelola_wisata_donasi.php?status=addsuccess&status=donasisuccess");
     }
 }
 ?>
@@ -70,7 +72,7 @@ if (isset($_POST['submit'])) {
 <html lang="en">
 
 <head>
-    <title>Kelola Batch - Terumbu Karang</title>
+    <title>Kelola Wisata Donasi - Terumbu Karang</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -138,21 +140,21 @@ if (isset($_POST['submit'])) {
                 <div class="container-fluid">
                     <div class="row pb-2">
                         <div class="col">
-                            <h4><span class="align-middle font-weight-bold">Kelola Wisata Donasi</span></h4>
+                            <h4><span class="align-middle font-weight-bold">Kelola Wisata Donasi Di <?= $rowLokasi->nama_lokasi ?></span></h4>
                         </div>
                     </div>
                     <!-- input harga donasi -->
                     <form action="" method="POST">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Rp.</span>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Rp.</span>
+                            </div>
+                            <input type="hidden" name="id_lokasi" value="<?= $rowLokasi->id_lokasi ?>">
+                            <input type="number" name="harga_donasi" required value="<?= $rowLokasi->harga_donasi ?>" class="form-control" placeholder="Jumlah Donasi Wisata Di <?= $rowLokasi->nama_lokasi ?>" aria-label="Jumlah Donasi Wisata Di <?= $rowLokasi->nama_lokasi ?>" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-primary" type="submit" name="submit">Simpan</button>
+                            </div>
                         </div>
-                        <input type="hidden" name="id_lokasi" value="<?=$rowLokasi->id_lokasi?>">
-                        <input type="number" name="harga_donasi" class="form-control" placeholder="Jumlah Donasi Wisata Di Lokasi Anda" aria-label="Jumlah Donasi Wisata Di Lokasi Anda" aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-primary" type="submit" name="submit">Simpan</button>
-                        </div>
-                    </div>
                     </form>
                 </div>
                 <!-- /.container-fluid -->
@@ -172,9 +174,9 @@ if (isset($_POST['submit'])) {
                             echo '<div class="alert alert-success" role="alert">
                           Data baru berhasil ditambahkan
                       </div>';
-                        } else if ($_GET['status'] == 'deletesuccess') {
+                        } else if ($_GET['status'] == 'donasisuccess') {
                             echo '<div class="alert alert-success" role="alert">
-                          Data berhasil dihapus
+                          Wisata Donasi Berhasil!
                       </div>';
                         }
                     }
@@ -200,52 +202,24 @@ if (isset($_POST['submit'])) {
                             <div class="batch-donasi">
                                 <?php
                                 $sum_donasi = 0;
-                                foreach($row as $donasi) { 
-                                $sum_donasi+= $donasi->donasi;
+                                foreach ($row as $donasi) {
+                                    $sum_donasi += $donasi->donasi;
                                 ?>
-                                <tr class="border rounded p-1 batch-donasi">
-                                    <td><?=$donasi->nama_user?></td>
-                                    <td><?=$donasi->nama_paket_wisata?></td>
-                                    <td><?=$donasi->donasi?></td>
-                                    <td><?=$donasi->status_donasi?></td>
-                                    <td><button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus-circle"></i></button></td>
-                                </tr>
+                                    <tr class="border rounded p-1 batch-donasi">
+                                        <td><?= $donasi->nama_user ?></td>
+                                        <td><?= $donasi->nama_paket_wisata ?></td>
+                                        <td><?= $donasi->donasi ?></td>
+                                        <td><?= $donasi->status_donasi ?></td>
+                                        <td><button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus-circle"></i></button></td>
+                                    </tr>
                                 <?php } ?>
                             </div>
                         </tbody>
                     </table>
-
-                    <!-- <div class="row pb-2">
-                        <div class="col">
-                            <h4><span class="align-middle font-weight-bold">Tabel Wisata Donasi</span></h4>
-                            <p>Tabel ini dibuat dengan tujuan mengambil donasi pada wisata</p>
-                        </div>
-                    </div>
-                    tabel yang akan diambil
-                    <table class="table table-striped table-responsive-sm">
-                        <thead>
-                            <tr>
-                                <th scope="col">Nama Wisatawan</th>
-                                <th scope="col">Paket Wisata</th>
-                                <th scope="col">Donasi</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Nama Wisatawan</td>
-                                <td>Paket Wisata Yang Dipilih</td>
-                                <td>Rp 15.000</td>
-                                <td>Akan diambil</td>
-                                <td id="donasipilihan"></td>
-                            </tr>
-                        </tbody>
-                    </table> -->
                     <div class="d-flex justify-content-between ">
                         <button type="button" class="btn btn-primary">Ambil Donasi</button>
                         <p><b>Total Donasi Yang Diambil : 60.000</b></p>
-                        <p><b>Total Donasi : <?=number_format($sum_donasi, 0)?></b></p>
+                        <p><b>Total Donasi : Rp. <?= number_format($sum_donasi, 0) ?></b></p>
                     </div>
             </section>
             <!-- /.Left col -->

@@ -29,7 +29,8 @@ $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
 $stmt = $pdo->prepare($sqlviewreservasi);
 $stmt->execute(['id_user' => $_SESSION['id_user']]);
 $row = $stmt->fetchAll();
-
+// var_dump($row);
+// die;
 function ageCalculator($dob)
 {
     $birthdate = new DateTime($dob);
@@ -202,7 +203,7 @@ function alertPembayaran($dob)
                                             <div class="mb-3">
                                                 <span class="font-weight-bold"><i class="nav-icon text-success fas fas fa-donate"></i> Jumlah Donasi</span>
                                                 <br>
-                                                <span class="mb-3">Rp. <?= number_format($rowitem->jumlah_donasi, 0) ?></span>
+                                                <span class="mb-3">Rp. <?= number_format($rowitem->harga_donasi, 0) ?></span>
                                             </div>
                                             <div class="mb-3">
                                                 <span class="font-weight-bold"><i class="nav-icon text-secondary fas fas fa-calendar-alt"></i> Tanggal Reservasi</span>

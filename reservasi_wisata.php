@@ -40,12 +40,14 @@ $stmt = $pdo->prepare($sqldetailpaket);
 $stmt->execute(['id_paket_wisata' => $_GET['id_paket_wisata']]);
 $rowwisata = $stmt->fetchAll();
 
+// var_dump($_POST);
+// die;
 if (isset($_POST['submit'])) {
     if ($_POST['submit'] == 'Simpan') {
         $id_lokasi              = $_POST['id_lokasi'];
         $tgl_reservasi          = $_POST['tgl_reservasi'];
         $jumlah_peserta         = $_POST['jumlah_peserta'];
-        // $jumlah_donasi          = $_POST['split_harga_tk'];
+        $jumlah_donasi          = $_POST['jumlah_donasi'];
         $total                  = $_POST['total'];
         $nama_donatur           = $_POST['nama_donatur'];
         $bank_donatur           = $_POST['nama_bank_donatur'];
@@ -58,10 +60,10 @@ if (isset($_POST['submit'])) {
         $tanggal_sekarang = date('Y-m-d H:i:s', time());
         $tanggal_pesan = date('Y-m-d', time());
 
-        $sqlreservasi = "INSERT INTO t_reservasi_wisata (id_user, id_lokasi, tgl_reservasi,tanggal_pesan, jumlah_peserta,
+        $sqlreservasi = "INSERT INTO t_reservasi_wisata (id_user, id_lokasi, tgl_reservasi,tanggal_pesan, jumlah_peserta, jumlah_donasi,
                                             total, id_status_reservasi_wisata, keterangan,
                                             nama_donatur, bank_donatur, nomor_rekening_donatur, pesan, update_terakhir, id_paket_wisata, id_rekening_bersama)
-                                VALUES (:id_user, :id_lokasi, :tgl_reservasi,:tanggal_pesan, :jumlah_peserta,
+                                VALUES (:id_user, :id_lokasi, :tgl_reservasi,:tanggal_pesan, :jumlah_peserta, :jumlah_donasi,
                                             :total, :id_status_reservasi_wisata, :keterangan,
                                             :nama_donatur, :bank_donatur, :nomor_rekening_donatur, :pesan, :update_terakhir, :id_paket_wisata, :id_rekening_bersama)";
 
@@ -72,7 +74,7 @@ if (isset($_POST['submit'])) {
             'tgl_reservasi' => $tgl_reservasi,
             'tanggal_pesan' => $tanggal_pesan,
             'jumlah_peserta' => $jumlah_peserta,
-            // 'jumlah_donasi' => $jumlah_donasi,
+            'jumlah_donasi' => $jumlah_donasi,
             'total' => $total,
             'id_status_reservasi_wisata' => $id_status_reservasi_wisata,
             'keterangan' => $keterangan,
@@ -85,7 +87,23 @@ if (isset($_POST['submit'])) {
             'id_rekening_bersama' => $id_rekening_bersama
         ]);
 
+
         $id_reservasi_terakhir = $pdo->lastInsertId();
+
+        $id_reservasi   = $id_reservasi_terakhir; //ok
+        $donasi         = $_POST['donasi']; //ok
+        $status_donasi  = 'Belum Terverifikasi'; //ok
+
+        $sqlwisatadonasi = "INSERT INTO t_donasi_wisata
+                                    (id_reservasi, donasi, status_donasi)
+                                VALUES (:id_reservasi, :donasi, :status_donasi)";
+
+        $stmt = $pdo->prepare($sqlwisatadonasi);
+        $stmt->execute([
+            'id_reservasi' => $id_reservasi,
+            'donasi' => $donasi,
+            'status_donasi' => $status_donasi
+        ]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
@@ -173,35 +191,35 @@ if (isset($_POST['submit'])) {
                 smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
             }
             //echo "HAHAHAAHA GREAT SUCCESSS !";
-            // header("Location: reservasi_saya.php?status=addsuccess");
             $last_id_reservasi = $pdo->lastInsertId();
+            header("Location: reservasi_saya.php?status=addsuccess");
         }
 
         // Jika wisata sekaligus donasi
-        foreach ($_POST['donasi'] as $donasi) {
-            $id_reservasi   = $last_id_reservasi; //ok
-            $donasi         = $_POST['donasi']; //ok
-            $status_donasi  = 'Belum Terambil'; //ok
+        // foreach ($_POST['donasi'] as $donasi) {
+        //     $id_reservasi   = $last_id_reservasi; //ok
+        //     $donasi         = $_POST['donasi']; //ok
+        //     $status_donasi  = 'Belum Terverifikasi'; //ok
 
-            $sqlwisatadonasi = "INSERT INTO t_donasi_wisata
-                                        (id_reservasi, donasi, status_donasi)
-                                    VALUES (:id_reservasi, :donasi, :status_donasi)";
+        //     $sqlwisatadonasi = "INSERT INTO t_donasi_wisata
+        //                                 (id_reservasi, donasi, status_donasi)
+        //                             VALUES (:id_reservasi, :donasi, :status_donasi)";
 
-            $stmt = $pdo->prepare($sqlwisatadonasi);
-            $stmt->execute([
-                'id_reservasi' => $id_reservasi,
-                'donasi' => $donasi,
-                'status_donasi' => $status_donasi
-            ]);
+        //     $stmt = $pdo->prepare($sqlwisatadonasi);
+        //     $stmt->execute([
+        //         'id_reservasi' => $id_reservasi,
+        //         'donasi' => $donasi,
+        //         'status_donasi' => $status_donasi
+        //     ]);
 
-            $affectedrows = $stmt->rowCount();
-            if ($affectedrows == '0') {
-                //echo "HAHAHAAHA INSERT FAILED !";
-            } else {
-                //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: reservasi_saya.php?status=addsuccess");
-            }
-        }
+        //     $affectedrows = $stmt->rowCount();
+        //     if ($affectedrows == '0') {
+        //         //echo "HAHAHAAHA INSERT FAILED !";
+        //     } else {
+        //         //echo "HAHAHAAHA GREAT SUCCESSS !";
+        //         header("Location: reservasi_saya.php?status=addsuccess");
+        //     }
+        // }
     } else {
         echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
     }
@@ -317,8 +335,7 @@ if (isset($_POST['submit'])) {
                                                 <ul class="list-group list-group-flush">
                                                     <li class="list-group-item card-reservasi">
                                                         <!-- Nama paket wisata -->
-                                                        <input type="text" value="<?= $rowitem->nama_paket_wisata ?>" class="list-group-item deskripsi-paket" 
-                                                        style="background: transparent;
+                                                        <input type="text" value="<?= $rowitem->nama_paket_wisata ?>" class="list-group-item deskripsi-paket" style="background: transparent;
                                                                 border: none;
                                                                 color: #fff;
                                                                 font-weight: bold;
@@ -522,14 +539,14 @@ if (isset($_POST['submit'])) {
                                         <!-- Donasi Wisata -->
                                         <label>
                                             Dengan berwisata anda turut berkontribusi dalam,<br>
-                                            konservasi terumbu karang sebesar Rp. <?=number_format(15000, 0)?>
+                                            konservasi terumbu karang sebesar Rp. <?= number_format($rowlokasi->harga_donasi, 0) ?>
                                         </label>
                                         <!-- Hidden Get ID Untuk Mendapatkan Value -->
-                                        <input type="hidden" id="donasi" value="15000" class="form-control">
+                                        <input type="hidden" id="donasi" value="<?= $rowlokasi->harga_donasi; ?>" class="form-control">
                                         <!-- Hidden Input Ke DB Donasi Wisata -->
-                                        <input type="hidden" id="donasi_wisata" name="donasi" value="" class="form-control">
+                                        <input type="hidden" id="donasi_wisata" name="donasi" value="<?= $rowlokasi->harga_donasi; ?>" class="form-control">
                                         <!-- Hidden Input Ke DB Reservasi Wisata -->
-                                        <input type="hidden" id="jumlah_donasi" name="jumlah_donasi" value="" class="form-control">
+                                        <input type="hidden" id="jumlah_donasi" name="jumlah_donasi" value="<?= $rowlokasi->harga_donasi; ?>" class="form-control">
                                     </div>
                                 <?php } ?>
 
