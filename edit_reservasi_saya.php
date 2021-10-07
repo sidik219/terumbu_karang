@@ -7,10 +7,13 @@ $id_reservasi = $_GET['id_reservasi'];
 $defaultpic = "images/image_default.jpg";
 $id_status_reservasi_wisata = 1;
 
-// Reservasi Wisata
-$sql = 'SELECT * FROM t_reservasi_wisata, t_user, t_lokasi
-    WHERE id_reservasi = :id_reservasi
-    AND t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi';
+$sql = 'SELECT * FROM t_reservasi_wisata
+        LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+        LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+        LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+        LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+        WHERE id_reservasi = :id_reservasi
+        AND t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi';
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute(['id_reservasi' => $id_reservasi]);

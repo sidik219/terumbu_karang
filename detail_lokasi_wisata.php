@@ -222,17 +222,18 @@ include 'hak_akses.php';
                                 <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-success fas fa-donate"></i>
                                     <label>Donasi:</label><br>
-                                    Rp. <?=number_format(15000, 0)?>
+                                    Rp. <?=number_format($rowitem->harga_donasi, 0)?>
                                 </p></div>
 
                                 <?php
-                                $sqlviewfasilitas = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_kerjasama, biaya_asuransi
+                                $sqlviewfasilitas = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_kerjasama, biaya_asuransi, harga_donasi
                                                     FROM tb_fasilitas_wisata
                                                     LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
                                                     LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
                                                     LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
                                                     LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                                                     LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
+                                                    LEFT JOIN t_lokasi ON tb_paket_wisata.id_lokasi = t_lokasi.id_lokasi
                                                     WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
                                                     AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
@@ -243,16 +244,17 @@ include 'hak_akses.php';
                                 foreach ($rowfasilitas as $fasilitas) { 
                                 
                                 // Menjumlahkan biaya asuransi dan biaya paket wisata
+                                $donasi         = $fasilitas->harga_donasi;
                                 $asuransi       = $fasilitas->biaya_asuransi;
                                 $wisata         = $fasilitas->total_biaya_fasilitas;
                                 $total_paket    = $asuransi + $wisata;
-                                
+                                $hasil          = $donasi + $total_paket;
                                 ?>
                                 
                                 <!-- Biaya Paket Kalkulasi Dari Biaya Fasilitas -->
                                 <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-success fas fa-money-bill-wave"></i>
-                                    <b>Total Paket Wisata:</b><br> Rp. <?=number_format($total_paket, 0)?>
+                                    <b>Total Paket Wisata:</b><br> Rp. <?=number_format($hasil, 0)?>
                                 </p></div>
                                 <?php } ?>
 

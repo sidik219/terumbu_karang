@@ -593,8 +593,8 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </a>
                 </li>
 
-                <li class="nav-item"> <!-- Lokasi -->
-                    <a href="kelola_wisata_donasi.php" class="nav-link ' . (('kelola_donasi.php' == $url_sekarang) || ('edit_donasi.php'  == $url_sekarang || 'kelola_pengadaan_bibit.php' == $url_sekarang) ? ' active ' : '') . ' ">
+                <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                    <a href="kelola_wisata_donasi.php" class="nav-link  ' . ('kelola_wisata_donasi.php' == $url_sekarang ? ' active ' : '') . ' ">
                         <i class="nav-icon fab fa-bandcamp"></i>
                         <p> Kelola Donasi Wisata </p>
                     </a>
