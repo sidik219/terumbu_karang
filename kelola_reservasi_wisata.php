@@ -1,6 +1,6 @@
 <?php include 'build/config/connection.php';
 session_start();
-if (!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)) {
+if (!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)) {
     header('location: login.php?status=restrictedaccess');
 }
 $url_sekarang = basename(__FILE__);
@@ -280,28 +280,32 @@ function alertPembayaran($dob)
                                             <br><?= strftime('%A, %d %B %Y', $truedate); ?></small>
                                     </td>
                                     <td>
+                                        <?php if($_SESSION['level_user'] == 2) { ?>
                                         <button type="button" class="btn btn-act">
                                             <a href="edit_reservasi_wisata.php?id_reservasi=<?= $rowitem->id_reservasi ?>" class="fas fa-edit"></a>
                                         </button>
-                                        <a class="btn btn-success" href="kelola_laporan_wisata.php?id_reservasi=<?= $rowitem->id_reservasi ?>" style="margin-top: 1rem;">
-                                            <i class="fas fa-file-excel"></i> Kelola Laporan</a>
-                                        <!-- Status Laporan -->
-                                        <?php
-                                        if ($rowitem->id_status_reservasi_wisata == 2) { ?>
-                                            <!-- Kelola Laporan Lama -->
-                                            <span class="badge badge-pill badge-info mt-2">
-                                                Cek Kembali <br> Laporan Pengeluaran
-                                            </span>
-                                        <?php } elseif ($rowitem->id_status_reservasi_wisata == 3) { ?>
-                                            <!-- Kelola Laporan Bermasalah -->
-                                            <span class="badge badge-pill badge-danger mt-2">
-                                                Laporan Pengeluaran <br> Belum Dibuat. <br> Dikarenakan Reservasi Bermasalah.
-                                            </span>
-                                        <?php } else { ?>
-                                            <!-- Kelola Laporan Baru -->
-                                            <span class="badge badge-pill badge-warning mt-2">
-                                                Laporan Pengeluaran <br> Belum Dibuat
-                                            </span>
+                                        <?php } ?>
+                                        <?php if($_SESSION['level_user'] == 3) { ?>
+                                            <a class="btn btn-success" href="kelola_laporan_wisata.php?id_reservasi=<?= $rowitem->id_reservasi ?>" style="margin-top: 1rem;">
+                                                <i class="fas fa-file-excel"></i> Kelola Laporan</a>
+                                            <!-- Status Laporan -->
+                                            <?php
+                                            if ($rowitem->id_status_reservasi_wisata == 2) { ?>
+                                                <!-- Kelola Laporan Lama -->
+                                                <span class="badge badge-pill badge-info mt-2">
+                                                    Cek Kembali <br> Laporan Pengeluaran
+                                                </span>
+                                            <?php } elseif ($rowitem->id_status_reservasi_wisata == 3) { ?>
+                                                <!-- Kelola Laporan Bermasalah -->
+                                                <span class="badge badge-pill badge-danger mt-2">
+                                                    Laporan Pengeluaran <br> Belum Dibuat. <br> Dikarenakan Reservasi Bermasalah.
+                                                </span>
+                                            <?php } else { ?>
+                                                <!-- Kelola Laporan Baru -->
+                                                <span class="badge badge-pill badge-warning mt-2">
+                                                    Laporan Pengeluaran <br> Belum Dibuat
+                                                </span>
+                                            <?php } ?>
                                         <?php } ?>
                                     </td>
                                 </tr>

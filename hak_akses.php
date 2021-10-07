@@ -426,6 +426,13 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="kelola_reservasi_wisata.php" class="nav-link ' . (('kelola_reservasi_wisata.php' == $url_sekarang) || ('edit_reservasi_wisata.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                        <i class="nav-icon fas fa-th-list"></i>
+                        <p> Kelola Reservasi ' . $notifikasi_reservasi . '</p>
+                    </a>
+                </li>
+
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                     <a href="kelola_lokasi.php" class="nav-link ' . ('kelola_lokasi.php' == $url_sekarang  || ('edit_lokasi.php'  == $url_sekarang) || ('input_lokasi.php'  == $url_sekarang) || ('kelola_harga_terumbu.php'  == $url_sekarang) || ('kelola_biaya_operasional.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
