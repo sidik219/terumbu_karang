@@ -8,6 +8,27 @@ include 'hak_akses.php';
 
 $level_user = $_SESSION['level_user'];
 
+if ($level_user == 2) {
+    $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+    $extra_query = " AND t_lokasi.id_wilayah = $id_wilayah ";
+    $extra_query_noand = " t_lokasi.id_wilayah = $id_wilayah ";
+} else if ($level_user == 3) {
+    $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+    $extra_query = " AND t_lokasi.id_lokasi = $id_lokasi ";
+    $extra_query_noand = " t_lokasi.id_lokasi = $id_lokasi ";
+} else if ($level_user == 4) {
+    $extra_query = "  ";
+    $extra_query_noand = " 1 ";
+}
+
+// Select Tabel Donasi Wisata
+$sqldonasiwisata = 'SELECT * FROM t_lokasi
+                WHERE  ' . $extra_query_noand . '
+                ORDER BY id_lokasi DESC';
+$stmt = $pdo->prepare($sqldonasiwisata);
+$stmt->execute();
+$rowLokasi = $stmt->fetch();
+
 // Select Tabel Donasi Wisata
 $sqldonasiwisata = 'SELECT * FROM t_donasi_wisata
                 LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi
@@ -16,6 +37,7 @@ $sqldonasiwisata = 'SELECT * FROM t_donasi_wisata
                 LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                 LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                 WHERE status_donasi = "Belum Terambil"
+                AND  ' . $extra_query_noand . '
                 ORDER BY id_donasi_wisata DESC';
 $stmt = $pdo->prepare($sqldonasiwisata);
 $stmt->execute();
@@ -125,9 +147,10 @@ if (isset($_POST['submit'])) {
                         <div class="input-group-prepend">
                             <span class="input-group-text">Rp.</span>
                         </div>
+                        <input type="hidden" name="id_lokasi" value="<?=$rowLokasi->id_lokasi?>">
                         <input type="number" name="harga_donasi" class="form-control" placeholder="Jumlah Donasi Wisata Di Lokasi Anda" aria-label="Jumlah Donasi Wisata Di Lokasi Anda" aria-describedby="basic-addon2">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-primary" type="button" name="submit">Simpan</button>
+                            <button class="btn btn-outline-primary" type="submit" name="submit">Simpan</button>
                         </div>
                     </div>
                     </form>
