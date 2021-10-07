@@ -173,55 +173,35 @@ if (isset($_POST['submit'])) {
                 smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
             }
             //echo "HAHAHAAHA GREAT SUCCESSS !";
-            header("Location: reservasi_saya.php?status=addsuccess");
-            // $last_id_reservasi = $pdo->lastInsertId();
+            // header("Location: reservasi_saya.php?status=addsuccess");
+            $last_id_reservasi = $pdo->lastInsertId();
         }
 
         // Jika wisata sekaligus donasi
-        // $i = 0;
-        // foreach ($_POST['nominal'] as $nominal) {
-        //     $id_status_donasi       = 1; //ok
-        //     $nominal                = $_POST['nominal'][$i]; //ok
-        //     $nama_donatur           = $_POST['nama_donatur']; //ok
-        //     $bank_donatur           = $_POST['nama_bank_donatur']; //ok
-        //     $nomor_rekening_donatur = $_POST['no_rekening_donatur']; //ok
-        //     $id_lokasi              = $_POST['id_lokasi']; //ok
-        //     $pesan                  = $_POST['pesan']; //ok
-        //     $id_rekening_bersama    = $_POST['id_rekening_bersama']; //ok
-        //     $tanggal_donasi         = date('Y-m-d H:i:s', time()); //ok
+        foreach ($_POST['donasi'] as $donasi) {
+            $id_reservasi   = $last_id_reservasi; //ok
+            $donasi         = $_POST['donasi']; //ok
+            $status_donasi  = 'Belum Terambil'; //ok
 
-        //     $sqlinsertdonasi = "INSERT INTO t_donasi
-        //                                 (id_user, nominal, tanggal_donasi, id_status_donasi,
-        //                                 id_lokasi, nama_donatur, nomor_rekening_donatur, bank_donatur,
-        //                                 pesan, update_terakhir, id_rekening_bersama)
-        //                             VALUES (:id_user, :nominal, :tanggal_donasi, :id_status_donasi,
-        //                                     :id_lokasi,  :nama_donatur, :nomor_rekening_donatur, :bank_donatur,
-        //                                     :pesan, :update_terakhir, :id_rekening_bersama)";
+            $sqlwisatadonasi = "INSERT INTO t_donasi_wisata
+                                        (id_reservasi, donasi, status_donasi)
+                                    VALUES (:id_reservasi, :donasi, :status_donasi)";
 
-        //     $stmt = $pdo->prepare($sqlinsertdonasi);
-        //     $stmt->execute([
-        //         'id_user'                   => $id_user,
-        //         'nominal'                   => $nominal,
-        //         'id_lokasi'                 => $id_lokasi,
-        //         'id_status_donasi'          => $id_status_donasi,
-        //         'pesan'                     => $pesan,
-        //         'nama_donatur'              => $nama_donatur,
-        //         'bank_donatur'              => $bank_donatur,
-        //         'nomor_rekening_donatur'    => $nomor_rekening_donatur,
-        //         'tanggal_donasi'            => $tanggal_donasi,
-        //         'update_terakhir'           => $tanggal_donasi,
-        //         'id_rekening_bersama'       => $id_rekening_bersama
-        //     ]);
+            $stmt = $pdo->prepare($sqlwisatadonasi);
+            $stmt->execute([
+                'id_reservasi' => $id_reservasi,
+                'donasi' => $donasi,
+                'status_donasi' => $status_donasi
+            ]);
 
-        //     $affectedrows = $stmt->rowCount();
-        //     if ($affectedrows == '0') {
-        //         //echo "HAHAHAAHA INSERT FAILED !";
-        //     } else {
-        //         //echo "HAHAHAAHA GREAT SUCCESSS !";
-        //         header("Location: reservasi_saya.php?status=addsuccess");
-        //     }
-        //     $i++;
-        // }
+            $affectedrows = $stmt->rowCount();
+            if ($affectedrows == '0') {
+                //echo "HAHAHAAHA INSERT FAILED !";
+            } else {
+                //echo "HAHAHAAHA GREAT SUCCESSS !";
+                header("Location: reservasi_saya.php?status=addsuccess");
+            }
+        }
     } else {
         echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
     }
@@ -534,9 +514,22 @@ if (isset($_POST['submit'])) {
                                         <!-- Pesan/Ekspresi -->
                                         <label>
                                             Pesan/Ekspresi di Terumbu Karang
-                                            <!-- <small style="color: red;">Isi jika melakukan donasi</small> -->
+                                            <small style="color: gray;">(Optional)</small>
                                         </label>
                                         <input type="text" id="pesan" name="pesan" value="-" class="form-control" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <!-- Donasi Wisata -->
+                                        <label>
+                                            Dengan berwisata anda turut berkontribusi dalam,<br>
+                                            konservasi terumbu karang sebesar Rp. <?=number_format(15000, 0)?>
+                                        </label>
+                                        <!-- Hidden Get ID Untuk Mendapatkan Value -->
+                                        <input type="hidden" id="donasi" value="15000" class="form-control">
+                                        <!-- Hidden Input Ke DB Donasi Wisata -->
+                                        <input type="hidden" id="donasi_wisata" name="donasi" value="" class="form-control">
+                                        <!-- Hidden Input Ke DB Reservasi Wisata -->
+                                        <input type="hidden" id="jumlah_donasi" name="jumlah_donasi" value="" class="form-control">
                                     </div>
                                 <?php } ?>
 
@@ -640,12 +633,13 @@ if (isset($_POST['submit'])) {
         function myFunction() {
             var jumlah_peserta = document.getElementById("jumlah_peserta").value;
             var paket_wisata = document.getElementById("total_paket_wisata").value;
+            var donasi = document.getElementById("donasi").value;
             //var id_tk = document.getElementById("id_tk").value; //data terumbu karang
             //var nominal = document.getElementById("id_tk").value; //data nominal terumbu karang
 
             var deskripsi = jumlah_peserta;
             var reservasi = jumlah_peserta * paket_wisata; //5 x 750.000 = 3.750.000
-            var total_reservasi = reservasi;
+            var total_reservasi = parseInt(reservasi) + parseInt(donasi);
             // var terumbu_karang = id_tk;
             // var hasil_split = nominal.split("-");
             // var split_tk = hasil_split[0];
@@ -670,6 +664,8 @@ if (isset($_POST['submit'])) {
             // document.getElementById("split_tk").value = split_tk;
             // document.getElementById("split_harga_tk").value = split_harga_tk;
             // document.getElementById("nominal").value = split_harga_tk;
+            document.getElementById("donasi_wisata").value = donasi; //Input ke tabel donasi wisata
+            document.getElementById("jumlah_donasi").value = donasi; //input ke tabel reservasi wisata field jumlah_donasi
             document.getElementById("total").value = total_reservasi; //total dari total_reservasi * donasi
             document.getElementById("total_reservasi").value = formatter.format(total_reservasi); //total dari total_reservasi * donasi
         }

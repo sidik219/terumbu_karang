@@ -219,6 +219,12 @@ include 'hak_akses.php';
                                     Rp. <?=number_format($rowitem->biaya_asuransi, 0)?>
                                 </p></div>
 
+                                <div class="row p-2 border-bottom"><p class="">
+                                    <i class="text-success fas fa-donate"></i>
+                                    <label>Donasi:</label><br>
+                                    Rp. <?=number_format(15000, 0)?>
+                                </p></div>
+
                                 <?php
                                 $sqlviewfasilitas = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_kerjasama, biaya_asuransi
                                                     FROM tb_fasilitas_wisata
@@ -255,19 +261,6 @@ include 'hak_akses.php';
 
                             </div>
                         </div>
-
-                        <!-- <div class="row mt-0">
-                            <div class="col p-3 shadow rounded"><b class="text-lg"><i class="text-primary nav-icon fas fa-info-circle"></i> Tentang Paket Wisata ini</b><br>
-                            <?php
-                                if($rowitem->deskripsi_panjang_wisata == NULL){
-                                echo "<span class='text-muted mt-3'>Informasi tidak tersedia</span>";
-                                }
-                                else{
-                                echo $rowitem->deskripsi_panjang_wisata;
-                                }
-                            ?>
-                            </div>
-                        </div> -->
                     <?php  } ?>
                 </div>
             <?php } ?>

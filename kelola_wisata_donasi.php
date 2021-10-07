@@ -8,6 +8,40 @@ include 'hak_akses.php';
 
 $level_user = $_SESSION['level_user'];
 
+// Select Tabel Donasi Wisata
+$sqldonasiwisata = 'SELECT * FROM t_donasi_wisata
+                LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi
+                LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                WHERE status_donasi = "Belum Terambil"
+                ORDER BY id_donasi_wisata DESC';
+$stmt = $pdo->prepare($sqldonasiwisata);
+$stmt->execute();
+$row = $stmt->fetchAll();
+
+// Setting harga donasi
+if (isset($_POST['submit'])) {
+    $harga_donasi  = $_POST['harga_donasi'];
+
+    //Update dan set id_paket_wisata ke wisata pilihan
+    $sqlupdatewisata = "UPDATE t_lokasi
+                        SET harga_donasi = :harga_donasi
+                        WHERE id_lokasi = :id_lokasi";
+
+    $stmt = $pdo->prepare($sqlupdatewisata);
+    $stmt->execute(['id_lokasi' => $id_lokasi,
+                    'harga_donasi' => $harga_donasi]);
+
+    $affectedrows = $stmt->rowCount();
+    if ($affectedrows == '0') {
+        header("Location: kelola_wisata_donasi.php?status=insertfailed");
+    } else {
+        //echo "HAHAHAAHA GREAT SUCCESSS !";
+        header("Location: kelola_wisata_donasi.php?status=addsuccess");
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -86,15 +120,17 @@ $level_user = $_SESSION['level_user'];
                         </div>
                     </div>
                     <!-- input harga donasi -->
+                    <form action="" method="POST">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Rp.</span>
                         </div>
-                        <input type="number" class="form-control" placeholder="Jumlah Donasi Wisata Di Lokasi Anda" aria-label="Jumlah Donasi Wisata Di Lokasi Anda" aria-describedby="basic-addon2">
+                        <input type="number" name="harga_donasi" class="form-control" placeholder="Jumlah Donasi Wisata Di Lokasi Anda" aria-label="Jumlah Donasi Wisata Di Lokasi Anda" aria-describedby="basic-addon2">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-primary" type="button">Simpan</button>
+                            <button class="btn btn-outline-primary" type="button" name="submit">Simpan</button>
                         </div>
                     </div>
+                    </form>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -139,13 +175,19 @@ $level_user = $_SESSION['level_user'];
                         </thead>
                         <tbody>
                             <div class="batch-donasi">
+                                <?php
+                                $sum_donasi = 0;
+                                foreach($row as $donasi) { 
+                                $sum_donasi+= $donasi->donasi;
+                                ?>
                                 <tr class="border rounded p-1 batch-donasi">
-                                    <td>Nama Wisatawan</td>
-                                    <td>Paket Wisata Yang Dipilih</td>
-                                    <td>Rp 15.000</td>
-                                    <td>Belum Terambil</td>
+                                    <td><?=$donasi->nama_user?></td>
+                                    <td><?=$donasi->nama_paket_wisata?></td>
+                                    <td><?=$donasi->donasi?></td>
+                                    <td><?=$donasi->status_donasi?></td>
                                     <td><button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus-circle"></i></button></td>
                                 </tr>
+                                <?php } ?>
                             </div>
                         </tbody>
                     </table>
@@ -180,7 +222,7 @@ $level_user = $_SESSION['level_user'];
                     <div class="d-flex justify-content-between ">
                         <button type="button" class="btn btn-primary">Ambil Donasi</button>
                         <p><b>Total Donasi Yang Diambil : 60.000</b></p>
-                        <p><b>Total Donasi : 60.000</b></p>
+                        <p><b>Total Donasi : <?=number_format($sum_donasi, 0)?></b></p>
                     </div>
             </section>
             <!-- /.Left col -->
