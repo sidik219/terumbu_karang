@@ -7,6 +7,8 @@ $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
 $level_user = $_SESSION['level_user'];
+// var_dump($_SESSION);
+// die;
 
 if ($level_user == 2) {
     $id_wilayah = $_SESSION['id_wilayah_dikelola'];
@@ -65,6 +67,22 @@ if (isset($_POST['submit'])) {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
         header("Location: kelola_wisata_donasi.php?status=addsuccess&status=donasisuccess");
     }
+}
+if (isset($_POST['submitin'])) {
+    $idpilih = $_POST['prodid'];
+    $hitung = count($_POST['prodid']);
+    for ($x = 0; $x < $hitung; $x++) {
+        $record = $idpilih[$x];
+        $sqlreservasi = "UPDATE t_donasi_wisata
+        SET status_donasi = 'Terambil'
+        WHERE id_donasi_wisata = $record";
+        $stmt = $pdo->prepare($sqlreservasi);
+        $stmt->execute();
+    }
+    header("Refresh:0;");
+    //surat cinta buat bobi <3
+    /*ini bisa loncat ke donasi, nanti total donasi tinggal sorting dari status terambil, 
+    nanti kalau udah di checkout ganti lagi status jadi terbeli*/
 }
 ?>
 
@@ -188,39 +206,46 @@ if (isset($_POST['submit'])) {
                         </div>
                     </div>
                     <!-- tabel data belum terambil -->
-                    <table class="table table-striped table-responsive-sm">
-                        <thead>
-                            <tr>
-                                <th scope="col">Nama Wisatawan</th>
-                                <th scope="col">Paket Wisata</th>
-                                <th scope="col">Donasi</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <div class="batch-donasi">
-                                <?php
-                                $sum_donasi = 0;
-                                foreach ($row as $donasi) {
-                                    $sum_donasi += $donasi->donasi;
-                                ?>
-                                    <tr class="border rounded p-1 batch-donasi">
-                                        <td><?= $donasi->nama_user ?></td>
-                                        <td><?= $donasi->nama_paket_wisata ?></td>
-                                        <td><?= $donasi->donasi ?></td>
-                                        <td><?= $donasi->status_donasi ?></td>
-                                        <td><button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus-circle"></i></button></td>
-                                    </tr>
-                                <?php } ?>
-                            </div>
-                        </tbody>
-                    </table>
-                    <div class="d-flex justify-content-between ">
-                        <button type="button" class="btn btn-primary">Ambil Donasi</button>
-                        <p><b>Total Donasi Yang Diambil : 60.000</b></p>
-                        <p><b>Total Donasi : Rp. <?= number_format($sum_donasi, 0) ?></b></p>
-                    </div>
+                    <form action="" method="POST">
+                        <table class="table table-striped table-responsive-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nama Wisatawan</th>
+                                    <th scope="col">Paket Wisata</th>
+                                    <th scope="col">Donasi</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <div class="batch-donasi">
+                                    <?php
+                                    $sum_donasi = 0;
+                                    foreach ($row as $donasi) {
+                                        $sum_donasi += $donasi->donasi;
+                                    ?>
+                                        <tr class="border rounded p-1 batch-donasi ">
+                                            <td><?= $donasi->nama_user ?><input type="hidden" name="user" value="<?= $donasi->nama_user ?>"></td>
+                                            <td><?= $donasi->nama_paket_wisata ?><input type="hidden" name="namapaket" value="<?= $donasi->nama_paket_wisata ?>"></td>
+                                            <td><?= $donasi->donasi ?><input type="hidden" name="donasi" value="<?= $donasi->donasi ?>"></td>
+                                            <td><?= $donasi->status_donasi ?><input type="hidden" name="statusdonasi" value="<?= $donasi->status_donasi ?>"></td>
+                                            <!-- <td><button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus-circle"></i></button></td> -->
+                                            <td class="pl-4"><input type="checkbox" name="prodid[]" onchange="keklik()" value="<?= $donasi->id_donasi_wisata; ?>"></td>
+                                        </tr>
+                                    <?php } ?>
+                                </div>
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-between ">
+                            <input type="submit" name="submitin" class="btn btn-primary">Ambil Donasi
+                            <p id="klik"><b>Total Donasi Yang Diambil : 60.000</b></p>
+                            <p><b>Total Donasi : Rp. <?= number_format($sum_donasi, 0) ?></b></p>
+                        </div>
+                        <!-- 
+                            yang belum itu verifikasi jika donasi kurang dari terumbu termurah bedasarkan lokasi,
+                            total donasi diambil dinamis pada saat checkbox dipilih
+                         -->
+                    </form>
             </section>
             <!-- /.Left col -->
             <!-- /.row (main row) -->
@@ -277,6 +302,10 @@ if (isset($_POST['submit'])) {
     <script src="dist/js/adminlte.js"></script>
 
     <script>
+        function keklik() {
+            document.getElementById('klik').value = '';
+        }
+
         $(document).ready(function() {
 
             $('.userinfo').click(function() {
