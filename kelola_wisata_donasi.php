@@ -31,6 +31,15 @@ $stmt = $pdo->prepare($sqldonasiwisata);
 $stmt->execute();
 $rowLokasi = $stmt->fetch();
 
+
+$sqlambilharga = 'SELECT * FROM `t_detail_lokasi`  
+                ORDER BY `t_detail_lokasi`.`harga_patokan_lokasi`, id_lokasi DESC';
+$stmt = $pdo->prepare($sqlambilharga);
+$stmt->execute();
+$rowharga = $stmt->fetch();
+// var_dump($rowharga);
+// die;
+
 // Select Tabel Donasi Wisata
 $sqldonasiwisata = 'SELECT * FROM t_donasi_wisata
                 LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi
@@ -69,6 +78,8 @@ if (isset($_POST['submit'])) {
     }
 }
 if (isset($_POST['submitin'])) {
+    var_dump($_POST);
+    die;
     $idpilih = $_POST['prodid'];
     $hitung = count($_POST['prodid']);
     for ($x = 0; $x < $hitung; $x++) {
@@ -82,7 +93,7 @@ if (isset($_POST['submitin'])) {
     header("Refresh:0;");
     //surat cinta buat bobi <3
     /*ini bisa loncat ke donasi, nanti total donasi tinggal sorting dari status terambil, 
-    nanti kalau udah di checkout ganti lagi status jadi terbeli*/
+    nanti kalau udah di checkout ganti lagi status jadi terbeli atau bagusnya seperti apa tergantung bobi*/
 }
 ?>
 
@@ -206,7 +217,7 @@ if (isset($_POST['submitin'])) {
                         </div>
                     </div>
                     <!-- tabel data belum terambil -->
-                    <form action="" method="POST">
+                    <form action="" method="POST" id="ok">
                         <table class="table table-striped table-responsive-sm">
                             <thead>
                                 <tr>
@@ -230,17 +241,47 @@ if (isset($_POST['submitin'])) {
                                             <td><?= $donasi->donasi ?><input type="hidden" name="donasi" value="<?= $donasi->donasi ?>"></td>
                                             <td><?= $donasi->status_donasi ?><input type="hidden" name="statusdonasi" value="<?= $donasi->status_donasi ?>"></td>
                                             <!-- <td><button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus-circle"></i></button></td> -->
-                                            <td class="pl-4"><input type="checkbox" name="prodid[]" onchange="keklik()" value="<?= $donasi->id_donasi_wisata; ?>"></td>
+                                            <!-- <td class="pl-4"><input type="checkbox" name="prodid[]" onchange="keklik()" value=""></td> -->
+                                            <td>
+                                                <label class="w-checkbox">
+                                                    <div class="w-checkbox-input w-checkbox-input--inputType-custom hack42-checkbox"></div>
+                                                    <input type="checkbox" id="checkbox" name="prodid[]" data-name="Checkbox" add-value="<?= $donasi->donasi; ?>" value="<?= $donasi->id_donasi_wisata; ?>">
+                                                    <span class="pilihdonasi w-form-label">
+                                                        Pilih
+                                                    </span>
+                                                </label>
+                                            </td>
                                         </tr>
                                     <?php } ?>
                                 </div>
                             </tbody>
                         </table>
-                        <div class="d-flex justify-content-between ">
-                            <input type="submit" name="submitin" class="btn btn-primary">Ambil Donasi
-                            <p id="klik"><b>Total Donasi Yang Diambil : 60.000</b></p>
-                            <p><b>Total Donasi : Rp. <?= number_format($sum_donasi, 0) ?></b></p>
+                        <div class="d-flex justify-content-between align-items-center pb-4">
+                            <input onclick="return ver()" type="submit" name="submitin" value="Ambil Donasi" class="btn btn-primary">
+                            <div class="hack42-45-added-value-row">
+                                <b>Total Donasi Yang Diambil : Rp. <span class="totalpilih">0</span></b>
+                                <div class="w-embed"><input type="hidden" name="hasil_donasi" id="hasil_donasi" class="hasil_donasi" val="" readonly></div>
+                                <!-- name "hasil_donasi" ini yang akan diambil untuk validasi harga terumbu yang paling murah dan setting donasi -->
+                            </div>
+                            <div>
+                                <b>Total Donasi : Rp. <?= number_format($sum_donasi, 0) ?></b>
+                            </div>
                         </div>
+                        <script>
+                            function ver() {
+                                let hargaterumbu = <?= $rowharga->harga_patokan_lokasi; ?>;
+                                const b = document.getElementById('hasil_donasi').value;
+                                // alert(hargaterumbu);
+                                if (b < hargaterumbu) {
+                                    alert('Donasi Yang Diambil Tidak Mencukupi, Minimal Mengambil <?= $rowharga->harga_patokan_lokasi; ?>');
+                                    return false
+                                } else {
+                                    // event.preventDefault()
+                                    // alert('gas');
+                                    return true
+                                }
+                            }
+                        </script>
                         <!-- 
                             yang belum itu verifikasi jika donasi kurang dari terumbu termurah bedasarkan lokasi,
                             total donasi diambil dinamis pada saat checkbox dipilih
@@ -260,30 +301,6 @@ if (isset($_POST['submitin'])) {
         <?= $footer ?>
     </footer>
 
-
-    <!-- Modal -->
-    <div class="modal fade" id="empModal" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <!-- Modal content-->
-            <div class="modal-content  bg-light">
-                <div class="modal-header">
-                    <h4 class="modal-title">Rincian Donasi</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
         <!-- Control sidebar content goes here -->
@@ -301,11 +318,24 @@ if (isset($_POST['submitin'])) {
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
 
+    <!-- checkbox calculator -->
     <script>
-        function keklik() {
-            document.getElementById('klik').value = '';
-        }
+        $('.pilihdonasi').click(function() {
+            const $totalVal = $('.totalpilih'),
+                $checkbox = $(this).prev();
+            let sum;
+            if (!$checkbox.is(':checked')) {
+                sum = Number($totalVal.text().replace(/[\$,]/g, '')) + Number($checkbox.attr('add-value'));
+            } else {
+                sum = Number($totalVal.text().replace(/[\$,]/g, '')) - Number($checkbox.attr('add-value'));
+            }
+            const formattedSum = new Intl.NumberFormat().format(sum);
+            $totalVal.text(formattedSum);
+            $('.hasil_donasi').val(sum);
+        });
+    </script>
 
+    <script>
         $(document).ready(function() {
 
             $('.userinfo').click(function() {
