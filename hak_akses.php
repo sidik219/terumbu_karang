@@ -601,7 +601,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 </li>
 
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
-                    <a href="kelola_wisata_donasi.php" class="nav-link  ' . ('kelola_wisata_donasi.php' == $url_sekarang ? ' active ' : '') . ' ">
+                    <a href="kelola_wisata_donasi.php?status=baru" class="nav-link  ' . ('kelola_wisata_donasi.php?status=baru' == $url_sekarang ? ' active ' : '') . ' ">
                         <i class="nav-icon fab fa-bandcamp"></i>
                         <p> Kelola Donasi Wisata </p>
                     </a>

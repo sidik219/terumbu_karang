@@ -261,10 +261,10 @@ if (isset($_POST['submitin'])) {
                                 </div>
                             </tbody>
                         </table>
-                        <div class="d-flex justify-content-between align-items-center pb-4">
+                        <div class="d-flex justify-content-between align-items-center pb-4 row">
                             <?php if ($_GET['status'] == 'kurang') : ?>
                                 <input type="submit" name="submitin" value="Ambil Donasi" class="btn btn-primary">
-                            <?php else : ?>
+                            <?php elseif ($_GET['status'] == 'baru') : ?>
                                 <input onclick="return ver()" type="submit" name="submitin" value="Ambil Donasi" class="btn btn-primary">
                             <?php endif ?>
                             <div class="hack42-45-added-value-row">
