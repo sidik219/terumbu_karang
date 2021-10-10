@@ -55,7 +55,7 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                 LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                 LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
                 WHERE status_donasi = "Belum Terambil"
-                AND  ' . $extra_query_noand . '
+                
                 ORDER BY id_donasi_wisata DESC';
     $stmt = $pdo->prepare($sqldonasiwisata);
     $stmt->execute();
@@ -159,7 +159,7 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                                         foreach ($rowharga as $donasi) {
                                             $sum_donasi += $donasi->donasi;
                                         } ?>
-                                        <input id="sum_donasi" type="hidden" value="<?=$sum_donasi?>">
+                                        <input id="sum_donasi" type="hidden" value="<?= $sum_donasi ?>">
                                         <b>Total Donasi Yang Diambil : <?= number_format($sum_donasi, 0) ?> </b>
                                     <?php endif ?>
                                 </div>
@@ -268,7 +268,7 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                 <div class="cart-total">
                     <strong class="cart-total-title">Subtotal</strong>
                     <span id="total_pilihan" class="cart-total-price font-weight-bold">0</span>
-                    <input type="text" id="totalpilihan" value="">
+                    <!-- <input type="text" id="totalpilihan" value=""> -->
                     <!-- <div id="totalpilihan"></div> -->
                 </div>
                 <div class="mb-3 text-center mt-2">
@@ -290,12 +290,12 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                     // const b = parseFloat(document.getElementsById('total_pilihan'));
                     var keranjang_deserialised = JSON.parse(sessionStorage.getItem('keranjang_serialised'))
                     subtotal = keranjang_deserialised.nominal
-                        if (subtotal < totalterumbu) {
-                            alert('Donasi Yang Diambil Tidak Mencukupi Dengan Bibit Diambil, Jika Kurang Klik Tombol Tambah Total Donasi Wisata');
-                        } else {
-                            purchaseClicked();
-                        }
+                    if (subtotal > totalterumbu) {
+                        alert('Donasi Yang Diambil Tidak Mencukupi Dengan Bibit Diambil, Jika Kurang Klik Tombol Tambah Total Donasi Wisata');
+                    } else {
+                        purchaseClicked();
                     }
+                }
                 // }
             </script>
         </footer>
