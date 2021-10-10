@@ -7,7 +7,8 @@ $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
 $level_user = $_SESSION['level_user'];
-// var_dump($_SESSION);
+$id_lokasi = $_SESSION['id_lokasi_dikelola'];
+// var_dump($id_lokasi);
 // die;
 
 if ($level_user == 2) {
@@ -33,9 +34,12 @@ $rowLokasi = $stmt->fetch();
 
 
 $sqlambilharga = 'SELECT * FROM `t_detail_lokasi`  
-                ORDER BY `t_detail_lokasi`.`harga_patokan_lokasi`, id_lokasi DESC';
+                LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_detail_lokasi.id_lokasi
+                WHERE t_detail_lokasi.id_lokasi=:id_lokasi
+                ORDER BY `t_detail_lokasi`.`harga_patokan_lokasi` ASC';
+// cek lagi buat lokasi lain dengan user lokasi yang lain kayanya salah
 $stmt = $pdo->prepare($sqlambilharga);
-$stmt->execute();
+$stmt->execute(['id_lokasi' => $id_lokasi]);
 $rowharga = $stmt->fetch();
 // var_dump($rowharga);
 // die;
@@ -78,8 +82,8 @@ if (isset($_POST['submit'])) {
     }
 }
 if (isset($_POST['submitin'])) {
-    var_dump($_POST);
-    die;
+    // var_dump($_POST);
+    // die;
     $idpilih = $_POST['prodid'];
     $hitung = count($_POST['prodid']);
     for ($x = 0; $x < $hitung; $x++) {
@@ -90,8 +94,9 @@ if (isset($_POST['submitin'])) {
         $stmt = $pdo->prepare($sqlreservasi);
         $stmt->execute();
     }
-    header("Refresh:0;");
-    //surat cinta buat bobi <3
+    // header("Refresh:0;");
+    header("location: pilih_terumbu_karang.php?status=terambil&id_lokasi=$id_lokasi");
+
     /*ini bisa loncat ke donasi, nanti total donasi tinggal sorting dari status terambil, 
     nanti kalau udah di checkout ganti lagi status jadi terbeli atau bagusnya seperti apa tergantung bobi*/
 }
@@ -257,7 +262,11 @@ if (isset($_POST['submitin'])) {
                             </tbody>
                         </table>
                         <div class="d-flex justify-content-between align-items-center pb-4">
-                            <input onclick="return ver()" type="submit" name="submitin" value="Ambil Donasi" class="btn btn-primary">
+                            <?php if ($_GET['status'] == 'kurang') : ?>
+                                <input type="submit" name="submitin" value="Ambil Donasi" class="btn btn-primary">
+                            <?php else : ?>
+                                <input onclick="return ver()" type="submit" name="submitin" value="Ambil Donasi" class="btn btn-primary">
+                            <?php endif ?>
                             <div class="hack42-45-added-value-row">
                                 <b>Total Donasi Yang Diambil : Rp. <span class="totalpilih">0</span></b>
                                 <div class="w-embed"><input type="hidden" name="hasil_donasi" id="hasil_donasi" class="hasil_donasi" val="" readonly></div>
@@ -269,11 +278,11 @@ if (isset($_POST['submitin'])) {
                         </div>
                         <script>
                             function ver() {
-                                let hargaterumbu = <?= $rowharga->harga_patokan_lokasi; ?>;
+                                let hargaterumbu = <?= $rowharga->harga_patokan_lokasi + $rowharga->biaya_pemeliharaan; ?>;
                                 const b = document.getElementById('hasil_donasi').value;
                                 // alert(hargaterumbu);
                                 if (b < hargaterumbu) {
-                                    alert('Donasi Yang Diambil Tidak Mencukupi, Minimal Mengambil <?= $rowharga->harga_patokan_lokasi; ?>');
+                                    alert('Donasi Yang Diambil Tidak Mencukupi, Minimal Mengambil <?= $rowharga->harga_patokan_lokasi + $rowharga->biaya_pemeliharaan;; ?>');
                                     return false
                                 } else {
                                     // event.preventDefault()
