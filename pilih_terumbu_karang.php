@@ -48,15 +48,15 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
     $row = $stmt->fetchAll();
 
     $sqldonasiwisata = 'SELECT*FROM t_donasi_wisata WHERE t_donasi_wisata.status_donasi="Terambil"';
-    // 'SELECT * FROM t_donasi_wisata
-    //             LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi
-    //             LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
-    //             LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
-    //             LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-    //             LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-    //             WHERE status_donasi = "Belum Terambil"
-    //             AND  ' . $extra_query_noand . '
-    //             ORDER BY id_donasi_wisata DESC';
+    'SELECT * FROM t_donasi_wisata
+                LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi
+                LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+                LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+                LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                WHERE status_donasi = "Belum Terambil"
+                AND  ' . $extra_query_noand . '
+                ORDER BY id_donasi_wisata DESC';
     $stmt = $pdo->prepare($sqldonasiwisata);
     $stmt->execute();
     $rowharga = $stmt->fetchAll();
@@ -159,6 +159,7 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                                         foreach ($rowharga as $donasi) {
                                             $sum_donasi += $donasi->donasi;
                                         } ?>
+                                        <input id="sum_donasi" type="hidden" value="<?=$sum_donasi?>">
                                         <b>Total Donasi Yang Diambil : <?= number_format($sum_donasi, 0) ?> </b>
                                     <?php endif ?>
                                 </div>
@@ -266,7 +267,7 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                 </div>
                 <div class="cart-total">
                     <strong class="cart-total-title">Subtotal</strong>
-                    <span class="cart-total-price font-weight-bold">0</span>
+                    <span id="total_pilihan" class="cart-total-price font-weight-bold">0</span>
                     <input type="text" id="totalpilihan" value="">
                     <!-- <div id="totalpilihan"></div> -->
                 </div>
@@ -277,30 +278,25 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                 </div>
                 <!-- <button class="btn btn-warning btn-back" type="button"><i class="fas fa-angle-left"></i> Jenis Lainnya</button> -->
                 <?php if ($_SESSION['level_user'] == '3') : ?>
-                    <button class="btn btn-primary btn-purchase btn-blue" onclick="ver()" type="button">ajnso <i class="fas fa-angle-double-right"></i></button>
+                    <button class="btn btn-primary btn-purchase btn-blue" onclick="event.preventDefault(); ver()" type="button">ajnso <i class="fas fa-angle-double-right"></i></button>
                 <?php else : ?>
-                    <button class="btn btn-primary btn-purchase btn-blue" onclick="updateCartTotal()" type="button">Selesai Pilih <i class="fas fa-angle-double-right"></i></button>
+                    <button class="btn btn-primary btn-purchase-donator btn-blue" onclick="updateCartTotal()" type="button">Selesai Pilih <i class="fas fa-angle-double-right"></i></button>
                 <?php endif ?>
             </section>
             <script>
                 function ver() {
-                    let totalerumbu = <?= $sum_donasi ?>;
-                    const b = document.getElementsByClassName('cart-total-price font-weight-bold');
-                    // alert(b);
-                    for (var i = 4; i < b.length; i++) {
-                        var price = b[i].innerText;
-                        alert(price);
-                        // alert(totalterumbu);
-                        // if (b < totalterumbu) {
-                        //     alert('Donasi Yang Diambil Tidak Mencukupi Dengan Bibit Diambil, Jika Kurang Klik Tombol Tambah Total Donasi Wisata');
-                        //     return false
-                        // } else {
-                        //     // event.preventDefault()
-                        //     // alert('gas');
-                        //     return true
-                        // }
+                    // event.preventDefault()
+                    let totalterumbu = $('#sum_donasi').val();
+                    // const b = parseFloat(document.getElementsById('total_pilihan'));
+                    var keranjang_deserialised = JSON.parse(sessionStorage.getItem('keranjang_serialised'))
+                    subtotal = keranjang_deserialised.nominal
+                        if (subtotal < totalterumbu) {
+                            alert('Donasi Yang Diambil Tidak Mencukupi Dengan Bibit Diambil, Jika Kurang Klik Tombol Tambah Total Donasi Wisata');
+                        } else {
+                            purchaseClicked();
+                        }
                     }
-                }
+                // }
             </script>
         </footer>
         <!-- jQuery -->

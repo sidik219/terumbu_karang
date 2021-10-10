@@ -34,7 +34,11 @@ function ready() {
         button.addEventListener('click', addToCartClicked)
     }
 
-    document.getElementsByClassName('btn-purchase')[0].addEventListener('click', purchaseClicked)
+    if ($('.btn-purchase-donator').length > 0) {
+        document.getElementsByClassName('btn-purchase-donator')[0].addEventListener('click', purchaseClicked)
+    }
+
+
 
     if (sessionStorage.getItem("keranjang_serialised")) {
         var keranjang_old = JSON.parse(sessionStorage.getItem("keranjang_serialised"))
@@ -113,9 +117,9 @@ function removeCartItem(event) {
 
     //filter null items
     var filtered_keranjang = keranjang_old.keranjang.filter(item => item !== null)
-        //empty array
+    //empty array
     keranjang_old.keranjang = []
-        //insert filtered array
+    //insert filtered array
     keranjang_old.keranjang = filtered_keranjang
 
 
@@ -223,7 +227,7 @@ function addItemToCart(title, price, imageSrc, itemID, ignore, jumlah_tk, stok_t
         var keranjang = []
         for (var i = 0; i < cartRows.length; i++) {
             var cartRow = cartRows[i]
-                // if (cartRow.getElementsByClassName('cart-item-ignore')[0] != undefined) {
+            // if (cartRow.getElementsByClassName('cart-item-ignore')[0] != undefined) {
             if (cartRow.getElementsByClassName('cart-item-ignore')[0].value != 1) {
                 var nama_tk = cartRow.getElementsByClassName('cart-item-title')[0].innerText
                 var priceElement = cartRow.getElementsByClassName('cart-price')[0]
@@ -267,13 +271,13 @@ function addItemToCart(title, price, imageSrc, itemID, ignore, jumlah_tk, stok_t
         keranjang_deserialised["keranjang"] = keranjang
         var keranjang_serialised = JSON.stringify(keranjang_deserialised)
         sessionStorage.setItem('keranjang_serialised', keranjang_serialised)
-            // document.location.href = `pilih_jenis_tk.php?id_lokasi=${keranjang_deserialised.id_lokasi}`;
+        // document.location.href = `pilih_jenis_tk.php?id_lokasi=${keranjang_deserialised.id_lokasi}`;
 
     } else {
         var keranjang_old = keranjang_deserialised.keranjang
         for (var i = 0; i < cartRows.length; i++) {
             var cartRow = cartRows[i]
-                // if (cartRow.getElementsByClassName('cart-item-ignore')[0] != undefined) {
+            // if (cartRow.getElementsByClassName('cart-item-ignore')[0] != undefined) {
             if (cartRow.getElementsByClassName('cart-item-ignore')[0].value != 1) {
                 var nama_tk = cartRow.getElementsByClassName('cart-item-title')[0].innerText
                 var priceElement = cartRow.getElementsByClassName('cart-price')[0]

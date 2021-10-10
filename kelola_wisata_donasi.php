@@ -261,10 +261,10 @@ if (isset($_POST['submitin'])) {
                                 </div>
                             </tbody>
                         </table>
-                        <div class="d-flex justify-content-between align-items-center pb-4 row">
+                        <div class="d-flex justify-content-between align-items-center pb-4">
                             <?php if ($_GET['status'] == 'kurang') : ?>
                                 <input type="submit" name="submitin" value="Ambil Donasi" class="btn btn-primary">
-                            <?php elseif ($_GET['status'] == 'baru') : ?>
+                            <?php else : ?>
                                 <input onclick="return ver()" type="submit" name="submitin" value="Ambil Donasi" class="btn btn-primary">
                             <?php endif ?>
                             <div class="hack42-45-added-value-row">
@@ -277,19 +277,19 @@ if (isset($_POST['submitin'])) {
                             </div>
                         </div>
                         <script>
-                            function ver() {
-                                let hargaterumbu = <?= $rowharga->harga_patokan_lokasi + $rowharga->biaya_pemeliharaan; ?>;
-                                const b = document.getElementById('hasil_donasi').value;
-                                // alert(hargaterumbu);
-                                if (b < hargaterumbu) {
-                                    alert('Donasi Yang Diambil Tidak Mencukupi, Minimal Mengambil <?= $rowharga->harga_patokan_lokasi + $rowharga->biaya_pemeliharaan;; ?>');
-                                    return false
-                                } else {
-                                    // event.preventDefault()
-                                    // alert('gas');
-                                    return true
-                                }
-                            }
+                            // function ver() {
+                            //     let hargaterumbu = <?= $rowharga->harga_patokan_lokasi + $rowharga->biaya_pemeliharaan; ?>;
+                            //     const b = document.getElementById('hasil_donasi').value;
+                            //     // alert(hargaterumbu);
+                            //     if (b < hargaterumbu) {
+                            //         alert('Donasi Yang Diambil Tidak Mencukupi, Minimal Mengambil <?= $rowharga->harga_patokan_lokasi + $rowharga->biaya_pemeliharaan;; ?>');
+                            //         return false
+                            //     } else {
+                            //         // event.preventDefault()
+                            //         // alert('gas');
+                            //         return true
+                            //     }
+                            // }
                         </script>
                         <!-- 
                             yang belum itu verifikasi jika donasi kurang dari terumbu termurah bedasarkan lokasi,
