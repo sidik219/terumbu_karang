@@ -614,6 +614,20 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </a>
                 </li>
 
+                <li class="nav-item"> <!-- Lokasi -->
+                    <a href="kelola_batch.php?id_status_batch=1" class="nav-link ' . (('kelola_batch.php' == $url_sekarang) || ('edit_batch.php' == $url_sekarang)  || ('input_batch.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
+                          <i class="nav-icon fas fa-boxes"></i>
+                          <p> Kelola Batch ' . $notifikasi_batch_penyemaian . '</p>
+                    </a>
+                </li>
+
+                <li class="nav-item"> <!-- Lokasi -->
+                    <a href="kelola_pemeliharaan.php?id_status_pemeliharaan=1" class="nav-link ' . ('kelola_pemeliharaan.php' == $url_sekarang  || ('edit_pemeliharaan.php' == $url_sekarang)  || ('input_pemeliharaan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                          <i class="nav-icon fas fa-heart"></i>
+                          <p> Kelola Pemeliharaan ' . $notifikasi_pemeliharaan . '</p>
+                    </a>
+                </li>
+
                 <li class="nav-item"> <!-- Konten Lokasi -->
                     <a href="kelola_konten_master.php" class="nav-link ' . (('kelola_konten_master.php' == $url_sekarang) || ('kelola_konten_tangkolak.php' == $url_sekarang) || ('edit_konten_tangkolak.php'  == $url_sekarang) || ('input_konten_tangkolak.php'  == $url_sekarang) || ('kelola_konten_ketentuan.php' == $url_sekarang)  || ('edit_konten_ketentuan.php' == $url_sekarang)  || ('input_konten_Ketentuan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-book"></i>
@@ -635,19 +649,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </a>
                 </li>
 
-                <li class="nav-item"> <!-- Lokasi -->
-                    <a href="kelola_batch.php?id_status_batch=1" class="nav-link ' . (('kelola_batch.php' == $url_sekarang) || ('edit_batch.php' == $url_sekarang)  || ('input_batch.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
-                          <i class="nav-icon fas fa-boxes"></i>
-                          <p> Kelola Batch ' . $notifikasi_batch_penyemaian . '</p>
-                    </a>
-                </li>
-
-                <li class="nav-item"> <!-- Lokasi -->
-                    <a href="kelola_pemeliharaan.php?id_status_pemeliharaan=1" class="nav-link ' . ('kelola_pemeliharaan.php' == $url_sekarang  || ('edit_pemeliharaan.php' == $url_sekarang)  || ('input_pemeliharaan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
-                          <i class="nav-icon fas fa-heart"></i>
-                          <p> Kelola Pemeliharaan ' . $notifikasi_pemeliharaan . '</p>
-                    </a>
-                </li>
+                
 
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                     <a href="laporan_donasi.php" class="nav-link  ' . ('laporan_donasi.php' == $url_sekarang ? ' active ' : '') . ' ">
@@ -660,6 +662,13 @@ if (!$_SESSION['level_user']) { //Belum log in
                     <a href="laporan_periode_wisata.php" class="nav-link  ' . ('laporan_periode_wisata.php' == $url_sekarang ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-file-invoice"></i>
                         <p> Laporan Wisata</p>
+                    </a>
+                </li>
+
+                <li class="nav-item"> <!-- Lokasi -->
+                    <a href="laporan_jenis_terumbu.php" class="nav-link ' . ('laporan_jenis_terumbu.php' == $url_sekarang ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-bacteria"></i>
+                            <p> Laporan Jenis Terumbu </p>
                     </a>
                 </li>
                 ';
