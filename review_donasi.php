@@ -18,13 +18,26 @@ include 'hak_akses.php';
     $stmt->execute(['id_wilayah' => $id_wilayah]);
     $rowrekening = $stmt->fetchAll();
 
-
+    $sqldonasiwisata = 'SELECT*FROM t_donasi_wisata WHERE t_donasi_wisata.status_donasi="Terambil"';
+    $stmt = $pdo->prepare($sqldonasiwisata);
+    $stmt->execute();
+    $donasiwisata = $stmt->fetchAll();
 
     if (isset($_POST['submit'])) {
         if($_POST['submit'] == 'Simpan'){
           $_SESSION['data_donasi'] = $_POST['tb_deskripsi_donasi'];
           header("Location:review_donasi_proses.php?status=addsuccess");
-
+        
+        $idpilih = $_POST['prodid'];
+        $hitung = count($_POST['prodid']);
+        for ($x = 0; $x < $hitung; $x++) {
+            $record = $idpilih[$x];
+            $sqlreservasi = "UPDATE t_donasi_wisata
+            SET status_donasi = 'Terbeli'
+            WHERE id_donasi_wisata = $record";
+            $stmt = $pdo->prepare($sqlreservasi);
+            $stmt->execute();
+        }
       // $id_user = $_POST['tb_id_user'];
       // $nominal = $_POST['tb_nominal'];
       // $deskripsi_donasi = $_POST['tb_deskripsi_donasi'];
@@ -155,7 +168,14 @@ if (sessionStorage.getItem('keranjang_serialised') == undefined){
             <form action="" method="POST">
             <div class="mb-3">
               <label for="nama_donatur">Nama Pemilik Rekening</label>
-              <input type="text" class="form-control data_donatur" value="<?=$_SESSION['nama_user']?>" id="nama_donatur" name="nama_donatur" required>
+              <?php if ($_SESSION['level_user'] == '1') : ?>
+                <input type="text" class="form-control data_donatur" value="<?=$_SESSION['nama_user']?>" id="nama_donatur" name="nama_donatur" required>
+              <?php elseif ($_SESSION['level_user'] == '3') : ?>
+                <input type="text" class="form-control data_donatur" value="" id="nama_donatur" name="nama_donatur" required>
+                <?php foreach ($donasiwisata as $donasi) { ?>
+                <input type="hidden" class="form-control data_donatur" value="<?= $donasi->id_donasi_wisata ?>" name="prodid[]" required>
+                <?php } ?>
+              <?php endif ?>
             </div>
             <div class="mb-3">
               <label for="no_rekening_donatur">Nomor Rekening</label>

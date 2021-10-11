@@ -468,7 +468,7 @@ if (isset($_POST['submit'])) {
         <!-- Pembatasan Date Pemesanan -->
         <script>
             var today = new Date().toISOString().split('T')[0];
-            document.getElementsByName("tgl_pemesanan")[0].setAttribute('max', today);
+            document.getElementsByName("tgl_pemesanan")[0].setAttribute('min', today);
         </script>
         <script>
             var today = new Date().toISOString().split('T')[0];

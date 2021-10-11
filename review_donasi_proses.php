@@ -146,7 +146,11 @@ if(isset($_SESSION['data_donasi'])){
       smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
       } 
 
-      header("Location:donasi_saya.php?status=addsuccess");
+      if ($_SESSION['level_user'] == '1') {
+        header("Location:donasi_saya.php?status=addsuccess");
+      } elseif ($_SESSION['level_user'] == '3') {
+        header("Location:kelola_donasi.php?status=addsuccess");
+      }
 }
 else{
   header("Location:map.php?status=nodata");
