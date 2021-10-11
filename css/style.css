@@ -436,8 +436,12 @@
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
-      background-image: url('../images/topbarbg.jpg');
+      /* background-image: url('../images/topbarbg.jpg'); */
       /* color: white; */
+    }
+
+    .wilayah-blue-bg{
+      background-image: url('../images/topbarbg.jpg');
     }
 
     .table-striped>tbody>tr:nth-child(even)>td,
