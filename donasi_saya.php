@@ -15,6 +15,18 @@ $stmt->execute(['id_user' => $id_user]);
 $row = $stmt->fetchAll();
 
 
+$sqlviewdonasiwisata = 'SELECT * FROM t_donasi_wisata
+LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi
+LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+LEFT JOIN t_donasi ON t_donasi_wisata.id_donasi = t_donasi.id_donasi
+LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
+LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
+LEFT JOIN t_batch ON t_batch.id_batch = t_donasi.id_batch
+WHERE t_reservasi_wisata.id_user = :id_user';
+$stmt = $pdo->prepare($sqlviewdonasiwisata);
+$stmt->execute(['id_user' => $id_user]);
+$rowlihat = $stmt->fetchAll();
+
 function ageCalculator($dob)
 {
     $birthdate = new DateTime($dob);
@@ -42,7 +54,8 @@ $stmt = $pdo->prepare($sqlstatus);
 $stmt->execute();
 $rowstatus = $stmt->fetchAll();
 
-function isMobile() {
+function isMobile()
+{
     return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
 }
 
@@ -328,44 +341,44 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                 </div><!-- First Row -->
 
                                 <div class="row">
-                                    <div class="col-12 p-0 <?php if($rowitem->id_status_donasi == 7) {echo ' d-none ';} ?>">
+                                    <div class="col-12 p-0 <?php if ($rowitem->id_status_donasi == 7) {
+                                                                echo ' d-none ';
+                                                            } ?>">
                                         <ul class="progress-indicator <?= (isMobile()) ? ' stacked ' : '' ?> shadow-sm">
-                                                <?php foreach($rowstatus as $status){ 
-                                                    $id_status_donasi = $rowitem->id_status_donasi;  
-                                                    if($status->id_status_donasi != 7){ ?>
-                                                <li class="<?php 
-                                                if($id_status_donasi == $status->id_status_donasi) 
-                                                    echo ' active ';
-                                                else if ($id_status_donasi > $status->id_status_donasi) 
-                                                    echo ' completed ';
-                                                else
-                                                    echo '  ';
-                                                ?>">
-                                                <span class="bubble"></span>
-                                                    <span class=" <?= (isMobile()) ? ' stacked-text ' : '' ?> ">                                                        
-                                                        <?=$status->nama_status_donasi?> 
-                                                        <br><small class="font-weight-bold">
-                                                        
-                                                            <?php 
-                                                            if ($id_status_donasi == $status->id_status_donasi){
-                                                                if($id_status_donasi == 5){
-                                                                    if($id_status_donasi == $status->id_status_donasi && $rowitem->jumlah_pemeliharaan == 0) 
-                                                                        echo '(Persiapan tahap pemeliharaan)';
-                                                                    else if($id_status_donasi == $status->id_status_donasi && $rowitem->jumlah_pemeliharaan != 0)
-                                                                        echo '(Pemeliharaan ke: '. $rowitem->jumlah_pemeliharaan.')';
-                                                                    }
-                                                                    else
+                                            <?php foreach ($rowstatus as $status) {
+                                                $id_status_donasi = $rowitem->id_status_donasi;
+                                                if ($status->id_status_donasi != 7) { ?>
+                                                    <li class="<?php
+                                                                if ($id_status_donasi == $status->id_status_donasi)
+                                                                    echo ' active ';
+                                                                else if ($id_status_donasi > $status->id_status_donasi)
+                                                                    echo ' completed ';
+                                                                else
+                                                                    echo '  ';
+                                                                ?>">
+                                                        <span class="bubble"></span>
+                                                        <span class=" <?= (isMobile()) ? ' stacked-text ' : '' ?> ">
+                                                            <?= $status->nama_status_donasi ?>
+                                                            <br><small class="font-weight-bold">
+
+                                                                <?php
+                                                                if ($id_status_donasi == $status->id_status_donasi) {
+                                                                    if ($id_status_donasi == 5) {
+                                                                        if ($id_status_donasi == $status->id_status_donasi && $rowitem->jumlah_pemeliharaan == 0)
+                                                                            echo '(Persiapan tahap pemeliharaan)';
+                                                                        else if ($id_status_donasi == $status->id_status_donasi && $rowitem->jumlah_pemeliharaan != 0)
+                                                                            echo '(Pemeliharaan ke: ' . $rowitem->jumlah_pemeliharaan . ')';
+                                                                    } else
                                                                         echo ('(Aktif)');
-                                                            
-                                                            }
-                                                            
-                                                            ?>
-                                                        </small>
-                                                    </span>
-                                                </li>
-                                                
-                                                <?php } 
-                                                    } ?>
+                                                                }
+
+                                                                ?>
+                                                            </small>
+                                                        </span>
+                                                    </li>
+
+                                            <?php }
+                                            } ?>
                                         </ul>
                                     </div>
                                 </div>
@@ -502,12 +515,274 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
 
 
                             </div> <!-- Main div -->
-
-
-
                         <?php //$index++;
                         } ?>
+                        <?php
+                        foreach ($rowlihat as $rowitem) {
+                            $truedate = strtotime($rowitem->update_terakhir);
+                            $donasidate = strtotime($rowitem->tanggal_donasi);
+                        ?>
+                            <div class="blue-container border rounded shadow-sm mb-4 p-4">
+                                <div class="row mb-3 rounded p-3 shadow-sm">
+                                    <!-- First row -->
 
+                                    <div class="col-12 mb-3">
+                                        <span class="badge badge-pill badge-primary mr-2"> ID Donasi <?= $rowitem->id_donasi ?> </span>
+                                        <?php echo empty($rowitem->id_batch) ? '' : '<span class="badge badge-pill badge-info mr-2"> ID Batch ' . $rowitem->id_batch . '</span>'; ?>
+
+                                    </div>
+
+                                    <div class="col-md mb-3">
+                                        <div class="mb-2">
+                                            <span class="font-weight-bold"><i class="nav-icon text-success fas fas fa-money-bill-wave"></i> Nominal</span>
+                                            <br>
+                                            <span class="mb-3">Rp. <?= number_format($rowitem->nominal, 0) ?></span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <span class="font-weight-bold"><i class="nav-icon text-secondary fas fas fa-calendar-alt"></i> Tanggal Donasi</span>
+                                            <br>
+                                            <?= strftime('%A, %e %B %Y', $donasidate); ?>
+                                            <br>
+
+
+                                            <?php if ($rowitem->id_status_donasi == 1) {
+                                                echo alertPembayaran($rowitem->tanggal_donasi, $rowitem->batas_hari_pembayaran);
+                                            }  ?>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <?php if ($rowitem->id_status_donasi >= 3 && $rowitem->id_status_donasi < 7) { ?>
+                                                <!-- Invoice -->
+                                                <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-file-invoice"></i> Invoice Donasi</span>
+                                                <br><a href="invoice_donasi.php?id_donasi=<?= $rowitem->id_donasi ?>" class="btn btn-primary text-sm btn-sm userinfo">
+                                                    <i class="fas fa-file-invoice"></i> Download Inovice Donasi</a>
+                                            <?php } ?>
+                                        </div>
+
+
+
+                                    </div>
+
+
+                                    <div class="col-md mb-3">
+                                        <div class="mb-2">
+                                            <span class="font-weight-bold"><i class="nav-icon text-info fas fas fa-comment-dots"></i> Pesan/Ekspresi</span>
+                                            <br><?= $rowitem->pesan ?><br>
+                                        </div>
+                                        <div class="mb-3">
+                                            <span class="font-weight-bold"><i class="nav-icon text-warning fas fas fa-list-alt"></i> Status</span>
+                                            <br>
+                                            <p class="badge badge-warning"><?= $rowitem->nama_status_donasi ?></p>
+
+                                            <?php echo ($rowitem->id_status_donasi <= 2 || $rowitem->id_status_donasi == 7) ? '<a href="edit_donasi_saya.php?id_donasi=' . $rowitem->id_donasi . '" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Donasi</a>' : ''; ?>
+
+                                            <br><small class="text-muted"><b>Update Terakhir</b>
+                                                <br><?= strftime('%A, %e %B %Y', $truedate) . '<br> (' . ageCalculator($rowitem->update_terakhir) . ')'; ?></small>
+
+                                        </div>
+
+
+                                        <?php if ($rowitem->id_status_donasi >= 3 && $rowitem->id_status_donasi < 7 && $rowitem->tanggal_penanaman != NULL) { ?>
+                                            <div class="mb-3">
+                                                <span class="font-weight-bold"><i class="nav-icon text-success fas fas fa-calendar-alt"></i> Tanggal Penanaman</span>
+                                                <br><?= strftime('%A, %e %B %Y', strtotime($rowitem->tanggal_penanaman)) ?>
+                                                <small class="text-muted"><?= '<br> (' . ageCalculatorFuture($rowitem->tanggal_penanaman) . ')'; ?></small>
+
+                                            </div>
+                                        <?php } ?>
+
+
+
+
+
+                                    </div>
+
+
+                                    <div class="col-md mb-3">
+                                        <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-map-marker-alt"></i> Lokasi Penanaman</span><br>
+                                        <img height='75px' class="rounded" src=<?= $rowitem->foto_lokasi; ?>><br><br>
+                                        <span class=""><?= "$rowitem->nama_lokasi" ?></span>
+                                        <br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?= $rowitem->latitude ?>,<?= $rowitem->longitude ?>&z=8" class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a>
+                                        <div class="mt-2">
+                                            <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-phone"></i> Kontak Pengelola Lokasi</span>
+                                            <br><?= $rowitem->kontak_lokasi ?><br>
+                                        </div>
+
+                                    </div>
+
+
+                                </div><!-- First Row -->
+
+                                <div class="row">
+                                    <div class="col-12 p-0 <?php if ($rowitem->id_status_donasi == 7) {
+                                                                echo ' d-none ';
+                                                            } ?>">
+                                        <ul class="progress-indicator <?= (isMobile()) ? ' stacked ' : '' ?> shadow-sm">
+                                            <?php foreach ($rowstatus as $status) {
+                                                $id_status_donasi = $rowitem->id_status_donasi;
+                                                if ($status->id_status_donasi != 7) { ?>
+                                                    <li class="<?php
+                                                                if ($id_status_donasi == $status->id_status_donasi)
+                                                                    echo ' active ';
+                                                                else if ($id_status_donasi > $status->id_status_donasi)
+                                                                    echo ' completed ';
+                                                                else
+                                                                    echo '  ';
+                                                                ?>">
+                                                        <span class="bubble"></span>
+                                                        <span class=" <?= (isMobile()) ? ' stacked-text ' : '' ?> ">
+                                                            <?= $status->nama_status_donasi ?>
+                                                            <br><small class="font-weight-bold">
+
+                                                                <?php
+                                                                if ($id_status_donasi == $status->id_status_donasi) {
+                                                                    if ($id_status_donasi == 5) {
+                                                                        if ($id_status_donasi == $status->id_status_donasi && $rowitem->jumlah_pemeliharaan == 0)
+                                                                            echo '(Persiapan tahap pemeliharaan)';
+                                                                        else if ($id_status_donasi == $status->id_status_donasi && $rowitem->jumlah_pemeliharaan != 0)
+                                                                            echo '(Pemeliharaan ke: ' . $rowitem->jumlah_pemeliharaan . ')';
+                                                                    } else
+                                                                        echo ('(Aktif)');
+                                                                }
+
+                                                                ?>
+                                                            </small>
+                                                        </span>
+                                                    </li>
+
+                                            <?php }
+                                            } ?>
+                                        </ul>
+                                    </div>
+                                </div>
+
+
+                                <p class=" btn btn-blue btn-primary" onclick="toggleDetail()">
+                                    <i class="icon fas fa-chevron-down"></i>
+                                    Daftar Terumbu Karang
+                                </p>
+
+                                <div class="detail-toggle" id="main-toggle">
+                                    <?php
+                                    $id_donasi = $rowitem->id_donasi;
+                                    $sqlviewisi = 'SELECT * FROM t_detail_donasi
+                                                LEFT JOIN t_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
+                                                LEFT JOIN t_terumbu_karang ON t_detail_donasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang                                                
+                                                WHERE t_detail_donasi.id_donasi = :id_donasi';
+                                    $stmt = $pdo->prepare($sqlviewisi);
+                                    $stmt->execute(['id_donasi' => $id_donasi]);
+                                    $rowisi = $stmt->fetchAll();
+                                    foreach ($rowisi as $isi) {
+                                        $sqlviewhistoryitems = 'SELECT * FROM t_history_pemeliharaan
+                                                                      WHERE t_history_pemeliharaan.id_detail_donasi = :id_detail_donasi
+                                                                      ORDER BY tanggal_pemeliharaan DESC
+                                                                      ';
+
+                                        $stmt = $pdo->prepare($sqlviewhistoryitems);
+                                        $stmt->execute(['id_detail_donasi' => $isi->id_detail_donasi]);
+                                        $rowhistory = $stmt->fetchAll();
+
+
+                                    ?>
+                                        <div class="row  mb-2 p-3 border rounded shadow-sm bg-light border subdetail">
+                                            <!--DONASI CONTAINER START-->
+
+                                            <div class="col-sm-12 col-md-auto mb-1">
+                                                <img class="rounded" height="40px" src="<?= $isi->foto_terumbu_karang ?>?">
+                                            </div>
+                                            <div class="col-sm mb-1">
+                                                <span class="font-weight-bold">Jenis</span><br><span><?= $isi->nama_terumbu_karang ?></span>
+                                            </div>
+                                            <div class="col-8">
+                                                <span class="font-weight-bold">Jumlah</span><br><span><?= $isi->jumlah_terumbu ?></span><br />
+                                            </div>
+
+                                            <?php
+
+                                            ?>
+
+
+                                            <div class="daftarhistory col-12 mt-1">
+                                                <div class='' id='fototk<?= $isi->id_detail_donasi ?>'>
+                                                    <div>
+                                                        <label for='image_uploads<?= $isi->id_detail_donasi ?>'><i class="nav-icon fas fas fa-history"></i> History Pemeliharaan</label><span class="small text-muted"></span> <br>
+                                                    </div>
+                                                </div>
+                                                <?php
+                                                $sqlviewhistoryitemdetail = 'SELECT * FROM t_history_pemeliharaan
+                                                                              WHERE id_detail_donasi = :id_detail_donasi
+                                                                              ORDER BY tanggal_pemeliharaan DESC
+                                                                              LIMIT 1';
+
+                                                $stmt = $pdo->prepare($sqlviewhistoryitemdetail);
+                                                $stmt->execute(['id_detail_donasi' => $isi->id_detail_donasi]);
+                                                $rowhistory = $stmt->fetchAll();
+
+                                                if (empty($rowhistory)) {
+                                                    echo '<span class="text-small text-muted">Belum tahap pemeliharaan</span>';
+                                                }
+                                                foreach ($rowhistory as $history) {
+                                                    $peliharadate =  strtotime($history->tanggal_pemeliharaan);
+                                                ?>
+
+
+                                                    <div class="form-group border shadow-sm p-3 mb-2 bg-white">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="col-12 mb-2">
+                                                                    <!-- <span class="badge badge-pill badge-success mr-2"> ID Pemeliharaan //$history->id_pemeliharaan</span> -->
+                                                                </div>
+                                                                <div class="col mb-2">
+                                                                    <span class="font-weight-bold"><i class="nav-icon text-pink fas fa-birthday-cake"></i> Umur Terumbu Karang </span>
+                                                                    <br> <span><?= $rowitem->tanggal_penanaman > time() ? 'Bibit belum ditanam' : ageCalculatorTanpaLalu($rowitem->tanggal_penanaman) ?></span>
+                                                                </div>
+                                                                <div class="col mb-2">
+                                                                    <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-calendar-alt"></i> Pemeliharaan Terkini</span>
+                                                                    <br> <span><?= strftime('%A, %e %B %Y', $peliharadate) . ' <br>
+                                                          <small class="text-muted">(' . ageCalculator($history->tanggal_pemeliharaan) . ')</small>' ?></span>
+                                                                </div>
+                                                                <div class="col">
+                                                                    <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-heartbeat"></i> Kondisi</span>
+                                                                    <br> <?php echo empty($history->kondisi_terumbu) ? '<span class="text-small text-muted">Belum ada laporan</span>' : $history->kondisi_terumbu; ?>
+                                                                </div>
+                                                                <div class="col">
+                                                                    <span class="font-weight-bold"><i class="nav-icon text-info fas fas fa-ruler-combined"></i> Ukuran</span>
+                                                                    <br> <?php echo empty($history->ukuran_terumbu) ? '<span class="text-small text-muted">Belum ada laporan</span>' : $history->ukuran_terumbu . ' m²'; ?>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-6">
+
+                                                                <img class="rounded" id="oldpic<?= $isi->id_detail_donasi ?>" src="<?php echo empty($history->foto_pemeliharaan) ? '' : $history->foto_pemeliharaan ?>" width="100%">
+
+                                                                <br>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                <?php } ?>
+
+                                            </div> <!-- Daftarhisory End -->
+
+
+
+
+
+
+                                        </div><!-- Batch box thing end -->
+
+
+
+                                    <?php   }
+                                    ?>
+                                </div>
+
+
+
+                            </div> <!-- Main div -->
+                        <?php //$index++;
+                        } ?>
                     </div>
                 </div>
 
