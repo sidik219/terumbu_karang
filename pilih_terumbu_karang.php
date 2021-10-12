@@ -9,6 +9,12 @@ if ($_GET['id_lokasi']) {
     header("Location: map.php");
 }
 
+// cek session
+if(isset($_SESSION['level_user'])) {
+//   echo "Your session is running " . $_SESSION['level_user'];
+  $cek_SESSION = $_SESSION['level_user'];
+}
+
 if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
     $id_jenis = $_GET['id_jenis'];
 
@@ -157,7 +163,7 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                                         <?php
                                         $sum_donasi = 0;
                                         foreach ($rowharga as $donasi) {
-                                            $sum_donasi += $donasi->donasi;
+                                        $sum_donasi += $donasi->donasi;
                                         } ?>
                                         <input id="sum_donasi" type="hidden" value="<?= $sum_donasi ?>">
                                         <b>Total Donasi Yang Diambil : <?= number_format($sum_donasi, 0) ?> </b>
@@ -261,6 +267,7 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
         <!-- ./wrapper -->
 
         <footer class="main-footer bg-light p-0 border-top-0">
+            <?php if ($cek_SESSION == 3 || $cek_SESSION == 1) : ?>
             <section class="container bg-white content-section p-3 shadow-lg pb-0 rounded">
                 <h4 class="section-header font-weight-bold" id="keranjang"><i class="fas fa-cart-arrow-down"></i> Keranjang Anda</h4>
                 <div class="cart-items">
@@ -283,6 +290,7 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                     <button class="btn btn-primary btn-purchase-donator btn-blue" onclick="updateCartTotal()" type="button">Selesai Pilih <i class="fas fa-angle-double-right"></i></button>
                 <?php endif ?>
             </section>
+            <?php endif ?>
             <script>
                 function ver() {
                     // event.preventDefault()

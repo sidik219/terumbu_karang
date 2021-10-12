@@ -238,7 +238,7 @@ if (isset($_POST['submitin'])) {
                                     <?php
                                     $sum_donasi = 0;
                                     foreach ($row as $donasi) {
-                                        $sum_donasi += $donasi->donasi;
+                                    $sum_donasi += $donasi->donasi;
                                     ?>
                                         <tr class="border rounded p-1 batch-donasi ">
                                             <td><?= $donasi->nama_user ?><input type="hidden" name="user" value="<?= $donasi->nama_user ?>"></td>
