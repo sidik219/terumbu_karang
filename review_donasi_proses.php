@@ -13,7 +13,11 @@ if(isset($_SESSION['data_donasi'])){
   $nomor_rekening_donatur = $keranjang->no_rekening_donatur;
   $bank_donatur = $keranjang->nama_bank_donatur;
   $deskripsi_donasi = $_SESSION["data_donasi"];
-  $id_status_donasi = 1;
+  if ($_SESSION['level_user'] == '1') {
+    $id_status_donasi = 1;
+  } elseif ($_SESSION['level_user'] == '3') {
+    $id_status_donasi = 3;
+  }
   $tanggal_donasi = date ('Y-m-d H:i:s', time());
   $id_rekening_bersama = $keranjang->id_rekening_bersama;
 

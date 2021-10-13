@@ -26,6 +26,15 @@ foreach ($donasiwisata as $donasi) {
     $sum_donasi += $donasi->donasi;
 }
 
+// Untuk User Donatur
+if (isset($_POST['submit'])) {
+    if($_POST['submit'] == 'Simpan'){
+          $_SESSION['data_donasi'] = $_POST['tb_deskripsi_donasi'];
+          header("Location:review_donasi_proses.php?status=addsuccess");
+    }
+}
+
+// Untuk Donasi Wisata
 if (isset($_POST['submitin'])) {
     // if ($_POST['submit'] == 'Simpan') {
     $_SESSION['data_donasi'] = $_POST['tb_deskripsi_donasi'];
@@ -167,7 +176,11 @@ if (isset($_POST['submitin'])) {
                 <div class="container">
                     <br>
                     <a class="btn btn-primary btn-sm btn-blue" href="#" onclick="history.back()"><i class="fas fa-angle-left"></i> Kembali Pilih</a><br>
-                    <h4 class="pt-3 mb-3"><span class="font-weight-bold">Review Informasi Donasi</span></h4>
+                    <?php if ($_SESSION['level_user'] == '1') : ?>
+                        <h4 class="pt-3 mb-3"><span class="font-weight-bold">Review Informasi Donasi</span></h4>
+                    <?php elseif ($_SESSION['level_user'] == '3') : ?>
+                        <h4 class="pt-3 mb-3"><span class="font-weight-bold">Review Informasi Donasi Wisata</span></h4>
+                    <?php endif ?>
                     <div class="row">
                         <div class="col-md-4 order-md-2 mb-4">
                             <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -286,7 +299,7 @@ if (isset($_POST['submitin'])) {
                             </div>
                         <?php elseif ($_SESSION['level_user'] == '3') : ?>
                             <div class="col-md-8 order-md-1 card">
-                                <h4 class="mb-3 card-header pl-0">Data Rekening Donatur</h4>
+                                <h4 class="mb-3 card-header pl-0">Data Rekening Donasi Wisata</h4>
                                 <form action="" method="POST">
                                     <div class="mb-3">
                                         <label for="nama_donatur">Nama Donasi Wisata Bersama</label>

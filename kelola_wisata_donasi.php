@@ -227,8 +227,14 @@ if (isset($_POST['submitin'])) {
                             <h4><span class="align-middle font-weight-bold">Tabel Wisata Donasi</span></h4>
                             <p>Tabel ini dibuat dengan tujuan bisa mengambil donasi pada wisata</p>
                         </div>
+                        <!-- <div class="col">
+                            <button onclick="takeshot()">
+                                Take Screenshot
+                            </button>
+                        </div> -->
                     </div>
                     <!-- tabel data belum terambil -->
+                    <div id="photo">
                     <form action="" method="POST" id="ok">
                         <table class="table table-striped table-responsive-sm">
                             <thead>
@@ -308,6 +314,8 @@ if (isset($_POST['submitin'])) {
                             }
                         </script>
                     </form>
+                    </div>
+                    <div id="output"></div>
             </section>
             <!-- /.Left col -->
             <!-- /.row (main row) -->
@@ -338,7 +346,8 @@ if (isset($_POST['submitin'])) {
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.5/dist/html2canvas.min.js">
+    </script>
     <!-- checkbox calculator -->
     <script>
         $('.pilihdonasi').click(function() {
@@ -383,7 +392,23 @@ if (isset($_POST['submitin'])) {
             });
         });
     </script>
-
+    <script type="text/javascript">
+  
+        // Define the function 
+        // to screenshot the div
+        function takeshot() {
+            let div = document.getElementById('photo');
+  
+            // Use the html2canvas
+            // function to take a screenshot
+            // and append it
+            // to the output div
+            html2canvas(div).then(
+            function (canvas) {
+                document.getElementById('output').appendChild(canvas);
+            })
+        }
+    </script>
 </body>
 
 </html>
