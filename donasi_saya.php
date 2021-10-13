@@ -22,7 +22,8 @@ LEFT JOIN t_donasi ON t_donasi_wisata.id_donasi = t_donasi.id_donasi
 LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
 LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
 LEFT JOIN t_batch ON t_batch.id_batch = t_donasi.id_batch
-WHERE t_reservasi_wisata.id_user = :id_user';
+WHERE t_reservasi_wisata.id_user = :id_user 
+AND t_donasi_wisata.id_donasi IS NOT NULL';
 $stmt = $pdo->prepare($sqlviewdonasiwisata);
 $stmt->execute(['id_user' => $id_user]);
 $rowlihat = $stmt->fetchAll();

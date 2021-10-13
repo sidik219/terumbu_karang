@@ -16,12 +16,14 @@ if (isset($_SESSION['level_user'])) {
 }
 
 // SIsa donasi dari periode sebelumnya
-$id_lokasi = $_SESSION['id_lokasi_dikelola'];
-$sqldonasiwisata = 'SELECT saldo_donasi_wisata FROM t_lokasi
-                WHERE t_lokasi.id_lokasi=' . $id_lokasi . '';
-$stmt = $pdo->prepare($sqldonasiwisata);
-$stmt->execute();
-$rowsisa = $stmt->fetch();
+if (isset($_SESSION['id_lokasi_dikelola'])) {
+    $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+    $sqldonasiwisata = 'SELECT saldo_donasi_wisata FROM t_lokasi
+                    WHERE t_lokasi.id_lokasi=' . $id_lokasi . '';
+    $stmt = $pdo->prepare($sqldonasiwisata);
+    $stmt->execute();
+    $rowsisa = $stmt->fetch();
+}
 
 if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
     $id_jenis = $_GET['id_jenis'];
@@ -171,7 +173,7 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                                         <?php
                                         $sum_donasi = 0 + $rowsisa->saldo_donasi_wisata;
                                         foreach ($rowharga as $donasi) {
-                                            $sum_donasi += $donasi->donasi;
+                                        $sum_donasi += $donasi->donasi;
                                         } ?>
                                         <input id="sum_donasi" type="hidden" value="<?= $sum_donasi ?>">
                                         <b>Total Donasi Yang Diambil : <?= number_format($sum_donasi, 0) ?> </b>
@@ -335,8 +337,6 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
 
             document.getElementById('pesan').value = isipesan
 
-
-
             $(window).scroll(function() {
                 if ($(this).scrollTop() > 50) {
                     $('.scrollup').fadeIn();
@@ -354,6 +354,8 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                     scrollTop: $("#keranjang").offset().top
                 }, 1000);
             });
+
+            $("#pesan").val(null);
         </script>
 
 </body>
