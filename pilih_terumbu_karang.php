@@ -10,10 +10,18 @@ if ($_GET['id_lokasi']) {
 }
 
 // cek session
-if(isset($_SESSION['level_user'])) {
-//   echo "Your session is running " . $_SESSION['level_user'];
-  $cek_SESSION = $_SESSION['level_user'];
+if (isset($_SESSION['level_user'])) {
+    //   echo "Your session is running " . $_SESSION['level_user'];
+    $cek_SESSION = $_SESSION['level_user'];
 }
+
+// SIsa donasi dari periode sebelumnya
+$id_lokasi = $_SESSION['id_lokasi_dikelola'];
+$sqldonasiwisata = 'SELECT saldo_donasi_wisata FROM t_lokasi
+                WHERE t_lokasi.id_lokasi=' . $id_lokasi . '';
+$stmt = $pdo->prepare($sqldonasiwisata);
+$stmt->execute();
+$rowsisa = $stmt->fetch();
 
 if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
     $id_jenis = $_GET['id_jenis'];
@@ -161,9 +169,9 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                                     <?php elseif ($_SESSION['level_user'] == '3') : ?>
                                         <a href="kelola_wisata_donasi.php?status=kurang" class="btn btn-primary btn-sm btn-blue"><i class="fas fa-angle-left"></i> Tambah Total Donasi Wisata</button></a>
                                         <?php
-                                        $sum_donasi = 0;
+                                        $sum_donasi = 0 + $rowsisa->saldo_donasi_wisata;
                                         foreach ($rowharga as $donasi) {
-                                        $sum_donasi += $donasi->donasi;
+                                            $sum_donasi += $donasi->donasi;
                                         } ?>
                                         <input id="sum_donasi" type="hidden" value="<?= $sum_donasi ?>">
                                         <b>Total Donasi Yang Diambil : <?= number_format($sum_donasi, 0) ?> </b>
@@ -268,28 +276,28 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
 
         <footer class="main-footer bg-light p-0 border-top-0">
             <?php if ($cek_SESSION == 3 || $cek_SESSION == 1) : ?>
-            <section class="container bg-white content-section p-3 shadow-lg pb-0 rounded">
-                <h4 class="section-header font-weight-bold" id="keranjang"><i class="fas fa-cart-arrow-down"></i> Keranjang Anda</h4>
-                <div class="cart-items">
-                </div>
-                <div class="cart-total">
-                    <strong class="cart-total-title">Subtotal</strong>
-                    <span id="total_pilihan" class="cart-total-price font-weight-bold">0</span>
-                    <!-- <input type="text" id="totalpilihan" value=""> -->
-                    <!-- <div id="totalpilihan"></div> -->
-                </div>
-                <div class="mb-3 text-center mt-2">
-                    <h5 class="font-weight-bold">Pesan / Ekspresi</h5><label for="pesan" class="font-weight-normal">
-                        (Opsional. Pesan akan disertakan dalam label khusus pada terumbu karang )</label>
-                    <input type="text" maxlength="64" class="form-control success" id="pesan" placeholder="Isi pesan anda di sini...">
-                </div>
-                <!-- <button class="btn btn-warning btn-back" type="button"><i class="fas fa-angle-left"></i> Jenis Lainnya</button> -->
-                <?php if ($_SESSION['level_user'] == '3') : ?>
-                    <button class="btn btn-primary btn-purchase btn-blue" onclick="event.preventDefault(); ver()" type="button">ajnso <i class="fas fa-angle-double-right"></i></button>
-                <?php else : ?>
-                    <button class="btn btn-primary btn-purchase-donator btn-blue" onclick="updateCartTotal()" type="button">Selesai Pilih <i class="fas fa-angle-double-right"></i></button>
-                <?php endif ?>
-            </section>
+                <section class="container bg-white content-section p-3 shadow-lg pb-0 rounded">
+                    <h4 class="section-header font-weight-bold" id="keranjang"><i class="fas fa-cart-arrow-down"></i> Keranjang Anda</h4>
+                    <div class="cart-items">
+                    </div>
+                    <div class="cart-total">
+                        <strong class="cart-total-title">Subtotal</strong>
+                        <span id="total_pilihan" class="cart-total-price font-weight-bold">0</span>
+                        <!-- <input type="text" id="totalpilihan" value=""> -->
+                        <!-- <div id="totalpilihan"></div> -->
+                    </div>
+                    <div class="mb-3 text-center mt-2">
+                        <h5 class="font-weight-bold">Pesan / Ekspresi</h5><label for="pesan" class="font-weight-normal">
+                            (Opsional. Pesan akan disertakan dalam label khusus pada terumbu karang )</label>
+                        <input type="text" maxlength="64" class="form-control success" id="pesan" placeholder="Isi pesan anda di sini...">
+                    </div>
+                    <!-- <button class="btn btn-warning btn-back" type="button"><i class="fas fa-angle-left"></i> Jenis Lainnya</button> -->
+                    <?php if ($_SESSION['level_user'] == '3') : ?>
+                        <button class="btn btn-primary btn-purchase btn-blue" onclick="event.preventDefault(); ver()" type="button">Selesai Pilih<i class="fas fa-angle-double-right"></i></button>
+                    <?php else : ?>
+                        <button class="btn btn-primary btn-purchase-donator btn-blue" onclick="updateCartTotal()" type="button">Selesai Pilih <i class="fas fa-angle-double-right"></i></button>
+                    <?php endif ?>
+                </section>
             <?php endif ?>
             <script>
                 function ver() {

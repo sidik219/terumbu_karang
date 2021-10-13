@@ -8,7 +8,14 @@ include 'hak_akses.php';
 
 $level_user = $_SESSION['level_user'];
 $id_lokasi = $_SESSION['id_lokasi_dikelola'];
-// var_dump($id_lokasi);
+// var_dump($_SESSION);
+// die;
+$sqldonasiwisata = 'SELECT saldo_donasi_wisata FROM t_lokasi
+                WHERE t_lokasi.id_lokasi=' . $id_lokasi . '';
+$stmt = $pdo->prepare($sqldonasiwisata);
+$stmt->execute();
+$rowsisa = $stmt->fetch();
+// var_dump($rowsisa);
 // die;
 
 if ($level_user == 2) {
@@ -215,7 +222,7 @@ if (isset($_POST['submitin'])) {
                         }
                     }
                     ?>
-                    <div class="row pb-2">
+                    <div class="row pb-2 d-flex justify-content-between">
                         <div class="col">
                             <h4><span class="align-middle font-weight-bold">Tabel Wisata Donasi</span></h4>
                             <p>Tabel ini dibuat dengan tujuan bisa mengambil donasi pada wisata</p>
@@ -238,7 +245,7 @@ if (isset($_POST['submitin'])) {
                                     <?php
                                     $sum_donasi = 0;
                                     foreach ($row as $donasi) {
-                                    $sum_donasi += $donasi->donasi;
+                                        $sum_donasi += $donasi->donasi;
                                     ?>
                                         <tr class="border rounded p-1 batch-donasi ">
                                             <td><?= $donasi->nama_user ?><input type="hidden" name="user" value="<?= $donasi->nama_user ?>"></td>
@@ -268,12 +275,21 @@ if (isset($_POST['submitin'])) {
                                 <input onclick="return ver()" type="submit" name="submitin" value="Ambil Donasi" class="btn btn-primary">
                             <?php endif ?>
                             <div class="hack42-45-added-value-row">
-                                <b>Total Donasi Yang Diambil : Rp. <span class="totalpilih">0</span></b>
-                                <div class="w-embed"><input type="hidden" name="hasil_donasi" id="hasil_donasi" class="hasil_donasi" val="" readonly></div>
+                                <?php if ($rowsisa->saldo_donasi_wisata == null || $rowsisa->saldo_donasi_wisata == 0) : ?>
+                                    <b>Total Donasi Yang Diambil : Rp. <span class="totalpilih">0</span></b>
+                                    <div class="w-embed"><input type="hidden" name="hasil_donasi" id="hasil_donasi" class="hasil_donasi" val="" readonly></div>
+                                <?php else : ?>
+                                    <b>Total Donasi Yang Diambil : Rp. <span class="totalpilih"><?= number_format($rowsisa->saldo_donasi_wisata, 0); ?></span></b>
+                                    <div class="w-embed"><input type="hidden" name="hasil_donasi" id="hasil_donasi" class="hasil_donasi" val="" readonly></div>
+
+                                <?php endif ?>
                                 <!-- name "hasil_donasi" ini yang akan diambil untuk validasi harga terumbu yang paling murah dan setting donasi -->
                             </div>
-                            <div>
+                            <div class="text-left">
                                 <b>Total Donasi : Rp. <?= number_format($sum_donasi, 0) ?></b>
+                                <div class="small">
+                                    Terdapat Sisa Saldo Sebesar Rp. <?= number_format($rowsisa->saldo_donasi_wisata, 0); ?>
+                                </div>
                             </div>
                         </div>
                         <script>
@@ -282,7 +298,7 @@ if (isset($_POST['submitin'])) {
                                 const b = document.getElementById('hasil_donasi').value;
                                 // alert(hargaterumbu);
                                 if (b < hargaterumbu) {
-                                    alert('Donasi Yang Diambil Tidak Mencukupi, Minimal Mengambil <?= $rowharga->harga_patokan_lokasi + $rowharga->biaya_pemeliharaan;; ?>');
+                                    alert('Donasi Yang Diambil Tidak Mencukupi, Minimal Mengambil <?= $rowharga->harga_patokan_lokasi + $rowharga->biaya_pemeliharaan; ?>');
                                     return false
                                 } else {
                                     // event.preventDefault()
@@ -291,10 +307,6 @@ if (isset($_POST['submitin'])) {
                                 }
                             }
                         </script>
-                        <!-- 
-                            yang belum itu verifikasi jika donasi kurang dari terumbu termurah bedasarkan lokasi,
-                            total donasi diambil dinamis pada saat checkbox dipilih
-                         -->
                     </form>
             </section>
             <!-- /.Left col -->
@@ -333,6 +345,7 @@ if (isset($_POST['submitin'])) {
             const $totalVal = $('.totalpilih'),
                 $checkbox = $(this).prev();
             let sum;
+            let sisa = <?= $rowsisa->saldo_donasi_wisata; ?>;
             if (!$checkbox.is(':checked')) {
                 sum = Number($totalVal.text().replace(/[\$,]/g, '')) + Number($checkbox.attr('add-value'));
             } else {
