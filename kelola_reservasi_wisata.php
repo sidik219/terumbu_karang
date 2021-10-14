@@ -46,6 +46,7 @@ if (isset($_GET['id_status_reservasi_wisata'])) {
                     LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                     LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                     LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                    LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
                     WHERE t_reservasi_wisata.id_status_reservasi_wisata = 1 ' . $extra_query_k_lok . '
                     ORDER BY id_reservasi DESC';
     } elseif ($id_status_reservasi_wisata == 2) { //reservasi Lama
@@ -54,6 +55,7 @@ if (isset($_GET['id_status_reservasi_wisata'])) {
                     LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                     LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                     LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                    LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
                     WHERE t_reservasi_wisata.id_status_reservasi_wisata = 2 ' . $extra_query_k_lok . '
                     ORDER BY id_reservasi DESC';
     } elseif ($id_status_reservasi_wisata == 3) { //reservasi bermasalah
@@ -62,6 +64,7 @@ if (isset($_GET['id_status_reservasi_wisata'])) {
                     LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                     LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                     LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                    LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
                     WHERE t_reservasi_wisata.id_status_reservasi_wisata = 3 ' . $extra_query_k_lok . '
                     ORDER BY id_reservasi DESC';
     }
@@ -74,6 +77,7 @@ if (isset($_GET['id_status_reservasi_wisata'])) {
                     LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                     LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                     LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                    LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
                     WHERE t_reservasi_wisata.id_status_reservasi_wisata = 1 ' . $extra_query_k_lok . '
                   ORDER BY id_reservasi DESC';
     $stmt = $pdo->prepare($sqlviewreservasi);
@@ -192,9 +196,15 @@ function alertPembayaran($dob)
 
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <!-- <a class="dropdown-item" href="kelola_reservasi_wisata.php">Tampilkan Semua</a> -->
-                                <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=1">Reservasi Wisata Baru</a>
-                                <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=2">Reservasi Wisata Lama</a>
-                                <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=3">Reservasi Wisata Bermasalah</a>
+                                <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=1">
+                                <span class="badge badge-pill badge-warning"> </span>
+                                Reservasi Wisata Baru</a>
+                                <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=2">
+                                <span class="badge badge-pill badge-info"> </span>
+                                Reservasi Wisata Lama</a>
+                                <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=3">
+                                <span class="badge badge-pill badge-danger"> </span>
+                                Reservasi Wisata Bermasalah</a>
                             </div>
                         </div>
 
@@ -211,6 +221,28 @@ function alertPembayaran($dob)
                                 <a class="dropdown-item" href="laporan_wisata.php?type=all_pengeluaran">
                                     <i class="far fa-file-excel btn-success"></i> Laporan Seluruh Pengeluaran</a> -->
                             </div>
+                        </div>
+
+                        <!-- Keterangan Untuk Mengecek Laporan Pengeluaran-->
+                        <div class="col text-sm mt-3">
+                            <?php if ($_SESSION['level_user'] == 2) : ?>
+                            <h6 class="text-muted">
+                                <i class="nav-icon text-info fas fa-question-circle"></i> 
+                                Untuk mengecek apakah ada reservasi wisata yang bermasalah atau tidak<br>
+                                bisa mengklik <b>Pilih Kategori</b>, lalu pilih <b>Reservasi Wisata Bermasalah</b>.
+                            </h6>
+                            <?php elseif ($_SESSION['level_user'] == 3) : ?>
+                            <h6 class="text-muted">
+                                <i class="nav-icon text-info fas fa-question-circle"></i> 
+                                Untuk mengecek apakah laporan pengeluaran sudah dibuat atau tidak<br>
+                                bisa mengklik <b>Pilih Kategori</b>, lalu pilih <b>Reservasi Wisata Lama</b>.
+                            </h6>
+                            <?php endif ?>
+                            <small class="text-muted">
+                                <i class="nav-icon text-info fas fa-info-circle"></i>
+                                Untuk Mengecek Laporan Periode Penghasilan bisa mengklik 
+                                <a href="laporan_periode_wisata.php"><b>Laporan Wisata</b></a>
+                            </small>
                         </div>
                     </div>
                 </div>
@@ -292,17 +324,18 @@ function alertPembayaran($dob)
                                             <?php
                                             if ($rowitem->id_status_reservasi_wisata == 2) { ?>
                                                 <!-- Kelola Laporan Lama -->
-                                                <span class="badge badge-pill badge-info mt-2">
+                                                <span class="badge badge-pill badge-info mt-2 p-2">
                                                     Cek Kembali <br> Laporan Pengeluaran
                                                 </span>
                                             <?php } elseif ($rowitem->id_status_reservasi_wisata == 3) { ?>
                                                 <!-- Kelola Laporan Bermasalah -->
-                                                <span class="badge badge-pill badge-danger mt-2">
-                                                    Laporan Pengeluaran <br> Belum Dibuat. <br> Dikarenakan Reservasi Bermasalah.
+                                                <span class="badge badge-pill badge-danger mt-2 p-3">
+                                                    Jangan Dulu Membuat<br> Laporan Pengeluaran. 
+                                                    <br> Dikarenakan Reservasi <br> Bermasalah.
                                                 </span>
                                             <?php } else { ?>
                                                 <!-- Kelola Laporan Baru -->
-                                                <span class="badge badge-pill badge-warning mt-2">
+                                                <span class="badge badge-pill badge-warning mt-2 p-2">
                                                     Laporan Pengeluaran <br> Belum Dibuat
                                                 </span>
                                             <?php } ?>
@@ -336,6 +369,14 @@ function alertPembayaran($dob)
                                                     </div>
                                                     <div class="col isi">
                                                         <?= $rowitem->jumlah_peserta ?>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3  border-bottom">
+                                                    <div class="col-md-3 kolom font-weight-bold">
+                                                        Asuransi
+                                                    </div>
+                                                    <div class="col isi">
+                                                        Rp. <?= number_format($rowitem->biaya_asuransi, 0) ?>
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3  border-bottom">

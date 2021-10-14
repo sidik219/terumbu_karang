@@ -18,8 +18,8 @@ if (isset($_POST['submit'])) {
         $foto_konten_lokasi = "images/image_default.jpg";
     }
     else if (isset($_FILES['image_uploads'])) {
-        $target_dir  = "tangkolak/img/foto_konten/lokasi/";
-        $foto_konten_lokasi = $target_dir .'PAW_'.$randomstring. '.jpg';
+        $target_dir  = "images/foto_konten/lokasi/";
+        $foto_konten_lokasi = $target_dir .'KEN_'.$randomstring. '.jpg';
         move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_konten_lokasi);
     }
     //---image upload end
@@ -153,7 +153,7 @@ if (isset($_POST['submit'])) {
                         <input type="text" id="status_konten_lokasi" name="status_konten_lokasi" class="form-control" placeholder="Status Konten" required>
                     </div>
 
-                    <div class='form-group'>
+                    <div class='form-group' id='fotowilayah'>
                         <div>
                             <label for='image_uploads'>Upload Foto Konten</label>
                             <input type='file'  class='form-control' id='image_uploads'
@@ -165,20 +165,21 @@ if (isset($_POST['submit'])) {
                         <img id="preview"  width="100px" src="#" alt="Preview Gambar"/>
 
                         <script>
-                            //Validasi Size Upload Image
-                            var uploadField = document.getElementById("image_uploads");
-
-                            uploadField.onchange = function() {
-                                if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
-                                    alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
-                                    this.value = "";
-                                };
-                            };
-
                             window.onload = function() {
                             document.getElementById('preview').style.display = 'none';
                             };
+
                             function readURL(input) {
+                                //Validasi Size Upload Image
+                                var uploadField = document.getElementById("image_uploads");
+
+                                uploadField.onchange = function() {
+                                    if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                        alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                        this.value = "";
+                                    };
+                                };
+
                                 if (input.files && input.files[0]) {
                                     var reader = new FileReader();
 

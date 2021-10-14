@@ -229,3 +229,12 @@ elseif ($type == 'hapus_user_pengelola_wilayah_baru'){
     $stmt->execute(['id_user' => $id_user]);
     header('Location: dashboard_admin_pusat.php?status=deletesuccess');
 }
+elseif ($type == 'berita_kegiatan'){
+    $id_kegiatan = $_GET['id_kegiatan'];
+    $sql = 'DELETE FROM t_berita_kegiatan
+            WHERE id_kegiatan = :id_kegiatan';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_kegiatan' => $id_kegiatan]);
+    header('Location: kelola_konten_kegiatan.php?status=deletesuccess');
+}

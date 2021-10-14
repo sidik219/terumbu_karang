@@ -23,6 +23,7 @@ $sqlviewreservasi = 'SELECT * FROM t_reservasi_wisata
                 LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                 LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                 LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
                 WHERE t_reservasi_wisata.id_user = :id_user
                 ORDER BY id_reservasi DESC';
 
@@ -204,6 +205,11 @@ function alertPembayaran($dob)
                                                 <span class="font-weight-bold"><i class="nav-icon text-success fas fas fa-donate"></i> Jumlah Donasi</span>
                                                 <br>
                                                 <span class="mb-3">Rp. <?= number_format($rowitem->harga_donasi, 0) ?></span>
+                                            </div>
+                                            <div class="mb-3">
+                                                <span class="font-weight-bold"><i class="nav-icon text-danger fas fa-heartbeat"></i> Asuransi</span>
+                                                <br>
+                                                <span class="mb-3">Rp. <?= number_format($rowitem->biaya_asuransi, 0) ?></span>
                                             </div>
                                             <div class="mb-3">
                                                 <span class="font-weight-bold"><i class="nav-icon text-secondary fas fas fa-calendar-alt"></i> Tanggal Reservasi</span>

@@ -145,11 +145,19 @@ if (isset($_POST['submit'])) {
             smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
 
             //Kirim email untuk Pengelola lokasi
-
-            $sqlviewpengelolalokasi = 'SELECT * FROM t_lokasi 
-                                        LEFT JOIN t_pengelola_lokasi ON t_pengelola_lokasi.id_lokasi = t_lokasi.id_lokasi
-                                        WHERE t_lokasi.id_lokasi = :id_lokasi';
-            $stmt = $pdo->prepare($sqlviewpengelolalokasi);
+            // $sqlviewpengelolalokasi = 'SELECT * FROM t_lokasi 
+            //                             LEFT JOIN t_pengelola_lokasi ON t_pengelola_lokasi.id_lokasi = t_lokasi.id_lokasi
+            //                             WHERE t_lokasi.id_lokasi = :id_lokasi';
+            // $stmt = $pdo->prepare($sqlviewpengelolalokasi);
+            // $stmt->execute(['id_lokasi' => $id_lokasi]);
+            // $rowpengelola = $stmt->fetchAll();
+            
+            // Kirim email untuk Pengelola Wilayah
+            $sqlviewpengelolawilayah = 'SELECT * FROM t_lokasi 
+                                    LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                                    LEFT JOIN t_pengelola_wilayah ON t_pengelola_wilayah.id_wilayah = t_lokasi.id_wilayah
+                                    WHERE id_lokasi = :id_lokasi';
+            $stmt = $pdo->prepare($sqlviewpengelolawilayah);
             $stmt->execute(['id_lokasi' => $id_lokasi]);
             $rowpengelola = $stmt->fetchAll();
 
@@ -168,11 +176,11 @@ if (isset($_POST['submit'])) {
                 $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
                 <br>Yth. ' . $nama_user . '
                 <br>Anda menerima reservasi wisata baru pada lokasi ' . $pengelola->nama_lokasi . '
+                <br>Berikut rincian reservasi wisata baru tersebut:
                 <br>Paket wisata: ' . $rowwisata[0]->nama_paket_wisata . '
                 <br>Lokasi wisata: ' . $rowlokasi->nama_lokasi . '
                 <br>Tanggal reservasi: ' . $tgl_reservasi . '
                 <br>Jumlah peserta: ' . $jumlah_peserta . '
-                <br>Berikut rincian reservasi wisata baru tersebut:
                 <br>Bank Wisatawan: ' . $bank_donatur . '
                 <br>Nomor Rekening wisatawan: ' . $nomor_rekening_donatur . '
                 <br>Nama Rekening wisatawan: ' . $nama_donatur . '
@@ -191,7 +199,7 @@ if (isset($_POST['submit'])) {
                 smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
             }
             //echo "HAHAHAAHA GREAT SUCCESSS !";
-            $last_id_reservasi = $pdo->lastInsertId();
+            // $last_id_reservasi = $pdo->lastInsertId();
             header("Location: reservasi_saya.php?status=addsuccess");
         }
 
@@ -551,8 +559,8 @@ if (isset($_POST['submit'])) {
                                     </div>
                                     <div class="mb-3">
                                         <!-- Donasi Wisata -->
-                                        <label>
-                                            Dengan berwisata anda turut berkontribusi dalam,<br>
+                                        <label style="color: red;">
+                                            * Dengan berwisata anda turut berkontribusi dalam,<br>
                                             konservasi terumbu karang sebesar Rp. <?= number_format($rowlokasi->harga_donasi, 0) ?>
                                         </label>
                                         <!-- Hidden Get ID Untuk Mendapatkan Value -->

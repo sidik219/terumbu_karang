@@ -11,19 +11,49 @@ $id_reservasi = $_GET['id_reservasi'];
 $update_terakhir = date('Y-m-d H:i:s', time());
 $status_reservasi_wisata = "Menunggu Konfirmasi Pembayaran";
 
-$sql = 'SELECT * FROM t_reservasi_wisata, t_user, t_lokasi, tb_paket_wisata
-    WHERE id_reservasi = :id_reservasi
-    AND t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
-    AND t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata';
+// Reservasi Wisatawan
+$sql = 'SELECT * FROM t_reservasi_wisata
+        LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+        LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+        LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+        LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+        LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
+        WHERE id_reservasi = :id_reservasi
+        AND t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+        AND t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata';
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute(['id_reservasi' => $id_reservasi]);
 $rowitem = $stmt->fetch();
 
+// Email Wisatawan
+$sql = 'SELECT *, email FROM t_reservasi_wisata
+        LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+        LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+        LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+        LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+        LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
+        WHERE id_reservasi = :id_reservasi
+        AND t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+        AND t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata';
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['id_reservasi' => $id_reservasi]);
+$rowEmail = $stmt->fetch();
+
+$email_wisatawan = $rowEmail->email;
+
+// Status Reservasi
 $sqlstatus = 'SELECT * FROM tb_status_reservasi_wisata';
 $stmt = $pdo->prepare($sqlstatus);
 $stmt->execute();
 $rowstatus = $stmt->fetchAll();
+
+// Rekber
+$sqlviewrekeningbersama = 'SELECT * FROM t_rekening_bank WHERE id_rekening_bank = :id_rekening_bersama';
+$stmt = $pdo->prepare($sqlviewrekeningbersama);
+$stmt->execute(['id_rekening_bersama' => $rowitem->id_rekening_bersama]);
+$rowrekening = $stmt->fetch();
 
 if (isset($_POST['submit'])) {
     $keterangan                  = $_POST['keterangan'];
@@ -50,6 +80,8 @@ if (isset($_POST['submit'])) {
 
 
 if (isset($_POST['submit_terima'])) {
+    include 'includes/email_handler.php'; //PHPMailer
+
     $sqldonasi = "UPDATE t_reservasi_wisata
                         SET id_status_reservasi_wisata = :id_status_reservasi_wisata, update_terakhir = :update_terakhir
                         WHERE id_reservasi = :id_reservasi";
@@ -57,23 +89,81 @@ if (isset($_POST['submit_terima'])) {
     $stmt = $pdo->prepare($sqldonasi);
     $stmt->execute(['id_reservasi' => $id_reservasi, 'id_status_reservasi_wisata' => 2, 'update_terakhir' => $update_terakhir]);
 
-    $sqldonasi = "UPDATE t_donasi_wisata
-        SET status_donasi = 'Belum Terambil'
-        WHERE id_reservasi = $id_reservasi";
+    // $sqldonasi = "UPDATE t_donasi_wisata
+    //     SET status_donasi = 'Belum Terambil'
+    //     WHERE id_reservasi = $id_reservasi";
 
-    $stmt = $pdo->prepare($sqldonasi);
-    $stmt->execute();
+    // $stmt = $pdo->prepare($sqldonasi);
+    // $stmt->execute();
 
-    $affectedrows = $stmt->rowCount();
-    if ($affectedrows == '0') {
-        header("Location: kelola_reservasi_wisata.php?status=nochange");
-    } else {
+    // $affectedrows = $stmt->rowCount();
+    // if ($affectedrows == '0') {
+    //     header("Location: kelola_reservasi_wisata.php?status=nochange");
+    // } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
+        //Kirim email untuk Pengelola Lokasi
+        $sqlviewpengelolawilayah = 'SELECT * FROM t_lokasi 
+                                        LEFT JOIN t_pengelola_lokasi ON t_pengelola_lokasi.id_lokasi = t_lokasi.id_lokasi
+                                        WHERE t_lokasi.id_lokasi = :id_lokasi';
+        $stmt = $pdo->prepare($sqlviewpengelolawilayah);
+        $stmt->execute(['id_lokasi' => $rowitem->id_lokasi]);
+        $rowpengelola = $stmt->fetchAll();
+
+        foreach ($rowpengelola as $pengelola) {
+            $sqlviewdatauser = 'SELECT * FROM t_user 
+                                    WHERE id_user = :id_user';
+            $stmt = $pdo->prepare($sqlviewdatauser);
+            $stmt->execute(['id_user' => $pengelola->id_user]);
+            $datauser = $stmt->fetch();
+
+            $email = $datauser->email;
+            $username = $datauser->username;
+            $nama_user = $datauser->nama_user;
+
+            $subjek = 'Reservasi Wisata Baru di Lokasi Anda (ID Reservasi : ' . $rowitem->id_reservasi . ' ) - GoKarang';
+            $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+                <br>Yth. ' . $nama_user . '
+                <br>Anda menerima reservasi wisata baru pada lokasi, ' . $pengelola->nama_lokasi . '
+                <br>Berikut rincian reservasi wisata baru tersebut:
+                <br>ID Reservasi: ' . $rowitem->id_reservasi . '
+                <br>Paket wisata: ' . $rowitem->nama_paket_wisata . '
+                <br>Lokasi wisata: ' . $rowitem->nama_lokasi . '
+                <br>Tanggal reservasi: ' . $tgl_reservasi . '
+                <br>Jumlah peserta: ' . $jumlah_peserta . '
+                <br>Bank Wisatawan: ' . $rowitem->bank_donatur . '
+                <br>Nomor Rekening Wisatawan: ' . $rowitem->nomor_rekening_donatur . '
+                <br>Nama Rekening Wisatawan: ' . $rowitem->nama_donatur . '
+                <br>          
+                <br>Bank Tujuan Pembayaran: ' . $rowrekening->nama_bank . '
+                <br>Nomor Rekening Tujuan: ' . $rowrekening->nomor_rekening . '
+                <br>Nama Rekening Tujuan: ' . $rowrekening->nama_pemilik_rekening . '
+                <br>Nominal pembayaran: Rp. ' . number_format($total, 0) . '
+                <br>
+                <br>Harap segera lakukan kelola laporan pengeluaran reservasi wisata pada link berikut:
+                <br><a href="https://tkjb.or.id/kelola_reservasi_wisata.php?id_reservasi=' . $id_reservasi . '">Laporan Pengeluaran Reservasi Wisata</a>
+            ';
+
+            smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+        }
+
+        //Kirim email untuk Donatur
+        $subjek = 'Bukti Reservasi Wisata Telah Diverifikasi (ID Reservasi : ' . $rowitem->id_reservasi . ' ) - GoKarang';
+        $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+                <br>Yth. ' . $rowitem->nama_donatur . '
+                <br>Bukti reservasi wisata anda telah diverifikasi oleh pihak pengelola ' . $rowitem->nama_lokasi . '
+                <br>Anda bisa dapat mengecek kembali bukti reservasi wisata yang telah di verifikasi melalui link berikut:
+                <br><a href="https://tkjb.or.id/reservasi_saya.php">Lihat Reservasi Saya</a>
+            ';
+
+        smtpmailer($email_wisatawan, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+
         header("Location: kelola_reservasi_wisata.php?status=updatesuccess");
-    }
+    // }
 }
 
 if (isset($_POST['submit_tolak'])) {
+    include 'includes/email_handler.php'; //PHPMailer
+
     $sqldonasi = "UPDATE t_reservasi_wisata
                         SET id_status_reservasi_wisata = :id_status_reservasi_wisata, update_terakhir = :update_terakhir
                         WHERE id_reservasi = :id_reservasi";
@@ -86,6 +176,20 @@ if (isset($_POST['submit_tolak'])) {
         header("Location: kelola_reservasi_wisata.php?status=nochange");
     } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
+        //Kirim email untuk Donatur           
+        $subjek = 'Bukti Reservasi Wisata tidak Sesuai (ID Reservasi : ' . $rowitem->id_reservasi . ' ) - GoKarang';
+        $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+            <br>Yth. ' . $rowitem->nama_donatur . '
+            <br>Bukti reservasi wisata anda tidak sesuai dan telah ditolak oleh pihak pengelola.
+            <br>
+            <br>Harap upload ulang bukti pembayaran reservasi wisata pada link berikut:
+            <br><a href="https://tkjb.or.id/edit_reservasi_saya.php?id_reservasi=' . $id_reservasi . '">Upload Ulang Bukti Pembayaran Reservasi Wisata</a>
+            <br>
+            <br>Jika bukti sudah diverifikasi, kami akan menginfokan kepada anda melalui email.
+        ';
+
+        smtpmailer($email_wisatawan, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+
         header("Location: kelola_reservasi_wisata.php?status=updatesuccess");
     }
 }
@@ -243,7 +347,9 @@ if (isset($_POST['submit_tolak'])) {
 
                                             <div class="row">
                                                 <div class="col">
-                                                    <span class="font-weight-bold">ID User
+                                                    <span class="font-weight-bold">
+                                                        <i class="text-danger fas fa-id-card-alt"></i> ID Reservasi
+                                                    </span>
                                                 </div>
                                                 <div class="col-lg-8 mb-2">
                                                     <span class=""><?= $rowitem->id_reservasi ?></span>
@@ -252,7 +358,9 @@ if (isset($_POST['submit_tolak'])) {
 
                                             <div class="row">
                                                 <div class="col">
-                                                    <span class="font-weight-bold">Nama User </span>
+                                                    <span class="font-weight-bold">
+                                                        <i class="text-primary fas fa-user"></i> Nama User
+                                                    </span>
                                                 </div>
                                                 <div class="col-lg-8  mb-2">
                                                     <span class=""><?= $rowitem->nama_user ?></span>
@@ -261,7 +369,9 @@ if (isset($_POST['submit_tolak'])) {
 
                                             <div class="row mb-2">
                                                 <div class="col">
-                                                    <span class="font-weight-bold">Tanggal Reservasi </span>
+                                                    <span class="font-weight-bold">
+                                                        <i class="text-secondary fas fa-calendar-alt"></i> Tanggal Reservasi
+                                                    </span>
                                                 </div>
                                                 <div class="col-lg-8  mb-2">
                                                     <span class=""><?= $rowitem->tgl_reservasi ?></span>
@@ -270,55 +380,84 @@ if (isset($_POST['submit_tolak'])) {
 
                                             <div class="row mb-2">
                                                 <div class="col">
-                                                    <span class="font-weight-bold">Wisata </span>
+                                                    <span class="font-weight-bold">
+                                                        <i class="text-info fas fa-suitcase"></i> Paket Wisata
+                                                    </span>
                                                 </div>
                                                 <div class="col-lg-8  mb-2">
-                                                    <span class="font-weight-bold"><?= $rowitem->nama_paket_wisata ?></span>
+                                                    <span class=""><?= $rowitem->nama_paket_wisata ?></span>
                                                 </div>
                                             </div>
 
                                             <div class="row mb-2">
                                                 <div class="col">
-                                                    <span class="font-weight-bold">Jumlah Peserta </span>
+                                                    <span class="font-weight-bold">
+                                                        <i class="text-info fas fa-users"></i> Jumlah Peserta
+                                                    </span>
                                                 </div>
                                                 <div class="col-lg-8  mb-2">
-                                                    <span class="font-weight-bold"><?= $rowitem->jumlah_peserta ?></span>
+                                                    <span class=""><?= $rowitem->jumlah_peserta ?></span>
                                                 </div>
                                             </div>
 
                                             <div class="row mb-2">
                                                 <div class="col">
-                                                    <span class="font-weight-bold">Jumlah Donasi </span>
+                                                    <span class="font-weight-bold">
+                                                        <i class="text-danger fas fa-heartbeat"></i> Asuransi
+                                                    </span>
                                                 </div>
                                                 <div class="col-lg-8  mb-2">
-                                                    <span class="font-weight-bold">Rp. <?= number_format($rowitem->jumlah_donasi, 0) ?></span>
+                                                    <span class="">Rp. <?= number_format($rowitem->biaya_asuransi, 0) ?></span>
                                                 </div>
                                             </div>
 
                                             <div class="row mb-2">
                                                 <div class="col">
-                                                    <span class="font-weight-bold">Total </span>
+                                                    <span class="font-weight-bold">
+                                                        <i class="text-success fas fa-donate"></i> Donasi
+                                                    </span>
                                                 </div>
                                                 <div class="col-lg-8  mb-2">
-                                                    <span class="font-weight-bold">Rp. <?= number_format($rowitem->total, 0) ?></span>
+                                                    <span class="">Rp. <?= number_format($rowitem->jumlah_donasi, 0) ?></span>
                                                 </div>
                                             </div>
 
                                             <div class="row mb-2">
                                                 <div class="col">
-                                                    <span class="font-weight-bold">Keterangan </span>
+                                                    <span class="font-weight-bold">
+                                                        <i class="text-success fas fa-money-bill-wave"></i> Total
+                                                    </span>
+                                                </div>
+                                                <div class="col-lg-8  mb-2">
+                                                    <span class="">Rp. <?= number_format($rowitem->total, 0) ?></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <div class="col">
+                                                    <span class="font-weight-bold">
+                                                        <i class="text-info fas fa-comment-dots"></i> Keterangan
+                                                    </span>
                                                 </div>
                                                 <div class="col-lg-8  mb-2">
                                                     <input type="text" name="keterangan" value="<?= $rowitem->keterangan ?>" class="form-control">
+                                                    <small style="color: gray;">(Optional)</small><br>
+                                                    <small style="color: red;">
+                                                    * Keterangan bisa diisi jika lokasi pantai sedang tidak mendukung,<br>
+                                                    atau bukti reservasi wisata tidak sesuai.<br>
+                                                    * Hal Tersebut untuk menginformasikan kepada wisatawan.
+                                                    </small>
                                                 </div>
                                             </div>
 
                                             <div class="row mb-2">
                                                 <div class="col">
-                                                    <span class="font-weight-bold">No HP </span>
+                                                    <span class="font-weight-bold">
+                                                            <i class="text-info fas fa-phone"></i> No HP
+                                                        </span>
                                                 </div>
                                                 <div class="col-lg-8  mb-2">
-                                                    <span class="font-weight-bold"><?= $rowitem->no_hp ?></span>
+                                                    <span class=""><?= $rowitem->no_hp ?></span>
                                                 </div>
                                             </div>
 

@@ -12,6 +12,7 @@ $sql = 'SELECT * FROM t_reservasi_wisata
         LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
         LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
         LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+        LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
         WHERE id_reservasi = :id_reservasi
         AND t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi';
 
@@ -215,7 +216,7 @@ if (isset($_POST['submit'])) {
                                                 <div class="row">
                                                     <div class="col">
                                                         <span class="font-weight-bold">
-                                                            <i class="text-danger fas fa-id-card-alt"></i> ID User
+                                                            <i class="text-danger fas fa-id-card-alt"></i> ID Reservasi
                                                         </span>
                                                     </div>
                                                     <div class="col-lg-8 mb-2">
@@ -248,11 +249,44 @@ if (isset($_POST['submit'])) {
                                                 <div class="row mb-2">
                                                     <div class="col">
                                                         <span class="font-weight-bold">
+                                                            <i class="text-info fas fa-suitcase"></i> Paket Wisata
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-lg-8  mb-2">
+                                                        <span class=""><?= $rowitem->nama_paket_wisata ?></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-2">
+                                                    <div class="col">
+                                                        <span class="font-weight-bold">
                                                             <i class="text-info fas fa-users"></i> Jumlah Peserta
                                                         </span>
                                                     </div>
                                                     <div class="col-lg-8  mb-2">
-                                                        <span class="font-weight-bold"><?= $rowitem->jumlah_peserta ?></span>
+                                                        <span class=""><?= $rowitem->jumlah_peserta ?></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-2">
+                                                    <div class="col">
+                                                        <span class="font-weight-bold">
+                                                            <i class="text-danger fas fa-heartbeat"></i> Asuransi
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-lg-8  mb-2">
+                                                        <span class="">Rp. <?= number_format($rowitem->biaya_asuransi, 0) ?></span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row mb-2">
+                                                    <div class="col">
+                                                        <span class="font-weight-bold">
+                                                            <i class="text-success fas fa-donate"></i> Donasi
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-lg-8  mb-2">
+                                                        <span class="">Rp. <?= number_format($rowitem->harga_donasi, 0) ?></span>
                                                     </div>
                                                 </div>
 
@@ -263,7 +297,7 @@ if (isset($_POST['submit'])) {
                                                         </span>
                                                     </div>
                                                     <div class="col-lg-8  mb-2">
-                                                        <span class="font-weight-bold">Rp. <?= number_format($rowitem->total, 0) ?></span>
+                                                        <span class="">Rp. <?= number_format($rowitem->total, 0) ?></span>
                                                     </div>
                                                 </div>
 

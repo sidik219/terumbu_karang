@@ -6,76 +6,45 @@ if(!($_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-$id_konten_lokasi = $_GET['id_konten_lokasi'];
-$defaultpic = "img/image_default.jpg";
-
-// Konten Lokasi
-$sqlviewkonten = 'SELECT * FROM t_konten_lokasi
-                    ORDER BY id_konten_lokasi ASC';
-$stmt = $pdo->prepare($sqlviewkonten);
-$stmt->execute();
-$rowKonten = $stmt->fetchAll();
-
-$sqleditkonten = 'SELECT * FROM t_konten_lokasi
-                    WHERE id_konten_lokasi = :id_konten_lokasi';
-
-$stmt = $pdo->prepare($sqleditkonten);
-$stmt->execute(['id_konten_lokasi' => $id_konten_lokasi]);
-$konten = $stmt->fetch();
-        
-// Jarak
-// 
-// Jarak
 if (isset($_POST['submit'])) {
-    $judul_konten_lokasi       = $_POST['judul_konten_lokasi'];
-    $deskripsi_konten_lokasi   = $_POST['deskripsi_konten_lokasi'];
-    $status_konten_lokasi      = $_POST['status_konten_lokasi'];
-    $tanggal_sekarang          = date('Y-m-d H:i:s', time());
-
-    $randomstring = substr(md5(rand()), 0, 7);
+    $judul_kegiatan     = $_POST['judul_kegiatan'];
+    $deskripsi_kegiatan = $_POST['deskripsi_kegiatan'];
+    $tgl_kegiatan       = $_POST['tgl_kegiatan'];
+    $randomstring       = substr(md5(rand()), 0, 7);
 
     //Image upload
     if($_FILES["image_uploads"]["size"] == 0) {
-        $foto_konten_lokasi = $konten->foto_konten_lokasi;
-        $pic = "&none=";
+        $foto_kegiatan = "images/image_default.jpg";
     }
     else if (isset($_FILES['image_uploads'])) {
-        if (($konten->foto_konten_lokasi == $defaultpic) || (!$konten->foto_konten_lokasi)){
-            $target_dir  = "images/foto_konten/lokasi/";
-            $foto_konten_lokasi = $target_dir .'KEN_'.$randomstring. '.jpg';
-            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_konten_lokasi);
-            $pic = "&new=";
-        }
-        else if (isset($konten->foto_konten_lokasi)){
-            $foto_konten_lokasi = $konten->foto_konten_lokasi;
-            unlink($konten->foto_konten_lokasi);
-            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $konten->foto_konten_lokasi);
-            $pic = "&replace=";
-        }
+        $target_dir  = "images/foto_konten/kegiatan/";
+        $foto_kegiatan = $target_dir .'KEG_'.$randomstring. '.jpg';
+        move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_kegiatan);
     }
     //---image upload end
-    
-    $sqlpaket = "UPDATE t_konten_lokasi
-                    SET judul_konten_lokasi = :judul_konten_lokasi,
-                        deskripsi_konten_lokasi = :deskripsi_konten_lokasi,
-                        status_konten_lokasi = :status_konten_lokasi,
-                        update_terakhir = :update_terakhir
-                    WHERE id_konten_lokasi = :id_konten_lokasi";
 
-    $stmt = $pdo->prepare($sqlpaket);
-    $stmt->execute(['judul_konten_lokasi' => $judul_konten_lokasi,
-                    'deskripsi_konten_lokasi' => $deskripsi_konten_lokasi,
-                    'status_konten_lokasi' => $status_konten_lokasi,
-                    'update_terakhir' => $tanggal_sekarang,
-                    'id_konten_lokasi' => $id_konten_lokasi
+    $sqlinsertkegiatan = "INSERT INTO t_berita_kegiatan (judul_kegiatan, 
+                                                        deskripsi_kegiatan, 
+                                                        foto_kegiatan, 
+                                                        tgl_kegiatan)
+                                        VALUES (:judul_kegiatan, 
+                                                :deskripsi_kegiatan, 
+                                                :foto_kegiatan,
+                                                :tgl_kegiatan)";
+
+    $stmt = $pdo->prepare($sqlinsertkegiatan);
+    $stmt->execute(['judul_kegiatan' => $judul_kegiatan,
+                    'deskripsi_kegiatan' => $deskripsi_kegiatan,
+                    'foto_kegiatan' => $foto_kegiatan,
+                    'tgl_kegiatan' => $tgl_kegiatan
                     ]);
 
     $affectedrows = $stmt->rowCount();
     if ($affectedrows == '0') {
-        header("Location: edit_konten_tangkolak.php?status=insertfailed");
+        header("Location: input_konten_kegiatan.php?status=insertfailed");
     } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
-        header("Location: kelola_konten_tangkolak.php?status=updatesuccess");
+        header("Location: kelola_konten_kegiatan.php?status=addsuccess");
     }
 }
 ?>
@@ -152,8 +121,8 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="kelola_konten_tangkolak.php">< Kembali</a><br><br>
-                    <h4><span class="align-middle font-weight-bold">Edit Data Konten</span></h4>
+                    <a class="btn btn-outline-primary" href="kelola_konten_kegiatan.php">< Kembali</a><br><br>
+                    <h4><span class="align-middle font-weight-bold">Input Data Kegiatan</span></h4>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -165,58 +134,34 @@ if (isset($_POST['submit'])) {
                     <form action="" enctype="multipart/form-data" method="POST">
 
                     <div class="form-group">
-                        <label for="judul_konten_lokasi">Judul Konten</label>
-                        <input type="text" id="judul_konten_lokasi" name="judul_konten_lokasi" value="<?=$konten->judul_konten_lokasi?>" class="form-control" placeholder="Judul Konten" required>
+                        <label for="judul_kegiatan">Judul Kegiatan</label>
+                        <input type="text" id="judul_kegiatan" name="judul_kegiatan" class="form-control" placeholder="Judul Konten" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="deskripsi_konten_lokasi">Deskripsi Konten</label>
-                        <input type="text" id="deskripsi_konten_lokasi" name="deskripsi_konten_lokasi" value="<?=$konten->deskripsi_konten_lokasi?>" class="form-control" placeholder="Deskripsi Konten" required>
+                        <label for="deskripsi_kegiatan">Deskripsi Kegiatan</label>
+                        <input type="text" id="deskripsi_kegiatan" name="deskripsi_kegiatan" class="form-control" placeholder="Deskripsi Konten" required>
                     </div>
 
-                    <!-- Lokasi -->
                     <div class="form-group">
-                    <label for="status_konten_lokasi">Status Konten</label>
-                    <select id="status_konten_lokasi" name="status_konten_lokasi" class="form-control" required>
-                        <option value="">Pilih Status</option>
-                        <?php foreach ($rowKonten as $status) {  ?>
-                        <option <?php if($status->id_konten_lokasi == $konten->id_konten_lokasi) echo 'selected'; ?> value="<?=$status->status_konten_lokasi?>"><?=$status->status_konten_lokasi?></option>
-                        <?php } ?>
-                    </select>
+                        <label for="tgl_kegiatan">Tanggal Kegiatan</label>
+                        <input type="date" id="tgl_kegiatan" name="tgl_kegiatan" class="form-control" placeholder="Status Konten" required>
                     </div>
 
-                    <div class='form-group'>
+                    <div class='form-group' id='fotowilayah'>
                         <div>
-                            <label for='image_uploads'>Upload Foto Konten</label>
-                            <input type='file' class='form-control' id='image_uploads' name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
+                            <label for='image_uploads'>Upload Foto Kegiatan</label>
+                            <input type='file'  class='form-control' id='image_uploads'
+                                name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <img id="preview" src="#" width="100px" alt="Preview Gambar" />
-                        <a href="<?= $konten->foto_konten_lokasi ?>" data-toggle="lightbox">
-                            <img class="img-fluid" id="oldpic" src="<?= $konten->foto_konten_lokasi ?>" width="20%" <?php if ($konten->foto_konten_lokasi == NULL) echo "style='display: none;'"; ?>></a>
-                        <br>
-
-                        <small class="text-muted">
-                            <?php if ($konten->foto_konten_lokasi == NULL) {
-                                echo "Bukti transfer belum diupload<br>Format .jpg .jpeg .png";
-                            } else {
-                                echo "Klik gambar untuk memperbesar";
-                            }
-
-                            ?>
-                        </small>
+                        <img id="preview"  width="100px" src="#" alt="Preview Gambar"/>
 
                         <script>
-                            const actualBtn = document.getElementById('image_uploads');
-                            const fileChosen = document.getElementById('file-input-label');
-
-                            actualBtn.addEventListener('change', function() {
-                                fileChosen.innerHTML = '<b>File dipilih :</b> ' + this.files[0].name
-                            })
                             window.onload = function() {
-                                document.getElementById('preview').style.display = 'none';
+                            document.getElementById('preview').style.display = 'none';
                             };
 
                             function readURL(input) {
@@ -232,12 +177,12 @@ if (isset($_POST['submit'])) {
 
                                 if (input.files && input.files[0]) {
                                     var reader = new FileReader();
-                                    document.getElementById('oldpic').style.display = 'none';
-                                    reader.onload = function(e) {
+
+                                    reader.onload = function (e) {
                                         $('#preview')
                                             .attr('src', e.target.result)
                                             .width(200);
-                                        document.getElementById('preview').style.display = 'block';
+                                            document.getElementById('preview').style.display = 'block';
                                     };
 
                                     reader.readAsDataURL(input.files[0]);
