@@ -78,40 +78,39 @@ if (isset($_POST['submit'])) {
     }
 }
 
-
 if (isset($_POST['submit_terima'])) {
     include 'includes/email_handler.php'; //PHPMailer
 
-    $sqldonasi = "UPDATE t_reservasi_wisata
-                        SET id_status_reservasi_wisata = :id_status_reservasi_wisata, update_terakhir = :update_terakhir
-                        WHERE id_reservasi = :id_reservasi";
+    $sqlreservasi = "UPDATE t_reservasi_wisata
+                    SET id_status_reservasi_wisata = :id_status_reservasi_wisata, update_terakhir = :update_terakhir
+                    WHERE id_reservasi = :id_reservasi";
 
-    $stmt = $pdo->prepare($sqldonasi);
+    $stmt = $pdo->prepare($sqlreservasi);
     $stmt->execute(['id_reservasi' => $id_reservasi, 'id_status_reservasi_wisata' => 2, 'update_terakhir' => $update_terakhir]);
 
-    // $sqldonasi = "UPDATE t_donasi_wisata
-    //     SET status_donasi = 'Belum Terambil'
-    //     WHERE id_reservasi = $id_reservasi";
+    $sqldonasi = "UPDATE t_donasi_wisata
+        SET status_donasi = 'Belum Terambil'
+        WHERE id_reservasi = $id_reservasi";
 
-    // $stmt = $pdo->prepare($sqldonasi);
-    // $stmt->execute();
+    $stmt = $pdo->prepare($sqldonasi);
+    $stmt->execute();
 
-    // $affectedrows = $stmt->rowCount();
-    // if ($affectedrows == '0') {
-    //     header("Location: kelola_reservasi_wisata.php?status=nochange");
-    // } else {
+    $affectedrows = $stmt->rowCount();
+    if ($affectedrows == '0') {
+        header("Location: kelola_reservasi_wisata.php?status=nochange");
+    } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
         //Kirim email untuk Pengelola Lokasi
         $sqlviewpengelolawilayah = 'SELECT * FROM t_lokasi 
-                                        LEFT JOIN t_pengelola_lokasi ON t_pengelola_lokasi.id_lokasi = t_lokasi.id_lokasi
-                                        WHERE t_lokasi.id_lokasi = :id_lokasi';
+                                    LEFT JOIN t_pengelola_lokasi ON t_pengelola_lokasi.id_lokasi = t_lokasi.id_lokasi
+                                    WHERE t_lokasi.id_lokasi = :id_lokasi';
         $stmt = $pdo->prepare($sqlviewpengelolawilayah);
         $stmt->execute(['id_lokasi' => $rowitem->id_lokasi]);
         $rowpengelola = $stmt->fetchAll();
 
         foreach ($rowpengelola as $pengelola) {
             $sqlviewdatauser = 'SELECT * FROM t_user 
-                                    WHERE id_user = :id_user';
+                                WHERE id_user = :id_user';
             $stmt = $pdo->prepare($sqlviewdatauser);
             $stmt->execute(['id_user' => $pengelola->id_user]);
             $datauser = $stmt->fetch();
@@ -158,15 +157,17 @@ if (isset($_POST['submit_terima'])) {
         smtpmailer($email_wisatawan, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
 
         header("Location: kelola_reservasi_wisata.php?status=updatesuccess");
-    // }
+        // var_dump($email_wisatawan, $pengirim, $nama_pengirim, $subjek, $pesan);exit();
+    }
 }
 
 if (isset($_POST['submit_tolak'])) {
+    // Di var_dump aman, data bisa dicek
     include 'includes/email_handler.php'; //PHPMailer
 
     $sqldonasi = "UPDATE t_reservasi_wisata
-                        SET id_status_reservasi_wisata = :id_status_reservasi_wisata, update_terakhir = :update_terakhir
-                        WHERE id_reservasi = :id_reservasi";
+                    SET id_status_reservasi_wisata = :id_status_reservasi_wisata, update_terakhir = :update_terakhir
+                    WHERE id_reservasi = :id_reservasi";
 
     $stmt = $pdo->prepare($sqldonasi);
     $stmt->execute(['id_reservasi' => $id_reservasi, 'id_status_reservasi_wisata' => 3, 'update_terakhir' => $update_terakhir]);
@@ -191,6 +192,7 @@ if (isset($_POST['submit_tolak'])) {
         smtpmailer($email_wisatawan, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
 
         header("Location: kelola_reservasi_wisata.php?status=updatesuccess");
+        // var_dump($email_wisatawan, $pengirim, $nama_pengirim, $subjek, $pesan);exit();
     }
 }
 ?>

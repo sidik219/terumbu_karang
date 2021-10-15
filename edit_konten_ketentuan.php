@@ -103,7 +103,7 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="kelola_konten.php">
+                    <a class="btn btn-outline-primary" href="kelola_konten_ketentuan.php">
                         < Kembali</a><br><br>
                             <h4><span class="align-middle font-weight-bold">Edit Kelola Konten</span></h4>
                             <p>Halaman Input Ini untuk pada halaman depan website</p>

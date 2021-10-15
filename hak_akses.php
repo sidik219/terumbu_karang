@@ -503,7 +503,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 
 
                 <li class="nav-item"> <!-- Konten Wilayah -->
-                    <a href="kelola_konten_wilayah_master.php" class="nav-link ' . (('kelola_konten_ketentuan.php' == $url_sekarang) || ('edit_konten.php'  == $url_sekarang) || ('input_konten.php'  == $url_sekarang) || ('kelola_konten.php' == $url_sekarang) || ('edit_konten.php'  == $url_sekarang) || ('input_konten.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                    <a href="kelola_konten_wilayah_master.php" class="nav-link ' . (('kelola_konten_wilayah_master.php' == $url_sekarang) || ('kelola_konten_ketentuan.php' == $url_sekarang) || ('edit_konten_ketentuan.php'  == $url_sekarang) || ('kelola_konten.php' == $url_sekarang) || ('edit_konten.php'  == $url_sekarang) || ('input_konten.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-book"></i>
                         <p> Kelola Konten </p>
                     </a>
@@ -630,7 +630,7 @@ if (!$_SESSION['level_user']) { //Belum log in
 
                 <li class="nav-item"> <!-- Konten Lokasi -->
                     <a href="kelola_konten_master.php" class="nav-link ' . (('kelola_konten_master.php' == $url_sekarang) || ('kelola_konten_tangkolak.php' == $url_sekarang) || ('edit_konten_tangkolak.php'  == $url_sekarang) || ('input_konten_tangkolak.php'  == $url_sekarang) || ('kelola_konten_ketentuan.php' == $url_sekarang)  || ('edit_konten_ketentuan.php' == $url_sekarang)  || ('input_konten_Ketentuan.php'  == $url_sekarang) ||
-                ('kelola_konten_kegiatan.php' == $url_sekarang) || ('edit_konten_kegiatan.php'  == $url_sekarang) || ('input_konten_kegiatan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                    ('kelola_konten_kegiatan.php' == $url_sekarang) || ('edit_konten_kegiatan.php'  == $url_sekarang) || ('input_konten_kegiatan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-book"></i>
                         <p> Kelola Konten </p>
                     </a>

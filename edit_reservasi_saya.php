@@ -72,6 +72,48 @@ if (isset($_POST['submit'])) {
         header("Location: reservasi_saya.php?status=nochange");
     } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
+        //Kirim email untuk Pengelola Wilayah
+        include 'includes/email_handler.php'; //PHPMailer
+        $sqlviewpengelolawilayah = 'SELECT * FROM t_lokasi 
+                                            LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                                            LEFT JOIN t_pengelola_wilayah ON t_pengelola_wilayah.id_wilayah = t_lokasi.id_wilayah
+                                            WHERE id_lokasi = :id_lokasi';
+        $stmt = $pdo->prepare($sqlviewpengelolawilayah);
+        $stmt->execute(['id_lokasi' => $rowitem->id_lokasi]);
+        $rowpengelola = $stmt->fetchAll();
+
+        foreach ($rowpengelola as $pengelola) {
+            $sqlviewdatauser = 'SELECT * FROM t_user 
+                                        WHERE id_user = :id_user';
+            $stmt = $pdo->prepare($sqlviewdatauser);
+            $stmt->execute(['id_user' => $pengelola->id_user]);
+            $datauser = $stmt->fetch();
+
+            $email = $datauser->email;
+            $username = $datauser->username;
+            $nama_user = $datauser->nama_user;
+
+            $subjek = 'Bukti Reservasi Wisata Perlu Verifikasi (ID Reservasi : ' . $id_reservasi . ' ) - GoKarang';
+            $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+                    <br>Yth. ' . $nama_user . '
+                    <br>Harap verifikasi bukti reservasi wisata baru pada lokasi ' . $pengelola->nama_lokasi . '
+                    <br>Berikut rincian reservasi wisata baru tersebut:
+                    <br>Bank Wisatawan: ' . $rowitem->bank_donatur . '
+                    <br>Nomor Rekening Wisatawan: ' . $rowitem->nomor_rekening_donatur . '
+                    <br>Nama Rekening Wisatawan: ' . $rowitem->nama_donatur . '
+                    <br>          
+                    <br>Bank Tujuan Pembayaran: ' . $rowrekening->nama_bank . '
+                    <br>Nomor Rekening Tujuan: ' . $rowrekening->nomor_rekening . '
+                    <br>Nama Rekening Tujuan: ' . $rowrekening->nama_pemilik_rekening . '
+                    <br>Nominal pembayaran: Rp. ' . number_format($rowitem->total, 0) . '
+                    <br>
+                    <br>Harap segera verifikasi bukti reservasi wisata di link berikut:
+                    <br><a href="https://tkjb.or.id/edit_reservasi_wisata.php?id_reservasi=' . $id_reservasi . '">Verifikasi Bukti Pembayaran</a>
+                ';
+
+            smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+        }
+
         header("Location: reservasi_saya.php?status=updatesuccess");
     }
 }

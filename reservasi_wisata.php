@@ -145,21 +145,21 @@ if (isset($_POST['submit'])) {
             smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
 
             //Kirim email untuk Pengelola lokasi
-            // $sqlviewpengelolalokasi = 'SELECT * FROM t_lokasi 
-            //                             LEFT JOIN t_pengelola_lokasi ON t_pengelola_lokasi.id_lokasi = t_lokasi.id_lokasi
-            //                             WHERE t_lokasi.id_lokasi = :id_lokasi';
-            // $stmt = $pdo->prepare($sqlviewpengelolalokasi);
-            // $stmt->execute(['id_lokasi' => $id_lokasi]);
-            // $rowpengelola = $stmt->fetchAll();
-            
-            // Kirim email untuk Pengelola Wilayah
-            $sqlviewpengelolawilayah = 'SELECT * FROM t_lokasi 
-                                    LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
-                                    LEFT JOIN t_pengelola_wilayah ON t_pengelola_wilayah.id_wilayah = t_lokasi.id_wilayah
-                                    WHERE id_lokasi = :id_lokasi';
-            $stmt = $pdo->prepare($sqlviewpengelolawilayah);
+            $sqlviewpengelolalokasi = 'SELECT * FROM t_lokasi 
+                                        LEFT JOIN t_pengelola_lokasi ON t_pengelola_lokasi.id_lokasi = t_lokasi.id_lokasi
+                                        WHERE t_lokasi.id_lokasi = :id_lokasi';
+            $stmt = $pdo->prepare($sqlviewpengelolalokasi);
             $stmt->execute(['id_lokasi' => $id_lokasi]);
             $rowpengelola = $stmt->fetchAll();
+            
+            // Kirim email untuk Pengelola Wilayah
+            // $sqlviewpengelolawilayah = 'SELECT * FROM t_lokasi 
+            //                         LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
+            //                         LEFT JOIN t_pengelola_wilayah ON t_pengelola_wilayah.id_wilayah = t_lokasi.id_wilayah
+            //                         WHERE id_lokasi = :id_lokasi';
+            // $stmt = $pdo->prepare($sqlviewpengelolawilayah);
+            // $stmt->execute(['id_lokasi' => $id_lokasi]);
+            // $rowpengelola = $stmt->fetchAll();
 
             foreach ($rowpengelola as $pengelola) {
                 $sqlviewdatauser = 'SELECT * FROM t_user 
