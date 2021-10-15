@@ -7,8 +7,19 @@ $stmt = $pdo->prepare('SELECT * From t_konten_lokasi');
 $stmt->execute();
 // $stmt->execute(array(0));
 $rowKonten = $stmt->fetchAll();
+
+$stmt = $pdo->prepare('SELECT * From t_konten_tangkolak_section');
+$stmt->execute();
+// $stmt->execute(array(0));
+$rowKonteninfo = $stmt->fetchAll();
+
+$stmt = $pdo->prepare('SELECT * From t_berita_kegiatan ORDER BY `t_berita_kegiatan`.`tgl_upload` DESC');
+$stmt->execute();
+// $stmt->execute(array(0));
+$rowKontenkegiatan = $stmt->fetchAll();
 ?>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -27,69 +38,70 @@ $rowKonten = $stmt->fetchAll();
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/b41ecad032.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
 
-     <!-- Navbar Container-->
-     <div class="navbar-tkjb fixed-top">
-            <!-- Navbar -->
-            <nav class="flex-wrap navpadd navbar navbar-expand-lg navbar-light ">
-                <!-- Navbar First Layer -->
-                    <!-- Logo Holder -->
-                        <a class="navbar-brand" href="index.php">
-                            <img id="logo-tkjb-navbar" src="img/TANGKOLAK3.png">
-                        </a>
-                    <!-- Menu Toogler -->
-                    <button class="navbar-toggler custom-toggler hamburger-menu" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon "></span>
-                    </button>
-                    <!-- Button & Link Action -->
-                    <ul class="ml-auto d-none d-lg-block navbar-nav">
-                        <button class="btn radius-50 py-1.5 px-4 ml-3 btn-wisata " onclick="window.location.href='wisata_tangkolak.php'">Reservasi Wisata</button>
-                        <button class="btn radius-50 py-1.5 px-5 ml-3 btn-login " onclick="window.location.href='login.php'">Login</button>
-                    </ul>
-                <!-- END Navbar First Layer -->
-                <!-- Navbar Second Layer -->
-                <div class="navbar-tkjb-navigation col px-0 collapse navbar-collapse" id="navbarTogglerDemo02">
-                    <!-- Navbar Menu -->
-                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                        <li class="nav-item active">
-                            <a class="nav-link current" href="index.php">Beranda</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="wisata_tangkolak.php">Wisata Bahari</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="paket_wisata.php">Paket Wisata</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="terumbu_karang.php">Terumbu Karang Tangkolak</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="https://tkjb.or.id/"  target="_blank">Website GoKarang</a>
-                        </li>
-                    </ul>
-                    <!-- END Navbar Menu -->
-                    <!-- Navbar Button & Link Action Mobile Version-->
-                    <div class="d-flex d-lg-none p-3 mobile-act-button">
-                        <div class="row-mid">
-                                    <button class="btn radius-50 py-1.5 px-4  btn-wisata " onclick="window.location.href='wisata_tangkolak.php'">Reservasi Wisata</button>
-                        </div>
-                        <div class="row-mid d-none d-md-block">
-                                <p>
-
-                                </p>
-                        </div>
-                        <div class="row-mid">
-                                    <button class="btn radius-50 py-1.5 px-5 btn-login " onclick="window.location.href='login.php'">Login</button>
-                        </div>
+    <!-- Navbar Container-->
+    <div class="navbar-tkjb fixed-top">
+        <!-- Navbar -->
+        <nav class="flex-wrap navpadd navbar navbar-expand-lg navbar-light ">
+            <!-- Navbar First Layer -->
+            <!-- Logo Holder -->
+            <a class="navbar-brand" href="index.php">
+                <img id="logo-tkjb-navbar" src="img/TANGKOLAK3.png">
+            </a>
+            <!-- Menu Toogler -->
+            <button class="navbar-toggler custom-toggler hamburger-menu" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon "></span>
+            </button>
+            <!-- Button & Link Action -->
+            <ul class="ml-auto d-none d-lg-block navbar-nav">
+                <button class="btn radius-50 py-1.5 px-4 ml-3 btn-wisata " onclick="window.location.href='wisata_tangkolak.php'">Reservasi Wisata</button>
+                <button class="btn radius-50 py-1.5 px-5 ml-3 btn-login " onclick="window.location.href='login.php'">Login</button>
+            </ul>
+            <!-- END Navbar First Layer -->
+            <!-- Navbar Second Layer -->
+            <div class="navbar-tkjb-navigation col px-0 collapse navbar-collapse" id="navbarTogglerDemo02">
+                <!-- Navbar Menu -->
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link current" href="index.php">Beranda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="wisata_tangkolak.php">Wisata Bahari</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="paket_wisata.php">Paket Wisata</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="terumbu_karang.php">Terumbu Karang Tangkolak</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://tkjb.or.id/" target="_blank">Website GoKarang</a>
+                    </li>
+                </ul>
+                <!-- END Navbar Menu -->
+                <!-- Navbar Button & Link Action Mobile Version-->
+                <div class="d-flex d-lg-none p-3 mobile-act-button">
+                    <div class="row-mid">
+                        <button class="btn radius-50 py-1.5 px-4  btn-wisata " onclick="window.location.href='wisata_tangkolak.php'">Reservasi Wisata</button>
                     </div>
-                    <!-- END Navbar Button & Link Action Mobile Version-->
+                    <div class="row-mid d-none d-md-block">
+                        <p>
+
+                        </p>
+                    </div>
+                    <div class="row-mid">
+                        <button class="btn radius-50 py-1.5 px-5 btn-login " onclick="window.location.href='login.php'">Login</button>
+                    </div>
                 </div>
-                <!-- END Navbar Second Layer -->
-            </nav>
-            <!-- END Navbar -->
-        </div>
-        <!-- END Navbar Container -->
+                <!-- END Navbar Button & Link Action Mobile Version-->
+            </div>
+            <!-- END Navbar Second Layer -->
+        </nav>
+        <!-- END Navbar -->
+    </div>
+    <!-- END Navbar Container -->
 
     <!-- Konten -->
     <div class="informational">
@@ -97,44 +109,44 @@ $rowKonten = $stmt->fetchAll();
             <!-- Header Container -->
             <div class="header-tkjb">
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                <!-- <ol class="carousel-indicators">
+                    <!-- <ol class="carousel-indicators">
                     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                 </ol> -->
-                <div class="carousel-inner">
-                    <?php foreach ($rowKonten as $lokasi) { ?>
-                    <div class="carousel-item 
-                        <?php 
+                    <div class="carousel-inner">
+                        <?php foreach ($rowKonten as $lokasi) { ?>
+                            <div class="carousel-item 
+                        <?php
                             if ($lokasi->status_konten_lokasi == "Wisata Bahari") {
-                              echo "active";  
+                                echo "active";
                             } else {
                                 echo " ";
                             }
                         ?>">
-                        <img class="d-block w-100" src="../<?=$lokasi->foto_konten_lokasi?>" alt="">
-                        <div class="carousel-caption  d-md-block">
-                            <h3><?= $lokasi->judul_konten_lokasi ?></h3><br>
-                            <p><?= $lokasi->deskripsi_konten_lokasi ?></p><br>
-                            <?php 
-                            if ($lokasi->status_konten_lokasi == "Wisata Bahari") { ?>
-                            <a href="wisata_tangkolak.php" class="btn btn-link-slide" role="button" aria-pressed="true">
-                                <?= $lokasi->status_konten_lokasi ?>
-                            </a>
-                            <?php } elseif ($lokasi->status_konten_lokasi == "Paket Wisata") { ?>
-                            <a href="paket_wisata.php" class="btn btn-link-slide" role="button" aria-pressed="true">
-                                <?= $lokasi->status_konten_lokasi ?>
-                            </a>
-                            <?php } elseif ($lokasi->status_konten_lokasi == "Terumbu Karang") { ?>
-                            <a href="terumbu_karang.php" class="btn btn-link-slide" role="button" aria-pressed="true">
-                                <?= $lokasi->status_konten_lokasi ?>
-                            </a>
-                            <?php } ?>
-                        </div>
-                    </div>
-                    <?php } ?>
+                                <img class="d-block w-100" src="../<?= $lokasi->foto_konten_lokasi ?>" alt="">
+                                <div class="carousel-caption  d-md-block">
+                                    <h3><?= $lokasi->judul_konten_lokasi ?></h3><br>
+                                    <p><?= $lokasi->deskripsi_konten_lokasi ?></p><br>
+                                    <?php
+                                    if ($lokasi->status_konten_lokasi == "Wisata Bahari") { ?>
+                                        <a href="wisata_tangkolak.php" class="btn btn-link-slide" role="button" aria-pressed="true">
+                                            <?= $lokasi->status_konten_lokasi ?>
+                                        </a>
+                                    <?php } elseif ($lokasi->status_konten_lokasi == "Paket Wisata") { ?>
+                                        <a href="paket_wisata.php" class="btn btn-link-slide" role="button" aria-pressed="true">
+                                            <?= $lokasi->status_konten_lokasi ?>
+                                        </a>
+                                    <?php } elseif ($lokasi->status_konten_lokasi == "Terumbu Karang") { ?>
+                                        <a href="terumbu_karang.php" class="btn btn-link-slide" role="button" aria-pressed="true">
+                                            <?= $lokasi->status_konten_lokasi ?>
+                                        </a>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        <?php } ?>
 
-                    <!-- <div class="carousel-item active">
+                        <!-- <div class="carousel-item active">
                     <img class="d-block w-100" src="img/banner1.jpg" alt="First slide">
                     </div>
                     <div class="carousel-item">
@@ -143,197 +155,128 @@ $rowKonten = $stmt->fetchAll();
                     <div class="carousel-item">
                     <img class="d-block w-100" src="img/banner1.jpg" alt="Third slide">
                     </div> -->
-                </div>
-                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
                 </div>
             </div>
             <!-- End Header Container -->
 
             <!-- Konten Mid Container -->
             <div class="mid-tkjb">
-
-                <div class="paragraf-awal">
-
-                        <div class="row justify-content-between">
-                            <div class="col-md-12 col-lg-7 p-5 text-light paragraf-awal-caption">
-                                <h2>Pantai Tangkolak</h2>
-                                <p>
-                                Kampung Tangkolak bersama Pemkab Karawang, dan komunitas pegiat pariwisata terus berinovasi dalam mengembangkan kampung Tangkolak sebagai wisata bahari.
-                                Sehingga pantai tangkolak terus berbenah menjadi obyek wisata terintegrasi, mulai dari wisata snorkling, mangrove, museum bawah laut BMKT, Pusat Informasi Bahari Tangkolak, hingga arena memancing.
-                                </p>
-                            </div>
-                            <div class="col-md-12 col-lg-5 p-5 text-center paragraf-awal-img">
-                                <img src="img/pantai-tangkolak.jpg" class="img-fluid shadow-sm rounded" alt="pantai tangkolak">
-                            </div>
-                        </div>
-
-                </div>
-
-                <div class="tkjb-banner-caption">
-                <h2>Bagian dari GoKarang</h2>
-                <p>Pantai Tangkolak merupakan bagian dari Program GoKarang (<a href="https://tkjb.or.id/">tkjb.or.id</a>) yang merupakan bentuk kerjasama antara
-                Dinas Kelautan dan Perikanan Jawa Barat (DKP Jabar) dengan Kelompok Usaha Bersama (KUB) masyarakat pesisir pantai Tangkolak yang memiliki tujuan sebagai berikut :</p>
-                    <div id="accordion " class="list-tujuan-tkjb">
-                        <div class="card accordion-bg">
-                            <div class="card-header accordion-header" id="headingOne">
-                            <h5 class="mb-0">
-                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" >
-                                1. Konservasi Terumbu Karang
-                                <i class="fas fa-chevron-circle-down icon-list-pad"></i>
-                                </button>
-                            </h5>
-                            </div>
-                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                                <div class="card-body">
-                                <p class="accordion-body-p">
-                                Melestarikan dan melakukan pemulihan pada terumbu karang sekitar pantai Jawa Barat.<br>
-                                <a href="terumbu_karang.php">Ikut konservasi ></a>
-                                </p>
+                <!-- foreach sama if -->
+                <?php foreach ($rowKonteninfo as $key => $info) : ?>
+                    <?php if ($key == 1) : ?>
+                        <div class="paragraf-awal">
+                            <div class="row justify-content-between">
+                                <div class="col-md-12 col-lg-5 p-5 text-center paragraf-awal-img">
+                                    <img src="../<?= $info->gambar; ?>" class="img-fluid shadow-sm rounded" alt="pantai tangkolak">
+                                </div>
+                                <div class="col-md-12 col-lg-7 p-5 text-light paragraf-awal-caption">
+                                    <h2><?= $info->judul; ?></h2>
+                                    <p>
+                                        <?= $info->isi_konten; ?>
+                                    </p>
                                 </div>
                             </div>
                         </div>
-                        <div class="card accordion-bg">
-                            <div class="card-header accordion-header" id="headingTwo">
-                            <h5 class="mb-0">
-                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                2. Informasi Terumbu Karang
-                                <i class="fas fa-chevron-circle-down icon-list-pad"></i>
-                                </button>
-                            </h5>
-                            </div>
-                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                            <div class="card-body">
-                                <p class="accordion-body-p">
-                                Menyajikan informasi pada masyarakat umum tentang kondisi terumbu karang di Jawa Barat.<br>
-                                <a href="https://tkjb.or.id/coralmaps.php" target="_blank">Lihat informasi ></a>
-                                </p>
-                            </div>
+                    <?php elseif ($key == 0 || $key == 2) : ?>
+                        <div class="paragraf-awal">
+                            <div class="row justify-content-between">
+                                <div class="col-md-12 col-lg-7 p-5 text-light paragraf-awal-caption">
+                                    <h2><?= $info->judul; ?></h2>
+                                    <p>
+                                        <?= $info->isi_konten; ?>
+                                    </p>
+                                </div>
+                                <div class="col-md-12 col-lg-5 p-5 text-center paragraf-awal-img">
+                                    <img src="../<?= $info->gambar; ?>" class="img-fluid shadow-sm rounded" alt="pantai tangkolak">
+                                </div>
                             </div>
                         </div>
-                        <div class="card accordion-bg">
-                            <div class="card-header accordion-header" id="headingThree">
-                            <h5 class="mb-0">
-                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                3. Ekonomi Terumbu Karang
-                                <i class="fas fa-chevron-circle-down icon-list-pad"></i>
-                                </button>
-                            </h5>
-                            </div>
-                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                            <div class="card-body">
-                                <p class="accordion-body-p">
-                                Mendukung wisata terumbu karang untuk meningkatkan ekonomi masyarakat pesisir.<br>
-                                <a href="wisata_tangkolak.php">Wisata Tangkolak ></a>
-                                </p>
-
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="kata-media">
-                 <h2> Berita Tangkolak </h2>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="card card-pilihan mb-4 shadow-sm">
-                                    <a href="">
-                                        <img class="card-img-top berita-img" width="100%" src="img/news1.jpg">
-                                    </a>
-                                        <div class="card-body">
-                                            <p > <h5 class="max-length">Tahun 2023 Nanti Pantai Tangkolak Jadi Wisata Bahari Terintegritas</h5></p>
-                                            <p class="max-length1">onlinemetro.id</p>
-                                            <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="https://onlinemetro.id/berita-metro-karawang/tahun-2023-nanti-pantai-tangkolak-jadi-wisata-bahari-terintegritas/" target="_blank" >Baca Berita</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card card-pilihan mb-4 shadow-sm">
-                                    <a href="">
-                                        <img class="card-img-top berita-img" width="100%" src="img/news2.jpg">
-                                    </a>
-                                        <div class="card-body card-body-costom">
-                                            <p><h5 class="max-length">Pantai Tangkolak,<br>Wajah Baru Wisata Bahari</h5></p>
-                                            <p class="max-length1">radarkarawang.id</p>
-                                            <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="https://radarkarawang.id/cilamaya/tangkolak-wajah-baru-wisata-bahari/" target="_blank">Baca Berita</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="card card-pilihan mb-4 shadow-sm">
-                                    <a href="">
-                                        <img class="card-img-top berita-img" width="100%" src="img/news3.jpg">
-                                    </a>
-                                        <div class="card-body card-body-costom">
-                                            <p><h5 class="max-length">Cerita Harta Karun Belanda Membuat Kampung Tangkolak Populer</h5></p>
-                                            <p class="max-length1">daerah.sindonews.com</p>
-                                            <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="https://daerah.sindonews.com/artikel/jabar/8612/cerita-tentang-harta-karun-belanda-membuat-kampung-tangkolak-populer" target="_blank" >Baca Berita</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                </div>
-
-
-
-
-
-                <div class="member-tkjb"></div>
-
+                    <?php endif ?>
+                <?php endforeach ?>
+                <!-- endforeach sama endif -->
             </div>
-            <!-- End Konten Mid Container -->
 
-
-
+            <div class="kata-media">
+                <h2> Berita Kegiatan Di Tangkolak </h2>
+                <div class="row">
+                    <!-- foreach dari t_berita_kegiatan -->
+                    <?php foreach ($rowKontenkegiatan as $kegiatan) : ?>
+                        <div class="col-md-4">
+                            <div class="card card-pilihan mb-4 shadow-sm">
+                                <a href="">
+                                    <img class="card-img-top berita-img" width="100%" src="../<?= $kegiatan->foto_kegiatan; ?>">
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="max-length"><?= $kegiatan->judul_kegiatan; ?></h5>
+                                    <div class="max-length"><?= $kegiatan->deskripsi_kegiatan; ?>
+                                    </div>
+                                    <!-- link buat lihat pake id -->
+                                    <a class="btn btn-primary btn-lg btn-block mb-4 btn-kata-media" href="lihat_kegiatan.php?id_kegiatan=<?= $kegiatan->id_kegiatan; ?>" target="_blank">Baca Kegiatan</a>
+                                    <div class="small">
+                                        <i class="far fa-calendar-alt"></i> Tanggal Kegiatan: <?= date('d F Y', strtotime($kegiatan->tgl_kegiatan)); ?>
+                                    </div>
+                                </div>
+                                <!-- <div class="card-footer"></div> -->
+                            </div>
+                        </div>
+                    <?php endforeach ?>
+                    <!-- endforeach -->
+                </div>
+            </div>
         </div>
-        </div>
-        <!-- End Konten -->
+        <!-- End Konten Mid Container -->
 
-          <!-- Pre Footer -->
-          <div class="pre-footer-tkjb">
-                <div>
-                <section>
-                    <div class="map-tangkolak">
+
+
+    </div>
+    </div>
+    <!-- End Konten -->
+
+    <!-- Pre Footer -->
+    <div class="pre-footer-tkjb">
+        <div>
+            <section>
+                <div class="map-tangkolak">
 
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.6200792239033!2d107.55975721436018!3d-6.181576562289898!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x8209ca60143b4b83!2sPusat%20Informasi%20Bahari%20TANGKOLAK!5e0!3m2!1sid!2sid!4v1614278046421!5m2!1sid!2sid" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
 
-                    </div>
-                </section>
-                    </div>
-            </div>
-            <!-- End Pre Footer -->
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- End Pre Footer -->
 
-        <!-- Footer -->
-       <section id="footer">
-                    <div class="row">
-                        <div class="blogo col-xs-12 col-sm-12 col-md-12 col-lg-4">
-                            <a href="#"><img src="img/footer-logo.png" id="footer-logo" alt="Tangkolak Footer Logo"></a>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 cr-tkjb">
-                            <div class="cpt text-light text-center">
-                                <p>© 2021 - Wisata Bahari Tangkolak</p>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
-                            <div class="ftaw text-light text-center">
-                                <a href="#" target="_blank"><i class="fa fa-phone-square-alt"></i></a>
-                                <a href="#" target="_blank"><i class="fas fa-envelope-square"></i></a>
-                                <a href="#" target="_blank"><i class="fa fa-facebook-square"></i></a>
-                                <a href="#" target="_blank"><i class="fa fa-instagram"></i></a>
-                            </div>
-                        </div>
-                    </div>
-        </section>
-        <!-- End Footer -->
+    <!-- Footer -->
+    <section id="footer">
+        <div class="row">
+            <div class="blogo col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                <a href="#"><img src="img/footer-logo.png" id="footer-logo" alt="Tangkolak Footer Logo"></a>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 cr-tkjb">
+                <div class="cpt text-light text-center">
+                    <p>© 2021 - Wisata Bahari Tangkolak</p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                <div class="ftaw text-light text-center">
+                    <a href="#" target="_blank"><i class="fa fa-phone-square-alt"></i></a>
+                    <a href="#" target="_blank"><i class="fas fa-envelope-square"></i></a>
+                    <a href="#" target="_blank"><i class="fa fa-facebook-square"></i></a>
+                    <a href="#" target="_blank"><i class="fa fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Footer -->
 
     <!-- Bootstrap JS & JQuery -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -341,4 +284,5 @@ $rowKonten = $stmt->fetchAll();
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </body>
+
 </html>

@@ -6,19 +6,31 @@ if (!($_SESSION['level_user'] == 3)) {
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
+
 if (isset($_POST['submit'])) {
     if ($_POST['submit'] == 'Simpan') {
-        $syarat_ketentuan = $_POST['syarat_ketentuan'];
+        $judul_informasi = $_POST['judul_Informasi'];
+        $isi_konten = $_POST['isi_konten'];
 
-        //Insert t_wisata
-        $sqlpaketwisata = "INSERT INTO `t_penjelasan` (`penjelasan`) VALUES ( '$syarat_ketentuan')";
-
-
+        // var_dump($_POST, $_FILES);
+        // die;
+        $randomstring       = substr(md5(rand()), 0, 7);
+        //Image upload
+        if ($_FILES["image_uploads"]["size"] == 0) {
+            $foto_kegiatan = "images/image_default.jpg";
+        } else if (isset($_FILES['image_uploads'])) {
+            $target_dir  = "images/foto_konten/kegiatan/";
+            $foto_kegiatan = $target_dir . 'INF_' . $randomstring . '.jpg';
+            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_kegiatan);
+        }
+        //---image upload end
+        //Insert t_konten_section
+        $sqlpaketwisata = "INSERT INTO `t_konten_tangkolak_section` (judul, isi_konten, gambar) VALUES (:judul, :isi_konten, :gambar)";
         $stmt = $pdo->prepare($sqlpaketwisata);
         $stmt->execute([
-            // 'sdh_biaya' => $fasilitas_masuk,
-            // 'blm_biaya' => $fasilitas_luar_biaya,
-            // 'sk' => $syarat_ketentuan
+            'judul' => $judul_informasi,
+            'isi_konten' => $isi_konten,
+            'gambar' => $foto_kegiatan
         ]);
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
@@ -28,7 +40,7 @@ if (isset($_POST['submit'])) {
             header("Location: kelola_konten_penjelasan.php?status=addsuccess");
         }
     } else {
-        echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
+        // echo '<script>alert("Harap pilih paket wisata yang akan ditambahkan")</script>';
     }
 }
 ?>
@@ -121,15 +133,63 @@ if (isset($_POST['submit'])) {
 
                     <form action="" enctype="multipart/form-data" method="POST">
                         <div class="form-group pb-3">
-                            <label for="syarat_ketentuan">
-                                <h5><b>Penejelasan Wisata:</b></h5>
-                                <p class="small">Berikan Tulisan yang menarik wisatawan untuk berwisata</p>
-                            </label>
 
-                            <textarea id="syarat_ketentuan" name="syarat_ketentuan" required></textarea>
-                            <script>
-                                $('#syarat_ketentuan').trumbowyg();
-                            </script>
+
+                            <div class='form-group' id='fotowilayah'>
+                                <div>
+                                    <label for='image_uploads'>Upload Foto Informasi</label>
+                                    <input type='file' class='form-control' required id='image_uploads' name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <img id="preview" width="100px" src="#" alt="Preview Gambar" />
+
+                                <script>
+                                    window.onload = function() {
+                                        document.getElementById('preview').style.display = 'none';
+                                    };
+
+                                    function readURL(input) {
+                                        //Validasi Size Upload Image
+                                        var uploadField = document.getElementById("image_uploads");
+
+                                        uploadField.onchange = function() {
+                                            if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                                alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                                this.value = "";
+                                            };
+                                        };
+
+                                        if (input.files && input.files[0]) {
+                                            var reader = new FileReader();
+                                            reader.onload = function(e) {
+                                                $('#preview')
+                                                    .attr('src', e.target.result)
+                                                    .width(200);
+                                                document.getElementById('preview').style.display = 'block';
+                                            };
+                                            reader.readAsDataURL(input.files[0]);
+                                        }
+                                    }
+                                </script>
+                            </div>
+                            <div class="form-group">
+                                <label for="judul_Informasi">Judul Informasi</label>
+                                <input type="text" id="judul_Informasi" name="judul_Informasi" class="form-control" placeholder="Judul Informasi" required>
+                            </div>
+                            <label for="isi_konten">
+                                <h5><b>Informasi Di Tangkolak:</b></h5>
+                                <p class="small">Berikan Informasi yang menarik wisatawan untuk berwisata</p>
+                            </label>
+                            <div id="count">
+                                <span id="current_count">0</span>
+                                <span id="maximum_count">/ 1200</span>
+                            </div>
+                            <textarea id="isi_konten" name="isi_konten" maxlength="1200" required rows="10" cols="100 " class="form-control"></textarea>
+                            <!-- <script>
+                                $('#isi_konten').trumbowyg();
+                            </script> -->
                         </div>
 
                         <p align="center">
@@ -170,11 +230,6 @@ if (isset($_POST['submit'])) {
         <script src="dist/js/adminlte.js"></script>
 
         <!-- jQuery library -->
-        <!-- Pembatasan Date Pemesanan -->
-        <script>
-            var today = new Date().toISOString().split('T')[0];
-            document.getElementsByName("tgl_pemesanan")[0].setAttribute('min', today);
-        </script>
         <script>
             $(document).ready(function() {
                 //group add limit
@@ -202,9 +257,20 @@ if (isset($_POST['submit'])) {
 </body>
 
 </html>
-;
-});
+
+<script type="text/javascript">
+    $('textarea').keyup(function() {
+        var characterCount = $(this).val().length,
+            current_count = $('#current_count'),
+            maximum_count = $('#maximum_count'),
+            count = $('#count');
+        current_count.text(characterCount);
+        if (current_count == maximum_count) {
+            alert('Sudah Melebihi Batas Input');
+        }
+    });
 </script>
+
 </div>
 <!-- Import Trumbowyg font size JS at the end of <body>... -->
 <script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>

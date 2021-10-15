@@ -6,7 +6,7 @@ if (!($_SESSION['level_user'] == 3)) {
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-$sqlviewtitik = 'SELECT * from t_penjelasan';
+$sqlviewtitik = 'SELECT * from t_konten_tangkolak_section';
 $stmt = $pdo->prepare($sqlviewtitik);
 $stmt->execute();
 $row = $stmt->fetchAll();
@@ -17,7 +17,7 @@ $row = $stmt->fetchAll();
 <html lang="en">
 
 <head>
-    <title>Kelola Detail Titik - GoKarang</title>
+    <title>Kelola Konten website Tangkolak - GoKarang</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -106,11 +106,11 @@ $row = $stmt->fetchAll();
                             <p class="small">Beri Penjelasan Wisata Untuk Para Calon Wisatawan Di Wisata Anda</p>
                         </div>
                         <div class="col">
-                            <?php if ($row == null) {
-                            ?>
+                            <?php
+                            $countrow = count($row);
+                            if ($countrow < 3) : ?>
                                 <a class="btn btn-primary float-right" href="input_konten_penjelasan.php" role="button">Input Data Baru (+)</a>
-                            <?php }
-                            ?>
+                            <?php endif ?>
                         </div>
                     </div>
                 </div>
@@ -125,7 +125,8 @@ $row = $stmt->fetchAll();
                         <thead>
                             <tr>
                                 <!-- <th scope="col">ID Konten</th> -->
-                                <th scope="col" colspan="4">Penjelasan Wisata</th>
+                                <th scope="col" colspan="2">Judul Informasi</th>
+                                <th scope="col" colspan="2">Informasi Di Tangkolak</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                         </thead>
@@ -134,9 +135,12 @@ $row = $stmt->fetchAll();
                             ?>
                                 <tr>
                                     <!-- <th scope="row"><?= $rowitem->id_konten ?></th> -->
-                                    <td class="max-length2" colspan="4"><?= $rowitem->penjelasan ?></td>
+                                    <td class="max-length2" colspan="2"><?= $rowitem->judul ?></td>
+                                    <div class="max-length">
+                                        <td colspan="2"><?= $rowitem->isi_konten ?></td>
+                                    </div>
                                     <td>
-                                        <a href="edit_konten_penjelasan.php?id_titik=<?= $rowitem->id_penjelasan ?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                                        <a href="edit_konten_penjelasan.php?id_konten=<?= $rowitem->id_konten ?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                     </td>
                                 </tr>
                             <?php } ?>

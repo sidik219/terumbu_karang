@@ -28,9 +28,9 @@ foreach ($donasiwisata as $donasi) {
 
 // Untuk User Donatur
 if (isset($_POST['submit'])) {
-    if($_POST['submit'] == 'Simpan'){
-          $_SESSION['data_donasi'] = $_POST['tb_deskripsi_donasi'];
-          header("Location:review_donasi_proses.php?status=addsuccess");
+    if ($_POST['submit'] == 'Simpan') {
+        $_SESSION['data_donasi'] = $_POST['tb_deskripsi_donasi'];
+        header("Location:review_donasi_proses.php?status=addsuccess");
     }
 }
 
@@ -40,6 +40,9 @@ if (isset($_POST['submitin'])) {
     $_SESSION['data_donasi'] = $_POST['tb_deskripsi_donasi'];
     $sisa = ($rowlokasi->saldo_donasi_wisata + $sum_donasi) - $_POST['total_pilih'];
     // var_dump($rowlokasi->saldo_donasi_wisata, $sum_donasi, $_POST['total_pilih'], $sisa);
+    // die;
+    $_SESSION['prodid'] = $_POST['prodid'];
+    // var_dump($_SESSION);
     // die;
 
     $sqlviewlokasi = 'UPDATE t_lokasi
@@ -52,6 +55,7 @@ if (isset($_POST['submitin'])) {
     ]);
     $rowlokasi = $stmt->fetch();
     // die;
+
     $idpilih = $_POST['prodid'];
     $hitung = count($_POST['prodid']);
     for ($x = 0; $x < $hitung; $x++) {

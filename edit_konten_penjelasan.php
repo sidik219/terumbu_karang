@@ -5,20 +5,65 @@ if (!($_SESSION['level_user'] == 3)) {
 }
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
-$id_konten = $_GET['id_titik'];
-$sqlviewtitik = 'SELECT * from t_penjelasan';
-$stmt = $pdo->prepare($sqlviewtitik);
-$stmt->execute();
-$row = $stmt->fetchAll();
+$id_konten = $_GET['id_konten'];
+$defaultpic = "img/image_default.jpg";
+
+$sqleditkegiatan = 'SELECT * FROM t_konten_tangkolak_section
+                    WHERE t_konten_tangkolak_section.id_konten = :id_konten';
+
+$stmt = $pdo->prepare($sqleditkegiatan);
+$stmt->execute(['id_konten' => $id_konten]);
+$kegiatan = $stmt->fetch();
+// var_dump($row);
+// die;
+
+// $sqlviewtitik = 'SELECT * FROM t_konten_tangkolak_section 
+// WHERE t_konten_tangkolak_section.id_konten = :id_konten';
+// $stmt = $pdo->prepare($sqlviewtitik);
+// $stmt->execute(['id_konten' => $id_konten]);
+// $rowkonten = $stmt->fetchAll();
+// var_dump($rowkonten);
+// die;
 
 if (isset($_POST['submit'])) {
-    $syarat_ketentuan = $_POST['syarat_ketentuan'];
-    $sqlkonten = " UPDATE t_penjelasan SET penjelasan =' $syarat_ketentuan ' where t_penjelasan.id_penjelasan = $id_konten ";
+    $judul = $_POST['judul'];
+    $isi_konten = $_POST['informasi'];
+    $randomstring       = substr(md5(rand()), 0, 7);
+    // $gambar = $_POST['gambar'];
+    // var_dump($_POST, $_FILES);
+    // die;
+    //Image upload
+    if ($_FILES["image_uploads"]["size"] == 0) {
+        $gambar = $kegiatan->gambar;
+        $pic = "&none=";
+    } else if (isset($_FILES['image_uploads'])) {
+        if (($kegiatan->gambar == $defaultpic) || (!$kegiatan->gambar)) {
+            $target_dir  = "images/foto_konten/kegiatan/";
+            $gambar = $target_dir . 'INF_' . $randomstring . '.jpg';
+            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $gambar);
+            $pic = "&new=";
+        } else if (isset($kegiatan->gambar)) {
+            $gambar = $kegiatan->gambar;
+            unlink($kegiatan->gambar);
+            move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $kegiatan->gambar);
+            $pic = "&replace=";
+        }
+    }
+    //---image upload end
+    $sqlkonten = "UPDATE t_konten_tangkolak_section SET isi_konten = :isi_konten,
+    judul = :judul, gambar= :gambar
+    WHERE t_konten_tangkolak_section.id_konten = :id_konten";
     $stmt = $pdo->prepare($sqlkonten);
-    $stmt->execute();
+    $stmt->execute([
+        'judul' => $judul,
+        'isi_konten' => $isi_konten,
+        'id_konten' => $id_konten,
+        'gambar' => $gambar
+    ]);
+    // $stmt->execute();
     $affectedrows = $stmt->rowCount();
     if ($affectedrows == '0') {
-        header("Location: kelola_konten_penjelasan.php?status=nochange");
+        header("Location: kelola_konten_penjelasan.php?status=updatesuccess");
     } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
         header("Location: kelola_konten_penjelasan.php?status=updatesuccess");
@@ -46,6 +91,7 @@ if (isset($_POST['submit'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="js/trumbowyg/dist/ui/trumbowyg.min.css">
     <script src="js/trumbowyg/dist/trumbowyg.js"></script>
+    <script src="js/trumbowyg/dist/trumbowyg.min.js"></script>
     <!-- Favicon -->
     <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
 
@@ -101,7 +147,7 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="kelola_konten_master.php">
+                    <a class="btn btn-outline-primary" href="kelola_konten_penjelasan.php">
                         < Kembali</a><br><br>
                             <h4><span class="align-middle font-weight-bold">Edit Kelola Konten</span></h4>
                             <p>Halaman Input Ini untuk pada halaman depan website</p>
@@ -114,21 +160,90 @@ if (isset($_POST['submit'])) {
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
-                        <?php foreach ($row as $row) : ?>
-                            <div class="form-group pb-3">
-                                <label for="syarat_ketentuan">
-                                    <h5><b>Penejelasan Wisata:</b></h5>
-                                </label>
-                                <textarea id="syarat_ketentuan" name="syarat_ketentuan" required><?= $row->penjelasan; ?></textarea>
-                                <script>
-                                    $('#syarat_ketentuan').trumbowyg();
-                                </script>
+
+                        <div class="form-group">
+                            <label for="judul">Judul Informasi</label>
+                            <input type="text" id="judul" name="judul" value="<?= $kegiatan->judul ?>" class="form-control" placeholder="Judul Konten" required>
+                        </div>
+
+                        <div id="count">
+                            <span id="current_count">0</span>
+                            <span id="maximum_count">/ 1200</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="informasi">Deskripsi Informasi</label>
+                            <textarea id="informasi" maxlength="1200" required rows="10" cols="100 " class="form-control" name="informasi" class="form-control" placeholder="Deskripsi Konten" required><?= $kegiatan->isi_konten; ?></textarea>
+                            <!-- <script>
+                                $('#informasi').trumbowyg();
+                            </script> -->
+                        </div>
+
+                        <div class='form-group'>
+                            <div>
+                                <label for='image_uploads'>Upload Foto Informasi</label>
+                                <input type='file' class='form-control' id='image_uploads' name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
                             </div>
-                        <?php endforeach ?>
+                        </div>
+
+                        <div class="form-group">
+                            <img id="preview" src="#" width="100px" alt="Preview Gambar" />
+                            <a href="<?= $kegiatan->gambar ?>" data-toggle="lightbox">
+                                <img class="img-fluid" id="oldpic" src="<?= $kegiatan->gambar ?>" width="20%" <?php if ($kegiatan->gambar == NULL) echo "style='display: none;'"; ?>></a>
+                            <br>
+
+                            <small class="text-muted">
+                                <?php if ($kegiatan->gambar == NULL) {
+                                    echo "Bukti transfer belum diupload<br>Format .jpg .jpeg .png";
+                                } else {
+                                    echo "Klik gambar untuk memperbesar";
+                                }
+
+                                ?>
+                            </small>
+
+                            <script>
+                                const actualBtn = document.getElementById('image_uploads');
+                                const fileChosen = document.getElementById('file-input-label');
+
+                                actualBtn.addEventListener('change', function() {
+                                    fileChosen.innerHTML = '<b>File dipilih :</b> ' + this.files[0].name
+                                })
+                                window.onload = function() {
+                                    document.getElementById('preview').style.display = 'none';
+                                };
+
+                                function readURL(input) {
+                                    //Validasi Size Upload Image
+                                    var uploadField = document.getElementById("image_uploads");
+
+                                    uploadField.onchange = function() {
+                                        if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                            alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                            this.value = "";
+                                        };
+                                    };
+
+                                    if (input.files && input.files[0]) {
+                                        var reader = new FileReader();
+                                        document.getElementById('oldpic').style.display = 'none';
+                                        reader.onload = function(e) {
+                                            $('#preview')
+                                                .attr('src', e.target.result)
+                                                .width(200);
+                                            document.getElementById('preview').style.display = 'block';
+                                        };
+
+                                        reader.readAsDataURL(input.files[0]);
+                                    }
+                                }
+                            </script>
+                        </div>
+
                         <p align="center">
                             <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button>
                         </p>
-                    </form>
+                    </form><br><br>
+                </div>
             </section>
             <!-- /.Left col -->
         </div>
@@ -163,8 +278,16 @@ if (isset($_POST['submit'])) {
         <!-- jQuery library -->
         <!-- Pembatasan Date Pemesanan -->
         <script>
-            var today = new Date().toISOString().split('T')[0];
-            document.getElementsByName("tgl_pemesanan")[0].setAttribute('min', today);
+            $('textarea').keyup(function() {
+                var characterCount = $(this).val().length,
+                    current_count = $('#current_count'),
+                    maximum_count = $('#maximum_count'),
+                    count = $('#count');
+                current_count.text(characterCount);
+                if (current_count == maximum_count) {
+                    alert('Sudah Melebihi Batas Input');
+                }
+            });
         </script>
         <script>
             $(document).ready(function() {

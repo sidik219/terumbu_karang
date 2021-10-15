@@ -100,15 +100,17 @@ include 'hak_akses.php';
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 col-lg-4">
-                                        <div class="card m-3 dashboard-home">
-                                            <!-- <img class="card-img-top mb-3" src="dist/img/briefcase.jpg" alt="Card image cap" id="img-cap"> -->
-                                            <i class="fas fa-handshake fa-7x py-4" style="color: #244276;"></i>
-                                            <div class="card-block">
-                                                <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='kelola_konten_ketentuan.php';">Kelola Ketentuan Wisata</button>
+                                    <?php if ($_SESSION['level_user'] == '2') : ?>
+                                        <div class="col-md-12 col-lg-4">
+                                            <div class="card m-3 dashboard-home">
+                                                <!-- <img class="card-img-top mb-3" src="dist/img/briefcase.jpg" alt="Card image cap" id="img-cap"> -->
+                                                <i class="fas fa-handshake fa-7x py-4" style="color: #244276;"></i>
+                                                <div class="card-block">
+                                                    <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='kelola_konten_ketentuan.php';">Kelola Ketentuan Wisata</button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    <?php endif ?>
                                     <div class="col-md-12 col-lg-4">
                                         <div class="card m-3 dashboard-home">
                                             <!-- <img class="card-img-top mb-3" src="dist/img/briefcase.jpg" alt="Card image cap" id="img-cap"> -->
