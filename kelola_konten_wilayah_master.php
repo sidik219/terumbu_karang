@@ -1,6 +1,8 @@
 <?php include 'build/config/connection.php';
 session_start();
-
+if (!($_SESSION['level_user'] == 2)) {
+    header('location: login.php?status=restrictedaccess');
+}
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 ?>
@@ -87,35 +89,35 @@ include 'hak_akses.php';
                         <div class="container">
                             <!-- <div class="card-group"> -->
                             <div class="text-center">
-                                <h2>Kelola Website Bahari Tangkolak</h2>
+                                <h2>Kelola Website GoKaran</h2>
                             </div>
                             <div class="row d-flex justify-content-center text-center p-5 ">
-                                <?php if ($_SESSION['level_user'] == '2' || $_SESSION['level_user'] == '3') { ?>
-                                    <div class="col-md-12 col-lg-4">
-                                        <div class="card m-3 dashboard-home">
-                                            <!-- <img class="card-img-top mb-3" src="dist/img/konservasi.jpg" alt="Card image cap" id="img-cap"> -->
 
-                                            <i class="fas fa-images fa-7x py-4 " style="color: #244276;"></i>
-                                            <div class="card-block">
-                                                <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='kelola_konten_tangkolak.php';">Kelola Banner Website</button>
-                                            </div>
+                                <div class="col-md-12 col-lg-4">
+                                    <div class="card m-3 dashboard-home">
+                                        <!-- <img class="card-img-top mb-3" src="dist/img/konservasi.jpg" alt="Card image cap" id="img-cap"> -->
+
+                                        <i class="fas fa-images fa-7x py-4 " style="color: #244276;"></i>
+                                        <div class="card-block">
+                                            <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='kelola_konten.php';">Kelola Banner Website</button>
                                         </div>
                                     </div>
-                                    <?php if ($_SESSION['level_user'] == '2') : ?>
-                                        <div class="col-md-12 col-lg-4">
-                                            <div class="card m-3 dashboard-home">
-                                                <!-- <img class="card-img-top mb-3" src="dist/img/briefcase.jpg" alt="Card image cap" id="img-cap"> -->
-                                                <i class="fas fa-handshake fa-7x py-4" style="color: #244276;"></i>
-                                                <div class="card-block">
-                                                    <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='kelola_konten_ketentuan.php';">Kelola Ketentuan Wisata</button>
-                                                    <p class="small">Untuk Halaman Go Karang</p>
-                                                </div>
-                                            </div>
+                                </div>
+
+                                <div class="col-md-12 col-lg-4">
+                                    <div class="card m-3 dashboard-home">
+
+                                        <i class="fas fa-handshake fa-7x py-4" style="color: #244276;"></i>
+                                        <div class="card-block">
+                                            <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='kelola_konten_ketentuan.php';">Kelola Ketentuan Wisata</button>
+                                            <!-- <p class="small">Untuk Halaman Go Karang</p> -->
                                         </div>
-                                    <?php endif ?>
-                                    <div class="col-md-12 col-lg-4">
+                                    </div>
+                                </div>
+
+                                <!-- <div class="col-md-12 col-lg-4">
                                         <div class="card m-3 dashboard-home">
-                                            <!-- <img class="card-img-top mb-3" src="dist/img/briefcase.jpg" alt="Card image cap" id="img-cap"> -->
+
                                             <i class="far fa-newspaper fa-7x py-4" style="color: #244276;"></i>
                                             <div class="card-block">
                                                 <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='kelola_konten_kegiatan.php';">Kelola Berita Kegiatan</button>
@@ -130,8 +132,8 @@ include 'hak_akses.php';
                                                 <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='kelola_konten_penjelasan.php';">Kelola Informasi Tangkolak</button>
                                             </div>
                                         </div>
-                                    </div>
-                                <?php } ?>
+                                    </div> -->
+
                             </div>
                             <!-- </div> -->
                         </div>
