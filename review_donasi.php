@@ -4,6 +4,9 @@ session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
+// var_dump($_SESSION);
+// die;
+
 $sqlviewlokasi = 'SELECT * FROM t_lokasi
                 WHERE id_lokasi = :id_lokasi';
 $stmt = $pdo->prepare($sqlviewlokasi);
@@ -30,6 +33,9 @@ foreach ($donasiwisata as $donasi) {
 if (isset($_POST['submit'])) {
     if ($_POST['submit'] == 'Simpan') {
         $_SESSION['data_donasi'] = $_POST['tb_deskripsi_donasi'];
+        // var_dump($_SESSION['data_donasi']);
+        // // var_dump($_SESSION['total_pilih']);
+        // die;
         header("Location:review_donasi_proses.php?status=addsuccess");
     }
 }
@@ -38,6 +44,9 @@ if (isset($_POST['submit'])) {
 if (isset($_POST['submitin'])) {
     // if ($_POST['submit'] == 'Simpan') {
     $_SESSION['data_donasi'] = $_POST['tb_deskripsi_donasi'];
+    // var_dump($_SESSION['data_donasi']);
+    // // var_dump($_SESSION['total_pilih']);
+    // die;
     $sisa = ($rowlokasi->saldo_donasi_wisata + $sum_donasi) - $_POST['total_pilih'];
     // var_dump($rowlokasi->saldo_donasi_wisata, $sum_donasi, $_POST['total_pilih'], $sisa);
     // die;
@@ -179,7 +188,7 @@ if (isset($_POST['submitin'])) {
             <section class="content">
                 <div class="container">
                     <br>
-                    <a class="btn btn-primary btn-sm btn-blue" href="#" onclick="history.back()"><i class="fas fa-angle-left"></i> Kembali Pilih</a><br>
+                    <a class="btn btn-primary btn-sm btn-blue" href="#" onclick="history.back(); sessionStorage.removeItem('keranjang_serialised')"><i class="fas fa-angle-left"></i> Kembali Pilih</a><br>
                     <?php if ($_SESSION['level_user'] == '1') : ?>
                         <h4 class="pt-3 mb-3"><span class="font-weight-bold">Review Informasi Donasi</span></h4>
                     <?php elseif ($_SESSION['level_user'] == '3') : ?>
@@ -202,9 +211,9 @@ if (isset($_POST['submitin'])) {
                                 <form action="" method="POST">
                                     <div class="mb-3">
                                         <label for="nama_donatur">Nama Pemilik Rekening</label>
-                                        <?php if ($_SESSION['level_user'] == '1') : ?>
-                                            <input type="text" class="form-control data_donatur" value="<?= $_SESSION['nama_user'] ?>" id="nama_donatur" name="nama_donatur" required>
-                                        <?php endif ?>
+
+                                        <input type="text" class="form-control data_donatur" value="<?= $_SESSION['nama_user'] ?>" id="nama_donatur" name="nama_donatur" required>
+
                                     </div>
                                     <div class="mb-3">
                                         <label for="no_rekening_donatur">Nomor Rekening</label>
@@ -301,18 +310,19 @@ if (isset($_POST['submitin'])) {
                                         <button name="submit" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4" type="submit">Buat Donasi</button>
                                 </form>
                             </div>
+
                         <?php elseif ($_SESSION['level_user'] == '3') : ?>
                             <div class="col-md-8 order-md-1 card">
                                 <h4 class="mb-3 card-header pl-0">Data Rekening Donasi Wisata</h4>
                                 <form action="" method="POST">
                                     <div class="mb-3">
                                         <label for="nama_donatur">Nama Donasi Wisata Bersama</label>
-                                        <?php if ($_SESSION['level_user'] == '3') : ?>
-                                            <input type="text" class="form-control data_donatur" value="" id="nama_donatur" name="nama_donatur" required>
-                                            <?php foreach ($donasiwisata as $donasi) { ?>
-                                                <input type="hidden" class="form-control data_donatur" value="<?= $donasi->id_donasi_wisata ?>" name="prodid[]" required>
-                                            <?php } ?>
-                                        <?php endif ?>
+
+                                        <input type="hidden" class="form-control data_donatur" value="<?= $_SESSION['username']; ?>" id="nama_donatur" name="nama_donatur" required>
+                                        <?php foreach ($donasiwisata as $donasi) { ?>
+                                            <input type="hidden" class="form-control data_donatur" value="<?= $donasi->id_donasi_wisata ?>" name="prodid[]" required>
+                                        <?php } ?>
+
                                     </div>
 
                                     <input type="hidden" name="total_pilih" id="total_pilih">
@@ -324,7 +334,7 @@ if (isset($_POST['submitin'])) {
                                         <label for="nama_bank_donatur">Nama Bank</label>
                                         <input type="text" class="form-control data_donatur" id="nama_bank_donatur" value="-">
                                     </div>
-
+                                    <input id="id_rekening" name="id_rekening_bersama" onload="updateData(this.value)" value="1" class="custom-control-input" required>
 
                                     <!-- Hidden fields for POST data -->
 
@@ -338,77 +348,34 @@ if (isset($_POST['submitin'])) {
                                         var tbno_rekening_donatur = document.getElementById('no_rekening_donatur')
                                         var tbnama_bank_donatur = document.getElementById('nama_bank_donatur')
                                         var tbdata_donatur = document.getElementsByClassName('data_donatur')
+                                        console.log(tbnama_donatur.value)
+                                        console.log(tbno_rekening_donatur.value)
+                                        console.log(tbnama_bank_donatur.value)
+                                        console.log(tbdata_donatur)
 
-                                        for (i = 0; i < tbdata_donatur.length; i++) {
-                                            tbdata_donatur[i].addEventListener('load', updateData);
-                                            tbdata_donatur[i].addEventListener('change', updateData);
-                                            tbdata_donatur[i].addEventListener('keyup', updateData);
-                                        }
+                                        // for (i = 0; i < tbdata_donatur.length; i++) {
+                                        //     tbdata_donatur[i].addEventListener('load', updateData);
+                                        //     tbdata_donatur[i].addEventListener('change', updateData);
+                                        //     tbdata_donatur[i].addEventListener('keyup', updateData);
+                                        // }
 
 
-                                        function updateData(e) {
-                                            keranjang["nama_donatur"] = tbnama_donatur.value
-                                            keranjang["no_rekening_donatur"] = tbno_rekening_donatur.value
-                                            keranjang["nama_bank_donatur"] = tbnama_bank_donatur.value
-                                            keranjang["id_user"] = 1;
-                                            keranjang["id_rekening_bersama"] = e
-                                            document.getElementById('tb_deskripsi_donasi').value = JSON.stringify(keranjang)
-                                        }
-
+                                        // function updateData(e) {
+                                        keranjang["nama_donatur"] = tbnama_donatur.value
+                                        keranjang["no_rekening_donatur"] = tbno_rekening_donatur.value
+                                        keranjang["nama_bank_donatur"] = tbnama_bank_donatur.value
+                                        keranjang["id_user"] = 1;
+                                        keranjang["id_rekening_bersama"] = 1
+                                        document.getElementById('tb_deskripsi_donasi').value = JSON.stringify(keranjang)
+                                        // }
+                                        // console.log(tb_deskripsi_donasi.value)
+                                        console.log(tbdata_donatur.length)
                                         document.getElementById('tb_id_lokasi').value = keranjang.id_lokasi
                                         document.getElementById('tb_nominal').value = keranjang.nominal
 
-                                        //console.log(document.getElementById('tb_deskripsi_donasi').value)
+                                        console.log(document.getElementById('tb_deskripsi_donasi').value = JSON.stringify(keranjang))
                                     </script>
-
-                                    <div class="" style="width:100%;">
-                                        <div class="">
-                                            <h4 class="card-header mb-2 pl-0">Metode Pembayaran</h4>
-                                            <span class="">Pilihan untuk lokasi</span> <span class="text-info font-weight-bolder"><?= $rowlokasi->nama_lokasi ?> : </span>
-
-
-                                            <?php foreach ($rowrekening as $rekening) { ?>
-                                                <div class="d-block my-4">
-                                                    <div class="rounded p-sm-4 pt-2 shadow-sm border">
-                                                        <div class="custom-control custom-radio">
-                                                            <input id="id_rekening<?= $rekening->id_rekening_bank ?>" onchange="updateData(this.value)" name="id_rekening_bersama" type="radio" value="<?= $rekening->id_rekening_bank ?>" class="custom-control-input" required>
-                                                            <label class="custom-control-label " for="id_rekening<?= $rekening->id_rekening_bank ?>">Bank Transfer - <span class=""><?= $rekening->nama_bank ?> (Konfirmasi Manual)</label>
-                                                        </div>
-
-                                                        <hr class="mb-1" />
-                                                        <div class="pl-2">
-                                                            <div class="row">
-                                                                <div class="col">
-                                                                    <span class="font-weight-bold">Nama Rekening Pengelola
-                                                                </div>
-                                                                <div class="col-lg-8 mb-2">
-                                                                    <span class=""><?= $rekening->nama_pemilik_rekening ?></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col">
-                                                                    <span class="font-weight-bold">Nomor Rekening Pengelola </span>
-                                                                </div>
-                                                                <div class="col-lg-8  mb-2">
-                                                                    <span class=""><?= $rekening->nomor_rekening ?></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row mb-2">
-                                                                <div class="col">
-                                                                    <span class="font-weight-bold">Bank Pengelola </span>
-                                                                </div>
-                                                                <div class="col-lg-8  mb-2">
-                                                                    <span class=""><?= $rekening->nama_bank ?></span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            <?php } ?>
-                                            <p class="text-muted"><i class="fas fa-info-circle"></i> Harap upload bukti transfer di halaman "Donasi Saya" setelah menekan tombol Buat Donasi.</p>
-                                        </div>
-
-                                        <button name="submitin" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4" type="submit">Buat Donasi</button>
+                                    <button name="submitin" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4" type="submit">Buat Donasi</button>
                                 </form>
                             </div>
                         <?php endif ?>
@@ -543,6 +510,7 @@ if (isset($_POST['submitin'])) {
         keranjangancestor.append(listtotalrow)
         // var tampiltotal = `<input type="hidden" value="${keranjang.nominal}" name="total_pilih">`
         document.getElementById('total_pilih').value = keranjang.nominal
+        // document.getElementById('total_pilih_tampil').value = keranjang.nominal
         // total_pilih.append(tampiltotal)
 
         // var badgejumlah = document.getElementById("badge-jumlah")
