@@ -27,6 +27,9 @@ AND t_donasi_wisata.id_donasi IS NOT NULL';
 $stmt = $pdo->prepare($sqlviewdonasiwisata);
 $stmt->execute(['id_user' => $id_user]);
 $rowlihat = $stmt->fetchAll();
+// var_dump($rowlihat);
+// count($rowlihat);
+// die;
 
 function ageCalculator($dob)
 {
@@ -229,7 +232,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                         }
                     }
 
-                    if (count($row) == 0) { ?>
+                    if (count($row) == 0 && count($rowlihat) == 0) { ?>
                         <div class="row text-center">
                             <div class="col">
                                 <img src="images/gs-terumbu-donasi-kosong.png" class="" width="25%" />

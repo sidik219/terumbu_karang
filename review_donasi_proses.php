@@ -3,6 +3,7 @@ include 'build/config/connection.php';
 session_start();
 if (isset($_SESSION['data_donasi'])) {
 
+  $defaultpic = "images/image_default.jpg";
   $keranjang =  json_decode($_SESSION['data_donasi']);
 
   $id_user = $_SESSION['id_user'];
@@ -23,6 +24,7 @@ if (isset($_SESSION['data_donasi'])) {
     $id_status_donasi = 1;
   } elseif ($_SESSION['level_user'] == '3') {
     $id_status_donasi = 3;
+    $id_status_pengadaan_bibit = 2;
   }
   $tanggal_donasi = date('Y-m-d H:i:s', time());
 
@@ -31,19 +33,35 @@ if (isset($_SESSION['data_donasi'])) {
   $stmt->execute(['id_rekening_bank' => $id_rekening_bersama]);
   $rekening = $stmt->fetch();
 
-  $sqlinsertdonasi = "INSERT INTO t_donasi
-        (id_user, nominal, deskripsi_donasi, id_lokasi, id_status_donasi, pesan, nama_donatur, bank_donatur, nomor_rekening_donatur, tanggal_donasi, update_terakhir, id_rekening_bersama)
-        VALUES (:id_user, :nominal, :deskripsi_donasi, :id_lokasi, :id_status_donasi,
-                :pesan, :nama_donatur, :bank_donatur, :nomor_rekening_donatur, :tanggal_donasi, :update_terakhir, :id_rekening_bersama)
-    ";
+  if ($_SESSION['level_user'] == '1') {
+    $sqlinsertdonasi = "INSERT INTO t_donasi
+            (id_user, nominal, deskripsi_donasi, id_lokasi, id_status_donasi, pesan, nama_donatur, bank_donatur, nomor_rekening_donatur, tanggal_donasi, update_terakhir, id_rekening_bersama)
+            VALUES (:id_user, :nominal, :deskripsi_donasi, :id_lokasi, :id_status_donasi,
+                    :pesan, :nama_donatur, :bank_donatur, :nomor_rekening_donatur, :tanggal_donasi, :update_terakhir, :id_rekening_bersama,:id)
+        ";
 
-  $stmt = $pdo->prepare($sqlinsertdonasi);
-  $stmt->execute([
-    'id_user' => $id_user, 'nominal' => $nominal, 'deskripsi_donasi' => $deskripsi_donasi,
-    'id_lokasi' => $id_lokasi, 'id_status_donasi' => $id_status_donasi, 'pesan' => $pesan,
-    'nama_donatur' => $nama_donatur, 'bank_donatur' => $bank_donatur, 'nomor_rekening_donatur' => $nomor_rekening_donatur,
-    'tanggal_donasi' => $tanggal_donasi, 'update_terakhir' => $tanggal_donasi, 'id_rekening_bersama' => $id_rekening_bersama
-  ]);
+    $stmt = $pdo->prepare($sqlinsertdonasi);
+    $stmt->execute([
+      'id_user' => $id_user, 'nominal' => $nominal, 'deskripsi_donasi' => $deskripsi_donasi,
+      'id_lokasi' => $id_lokasi, 'id_status_donasi' => $id_status_donasi, 'pesan' => $pesan,
+      'nama_donatur' => $nama_donatur, 'bank_donatur' => $bank_donatur, 'nomor_rekening_donatur' => $nomor_rekening_donatur,
+      'tanggal_donasi' => $tanggal_donasi, 'update_terakhir' => $tanggal_donasi, 'id_rekening_bersama' => $id_rekening_bersama
+    ]);
+  } elseif ($_SESSION['level_user'] == '3') {
+
+    $sqlinsertdonasi = "INSERT INTO t_donasi
+    (id_user, nominal, bukti_donasi,deskripsi_donasi, id_lokasi, id_status_donasi, pesan, nama_donatur, bank_donatur, nomor_rekening_donatur, tanggal_donasi, update_terakhir, id_rekening_bersama, id_status_pengadaan_bibit	)
+    VALUES (:id_user, :nominal, :bukti_donasi, :deskripsi_donasi, :id_lokasi, :id_status_donasi,
+            :pesan, :nama_donatur, :bank_donatur, :nomor_rekening_donatur, :tanggal_donasi, :update_terakhir, :id_rekening_bersama, :id_status_pengadaan_bibit	)";
+
+    $stmt = $pdo->prepare($sqlinsertdonasi);
+    $stmt->execute([
+      'id_user' => $id_user, 'nominal' => $nominal, 'bukti_donasi' => $defaultpic, 'deskripsi_donasi' => $deskripsi_donasi,
+      'id_lokasi' => $id_lokasi, 'id_status_donasi' => $id_status_donasi, 'pesan' => $pesan,
+      'nama_donatur' => $nama_donatur, 'bank_donatur' => $bank_donatur, 'nomor_rekening_donatur' => $nomor_rekening_donatur,
+      'tanggal_donasi' => $tanggal_donasi, 'update_terakhir' => $tanggal_donasi, 'id_rekening_bersama' => $id_rekening_bersama, 'id_status_pengadaan_bibit' => $id_status_pengadaan_bibit
+    ]);
+  }
 
   $affectedrows = $stmt->rowCount();
   if ($affectedrows == '0') {

@@ -328,11 +328,11 @@ if (isset($_POST['submitin'])) {
                                     <input type="hidden" name="total_pilih" id="total_pilih">
                                     <div class="mb-3" style="display: none;">
                                         <label for="no_rekening_donatur">Nomor Rekening</label>
-                                        <input type="hidden" class="form-control data_donatur" id="no_rekening_donatur" value="0">
+                                        <input type="hidden" class="form-control data_donatur" id="no_rekening_donatur" value="No Rekening Bersama">
                                     </div>
                                     <div class="mb-3" style="display: none;">
                                         <label for="nama_bank_donatur">Nama Bank</label>
-                                        <input type="text" class="form-control data_donatur" id="nama_bank_donatur" value="-">
+                                        <input type="text" class="form-control data_donatur" id="nama_bank_donatur" value="Bank Rekening Bersama">
                                     </div>
                                     <input id="id_rekening" name="id_rekening_bersama" onload="updateData(this.value)" value="1" class="custom-control-input" required>
 
