@@ -91,17 +91,15 @@ if (isset($_POST['submit'])) {
 if (isset($_POST['submitin'])) {
     // var_dump($_POST);
     // die;
-    if (!$_POST['prodid'] == null) {
-        $idpilih = $_POST['prodid'];
-        $hitung = count($_POST['prodid']);
-        for ($x = 0; $x < $hitung; $x++) {
-            $record = $idpilih[$x];
-            $sqlreservasi = "UPDATE t_donasi_wisata
+    $idpilih = $_POST['prodid'];
+    $hitung = count($_POST['prodid']);
+    for ($x = 0; $x < $hitung; $x++) {
+        $record = $idpilih[$x];
+        $sqlreservasi = "UPDATE t_donasi_wisata
         SET status_donasi = 'Terambil'
         WHERE id_donasi_wisata = $record";
-            $stmt = $pdo->prepare($sqlreservasi);
-            $stmt->execute();
-        }
+        $stmt = $pdo->prepare($sqlreservasi);
+        $stmt->execute();
     }
     // header("Refresh:0;");
     header("location: pilih_terumbu_karang.php?status=terambil&id_lokasi=$id_lokasi");
@@ -237,85 +235,85 @@ if (isset($_POST['submitin'])) {
                     </div>
                     <!-- tabel data belum terambil -->
                     <div id="photo">
-                        <form action="" method="POST" id="ok">
-                            <table class="table table-striped table-responsive-sm">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Nama Wisatawan</th>
-                                        <th scope="col">Paket Wisata</th>
-                                        <th scope="col">Donasi</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <div class="batch-donasi">
-                                        <?php
-                                        $sum_donasi = 0;
-                                        foreach ($row as $donasi) {
-                                            $sum_donasi += $donasi->donasi;
-                                        ?>
-                                            <tr class="border rounded p-1 batch-donasi ">
-                                                <td><?= $donasi->nama_user ?><input type="hidden" name="user" value="<?= $donasi->nama_user ?>"></td>
-                                                <td><?= $donasi->nama_paket_wisata ?><input type="hidden" name="namapaket" value="<?= $donasi->nama_paket_wisata ?>"></td>
-                                                <td><?= $donasi->donasi ?><input type="hidden" name="donasi" value="<?= $donasi->donasi ?>"></td>
-                                                <td><?= $donasi->status_donasi ?><input type="hidden" name="statusdonasi" value="<?= $donasi->status_donasi ?>"></td>
-                                                <!-- <td><button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus-circle"></i></button></td> -->
-                                                <!-- <td class="pl-4"><input type="checkbox" name="prodid[]" onchange="keklik()" value=""></td> -->
-                                                <td>
-                                                    <label class="w-checkbox">
-                                                        <div class="w-checkbox-input w-checkbox-input--inputType-custom hack42-checkbox"></div>
-                                                        <input type="checkbox" id="checkbox" name="prodid[]" data-name="Checkbox" add-value="<?= $donasi->donasi; ?>" value="<?= $donasi->id_donasi_wisata; ?>">
-                                                        <span class="pilihdonasi w-form-label">
-                                                            Pilih
-                                                        </span>
-                                                    </label>
-                                                </td>
-                                            </tr>
-                                        <?php } ?>
-                                    </div>
-                                </tbody>
-                            </table>
-                            <div class="d-flex justify-content-between align-items-center pb-4">
-                                <?php if ($_GET['status'] == 'kurang') : ?>
-                                    <input type="submit" name="submitin" value="Ambil Donasi" class="btn btn-primary">
-                                <?php elseif ($_GET['status'] == 'baru') : ?>
-                                    <input onclick="return ver()" type="submit" name="submitin" value="Ambil Donasi" class="btn btn-primary">
-                                <?php endif ?>
-                                <div class="hack42-45-added-value-row">
-                                    <?php if ($rowsisa->saldo_donasi_wisata == null || $rowsisa->saldo_donasi_wisata == 0) : ?>
-                                        <b>Total Donasi Yang Diambil : Rp. <span class="totalpilih">0</span></b>
-                                        <div class="w-embed"><input type="hidden" name="hasil_donasi" id="hasil_donasi" class="hasil_donasi" val="" readonly></div>
-                                    <?php else : ?>
-                                        <b>Total Donasi Yang Diambil : Rp. <span class="totalpilih"><?= number_format($rowsisa->saldo_donasi_wisata, 0); ?></span></b>
-                                        <div class="w-embed"><input type="hidden" name="hasil_donasi" id="hasil_donasi" class="hasil_donasi" val="" value="<?= $rowsisa->saldo_donasi_wisata; ?>" readonly></div>
-
-                                    <?php endif ?>
-                                    <!-- name "hasil_donasi" ini yang akan diambil untuk validasi harga terumbu yang paling murah dan setting donasi -->
+                    <form action="" method="POST" id="ok">
+                        <table class="table table-striped table-responsive-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nama Wisatawan</th>
+                                    <th scope="col">Paket Wisata</th>
+                                    <th scope="col">Donasi</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <div class="batch-donasi">
+                                    <?php
+                                    $sum_donasi = 0;
+                                    foreach ($row as $donasi) {
+                                        $sum_donasi += $donasi->donasi;
+                                    ?>
+                                        <tr class="border rounded p-1 batch-donasi ">
+                                            <td><?= $donasi->nama_user ?><input type="hidden" name="user" value="<?= $donasi->nama_user ?>"></td>
+                                            <td><?= $donasi->nama_paket_wisata ?><input type="hidden" name="namapaket" value="<?= $donasi->nama_paket_wisata ?>"></td>
+                                            <td><?= $donasi->donasi ?><input type="hidden" name="donasi" value="<?= $donasi->donasi ?>"></td>
+                                            <td><?= $donasi->status_donasi ?><input type="hidden" name="statusdonasi" value="<?= $donasi->status_donasi ?>"></td>
+                                            <!-- <td><button type="button" class="btn donasitambah" onclick="tambahPilihan(this)"><i class="nav-icon fas fa-plus-circle"></i></button></td> -->
+                                            <!-- <td class="pl-4"><input type="checkbox" name="prodid[]" onchange="keklik()" value=""></td> -->
+                                            <td>
+                                                <label class="w-checkbox">
+                                                    <div class="w-checkbox-input w-checkbox-input--inputType-custom hack42-checkbox"></div>
+                                                    <input type="checkbox" id="checkbox" name="prodid[]" data-name="Checkbox" add-value="<?= $donasi->donasi; ?>" value="<?= $donasi->id_donasi_wisata; ?>">
+                                                    <span class="pilihdonasi w-form-label">
+                                                        Pilih
+                                                    </span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
                                 </div>
-                                <div class="text-left">
-                                    <b>Total Donasi : Rp. <?= number_format($sum_donasi, 0) ?></b>
-                                    <div class="small">
-                                        Terdapat Sisa Saldo Sebesar Rp. <?= number_format($rowsisa->saldo_donasi_wisata, 0); ?>
-                                    </div>
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-between align-items-center pb-4">
+                            <?php if ($_GET['status'] == 'kurang') : ?>
+                                <input type="submit" name="submitin" value="Ambil Donasi" class="btn btn-primary">
+                            <?php elseif ($_GET['status'] == 'baru') : ?>
+                                <input onclick="return ver()" type="submit" name="submitin" value="Ambil Donasi" class="btn btn-primary">
+                            <?php endif ?>
+                            <div class="hack42-45-added-value-row">
+                                <?php if ($rowsisa->saldo_donasi_wisata == null || $rowsisa->saldo_donasi_wisata == 0) : ?>
+                                    <b>Total Donasi Yang Diambil : Rp. <span class="totalpilih">0</span></b>
+                                    <div class="w-embed"><input type="hidden" name="hasil_donasi" id="hasil_donasi" class="hasil_donasi" val="" readonly></div>
+                                <?php else : ?>
+                                    <b>Total Donasi Yang Diambil : Rp. <span class="totalpilih"><?= number_format($rowsisa->saldo_donasi_wisata, 0); ?></span></b>
+                                    <div class="w-embed"><input type="hidden" name="hasil_donasi" id="hasil_donasi" class="hasil_donasi" val="" readonly></div>
+
+                                <?php endif ?>
+                                <!-- name "hasil_donasi" ini yang akan diambil untuk validasi harga terumbu yang paling murah dan setting donasi -->
+                            </div>
+                            <div class="text-left">
+                                <b>Total Donasi : Rp. <?= number_format($sum_donasi, 0) ?></b>
+                                <div class="small">
+                                    Terdapat Sisa Saldo Sebesar Rp. <?= number_format($rowsisa->saldo_donasi_wisata, 0); ?>
                                 </div>
                             </div>
-                            <script>
-                                function ver() {
-                                    let hargaterumbu = <?= $rowharga->harga_patokan_lokasi + $rowharga->biaya_pemeliharaan; ?>;
-                                    const b = document.getElementById('hasil_donasi').value;
-                                    // alert(hargaterumbu);
-                                    if (b < hargaterumbu) {
-                                        alert('Donasi Yang Diambil Tidak Mencukupi, Minimal Mengambil <?= $rowharga->harga_patokan_lokasi + $rowharga->biaya_pemeliharaan; ?>');
-                                        return false
-                                    } else {
-                                        // event.preventDefault()
-                                        // alert('gas');
-                                        return true
-                                    }
+                        </div>
+                        <script>
+                            function ver() {
+                                let hargaterumbu = <?= $rowharga->harga_patokan_lokasi + $rowharga->biaya_pemeliharaan; ?>;
+                                const b = document.getElementById('hasil_donasi').value;
+                                // alert(hargaterumbu);
+                                if (b < hargaterumbu) {
+                                    alert('Donasi Yang Diambil Tidak Mencukupi, Minimal Mengambil <?= $rowharga->harga_patokan_lokasi + $rowharga->biaya_pemeliharaan; ?>');
+                                    return false
+                                } else {
+                                    // event.preventDefault()
+                                    // alert('gas');
+                                    return true
                                 }
-                            </script>
-                        </form>
+                            }
+                        </script>
+                    </form>
                     </div>
                     <div id="output"></div>
             </section>
@@ -395,19 +393,20 @@ if (isset($_POST['submitin'])) {
         });
     </script>
     <script type="text/javascript">
+  
         // Define the function 
         // to screenshot the div
         function takeshot() {
             let div = document.getElementById('photo');
-
+  
             // Use the html2canvas
             // function to take a screenshot
             // and append it
             // to the output div
             html2canvas(div).then(
-                function(canvas) {
-                    document.getElementById('output').appendChild(canvas);
-                })
+            function (canvas) {
+                document.getElementById('output').appendChild(canvas);
+            })
         }
     </script>
 </body>
