@@ -173,7 +173,7 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                                         <?php
                                         $sum_donasi = 0 + $rowsisa->saldo_donasi_wisata;
                                         foreach ($rowharga as $donasi) {
-                                        $sum_donasi += $donasi->donasi;
+                                            $sum_donasi += $donasi->donasi;
                                         } ?>
                                         <input id="sum_donasi" type="hidden" value="<?= $sum_donasi ?>">
                                         <b>Total Donasi Yang Diambil : <?= number_format($sum_donasi, 0) ?> </b>
@@ -291,13 +291,17 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                     <div class="mb-3 text-center mt-2">
                         <h5 class="font-weight-bold">Pesan / Ekspresi</h5><label for="pesan" class="font-weight-normal">
                             (Opsional. Pesan akan disertakan dalam label khusus pada terumbu karang )</label>
-                        <input type="text" maxlength="64" class="form-control success" id="pesan" placeholder="Isi pesan anda di sini...">
+                        <?php if ($_SESSION['level_user'] == '3') : ?>
+                            <input type="text" maxlength="64" class="form-control success" id="pesan" value="Donasi Wisata Bersama" placeholder="Isi pesan anda di sini...">
+                        <?php else : ?>
+                            <input type="text" maxlength="64" class="form-control success" id="pesan" placeholder="Isi pesan anda di sini...">
+                        <?php endif ?>
                     </div>
                     <!-- <button class="btn btn-warning btn-back" type="button"><i class="fas fa-angle-left"></i> Jenis Lainnya</button> -->
                     <?php if ($_SESSION['level_user'] == '3') : ?>
                         <button class="btn btn-primary btn-purchase btn-blue" onclick="event.preventDefault(); ver()" type="button">Selesai Pilih<i class="fas fa-angle-double-right"></i></button>
                     <?php else : ?>
-                        <button class="btn btn-primary btn-purchase-donator btn-blue" onclick="updateCartTotal()" type="button">Selesai Pilih <i class="fas fa-angle-double-right"></i></button>
+                        <button class="btn btn-primary btn-purchase btn-purchase-donator btn-blue" onclick="updateCartTotal()" type="button">Selesai Pilih <i class="fas fa-angle-double-right"></i></button>
                     <?php endif ?>
                 </section>
             <?php endif ?>
