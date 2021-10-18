@@ -194,18 +194,18 @@ if (isset($_POST['submitin'])) {
                     <?php elseif ($_SESSION['level_user'] == '3') : ?>
                         <h4 class="pt-3 mb-3"><span class="font-weight-bold">Review Informasi Donasi Wisata</span></h4>
                     <?php endif ?>
-                    <div class="row">
-                        <div class="col-md-4 order-md-2 mb-4">
-                            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="text-muted"><i class="fas fa-shopping-cart"></i> Keranjang Anda</span>
-                                <span id="badge-jumlah" class="badge badge-info badge-pill"></span>
-                            </h4>
+                    <?php if ($_SESSION['level_user'] == '1') : ?>
+                        <div class="row">
+                            <div class="col-md-4 order-md-2 mb-4">
+                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-muted"><i class="fas fa-shopping-cart"></i> Keranjang Anda</span>
+                                    <span id="badge-jumlah" class="badge badge-info badge-pill"></span>
+                                </h4>
 
-                            <ul class="list-group mb-3" id="keranjangancestor">
-                                <!-- listcontentrow cetak di sini -->
-                            </ul>
-                        </div>
-                        <?php if ($_SESSION['level_user'] == '1') : ?>
+                                <ul class="list-group mb-3" id="keranjangancestor">
+                                    <!-- listcontentrow cetak di sini -->
+                                </ul>
+                            </div>
                             <div class="col-md-8 order-md-1 card">
                                 <h4 class="mb-3 card-header pl-0">Data Rekening Donatur</h4>
                                 <form action="" method="POST">
@@ -310,13 +310,24 @@ if (isset($_POST['submitin'])) {
                                         <button name="submit" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4" type="submit">Buat Donasi</button>
                                 </form>
                             </div>
-
-                        <?php elseif ($_SESSION['level_user'] == '3') : ?>
-                            <div class="col-md-8 order-md-1 card">
-                                <h4 class="mb-3 card-header pl-0">Data Rekening Donasi Wisata</h4>
+                        </div>
+                    <?php elseif ($_SESSION['level_user'] == '3') : ?>
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-6 order-md-1 card">
+                                <!-- <h4 class="mb-3 card-header pl-0">Data Rekening Donasi Wisata</h4> -->
                                 <form action="" method="POST">
+                                    <div class="mb-4">
+                                        <h4 class="my-3">
+                                            <span class="text-muted"><i class="fas fa-shopping-cart"></i> Keranjang Anda</span>
+                                            <span id="badge-jumlah" class="badge badge-info badge-pill"></span>
+                                        </h4>
+
+                                        <ul class="list-group mb-3" id="keranjangancestor">
+                                            <!-- listcontentrow cetak di sini -->
+                                        </ul>
+                                    </div>
                                     <div class="mb-3">
-                                        <label for="nama_donatur">Nama Donasi Wisata Bersama</label>
+                                        <!-- <label for="nama_donatur">Nama Donasi Wisata Bersama</label> -->
 
                                         <input type="hidden" class="form-control data_donatur" value="<?= $_SESSION['username']; ?>" id="nama_donatur" name="nama_donatur" required>
                                         <?php foreach ($donasiwisata as $donasi) { ?>
@@ -378,9 +389,10 @@ if (isset($_POST['submitin'])) {
                                     <button name="submitin" value="Simpan" class="btn btn-primary btn-lg btn-block mb-4" type="submit">Buat Donasi</button>
                                 </form>
                             </div>
-                        <?php endif ?>
-                    </div>
-                    <!-- /.container-fluid -->
+                        </div>
+                    <?php endif ?>
+                </div>
+                <!-- /.container-fluid -->
             </section>
 
             <!-- /.content -->
