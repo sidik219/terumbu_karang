@@ -55,6 +55,22 @@ $stmt = $pdo->prepare($sqlviewrekeningbersama);
 $stmt->execute(['id_rekening_bersama' => $rowitem->id_rekening_bersama]);
 $rowrekening = $stmt->fetch();
 
+// Fasilitas
+$sqlviewfasilitas = 'SELECT SUM(biaya_kerjasama)+biaya_asuransi+harga_donasi AS total_biaya_fasilitas
+                    FROM tb_fasilitas_wisata
+                    LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
+                    LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                    LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
+                    LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                    LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
+                    LEFT JOIN t_lokasi ON tb_paket_wisata.id_lokasi = t_lokasi.id_lokasi
+                    WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                    AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
+
+$stmt = $pdo->prepare($sqlviewfasilitas);
+$stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+$rowfasilitas = $stmt->fetchAll();
+
 if (isset($_POST['submit'])) {
     $keterangan                  = $_POST['keterangan'];
     $id_status_reservasi_wisata  = $_POST['radio_status'];
@@ -127,8 +143,10 @@ if (isset($_POST['submit_terima'])) {
                 <br>ID Reservasi: ' . $rowitem->id_reservasi . '
                 <br>Paket wisata: ' . $rowitem->nama_paket_wisata . '
                 <br>Lokasi wisata: ' . $rowitem->nama_lokasi . '
-                <br>Tanggal reservasi: ' . $tgl_reservasi . '
-                <br>Jumlah peserta: ' . $jumlah_peserta . '
+                <br>Tanggal reservasi: ' . $rowitem->$tgl_reservasi . '
+                <br>Jumlah peserta: ' . $rowitem->$jumlah_peserta . '
+                <br>Total paket wisata: ' . $rowfasilitas->total_biaya_fasilitas . '
+                <br>Nama paket wisata: ' . $rowitem->$nama_paket_wisata . '
                 <br>Bank Wisatawan: ' . $rowitem->bank_donatur . '
                 <br>Nomor Rekening Wisatawan: ' . $rowitem->nomor_rekening_donatur . '
                 <br>Nama Rekening Wisatawan: ' . $rowitem->nama_donatur . '
@@ -136,7 +154,7 @@ if (isset($_POST['submit_terima'])) {
                 <br>Bank Tujuan Pembayaran: ' . $rowrekening->nama_bank . '
                 <br>Nomor Rekening Tujuan: ' . $rowrekening->nomor_rekening . '
                 <br>Nama Rekening Tujuan: ' . $rowrekening->nama_pemilik_rekening . '
-                <br>Nominal pembayaran: Rp. ' . number_format($total, 0) . '
+                <br>Nominal pembayaran: Rp. ' . number_format($rowitem->$total, 0) . '
                 <br>
                 <br>Harap segera lakukan kelola laporan pengeluaran reservasi wisata pada link berikut:
                 <br><a href="https://tkjb.or.id/kelola_reservasi_wisata.php?id_reservasi=' . $id_reservasi . '">Laporan Pengeluaran Reservasi Wisata</a>

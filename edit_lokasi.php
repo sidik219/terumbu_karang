@@ -70,6 +70,7 @@ if (isset($_POST['submit'])) {
         $batas_hari_pembayaran = $_POST['num_batas_hari_pembayaran'];
         $kapasitas_kapal = $_POST['kapasitas_kapal'];
         $kode_lokasi = $_POST['kode_lokasi'];
+        $randomstring1 = substr(md5(rand()), 0, 7);
 
         //Image upload
         if ($_FILES["image_uploads"]["size"] == 0) {
@@ -88,10 +89,29 @@ if (isset($_POST['submit'])) {
 
         //---image upload end
 
+        //Image upload TTD Digital
+        if ($_FILES["image_uploads1"]["size"] == 0) {
+            $ttd_digital = $row->ttd_digital;
+            $pic = "&none=";
+        } else if (isset($_FILES['image_uploads1'])) {
+            if (($row->ttd_digital == $defaultpic) || (!$row->ttd_digital)) {
+                $target_dir  = "images/ttd_digital/";
+                $ttd_digital = $target_dir . 'TTD_' . $randomstring . '.jpg';
+                move_uploaded_file($_FILES["image_uploads1"]["tmp_name"], $ttd_digital);
+                $pic = "&new=";
+            } else if (isset($row->ttd_digital)) {
+                $ttd_digital = $row->ttd_digital;
+                unlink($row->ttd_digital);
+                move_uploaded_file($_FILES["image_uploads1"]["tmp_name"], $row->ttd_digital);
+                $pic = "&replace=";
+            }
+        }
+        //---image upload end
+
         $sqllokasi = "UPDATE t_lokasi
                         SET id_wilayah = :id_wilayah, nama_lokasi=:nama_lokasi, deskripsi_lokasi=:deskripsi_lokasi, foto_lokasi = :foto_lokasi,
                         luas_lokasi=:luas_lokasi, id_user_pengelola=:id_user_pengelola, kapasitas_kapal = :kapasitas_kapal, kode_lokasi = :kode_lokasi,
-                        kontak_lokasi=:kontak_lokasi, nama_bank=:nama_bank, nama_rekening=:nama_rekening, nomor_rekening=:nomor_rekening, longitude=:longitude, latitude=:latitude, batas_hari_pembayaran =:batas_hari_pembayaran
+                        kontak_lokasi=:kontak_lokasi, nama_bank=:nama_bank, nama_rekening=:nama_rekening, nomor_rekening=:nomor_rekening, longitude=:longitude, latitude=:latitude, batas_hari_pembayaran =:batas_hari_pembayaran, ttd_digital = :ttd_digital
 
                         WHERE id_lokasi = :id_lokasi";
 
@@ -102,7 +122,7 @@ if (isset($_POST['submit'])) {
             'luas_lokasi' => $luas_lokasi, 'id_user_pengelola' => $id_user_pengelola,
             'kontak_lokasi' => $kontak_lokasi, 'nama_bank' => $nama_bank, 'kapasitas_kapal' => $kapasitas_kapal,
             'nama_rekening' => $nama_rekening, 'nomor_rekening' => $nomor_rekening, 'id_lokasi' => $id_lokasi, 'kode_lokasi' => $kode_lokasi,
-            'foto_lokasi' => $foto_lokasi, 'longitude' => $longitude, 'latitude' => $latitude, 'batas_hari_pembayaran' => $batas_hari_pembayaran
+            'foto_lokasi' => $foto_lokasi, 'longitude' => $longitude, 'latitude' => $latitude, 'batas_hari_pembayaran' => $batas_hari_pembayaran, 'ttd_digital' => $ttd_digital
         ]);
 
         $affectedrows = $stmt->rowCount();
@@ -263,6 +283,66 @@ if (isset($_POST['submit'])) {
                                                 .attr('src', e.target.result)
                                                 .width(200);
                                             document.getElementById('preview').style.display = 'block';
+                                        };
+
+                                        reader.readAsDataURL(input.files[0]);
+                                    }
+                                }
+                            </script>
+                        </div>
+                        <div class='form-group'>
+                            <div>
+                                <label for='image_uploads1'>Upload Foto Tanda Tangan Digital</label>
+                                <input type='file' class='form-control' id='image_uploads1' name='image_uploads1' accept='.jpg, .jpeg, .png' onchange="readURL1(this);">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <img id="preview1" src="#" width="100px" alt="Preview Gambar" />
+                            <a href="<?= $row->ttd_digital ?>" data-toggle="lightbox">
+                                <img class="img-fluid" id="oldpic1" src="<?= $row->ttd_digital ?>" width="20%" <?php if ($row->ttd_digital == NULL) echo "style='display: none;'"; ?>></a>
+                            <br>
+
+                            <small class="text-muted">
+                                <?php if ($row->ttd_digital == NULL) {
+                                    echo "Bukti transfer belum diupload<br>Format .jpg .jpeg .png";
+                                } else {
+                                    echo "Klik gambar untuk memperbesar";
+                                }
+
+                                ?>
+                            </small>
+
+                            <script>
+                                const actualBtn = document.getElementById('image_uploads1');
+                                const fileChosen = document.getElementById('file-input-label');
+
+                                actualBtn.addEventListener('change', function() {
+                                    fileChosen.innerHTML = '<b>File dipilih :</b> ' + this.files[0].name
+                                })
+                                window.onload = function() {
+                                    document.getElementById('preview1').style.display = 'none';
+                                };
+
+                                function readURL1(input) {
+                                    //Validasi Size Upload Image
+                                    var uploadField = document.getElementById("image_uploads1");
+
+                                    uploadField.onchange = function() {
+                                        if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                            alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                            this.value = "";
+                                        };
+                                    };
+
+                                    if (input.files && input.files[0]) {
+                                        var reader = new FileReader();
+                                        document.getElementById('oldpic1').style.display = 'none';
+                                        reader.onload = function(e) {
+                                            $('#preview1')
+                                                .attr('src', e.target.result)
+                                                .width(200);
+                                            document.getElementById('preview1').style.display = 'block';
                                         };
 
                                         reader.readAsDataURL(input.files[0]);

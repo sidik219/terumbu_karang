@@ -45,7 +45,7 @@ if (isset($_POST['submit'])) {
         $randomstring = substr(md5(rand()), 0, 7);
         $kapasitas_kapal = $_POST['kapasitas_kapal'];
         $kode_lokasi = $_POST['kode_lokasi'];
-
+        $randomstring1 = substr(md5(rand()), 0, 7);
         // echo '<script> alert('.$kapasitas_kapal.');</script>';
 
         //Image upload
@@ -58,12 +58,22 @@ if (isset($_POST['submit'])) {
         }
 
         //---image upload end
+        
+        //Image upload TTD Digital
+        if ($_FILES["image_uploads1"]["size"] == 0) {
+            $ttd_digital = "images/image_default.jpg";
+        } else if (isset($_FILES['image_uploads1'])) {
+            $target_dir  = "images/ttd_digital/";
+            $ttd_digital = $target_dir . 'TTD_' . $randomstring1 . '.jpg';
+            move_uploaded_file($_FILES["image_uploads1"]["tmp_name"], $ttd_digital);
+        }
+        //---image upload end
 
         $sqllokasi = "INSERT INTO t_lokasi
                             (id_wilayah, nama_lokasi, deskripsi_lokasi, foto_lokasi, luas_lokasi, id_user_pengelola, kapasitas_kapal,
-                            kontak_lokasi, nama_bank, nama_rekening, nomor_rekening, longitude, latitude, batas_hari_pembayaran, kode_lokasi)
+                            kontak_lokasi, nama_bank, nama_rekening, nomor_rekening, longitude, latitude, batas_hari_pembayaran, kode_lokasi, ttd_digital)
                             VALUES (:id_wilayah, :nama_lokasi, :deskripsi_lokasi, :foto_lokasi, :luas_lokasi,
-                            :id_user_pengelola, :kapasitas_kapal, :kontak_lokasi, :nama_bank, :nama_rekening, :nomor_rekening, :longitude, :latitude, :batas_hari_pembayaran, :kode_lokasi)";
+                            :id_user_pengelola, :kapasitas_kapal, :kontak_lokasi, :nama_bank, :nama_rekening, :nomor_rekening, :longitude, :latitude, :batas_hari_pembayaran, :kode_lokasi, :ttd_digital)";
 
         $stmt = $pdo->prepare($sqllokasi);
         $stmt->execute([
@@ -72,7 +82,7 @@ if (isset($_POST['submit'])) {
             'luas_lokasi' => $luas_lokasi, 'id_user_pengelola' => $id_user_pengelola,
             'kontak_lokasi' => $kontak_lokasi, 'nama_bank' => $nama_bank, 'kapasitas_kapal' => $kapasitas_kapal,
             'nama_rekening' => $nama_rekening, 'nomor_rekening' => $nomor_rekening, 'longitude' => $longitude, 'latitude' => $latitude, 
-            'batas_hari_pembayaran' => $batas_hari_pembayaran, 'kode_lokasi' => $kode_lokasi
+            'batas_hari_pembayaran' => $batas_hari_pembayaran, 'kode_lokasi' => $kode_lokasi, 'ttd_digital' => $ttd_digital
         ]);
 
 
@@ -245,6 +255,47 @@ if (isset($_POST['submit'])) {
                                                 .attr('src', e.target.result)
                                                 .width(200);
                                             document.getElementById('preview').style.display = 'block';
+                                        };
+
+                                        reader.readAsDataURL(input.files[0]);
+                                    }
+                                }
+                            </script>
+                        </div>
+                        <div class='form-group'>
+                            <div>
+                                <label for='image_uploads1'>Upload Foto Tanda Tangan Digital</label>
+                                <input type='file' class='form-control' id='image_uploads1' name='image_uploads1' accept='.jpg, .jpeg, .png' onchange="readURL1(this);">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <img id="preview1" width="100px" src="#" alt="Preview Gambar" />
+
+                            <script>
+                                window.onload = function() {
+                                    document.getElementById('preview1').style.display = 'none';
+                                };
+
+                                function readURL1(input) {
+                                    //Validasi Size Upload Image
+                                    var uploadField = document.getElementById("image_uploads1");
+
+                                    uploadField.onchange = function() {
+                                        if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                            alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                            this.value = "";
+                                        };
+                                    };
+
+                                    if (input.files && input.files[0]) {
+                                        var reader = new FileReader();
+
+                                        reader.onload = function(e) {
+                                            $('#preview1')
+                                                .attr('src', e.target.result)
+                                                .width(200);
+                                            document.getElementById('preview1').style.display = 'block';
                                         };
 
                                         reader.readAsDataURL(input.files[0]);

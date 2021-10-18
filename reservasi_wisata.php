@@ -40,6 +40,22 @@ $stmt = $pdo->prepare($sqldetailpaket);
 $stmt->execute(['id_paket_wisata' => $_GET['id_paket_wisata']]);
 $rowwisata = $stmt->fetchAll();
 
+// Fasilitas
+$sqlviewfasilitas = 'SELECT SUM(biaya_kerjasama)+biaya_asuransi+harga_donasi AS total_biaya_fasilitas
+                    FROM tb_fasilitas_wisata
+                    LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
+                    LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
+                    LEFT JOIN t_wisata ON tb_fasilitas_wisata.id_wisata = t_wisata.id_wisata
+                    LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+                    LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
+                    LEFT JOIN t_lokasi ON tb_paket_wisata.id_lokasi = t_lokasi.id_lokasi
+                    WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
+                    AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
+
+$stmt = $pdo->prepare($sqlviewfasilitas);
+$stmt->execute(['id_paket_wisata' => $rowwisata->id_paket_wisata]);
+$rowfasilitas = $stmt->fetchAll();
+
 // var_dump($_POST);
 // die;
 if (isset($_POST['submit'])) {
@@ -124,11 +140,12 @@ if (isset($_POST['submit'])) {
             $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
                 <br>Yth. ' . $nama_user . '
                 <br>Terima kasih telah membuat reservasi wisata di GoKarang!
-                <br>Paket wisata: ' . $rowwisata->nama_paket_wisata . '
+                <br>Berikut rincian tujuan pembayaran wisata anda: 
                 <br>Paket wisata: ' . $rowwisata[0]->nama_paket_wisata . '
+                <br>Lokasi wisata: ' . $rowlokasi->nama_lokasi . '
                 <br>Tanggal reservasi: ' . $tgl_reservasi . '
                 <br>Jumlah peserta: ' . $jumlah_peserta . '
-                <br>Berikut rincian tujuan pembayaran wisata anda:          
+                <br>Total paket wisata: ' . $rowfasilitas->$total_biaya_fasilitas . '
                 <br>Bank Tujuan Pembayaran: ' . $rekening->nama_bank . '
                 <br>Nomor Rekening: ' . $rekening->nomor_rekening . '
                 <br>Nama Rekening: ' . $rekening->nama_pemilik_rekening . '
@@ -181,6 +198,7 @@ if (isset($_POST['submit'])) {
                 <br>Lokasi wisata: ' . $rowlokasi->nama_lokasi . '
                 <br>Tanggal reservasi: ' . $tgl_reservasi . '
                 <br>Jumlah peserta: ' . $jumlah_peserta . '
+                <br>Total paket wisata: ' . $rowfasilitas->total_biaya_fasilitas . '
                 <br>Bank Wisatawan: ' . $bank_donatur . '
                 <br>Nomor Rekening wisatawan: ' . $nomor_rekening_donatur . '
                 <br>Nama Rekening wisatawan: ' . $nama_donatur . '
