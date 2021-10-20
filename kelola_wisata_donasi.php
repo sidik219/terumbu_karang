@@ -248,6 +248,7 @@ if (isset($_POST['submitin'])) {
                                 </thead>
                                 <tbody>
                                     <div class="batch-donasi">
+
                                         <?php
                                         $sum_donasi = 0;
                                         foreach ($row as $donasi) {
@@ -262,9 +263,9 @@ if (isset($_POST['submitin'])) {
                                                 <!-- <td class="pl-4"><input type="checkbox" name="prodid[]" onchange="keklik()" value=""></td> -->
                                                 <td>
                                                     <label class="w-checkbox">
-                                                        <div class="w-checkbox-input w-checkbox-input--inputType-custom hack42-checkbox"></div>
-                                                        <input type="checkbox" id="checkbox" name="prodid[]" data-name="Checkbox" add-value="<?= $donasi->donasi; ?>" value="<?= $donasi->id_donasi_wisata; ?>">
-                                                        <span class="pilihdonasi w-form-label">
+                                                        <div class="w-checkbox-input w-checkbox-input--inputType-custom hack42-checkbox "></div>
+                                                        <input type="checkbox" id="checkbox" name="prodid[]" data-name="Checkbox" add-value="<?= $donasi->donasi; ?>" value="<?= $donasi->id_donasi_wisata; ?>" style="opacity:0;position:absolute;z-index:-1">
+                                                        <span class="btn btn-outline-success pilihdonasi w-form-label" data-toggle="button" aria-pressed="false">
                                                             Pilih
                                                         </span>
                                                     </label>
