@@ -199,7 +199,7 @@ if (isset($_SESSION['data_donasi'])) {
                                   LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                                   LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                                   LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                                  WHERE id_donasi_wisata= id_donasi_wisata';
+                                  WHERE id_donasi_wisata= :id_donasi_wisata';
       $stmt = $pdo->prepare($sqlviewuser);
       $stmt->execute(['id_donasi_wisata' => $id_donasi_wisata]);
       $rowuser = $stmt->fetchAll();

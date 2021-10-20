@@ -308,7 +308,7 @@ if (isset($_POST['submit'])) {
                             <small>* Pilih Wisata: Wisata Diving dst</small><br>
                             <small>* Hari: Hari Pertama dst</small><br>
                             <small style="color: red;">* Hanya bisa satu wisata, untuk perhari</small><br>
-                            <small style="color: red;">* Untuk menambahkan wisata baru, harus input fasilitas terlebih dahulu</small><br>
+                            <small style="color: red;">* Untuk menambahkan wisata baru, harus <a href="input_pengadaan_fasilitas.php"><b>input fasilitas</b></a> terlebih dahulu</small><br>
                             <small style="color: red;">* Belum Bisa menambahkan wisata baru, pada saat edit wisata</small>
                         </div>
 

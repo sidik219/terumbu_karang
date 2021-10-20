@@ -10,9 +10,10 @@ $stmt = $pdo->prepare('SELECT * FROM t_konten');
 $stmt->execute();
 $rowkonten = $stmt->fetchAll();
 
-$stmt = $pdo->prepare('SELECT * FROM t_penjelasan');
-$stmt->execute();
-$rowkontet = $stmt->fetchAll();
+// Tabel apa ini????
+// $stmt = $pdo->prepare('SELECT * FROM t_penjelasan');
+// $stmt->execute();
+// $rowkontet = $stmt->fetchAll();
 
 $sqlpaketSelect = 'SELECT * FROM t_wisata
 LEFT JOIN tb_paket_wisata ON t_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
