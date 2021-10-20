@@ -167,7 +167,7 @@
                         <span>
                           Kunjungi halaman <b>"Donasi Saya"</b><br>
                           untuk <b>mengupload bukti transfer</b> atau<br>
-                          melihat <b>status donasi anda.</b>
+                          melihat <b>status donasi Anda.</b>
                         </span>
                       </td>
                     </tr>

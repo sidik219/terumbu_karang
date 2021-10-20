@@ -29,8 +29,8 @@ if (isset($_POST['reset'])) {
         include 'includes/email_handler.php'; //PHPMailer
         $subjek = 'Password Akun Anda telah Diperbarui - GoKarang';
         $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
-            <br>Password akun GoKarang anda telah berhasil diperbarui.
-            <br>Username anda: '.$row->username.'
+            <br>Password akun GoKarang Anda telah berhasil diperbarui.
+            <br>Username Anda: '.$row->username.'
             <br>Anda dapat menggunakan password baru untuk log in:
             <br><a href="https://tkjb.or.id/login.php">Masuk ke GoKarang</a>
         ';
@@ -93,7 +93,7 @@ if (isset($_POST['reset'])) {
                 }
                 ?>
               <h4 class="font-weight-bold text-center">Form Reset Password</h4>
-              <br><span class="text-sm text-muted">Harap simpan password baru anda di tempat yang aman.</span>
+              <br><span class="text-sm text-muted">Harap simpan password baru Anda di tempat yang aman.</span>
     		<form action="" enctype="multipart/form-data" method="POST">              
                 <div class="form-group mt-4">
                     <label for="tb_password" class="font-weight-bold">Password Baru</label>

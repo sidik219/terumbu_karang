@@ -86,6 +86,36 @@ if (isset($_POST['submit'])) {
             $stmt = $pdo->prepare($sqlbatch);
             $stmt->execute(['id_donasi' => $id_donasi, 'update_terakhir' => $update_terakhir, 'id_status_donasi' => $id_status_donasi]);
 
+                //Kirim email untuk Donatur
+               include 'includes/email_handler.php'; //PHPMailer
+
+                $sqlselectdonasi = 'SELECT * FROM t_donasi 
+                                LEFT JOIN t_user ON t_user.id_user = t_donasi.id_user
+                                LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
+                                WHERE id_donasi = '.$id_donasi_value;
+                $stmt = $pdo->prepare($sqlselectdonasi);
+                $stmt->execute();
+                $donasi = $stmt->fetch();
+
+                if($donasi->jumlah_pemeliharaan == 0){
+                    $email_donatur = $donasi->email;
+
+                $subjek = 'Bibit Terumbu Karang Anda dalam Tahap Pemeliharaan (ID Donasi : ' . $id_donasi_value . ' ) - GoKarang';
+                $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+                        <br>Yth. ' . $donasi->nama_donatur . '
+                        <br>Bibit terumbu karang Anda telah memasuki tahap pemeliharaan oleh pihak pengelola ' . $donasi->nama_lokasi . ' pada 
+                        yang akan dilaksanakan pada tanggal '.$tanggal_pemeliharaan.'.
+                        <br>Terumbu karang Anda akan dilakukan pemeliharaan berkala, umumnya empat kali selama satu tahun, dimana
+                        akan dilaporkan foto, kondisi terumbu karang, serta ukuran terumbu karang yang akan kami akan infokan kepada Anda melalui email.
+                        <br>
+                        <br>Anda dapat memantau perkembangan terumbu karang Anda secara berkala pada bagian History Pemeliharaan pada link berikut:
+                        <br><a href="https://tkjb.or.id/donasi_saya.php">Lihat Donasi Saya</a>
+                    ';
+
+                smtpmailer($email_donatur, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+                }
+                
+
             $affectedrows = $stmt->rowCount();
             if ($affectedrows == '0') {
                 header("Location: kelola_pemeliharaan.php?status=insertfailed");

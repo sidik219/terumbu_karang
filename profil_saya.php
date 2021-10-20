@@ -90,7 +90,7 @@ include 'hak_akses.php';
                     <div class="container-profil-saya">
                         <div class="container-profil-header">
                         <h4><span class="align-middle font-weight-bold">Profil Saya</span></h4>
-                        Kelola informasi profil anda
+                        Kelola informasi profil Anda
                         </div>
                         <div class="container-profil-flex">
                             <div class="container-profil-kiri">

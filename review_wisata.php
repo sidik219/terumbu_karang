@@ -128,7 +128,7 @@ include 'hak_akses.php';
             if(!empty($_GET['status'])) {
                 if($_GET['status'] == 'review_reservasi') {
                     echo '<div class="alert alert-success" role="alert">
-                            Cek kembali reservasi wisata anda, supaya tidak terjadi kesalahan dalam menginputan data
+                            Cek kembali reservasi wisata Anda, supaya tidak terjadi kesalahan dalam menginputan data
                             </div>'; }
             }
         ?>

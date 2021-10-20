@@ -166,7 +166,7 @@ if (isset($_POST['submit_terima'])) {
         $subjek = 'Bukti Reservasi Wisata Telah Diverifikasi (ID Reservasi : ' . $rowitem->id_reservasi . ' ) - GoKarang';
         $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
                 <br>Yth. ' . $rowitem->nama_donatur . '
-                <br>Bukti reservasi wisata anda telah diverifikasi oleh pihak pengelola ' . $rowitem->nama_lokasi . '
+                <br>Bukti reservasi wisata Anda telah diverifikasi oleh pihak pengelola ' . $rowitem->nama_lokasi . '
                 <br>Anda bisa dapat mengecek kembali bukti reservasi wisata yang telah di verifikasi melalui link berikut:
                 <br><a href="https://tkjb.or.id/reservasi_saya.php">Lihat Reservasi Saya</a>
             ';
@@ -198,12 +198,12 @@ if (isset($_POST['submit_tolak'])) {
         $subjek = 'Bukti Reservasi Wisata tidak Sesuai (ID Reservasi : ' . $rowitem->id_reservasi . ' ) - GoKarang';
         $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
             <br>Yth. ' . $rowitem->nama_donatur . '
-            <br>Bukti reservasi wisata anda tidak sesuai dan telah ditolak oleh pihak pengelola.
+            <br>Bukti reservasi wisata Anda tidak sesuai dan telah ditolak oleh pihak pengelola.
             <br>
             <br>Harap upload ulang bukti pembayaran reservasi wisata pada link berikut:
             <br><a href="https://tkjb.or.id/edit_reservasi_saya.php?id_reservasi=' . $id_reservasi . '">Upload Ulang Bukti Pembayaran Reservasi Wisata</a>
             <br>
-            <br>Jika bukti sudah diverifikasi, kami akan menginfokan kepada anda melalui email.
+            <br>Jika bukti sudah diverifikasi, kami akan menginfokan kepada Anda melalui email.
         ';
 
         smtpmailer($email_wisatawan, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);

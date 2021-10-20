@@ -103,8 +103,8 @@ if (isset($_POST['register'])) {
             $subjek = 'Konfirmasi Registrasi Akun Pengelola ' . $tingkat_kelola . ' GoKarang';
             $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
                 <br>Terima kasih telah mendaftar sebagai Pengelola ' . $tingkat_kelola . ' di GoKarang!
-                <br>Username anda adalah: ' . $username . '
-                <br>Harap klik link di bawah agar akun anda segera diverifikasi dan diberi hak akses oleh Administrator:
+                <br>Username Anda adalah: ' . $username . '
+                <br>Harap klik link di bawah agar akun Anda segera diverifikasi dan diberi hak akses oleh Administrator:
                 <br><a href="https://tkjb.or.id/aktivasi_user.php?token_aktivasi_user=' . $token_aktivasi_user . '">Konfirmasi Akun Anda</a>
             ';
             smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);

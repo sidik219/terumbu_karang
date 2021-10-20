@@ -155,12 +155,12 @@ if (isset($_POST['submit_terima'])) {
     $subjek = 'Bukti Donasi Telah Diverifikasi (ID Donasi : ' . $rowitem->id_donasi . ' ) - GoKarang';
     $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
             <br>Yth. ' . $rowitem->nama_donatur . '
-            <br>Bukti donasi anda telah diverifikasi dan bibit akan disemai oleh pihak pengelola ' . $rowitem->nama_lokasi . '
-            <br>Proses penyemaian memerlukan waktu hingga beberapa minggu. Saat terumbu karang anda akan ditransplantasi ke laut, kami akan menginfokan kepada anda melalui email.
+            <br>Bukti donasi Anda telah diverifikasi dan bibit akan disemai oleh pihak pengelola ' . $rowitem->nama_lokasi . '
+            <br>Proses penyemaian memerlukan waktu hingga beberapa minggu. Saat terumbu karang Anda akan ditransplantasi ke laut, kami akan menginfokan kepada Anda melalui email.
             <br>
             <br>Terumbu Karang Pilihan: ' . $listterumbu . '
             <br>
-            <br>Anda dapat memantau perkembangan terumbu karang anda secara berkala pada link berikut:
+            <br>Anda dapat memantau perkembangan terumbu karang Anda secara berkala pada link berikut:
             <br><a href="https://tkjb.or.id/donasi_saya.php">Lihat Donasi Saya</a>
         ';
 
@@ -196,12 +196,12 @@ if (isset($_POST['submit_tolak'])) {
         $subjek = 'Bukti Donasi tidak Sesuai (ID Donasi : ' . $rowitem->id_donasi . ' ) - GoKarang';
         $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
             <br>Yth. ' . $rowitem->nama_donatur . '
-            <br>Bukti donasi anda tidak sesuai dan telah ditolak oleh pihak pengelola.
+            <br>Bukti donasi Anda tidak sesuai dan telah ditolak oleh pihak pengelola.
             <br>
             <br>Harap upload ulang bukti pembayaran donasi pada link berikut:
             <br><a href="https://tkjb.or.id/edit_donasi_saya.php?id_donasi=' . $id_donasi . '">Upload Ulang Bukti Pembayaran Donasi</a>
             <br>
-            <br>Jika bukti sudah diverifikasi, kami akan menginfokan kepada anda melalui email.
+            <br>Jika bukti sudah diverifikasi, kami akan menginfokan kepada Anda melalui email.
         ';
 
         smtpmailer($email_donatur, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);

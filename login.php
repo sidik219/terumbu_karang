@@ -117,17 +117,17 @@ if (isset($_POST['login'])) {
                 if(!empty($_GET['pesan'])){
                   if($_GET['pesan'] == 'registrasi_berhasil'){
                   echo '<div class="alert alert-success" role="alert">
-                          Pendaftaran berhasil! Harap konfirmasi email anda untuk melanjutkan.
+                          Pendaftaran berhasil! Harap konfirmasi email Anda untuk melanjutkan.
                       </div>';
                     }
                   else if($_GET['pesan'] == 'akun_belum_diberi_akses'){
                   echo '<div class="alert alert-primary" role="alert">
-                          Akun anda dalam tahap verifikasi oleh Pengelola Pusat. Harap tunggu beberapa saat. Terima kasih.
+                          Akun Anda dalam tahap verifikasi oleh Pengelola Pusat. Harap tunggu beberapa saat. Terima kasih.
                       </div>';
                     }
                     else if ($_GET['pesan'] == 'belum_konfirmasi_email'){
                       echo '<div class="alert alert-primary" role="alert">
-                          Harap konfirmasi email anda terlebih dahulu. Terima kasih.
+                          Harap konfirmasi email Anda terlebih dahulu. Terima kasih.
                       </div>';
                     }
                     else if ($_GET['pesan'] == 'aktivasi_berhasil'){
@@ -142,7 +142,7 @@ if (isset($_POST['login'])) {
                     }
                     else if ($_GET['pesan'] == 'reset_password_berhasil'){
                       echo '<div class="alert alert-success" role="alert">
-                          Password anda berhasil diperbarui. Silahkan Log In.
+                          Password Anda berhasil diperbarui. Silahkan Log In.
                       </div>';
                     }
                   else{                    

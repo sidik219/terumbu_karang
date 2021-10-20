@@ -71,7 +71,7 @@ if (isset($_POST['submit'])) {
             <br>Anda bertugas untuk menangani bibit terumbu karang yang dipilih donatur mulai dari pengadaan bibit, penyemaian, penanaman, hingga pemeliharaan berkala di laut,
             <br>Mengelola Reservasi Wisata yang masuk, Paket Wisata beserta fasilitas yang disediakan, pengadaan fasilitas wisata, kerja sama pihak ke tiga, dan asuransi wisata.
             <br>
-            <br>Anda dapat mulai mengelola lokasi anda dengan Log In melalui link berikut:
+            <br>Anda dapat mulai mengelola lokasi Anda dengan Log In melalui link berikut:
             <br><a href="https://tkjb.or.id/login.php">Log In GoKarang</a>
             <br>
             <br>Selamat bergabung di GoKarang dan terima kasih atas kerjasamanya.

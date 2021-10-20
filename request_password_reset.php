@@ -19,8 +19,8 @@ if (isset($_POST['reset'])) {
             $subjek = 'Reset Password Akun GoKarang';
             $pesan = '
                 <img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
-                <br>Anda telah meminta reset password akun GoKarang Anda. Jika anda tidak meminta ganti password, hiraukan email ini.
-                <br>Username anda: '.$row->username.'
+                <br>Anda telah meminta reset password akun GoKarang Anda. Jika Anda tidak meminta ganti password, hiraukan email ini.
+                <br>Username Anda: '.$row->username.'
                 <br>Untuk melakukan reset password, klik link di bawah ini:
                 <br><a href="https://tkjb.or.id/form_reset_password.php?token_reset_password='.$token_reset_password.'">Reset Password Anda</a>
             ';

@@ -87,8 +87,8 @@ if (isset($_POST['register'])) {
             $subjek = 'Konfirmasi Registrasi Akun Donatur GoKarang';
             $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
                 <br>Terima kasih telah mendaftar sebagai donatur di GoKarang!
-                <br>Username anda: ' . $username . '
-                <br>Ayo mulai buat donasi pertama anda dengan konfirmasi email anda:
+                <br>Username Anda: ' . $username . '
+                <br>Ayo mulai buat donasi pertama Anda dengan konfirmasi email Anda:
                 <br><a href="https://tkjb.or.id/aktivasi_user.php?token_aktivasi_user=' . $token_aktivasi_user . '">Konfirmasi Akun Anda</a>
             ';
             smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);

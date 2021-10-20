@@ -72,7 +72,7 @@ if (isset($_POST['submit'])) {
             <br>Anda bertugas untuk mengawasi donasi yang masuk, mengelola rekening bersama wilayah, serta mengawasi pengadaan bibit terumbu karang hingga pemeliharaan oleh Pengelola Lokasi,
             <br>input dan edit data lokasi (pantai), serta mengatur user Pengelola Lokasi.
             <br>
-            <br>Anda dapat mulai mengelola Wilayah anda dengan Log In melalui link berikut:
+            <br>Anda dapat mulai mengelola Wilayah Anda dengan Log In melalui link berikut:
             <br><a href="https://tkjb.or.id/login.php">Log In GoKarang</a>
             <br>
             <br>Selamat bergabung di GoKarang dan terima kasih atas kerjasamanya.

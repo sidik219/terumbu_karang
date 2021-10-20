@@ -140,7 +140,7 @@ if (isset($_POST['submit'])) {
             $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
                 <br>Yth. ' . $nama_user . '
                 <br>Terima kasih telah membuat reservasi wisata di GoKarang!
-                <br>Berikut rincian tujuan pembayaran wisata anda: 
+                <br>Berikut rincian tujuan pembayaran wisata Anda: 
                 <br>Paket wisata: ' . $rowwisata[0]->nama_paket_wisata . '
                 <br>Lokasi wisata: ' . $rowlokasi->nama_lokasi . '
                 <br>Tanggal reservasi: ' . $tgl_reservasi . '
@@ -338,7 +338,7 @@ if (isset($_POST['submit'])) {
                             if (!empty($_GET['status'])) {
                                 if ($_GET['status'] == 'review_reservasi') {
                                     echo '<div class="alert alert-success" role="alert">
-                                            Cek kembali reservasi wisata anda, 
+                                            Cek kembali reservasi wisata Anda, 
                                             agar tidak terjadi kesalahan dalam menginputan data.
                                             </div>';
                                 }
@@ -578,7 +578,7 @@ if (isset($_POST['submit'])) {
                                     <div class="mb-3">
                                         <!-- Donasi Wisata -->
                                         <label style="color: red;">
-                                            * Dengan berwisata anda turut berkontribusi dalam,<br>
+                                            * Dengan berwisata Anda turut berkontribusi dalam,<br>
                                             konservasi terumbu karang sebesar Rp. <?= number_format($rowlokasi->harga_donasi, 0) ?>
                                         </label>
                                         <!-- Hidden Get ID Untuk Mendapatkan Value -->

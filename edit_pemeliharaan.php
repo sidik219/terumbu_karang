@@ -109,15 +109,66 @@ if (isset($_POST['submit'])) {
                         WHERE id_donasi = :id_donasi";
 
                 $stmt = $pdo->prepare($sqldonasi);
-                $stmt->execute(['id_donasi' => $detailbatch->id_donasi]);
+                $stmt->execute(['id_donasi' => $detailbatch->id_donasi]);                
 
-                if($jumlah_pemeliharaan > 4){
+                if($jumlah_pemeliharaan >= 4){ //Jika sudah selesai pemeliharaan 4 kali
                     $sqldonasi = "UPDATE t_donasi
                         SET id_status_donasi = 6
                         WHERE id_donasi = :id_donasi";
 
-                $stmt = $pdo->prepare($sqldonasi);
-                $stmt->execute(['id_donasi' => $detailbatch->id_donasi]);
+                    $stmt = $pdo->prepare($sqldonasi);
+                    $stmt->execute(['id_donasi' => $detailbatch->id_donasi]);
+
+                    //Kirim email pemeliharaan selesai untuk Donatur 
+                    include 'includes/email_handler.php'; //PHPMailer
+
+                    $sqlselectdonasi = 'SELECT * FROM t_donasi 
+                                        LEFT JOIN t_user ON t_user.id_user = t_donasi.id_user
+                                        LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
+                                        WHERE id_donasi = '.$detailbatch->id_donasi;
+                    $stmt = $pdo->prepare($sqlselectdonasi);
+                    $stmt->execute();
+                    $donasi = $stmt->fetch();
+
+                    $email_donatur = $donasi->email;
+
+                    $subjek = 'Bibit Terumbu Karang Anda telah Selesai Tahap Pemeliharaan (ID Donasi : ' . $detailbatch->id_donasi . ' ) - GoKarang';
+                    $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+                            <br>Yth. ' . $donasi->nama_donatur . '
+                            <br>Terumbu karang Anda telah selesai tahap pemeliharaan akhir oleh pihak pengelola ' . $donasi->nama_lokasi . ' pada tanggal '.$tanggal_pemeliharaan .'.
+                            <br>Perkembangan terumbu karang Anda seterusnya tidak lagi dilaporkan oleh pengelola, karena pemeliharaan hanya dilakukan sebanyak empat kali.
+                            <br>
+                            <br>Anda dapat memantau perkembangan terumbu karang Anda yang lainnya secara berkala pada bagian History Pemeliharaan atau membuat donasi baru pada link berikut:
+                            <br><a href="https://tkjb.or.id/donasi_saya.php">Lihat Donasi Saya</a>
+                        ';
+
+                    smtpmailer($email_donatur, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+                }
+                else{ //Belum selesai pemeliharaan
+                    //Kirim email pemeliharaan baru untuk Donatur 
+                    include 'includes/email_handler.php'; //PHPMailer
+
+                    $sqlselectdonasi = 'SELECT * FROM t_donasi 
+                                        LEFT JOIN t_user ON t_user.id_user = t_donasi.id_user
+                                        LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
+                                        WHERE id_donasi = '.$detailbatch->id_donasi;
+                    $stmt = $pdo->prepare($sqlselectdonasi);
+                    $stmt->execute();
+                    $donasi = $stmt->fetch();
+
+                    $email_donatur = $donasi->email;
+
+                    $subjek = 'Terumbu Karang Anda telah Memasuki Tahap Pemeliharaan Ke - '.$jumlah_pemeliharaan.' (ID Donasi : ' . $detailbatch->id_donasi . ' ) - GoKarang';
+                    $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+                            <br>Yth. ' . $donasi->nama_donatur . '
+                            <br>Terumbu karang Anda telah selesai tahap pemeliharaan ke-'.$jumlah_pemeliharaan.' oleh pihak pengelola ' . $donasi->nama_lokasi . ' dan akan dilakukan hingga pemeliharaan ke-4.
+                            <br>
+                            <br>Anda dapat memantau perkembangan terumbu karang Anda secara berkala pada bagian History Pemeliharaan pada link berikut:
+                            <br><a href="https://tkjb.or.id/donasi_saya.php">Lihat Donasi Saya</a>
+                        ';
+
+                    smtpmailer($email_donatur, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+
                 }
             }
         } //END UPDATE DATA TIAP BATCH

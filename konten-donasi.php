@@ -105,7 +105,7 @@
                         <div class="col-md-12 col-lg-6 p-5 text-light">
                             <h2>Bagi Masyarakat Pesisir</h2>
                             <p>
-                                Terumbu karang yang anda donasikan bermanfaat untuk perbaikan dan perluasan titik
+                                Terumbu karang yang Anda donasikan bermanfaat untuk perbaikan dan perluasan titik
                                 terumbu karang di tempat tinggal mereka.
                                 <br>
                             <ol>

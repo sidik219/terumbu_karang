@@ -292,9 +292,9 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                         <h5 class="font-weight-bold">Pesan / Ekspresi</h5><label for="pesan" class="font-weight-normal">
                             (Opsional. Pesan akan disertakan dalam label khusus pada terumbu karang )</label>
                         <?php if ($_SESSION['level_user'] == '3') : ?>
-                            <input type="text" maxlength="64" class="form-control success" id="pesan" value="Donasi Wisata Bersama" placeholder="Isi pesan anda di sini...">
+                            <input type="text" maxlength="64" class="form-control success" id="pesan" value="Donasi Wisata Bersama" placeholder="Isi pesan Anda di sini...">
                         <?php else : ?>
-                            <input type="text" maxlength="64" class="form-control success" id="pesan" placeholder="Isi pesan anda di sini...">
+                            <input type="text" maxlength="64" class="form-control success" id="pesan" placeholder="Isi pesan Anda di sini...">
                         <?php endif ?>
                     </div>
                     <!-- <button class="btn btn-warning btn-back" type="button"><i class="fas fa-angle-left"></i> Jenis Lainnya</button> -->

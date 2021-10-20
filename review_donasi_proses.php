@@ -127,7 +127,7 @@ if (isset($_SESSION['data_donasi'])) {
     $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
             <br>Yth. ' . $nama_user . '
             <br>Terima kasih telah membuat donasi terumbu karang di GoKarang!
-            <br>Berikut rincian tujuan pembayaran donasi anda:          
+            <br>Berikut rincian tujuan pembayaran donasi Anda:          
             <br>Bank Tujuan Pembayaran: ' . $rekening->nama_bank . '
             <br>Nomor Rekening: ' . $rekening->nomor_rekening . '
             <br>Nama Rekening: ' . $rekening->nama_pemilik_rekening . '
@@ -167,7 +167,7 @@ if (isset($_SESSION['data_donasi'])) {
       $subjek = 'Donasi Baru (ID Donasi: ' . $id_donasi . ') - Terumbu Karang GoKarang';
       $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
             <br>Yth. ' . $nama_user . '
-            <br>Wilayah anda menerima donasi baru pada lokasi ' . $pengelola->nama_lokasi . '
+            <br>Wilayah Anda menerima donasi baru pada lokasi ' . $pengelola->nama_lokasi . '
             <br>Berikut rincian donasi baru tersebut:
             <br>Bank Donatur: ' . $bank_donatur . '
             <br>Nomor Rekening Donatur: ' . $nomor_rekening_donatur . '
@@ -219,7 +219,7 @@ if (isset($_SESSION['data_donasi'])) {
       $subjek = 'Informasi Donasi Wisata (ID Donasi: ' . $id_donasi . ') - GoKarang';
       $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
               <br>Yth. ' . $nama_user . '
-              <br>Terima kasih donasi wisata anda telah terambil pada lokasi ' . $nama_lokasi . '
+              <br>Terima kasih donasi wisata Anda telah terambil pada lokasi ' . $nama_lokasi . '
               <br>Berikut rincian donasi wisata yang terambil:
               <br>Nominal: Rp. ' . number_format($nominal, 0) . '
           ';
@@ -250,7 +250,7 @@ if (isset($_SESSION['data_donasi'])) {
         $subjek = 'Bukti Donasi Wisata Telah Terambil (ID Donasi : ' . $id_donasi . ' ) - GoKarang';
         $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
               <br>Yth. ' . $nama_user . '
-              <br>Wilayah anda menerima donasi wisata baru pada lokasi ' . $pengelola->nama_lokasi . '
+              <br>Wilayah Anda menerima donasi wisata baru pada lokasi ' . $pengelola->nama_lokasi . '
           ';
 
         smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);

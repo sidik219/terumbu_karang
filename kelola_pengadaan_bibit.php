@@ -118,7 +118,7 @@ if (isset($_POST['submit_terima_bibit'])) {
 
     $affectedrows = $stmt->rowCount();
 
-    // Kirim email ke pengelola Lokasi
+    // Kirim email terima ke pengelola Lokasi
     include 'includes/email_handler.php'; //PHPMailer
         $sqlpengelolalokasi = "SELECT * FROM t_pengelola_lokasi
                                 WHERE id_lokasi = {$rowitem->id_lokasi} ";
@@ -171,7 +171,7 @@ if (isset($_POST['submit_tolak_bibit'])) {
 
     $affectedrows = $stmt->rowCount();
 
-    // Kirim email ke pengelola Lokasi
+    // Kirim email tolak ke pengelola Lokasi
     include 'includes/email_handler.php'; //PHPMailer
         $sqlpengelolalokasi = "SELECT * FROM t_pengelola_lokasi
                                 WHERE id_lokasi = {$rowitem->id_lokasi} ";
