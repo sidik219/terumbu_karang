@@ -53,7 +53,7 @@ $sqlviewfasilitas = 'SELECT SUM(biaya_kerjasama)+biaya_asuransi+harga_donasi AS 
                     AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
 $stmt = $pdo->prepare($sqlviewfasilitas);
-$stmt->execute(['id_paket_wisata' => $rowwisata->id_paket_wisata]);
+$stmt->execute(['id_paket_wisata' => $_GET['id_paket_wisata']]);
 $rowfasilitas = $stmt->fetchAll();
 
 // var_dump($_POST);
