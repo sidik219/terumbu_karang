@@ -41,13 +41,12 @@ if (isset($_POST['submit'])) {
 
         $sqlwilayah = "INSERT INTO t_wilayah
                         (nama_wilayah, deskripsi_wilayah, foto_wilayah, id_user_pengelola, sisi_pantai, alamat_kantor_wilayah, kontak_wilayah, kode_wilayah)
-                        VALUES (:nama_wilayah, :deskripsi_wilayah, :foto_wilayah, :id_user_pengelola, :sisi_pantai, :alamat_kantor_wilayah, :kontak_wilayah. :kode_wilayah)";
+                        VALUES (:nama_wilayah, :deskripsi_wilayah, :foto_wilayah, :id_user_pengelola, :sisi_pantai, :alamat_kantor_wilayah, :kontak_wilayah, :kode_wilayah)";
 
         $stmt = $pdo->prepare($sqlwilayah);
         $stmt->execute([
             'nama_wilayah' => $nama_wilayah, 'deskripsi_wilayah' => $deskripsi_wilayah, 'foto_wilayah' => $foto_wilayah, 'id_user_pengelola' => $id_user_pengelola, 'sisi_pantai' => $sisi_pantai,
-            'alamat_kantor_wilayah' => $alamat_kantor_wilayah, 'kontak_wilayah' => $kontak_wilayah, 'kode_wilayah' => $kode_wilayah 
-        ]);
+            'alamat_kantor_wilayah' => $alamat_kantor_wilayah, 'kontak_wilayah' => $kontak_wilayah, 'kode_wilayah' => $kode_wilayah]);
 
         $affectedrows = $stmt->rowCount();
         if ($affectedrows == '0') {
@@ -151,7 +150,7 @@ if (isset($_POST['submit'])) {
                             <select id="dd_kode_wilayah" name="kode_wilayah" class="form-control" required>
                                 <?php foreach ($rowkodewilayah as $kodewilayah) {
                                 ?>
-                                    <option value="<?= $kodewilayah->kode_wilayah ?>"> <?= $kodewilayah->kode_wilayah ?> - <?= $kodewilayah->nama_wilayah ?></option>
+                                    <option value="<?=$kodewilayah->kode_wilayah?>"> <?= $kodewilayah->kode_wilayah ?> - <?= $kodewilayah->nama_wilayah ?></option>
 
                                 <?php } ?>
                             </select>
