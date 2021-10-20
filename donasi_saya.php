@@ -195,7 +195,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
         </aside>
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
+        <div class="content-wrapper-donasi-saya content-wrapper">
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
@@ -253,11 +253,11 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                             $truedate = strtotime($rowitem->update_terakhir);
                             $donasidate = strtotime($rowitem->tanggal_donasi);
                         ?>
-                            <div class="blue-container border rounded shadow-sm mb-4 p-4">
-                                <div class="row mb-3 rounded p-3 shadow-sm">
+                            <div class="blue-container mb-4 p-4 rounded">
+                                <div class="row mb-3 rounded p-3 shadow-sm bg-white">
                                     <!-- First row -->
 
-                                    <div class="col-12 mb-3">
+                                    <div class="col-12 pb-1 mb-2 border-bottom">
                                         <span class="badge badge-pill badge-primary mr-2"> ID Donasi <?= $rowitem->id_donasi ?> </span>
                                         <?php echo empty($rowitem->id_batch) ? '' : '<span class="badge badge-pill badge-info mr-2"> ID Batch ' . $rowitem->id_batch . '</span>'; ?>
 
@@ -267,25 +267,26 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                         <div class="mb-2">
                                             <span class="font-weight-bold"><i class="nav-icon text-success fas fas fa-money-bill-wave"></i> Nominal</span>
                                             <br>
-                                            <span class="mb-3">Rp. <?= number_format($rowitem->nominal, 0) ?></span>
+                                            <span class="mb-3 text-sm">Rp. <?= number_format($rowitem->nominal, 0) ?></span>
                                         </div>
                                         <div class="mb-3">
                                             <span class="font-weight-bold"><i class="nav-icon text-secondary fas fas fa-calendar-alt"></i> Tanggal Donasi</span>
                                             <br>
-                                            <?= strftime('%A, %e %B %Y', $donasidate); ?>
+                                            <span class="text-sm"><?= strftime('%A, %e %B %Y', $donasidate); ?></span>
                                             <br>
 
-
-                                            <?php if ($rowitem->id_status_donasi == 1) {
-                                                echo alertPembayaran($rowitem->tanggal_donasi, $rowitem->batas_hari_pembayaran);
-                                            }  ?>
+                                            <span class="text-sm">
+                                                <?php if ($rowitem->id_status_donasi == 1) {
+                                                    echo alertPembayaran($rowitem->tanggal_donasi, $rowitem->batas_hari_pembayaran);
+                                                }  ?>
+                                            </span>
                                         </div>
 
                                         <div class="mb-3">
                                             <?php if ($rowitem->id_status_donasi >= 3 && $rowitem->id_status_donasi < 7) { ?>
                                                 <!-- Invoice -->
                                                 <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-file-invoice"></i> Invoice Donasi</span>
-                                                <br><a href="invoice_donasi.php?id_donasi=<?= $rowitem->id_donasi ?>" class="btn btn-primary text-sm btn-sm userinfo">
+                                                <br><a href="invoice_donasi.php?id_donasi=<?= $rowitem->id_donasi ?>" class="px-2 py-0 btn btn-primary text-sm btn-sm userinfo">
                                                     <i class="fas fa-file-invoice"></i> Download Inovice Donasi</a>
                                             <?php } ?>
                                         </div>
@@ -298,14 +299,15 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                     <div class="col-md mb-3">
                                         <div class="mb-2">
                                             <span class="font-weight-bold"><i class="nav-icon text-info fas fas fa-comment-dots"></i> Pesan/Ekspresi</span>
-                                            <br><?= $rowitem->pesan ?><br>
+                                            <br><span class="text-sm"><?= $rowitem->pesan ?></span><br>
                                         </div>
                                         <div class="mb-3">
                                             <span class="font-weight-bold"><i class="nav-icon text-warning fas fas fa-list-alt"></i> Status</span>
                                             <br>
                                             <p class="badge badge-warning"><?= $rowitem->nama_status_donasi ?></p>
-
-                                            <?php echo ($rowitem->id_status_donasi <= 2 || $rowitem->id_status_donasi == 7) ? '<a href="edit_donasi_saya.php?id_donasi=' . $rowitem->id_donasi . '" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Donasi</a>' : ''; ?>
+                                            
+                                            <?php echo ($rowitem->id_status_donasi <= 2 || $rowitem->id_status_donasi == 7) ? '<a href="edit_donasi_saya.php?id_donasi=' . $rowitem->id_donasi . '" 
+                                            class="px-2 py-1 btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Donasi</a>' : ''; ?>
 
                                             <br><small class="text-muted"><b>Update Terakhir</b>
                                                 <br><?= strftime('%A, %e %B %Y', $truedate) . '<br> (' . ageCalculator($rowitem->update_terakhir) . ')'; ?></small>
@@ -316,7 +318,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                         <?php if ($rowitem->id_status_donasi >= 3 && $rowitem->id_status_donasi < 7 && $rowitem->tanggal_penanaman != NULL) { ?>
                                             <div class="mb-3">
                                                 <span class="font-weight-bold"><i class="nav-icon text-success fas fas fa-calendar-alt"></i> Tanggal Penanaman</span>
-                                                <br><?= strftime('%A, %e %B %Y', strtotime($rowitem->tanggal_penanaman)) ?>
+                                                <br><span class="text-sm"><?= strftime('%A, %e %B %Y', strtotime($rowitem->tanggal_penanaman)) ?></span>
                                                 <small class="text-muted"><?= '<br> (' . ageCalculatorFuture($rowitem->tanggal_penanaman) . ')'; ?></small>
 
                                             </div>
@@ -332,11 +334,11 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                     <div class="col-md mb-3">
                                         <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-map-marker-alt"></i> Lokasi Penanaman</span><br>
                                         <img height='75px' class="rounded" src=<?= $rowitem->foto_lokasi; ?>><br><br>
-                                        <span class=""><?= "$rowitem->nama_lokasi" ?></span>
+                                        <span class="small"><?= $rowitem->nama_lokasi ?></span>
                                         <br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?= $rowitem->latitude ?>,<?= $rowitem->longitude ?>&z=8" class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a>
-                                        <div class="mt-2">
+                                        <br><br><div class="mt-2">
                                             <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-phone"></i> Kontak Pengelola Lokasi</span>
-                                            <br><?= $rowitem->kontak_lokasi ?><br>
+                                            <br><span class="text-sm"><?= $rowitem->kontak_lokasi ?></span><br>
                                         </div>
 
                                     </div>

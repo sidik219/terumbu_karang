@@ -7,6 +7,10 @@
       background-color: white;
     }
 
+    .content-wrapper-donasi-saya {
+      /* background-color: rgb(241, 241, 241) !important; */
+    }
+
     table {
       table-layout: fixed;
       overflow: hidden;
@@ -432,11 +436,11 @@
 
     .blue-container,
     .table-striped>tbody>tr {
-      /* background-color: #ddeeff; */
-      background-repeat: no-repeat;
+      background-color: #f2f6fd;
+      /* background-repeat: no-repeat;
       background-position: center;
-      background-size: cover;
-      background-image: url('../images/topbarbg.jpg');
+      background-size: cover; */
+      /* background-image: url('../images/topbarbg.jpg'); */
       /* color: white; */
     }
 

@@ -102,8 +102,8 @@ if (isset($_POST['submit'])) {
         $subjek = 'Bibit Terumbu Karang Anda dalam Tahap Penanaman (ID Donasi : ' . $id_donasi . ' ) - GoKarang';
         $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
                 <br>Yth. ' . $donasi->nama_donatur . '
-                <br>Bibit terumbu karang Anda akan ditanam oleh pihak pengelola ' . $donasi->nama_lokasi . ' pada tanggal '.$tanggal_penanaman.'.
-                <br>Terumbu karang Anda akan dilakukan pemeliharaan berkala, umumnya empat kali kali selama satu tahun, dimana
+                <br>Bibit terumbu karang Anda akan ditanam oleh pihak pengelola ' . $donasi->nama_lokasi . ' pada tanggal '.$tanggal_penanaman.' dalam Batch Penanaman ID '.$id_batch.'.
+                <br>Terumbu karang Anda akan dilakukan pemeliharaan berkala, umumnya empat kali selama satu tahun, dimana
                 akan dilaporkan foto, kondisi terumbu karang, serta ukuran terumbu karang yang akan kami akan infokan kepada Anda melalui email.
                 <br>
                 <br>Anda dapat memantau perkembangan terumbu karang Anda secara berkala pada bagian History Pemeliharaan pada link berikut:
