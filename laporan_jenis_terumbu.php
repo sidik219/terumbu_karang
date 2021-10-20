@@ -357,7 +357,7 @@ GROUP BY t_terumbu_karang.id_terumbu_karang';
             var element = document.getElementById('clientPrintContent');
             var opt = {
             margin:       [1.5,2,2,2],
-            filename:     `Laporan_Kondisi_GoKarang_${dateTime}.pdf`,
+            filename:     `Laporan_JenisTerumbu_GoKarang_${dateTime}.pdf`,
 
             image:        { type: 'jpeg', quality: 0.95 },
             html2canvas:  { scale: 3 },

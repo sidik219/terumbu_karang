@@ -64,6 +64,39 @@ if (isset($_POST['submit'])) {
 
     $stmt->execute(['id_donasi' => $id_donasi, 'id_status_pengadaan_bibit' => 3, 'update_terakhir' => $tanggal_update_status, 'bukti_pengadaan_bibit' => $bukti_pengadaan_bibit, 'tgl_pembelian_bibit' => $tgl_pembelian_bibit]);
 
+
+    // Kirim email ke pengelola wilayah
+    include 'includes/email_handler.php'; //PHPMailer
+        $sqlpengelolawilayah = "SELECT * FROM t_pengelola_wilayah
+                                WHERE id_wilayah = {$rowitem->id_wilayah} ";
+
+    $stmt = $pdo->prepare($sqlpengelolawilayah);
+    $stmt->execute();
+    $rowpengelola = $stmt->fetchAll();
+
+
+    foreach($rowpengelola as $pengelola){
+          $sqlviewdatauser = 'SELECT * FROM t_user 
+                              WHERE id_user = :id_user';
+          $stmt = $pdo->prepare($sqlviewdatauser);
+          $stmt->execute(['id_user' => $pengelola->id_user]);
+          $datauser = $stmt->fetch();
+
+          $email = $datauser->email;
+          $nama_user = $datauser->nama_user;
+
+          $subjek = 'Verifikasi Bukti Pembelian Bibit (ID Donasi: '.$id_donasi.') - Terumbu Karang GoKarang';
+          $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+          <br>Yth. '.$nama_user.'
+          <br>Pengelola lokasi '.$rowitem->nama_lokasi.' telah mengupload bukti pembelian bibit untuk donasi dengan ID Donasi '.$id_donasi.'
+          <br>
+          <br>Harap verifikasi bukti pembelian bibit tersebut di link berikut:
+          <br><a href="https://tkjb.or.id/kelola_pengadaan_bibit.php?id_donasi='.$id_donasi.'">Verifikasi Bukti Pembelian Bibit</a>
+      ';
+      
+      smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+      } 
+
     $affectedrows = $stmt->rowCount();
     header("Location: kelola_donasi.php?status=updatesuccess");
     // if ($affectedrows == '0') {
@@ -84,6 +117,40 @@ if (isset($_POST['submit_terima_bibit'])) {
     $stmt->execute(['id_donasi' => $id_donasi, 'id_status_donasi' => 3, 'update_terakhir' => $tanggal_update_status, 'id_status_pengadaan_bibit' => 4]);
 
     $affectedrows = $stmt->rowCount();
+
+    // Kirim email ke pengelola Lokasi
+    include 'includes/email_handler.php'; //PHPMailer
+        $sqlpengelolalokasi = "SELECT * FROM t_pengelola_lokasi
+                                WHERE id_lokasi = {$rowitem->id_lokasi} ";
+
+    $stmt = $pdo->prepare($sqlpengelolalokasi);
+    $stmt->execute();
+    $rowpengelola = $stmt->fetchAll();
+
+
+    foreach($rowpengelola as $pengelola){
+          $sqlviewdatauser = 'SELECT * FROM t_user 
+                              WHERE id_user = :id_user';
+          $stmt = $pdo->prepare($sqlviewdatauser);
+          $stmt->execute(['id_user' => $pengelola->id_user]);
+          $datauser = $stmt->fetch();
+
+          $email = $datauser->email;
+          $nama_user = $datauser->nama_user;
+
+          $subjek = 'Bukti Pembelian Bibit Telah Diterima (ID Donasi: '.$id_donasi.') - Terumbu Karang GoKarang';
+          $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+          <br>Yth. '.$nama_user.'
+          <br>Pengelola Wilayah telah memverifikasi bukti pembelian bibit untuk donasi dengan ID Donasi '.$id_donasi.'
+          <br>
+          <br>Harap masukkan donasi tersebut ke dalam batch penanaman jika jumlah donasi yang terkumpul sudah mencapai jumlah penanaman bibit minimal yang ditentukan.
+          <br><a href="https://tkjb.or.id/kelola_pengadaan_bibit.php?id_donasi='.$id_donasi.'">Kelola Batch Penanaman</a>
+      ';
+      
+      smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+      } 
+
+
     header("Refresh: 0");
 
     if ($affectedrows == '0') {
@@ -103,6 +170,40 @@ if (isset($_POST['submit_tolak_bibit'])) {
     $stmt->execute(['id_donasi' => $id_donasi, 'id_status_pengadaan_bibit' => 5, 'update_terakhir' => $tanggal_update_status]);
 
     $affectedrows = $stmt->rowCount();
+
+    // Kirim email ke pengelola Lokasi
+    include 'includes/email_handler.php'; //PHPMailer
+        $sqlpengelolalokasi = "SELECT * FROM t_pengelola_lokasi
+                                WHERE id_lokasi = {$rowitem->id_lokasi} ";
+
+    $stmt = $pdo->prepare($sqlpengelolalokasi);
+    $stmt->execute();
+    $rowpengelola = $stmt->fetchAll();
+
+
+    foreach($rowpengelola as $pengelola){
+          $sqlviewdatauser = 'SELECT * FROM t_user 
+                              WHERE id_user = :id_user';
+          $stmt = $pdo->prepare($sqlviewdatauser);
+          $stmt->execute(['id_user' => $pengelola->id_user]);
+          $datauser = $stmt->fetch();
+
+          $email = $datauser->email;
+          $nama_user = $datauser->nama_user;
+
+          $subjek = 'Bukti Pembelian Bibit Ditolak (ID Donasi: '.$id_donasi.') - Terumbu Karang GoKarang';
+          $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+          <br>Yth. '.$nama_user.'
+          <br>Pengelola Wilayah telah menolak bukti pembelian bibit untuk donasi dengan ID Donasi '.$id_donasi.'
+          <br>
+          <br>Harap upload kembali bukti pembelian bibit yang sesuai.
+          <br><a href="https://tkjb.or.id/kelola_pengadaan_bibit.php?id_donasi='.$id_donasi.'">Upload Ulang Bukti Pembelian bibit</a>
+      ';
+      
+      smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+      } 
+
+
     if ($affectedrows == '0') {
         header("Location: kelola_donasi.php?status=nochange");
     } else {

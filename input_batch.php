@@ -81,10 +81,27 @@ if (isset($_POST['submit'])) {
       $stmt->execute(['id_donasi' => $id_donasi, 'id_batch' => $id_batch, 'update_terakhir' => $update_status_batch_terakhir, 'id_status_donasi' => $id_status_donasi]);
 
       $affectedrows = $stmt->rowCount();
+
       if ($affectedrows == '0') {
         header("Location: kelola_batch.php?status=insertfailed");
       } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
+
+        //Kirim email untuk Donatur
+               
+        $subjek = 'Bibit Terumbu Karang Anda dalam Tahap Penanaman (ID Donasi : ' . $rowitem->id_donasi . ' ) - GoKarang';
+        $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+                <br>Yth. ' . $rowitem->nama_donatur . '
+                <br>Bibit terumbu karang Anda akan ditanam oleh pihak pengelola ' . $rowitem->nama_lokasi . ' pada tanggal '.$tanggal_penanaman.'.
+                <br>Terumbu karang Anda akan dilakukan pemeliharaan berkala, umumnya 3 bulan sekali selama satu tahun dimana
+                akan dilaporkan foto, kondisi terumbu karang, serta ukuran terumbu karang yang akan kami akan infokan kepada Anda melalui email.
+                <br>
+                <br>Anda dapat memantau perkembangan terumbu karang Anda secara berkala pada bagian History Pemeliharaan pada link berikut:
+                <br><a href="https://tkjb.or.id/donasi_saya.php">Lihat Donasi Saya</a>
+            ';
+
+        smtpmailer($email_donatur, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+
         header("Location: kelola_batch.php?status=addsuccess&id_status_batch=1");
       }
     }
