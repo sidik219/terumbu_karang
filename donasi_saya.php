@@ -206,7 +206,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
 
                         <div class="col">
 
-                            <a class="btn btn-primary float-right" href="map.php" role="button">Donasi Sekarang (+)</a>
+                            <a class="btn btn-primary float-right" href="map.php" role="button">Donasi Sekarang <i class="fas text-lg fa-angle-double-right"></i></a>
 
                         </div>
                     </div>
@@ -254,7 +254,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                             $donasidate = strtotime($rowitem->tanggal_donasi);
                         ?>
                             <div class="blue-container mb-4 p-4 rounded">
-                                <div class="row mb-3 rounded p-3 shadow-sm bg-white">
+                                <div class="row mb-3 rounded p-3 shadow-sm bg-white donasi-content">
                                     <!-- First row -->
 
                                     <div class="col-12 pb-1 mb-2 border-bottom">
@@ -335,7 +335,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                         <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-map-marker-alt"></i> Lokasi Penanaman</span><br>
                                         <img height='75px' class="rounded" src=<?= $rowitem->foto_lokasi; ?>><br><br>
                                         <span class="small"><?= $rowitem->nama_lokasi ?></span>
-                                        <br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?= $rowitem->latitude ?>,<?= $rowitem->longitude ?>&z=8" class="btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a>
+                                        <br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?= $rowitem->latitude ?>,<?= $rowitem->longitude ?>&z=8" class="px-1 py-0 btn-sm small btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a>
                                         <br><br><div class="mt-2">
                                             <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-phone"></i> Kontak Pengelola Lokasi</span>
                                             <br><span class="text-sm"><?= $rowitem->kontak_lokasi ?></span><br>

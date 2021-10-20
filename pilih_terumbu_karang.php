@@ -215,13 +215,15 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                                 </div>
 
                                 <div class="row shop-items">
-                                    <div class="card-columns">
+                                    <!-- <div class="card-columns"> -->
+                                    <div class="row">
+
                                         <?php
                                         foreach ($row as $rowitem) {
                                             $harga_tk = $rowitem->harga_patokan_lokasi + $rowitem->biaya_pemeliharaan;
                                         ?>
-
-                                            <div class="card  card-pilihan rounded mb-4 shadow-sm shop-item text-sm">
+                                            <div class="col-sm-4 card-container">
+                                            <div class="card col-4 card-pilihan rounded mb-4 shadow-sm shop-item text-sm">
                                                 <a href="#">
                                                     <img class="card-img-top rounded shop-item-image" height="150px" width="150px" src="<?= $rowitem->foto_terumbu_karang ?>"></a>
                                                 <div class="card-body pt-2">
@@ -251,6 +253,7 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
 
                                                 </div>
                                             </div>
+                                        </div>
                                         <?php } ?>
                                         <input type="text" class="d-none" id="id-lokasi" value="<?= $_SESSION['id_lokasi'] ?>">
                                     </div>

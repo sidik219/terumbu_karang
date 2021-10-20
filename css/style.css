@@ -157,9 +157,9 @@
 
     /*End Container profile saya dashboard user*/
 
-    shop-item {
+    /* .shop-item {
       margin: 30px;
-    }
+    } */
 
     .shop-item-title {
       display: block;
@@ -215,6 +215,12 @@
       margin-right: 1.5em;
       padding-bottom: 10px;
       margin-top: 10px;
+    }
+
+    /* Class bawaan Admin LTE */
+    .card-columns{ 
+      /* display: inline-block; */
+      column-count: 3;
     }
 
     .cart-row {
@@ -404,6 +410,11 @@
       -webkit-transform: translate3d(0, 0, 0);
     }
 
+    .card-container .col-4{
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+
     @font-face {
       font-family: MontserratRegular;
       src: url(../webfonts/Montserrat-Regular.ttf);
@@ -443,6 +454,13 @@
       /* background-image: url('../images/topbarbg.jpg'); */
       /* color: white; */
     }
+/* 
+    .donasi-content{
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      background-image: url('../images/topbarbga.jpg');
+    } */
 
     .wilayah-blue-bg{
       background-image: url('../images/topbarbg.jpg');
