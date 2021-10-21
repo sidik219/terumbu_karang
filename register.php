@@ -42,9 +42,11 @@ if (isset($_POST['register'])) {
     $result_email = mysqli_query($conn, "SELECT email FROM t_user WHERE email = '$email'");
     // var_dump($result);
     // die;
-    if (mysqli_fetch_assoc($result) && mysqli_fetch_assoc($result_email)) {
-        header('location: register.php?pesan=Username_Email_Telah_Terdaftar');
-    } else if (mysqli_fetch_assoc($result)) {
+    // ini ga tau buat validasi email sama username ada di db malah kelewat
+    // if (mysqli_fetch_assoc($result) && mysqli_fetch_assoc($result_email)) {
+    //     header('location: register.php?pesan=Username_Email_Telah_Terdaftar');
+    // } else 
+    if (mysqli_fetch_assoc($result)) {
         header('location: register.php?pesan=Username_Telah_Terdaftar');
     } else  if (mysqli_fetch_assoc($result_email)) {
         header('location: register.php?pesan=Email_Telah_Terdaftar');

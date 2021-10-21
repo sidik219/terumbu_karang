@@ -44,9 +44,11 @@ if (isset($_POST['register'])) {
     $result_email = mysqli_query($conn, "SELECT email FROM t_user WHERE email = '$email'");
     // var_dump($result);
     // die;
-    if (mysqli_fetch_assoc($result) && mysqli_fetch_assoc($result_email)) {
-        header('location: register_pengelola.php?pesan=Username_Email_Telah_Terdaftar');
-    } else if (mysqli_fetch_assoc($result)) {
+    // ini ga tau buat validasi email sama username ada di db malah kelewat
+    // if (mysqli_fetch_assoc($result) && mysqli_fetch_assoc($result_email)) {
+    //     header('location: register_pengelola.php?pesan=Username_Email_Telah_Terdaftar');
+    // } else
+    if (mysqli_fetch_assoc($result)) {
         header('location: register_pengelola.php?pesan=Username_Telah_Terdaftar');
     } else  if (mysqli_fetch_assoc($result_email)) {
         header('location: register_pengelola.php?pesan=Email_Telah_Terdaftar');
@@ -109,14 +111,14 @@ if (isset($_POST['register'])) {
             ';
             smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
 
-            if($level_user == 2){
+            if ($level_user == 2) {
                 //Query semua user pengelola pusat
                 $sqluserpusat = 'SELECT email FROM t_user WHERE level_user=4';
                 $stmt = $pdo->prepare($sqluserpusat);
                 $stmt->execute();
                 $rowuserpusat = $stmt->fetchAll();
 
-                foreach($rowuserpusat as $userpusat){
+                foreach ($rowuserpusat as $userpusat) {
                     //Email untuk pengelola pusat bahwa ada calon pengelola wilayah baru
                     $email_pusat = $userpusat->email;
 
@@ -134,12 +136,12 @@ if (isset($_POST['register'])) {
                         <br><a href="https://tkjb.or.id/kelola_wilayah.php">Atur Pengelola Wilayah</a>
                         <br>
                         <br>Jika akun calon pengelola tersebut dipastikan tidak dikenal, klik link berikut untuk menghapus akun tersebut:
-                        <br><a href="https://tkjb.or.id/hapus.php?type=hapus_user_pengelola_wilayah_baru&id_user='.$id_user_terakhir.'">Hapus Akun Pengelola Tidak Dikenal</a>
+                        <br><a href="https://tkjb.or.id/hapus.php?type=hapus_user_pengelola_wilayah_baru&id_user=' . $id_user_terakhir . '">Hapus Akun Pengelola Tidak Dikenal</a>
                     ';
                     smtpmailer($email_pusat, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
-                }                
+                }
             }
-            
+
 
             header('Location: login.php?pesan=registrasi_berhasil');
         }
