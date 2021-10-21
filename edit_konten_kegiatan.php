@@ -165,7 +165,7 @@ if (isset($_POST['submit'])) {
                             <label for="deskripsi_kegiatan">Deskripsi Kegiatan</label>
                             <!-- <input type="text" id="deskripsi_kegiatan" value="<?= $kegiatan->deskripsi_kegiatan ?>" name="deskripsi_kegiatan" class="form-control" placeholder="Deskripsi Konten" required> -->
 
-                            <textarea id="deskripsi_kegiatan" name="deskripsi_kegiatan" class="form-control" placeholder="Deskripsi Konten" required value="<?= $kegiatan->deskripsi_kegiatan; ?>"></textarea>
+                            <textarea id="deskripsi_kegiatan" name="deskripsi_kegiatan" class="form-control" placeholder="Deskripsi Konten" required><?= $kegiatan->deskripsi_kegiatan; ?></textarea>
                             <script>
                                 $('#deskripsi_kegiatan').trumbowyg();
                             </script>

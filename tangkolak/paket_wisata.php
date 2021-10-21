@@ -351,6 +351,9 @@ $rowpaket = $stmt->fetchAll();
                     <span class="">
                         <h2>Ketentuan Wisata</h2>
                     </span>
+                    <?php if ($rowkonten == null) : ?>
+                        <p class="text-center">Tidak Ada data</p>
+                    <?php endif ?>
                     <div class="row card-body">
                         <?php foreach ($rowkonten as $row) : ?>
                             <div class="col-sm  pt-3 ">

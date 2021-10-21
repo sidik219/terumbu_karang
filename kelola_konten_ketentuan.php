@@ -32,6 +32,8 @@ $row = $stmt->fetchAll();
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Favicon -->
     <?= $favicon ?>
+    <!-- tooltips -->
+    <link rel="stylesheet" type="text/css" href="css/tooltips.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -103,7 +105,18 @@ $row = $stmt->fetchAll();
                     <div class="row">
                         <div class="col">
                             <h4><span class="align-middle font-weight-bold">Ketentuan Wisata</span></h4>
-                            <p class="small">Beri Ketentuan Berwisata Untuk Para Calon Wisatawan Di Wisata Anda</p>
+                            <p>
+                                Beri Ketentuan Berwisata Untuk Para Calon Wisatawan Di Wisata Anda
+                            </p>
+                            <p class="small"><b>Ketentuan Ini Akan Berada Di Halaman Info Wisata</b>
+                                <span class="mytooltip tooltip-effect-1">
+                                    <span class="fas fa-info-circle"></span>
+                                    <span class="tooltip-content clearfix">
+                                        <img src="./images/tooltips/ketentuan.png">
+                                        <span class="tooltip-text">Contoh seperti gambar disamping</span>
+                                    </span>
+                                </span>
+                            </p>
                         </div>
                         <div class="col">
                             <?php if ($row == null) {
@@ -146,7 +159,7 @@ $row = $stmt->fetchAll();
                             <?php } ?>
                         </tbody>
                     </table>
-                    <p class="small"><b>*Ketentuan Ini Akan Berada Di Halaman Info Wisata</b></p>
+                    <!-- <p class="small"><b>*Ketentuan Ini Akan Berada Di Halaman Info Wisata</b></p> -->
             </section>
             <!-- /.Left col -->
         </div>

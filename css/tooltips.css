@@ -1,0 +1,75 @@
+.mytooltip {
+  display: inline;
+  position: relative;
+  z-index: 999;
+}
+
+.mytooltip .tooltip-item {
+  background: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 500;
+  padding: 0 10px;
+}
+
+.mytooltip .tooltip-content {
+  position: absolute;
+  z-index: 9999;
+  width: 360px;
+  left: 50%;
+  margin: 0 0 20px -180px;
+  top: 100%;
+  text-align: left;
+  font-size: 14px;
+  line-height: 30px;
+  -webkit-box-shadow: -5px -5px 15px rgba(48, 54, 61, 0.2);
+  box-shadow: -5px -5px 15px rgba(48, 54, 61, 0.2);
+  background: #2b2b2b;
+  opacity: 0;
+  cursor: default;
+  pointer-events: none;
+}
+
+.mytooltip .tooltip-content img {
+  position: relative;
+  height: 140px;
+  display: block;
+  float: left;
+  margin-right: 1em;
+}
+
+.mytooltip .tooltip-item::after {
+  content: "";
+  position: absolute;
+  width: 360px;
+  height: 20px;
+  bottom: -100%;
+  left: 50%;
+  pointer-events: none;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.mytooltip:hover .tooltip-item::after {
+  pointer-events: auto;
+}
+
+.mytooltip:hover .tooltip-content {
+  pointer-events: auto;
+  opacity: 1;
+  -webkit-transform: translate3d(0, 0, 0) rotate3d(0, 0, 0, 0deg);
+  transform: translate3d(0, 0, 0) rotate3d(0, 0, 0, 0deg);
+}
+
+.mytooltip:hover .tooltip-content2 {
+  opacity: 1;
+  font-size: 18px;
+}
+
+.mytooltip .tooltip-text {
+  font-size: 14px;
+  line-height: 24px;
+  display: block;
+  padding: 1.31em 1.21em 1.21em 0;
+  color: #fff;
+}
