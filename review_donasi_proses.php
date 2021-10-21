@@ -70,17 +70,19 @@ if (isset($_SESSION['data_donasi'])) {
   } else {
     //echo "HAHAHAAHA GREAT SUCCESSS !";
     $last_id = $pdo->lastInsertId();
-    $idpilih = $_SESSION['prodid'];
-    $hitung = count($_SESSION['prodid']);
-    for ($x = 0; $x < $hitung; $x++) {
-      $record = $idpilih[$x];
-      $sqlreservasi = "UPDATE t_donasi_wisata
+    if ($_SESSION['level_user'] == '3') {
+      $idpilih = $_SESSION['prodid'];
+      $hitung = count($_SESSION['prodid']);
+      for ($x = 0; $x < $hitung; $x++) {
+        $record = $idpilih[$x];
+        $sqlreservasi = "UPDATE t_donasi_wisata
                 SET id_donasi = :id_donasi
                 WHERE id_donasi_wisata = $record";
-      $stmt = $pdo->prepare($sqlreservasi);
-      $stmt->execute([
-        'id_donasi' => $last_id
-      ]);
+        $stmt = $pdo->prepare($sqlreservasi);
+        $stmt->execute([
+          'id_donasi' => $last_id
+        ]);
+      }
     }
   }
 
