@@ -448,10 +448,10 @@
     .blue-container,
     .table-striped>tbody>tr {
       background-color: #f2f6fd;
-      /* background-repeat: no-repeat;
+      background-repeat: no-repeat;
       background-position: center;
-      background-size: cover; */
-      /* background-image: url('../images/topbarbg.jpg'); */
+      background-size: cover;
+      background-image: url('../images/topbarbg.jpg');
       /* color: white; */
     }
 /* 
