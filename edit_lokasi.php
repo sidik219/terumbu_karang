@@ -96,7 +96,7 @@ if (isset($_POST['submit'])) {
         } else if (isset($_FILES['image_uploads1'])) {
             if (($row->ttd_digital == $defaultpic) || (!$row->ttd_digital)) {
                 $target_dir  = "images/ttd_digital/";
-                $ttd_digital = $target_dir . 'TTD_' . $randomstring . '.jpg';
+                $ttd_digital = $target_dir . 'TTD_' . $randomstring . '.png';
                 move_uploaded_file($_FILES["image_uploads1"]["tmp_name"], $ttd_digital);
                 $pic = "&new=";
             } else if (isset($row->ttd_digital)) {
