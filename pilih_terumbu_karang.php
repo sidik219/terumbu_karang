@@ -216,14 +216,14 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
 
                                 <div class="row shop-items">
                                     <!-- <div class="card-columns"> -->
-                                    <div class="row">
+                                    <div class="row row-pilihan">
 
                                         <?php
                                         foreach ($row as $rowitem) {
                                             $harga_tk = $rowitem->harga_patokan_lokasi + $rowitem->biaya_pemeliharaan;
                                         ?>
                                             <div class="col-sm-4 card-container">
-                                            <div class="card col-4 card-pilihan rounded mb-4 shadow-sm shop-item text-sm">
+                                                <div class="card p-0 col-4 card-pilihan rounded mb-4 shadow-sm shop-item text-sm">
                                                 <a href="#">
                                                     <img class="card-img-top rounded shop-item-image" height="150px" width="150px" src="<?= $rowitem->foto_terumbu_karang ?>"></a>
                                                 <div class="card-body pt-2">

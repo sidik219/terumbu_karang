@@ -37,31 +37,27 @@ function ready() {
     if ($('.btn-purchase-donator').length > 0) {
         document.getElementsByClassName('btn-purchase-donator')[0].addEventListener('click', purchaseClicked)
     }
-
-
-    var cek_SESSION = "<?php echo $_SESSION['level_user'] ?>";
-    if (cek_SESSION == 1 || cek_SESSION == 3) {
-        if (sessionStorage.getItem("keranjang_serialised")) {
-            var keranjang_old = JSON.parse(sessionStorage.getItem("keranjang_serialised"))
-            if (keranjang_old.keranjang.length) {
-                for (i = 0; i < keranjang_old.keranjang.length; i++) {
-                    if (keranjang_old.keranjang[i] !== null) {
-                        var title = keranjang_old.keranjang[i].nama_tk
-                        var price = `Rp. ${keranjang_old.keranjang[i].harga_tk}`
-                        var imageSrc = keranjang_old.keranjang[i].image
-                        var itemID = keranjang_old.keranjang[i].id_tk
-                        var jumlah_tk = keranjang_old.keranjang[i].jumlah_tk
-                        keranjang_old.keranjang[i]["ignore"] = 1
-                        var stok_tk = keranjang_old.keranjang[i].stok_tk
-                        var ignore = keranjang_old.keranjang[i].ignore
-                        addItemToCart(title, price, imageSrc, itemID, ignore, jumlah_tk, stok_tk)
-                        updateCartTotal()
-                    }
+    if (sessionStorage.getItem("keranjang_serialised")) {
+        var keranjang_old = JSON.parse(sessionStorage.getItem("keranjang_serialised"))
+        if (keranjang_old.keranjang.length) {
+            for (i = 0; i < keranjang_old.keranjang.length; i++) {
+                if (keranjang_old.keranjang[i] !== null) {
+                    var title = keranjang_old.keranjang[i].nama_tk
+                    var price = `Rp. ${keranjang_old.keranjang[i].harga_tk}`
+                    var imageSrc = keranjang_old.keranjang[i].image
+                    var itemID = keranjang_old.keranjang[i].id_tk
+                    var jumlah_tk = keranjang_old.keranjang[i].jumlah_tk
+                    keranjang_old.keranjang[i]["ignore"] = 1
+                    var stok_tk = keranjang_old.keranjang[i].stok_tk
+                    var ignore = keranjang_old.keranjang[i].ignore
+                    addItemToCart(title, price, imageSrc, itemID, ignore, jumlah_tk, stok_tk)
+                    updateCartTotal()
                 }
-
             }
+
         }
     }
+
 
 
     // window.addEventListener('beforeunload', function(event) {
