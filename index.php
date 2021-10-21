@@ -125,20 +125,6 @@ $rowKonten = $stmt->fetchAll();
                                 <div class="carousel-caption  d-md-block">
                                     <h3><?= $wilayah->judul_konten_wilayah ?></h3><br>
                                     <p><?= $wilayah->deskripsi_konten_wilayah ?></p><br>
-                                    <?php
-                                    if ($wilayah->status_konten_wilayah == "Donasi Sekarang") { ?>
-                                        <a href="konten-donasi.php" class="btn btn-link-slide" role="button" aria-pressed="true">
-                                            <?= $wilayah->status_konten_wilayah ?>
-                                        </a>
-                                    <?php } elseif ($wilayah->status_konten_wilayah == "Wisata Sekarang") { ?>
-                                        <a href="konten-wisata.php" class="btn btn-link-slide" role="button" aria-pressed="true">
-                                            <?= $wilayah->status_konten_wilayah ?>
-                                        </a>
-                                    <?php } elseif ($wilayah->status_konten_wilayah == "Coralmaps") { ?>
-                                        <a href="coralmaps.php" class="btn btn-link-slide" role="button" aria-pressed="true">
-                                            <?= $wilayah->status_konten_wilayah ?>
-                                        </a>
-                                    <?php } ?>
                                 </div>
                             </div>
                         <?php } ?>

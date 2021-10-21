@@ -178,7 +178,7 @@ include 'hak_akses.php';
                                                     <!-- Judul Wisata -->
                                                     <i class="text-info fas fa-luggage-cart"></i>
                                                     <label>Wisata:</label>
-                                                    <span class="badge badge-pill badge-info">
+                                                    <span style="font-weight:normal;">
                                                         <?=$wisata->judul_wisata?>
                                                     </span><br>
                                                     
@@ -213,7 +213,7 @@ include 'hak_akses.php';
                                 <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-danger fas fa-heartbeat"></i>
                                     <label>Asuransi:</label>
-                                    <span class="badge badge-pill badge-info">
+                                    <span style="font-weight:normal;">
                                         <?=$rowitem->nama_asuransi?>
                                     </span><br>
                                     Rp. <?=number_format($rowitem->biaya_asuransi, 0)?>

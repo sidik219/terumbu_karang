@@ -124,24 +124,10 @@ $rowKontenkegiatan = $stmt->fetchAll();
                                 echo " ";
                             }
                         ?>">
-                                <img class="d-block w-100" src="../<?= $lokasi->foto_konten_lokasi ?>" alt="">
+                                <img class="d-block w-100" src="../<?= $lokasi->foto_konten_lokasi ?>" alt="" height="600px">
                                 <div class="carousel-caption  d-md-block">
                                     <h3><?= $lokasi->judul_konten_lokasi ?></h3><br>
                                     <p><?= $lokasi->deskripsi_konten_lokasi ?></p><br>
-                                    <?php
-                                    if ($lokasi->status_konten_lokasi == "Wisata Bahari") { ?>
-                                        <a href="wisata_tangkolak.php" class="btn btn-link-slide" role="button" aria-pressed="true">
-                                            <?= $lokasi->status_konten_lokasi ?>
-                                        </a>
-                                    <?php } elseif ($lokasi->status_konten_lokasi == "Paket Wisata") { ?>
-                                        <a href="paket_wisata.php" class="btn btn-link-slide" role="button" aria-pressed="true">
-                                            <?= $lokasi->status_konten_lokasi ?>
-                                        </a>
-                                    <?php } elseif ($lokasi->status_konten_lokasi == "Terumbu Karang") { ?>
-                                        <a href="terumbu_karang.php" class="btn btn-link-slide" role="button" aria-pressed="true">
-                                            <?= $lokasi->status_konten_lokasi ?>
-                                        </a>
-                                    <?php } ?>
                                 </div>
                             </div>
                         <?php } ?>
