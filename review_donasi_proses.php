@@ -114,7 +114,7 @@ if (isset($_SESSION['data_donasi'])) {
     $stmt = $pdo->prepare($sqlupdatestoktk);
     $stmt->execute(['id_lokasi' => $id_lokasi, 'id_terumbu_karang' => $id_terumbu_karang, 'jumlah_terumbu' => 0]);
   }
-  
+
 
   if ($_SESSION['level_user'] == '1') {
     //Kirim email untuk Donatur
@@ -188,23 +188,23 @@ if (isset($_SESSION['data_donasi'])) {
       smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
     }
   } elseif ($_SESSION['level_user'] == '3') {
-      include 'includes/email_handler.php'; //PHPMailer
-      // $email = $_SESSION['email'];
-      // $username = $_SESSION['username'];
-      // $nama_user = $_SESSION['nama_user'];
+    include 'includes/email_handler.php'; //PHPMailer
+    // $email = $_SESSION['email'];
+    // $username = $_SESSION['username'];
+    // $nama_user = $_SESSION['nama_user'];
 
-      //Kirim email untuk Donatur
-      $sqlviewuser = 'SELECT * FROM t_donasi_wisata
+    //Kirim email untuk Donatur
+    $sqlviewuser = 'SELECT * FROM t_donasi_wisata
                       LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi
                       LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
-                      WHERE id_donasi_wisata = :id_donasi_wisata
-                      AND status_donasi = "Belum Terambil"
-                      AND id_donasi IS NULL';
-      $stmt = $pdo->prepare($sqlviewuser);
-      $stmt->execute(['id_donasi_wisata' => $id_donasi_wisata]);
-      $rowuser = $stmt->fetchAll();
+                      WHERE id_donasi = :id_donasi
+                      AND status_donasi = "Terbeli"';
+    // AND id_donasi IS NULL';
+    $stmt = $pdo->prepare($sqlviewuser);
+    $stmt->execute(['id_donasi' => $last_id]);
+    $rowuser = $stmt->fetchAll();
 
-      foreach ($rowuser as $user) {
+    foreach ($rowuser as $user) {
       $sqlviewdatauser = 'SELECT * FROM t_user 
                           WHERE id_user = :id_user';
       $stmt = $pdo->prepare($sqlviewdatauser);
@@ -222,36 +222,36 @@ if (isset($_SESSION['data_donasi'])) {
           ';
 
       smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
-      }
+    }
 
-      //Kirim email untuk Pengelola Wilayah
-      $sqlviewpengelolawilayah = 'SELECT * FROM t_lokasi 
+    //Kirim email untuk Pengelola Wilayah
+    $sqlviewpengelolawilayah = 'SELECT * FROM t_lokasi 
                                   LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
                                   LEFT JOIN t_pengelola_wilayah ON t_pengelola_wilayah.id_wilayah = t_lokasi.id_wilayah
                                   WHERE id_lokasi = :id_lokasi';
-      $stmt = $pdo->prepare($sqlviewpengelolawilayah);
-      $stmt->execute(['id_lokasi' => $id_lokasi]);
-      $rowpengelola = $stmt->fetchAll();
+    $stmt = $pdo->prepare($sqlviewpengelolawilayah);
+    $stmt->execute(['id_lokasi' => $id_lokasi]);
+    $rowpengelola = $stmt->fetchAll();
 
-      foreach ($rowpengelola as $pengelola) {
-        $sqlviewdatauser = 'SELECT * FROM t_user 
+    foreach ($rowpengelola as $pengelola) {
+      $sqlviewdatauser = 'SELECT * FROM t_user 
                                   WHERE id_user = :id_user';
-        $stmt = $pdo->prepare($sqlviewdatauser);
-        $stmt->execute(['id_user' => $pengelola->id_user]);
-        $datauser = $stmt->fetch();
+      $stmt = $pdo->prepare($sqlviewdatauser);
+      $stmt->execute(['id_user' => $pengelola->id_user]);
+      $datauser = $stmt->fetch();
 
-        $email = $datauser->email;
-        $username = $datauser->username;
-        $nama_user = $datauser->nama_user;
+      $email = $datauser->email;
+      $username = $datauser->username;
+      $nama_user = $datauser->nama_user;
 
-        $subjek = 'Bukti Donasi Wisata Terambil (ID Donasi : ' . $id_donasi . ' ) - GoKarang';
-        $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+      $subjek = 'Bukti Donasi Wisata Terambil (ID Donasi : ' . $id_donasi . ' ) - GoKarang';
+      $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
               <br>Yth. ' . $nama_user . '
               <br>Wilayah anda telah menerima donasi wisata baru pada lokasi ' . $pengelola->nama_lokasi . '
           ';
 
-        smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
-      }
+      smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+    }
   }
 
   if ($_SESSION['level_user'] == '1') {
