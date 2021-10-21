@@ -146,11 +146,15 @@ if (isset($_POST['submit'])) {
                         <label for="deskripsi_konten_lokasi">Deskripsi Konten</label>
                         <input type="text" id="deskripsi_konten_lokasi" name="deskripsi_konten_lokasi" class="form-control" placeholder="Deskripsi Konten" required>
                     </div>
-
-                    <!-- Lokasi -->
+                    
                     <div class="form-group">
                         <label for="status_konten_lokasi">Status Konten</label>
-                        <input type="text" id="status_konten_lokasi" name="status_konten_lokasi" class="form-control" placeholder="Status Konten" required>
+                        <select id="status_konten_lokasi" name="status_konten_lokasi" class="form-control" required>
+                            <option selected disabled>Pilih Status</option>
+                            <option value="Wisata Bahari">Wisata Bahari</option>
+                            <option value="Paket Wisata">Paket Wisata</option>
+                            <option value="Terumbu Karang">Terumbu Karang</option>
+                        </select>
                     </div>
 
                     <div class='form-group' id='fotowilayah'>

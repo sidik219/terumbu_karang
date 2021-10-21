@@ -150,10 +150,14 @@ if (isset($_POST['submit'])) {
                             <input type="text" id="deskripsi_konten_wilayah" name="deskripsi_konten_wilayah" class="form-control" placeholder="Deskripsi Konten" required>
                         </div>
 
-                        <!-- Lokasi -->
                         <div class="form-group">
                             <label for="status_konten_wilayah">Status Konten</label>
-                            <input type="text" id="status_konten_wilayah" name="status_konten_wilayah" class="form-control" placeholder="Status Konten" required>
+                            <select id="status_konten_wilayah" name="status_konten_wilayah" class="form-control" required>
+                            <option selected disabled>Pilih Status</option>
+                            <option value="Donasi Sekarang">Donasi Sekarang</option>
+                            <option value="Wisata Sekarang">Wisata Sekarang</option>
+                            <option value="Coralmaps">Coralmaps</option>
+                        </select>
                         </div>
 
                         <div class='form-group'>

@@ -178,7 +178,7 @@ if (isset($_POST['submit'])) {
                     <div class="form-group">
                     <label for="status_konten_lokasi">Status Konten</label>
                     <select id="status_konten_lokasi" name="status_konten_lokasi" class="form-control" required>
-                        <option value="">Pilih Status</option>
+                        <option disabled>Pilih Status</option>
                         <?php foreach ($rowKonten as $status) {  ?>
                         <option <?php if($status->id_konten_lokasi == $konten->id_konten_lokasi) echo 'selected'; ?> value="<?=$status->status_konten_lokasi?>"><?=$status->status_konten_lokasi?></option>
                         <?php } ?>
