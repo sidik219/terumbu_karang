@@ -163,13 +163,11 @@ include 'hak_akses.php';
                                                     $tgl_exp = date("Y-m-d",$jangka_waktu);
 
                                                     if ($tgl_sekarang >= $tgl_exp) { ?>
-                                                        <span class="badge badge-pill badge-danger">
-                                                            <i class="fas fa-tag"></i> Sudah Tidak Berlaku.
-                                                        </span>
+                                                        <i class="text-danger fas fa-tag"></i>
+                                                        Sudah Tidak Berlaku.
                                                     <?php } else { ?>
-                                                        <span class="badge badge-pill badge-success">
-                                                            <i class="fas fa-tag"></i> Masih dalam jangka waktu.
-                                                        </span>
+                                                        <i class="text-success fas fa-tag"></i>
+                                                        Masih dalam jangka waktu.
                                                     <?php }?>
                                                 </h5>
                                             </div>
@@ -199,7 +197,7 @@ include 'hak_akses.php';
                                                 <!-- Judul Wisata -->
                                                 <label></label>
                                                 <li>Wisata: 
-                                                    <span class="badge badge-pill badge-info">
+                                                    <span style="font-weight:normal;">
                                                         <?=$wisata->judul_wisata?>
                                                     </span>
                                                 </li>
@@ -221,8 +219,10 @@ include 'hak_akses.php';
                                                 $rowfasilitas = $stmt->fetchAll();
 
                                                 foreach ($rowfasilitas as $allfasilitas) { ?> 
-                                                <i class="text-info fas fa-arrow-circle-right"></i>                 
-                                                <?=$allfasilitas->pengadaan_fasilitas?><br>
+                                                <i class="text-info fas fa-arrow-circle-right"></i>   
+                                                <span style="font-weight:normal;">              
+                                                    <?=$allfasilitas->pengadaan_fasilitas?>
+                                                </span><br>
                                                 <?php } ?>
                                             <?php } ?>
                                             </ol>

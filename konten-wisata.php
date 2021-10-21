@@ -252,9 +252,8 @@ $rowWisata = $stmt->fetchAll();
                                                             <hr class="mr-4">
 
                                                             <!-- Judul Wisata -->
-                                                            <label></label>
                                                             <li>Wisata:
-                                                                <span class="badge badge-pill badge-info">
+                                                                <span style="font-weight:normal;">
                                                                     <?= $wisata->judul_wisata ?>
                                                                 </span>
                                                             </li>
@@ -279,7 +278,9 @@ $rowWisata = $stmt->fetchAll();
 
                                                             foreach ($rowfasilitas as $allfasilitas) { ?>
                                                                 <i class="text-info fas fa-arrow-circle-right"></i>
-                                                                <?= $allfasilitas->pengadaan_fasilitas ?><br>
+                                                                <span style="font-weight:normal;">
+                                                                    <?= $allfasilitas->pengadaan_fasilitas ?>
+                                                                </span><br>
                                                             <?php } ?>
                                                         <?php } ?>
                                                     </ol>
