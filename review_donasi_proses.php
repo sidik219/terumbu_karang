@@ -189,18 +189,17 @@ if (isset($_SESSION['data_donasi'])) {
     }
   } elseif ($_SESSION['level_user'] == '3') {
       include 'includes/email_handler.php'; //PHPMailer
-      $email = $_SESSION['email'];
-      $username = $_SESSION['username'];
-      $nama_user = $_SESSION['nama_user'];
+      // $email = $_SESSION['email'];
+      // $username = $_SESSION['username'];
+      // $nama_user = $_SESSION['nama_user'];
 
       //Kirim email untuk Donatur
       $sqlviewuser = 'SELECT * FROM t_donasi_wisata
-                                  LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi
-                                  LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
-                                  LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
-                                  LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-                                  LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                                  WHERE id_donasi_wisata= :id_donasi_wisata';
+                      LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi
+                      LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                      WHERE id_donasi_wisata = :id_donasi_wisata
+                      AND status_donasi = "Belum Terambil"
+                      AND id_donasi IS NULL';
       $stmt = $pdo->prepare($sqlviewuser);
       $stmt->execute(['id_donasi_wisata' => $id_donasi_wisata]);
       $rowuser = $stmt->fetchAll();
@@ -219,9 +218,7 @@ if (isset($_SESSION['data_donasi'])) {
       $subjek = 'Informasi Donasi Wisata (ID Donasi: ' . $id_donasi . ') - GoKarang';
       $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
               <br>Yth. ' . $nama_user . '
-              <br>Terima kasih donasi wisata Anda telah terambil pada lokasi ' . $nama_lokasi . '
-              <br>Berikut rincian donasi wisata yang terambil:
-              <br>Nominal: Rp. ' . number_format($nominal, 0) . '
+              <br>Terima kasih donasi wisata anda telah terambil pada lokasi ' . $nama_lokasi . '
           ';
 
       smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
@@ -229,9 +226,9 @@ if (isset($_SESSION['data_donasi'])) {
 
       //Kirim email untuk Pengelola Wilayah
       $sqlviewpengelolawilayah = 'SELECT * FROM t_lokasi 
-                                      LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
-                                      LEFT JOIN t_pengelola_wilayah ON t_pengelola_wilayah.id_wilayah = t_lokasi.id_wilayah
-                                      WHERE id_lokasi = :id_lokasi';
+                                  LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                                  LEFT JOIN t_pengelola_wilayah ON t_pengelola_wilayah.id_wilayah = t_lokasi.id_wilayah
+                                  WHERE id_lokasi = :id_lokasi';
       $stmt = $pdo->prepare($sqlviewpengelolawilayah);
       $stmt->execute(['id_lokasi' => $id_lokasi]);
       $rowpengelola = $stmt->fetchAll();
@@ -247,10 +244,10 @@ if (isset($_SESSION['data_donasi'])) {
         $username = $datauser->username;
         $nama_user = $datauser->nama_user;
 
-        $subjek = 'Bukti Donasi Wisata Telah Terambil (ID Donasi : ' . $id_donasi . ' ) - GoKarang';
+        $subjek = 'Bukti Donasi Wisata Terambil (ID Donasi : ' . $id_donasi . ' ) - GoKarang';
         $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
               <br>Yth. ' . $nama_user . '
-              <br>Wilayah Anda menerima donasi wisata baru pada lokasi ' . $pengelola->nama_lokasi . '
+              <br>Wilayah anda telah menerima donasi wisata baru pada lokasi ' . $pengelola->nama_lokasi . '
           ';
 
         smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
