@@ -6,9 +6,7 @@ $stmt = $pdo->prepare('SELECT * From tb_paket_wisata LEFT JOIN t_lokasi ON tb_pa
 $stmt->execute();
 $rowpaket = $stmt->fetchAll();
 
-$stmt = $pdo->prepare('SELECT * FROM t_konten');
-$stmt->execute();
-$rowkonten = $stmt->fetchAll();
+
 
 // Tabel apa ini????
 // $stmt = $pdo->prepare('SELECT * FROM t_penjelasan');
@@ -341,45 +339,7 @@ $rowWisata = $stmt->fetchAll();
                             <?php } ?>
                         <?php } ?>
                     </div>
-                    <div class="container-fluid pt-4 ">
-                        <span class="">
-                            <h2 class="card-header">Ketentuan Wisata</h2>
-                        </span>
-                        <div class="row card-body">
-                            <?php foreach ($rowkonten as $row) : ?>
-                                <div class="col-sm  pt-3 ">
-                                    <h2 class="border-bottom">Fasilitas Sudah Termasuk Biaya :</h2>
-                                    <div class="p-1">
-                                        <?php if ($row->sdh_biaya == null) : ?>
-                                            <p>Tidak Ada data</p>
-                                        <?php else : ?>
-                                            <?= $row->sdh_biaya; ?>
-                                        <?php endif ?>
-                                    </div>
-                                </div>
-                                <div class="col-sm  pt-3">
-                                    <h2 class="border-bottom">Fasilitas Belum Termasuk Biaya :</h2>
-                                    <div class="p-1">
-                                        <?php if ($row->blm_biaya == null) : ?>
-                                            <p>Tidak Ada data</p>
-                                        <?php else : ?>
-                                            <?= $row->blm_biaya; ?>
-                                        <?php endif ?>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12  pt-3">
-                                    <h2 class="border-bottom">Syarat dan Ketentuan</h2>
-                                    <div class="p-1">
-                                        <?php if ($row->sk == null) : ?>
-                                            <p>Tidak Ada data</p>
-                                        <?php else : ?>
-                                            <?= $row->sk; ?>
-                                        <?php endif ?>
-                                    </div>
-                                </div>
-                        </div>
-                    <?php endforeach ?>
-                    </div>
+
                 </div>
             </div>
         </div>

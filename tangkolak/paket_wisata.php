@@ -1,6 +1,10 @@
 <?php include '../build/config/connection.php';
 $url_sekarang = basename(__FILE__);
 
+$stmt = $pdo->prepare('SELECT * FROM t_konten');
+$stmt->execute();
+$rowkonten = $stmt->fetchAll();
+
 // Get Lokasi Berdasarkan Kode Lokasi
 $sqlpaket = 'SELECT * FROM tb_paket_wisata
             LEFT JOIN t_lokasi ON tb_paket_wisata.id_lokasi = t_lokasi.id_lokasi
@@ -11,6 +15,7 @@ $stmt->execute();
 $rowpaket = $stmt->fetchAll();
 ?>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,76 +34,77 @@ $rowpaket = $stmt->fetchAll();
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/b41ecad032.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
 
-     <!-- Navbar Container-->
-     <div class="navbar-tkjb fixed-top">
-            <!-- Navbar -->
-            <nav class="flex-wrap navpadd navbar navbar-expand-lg navbar-light ">
-                <!-- Navbar First Layer -->
-                    <!-- Logo Holder -->
-                        <a class="navbar-brand" href="index.php">
-                            <img id="logo-tkjb-navbar" src="img/TANGKOLAK3.png">
-                        </a>
-                    <!-- Menu Toogler -->
-                    <button class="navbar-toggler custom-toggler hamburger-menu" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon "></span>
-                    </button>
-                    <!-- Button & Link Action -->
-                    <ul class="ml-auto d-none d-lg-block navbar-nav">
-                        <button class="btn radius-50 py-1.5 px-4 ml-3 btn-wisata " onclick="window.location.href='wisata_tangkolak.php'">Reservasi Wisata</button>
-                        <button class="btn radius-50 py-1.5 px-5 ml-3 btn-login " onclick="window.location.href='login.php'">Login</button>
-                    </ul>
-                <!-- END Navbar First Layer -->
-                <!-- Navbar Second Layer -->
-                <div class="navbar-tkjb-navigation col px-0 collapse navbar-collapse" id="navbarTogglerDemo02">
-                     <!-- Navbar Menu -->
-                     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                        <li class="nav-item ">
-                            <a class="nav-link " href="index.php">Beranda</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="wisata_tangkolak.php">Wisata Bahari</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link current" href="paket_wisata.php">Paket Wisata</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="terumbu_karang.php">Terumbu Karang Tangkolak</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="https://tkjb.or.id/"  target="_blank">Website GoKarang</a>
-                        </li>
-                    </ul>
-                    <!-- END Navbar Menu -->
-                    <!-- Navbar Button & Link Action Mobile Version-->
-                    <div class="d-flex d-lg-none p-3 mobile-act-button">
-                        <div class="row-mid">
-                                    <button class="btn radius-50 py-1.5 px-4  btn-wisata " onclick="window.location.href='wisata_tangkolak.php'">Reservasi Wisata</button>
-                        </div>
-                        <div class="row-mid d-none d-md-block">
-                                <p>
-
-                                </p>
-                        </div>
-                        <div class="row-mid">
-                                    <button class="btn radius-50 py-1.5 px-5 btn-login " onclick="window.location.href='login.php'">Login</button>
-                        </div>
+    <!-- Navbar Container-->
+    <div class="navbar-tkjb fixed-top">
+        <!-- Navbar -->
+        <nav class="flex-wrap navpadd navbar navbar-expand-lg navbar-light ">
+            <!-- Navbar First Layer -->
+            <!-- Logo Holder -->
+            <a class="navbar-brand" href="index.php">
+                <img id="logo-tkjb-navbar" src="img/TANGKOLAK3.png">
+            </a>
+            <!-- Menu Toogler -->
+            <button class="navbar-toggler custom-toggler hamburger-menu" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon "></span>
+            </button>
+            <!-- Button & Link Action -->
+            <ul class="ml-auto d-none d-lg-block navbar-nav">
+                <button class="btn radius-50 py-1.5 px-4 ml-3 btn-wisata " onclick="window.location.href='wisata_tangkolak.php'">Reservasi Wisata</button>
+                <button class="btn radius-50 py-1.5 px-5 ml-3 btn-login " onclick="window.location.href='login.php'">Login</button>
+            </ul>
+            <!-- END Navbar First Layer -->
+            <!-- Navbar Second Layer -->
+            <div class="navbar-tkjb-navigation col px-0 collapse navbar-collapse" id="navbarTogglerDemo02">
+                <!-- Navbar Menu -->
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item ">
+                        <a class="nav-link " href="index.php">Beranda</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link " href="wisata_tangkolak.php">Wisata Bahari</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link current" href="paket_wisata.php">Paket Wisata</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link " href="terumbu_karang.php">Terumbu Karang Tangkolak</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://tkjb.or.id/" target="_blank">Website GoKarang</a>
+                    </li>
+                </ul>
+                <!-- END Navbar Menu -->
+                <!-- Navbar Button & Link Action Mobile Version-->
+                <div class="d-flex d-lg-none p-3 mobile-act-button">
+                    <div class="row-mid">
+                        <button class="btn radius-50 py-1.5 px-4  btn-wisata " onclick="window.location.href='wisata_tangkolak.php'">Reservasi Wisata</button>
                     </div>
-                    <!-- END Navbar Button & Link Action Mobile Version-->
-                </div>
-                <!-- END Navbar Second Layer -->
-            </nav>
-            <!-- END Navbar -->
-        </div>
-        <!-- END Navbar Container -->
+                    <div class="row-mid d-none d-md-block">
+                        <p>
 
-   <!-- Konten -->
-   <div class="informational">
+                        </p>
+                    </div>
+                    <div class="row-mid">
+                        <button class="btn radius-50 py-1.5 px-5 btn-login " onclick="window.location.href='login.php'">Login</button>
+                    </div>
+                </div>
+                <!-- END Navbar Button & Link Action Mobile Version-->
+            </div>
+            <!-- END Navbar Second Layer -->
+        </nav>
+        <!-- END Navbar -->
+    </div>
+    <!-- END Navbar Container -->
+
+    <!-- Konten -->
+    <div class="informational">
         <div class="informational-container">
             <div class="wisata-media">
                 <h2> Paket Wisata Tangkolak </h2>
-                            <!-- <div class="row">
+                <!-- <div class="row">
                                 <div class="col-md-4">
                                     <div class="card card-pilihan mb-4 shadow-sm">
                                     <a href="">
@@ -341,7 +347,46 @@ $rowpaket = $stmt->fetchAll();
                         <?php } ?>
                     <?php } ?>
                 </div>
-            </div>  
+                <div class="container-fluid pt-4 ">
+                    <span class="">
+                        <h2>Ketentuan Wisata</h2>
+                    </span>
+                    <div class="row card-body">
+                        <?php foreach ($rowkonten as $row) : ?>
+                            <div class="col-sm  pt-3 ">
+                                <h2 class="border-bottom">Fasilitas Sudah Termasuk Biaya :</h2>
+                                <div class="p-1">
+                                    <?php if ($row->sdh_biaya == null) : ?>
+                                        <p>Tidak Ada data</p>
+                                    <?php else : ?>
+                                        <?= $row->sdh_biaya; ?>
+                                    <?php endif ?>
+                                </div>
+                            </div>
+                            <div class="col-sm  pt-3">
+                                <h2 class="border-bottom">Fasilitas Belum Termasuk Biaya :</h2>
+                                <div class="p-1">
+                                    <?php if ($row->blm_biaya == null) : ?>
+                                        <p>Tidak Ada data</p>
+                                    <?php else : ?>
+                                        <?= $row->blm_biaya; ?>
+                                    <?php endif ?>
+                                </div>
+                            </div>
+                            <div class="col-sm-12  pt-3">
+                                <h2 class="border-bottom">Syarat dan Ketentuan</h2>
+                                <div class="p-1">
+                                    <?php if ($row->sk == null) : ?>
+                                        <p>Tidak Ada data</p>
+                                    <?php else : ?>
+                                        <?= $row->sk; ?>
+                                    <?php endif ?>
+                                </div>
+                            </div>
+                    </div>
+                <?php endforeach ?>
+                </div>
+            </div>
         </div>
     </div>
     <!-- End Konten -->
@@ -377,4 +422,5 @@ $rowpaket = $stmt->fetchAll();
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </body>
+
 </html>

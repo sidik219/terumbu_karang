@@ -103,17 +103,16 @@ include 'hak_akses.php';
                                         </div>
                                     </div>
                                 </div>
-
+                                <!-- 
                                 <div class="col-md-12 col-lg-4">
                                     <div class="card m-3 dashboard-home">
 
                                         <i class="fas fa-handshake fa-7x py-4" style="color: #244276;"></i>
                                         <div class="card-block">
                                             <button class="btn btn-info mb-3 btn-card" onclick="window.location.href='kelola_konten_ketentuan.php';">Kelola Ketentuan Wisata</button>
-                                            <!-- <p class="small">Untuk Halaman Go Karang</p> -->
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <!-- <div class="col-md-12 col-lg-4">
                                         <div class="card m-3 dashboard-home">
