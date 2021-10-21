@@ -118,7 +118,7 @@ if (isset($_POST['register'])) {
 
                 foreach($rowuserpusat as $userpusat){
                     //Email untuk pengelola pusat bahwa ada calon pengelola wilayah baru
-                    $email = $userpusat->email;
+                    $email_pusat = $userpusat->email;
 
                     $subjek = 'Verifikasi Registrasi Akun Pengelola ' . $tingkat_kelola . ' Baru - GoKarang';
                     $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
@@ -136,7 +136,7 @@ if (isset($_POST['register'])) {
                         <br>Jika akun calon pengelola tersebut dipastikan tidak dikenal, klik link berikut untuk menghapus akun tersebut:
                         <br><a href="https://tkjb.or.id/hapus.php?type=hapus_user_pengelola_wilayah_baru&id_user='.$id_user_terakhir.'">Hapus Akun Pengelola Tidak Dikenal</a>
                     ';
-                    smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+                    smtpmailer($email_pusat, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
                 }                
             }
             
