@@ -199,6 +199,7 @@ if (isset($_SESSION['data_donasi'])) {
     $sqlviewuser = 'SELECT * FROM t_donasi_wisata
                       LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi
                       LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+                      LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
                       WHERE id_donasi = :id_donasi
                       AND status_donasi = "Terbeli"';
     // AND id_donasi IS NULL';
@@ -220,7 +221,7 @@ if (isset($_SESSION['data_donasi'])) {
       $subjek = 'Informasi Donasi Wisata (ID Donasi: ' . $id_donasi . ') - GoKarang';
       $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
               <br>Yth. ' . $nama_user . '
-              <br>Terima kasih donasi wisata anda telah terambil pada lokasi ' . $nama_lokasi . '
+              <br>Terima kasih donasi wisata anda telah terambil pada lokasi ' . $user->nama_lokasi . '
           ';
 
       smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);

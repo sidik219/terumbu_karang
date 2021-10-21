@@ -210,8 +210,8 @@ function ageCalculator($dob)
                     <!-- copy of input fields group -->
                     <div class="form-group fieldGroupCopy" style="display: none;">
                         <div class="input-group">
-                            <input type="text" name="nama_pengeluaran[]" min="0" class="form-control" placeholder="Nama Pengeluaran" required/>
-                            <input type="number" name="biaya_pengeluaran[]" min="0" class="form-control" placeholder="Biaya Pengeluaran" required/>
+                            <input type="text" name="nama_pengeluaran[]" min="0" class="form-control" placeholder="Nama Pengeluaran" required />
+                            <input type="number" name="biaya_pengeluaran[]" min="0" class="form-control" placeholder="Biaya Pengeluaran" required />
                             <div class="input-group-addon">
                                 <a href="javascript:void(0)" class="btn btn-danger remove">
                                     <span class="fas fas fa-minus" aria-hidden="true"></span> Hapus Pengeluaran
@@ -257,7 +257,7 @@ function ageCalculator($dob)
                                             <br><?= strftime('%A, %d %B %Y', $truedate) . '<br> (' . ageCalculator($pengeluaran->update_terakhir) . ' yang lalu)'; ?></small>
                                     </td>
                                     <td>
-                                        <a href="hapus.php?type=pengeluaran&id_pengeluaran=<?= $pengeluaran->id_pengeluaran ?>&id_reservasi=<?= $id_reservasi ?>" class="far fa-trash-alt btn btn-act"></a>
+                                        <a onclick="return konfirmasiHapusPengadaan(event)" href="hapus.php?type=pengeluaran&id_pengeluaran=<?= $pengeluaran->id_pengeluaran ?>&id_reservasi=<?= $id_reservasi ?>" class="far fa-trash-alt btn btn-act"></a>
                                     </td>
                                 </tr>
                             <?php } ?>
@@ -334,7 +334,21 @@ function ageCalculator($dob)
                 });
             });
         </script>
+        <script>
+            function konfirmasiHapusPengadaan(event) {
+                jawab = true
+                jawab = confirm('Yakin ingin menghapus? Data pengadaan akan hilang permanen!')
 
+                if (jawab) {
+                    // alert('Lanjut.')
+                    return true
+                } else {
+                    event.preventDefault()
+                    return false
+
+                }
+            }
+        </script>
     </div>
     <!-- Import Trumbowyg font size JS at the end of <body>... -->
     <script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>

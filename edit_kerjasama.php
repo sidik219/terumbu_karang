@@ -15,7 +15,8 @@ $sqlkerjasama = 'SELECT * FROM t_kerjasama
 $stmt = $pdo->prepare($sqlkerjasama);
 $stmt->execute(['id_kerjasama' => $id_kerjasama]);
 $rowkerjasama = $stmt->fetch();
-
+// var_dump($rowkerjasama);
+// die;
 if (isset($_POST['submit'])) {
     $id_pengadaan           = $_POST['nama_fasilitas'];
     $status_kerjasama       = $_POST['status_kerjasama'];
@@ -23,6 +24,7 @@ if (isset($_POST['submit'])) {
     $biaya_kerjasama        = $_POST['biaya_kerjasama'];
     $pembagian_hasil        = $_POST['pembagian_hasil'];
     $Pihak_Ketiga           = $_POST['Pihak_Ketiga'];
+    // $id_kerjasama = $_GET['id_kerjasama'];
 
     //Insert t_kerjasama
     $sqlpengadaan = "UPDATE t_kerjasama
@@ -47,7 +49,7 @@ if (isset($_POST['submit'])) {
 
     $affectedrows = $stmt->rowCount();
     if ($affectedrows == '0') {
-        header("Location: edit_kerjasama.php?status=updatefailed");
+        header("Location: edit_kerjasama.php?status=updatefailed&id_kerjasama=$id_kerjasama");
     } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
         header("Location: kelola_kerjasama.php?status=updatesuccess");
@@ -141,7 +143,15 @@ if (isset($_POST['submit'])) {
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-
+                    <?php
+                    if (!empty($_GET['status'])) {
+                        if ($_GET['status'] == 'updatefailed') {
+                            echo '<div class="alert alert-success" role="alert">
+                                        Data Kerjasama Tidak Ada yang Berubah
+                                        </div>';
+                        }
+                    }
+                    ?>
                     <form action="" enctype="multipart/form-data" method="POST">
                         <div class="form-group field_wrapper">
                             <div class="form-group">
@@ -156,7 +166,9 @@ if (isset($_POST['submit'])) {
                                     $rowpengadaan = $stmt->fetchAll();
 
                                     foreach ($rowpengadaan as $pengadaan) { ?>
-                                        <option value="<?= $pengadaan->id_pengadaan ?>" <?php if ($pengadaan->id_pengadaan == $rowkerjasama->id_pengadaan) { echo " selected"; } ?>>
+                                        <option value="<?= $pengadaan->id_pengadaan ?>" <?php if ($pengadaan->id_pengadaan == $rowkerjasama->id_pengadaan) {
+                                                                                            echo " selected";
+                                                                                        } ?>>
                                             <?= $pengadaan->pengadaan_fasilitas ?>
                                         </option>
                                     <?php } ?>
@@ -164,10 +176,14 @@ if (isset($_POST['submit'])) {
                             </div>
                             <div class="form-group">
                                 <label for="status_kerjasama">Status Kerjasama</label>
-                                <select class="form-control" name="status_kerjasama" id="exampleFormControlSelect1">
+                                <select class="form-control" name="status_kerjasama" id="exampleFormControlSelect1" required>
                                     <option selected disabled>Pilih Status Kerjasama:</option>
-                                    <option value="Tidak Melakukan Kerjasama">Tidak Melakukan Kerjasama</option>
-                                    <option value="Melakukan Kerjasama">Melakukan Kerjasama</option>
+                                    <option <?php if ($rowkerjasama->status_kerjasama == "Tidak Melakukan Kerjasama") {
+                                                echo 'selected';
+                                            } ?> value="Tidak Melakukan Kerjasama">Tidak Melakukan Kerjasama</option>
+                                    <option <?php if ($rowkerjasama->status_kerjasama == "Melakukan Kerjasama") {
+                                                echo 'selected';
+                                            } ?> value="Melakukan Kerjasama">Melakukan Kerjasama</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -176,18 +192,38 @@ if (isset($_POST['submit'])) {
                             </div>
                             <div class="form-group">
                                 <label for="pembagian_kerjasama">Pembagian Kerjasama</label>
-                                <select class="form-control" name="pembagian_kerjasama" id="persentase" onchange="myPersentase();">
-                                    <option selected disabled>Pilih Pembagian Kerjasama:</option>
-                                    <option value="0">0%</option>
-                                    <option value="0.1">10%</option>
-                                    <option value="0.2">20%</option>
-                                    <option value="0.3">30%</option>
-                                    <option value="0.4">40%</option>
-                                    <option value="0.5">50%</option>
-                                    <option value="0.6">60%</option>
-                                    <option value="0.7">70%</option>
-                                    <option value="0.8">80%</option>
-                                    <option value="0.9">90%</option>
+                                <select class="form-control" name="pembagian_kerjasama" id="persentase" onchange="myPersentase()" required>
+                                    <option disabled>Pilih Pembagian Kerjasama:</option>
+                                    <option <?php if ($rowkerjasama->pembagian_kerjasama == "0.0") {
+                                                echo 'selected';
+                                            } ?> value="0">0%</option>
+                                    <option <?php if ($rowkerjasama->pembagian_kerjasama == "0.1") {
+                                                echo 'selected';
+                                            } ?> value="0.1">10%</option>
+                                    <option <?php if ($rowkerjasama->pembagian_kerjasama == "0.2") {
+                                                echo 'selected';
+                                            } ?> value="0.2">20%</option>
+                                    <option <?php if ($rowkerjasama->pembagian_kerjasama == "0.3") {
+                                                echo 'selected';
+                                            } ?> value="0.3">30%</option>
+                                    <option <?php if ($rowkerjasama->pembagian_kerjasama == "0.4") {
+                                                echo 'selected';
+                                            } ?> value="0.4">40%</option>
+                                    <option <?php if ($rowkerjasama->pembagian_kerjasama == "0.5") {
+                                                echo 'selected';
+                                            } ?> value="0.5">50%</option>
+                                    <option <?php if ($rowkerjasama->pembagian_kerjasama == "0.6") {
+                                                echo 'selected';
+                                            } ?> value="0.6">60%</option>
+                                    <option <?php if ($rowkerjasama->pembagian_kerjasama == "0.7") {
+                                                echo 'selected';
+                                            } ?> value="0.7">70%</option>
+                                    <option <?php if ($rowkerjasama->pembagian_kerjasama == "0.8") {
+                                                echo 'selected';
+                                            } ?> value="0.8">80%</option>
+                                    <option <?php if ($rowkerjasama->pembagian_kerjasama == "0.9") {
+                                                echo 'selected';
+                                            } ?> value="0.9">90%</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -197,9 +233,9 @@ if (isset($_POST['submit'])) {
                             <div class="form-group">
                                 <label for="pembagian_hasil">Pembagian Hasil</label>
                                 <!-- Output for display in form -->
-                                <input type="text" id="hasil" class="form-control" required readonly>
+                                <input type="text" id="hasil" class="form-control" value="<?= number_format($rowkerjasama->pembagian_hasil, 0); ?>" required readonly>
                                 <!-- Hidden Output insert to DB -->
-                                <input type="hidden" id="pembagian_hasil" name="pembagian_hasil" value="" class="form-control" required>
+                                <input type="hidden" id="pembagian_hasil" name="pembagian_hasil" value="<?= $rowkerjasama->pembagian_hasil; ?>" class="form-control" required>
                             </div>
                         </div>
 
@@ -240,6 +276,7 @@ if (isset($_POST['submit'])) {
         <script src="dist/js/adminlte.js"></script>
         <script>
             function myPersentase() {
+                // alert('work');
                 var persentase = document.getElementById("persentase").value;
                 var biaya_kerjasama = document.getElementById("biaya_kerjasama").value;
 

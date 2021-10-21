@@ -320,7 +320,7 @@ if (isset($_POST['submit'])) {
                                                         <span class="">Rp. <?= number_format($rowitem->biaya_asuransi, 0) ?></span>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="row mb-2">
                                                     <div class="col">
                                                         <span class="font-weight-bold">
@@ -396,7 +396,7 @@ if (isset($_POST['submit'])) {
                                                 <i class="fas fa-camera"></i> Upload File
                                             </label>
                                             <div>
-                                                <input type='file' class='form-control d-none' id='image_uploads' name='image_uploads' accept='.jpg, .jpeg, .png, .pdf' onchange="readURL(this);">
+                                                <input type='file' class='form-control d-none' id='image_uploads' name='image_uploads' accept='.jpg, .jpeg, .png, .pdf' onchange="readURL(this);" required>
                                             </div>
                                         </div>
 
@@ -426,7 +426,7 @@ if (isset($_POST['submit'])) {
                                                         alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
                                                         input.value = "";
                                                     };
-                                                    
+
                                                     if (input.files && input.files[0]) {
                                                         var reader = new FileReader();
 

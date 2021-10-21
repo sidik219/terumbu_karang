@@ -368,13 +368,9 @@ if (isset($_POST['submit'])) {
 
                                 function readURL(input) {
                                     //Validasi Size Upload Image
-                                    var uploadField = document.getElementById("image_uploads");
-
-                                    uploadField.onchange = function() {
-                                        if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
-                                            alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
-                                            this.value = "";
-                                        };
+                                    if (input.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                        alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                        input.value = "";
                                     };
 
                                     if (input.files && input.files[0]) {

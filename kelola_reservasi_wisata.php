@@ -197,18 +197,18 @@ function alertPembayaran($dob)
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <!-- <a class="dropdown-item" href="kelola_reservasi_wisata.php">Tampilkan Semua</a> -->
                                 <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=1">
-                                <span class="badge badge-pill badge-warning"> </span>
-                                Reservasi Wisata Baru</a>
+                                    <span class="badge badge-pill badge-warning"> </span>
+                                    Reservasi Wisata Baru</a>
                                 <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=2">
-                                <span class="badge badge-pill badge-info"> </span>
-                                Reservasi Wisata Lama</a>
+                                    <span class="badge badge-pill badge-info"> </span>
+                                    Reservasi Wisata Lama</a>
                                 <a class="dropdown-item" href="kelola_reservasi_wisata.php?id_status_reservasi_wisata=3">
-                                <span class="badge badge-pill badge-danger"> </span>
-                                Reservasi Wisata Bermasalah</a>
+                                    <span class="badge badge-pill badge-danger"> </span>
+                                    Reservasi Wisata Bermasalah</a>
                             </div>
                         </div>
 
-                        <div class="dropdown show mt-2 ml-2">
+                        <!-- <div class="dropdown show mt-2 ml-2">
                             <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Pilih Cetak Laporan
                             </a>
@@ -217,30 +217,30 @@ function alertPembayaran($dob)
                                 <label class="ml-2">Laporan Reservasi :</label>
                                 <a class="dropdown-item" href="laporan_wisata.php?type=all_reservasi">
                                     <i class="far fa-file-excel btn-success"></i> Laporan Reservasi Wisata</a>
-                                <!-- <hr><label class="ml-2">Laporan Pengeluaran :</label>
+                                <hr><label class="ml-2">Laporan Pengeluaran :</label>
                                 <a class="dropdown-item" href="laporan_wisata.php?type=all_pengeluaran">
-                                    <i class="far fa-file-excel btn-success"></i> Laporan Seluruh Pengeluaran</a> -->
+                                    <i class="far fa-file-excel btn-success"></i> Laporan Seluruh Pengeluaran</a>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!-- Keterangan Untuk Mengecek Laporan Pengeluaran-->
                         <div class="col text-sm mt-3">
                             <?php if ($_SESSION['level_user'] == 2) : ?>
-                            <h6 class="text-muted">
-                                <i class="nav-icon text-info fas fa-question-circle"></i> 
-                                Untuk mengecek apakah ada reservasi wisata yang bermasalah atau tidak<br>
-                                bisa mengklik <b>Pilih Kategori</b>, lalu pilih <b>Reservasi Wisata Bermasalah</b>.
-                            </h6>
+                                <h6 class="text-muted">
+                                    <i class="nav-icon text-info fas fa-question-circle"></i>
+                                    Untuk mengecek apakah ada reservasi wisata yang bermasalah atau tidak<br>
+                                    bisa mengklik <b>Pilih Kategori</b>, lalu pilih <b>Reservasi Wisata Bermasalah</b>.
+                                </h6>
                             <?php elseif ($_SESSION['level_user'] == 3) : ?>
-                            <h6 class="text-muted">
-                                <i class="nav-icon text-info fas fa-question-circle"></i> 
-                                Untuk mengecek apakah laporan pengeluaran sudah dibuat atau tidak<br>
-                                bisa mengklik <b>Pilih Kategori</b>, lalu pilih <b>Reservasi Wisata Lama</b>.
-                            </h6>
+                                <h6 class="text-muted">
+                                    <i class="nav-icon text-info fas fa-question-circle"></i>
+                                    Untuk mengecek apakah laporan pengeluaran sudah dibuat atau tidak<br>
+                                    bisa mengklik <b>Pilih Kategori</b>, lalu pilih <b>Reservasi Wisata Lama</b>.
+                                </h6>
                             <?php endif ?>
                             <small class="text-muted">
                                 <i class="nav-icon text-info fas fa-info-circle"></i>
-                                Untuk Mengecek Laporan Periode Penghasilan bisa mengklik 
+                                Untuk Mengecek Laporan Periode Penghasilan bisa mengklik
                                 <a href="laporan_periode_wisata.php"><b>Laporan Wisata</b></a>
                             </small>
                         </div>
@@ -312,12 +312,12 @@ function alertPembayaran($dob)
                                             <br><?= strftime('%A, %d %B %Y', $truedate); ?></small>
                                     </td>
                                     <td>
-                                        <?php if($_SESSION['level_user'] == 2) { ?>
-                                        <button type="button" class="btn btn-act">
-                                            <a href="edit_reservasi_wisata.php?id_reservasi=<?= $rowitem->id_reservasi ?>" class="fas fa-edit"></a>
-                                        </button>
+                                        <?php if ($_SESSION['level_user'] == 2) { ?>
+                                            <button type="button" class="btn btn-act">
+                                                <a href="edit_reservasi_wisata.php?id_reservasi=<?= $rowitem->id_reservasi ?>" class="fas fa-edit"></a>
+                                            </button>
                                         <?php } ?>
-                                        <?php if($_SESSION['level_user'] == 3) { ?>
+                                        <?php if ($_SESSION['level_user'] == 3) { ?>
                                             <a class="btn btn-success" href="kelola_laporan_wisata.php?id_reservasi=<?= $rowitem->id_reservasi ?>" style="margin-top: 1rem;">
                                                 <i class="fas fa-file-excel"></i> Kelola Laporan</a>
                                             <!-- Status Laporan -->
@@ -330,7 +330,7 @@ function alertPembayaran($dob)
                                             <?php } elseif ($rowitem->id_status_reservasi_wisata == 3) { ?>
                                                 <!-- Kelola Laporan Bermasalah -->
                                                 <span class="badge badge-pill badge-danger mt-2 p-3">
-                                                    Jangan Dulu Membuat<br> Laporan Pengeluaran. 
+                                                    Jangan Dulu Membuat<br> Laporan Pengeluaran.
                                                     <br> Dikarenakan Reservasi <br> Bermasalah.
                                                 </span>
                                             <?php } else { ?>

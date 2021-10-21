@@ -168,7 +168,7 @@ if (isset($_POST['submit'])) {
             $stmt = $pdo->prepare($sqlviewpengelolalokasi);
             $stmt->execute(['id_lokasi' => $id_lokasi]);
             $rowpengelola = $stmt->fetchAll();
-            
+
             // Kirim email untuk Pengelola Wilayah
             // $sqlviewpengelolawilayah = 'SELECT * FROM t_lokasi 
             //                         LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
@@ -483,8 +483,8 @@ if (isset($_POST['submit'])) {
                                             </div>
                                         </div>
                                         <p>
-                                        <!-- Asuransi -->
-                                        <hr class="mb-2" />
+                                            <!-- Asuransi -->
+                                            <hr class="mb-2" />
                                         <div class="row">
                                             <div class="col">
                                                 <i class="text-danger fas fa-heartbeat"></i>
@@ -500,8 +500,8 @@ if (isset($_POST['submit'])) {
                                             </div>
                                         </div>
                                         <p>
-                                        <!-- Asuransi -->
-                                        <hr class="mb-2" />
+                                            <!-- Asuransi -->
+                                            <hr class="mb-2" />
                                         <div class="row">
                                             <div class="col">
                                                 <i class="text-success fas fa-donate"></i>
@@ -514,10 +514,10 @@ if (isset($_POST['submit'])) {
                                             </div>
                                         </div>
                                         <p>
-                                        <!-- Total Pembayaran -->
-                                        <hr class="mb-2" />
-                                        <?php
-                                        $sqlviewpaket = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_kerjasama, biaya_asuransi
+                                            <!-- Total Pembayaran -->
+                                            <hr class="mb-2" />
+                                            <?php
+                                            $sqlviewpaket = 'SELECT SUM(biaya_kerjasama) AS total_biaya_fasilitas, pengadaan_fasilitas, biaya_kerjasama, biaya_asuransi
                                         FROM tb_fasilitas_wisata
                                         LEFT JOIN t_kerjasama ON tb_fasilitas_wisata.id_kerjasama = t_kerjasama.id_kerjasama
                                         LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
@@ -527,18 +527,18 @@ if (isset($_POST['submit'])) {
                                         WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata
                                         AND tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata';
 
-                                        $stmt = $pdo->prepare($sqlviewpaket);
-                                        $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
-                                        $rowfasilitas = $stmt->fetchAll();
+                                            $stmt = $pdo->prepare($sqlviewpaket);
+                                            $stmt->execute(['id_paket_wisata' => $rowitem->id_paket_wisata]);
+                                            $rowfasilitas = $stmt->fetchAll();
 
-                                        foreach ($rowfasilitas as $fasilitas) {
+                                            foreach ($rowfasilitas as $fasilitas) {
 
-                                        // Menjumlahkan biaya asuransi dan biaya paket wisata
-                                        $asuransi       = $fasilitas->biaya_asuransi;
-                                        $wisata         = $fasilitas->total_biaya_fasilitas;
-                                        $total_paket    = $asuransi + $wisata; ?>
+                                                // Menjumlahkan biaya asuransi dan biaya paket wisata
+                                                $asuransi       = $fasilitas->biaya_asuransi;
+                                                $wisata         = $fasilitas->total_biaya_fasilitas;
+                                                $total_paket    = $asuransi + $wisata; ?>
 
-                                        <!-- Biaya Paket Kalkulasi Dari Biaya Fasilitas -->
+                                                <!-- Biaya Paket Kalkulasi Dari Biaya Fasilitas -->
                                         <div class="row p-2 border-bottom">
                                             <p class="">
                                                 <i class="text-success fas fa-money-bill-wave"></i>
@@ -569,11 +569,11 @@ if (isset($_POST['submit'])) {
                                     </div>
                                     <div class="mb-3">
                                         <!-- Pesan/Ekspresi -->
-                                        <label>
+                                        <!-- <label>
                                             Pesan/Ekspresi di Terumbu Karang
                                             <small style="color: gray;">(Optional)</small>
-                                        </label>
-                                        <input type="text" id="pesan" name="pesan" value="-" class="form-control" required>
+                                        </label> -->
+                                        <input type="hidden" id="pesan" name="pesan" value="-" class="form-control" required>
                                     </div>
                                     <div class="mb-3">
                                         <!-- Donasi Wisata -->

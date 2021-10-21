@@ -159,7 +159,7 @@ if (isset($_POST['submit'])) {
                             <div class="form-group fieldGroup">
                                 <div class="input-group">
                                     <select class="form-control" name="nama_fasilitas[]" id="exampleFormControlSelect1" required>
-                                        <option selected disabled>Fasilitas Wisata:</option>
+                                        <option selected value="">Fasilitas Wisata:</option>
                                         <?php
                                         $sqlkerjasama = 'SELECT * FROM t_kerjasama
                                                         LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan
@@ -205,7 +205,7 @@ if (isset($_POST['submit'])) {
                     <div class="form-group fieldGroupCopy" style="display: none;">
                         <div class="input-group">
                             <select class="form-control" name="nama_fasilitas[]" id="nama_fasilitas" required>
-                                <option selected disabled>Fasilitas Wisata:</option>
+                                <option selected value="">Fasilitas Wisata:</option>
                                 <?php
                                 $sqlkerjasama = 'SELECT * FROM t_kerjasama
                                                     LEFT JOIN t_pengadaan_fasilitas ON t_kerjasama.id_pengadaan = t_pengadaan_fasilitas.id_pengadaan

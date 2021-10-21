@@ -372,17 +372,27 @@ if ($_SESSION['level_user'] == 4) {
     }
 
     function updateRekening() {
-      var isiform = $('#edit_form').serialize()
-      $.ajax({
-        type: 'POST',
-        url: 'proses_form.php',
-        data: isiform,
-        success: function() {
-          alert('Data berhasil diupdate')
-          location.reload();
-        }
+      var value1 = document.getElementById('nama_pemilik_rekening').value;
+      var value2 = document.getElementById('nomor_rekening').value;
+      var value3 = document.getElementById('nama_bank').value;
+      console.log(value1)
+      console.log(value2)
+      console.log(value3)
+      if (value1 === '' || value2 === '' || value3 === '') {
+        alert('Semua Data harus Terisi');
+      } else {
+        var isiform = $('#edit_form').serialize()
+        $.ajax({
+          type: 'POST',
+          url: 'proses_form.php',
+          data: isiform,
+          success: function() {
+            alert('Data berhasil diupdate')
+            location.reload();
+          }
 
-      })
+        })
+      }
     }
 
     function loadTk(id_jenis) {
