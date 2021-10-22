@@ -112,10 +112,14 @@ $rowKonten = $stmt->fetchAll();
                     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                 </ol> -->
                     <div class="carousel-inner">
-                        <?php foreach ($rowKonten as $wilayah) { ?>
+                        <?php foreach ($rowKonten as $key => $wilayah) { ?>
                             <div class="carousel-item 
                         <?php
-                            if ($wilayah->status_konten_wilayah == "Donasi Sekarang") {
+                            if ($wilayah->status_konten_wilayah == "Donasi Sekarang" && $key == 0) {
+                                echo "active";
+                            } else if ($wilayah->status_konten_wilayah == "Coralmaps" && $key == 0) {
+                                echo "active";
+                            } else if ($wilayah->status_konten_wilayah == "Wisata Sekarang" && $key == 0) {
                                 echo "active";
                             } else {
                                 echo " ";

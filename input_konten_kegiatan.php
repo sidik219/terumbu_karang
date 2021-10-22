@@ -138,8 +138,8 @@ if (isset($_POST['submit'])) {
                     <form action="" enctype="multipart/form-data" method="POST">
                         <div class='form-group' id='fotowilayah'>
                             <div>
-                                <label for='image_uploads'>Upload Foto Kegiatan</label>
-                                <input type='file' class='form-control' id='image_uploads' name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
+                                <label for='image_uploads'>Upload Foto Informasi</label>
+                                <input required type='file' class='form-control' required id='image_uploads' name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
                             </div>
                         </div>
 
@@ -147,21 +147,17 @@ if (isset($_POST['submit'])) {
                             <img id="preview" width="100px" src="#" alt="Preview Gambar" />
 
                             <script>
+                                //Validasi Size Upload Image
+
                                 window.onload = function() {
                                     document.getElementById('preview').style.display = 'none';
                                 };
 
                                 function readURL(input) {
-                                    //Validasi Size Upload Image
-                                    var uploadField = document.getElementById("image_uploads");
-
-                                    uploadField.onchange = function() {
-                                        if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
-                                            alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
-                                            this.value = "";
-                                        };
+                                    if (input.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                        alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                        input.value = "";
                                     };
-
                                     if (input.files && input.files[0]) {
                                         var reader = new FileReader();
 
@@ -178,9 +174,10 @@ if (isset($_POST['submit'])) {
                             </script>
                         </div>
 
+
                         <div class="form-group">
                             <label for="judul_kegiatan">Judul Kegiatan</label>
-                            <input type="text" id="judul_kegiatan" name="judul_kegiatan" class="form-control" placeholder="Judul Konten" required>
+                            <input maxlength="65" type="text" id="judul_kegiatan" name="judul_kegiatan" class="form-control" placeholder="Judul Konten" required>
                         </div>
 
                         <div class="form-group">

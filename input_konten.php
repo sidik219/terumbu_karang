@@ -142,24 +142,24 @@ if (isset($_POST['submit'])) {
 
                         <div class="form-group">
                             <label for="judul_konten_wilayah">Judul Konten</label>
-                            <input type="text" id="judul_konten_wilayah" name="judul_konten_wilayah" class="form-control" placeholder="Judul Konten" required>
+                            <input maxlength="50" type="text" id="judul_konten_wilayah" name="judul_konten_wilayah" class="form-control" placeholder="Judul Konten" required>
                         </div>
 
                         <div class="form-group">
                             <label for="deskripsi_konten_wilayah">Deskripsi Konten</label>
-                            <input type="text" id="deskripsi_konten_wilayah" name="deskripsi_konten_wilayah" class="form-control" placeholder="Deskripsi Konten" required>
+                            <input maxlength="65" type="text" id="deskripsi_konten_wilayah" name="deskripsi_konten_wilayah" class="form-control" placeholder="Deskripsi Konten" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="status_konten_wilayah">Status Konten</label>
+                            <label for="status_konten_wilayah">Kategori Konten</label>
                             <select id="status_konten_wilayah" name="status_konten_wilayah" class="form-control" required>
-                            <option selected disabled>Pilih Status</option>
-                            <option value="Donasi Sekarang">Donasi Sekarang</option>
-                            <option value="Wisata Sekarang">Wisata Sekarang</option>
-                            <option value="Coralmaps">Coralmaps</option>
-                        </select>
+                                <option selected value="">Pilih Kategori</option>
+                                <option value="Donasi Sekarang">Donasi Sekarang</option>
+                                <option value="Wisata Sekarang">Wisata Sekarang</option>
+                                <option value="Coralmaps">Coralmaps</option>
+                            </select>
                         </div>
-
+                        <p class="small"><b>*Harap Teliti Pada Saat Memilih Status Jika Ada Status Sama Maka Foto Tidak Muncul</b></p>
                         <div class='form-group'>
                             <div>
                                 <label for='image_uploads'>Upload Foto Konten</label>
@@ -172,20 +172,16 @@ if (isset($_POST['submit'])) {
 
                             <script>
                                 //Validasi Size Upload Image
-                                var uploadField = document.getElementById("image_uploads");
-
-                                uploadField.onchange = function() {
-                                    if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
-                                        alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
-                                        this.value = "";
-                                    };
-                                };
 
                                 window.onload = function() {
                                     document.getElementById('preview').style.display = 'none';
                                 };
 
                                 function readURL(input) {
+                                    if (input.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                        alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                        input.value = "";
+                                    };
                                     if (input.files && input.files[0]) {
                                         var reader = new FileReader();
 

@@ -7,7 +7,7 @@ $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
 $id_kegiatan = $_GET['id_kegiatan'];
-$defaultpic = "img/image_default.jpg";
+$defaultpic = "images/image_default.jpg";
 
 // Kegiatan
 $sqleditkegiatan = 'SELECT * FROM t_berita_kegiatan
@@ -19,11 +19,12 @@ $kegiatan = $stmt->fetch();
 // var_dump($kegiatan);die;
 
 if (isset($_POST['submit'])) {
+    // var_dump($_POST, $_FILES);
+    // die;
     $judul_kegiatan     = $_POST['judul_kegiatan'];
     $deskripsi_kegiatan = $_POST['deskripsi_kegiatan'];
     $tgl_kegiatan       = $_POST['tgl_kegiatan'];
     $randomstring = substr(md5(rand()), 0, 7);
-
     //Image upload
     if ($_FILES["image_uploads"]["size"] == 0) {
         $foto_kegiatan = $kegiatan->foto_kegiatan;
@@ -43,12 +44,12 @@ if (isset($_POST['submit'])) {
     }
     //---image upload end
 
-    $sqleditkegiatan = "UPDATE t_berita_kegiatan
+    $sqleditkegiatan = 'UPDATE t_berita_kegiatan
                         SET judul_kegiatan = :judul_kegiatan,
                             deskripsi_kegiatan = :deskripsi_kegiatan,
                             tgl_kegiatan = :tgl_kegiatan,
                             foto_kegiatan = :foto_kegiatan
-                        WHERE id_kegiatan = :id_kegiatan";
+                        WHERE id_kegiatan = :id_kegiatan';
 
     $stmt = $pdo->prepare($sqleditkegiatan);
     $stmt->execute([
@@ -60,8 +61,11 @@ if (isset($_POST['submit'])) {
     ]);
 
     $affectedrows = $stmt->rowCount();
+    // var_dump($affectedrows);
+    // die;
     if ($affectedrows == '0') {
-        header("Location: input_konten_kegiatan.php?status=insertfailed");
+        // header("Location: edit_konten_kegiatan.php?status=insertfailed&id_kegiatan=$id_kegiatan");
+        header("Location: kelola_konten_kegiatan.php?status=updatesuccess");
     } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
         header("Location: kelola_konten_kegiatan.php?status=updatesuccess");
@@ -155,7 +159,15 @@ if (isset($_POST['submit'])) {
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
-
+                        <?php
+                        if (!empty($_GET['status'])) {
+                            if ($_GET['status'] == 'insertfailed') {
+                                echo '<div class="alert alert-success" role="alert">
+                                    Data Kegiatan Tidak Ada Yang Berubah!
+                                    </div>';
+                            }
+                        }
+                        ?>
                         <div class="form-group">
                             <label for="judul_kegiatan">Judul Kegiatan</label>
                             <input type="text" id="judul_kegiatan" name="judul_kegiatan" value="<?= $kegiatan->judul_kegiatan ?>" class="form-control" placeholder="Judul Konten" required>
@@ -182,6 +194,7 @@ if (isset($_POST['submit'])) {
                                 <input type='file' class='form-control' id='image_uploads' name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
                             </div>
                         </div>
+
 
                         <div class="form-group">
                             <img id="preview" src="#" width="100px" alt="Preview Gambar" />

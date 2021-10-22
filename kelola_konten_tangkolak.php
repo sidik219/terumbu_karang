@@ -172,7 +172,7 @@ function ageCalculator($dob)
                                 <tr>
                                     <th scope="col">ID Konten</th>
                                     <th scope="col">Judul Konten</th>
-                                    <th scope="col">Status Konten</th>
+                                    <th scope="col">Kategori Konten</th>
                                     <th scope="col">Update Terakhir Konten</th>
                                     <th scope="col">Aksi</th>
                                 </tr>

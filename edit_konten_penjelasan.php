@@ -94,6 +94,11 @@ if (isset($_POST['submit'])) {
     <script src="js/trumbowyg/dist/trumbowyg.min.js"></script>
     <!-- Favicon -->
     <link rel="icon" href="dist/img/KKPlogo.png" type="image/x-icon" />
+    <style>
+        img {
+            width: 250px;
+        }
+    </style>
 
 </head>
 
@@ -160,46 +165,17 @@ if (isset($_POST['submit'])) {
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
-
-                        <div class="form-group">
-                            <label for="judul">Judul Informasi</label>
-                            <input type="text" id="judul" name="judul" value="<?= $kegiatan->judul ?>" class="form-control" placeholder="Judul Konten" required>
-                        </div>
-
-                        <div id="count">
-                            <span id="current_count">0</span>
-                            <span id="maximum_count">/ 1200</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="informasi">Deskripsi Informasi</label>
-                            <textarea id="informasi" maxlength="1200" required rows="10" cols="100 " class="form-control" name="informasi" class="form-control" placeholder="Deskripsi Konten" required><?= $kegiatan->isi_konten; ?></textarea>
-                            <!-- <script>
-                                $('#informasi').trumbowyg();
-                            </script> -->
-                        </div>
-
                         <div class='form-group'>
                             <div>
                                 <label for='image_uploads'>Upload Foto Informasi</label>
                                 <input type='file' class='form-control' id='image_uploads' name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
                             </div>
                         </div>
-
                         <div class="form-group">
                             <img id="preview" src="#" width="100px" alt="Preview Gambar" />
                             <a href="<?= $kegiatan->gambar ?>" data-toggle="lightbox">
                                 <img class="img-fluid" id="oldpic" src="<?= $kegiatan->gambar ?>" width="20%" <?php if ($kegiatan->gambar == NULL) echo "style='display: none;'"; ?>></a>
                             <br>
-
-                            <small class="text-muted">
-                                <?php if ($kegiatan->gambar == NULL) {
-                                    echo "Bukti transfer belum diupload<br>Format .jpg .jpeg .png";
-                                } else {
-                                    echo "Klik gambar untuk memperbesar";
-                                }
-
-                                ?>
-                            </small>
 
                             <script>
                                 const actualBtn = document.getElementById('image_uploads');
@@ -214,13 +190,9 @@ if (isset($_POST['submit'])) {
 
                                 function readURL(input) {
                                     //Validasi Size Upload Image
-                                    var uploadField = document.getElementById("image_uploads");
-
-                                    uploadField.onchange = function() {
-                                        if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
-                                            alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
-                                            this.value = "";
-                                        };
+                                    if (input.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                        alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                        input.value = "";
                                     };
 
                                     if (input.files && input.files[0]) {
@@ -238,6 +210,24 @@ if (isset($_POST['submit'])) {
                                 }
                             </script>
                         </div>
+                        <div class="form-group">
+                            <label for="judul">Judul Informasi</label>
+                            <input type="text" id="judul" name="judul" value="<?= $kegiatan->judul ?>" class="form-control" placeholder="Judul Konten" required>
+                        </div>
+
+                        <div id="count">
+                            <span id="current_count">0</span>
+                            <span id="maximum_count">/ 1350</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="informasi">Deskripsi Informasi</label>
+                            <textarea id="informasi" maxlength="1350" required rows="10" cols="100 " class="form-control" name="informasi" class="form-control" placeholder="Deskripsi Konten" required><?= $kegiatan->isi_konten; ?></textarea>
+                            <!-- <script>
+                                $('#informasi').trumbowyg();
+                            </script> -->
+                        </div>
+
+
 
                         <p align="center">
                             <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button>

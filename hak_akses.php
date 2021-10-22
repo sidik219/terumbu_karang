@@ -393,19 +393,19 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </a>
                 </li>
 
-                <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                <!--<li class="nav-item">  Wilayah & Lokasi 
                     <a href="laporan_donasi.php" class="nav-link  ' . ('laporan_donasi.php' == $url_sekarang ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-file-invoice"></i>
                         <p> Laporan Donasi</p>
                     </a>
-                </li>
+                </li>-->
 
-                <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                <!-- <li class="nav-item"> Wilayah & Lokasi 
                     <a href="laporan_periode_wisata.php" class="nav-link  ' . ('laporan_periode_wisata.php' == $url_sekarang ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-file-invoice"></i>
                         <p> Laporan Wisata</p>
                     </a>
-                </li>
+                </li>-->
                 ';
 
             echo $sidebar;
@@ -630,7 +630,7 @@ if (!$_SESSION['level_user']) { //Belum log in
 
                 <li class="nav-item"> <!-- Konten Lokasi -->
                     <a href="kelola_konten_master.php" class="nav-link ' . (('kelola_konten_master.php' == $url_sekarang) || ('kelola_konten_tangkolak.php' == $url_sekarang) || ('edit_konten_tangkolak.php'  == $url_sekarang) || ('input_konten_tangkolak.php'  == $url_sekarang) || ('kelola_konten_ketentuan.php' == $url_sekarang)  || ('edit_konten_ketentuan.php' == $url_sekarang)  || ('input_konten_Ketentuan.php'  == $url_sekarang) ||
-                    ('kelola_konten_kegiatan.php' == $url_sekarang) || ('edit_konten_kegiatan.php'  == $url_sekarang) || ('input_konten_kegiatan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                ('kelola_konten_kegiatan.php' == $url_sekarang) || ('edit_konten_kegiatan.php'  == $url_sekarang) || ('input_konten_kegiatan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-book"></i>
                         <p> Kelola Konten </p>
                     </a>

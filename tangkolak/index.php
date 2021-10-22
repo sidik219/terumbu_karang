@@ -7,7 +7,8 @@ $stmt = $pdo->prepare('SELECT * From t_konten_lokasi');
 $stmt->execute();
 // $stmt->execute(array(0));
 $rowKonten = $stmt->fetchAll();
-
+// var_dump($rowKonten);
+// die;
 $stmt = $pdo->prepare('SELECT * From t_konten_tangkolak_section');
 $stmt->execute();
 // $stmt->execute(array(0));
@@ -115,15 +116,20 @@ $rowKontenkegiatan = $stmt->fetchAll();
                     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                 </ol> -->
                     <div class="carousel-inner">
-                        <?php foreach ($rowKonten as $lokasi) { ?>
+                        <?php foreach ($rowKonten as $key => $lokasi) { ?>
                             <div class="carousel-item 
-                        <?php
-                            if ($lokasi->status_konten_lokasi == "Wisata Bahari") {
-                                echo "active";
-                            } else {
-                                echo " ";
-                            }
-                        ?>">
+
+                                <?php
+                                if ($lokasi->status_konten_lokasi == "Wisata Bahari" && $key == 0) {
+                                    echo "active";
+                                } else if ($lokasi->status_konten_lokasi == "Terumbu Karang" && $key == 0) {
+                                    echo "active";
+                                } else if ($lokasi->status_konten_lokasi == "Paket Wisata" && $key == 0) {
+                                    echo "active";
+                                } else {
+                                    echo " ";
+                                }
+                                ?>">
                                 <img class="d-block w-100" src="../<?= $lokasi->foto_konten_lokasi ?>" alt="" height="600px">
                                 <div class="carousel-caption  d-md-block">
                                     <h3><?= $lokasi->judul_konten_lokasi ?></h3><br>
