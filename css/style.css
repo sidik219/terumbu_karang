@@ -328,6 +328,11 @@
       border-radius: 40px;
     }
 
+    .sidebar-menu{
+      background-color: rgba(37, 22, 49, 0.19) !important;
+      border-radius: 10px;
+    }
+
     .nav-treeview>.nav-item>.nav-link{
       font-size: 0.9rem;
     }

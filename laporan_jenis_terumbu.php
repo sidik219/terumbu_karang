@@ -17,7 +17,7 @@ $tahunterawal = $stmt->fetch();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Laporan Kondisi - GoKarang</title>
+    <title>Laporan Jenis Terumbu - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -28,12 +28,12 @@ $tahunterawal = $stmt->fetch();
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
-        <script type="text/javascript" src="js/daterangepicker/jquery.min.js"></script>
-<script type="text/javascript" src="js/daterangepicker/moment.min.js"></script>
-<script type="text/javascript" src="js/daterangepicker/daterangepicker.min.js"></script>
-<script type="text/javascript" src="js/loadingoverlay.min.js"></script>
-<script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
-<link rel="stylesheet" type="text/css" href="js/daterangepicker/daterangepicker.css" />
+    <script type="text/javascript" src="js/daterangepicker/jquery.min.js"></script>
+    <script type="text/javascript" src="js/daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="js/daterangepicker/daterangepicker.min.js"></script>
+    <script type="text/javascript" src="js/loadingoverlay.min.js"></script>
+    <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="js/daterangepicker/daterangepicker.css" />
     <!-- Favicon -->
     <?= $favicon ?>
 </head>

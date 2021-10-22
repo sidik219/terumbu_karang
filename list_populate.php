@@ -967,7 +967,7 @@ if ($_POST['type'] == 'load_laporan_jenis' && !empty($_POST["start"])) {
     $filter_wilayah = ' ';
     $filter_lokasi = ' ';
     if($level_user == 2){
-        $filter_wilayah = ' AND t_wilayah.id_wilayah = '.$id_wilayah; //
+        $filter_wilayah = ' AND t_wilayah.id_wilayah = '.$id_wilayah;
     }elseif($level_user == 3){
         $sql_wilayah_lokasi  = 'SELECT id_wilayah FROM t_lokasi WHERE id_lokasi = '. $id_lokasi;
         $stmt = $pdo->prepare($sql_wilayah_lokasi);
@@ -1184,6 +1184,245 @@ GROUP BY t_terumbu_karang.id_terumbu_karang';
                     });
                 </script>
 
+<?php
+    
+}
+?>
+
+
+
+
+
+
+
+<?php
+//filter tabel laporan kondisi
+if ($_POST['type'] == 'load_laporan_kondisi' && !empty($_POST["start"])) {
+    $level_user = $_POST['level_user'];
+
+    $id_wilayah = $_POST['id_wilayah_dikelola'];
+
+    $id_lokasi = $_POST['id_lokasi_dikelola'];
+    
+    $start = $_POST["start"];
+    $end = $_POST["end"]; 
+
+    $filter_wilayah = ' ';
+    $filter_lokasi = ' ';
+    if($level_user == 2){
+        $filter_wilayah = ' AND t_wilayah.id_wilayah = '.$id_wilayah; //
+    }elseif($level_user == 3){
+        $sql_wilayah_lokasi  = 'SELECT id_wilayah FROM t_lokasi WHERE id_lokasi = '. $id_lokasi;
+        $stmt = $pdo->prepare($sql_wilayah_lokasi);
+        $stmt->execute();
+        $wilayah_lokasi = $stmt->fetch();
+
+        $filter_lokasi = ' AND t_lokasi.id_wilayah = '.$wilayah_lokasi->id_wilayah.' AND t_lokasi.id_lokasi = '.$id_lokasi; //
+    }
+    
+
+    $sql_daftar_wilayah  = 'SELECT t_wilayah.id_wilayah, nama_wilayah FROM t_wilayah 
+                            LEFT JOIN t_lokasi ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                            WHERE 1 '.$filter_wilayah. ' '.$filter_lokasi;
+    $stmt = $pdo->prepare($sql_daftar_wilayah);
+    $stmt->execute();
+    $daftar_wilayah = $stmt->fetchAll();
+
+    $sqlviewwilayah = 'SELECT *,
+    
+    COUNT(
+        CASE WHEN kondisi_terumbu = "Rusak" THEN 1 ELSE NULL
+    END
+) AS jumlah_rusak,
+CAST(
+    SUM(
+        CASE WHEN kondisi_terumbu = "Rusak" THEN ukuran_terumbu ELSE 0
+    END
+) AS DECIMAL(10, 1)
+) AS ukuran_rusak,
+COUNT(
+    CASE WHEN kondisi_terumbu = "Baik" THEN 1 ELSE NULL
+END
+) AS jumlah_baik,
+CAST(
+    SUM(
+        CASE WHEN kondisi_terumbu = "Baik" THEN ukuran_terumbu ELSE 0
+    END
+) AS DECIMAL(10, 1)
+) AS ukuran_baik,
+COUNT(
+    CASE WHEN kondisi_terumbu = "Sangat Baik" THEN 1 ELSE NULL
+END
+) AS jumlah_sangat_baik,
+CAST(
+    SUM(
+        CASE WHEN kondisi_terumbu = "Sangat Baik" THEN ukuran_terumbu ELSE 0
+    END
+) AS DECIMAL(10, 1)
+) AS ukuran_sangat_baik,
+CAST(SUM(ukuran_terumbu) AS DECIMAL(10,2)) AS ukuran_total_lokasi,
+COUNT(t_history_pemeliharaan.id_detail_donasi) AS jumlah_terumbu_total
+FROM
+    t_lokasi
+    LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
+    LEFT JOIN t_donasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
+ 	LEFT JOIN t_detail_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
+    LEFT JOIN t_history_pemeliharaan ON t_history_pemeliharaan.id_detail_donasi = t_detail_donasi.id_detail_donasi
+    
+    WHERE kondisi_terumbu <> "Mati" '.$filter_wilayah. ' '.$filter_lokasi.'
+    AND t_history_pemeliharaan.tanggal_pemeliharaan BETWEEN "'.$start.'" AND "'.$end.'"
+    GROUP BY t_wilayah.id_wilayah';
+
+$stmt = $pdo->prepare($sqlviewwilayah);
+$stmt->execute();
+$rowwilayah = $stmt->fetchAll();
+?>
+
+<table class="table table-striped DataWilayah">
+
+                <tbody>
+                <?php
+                    foreach ($rowwilayah as $rowitem) {
+                        $total_ukuran_terumbu = 0;
+                        $total_ukuran_rusak = 0;
+                        $total_ukuran_baik = 0;
+                        $total_ukuran_sangat_baik = 0;
+                ?>
+                        <tr>
+                            <th scope="row" colspan="3"><?=$rowitem->nama_wilayah?></th>
+                        </tr>
+                        <tr>
+                                <td colspan="3">
+                            
+                                <table class="table table-striped">
+
+                                    <thead>
+                                    <tr   class="bg-white border-top">
+                                        <th scope="col">Nama Lokasi</th>
+                                        <th scope="col">Jumlah Terumbu</th>
+                                        <th scope="col">Ukuran Rusak</th>
+                                        <th scope="col">Ukuran Baik</th>
+                                        <th scope="col">Ukuran Sangat Baik</th>
+                                        <th scope="col">Ukuran Total</th>
+
+                                    </tr>
+                                    </thead>
+                                <?php
+                                  $sql_lokasi = 'SELECT *,
+    
+    COUNT(
+        CASE WHEN kondisi_terumbu = "Rusak" THEN 1 ELSE NULL
+    END
+) AS jumlah_rusak,
+CAST(
+    SUM(
+        CASE WHEN kondisi_terumbu = "Rusak" THEN ukuran_terumbu ELSE 0
+    END
+) AS DECIMAL(10, 1)
+) AS ukuran_rusak,
+COUNT(
+    CASE WHEN kondisi_terumbu = "Baik" THEN 1 ELSE NULL
+END
+) AS jumlah_baik,
+CAST(
+    SUM(
+        CASE WHEN kondisi_terumbu = "Baik" THEN ukuran_terumbu ELSE 0
+    END
+) AS DECIMAL(10, 1)
+) AS ukuran_baik,
+COUNT(
+    CASE WHEN kondisi_terumbu = "Sangat Baik" THEN 1 ELSE NULL
+END
+) AS jumlah_sangat_baik,
+CAST(
+    SUM(
+        CASE WHEN kondisi_terumbu = "Sangat Baik" THEN ukuran_terumbu ELSE 0
+    END
+) AS DECIMAL(10, 1)
+) AS ukuran_sangat_baik,
+CAST(SUM(ukuran_terumbu) AS DECIMAL(10, 1)) AS ukuran_total_lokasi,
+COUNT(t_history_pemeliharaan.id_detail_donasi) AS jumlah_terumbu_total
+FROM
+    t_lokasi
+    LEFT JOIN t_donasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
+ 	LEFT JOIN t_detail_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
+    LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
+    LEFT JOIN t_history_pemeliharaan ON t_history_pemeliharaan.id_detail_donasi = t_detail_donasi.id_detail_donasi
+    
+
+    WHERE t_lokasi.id_wilayah = '.$rowitem->id_wilayah.' '.$filter_wilayah. ' '.$filter_lokasi.'
+    AND t_history_pemeliharaan.tanggal_pemeliharaan BETWEEN "'.$start.'" AND "'.$end.'"
+    AND kondisi_terumbu <> "Mati"
+   GROUP BY t_lokasi.id_lokasi';
+
+                                    $stmt = $pdo->prepare($sql_lokasi);
+                                    $stmt->execute();
+                                    $rowlokasi = $stmt->fetchAll();
+
+                                    $rusak=0; $baik=0; $sangat_baik=0;
+                                    $rusak_luas = 0; $baik_luas = 0; $sangat_baik_luas = 0;
+
+                                    foreach($rowlokasi as $lokasi) {
+                                        $ps = $lokasi->kondisi_terumbu;
+                                        if($ps == "Rusak"){
+                                        $rusak_luas += $lokasi->ukuran_rusak;
+                                        }
+                                        else if($ps  == "Baik"){
+                                        $baik_luas += $lokasi->ukuran_baik;
+                                        }
+                                        else if($ps  == "Sangat Baik"){
+                                        $sangat_baik_luas += $lokasi->ukuran_sangat_baik;;
+                                        }
+                                    ?>
+
+
+                                    <tr>
+                                        <td><?=$lokasi->nama_lokasi?></td>
+                                        <td><?=$lokasi->jumlah_terumbu_total?></td>
+                                        <td><?=$lokasi->ukuran_rusak?></td>
+                                        <td><?=$lokasi->ukuran_baik?></td>
+                                        <td><?=$lokasi->ukuran_sangat_baik?></td>
+                                        <td><?=($lokasi->ukuran_total_lokasi).' m<sup>2</sup>'?></td>                                        
+                                    </tr>
+
+                    <?php
+                } //lokasi loop end
+                ?>
+                                    <thead>
+                                    <tr   class="bg-white border-top">
+                                        <th scope="col">Total:</th>
+                                        <th scope="col"><?=$rowitem->jumlah_terumbu_total?> buah</th>
+                                        <th scope="col"><?=$rowitem->ukuran_rusak?> m<sup>2</sup></th>
+                                        <th scope="col"><?=$rowitem->ukuran_baik?> m<sup>2</sup></th>
+                                        <th scope="col"><?=$rowitem->ukuran_sangat_baik?> m<sup>2</sup></th>
+                                        <th scope="col"><?=($rowitem->ukuran_total_lokasi).' m<sup>2</sup>'?></th>
+
+                                    </tr>
+                        
+                        </table>
+
+                        <hr/>
+
+
+                            </div>
+                        </div>
+
+
+                        <!--collapse end -->
+                                </td>
+                            </tr>
+                            <?php } ?>
+                        
+
+                        
+                </tbody>
+                </table>
+
+                   <script>       
+                   $(function() {
+                    $("#tabel_laporan_donasi").tablesorter();
+                    });
+                </script>
 <?php
     
 }

@@ -287,7 +287,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <!-- LAPORAN COLLAPSE START -->        
         <li class="nav-item ' . (in_array($url_sekarang, [
                 'kelola_laporan_baru.php', 'kelola_laporan.php', 'laporan_kondisi.php', 'laporan_donasi.php',
-                'laporan_periode_wisata.php', 'kelola_arsip_laporan_sebaran.php', 'edit_arsip_luas_wilayah.php'
+                'laporan_periode_wisata.php', 'kelola_arsip_laporan_sebaran.php', 'edit_arsip_luas_wilayah.php', 'laporan_jenis_terumbu.php'
             ])  ? ' active menu-open ' : '') . '"> 
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-file-invoice"></i>
@@ -296,7 +296,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
-            <ul class="nav nav-treeview ml-2">
+            <ul class="nav sidebar-menu nav-treeview ml-2">
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                         <a href="laporan_donasi.php" class="nav-link  ' . ('laporan_donasi.php' == $url_sekarang ? ' active ' : '') . ' ">
                             <i class="nav-icon fas fa-file-invoice"></i>
@@ -318,33 +318,33 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </a>
                 </li>
                   
-                <li class="nav-item"> <!-- Wilayah -->
+                <!-- <li class="nav-item"> 
                     <a href="kelola_laporan.php" class="nav-link ' . ('kelola_laporan.php' == $url_sekarang ? ' active ' : '') . ' ">
                             <i class="nav-icon fas fa-angle-down"></i>
                             <p> Sebaran Per-Wilayah </p>
                     </a>
-                </li>
+                </li> -->
 
                    <li class="nav-item"> <!-- Wilayah & Pusat -->
                     <a href="laporan_kondisi.php" class="nav-link ' . ('laporan_kondisi.php' == $url_sekarang   ? ' active ' : '') . ' ">
                             <i class="nav-icon fas fa-heartbeat"></i>
                             <p> Laporan Kondisi </p>
                     </a>
-                </li>                
-
-                <li class="nav-item"> <!-- Wilayah & Pusat -->
-                    <a href="kelola_arsip_laporan_sebaran.php" class="nav-link ' . ('kelola_arsip_laporan_sebaran.php' == $url_sekarang || ('edit_arsip_luas_wilayah.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
-                            <i class="nav-icon fas fa-history"></i>
-                            <p> Kelola Arsip Laporan </p>
-                    </a>
                 </li>
-
+                
                 <li class="nav-item"> <!-- Lokasi -->
                     <a href="laporan_jenis_terumbu.php" class="nav-link ' . ('laporan_jenis_terumbu.php' == $url_sekarang ? ' active ' : '') . ' ">
                             <i class="nav-icon fas fa-bacteria"></i>
                             <p> Laporan Jenis Terumbu </p>
                     </a>
                 </li>
+
+                <li class="nav-item"> <!-- Wilayah & Pusat -->
+                    <a href="kelola_arsip_laporan_sebaran.php" class="nav-link ' . ('kelola_arsip_laporan_sebaran.php' == $url_sekarang || ('edit_arsip_luas_wilayah.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-history"></i>
+                            <p> Kelola Arsip Laporan </p>
+                    </a>
+                </li>              
             </ul> <!-- LAPORAN COLLAPSE END -->
             ';
 
@@ -387,12 +387,12 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </a>
                 </li>
                   
-                <li class="nav-item"> <!-- Wilayah -->
+                <!-- <li class="nav-item"> 
                     <a href="kelola_laporan.php" class="nav-link ' . ('kelola_laporan.php' == $url_sekarang ? ' active ' : '') . ' ">
                             <i class="nav-icon fas fa-angle-down"></i>
                             <p> Sebaran Per-Wilayah </p>
                     </a>
-                </li>
+                </li> -->
 
                 <li class="nav-item"> <!-- Wilayah -->
                     <a href="arsip_perizinan.php" class="nav-link ' . ('arsip_perizinan.php' == $url_sekarang ? ' active ' : '') . ' ">
@@ -473,7 +473,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
-            <ul class="nav nav-treeview ml-2">
+            <ul class="nav sidebar-menu nav-treeview ml-2">
                     <li class="nav-item"> 
                     <a href="kelola_wisata.php" class="nav-link ' . (('kelola_wisata.php' == $url_sekarang) || ('edit_wisata.php'  == $url_sekarang) ||
                 ('kelola_fasilitas_wisata.php'  == $url_sekarang) || ('input_wisata.php'  == $url_sekarang) ||
@@ -535,8 +535,8 @@ if (!$_SESSION['level_user']) { //Belum log in
         <!-- LAPORAN COLLAPSE START -->        
         <li class="nav-item ' . (in_array($url_sekarang, [
                 'kelola_laporan_baru.php', 'kelola_laporan.php', 'laporan_kondisi.php', 'laporan_donasi.php',
-                'laporan_periode_wisata.php', 'kelola_arsip_laporan_sebaran.php', 'edit_arsip_luas_wilayah.php'
-            ])  ? ' active menu-open ' : '') . '"> 
+                'laporan_periode_wisata.php', 'kelola_arsip_laporan_sebaran.php', 'edit_arsip_luas_wilayah.php', 'laporan_jenis_terumbu.php'
+            ])  ? 'active menu-open ' : '') . '"> 
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-file-invoice"></i>
               <p>
@@ -544,7 +544,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
-            <ul class="nav nav-treeview ml-2">
+            <ul class="nav sidebar-menu sidebar-menu nav-treeview ml-2">
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                         <a href="laporan_donasi.php" class="nav-link  ' . ('laporan_donasi.php' == $url_sekarang ? ' active ' : '') . ' ">
                             <i class="nav-icon fas fa-file-invoice"></i>
@@ -566,19 +566,26 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </a>
                 </li>
                   
-                <li class="nav-item"> <!-- Wilayah -->
+                <!-- <li class="nav-item"> 
                     <a href="kelola_laporan.php" class="nav-link ' . ('kelola_laporan.php' == $url_sekarang ? ' active ' : '') . ' ">
                             <i class="nav-icon fas fa-angle-down"></i>
                             <p> Sebaran Per-Wilayah </p>
                     </a>
-                </li>
+                </li> -->
 
                    <li class="nav-item"> <!-- Wilayah & Pusat -->
                     <a href="laporan_kondisi.php" class="nav-link ' . ('laporan_kondisi.php' == $url_sekarang   ? ' active ' : '') . ' ">
                             <i class="nav-icon fas fa-heartbeat"></i>
                             <p> Laporan Kondisi </p>
                     </a>
-                </li>                
+                </li>        
+                
+                <li class="nav-item"> <!-- Lokasi -->
+                    <a href="laporan_jenis_terumbu.php" class="nav-link ' . ('laporan_jenis_terumbu.php' == $url_sekarang ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-bacteria"></i>
+                            <p> Laporan Jenis Terumbu </p>
+                    </a>
+                </li>
 
                 <li class="nav-item"> <!-- Wilayah & Pusat -->
                     <a href="kelola_arsip_laporan_sebaran.php" class="nav-link ' . ('kelola_arsip_laporan_sebaran.php' == $url_sekarang || ('edit_arsip_luas_wilayah.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
@@ -587,12 +594,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </a>
                 </li>
 
-                <li class="nav-item"> <!-- Lokasi -->
-                    <a href="laporan_jenis_terumbu.php" class="nav-link ' . ('laporan_jenis_terumbu.php' == $url_sekarang ? ' active ' : '') . ' ">
-                            <i class="nav-icon fas fa-bacteria"></i>
-                            <p> Laporan Jenis Terumbu </p>
-                    </a>
-                </li>
+                
             </ul> <!-- LAPORAN COLLAPSE END -->
 
                 
@@ -632,15 +634,15 @@ if (!$_SESSION['level_user']) { //Belum log in
 
                 <li class="nav-item"> <!-- Lokasi -->
                     <a href="kelola_batch.php?id_status_batch=1" class="nav-link ' . (('kelola_batch.php' == $url_sekarang) || ('edit_batch.php' == $url_sekarang)  || ('input_batch.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
-                          <i class="nav-icon fas fa-boxes"></i>
-                          <p> Kelola Batch ' . $notifikasi_batch_penyemaian . '</p>
+                        <i class="nav-icon fas fa-boxes"></i>
+                        <p> Kelola Batch ' . $notifikasi_batch_penyemaian . '</p>
                     </a>
                 </li>
 
                 <li class="nav-item"> <!-- Lokasi -->
                     <a href="kelola_pemeliharaan.php?id_status_pemeliharaan=1" class="nav-link ' . ('kelola_pemeliharaan.php' == $url_sekarang  || ('edit_pemeliharaan.php' == $url_sekarang)  || ('input_pemeliharaan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
-                          <i class="nav-icon fas fa-heart"></i>
-                          <p> Kelola Pemeliharaan ' . $notifikasi_pemeliharaan . '</p>
+                        <i class="nav-icon fas fa-heart"></i>
+                        <p> Kelola Pemeliharaan ' . $notifikasi_pemeliharaan . '</p>
                     </a>
                 </li>
 
@@ -661,12 +663,10 @@ if (!$_SESSION['level_user']) { //Belum log in
                 
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                     <a href="kelola_titik.php" class="nav-link ' . (('kelola_titik.php' == $url_sekarang) || ('edit_titik.php' == $url_sekarang)  || ('input_titik.php'  == $url_sekarang) ? ' active ' : '') . ' ">
-                          <i class="nav-icon fas fa-crosshairs"></i>
-                          <p> Kelola Titik </p>
+                        <i class="nav-icon fas fa-crosshairs"></i>
+                        <p> Kelola Titik </p>
                     </a>
                 </li>
-
-                
 
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                     <a href="laporan_donasi.php" class="nav-link  ' . ('laporan_donasi.php' == $url_sekarang ? ' active ' : '') . ' ">
