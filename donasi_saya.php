@@ -119,10 +119,10 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
     $batas_waktu_pesan = '<br><b>Batas pembayaran:</b><br><b>' . $tglbatas_formatted . '</b>';
     if ($dy <= $batas_hari_pembayaran) {
         //jika masih dalam batas waktu
-        return  $batas_waktu_pesan . '<br> <i class="fas fa-exclamation-circle text-primary"></i> Harap upload bukti pembayaran sebelum batas waktu agar donasi segera diproses pengelola.';
+        return  $batas_waktu_pesan . '<br> <i class="fas fa-exclamation-circle text-primary"></i> Harap upload bukti pembayaran donasi sebelum batas waktu agar donasi segera diproses pengelola.';
     } else if ($dy > $batas_hari_pembayaran) {
         //overdue
-        return $batas_waktu_pesan . '<br><i class="fas fa-exclamation-circle text-danger"></i> Upload Bukti pembayaran telah melebihi batas waktu. Donasi akan segera dibatalkan pengelola.';
+        return $batas_waktu_pesan . '<br><i class="fas fa-exclamation-circle text-danger"></i> Upload Bukti pembayaran donasi telah melebihi batas waktu. Donasi akan segera dibatalkan pengelola.';
     }
 }
 ?>
@@ -227,7 +227,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                       </div>';
                         } else if ($_GET['status'] == 'addsuccess') {
                             echo '<div class="alert alert-success" role="alert">
-                          Donasi berhasil dibuat! Harap upload bukti pembayaran agar donasi diproses pengelola
+                          Donasi berhasil dibuat! Harap upload bukti pembayaran donasi agar donasi diproses pengelola
                       </div>';
                         }
                     }
@@ -256,31 +256,40 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                             <div class="blue-container mb-4 p-4 rounded">
                                 <div class="row mb-3 rounded p-3 shadow-sm bg-white donasi-content">
                                     <!-- First row -->
-
+                                
                                     <div class="col-12 pb-1 mb-2 border-bottom">
-                                        <span class="badge badge-pill badge-primary mr-2"> ID Donasi <?= $rowitem->id_donasi ?> </span>
-                                        <?php echo empty($rowitem->id_batch) ? '' : '<span class="badge badge-pill badge-info mr-2"> ID Batch ' . $rowitem->id_batch . '</span>'; ?>
+                                        <div class="row">
+                                                <div class="col-sm-6">
+                                                    <span class="badge badge-pill badge-primary mr-2"> ID Donasi <?= $rowitem->id_donasi ?> </span>
+                                                <?php echo empty($rowitem->id_batch) ? '' : '<span class="badge badge-pill badge-info mr-2"> ID Batch ' . $rowitem->id_batch . '</span>'; ?>
+                                                </div>
 
+                                                <div class="col text-sm-right float-right text-sm">
+                                                    <span class="text-sm font-weight-bold">Status: </span>
+                                                    <span class="badge badge-info"><?= $rowitem->nama_status_donasi ?></span>
+                                                    <br><small class="text-muted"><b>Update Terakhir</b>
+                                                <?= strftime('%A, %e %B %Y', $truedate) . ' (' . ageCalculator($rowitem->update_terakhir) . ')'; ?></small>
+                                                </div>
+
+                                        </div>
+
+                                        
+                                        
                                     </div>
 
                                     <div class="col-md mb-3">
+                                        <div class="mb-3">
+                                            <span class="font-weight-bold"><i class="nav-icon text-secondary fas fas fa-calendar-alt"></i> Tanggal Donasi</span>
+                                            <br>
+                                            <span class="text-sm"><?= strftime('%A, %e %B %Y', $donasidate); ?></span>
+                                            
+                                        </div>
                                         <div class="mb-2">
                                             <span class="font-weight-bold"><i class="nav-icon text-success fas fas fa-money-bill-wave"></i> Nominal</span>
                                             <br>
                                             <span class="mb-3 text-sm">Rp. <?= number_format($rowitem->nominal, 0) ?></span>
                                         </div>
-                                        <div class="mb-3">
-                                            <span class="font-weight-bold"><i class="nav-icon text-secondary fas fas fa-calendar-alt"></i> Tanggal Donasi</span>
-                                            <br>
-                                            <span class="text-sm"><?= strftime('%A, %e %B %Y', $donasidate); ?></span>
-                                            <br>
-
-                                            <span class="text-sm">
-                                                <?php if ($rowitem->id_status_donasi == 1) {
-                                                    echo alertPembayaran($rowitem->tanggal_donasi, $rowitem->batas_hari_pembayaran);
-                                                }  ?>
-                                            </span>
-                                        </div>
+                                        
 
                                         <div class="mb-3">
                                             <?php if ($rowitem->id_status_donasi >= 3 && $rowitem->id_status_donasi < 7) { ?>
@@ -302,15 +311,21 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                             <br><span class="text-sm"><?= $rowitem->pesan ?></span><br>
                                         </div>
                                         <div class="mb-3">
-                                            <span class="font-weight-bold"><i class="nav-icon text-warning fas fas fa-list-alt"></i> Status</span>
-                                            <br>
-                                            <p class="badge badge-warning"><?= $rowitem->nama_status_donasi ?></p>
                                             
-                                            <?php echo ($rowitem->id_status_donasi <= 2 || $rowitem->id_status_donasi == 7) ? '<a href="edit_donasi_saya.php?id_donasi=' . $rowitem->id_donasi . '" 
-                                            class="px-2 py-1 btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Donasi</a>' : ''; ?>
+                                            
+                                            <?php echo ($rowitem->id_status_donasi <= 2 || $rowitem->id_status_donasi == 7) ? '<small class="font-weight-bold"><b>Upload Bukti Donasi</b>
+                                                <br><a href="edit_donasi_saya.php?id_donasi=' . $rowitem->id_donasi . '"class="px-2 py-1 btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Donasi</a></small>' : ''; ?>
+                                            
+                                            <?php echo ($rowitem->id_status_donasi == 2) ? '<br><small class="text-muted text-sm"><i class="fas text-info fa-check"></i> Bukti donasi sudah diupload </small>' : '' ?>
+                                            <?php echo ($rowitem->id_status_donasi == 7) ? '<br><small class="text-muted text-sm"><i class="fas text-danger fa-times"></i> Bukti donasi bermasalah, harap upload kembali </small>' : '' ?>
 
-                                            <br><small class="text-muted"><b>Update Terakhir</b>
-                                                <br><?= strftime('%A, %e %B %Y', $truedate) . '<br> (' . ageCalculator($rowitem->update_terakhir) . ')'; ?></small>
+                                            <br>
+
+                                            <span class="text-sm">
+                                                <?php if ($rowitem->id_status_donasi == 1) {
+                                                    echo alertPembayaran($rowitem->tanggal_donasi, $rowitem->batas_hari_pembayaran);
+                                                }  ?>
+                                            </span>
 
                                         </div>
 
@@ -350,7 +365,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                     <div class="col-12 p-0 <?php if ($rowitem->id_status_donasi == 7) {
                                                                 echo ' d-none ';
                                                             } ?>">
-                                        <ul class="progress-indicator <?= (isMobile()) ? ' stacked ' : '' ?> shadow-sm">
+                                        <ul class="progress-indicator <?= (isMobile()) ? ' stacked ' : '' ?> shadow-sm p-5 ">
                                             <?php foreach ($rowstatus as $status) {
                                                 $id_status_donasi = $rowitem->id_status_donasi;
                                                 if ($status->id_status_donasi != 7) { ?>
@@ -471,7 +486,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                                                 </div>
                                                                 <div class="col mb-2">
                                                                     <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-calendar-alt"></i> Pemeliharaan Terkini</span>
-                                                                    <br> <span><?= strftime('%A, %e %B %Y', $peliharadate) . ' <br>
+                                                                    <br> <span><?= strftime('%A, %e %B %Y', $peliharadate) . ' <br>'?>
                                                           <small class="text-muted">(' . ageCalculator($history->tanggal_pemeliharaan) . ')</small>' ?></span>
                                                                 </div>
                                                                 <div class="col">
@@ -539,11 +554,6 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                     </div>
 
                                     <div class="col-md mb-3">
-                                        <div class="mb-2">
-                                            <span class="font-weight-bold"><i class="nav-icon text-success fas fas fa-money-bill-wave"></i> Nominal</span>
-                                            <br>
-                                            <span class="mb-3">Rp. <?= number_format($rowitem->nominal, 0) ?></span>
-                                        </div>
                                         <div class="mb-3">
                                             <span class="font-weight-bold"><i class="nav-icon text-secondary fas fas fa-calendar-alt"></i> Tanggal Donasi</span>
                                             <br>
@@ -555,6 +565,12 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                                 echo alertPembayaran($rowitem->tanggal_donasi, $rowitem->batas_hari_pembayaran);
                                             }  ?>
                                         </div>
+                                        <div class="mb-2">
+                                            <span class="font-weight-bold"><i class="nav-icon text-success fas fas fa-money-bill-wave"></i> Nominal</span>
+                                            <br>
+                                            <span class="mb-3">Rp. <?= number_format($rowitem->nominal, 0) ?></span>
+                                        </div>
+                                        
 
                                         <div class="mb-3">
                                             <?php if ($rowitem->id_status_donasi >= 3 && $rowitem->id_status_donasi < 7) { ?>
@@ -576,15 +592,13 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                             <br><?= $rowitem->pesan ?><br>
                                         </div>
                                         <div class="mb-3">
-                                            <span class="font-weight-bold"><i class="nav-icon text-warning fas fas fa-list-alt"></i> Status</span>
-                                            <br>
-                                            <p class="badge badge-warning"><?= $rowitem->nama_status_donasi ?></p>
+                                            
 
-                                            <?php echo ($rowitem->id_status_donasi <= 2 || $rowitem->id_status_donasi == 7) ? '<a href="edit_donasi_saya.php?id_donasi=' . $rowitem->id_donasi . '" class="btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Donasi</a>' : ''; ?>
-
-                                            <br><small class="text-muted"><b>Update Terakhir</b>
-                                                <br><?= strftime('%A, %e %B %Y', $truedate) . '<br> (' . ageCalculator($rowitem->update_terakhir) . ')'; ?></small>
-
+                                            <?php echo ($rowitem->id_status_donasi <= 2 || $rowitem->id_status_donasi == 7) ? '<small class="font-weight-bold"><b>Upload Bukti Donasi</b>
+                                                <br><a href="edit_donasi_saya.php?id_donasi=' . $rowitem->id_donasi . '"class="px-2 py-1 btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Donasi</a></small>' : ''; ?>
+                                            
+                                            <?php echo ($rowitem->id_status_donasi == 2) ? '<br><small class="text-muted text-sm"><i class="fas text-info fa-check"></i> Bukti donasi sudah diupload </small>' : '' ?>
+                                            <?php echo ($rowitem->id_status_donasi == 7) ? '<br><small class="text-muted text-sm"><i class="fas text-danger fa-times"></i> Bukti donasi bermasalah, harap upload kembali </small>' : '' ?>
                                         </div>
 
 
@@ -623,7 +637,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                     <div class="col-12 p-0 <?php if ($rowitem->id_status_donasi == 7) {
                                                                 echo ' d-none ';
                                                             } ?>">
-                                        <ul class="progress-indicator <?= (isMobile()) ? ' stacked ' : '' ?> shadow-sm">
+                                        <ul class="progress-indicator <?= (isMobile()) ? ' stacked ' : '' ?> shadow-sm p-5 ">
                                             <?php foreach ($rowstatus as $status) {
                                                 $id_status_donasi = $rowitem->id_status_donasi;
                                                 if ($status->id_status_donasi != 7) { ?>

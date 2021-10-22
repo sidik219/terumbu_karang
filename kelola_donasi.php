@@ -327,6 +327,12 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                                     <a href="kelola_pengadaan_bibit.php?id_donasi=<?= $rowitem->id_donasi ?>" class="btn btn-sm btn-primary userinfo">
                                                         <i class="fas fa-file-invoice"></i> Kelola Pengadaan Bibit</a>
                                                 <?php } ?>
+
+                                                <?php echo (($rowitem->id_status_pengadaan_bibit == 1) && ($rowitem->id_status_donasi == 3)) ? '<br><small class="text-muted text-sm"><i class="fas text-warning fa-exclamation-circle"></i> Bukti pengadaan bibit belum diunggah </small>' : '' ?>
+                                                <?php echo ($rowitem->id_status_pengadaan_bibit == 2) ? '<br><small class="text-muted text-sm"><i class="fas text-warning fa-exclamation-circle"></i> Bukti pengadaan bibit belum diunggah </small>' : '' ?>
+                                                <?php echo ($rowitem->id_status_pengadaan_bibit == 3) ? '<br><small class="text-muted text-sm"><i class="fas text-warning fa-exclamation-circle"></i> Bukti pengadaan bibit perlu verifikasi </small>' : '' ?>
+                                                <?php echo ($rowitem->id_status_pengadaan_bibit == 4) ? '<br><small class="text-muted text-sm"> <i class="fas text-info fa-check"></i> Pengadaan Bibit Selesai </small>' : '' ?>
+                                                <?php echo ($rowitem->id_status_pengadaan_bibit == 5) ? '<br><small class="text-muted text-sm"><i class="fas text-danger fa-times"></i> Bukti pengadaan bibit bermasalah, menuggu unggah ulang </small>' : '' ?>
                                             </div>
                                     </td>
                                     <td>
@@ -335,10 +341,15 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                                                                     } ?>">
                                             <a href="edit_donasi.php?id_donasi=<?= $rowitem->id_donasi ?>"><i class="fas fa-edit"></i><?= $level_user == 2 ? ' Verifikasi Bukti Donasi' : '' ?></a>
                                         </button>
+                                            <?php echo ($rowitem->id_status_donasi == 2) ? '<br><small class="text-muted text-sm"><i class="fas text-warning fa-exclamation-circle"></i> Bukti donasi dalam proses verifikasi </small>' : '' ?>
+                                            <?php echo (($rowitem->id_status_donasi >= 3) && ($rowitem->id_status_donasi < 7)) ? '<br><small> <i class="fas text-info fa-check"></i> Bukti donasi sudah verifikasi </small>' : '' ?>
+                                            <?php echo ($rowitem->id_status_donasi == 7) ? '<br><small class="text-muted text-sm"><i class="fas text-danger fa-times"></i> Bukti donasi bermasalah </small>' : '' ?>
+
                                         <button type="button" class="btn btn-act float-right <?php if (!($_SESSION['level_user'] == 4)) {
                                                                                         echo " d-none ";
                                                                                     } ?>"><i class="far fa-trash-alt"></i></button>
                                     </td>
+                                    
 
                                 </tr>
 
