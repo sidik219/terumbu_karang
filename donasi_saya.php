@@ -487,7 +487,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                                                 <div class="col mb-2">
                                                                     <span class="font-weight-bold"><i class="nav-icon text-primary fas fas fa-calendar-alt"></i> Pemeliharaan Terkini</span>
                                                                     <br> <span><?= strftime('%A, %e %B %Y', $peliharadate) . ' <br>'?>
-                                                          <small class="text-muted">(' . ageCalculator($history->tanggal_pemeliharaan) . ')</small>' ?></span>
+                                                          <small class="text-muted"><?= '(' . ageCalculator($history->tanggal_pemeliharaan) . ')</small>' ?></span>
                                                                 </div>
                                                                 <div class="col">
                                                                     <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-heartbeat"></i> Kondisi</span>
