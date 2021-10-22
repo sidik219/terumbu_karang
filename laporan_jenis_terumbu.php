@@ -3,7 +3,22 @@ session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-$sql_daftar_wilayah  = 'SELECT id_wilayah, nama_wilayah FROM t_wilayah';
+$filter_wilayah = ' ';
+$filter_lokasi = ' ';
+if($_SESSION['level_user'] == 2){
+    $filter_wilayah = ' AND t_wilayah.id_wilayah = '.$_SESSION['id_wilayah_dikelola']; //
+}elseif($_SESSION['level_user'] == 3){
+    $sql_wilayah_lokasi  = 'SELECT id_wilayah FROM t_lokasi WHERE id_lokasi = '. $_SESSION['id_lokasi_dikelola'];
+    $stmt = $pdo->prepare($sql_wilayah_lokasi);
+    $stmt->execute();
+    $wilayah_lokasi = $stmt->fetch();
+
+    $filter_lokasi = ' AND t_lokasi.id_wilayah = '.$wilayah_lokasi->id_wilayah.' AND t_lokasi.id_lokasi = '.$_SESSION['id_lokasi_dikelola']; //
+}
+
+$sql_daftar_wilayah  = 'SELECT t_wilayah.id_wilayah, nama_wilayah FROM t_wilayah 
+                        LEFT JOIN t_lokasi ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                        WHERE 1 '.$filter_wilayah. ' '.$filter_lokasi;
 $stmt = $pdo->prepare($sql_daftar_wilayah);
 $stmt->execute();
 $daftar_wilayah = $stmt->fetchAll();
@@ -118,7 +133,7 @@ $daftar_wilayah = $stmt->fetchAll();
 
                 <tbody>
                 <?php
-                    foreach($daftar_wilayah as $wilayah){
+                    foreach($daftar_wilayah as $wilayah){                                                    
                         $sqlviewwilayah = 'SELECT *,
     
                                         COUNT(
@@ -129,7 +144,7 @@ $daftar_wilayah = $stmt->fetchAll();
                                         SUM(
                                             CASE WHEN kondisi_terumbu = "Rusak" THEN ukuran_terumbu ELSE 0
                                         END
-                                    ) AS DECIMAL(10, 2)
+                                    ) AS DECIMAL(10, 1)
                                     ) AS ukuran_rusak,
                                     COUNT(
                                         CASE WHEN kondisi_terumbu = "Baik" THEN 1 ELSE NULL
@@ -139,7 +154,7 @@ $daftar_wilayah = $stmt->fetchAll();
                                         SUM(
                                             CASE WHEN kondisi_terumbu = "Baik" THEN ukuran_terumbu ELSE 0
                                         END
-                                    ) AS DECIMAL(10, 2)
+                                    ) AS DECIMAL(10, 1)
                                     ) AS ukuran_baik,
                                     COUNT(
                                         CASE WHEN kondisi_terumbu = "Sangat Baik" THEN 1 ELSE NULL
@@ -149,9 +164,9 @@ $daftar_wilayah = $stmt->fetchAll();
                                         SUM(
                                             CASE WHEN kondisi_terumbu = "Sangat Baik" THEN ukuran_terumbu ELSE 0
                                         END
-                                    ) AS DECIMAL(10, 2)
+                                    ) AS DECIMAL(10, 1)
                                     ) AS ukuran_sangat_baik,
-                                    CAST(SUM(ukuran_terumbu) AS DECIMAL(10,2)) AS ukuran_total_lokasi,
+                                    CAST(SUM(ukuran_terumbu) AS DECIMAL(10,1)) AS ukuran_total_lokasi,
                                     COUNT(t_history_pemeliharaan.id_detail_donasi) AS jumlah_terumbu_total
                                     FROM
                                         t_lokasi
@@ -160,7 +175,7 @@ $daftar_wilayah = $stmt->fetchAll();
                                         INNER JOIN t_detail_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
                                         INNER JOIN t_history_pemeliharaan ON t_history_pemeliharaan.id_detail_donasi = t_detail_donasi.id_detail_donasi
                                         
-                                        WHERE kondisi_terumbu <> "Mati" AND t_wilayah.id_wilayah = '.$wilayah->id_wilayah.'
+                                        WHERE kondisi_terumbu <> "Mati" AND t_wilayah.id_wilayah = '.$wilayah->id_wilayah.' '.$filter_wilayah.' '.$filter_lokasi.' 
                                         GROUP BY t_lokasi.id_lokasi';
 
                                     $stmt = $pdo->prepare($sqlviewwilayah);
@@ -168,9 +183,11 @@ $daftar_wilayah = $stmt->fetchAll();
                                     $rowwilayah = $stmt->fetchAll();
 
                                     ?>
+                                    <?php if($_SESSION['level_user'] != 3){ ?>                                    
                                         <tr class="wilayah-blue-bg">
                                             <th scope="row" colspan="3"><?=$wilayah->nama_wilayah?></th>
                                         </tr>
+                                    <?php } ?>
                                     <?php
                     foreach ($rowwilayah as $rowitem) {
                         $total_ukuran_terumbu = 0;
@@ -185,7 +202,7 @@ $daftar_wilayah = $stmt->fetchAll();
                                 <table class="table table-striped">
 
                                     <thead>
-                                        <th><?=$rowitem->nama_lokasi?></th>
+                                        <th class="text-md text-primary"><?=$rowitem->nama_lokasi?></th>
                                         <th scope="col">Jumlah Terumbu</th>                                        
                                         <th scope="col">Ukuran Rusak</th>
                                         <th scope="col">Ukuran Baik</th>
@@ -204,7 +221,7 @@ CAST(
     SUM(
         CASE WHEN kondisi_terumbu = "Rusak" THEN ukuran_terumbu ELSE 0
     END
-) AS DECIMAL(10, 2)
+) AS DECIMAL(10, 1)
 ) AS ukuran_rusak,
 COUNT(
     CASE WHEN kondisi_terumbu = "Baik" THEN 1 ELSE NULL
@@ -214,7 +231,7 @@ CAST(
     SUM(
         CASE WHEN kondisi_terumbu = "Baik" THEN ukuran_terumbu ELSE 0
     END
-) AS DECIMAL(10, 2)
+) AS DECIMAL(10, 1)
 ) AS ukuran_baik,
 COUNT(
     CASE WHEN kondisi_terumbu = "Sangat Baik" THEN 1 ELSE NULL
@@ -224,7 +241,7 @@ CAST(
     SUM(
         CASE WHEN kondisi_terumbu = "Sangat Baik" THEN ukuran_terumbu ELSE 0
     END
-) AS DECIMAL(10, 2)
+) AS DECIMAL(10, 1)
 ) AS ukuran_sangat_baik
 
 FROM t_terumbu_karang 
@@ -233,7 +250,7 @@ INNER JOIN t_history_pemeliharaan ON t_history_pemeliharaan.id_detail_donasi = t
 INNER JOIN t_donasi ON t_donasi.id_donasi = t_detail_donasi.id_donasi
 INNER JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
 
-WHERE t_lokasi.id_lokasi = '.$rowitem->id_lokasi.' AND kondisi_terumbu <> "Mati" 
+WHERE t_lokasi.id_lokasi = '.$rowitem->id_lokasi.' AND kondisi_terumbu <> "Mati"
 
 GROUP BY t_terumbu_karang.id_terumbu_karang';
 
@@ -273,10 +290,10 @@ GROUP BY t_terumbu_karang.id_terumbu_karang';
                                     <thead>
                                     <tr   class="bg-white border-top">
                                         <th scope="col">Total:</th>
-                                        <th scope="col"><?=$rowitem->jumlah_terumbu_total?></th>                                        
-                                        <th scope="col"><?=$rowitem->ukuran_rusak?></th>
-                                        <th scope="col"><?=$rowitem->ukuran_baik?></th>
-                                        <th scope="col"><?=$rowitem->ukuran_sangat_baik?></th>
+                                        <th scope="col"><?=$rowitem->jumlah_terumbu_total.' buah'?></th>                                        
+                                        <th scope="col"><?=$rowitem->ukuran_rusak.' m<sup>2</sup>'?></th>
+                                        <th scope="col"><?=$rowitem->ukuran_baik.' m<sup>2</sup>'?></th>
+                                        <th scope="col"><?=$rowitem->ukuran_sangat_baik.' m<sup>2</sup>'?></th>
                                         <th scope="col"><?=($rowitem->ukuran_total_lokasi).' m<sup>2</sup>'?></th>
                                         
 

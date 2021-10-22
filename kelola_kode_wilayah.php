@@ -183,8 +183,8 @@ include 'hak_akses.php';
              <table class="table table-striped table-bordered DataWilayah">
                     <thead>
                             <tr class="table-active">
-                                <th class="text-center align-middle" >Nama Wilayah: <input class="form-control-sm" type="text" value="<?= $wilayah->nama_wilayah ?>" name="nama_wilayah[]" required></th>
-                                <th class="text-center">Kode Wilayah: <input class="form-control-sm" type="text" value="<?=$wilayah->kode_wilayah?>" name="kode_wilayah[]" required>
+                                <th class="text-center align-middle" >Nama Wilayah: <input class="cek form-control-sm" type="text" value="<?= $wilayah->nama_wilayah ?>" name="nama_wilayah[]" required></th>
+                                <th class="text-center">Kode Wilayah: <input class="cek form-control-sm" type="text" value="<?=$wilayah->kode_wilayah?>" name="kode_wilayah[]" required>
                             <button onclick="event.preventDefault(); (()=>$('#rowwilayah<?=$wilayah->kode_wilayah?>').remove())();" class="ml-2 btn text-cyan"><i class="fas fa-times"></i></button></th>
                               <input type="hidden" id="jumlah<?=$wilayah->kode_wilayah?>" value="<?= count($rowlokasi) ?>" name="jumlahlokasiwilayah[]" ><tr>
                                 <th class="text-center" scope="col">Nama Lokasi</th><th class="text-center" scope="col">Kode Lokasi</th>
@@ -199,8 +199,8 @@ include 'hak_akses.php';
                     foreach ($rowlokasi as $lokasi) {                  
                 ?>
                         <tr>
-                            <td class="text-center"><input class="form-control-sm text-center" type="text" value="<?=$lokasi->nama_lokasi?>" name="nama_lokasi[]" required></td>
-                            <td class="text-center"><input class="form-control-sm text-center" type="text" value="<?=$lokasi->kode_lokasi?>" name="kode_lokasi[]" required> 
+                            <td class="text-center"><input class="cek form-control-sm text-center" type="text" value="<?=$lokasi->nama_lokasi?>" name="nama_lokasi[]" required></td>
+                            <td class="text-center"><input class=" cek form-control-sm text-center" type="text" value="<?=$lokasi->kode_lokasi?>" name="kode_lokasi[]" required> 
                                                     <button onclick="event.preventDefault(); $(this).parent().parent().remove(); $('#jumlah<?=$wilayah->kode_wilayah?>').val(parseInt($('#jumlah<?=$wilayah->kode_wilayah?>').val()) - 1);" class="ml-2 btn text-cyan"><i class="fas fa-times"></i></button></td>
                         </tr>
                 <?php }
@@ -262,8 +262,8 @@ include 'hak_akses.php';
     <script>
         function tambahLokasi(id_target, id_jumlah){        
             var lokasibaru = `<tr>
-                            <td class="text-center"><input class="form-control-sm text-center" type="text" value="" name="nama_lokasi[]" required></td>
-                            <td class="text-center"><input class="form-control-sm text-center" type="text" value="" name="kode_lokasi[]" required>
+                            <td class="text-center"><input class="cek form-control-sm text-center" type="text" value="" name="nama_lokasi[]" required></td>
+                            <td class="text-center"><input class="cek form-control-sm text-center" type="text" value="" name="kode_lokasi[]" required>
                             <button onclick="event.preventDefault(); (()=>$(this).parent().parent().remove())(); $('#${id_jumlah}').val(parseInt($('#${id_jumlah}').val()) - 1);" class="ml-2 btn text-cyan"><i class="fas fa-times"></i></button></td>
                         </tr>`;
             $(lokasibaru).appendTo('#'+id_target);
@@ -279,8 +279,8 @@ include 'hak_akses.php';
              <table class="table table-striped table-bordered DataWilayah">
                     <thead>
                             <tr class="table-active">
-                                <th class="text-center align-middle" >Nama Wilayah: <input class="form-control-sm" type="text"  name="nama_wilayah[]" required></th>
-                                <th class="text-center">Kode Wilayah: <input class="form-control-sm" type="text"  name="kode_wilayah[]" required><input type="hidden" id="jumlah${random_id}" value="1" name="jumlahlokasiwilayah[]" >
+                                <th class="text-center align-middle" >Nama Wilayah: <input class="cek form-control-sm" type="text"  name="nama_wilayah[]" required></th>
+                                <th class="text-center">Kode Wilayah: <input class="cek form-control-sm" type="text"  name="kode_wilayah[]" required><input type="hidden" id="jumlah${random_id}" value="1" name="jumlahlokasiwilayah[]" >
                             <button onclick="event.preventDefault(); (()=>$('#rowwilayah${random_id}').remove())();" class="ml-2 btn text-cyan"><i class="fas fa-times"></i></button></th>
                               <tr>
                                 <th class="text-center" scope="col">Nama Lokasi</th><th class="text-center" scope="col">Kode Lokasi</th>
@@ -291,8 +291,8 @@ include 'hak_akses.php';
                 <tbody  id="rowlokasi${random_id}" class="table-hover">
 
                         <tr>
-                            <td class="text-center"><input class="form-control-sm text-center" type="text"  name="nama_lokasi[]" required></td>
-                            <td class="text-center"><input class="form-control-sm text-center" type="text"  name="kode_lokasi[]" required> 
+                            <td class="text-center"><input class="cek form-control-sm text-center" type="text"  name="nama_lokasi[]" required></td>
+                            <td class="text-center"><input class="cek form-control-sm text-center" type="text"  name="kode_lokasi[]" required> 
                                                     <button onclick="event.preventDefault(); (()=>$(this).parent().parent().remove())(); $('#${random_id}').val(parseInt($('#${random_id}').val()) - 1);" class="ml-2 btn text-cyan"><i class="fas fa-times"></i></button></td>
                         </tr>
                         
@@ -316,13 +316,14 @@ include 'hak_akses.php';
 
         function cekDuplikat(){
             var inputs=[], flag=false;
-            $('input').each(function(){
+            $('.cek').each(function(){
                 if ($.inArray(this.value, inputs) != -1) flag=true ;
                 inputs.push(this.value);
             });
 
             if (flag==true) {
                 alert('Kode tidak boleh ada duplikat!')
+                console.log(inputs)
                 return false;
             }
         }

@@ -274,6 +274,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </a>
                 </li>
                 
+                
                 <!--
                 <li class="nav-item">
                     <a href="kelola_user.php" class="nav-link ' . ('kelola_user.php' == $url_sekarang ? ' active ' : '') . ' ">
@@ -337,6 +338,13 @@ if (!$_SESSION['level_user']) { //Belum log in
                             <p> Kelola Arsip Laporan </p>
                     </a>
                 </li>
+
+                <li class="nav-item"> <!-- Lokasi -->
+                    <a href="laporan_jenis_terumbu.php" class="nav-link ' . ('laporan_jenis_terumbu.php' == $url_sekarang ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-bacteria"></i>
+                            <p> Laporan Jenis Terumbu </p>
+                    </a>
+                </li>
             </ul> <!-- LAPORAN COLLAPSE END -->
             ';
 
@@ -392,6 +400,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                             <p> Arsip Perizinan </p>
                     </a>
                 </li>
+                
 
                 <!--<li class="nav-item">  Wilayah & Lokasi 
                     <a href="laporan_donasi.php" class="nav-link  ' . ('laporan_donasi.php' == $url_sekarang ? ' active ' : '') . ' ">
@@ -575,6 +584,13 @@ if (!$_SESSION['level_user']) { //Belum log in
                     <a href="kelola_arsip_laporan_sebaran.php" class="nav-link ' . ('kelola_arsip_laporan_sebaran.php' == $url_sekarang || ('edit_arsip_luas_wilayah.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
                             <i class="nav-icon fas fa-history"></i>
                             <p> Kelola Arsip Laporan </p>
+                    </a>
+                </li>
+
+                <li class="nav-item"> <!-- Lokasi -->
+                    <a href="laporan_jenis_terumbu.php" class="nav-link ' . ('laporan_jenis_terumbu.php' == $url_sekarang ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-bacteria"></i>
+                            <p> Laporan Jenis Terumbu </p>
                     </a>
                 </li>
             </ul> <!-- LAPORAN COLLAPSE END -->
