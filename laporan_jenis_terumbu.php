@@ -3,26 +3,14 @@ session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-$filter_wilayah = ' ';
-$filter_lokasi = ' ';
-if($_SESSION['level_user'] == 2){
-    $filter_wilayah = ' AND t_wilayah.id_wilayah = '.$_SESSION['id_wilayah_dikelola']; //
-}elseif($_SESSION['level_user'] == 3){
-    $sql_wilayah_lokasi  = 'SELECT id_wilayah FROM t_lokasi WHERE id_lokasi = '. $_SESSION['id_lokasi_dikelola'];
-    $stmt = $pdo->prepare($sql_wilayah_lokasi);
-    $stmt->execute();
-    $wilayah_lokasi = $stmt->fetch();
+//Tanggal pemeliharaan terawal
+$sqltahunterawal = 'SELECT YEAR(MIN(t_history_pemeliharaan.tanggal_pemeliharaan)) AS tahun_terawal FROM t_pemeliharaan 
+                    LEFT JOIN t_history_pemeliharaan ON t_history_pemeliharaan.id_pemeliharaan = t_pemeliharaan.id_pemeliharaan
+                    LIMIT 1';
 
-    $filter_lokasi = ' AND t_lokasi.id_wilayah = '.$wilayah_lokasi->id_wilayah.' AND t_lokasi.id_lokasi = '.$_SESSION['id_lokasi_dikelola']; //
-}
-
-$sql_daftar_wilayah  = 'SELECT t_wilayah.id_wilayah, nama_wilayah FROM t_wilayah 
-                        LEFT JOIN t_lokasi ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
-                        WHERE 1 '.$filter_wilayah. ' '.$filter_lokasi;
-$stmt = $pdo->prepare($sql_daftar_wilayah);
+$stmt = $pdo->prepare($sqltahunterawal);
 $stmt->execute();
-$daftar_wilayah = $stmt->fetchAll();
-
+$tahunterawal = $stmt->fetch();
 
 ?>
 
@@ -40,6 +28,12 @@ $daftar_wilayah = $stmt->fetchAll();
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
+        <script type="text/javascript" src="js/daterangepicker/jquery.min.js"></script>
+<script type="text/javascript" src="js/daterangepicker/moment.min.js"></script>
+<script type="text/javascript" src="js/daterangepicker/daterangepicker.min.js"></script>
+<script type="text/javascript" src="js/loadingoverlay.min.js"></script>
+<script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
+<link rel="stylesheet" type="text/css" href="js/daterangepicker/daterangepicker.css" />
     <!-- Favicon -->
     <?= $favicon ?>
 </head>
@@ -91,21 +85,77 @@ $daftar_wilayah = $stmt->fetchAll();
         <!-- Content Wrapper. Contains page content -->
         <div id="clientPrintContent" class="content-wrapper">
             <!-- Content Header (Page header) -->
-            <div class="content-header">
+            <div class="content-header print-hide">
                 <div class="container-fluid">
-                <div class="row">
+                
+                <div class="row print-hide">
                         <div class="col">
                             <h4><span class="align-middle font-weight-bold">Laporan Jenis Terumbu Karang</span></h4>
                             <p class="text-muted text-sm"><i class="fas text-primary fa-info-circle"></i> Data dari kondisi dan ukuran terumbu karang 
                             yang telah memasuki tahap pemeliharaan berdasarkan jenis terumbu karang yang telah ditanam.</p>
                             <div id="datalaporan">
                         <div class="row">
-                            <div class="col-auto">
+                            <div class="col">
+                                <div class="row print-hide">
+                <div class="row">
+                    <div class="col float-left text-middle">
+                    Periode:
+                    </div>
+                </div>
+                <div class="col float-left">
+                      <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span></span> <i class="fa fa-caret-down"></i>
+                    </div>
+
+                    <script type="text/javascript">
+                    
+                    $(function() {  
+                        moment.locale('id')
+
+                        var start = moment().subtract(29, 'days');
+                        var end = moment();
+                        var tahunterawal = moment(`<?=$tahunterawal->tahun_terawal?>`).format('DD-MM-YYYY');     
+                        
+                        function cb(start, end) {
+                          starto = start.format('Y-MM-DD');
+                          endo = end.format('Y-MM-DD');
+
+                            $('#reportrange span').html(start.format('D MMMM YYYY') + ' - ' + end.format('D MMMM YYYY')); //apply date range to element                            
+                            updateTabelLaporan(starto, endo)                            
+                            $('#periode_laporan').text(start.format('D MMMM YYYY') + ' - ' + end.format('D MMMM YYYY'))                            
+                        }
+
+                        $('#reportrange').daterangepicker({
+                            "autoApply": true,
+                            locale: 'id',
+                            language: 'id',
+                            startDate: start,
+                            endDate: end,
+                            ranges: {
+                              'Hari ini': [moment(), moment()],                              
+                              '7 hari terakhir': [moment().subtract(6, 'days'), moment()],
+                              'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
+                              'Bulan lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                              'Tahun ini': [moment().startOf('year'), moment().endOf('year')],
+                              'Tahun lalu': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+                              'Tampilkan semua': [tahunterawal, moment()]
+                            }
+                        }, cb);
+
+                        cb(start, end)
+                    });                    
+                    </script>                    
+                    </div>
+                
+                </div>
+                            </div>
+                            <!-- <div class="col-auto">
                                 <span class="text-bold">Tanggal Laporan :</span>
                             </div>
                             <div class="col">
                                 <?= strftime("%A, %d %B %Y");?>
-                            </div>
+                            </div> -->
                         </div> 
                 </div>
                         </div>
@@ -129,195 +179,33 @@ $daftar_wilayah = $stmt->fetchAll();
             <section class="content">
                 <div class="container-fluid">
 
-                    <table class="table DataWilayah">
+                    
+                <div class="row text-center mb-3">
+                      <div class="col">
+                          <h5 class="mb-0"><span class="align-middle font-weight-bold mb-0">Laporan Jenis Terumbu Karang</span></h5>
+                          <h5 class="mt-0 font-weight-bold text-muted text-sm">Periode <span id="periode_laporan"></span></h5>
+                          
+                      </div>
+                    </div>
+                <!-- Response AJAX call filter tabel laporan ditaro dalam sini -->
+                <div id="table-container">              
+                </div>
+                <!-- Container tabel laporan end -->
 
-                <tbody>
-                <?php
-                    foreach($daftar_wilayah as $wilayah){                                                    
-                        $sqlviewwilayah = 'SELECT *,
-    
-                                        COUNT(
-                                            CASE WHEN kondisi_terumbu = "Rusak" THEN 1 ELSE NULL
-                                        END
-                                    ) AS jumlah_rusak,
-                                    CAST(
-                                        SUM(
-                                            CASE WHEN kondisi_terumbu = "Rusak" THEN ukuran_terumbu ELSE 0
-                                        END
-                                    ) AS DECIMAL(10, 1)
-                                    ) AS ukuran_rusak,
-                                    COUNT(
-                                        CASE WHEN kondisi_terumbu = "Baik" THEN 1 ELSE NULL
-                                    END
-                                    ) AS jumlah_baik,
-                                    CAST(
-                                        SUM(
-                                            CASE WHEN kondisi_terumbu = "Baik" THEN ukuran_terumbu ELSE 0
-                                        END
-                                    ) AS DECIMAL(10, 1)
-                                    ) AS ukuran_baik,
-                                    COUNT(
-                                        CASE WHEN kondisi_terumbu = "Sangat Baik" THEN 1 ELSE NULL
-                                    END
-                                    ) AS jumlah_sangat_baik,
-                                    CAST(
-                                        SUM(
-                                            CASE WHEN kondisi_terumbu = "Sangat Baik" THEN ukuran_terumbu ELSE 0
-                                        END
-                                    ) AS DECIMAL(10, 1)
-                                    ) AS ukuran_sangat_baik,
-                                    CAST(SUM(ukuran_terumbu) AS DECIMAL(10,1)) AS ukuran_total_lokasi,
-                                    COUNT(t_history_pemeliharaan.id_detail_donasi) AS jumlah_terumbu_total
-                                    FROM
-                                        t_lokasi
-                                        INNER JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
-                                        INNER JOIN t_donasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
-                                        INNER JOIN t_detail_donasi ON t_detail_donasi.id_donasi = t_donasi.id_donasi
-                                        INNER JOIN t_history_pemeliharaan ON t_history_pemeliharaan.id_detail_donasi = t_detail_donasi.id_detail_donasi
-                                        
-                                        WHERE kondisi_terumbu <> "Mati" AND t_wilayah.id_wilayah = '.$wilayah->id_wilayah.' '.$filter_wilayah.' '.$filter_lokasi.' 
-                                        GROUP BY t_lokasi.id_lokasi';
-
-                                    $stmt = $pdo->prepare($sqlviewwilayah);
-                                    $stmt->execute();
-                                    $rowwilayah = $stmt->fetchAll();
-
-                                    ?>
-                                    <?php if($_SESSION['level_user'] != 3){ ?>                                    
-                                        <tr class="wilayah-blue-bg">
-                                            <th scope="row" colspan="3"><?=$wilayah->nama_wilayah?></th>
-                                        </tr>
-                                    <?php } ?>
-                                    <?php
-                    foreach ($rowwilayah as $rowitem) {
-                        $total_ukuran_terumbu = 0;
-                        $total_ukuran_rusak = 0;
-                        $total_ukuran_baik = 0;
-                        $total_ukuran_sangat_baik = 0;
-                ?>
-                        
-                        <tr>
-                                <td colspan="3">
-                            
-                                <table class="table table-striped">
-
-                                    <thead>
-                                        <th class="text-md text-primary"><?=$rowitem->nama_lokasi?></th>
-                                        <th scope="col">Jumlah Terumbu</th>                                        
-                                        <th scope="col">Ukuran Rusak</th>
-                                        <th scope="col">Ukuran Baik</th>
-                                        <th scope="col">Ukuran Sangat Baik</th>
-                                        <th scope="col">Ukuran Total</th>
-                                        
-                                    </thead>
-                                <?php
-                                  $sql_lokasi = 'SELECT nama_terumbu_karang, nama_lokasi, kondisi_terumbu,
-COUNT(t_terumbu_karang.id_terumbu_karang) AS jumlah_terumbu_karang, 
-SUM(ukuran_terumbu) AS ukuran_terumbu, COUNT(
-        CASE WHEN kondisi_terumbu = "Rusak" THEN 1 ELSE NULL
-    END
-) AS jumlah_rusak,
-CAST(
-    SUM(
-        CASE WHEN kondisi_terumbu = "Rusak" THEN ukuran_terumbu ELSE 0
-    END
-) AS DECIMAL(10, 1)
-) AS ukuran_rusak,
-COUNT(
-    CASE WHEN kondisi_terumbu = "Baik" THEN 1 ELSE NULL
-END
-) AS jumlah_baik,
-CAST(
-    SUM(
-        CASE WHEN kondisi_terumbu = "Baik" THEN ukuran_terumbu ELSE 0
-    END
-) AS DECIMAL(10, 1)
-) AS ukuran_baik,
-COUNT(
-    CASE WHEN kondisi_terumbu = "Sangat Baik" THEN 1 ELSE NULL
-END
-) AS jumlah_sangat_baik,
-CAST(
-    SUM(
-        CASE WHEN kondisi_terumbu = "Sangat Baik" THEN ukuran_terumbu ELSE 0
-    END
-) AS DECIMAL(10, 1)
-) AS ukuran_sangat_baik
-
-FROM t_terumbu_karang 
-INNER JOIN t_detail_donasi ON t_detail_donasi.id_terumbu_karang = t_terumbu_karang.id_terumbu_karang
-INNER JOIN t_history_pemeliharaan ON t_history_pemeliharaan.id_detail_donasi = t_detail_donasi.id_detail_donasi
-INNER JOIN t_donasi ON t_donasi.id_donasi = t_detail_donasi.id_donasi
-INNER JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
-
-WHERE t_lokasi.id_lokasi = '.$rowitem->id_lokasi.' AND kondisi_terumbu <> "Mati"
-
-GROUP BY t_terumbu_karang.id_terumbu_karang';
-
-                                    $stmt = $pdo->prepare($sql_lokasi);
-                                    $stmt->execute();
-                                    $rowlokasi = $stmt->fetchAll();
-
-                                    $rusak=0; $baik=0; $sangat_baik=0;
-                                    $rusak_luas = 0; $baik_luas = 0; $sangat_baik_luas = 0;
-
-                                    foreach($rowlokasi as $lokasi) {
-                                        $ps = $lokasi->kondisi_terumbu;
-                                        if($ps == "Rusak"){
-                                        $rusak_luas += $lokasi->ukuran_rusak;
-                                        }
-                                        else if($ps  == "Baik"){
-                                        $baik_luas += $lokasi->ukuran_baik;
-                                        }
-                                        else if($ps  == "Sangat Baik"){
-                                        $sangat_baik_luas += $lokasi->ukuran_sangat_baik;;
-                                        }
-                                    ?>
-
-
-                                    <tr>
-                                        <td><?=$lokasi->nama_terumbu_karang?></td>
-                                        <td><?=$lokasi->jumlah_terumbu_karang?></td>                                        
-                                        <td><?=$lokasi->ukuran_rusak?></td>
-                                        <td><?=$lokasi->ukuran_baik?></td>
-                                        <td scope="col"><?=$lokasi->ukuran_sangat_baik?></td>
-                                        <td><?=$lokasi->ukuran_terumbu?></td>                          
-                                    </tr>
-
-                    <?php
-                } //lokasi loop end
-                ?>
-                                    <thead>
-                                    <tr   class="bg-white border-top">
-                                        <th scope="col">Total:</th>
-                                        <th scope="col"><?=$rowitem->jumlah_terumbu_total.' buah'?></th>                                        
-                                        <th scope="col"><?=$rowitem->ukuran_rusak.' m<sup>2</sup>'?></th>
-                                        <th scope="col"><?=$rowitem->ukuran_baik.' m<sup>2</sup>'?></th>
-                                        <th scope="col"><?=$rowitem->ukuran_sangat_baik.' m<sup>2</sup>'?></th>
-                                        <th scope="col"><?=($rowitem->ukuran_total_lokasi).' m<sup>2</sup>'?></th>
-                                        
-
-                                    </tr>
-                        
-                        </table>
-
-                        <hr/>
-
-
-                            </div>
-                        </div>
-
-
-                        <!--collapse end -->
-                                </td>
-                            </tr>
-                            <?php }
-                            } ?>
-                        
-
-                        
-                </tbody>
-                </table>
+                <div class="row info-cetak text-center">
+                    <div class="col float-right">
+                        <?= isset($_SESSION['nama_wilayah_dikelola']) ? $_SESSION['nama_wilayah_dikelola'] : '' ?>
+                        <?= isset($_SESSION['nama_lokasi_dikelola']) ? $_SESSION['nama_lokasi_dikelola'] : '' ?>
+                        <br>
+                        <?= strftime('%A, %e %B %Y', date(time())); ?>
+                        <br>
+                        <br>
+                        <br>
+                        <b><u><?= $_SESSION['nama_user'] ?></u></b>
+                        <br>
+                        <?= $_SESSION['organisasi_user'] ?>
+                    </div>
+                </div>
 
             </section>
             <!-- /.Left col -->
@@ -343,7 +231,7 @@ GROUP BY t_terumbu_karang.id_terumbu_karang';
     <!-- ./wrapper -->
 
     <!-- jQuery -->
-    <script src="plugins/jquery/jquery.min.js"></script>
+    <!-- <script src="plugins/jquery/jquery.min.js"></script> -->
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- overlayScrollbars -->
@@ -359,11 +247,21 @@ GROUP BY t_terumbu_karang.id_terumbu_karang';
 
     <script>
         function savePDF(){
+
+            $('body').LoadingOverlay("show");
+
+            periode_laporan = $('#periode_laporan').text().split(" ").join("");
+            
+
             $('#btn-unduh').css('left', '9999px')
             $('#clientPrintContent').css('background-color', 'white')
             $('.collapse').show()
             $('.main-sidebar').show()
             $('#clientPrintContent, .main-header, .navbar navbar-expand, .navbar-white, .navbar-light').css('margin-left', 0)
+
+            $('.capture-hide').remove()
+            $('.print-hide').remove()
+            $('body').addClass('text-sm')
 
             var today = new Date();
             var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
@@ -374,11 +272,12 @@ GROUP BY t_terumbu_karang.id_terumbu_karang';
             var element = document.getElementById('clientPrintContent');
             var opt = {
             margin:       [1.5,2,2,2],
-            filename:     `Laporan_JenisTerumbu_GoKarang_${dateTime}.pdf`,
+            filename:     `Laporan_Donasi_GoKarang_periode-${periode_laporan}_diunduh-pada${dateTime}.pdf`,
 
             image:        { type: 'jpeg', quality: 0.95 },
-            html2canvas:  { scale: 3 },
-            jsPDF:        { unit: 'cm', format: 'a3', orientation: 'landscape' }
+            html2canvas:  { scale: 2 },
+            pagebreak: {avoid: ['tr', '.info-cetak']},
+            jsPDF:        { unit: 'cm', format: 'a4', orientation: 'landscape' }
             };
 
             // New Promise-based usage:
@@ -394,6 +293,37 @@ GROUP BY t_terumbu_karang.id_terumbu_karang';
 
 
         }
+
+        function updateTabelLaporan(start, end, sortir){
+  // starto = start
+  // endo = end
+  id_wilayah_dikelola =  <?=!empty($_SESSION['id_wilayah_dikelola']) ? $_SESSION['id_wilayah_dikelola'] : '1'?>
+
+  id_lokasi_dikelola = <?=!empty($_SESSION['id_lokasi_dikelola']) ? $_SESSION['id_lokasi_dikelola'] : '1'?>
+
+  level_user = <?=$_SESSION['level_user']?>
+
+
+  // AJAX request
+  $.ajax({
+    url: 'list_populate.php',
+    type: 'post',
+    data: {start: start, 
+            end: end,
+            sortir: sortir,
+            level_user : level_user,
+            id_wilayah_dikelola : id_wilayah_dikelola,
+            id_lokasi_dikelola : id_lokasi_dikelola,
+            type : 'load_laporan_jenis'},
+    beforeSend : function(){$('#table-container').LoadingOverlay("show");},
+    success: function(response){
+      // Attach response to target container/element
+      $('#table-container').html(response);
+      console.log(start, end)
+      $('#table-container').LoadingOverlay("hide");
+    }
+  });
+}
 
 
     </script>

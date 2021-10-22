@@ -5,7 +5,7 @@ if (isset($_POST['login'])) {
     $username   = $_POST['tbusername'];
     $password   = $_POST['tbpassword'];
 
-    $sql  = "SELECT username, password, id_user, level_user, email, nama_user, aktivasi_user FROM t_user WHERE username=:username";
+    $sql  = "SELECT username, password, id_user, level_user, email, nama_user, aktivasi_user, organisasi_user FROM t_user WHERE username=:username";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['username' => $username]);
     $row = $stmt->fetch();
@@ -25,7 +25,9 @@ if (isset($_POST['login'])) {
                 header('Location: dashboard_user.php?pesan=login_berhasil');
 
             } elseif ($row->level_user == "2") {
-              $sql  = "SELECT id_wilayah FROM t_pengelola_wilayah WHERE id_user=:id_user";
+              $sql  = "SELECT t_pengelola_wilayah.id_wilayah, nama_wilayah FROM t_pengelola_wilayah 
+                        LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_pengelola_wilayah.id_wilayah
+                        WHERE id_user=:id_user";
               $stmt = $pdo->prepare($sql);
               $stmt->execute(['id_user' => $row->id_user]);
               $rowkelolawilayah = $stmt->fetch();
@@ -34,6 +36,12 @@ if (isset($_POST['login'])) {
                 $_SESSION['id_wilayah_dikelola']     = $rowkelolawilayah->id_wilayah;
                 $_SESSION['id_user']        = $row->id_user;
                 $_SESSION['username']        = $row->username;
+
+                $_SESSION['nama_wilayah_dikelola']        = $rowkelolawilayah->nama_wilayah;    
+                $_SESSION['nama_user']        = $row->nama_user;
+                $_SESSION['organisasi_user']        = $row->organisasi_user;
+
+
                 $_SESSION['level_user']     = $row->level_user;
                 header('Location: dashboard_admin.php?pesan=login_berhasil_w&id_wilayah='.$rowkelolawilayah->id_wilayah);
               }
@@ -42,13 +50,21 @@ if (isset($_POST['login'])) {
               }
             }
             elseif ($row->level_user == "3") {
-              $sql  = "SELECT id_lokasi FROM t_pengelola_lokasi WHERE id_user=:id_user";
+              $sql  = "SELECT t_pengelola_lokasi.id_lokasi, nama_lokasi FROM t_pengelola_lokasi 
+                      LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_pengelola_lokasi.id_lokasi
+                      WHERE id_user=:id_user";
               $stmt = $pdo->prepare($sql);
               $stmt->execute(['id_user' => $row->id_user]);
               $rowkelolalokasi = $stmt->fetch();
               if($stmt->rowCount() != 0){
                 $_SESSION['id_user']        = $row->id_user;
                 $_SESSION['username']        = $row->username;
+
+                $_SESSION['nama_lokasi_dikelola']        = $rowkelolalokasi->nama_lokasi;                
+                $_SESSION['nama_user']        = $row->nama_user;
+                $_SESSION['organisasi_user']        = $row->organisasi_user;
+
+
                 $_SESSION['level_user']     = $row->level_user;
                 $_SESSION['id_lokasi_dikelola']     = $rowkelolalokasi->id_lokasi;
                 header('Location: dashboard_admin.php?pesan=login_berhasil_l&id_lokasi='.$rowkelolalokasi->id_lokasi);
@@ -61,6 +77,8 @@ if (isset($_POST['login'])) {
             elseif ($row->level_user == "4") {
                 $_SESSION['id_user']        = $row->id_user;
                 $_SESSION['username']        = $row->username;
+                $_SESSION['nama_user']        = $row->nama_user;
+                $_SESSION['organisasi_user']        = $row->organisasi_user;
                 $_SESSION['level_user']     = $row->level_user;
                 header('Location: dashboard_admin_pusat.php?pesan=login_berhasil_p');
 

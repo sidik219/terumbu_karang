@@ -23,50 +23,6 @@ else if($level_user == 4){
   $extra_query_noand = " 1 ";
 }
 
-// if(isset($_GET['id_status_donasi'])){
-//   $id_status_donasi =$_GET['id_status_donasi'];
-
-//   if($id_status_donasi == 1){ //donasi baru
-//     $sqlviewdonasi = 'SELECT * FROM t_donasi
-//                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
-//                   LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
-//                   LEFT JOIN t_status_pengadaan_bibit ON t_donasi.id_status_pengadaan_bibit = t_status_pengadaan_bibit.id_status_pengadaan_bibit
-//                   WHERE t_donasi.id_status_donasi = 1  '.$extra_query.'
-//                   ORDER BY id_donasi DESC';
-//   }
-//   elseif($id_status_donasi == 2){ //donasi butuh verifikasi
-//     $sqlviewdonasi = 'SELECT * FROM t_donasi
-//                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
-//                   LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
-//                   LEFT JOIN t_status_pengadaan_bibit ON t_donasi.id_status_pengadaan_bibit = t_status_pengadaan_bibit.id_status_pengadaan_bibit
-//                   WHERE t_donasi.id_status_donasi = 2  '.$extra_query.'
-//                   ORDER BY id_donasi DESC';
-//   }
-//   elseif($id_status_donasi == 6){ //donasi bermasalah
-//     $sqlviewdonasi = 'SELECT * FROM t_donasi
-//                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
-//                   LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
-//                   LEFT JOIN t_status_pengadaan_bibit ON t_donasi.id_status_pengadaan_bibit = t_status_pengadaan_bibit.id_status_pengadaan_bibit
-//                   WHERE t_donasi.id_status_donasi = 6  '.$extra_query.'
-//                   ORDER BY id_donasi DESC';
-//   }
-//   $stmt = $pdo->prepare($sqlviewdonasi);
-//   $stmt->execute();
-//   $row = $stmt->fetchAll();
-// }
-// elseif(isset($_GET['id_batch'])){ //donasi belum masuk batch
-//   $sqlviewdonasi = 'SELECT * FROM t_donasi
-//                   LEFT JOIN t_lokasi ON t_donasi.id_lokasi = t_lokasi.id_lokasi
-//                   LEFT JOIN t_status_donasi ON t_donasi.id_status_donasi = t_status_donasi.id_status_donasi
-//                   LEFT JOIN t_status_pengadaan_bibit ON t_donasi.id_status_pengadaan_bibit = t_status_pengadaan_bibit.id_status_pengadaan_bibit
-//                   WHERE t_donasi.id_batch IS NULL AND t_donasi.id_status_donasi = 3  '.$extra_query.'
-//                   ORDER BY id_donasi DESC';
-
-//   $stmt = $pdo->prepare($sqlviewdonasi);
-//   $stmt->execute();
-//   $row = $stmt->fetchAll();
-// }
-
 
 
 //umum
@@ -312,22 +268,6 @@ function ageCalculator($dob){
                 </div>
 
 
-                <!-- <div class="row mb-2">
-                      <div class="col">
-                        <div class="dropdown show">
-                          <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Sortir Donasi
-                          </a>
-
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="laporan_donasi.php">Default</a>
-                            <a class="dropdown-item" onclick="cb(moment().subtract(29, 'days'), moment(), ' SORT BY nominal DESC ');">Nominal Tertinggi</a>
-                            <a class="dropdown-item" onclick="cb(moment().subtract(29, 'days'), moment(), ' SORT BY nominal ASC ');">Nominal Terendah</a>
-                        </div>
-                    </div>
-                      </div>
-                </div> -->
-
                 <div class="row text-center">
                       <div class="col">
                           <h5 class="mb-0"><span class="align-middle font-weight-bold mb-0">Laporan Donasi Terumbu Karang</span></h5>
@@ -338,6 +278,22 @@ function ageCalculator($dob){
 
                 <!-- Response AJAX call filter tabel laporan ditaro dalam sini -->
                 <div id="table-container">              
+                </div>
+
+
+                <div class="row info-cetak text-center">
+                    <div class="col float-right">
+                        <?= isset($_SESSION['nama_wilayah_dikelola']) ? $_SESSION['nama_wilayah_dikelola'] : '' ?>
+                        <?= isset($_SESSION['nama_lokasi_dikelola']) ? $_SESSION['nama_lokasi_dikelola'] : '' ?>
+                        <br>
+                        <?= strftime('%A, %e %B %Y', date(time())); ?>
+                        <br>
+                        <br>
+                        <br>
+                        <b><u><?= $_SESSION['nama_user'] ?></u></b>
+                        <br>
+                        <?= $_SESSION['organisasi_user'] ?>
+                    </div>
                 </div>
 
 
@@ -513,6 +469,7 @@ function savePDF(){
 
             image:        { type: 'jpeg', quality: 0.95 },
             html2canvas:  { scale: 2 },
+            pagebreak: {avoid: ['tr', '.info-cetak']},
             jsPDF:        { unit: 'cm', format: 'a4', orientation: 'landscape' }
             };
 
