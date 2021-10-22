@@ -154,9 +154,6 @@ if (isset($_POST['submit'])) {
                 <br>Bank Anda: ' . $bank_donatur . '
                 <br>Nomor Rekening Anda: ' . $nomor_rekening_donatur . '
                 <br>Nama Rekening Anda: ' . $nama_donatur . '
-                <br>
-                <br>Harap upload bukti pembayaran reservasi (format gambar .JPG) di link berikut:
-                <br><a href="https://tkjb.or.id/edit_reservasi_saya.php?id_reservasi=' . $id_reservasi_terakhir . '">Upload Bukti Pembayaran</a>
             ';
 
             smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);

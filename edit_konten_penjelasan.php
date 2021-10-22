@@ -173,42 +173,45 @@ if (isset($_POST['submit'])) {
                         </div>
                         <div class="form-group">
                             <img id="preview" src="#" width="100px" alt="Preview Gambar" />
-                            <a href="<?= $kegiatan->gambar ?>" data-toggle="lightbox">
-                                <img class="img-fluid" id="oldpic" src="<?= $kegiatan->gambar ?>" width="20%" <?php if ($kegiatan->gambar == NULL) echo "style='display: none;'"; ?>></a>
-                            <br>
+                            <div class="detail-toggle" id="main-toggle">
+                                <a href="<?= $kegiatan->gambar ?>" data-toggle="lightbox">
+                                    <img class="img-fluid" id="oldpic" src="<?= $kegiatan->gambar ?>" width="20%" <?php if ($kegiatan->gambar == NULL) echo "style='display: none;'"; ?>>
+                                    <br>
 
-                            <script>
-                                const actualBtn = document.getElementById('image_uploads');
-                                const fileChosen = document.getElementById('file-input-label');
+                                    <script>
+                                        const actualBtn = document.getElementById('image_uploads');
+                                        const fileChosen = document.getElementById('file-input-label');
 
-                                actualBtn.addEventListener('change', function() {
-                                    fileChosen.innerHTML = '<b>File dipilih :</b> ' + this.files[0].name
-                                })
-                                window.onload = function() {
-                                    document.getElementById('preview').style.display = 'none';
-                                };
-
-                                function readURL(input) {
-                                    //Validasi Size Upload Image
-                                    if (input.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
-                                        alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
-                                        input.value = "";
-                                    };
-
-                                    if (input.files && input.files[0]) {
-                                        var reader = new FileReader();
-                                        document.getElementById('oldpic').style.display = 'none';
-                                        reader.onload = function(e) {
-                                            $('#preview')
-                                                .attr('src', e.target.result)
-                                                .width(200);
-                                            document.getElementById('preview').style.display = 'block';
+                                        actualBtn.addEventListener('change', function() {
+                                            fileChosen.innerHTML = '<b>File dipilih :</b> ' + this.files[0].name
+                                        })
+                                        window.onload = function() {
+                                            document.getElementById('preview').style.display = 'none';
                                         };
 
-                                        reader.readAsDataURL(input.files[0]);
-                                    }
-                                }
-                            </script>
+                                        function readURL(input) {
+                                            //Validasi Size Upload Image
+                                            if (input.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                                alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                                input.value = "";
+                                            };
+
+                                            if (input.files && input.files[0]) {
+                                                var reader = new FileReader();
+                                                document.getElementById('oldpic').style.display = 'none';
+                                                reader.onload = function(e) {
+                                                    $('#preview')
+                                                        .attr('src', e.target.result)
+                                                        .width(200);
+                                                    document.getElementById('preview').style.display = 'block';
+                                                };
+
+                                                reader.readAsDataURL(input.files[0]);
+                                            }
+                                        }
+                                    </script>
+                                </a>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="judul">Judul Informasi</label>
@@ -303,6 +306,14 @@ if (isset($_POST['submit'])) {
     </div>
     <!-- Import Trumbowyg font size JS at the end of <body>... -->
     <script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
+    <!-- Menampilkan Bukti Pembayaran -->
+    <script src="js/ekko-lightbox.min.js"></script>
+    <script>
+        $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+            event.preventDefault();
+            $(this).ekkoLightbox();
+        });
+    </script>
 </body>
 
 </html>

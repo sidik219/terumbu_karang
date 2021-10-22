@@ -492,51 +492,51 @@ if (isset($_POST['submit_tolak'])) {
                                     <hr class="m-0">
                                     <div class='form-group' id='buktireservasi'>
                                         <!-- <div>
-                                <input type='file'  class='form-control' id='image_uploads'
-                                    name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
-                            </div> -->
+                                            <input type='file'  class='form-control' id='image_uploads'
+                                                name='image_uploads' accept='.jpg, .jpeg, .png' onchange="readURL(this);">
+                                        </div> -->
                                     </div>
 
                                     <div class="form-group">
-                                        <img id="preview" src="#" width="100px" alt="Preview Gambar" />
-                                        <a href="<?= $rowitem->bukti_reservasi ?>" data-toggle="lightbox"><img class="img-fluid" id="oldpic" src="<?= $rowitem->bukti_reservasi ?>" width="50%" <?php if ($rowitem->bukti_reservasi == NULL) echo " style='display:none;'"; ?>></a>
-                                        <br>
+                                        <div class="detail-toggle" id="main-toggle">
+                                            <a href="<?= $rowitem->bukti_reservasi ?>" data-toggle="lightbox">
+                                                <img id="oldpic" src="<?= $rowitem->bukti_reservasi ?>" width="100px">
+                                                <br>
+                                                
+                                                <small class="text-muted">
+                                                    <?php if ($rowitem->bukti_reservasi == NULL) {
+                                                        echo "Bukti transfer belum diupload";
+                                                    } else {
+                                                        echo "Klik gambar untuk memperbesar";
+                                                    }
 
-                                        <small class="text-muted">
-                                            <?php if ($rowitem->bukti_reservasi == NULL) {
-                                                echo "Bukti transfer belum diupload";
-                                            } else {
-                                                echo "Klik gambar untuk memperbesar";
-                                            }
+                                                    ?>
+                                                </small>
 
-                                            ?>
-                                        </small>
-
-                                        <script>
-                                            window.onload = function() {
-                                                document.getElementById('preview').style.display = 'none';
-                                            };
-
-                                            function readURL(input) {
-                                                if (input.files && input.files[0]) {
-                                                    var reader = new FileReader();
-                                                    document.getElementById('oldpic').style.display = 'none';
-                                                    reader.onload = function(e) {
-                                                        $('#preview')
-                                                            .attr('src', e.target.result)
-                                                            .width(200);
-                                                        document.getElementById('preview').style.display = 'block';
+                                                <script>
+                                                    window.onload = function() {
+                                                        document.getElementById('preview').style.display = 'none';
                                                     };
 
-                                                    reader.readAsDataURL(input.files[0]);
-                                                }
-                                            }
-                                        </script>
+                                                    function readURL(input) {
+                                                        if (input.files && input.files[0]) {
+                                                            var reader = new FileReader();
+                                                            document.getElementById('oldpic').style.display = 'none';
+                                                            reader.onload = function(e) {
+                                                                $('#preview')
+                                                                    .attr('src', e.target.result)
+                                                                    .width(200);
+                                                                document.getElementById('preview').style.display = 'block';
+                                                            };
+
+                                                            reader.readAsDataURL(input.files[0]);
+                                                        }
+                                                    }
+                                                </script>
+                                            </a>
+                                        </div>
                                     </div>
                                     <?php if (!$rowitem->bukti_reservasi == NULL) {
-
-
-
                                         if (($rowitem->id_status_reservasi_wisata == 1) || (($rowitem->id_status_reservasi_wisata) == 3)) { ?>
                                             <form name="submit_terima" method="POST">
                                                 <button type="submit" name="submit_terima" value="terima" class="btn btn-success rounded-pill mt-2"><i class="fas fa-check-circle"></i> Terima</button></p>
@@ -545,11 +545,9 @@ if (isset($_POST['submit_tolak'])) {
                                             <form name="submit_tolak" method="POST">
                                                 <button type="submit" name="submit_tolak" value="tolak" class="btn btn-danger rounded-pill mt-2"><i class="fas fa-times-circle"></i> Tolak</button></p>
                                             </form>
-                                    <?php }
+                                        <?php }
                                     } ?>
                                 </div>
-
-
 
                                 <p align="center">
                                     <!-- <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p> -->
@@ -557,16 +555,6 @@ if (isset($_POST['submit_tolak'])) {
 
                 </div>
             </section>
-
-
-
-
-
-
-
-
-
-
             <!-- /.Left col -->
         </div>
         <!-- /.row (main row) -->
@@ -597,7 +585,14 @@ if (isset($_POST['submit_tolak'])) {
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
-
+    <!-- Menampilkan Bukti Pembayaran -->
+    <script src="js/ekko-lightbox.min.js"></script>
+    <script>
+        $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+            event.preventDefault();
+            $(this).ekkoLightbox();
+        });
+    </script>
 </body>
 
 </html>

@@ -142,7 +142,7 @@ include 'hak_akses.php';
 
                                 <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-danger fas fa-map-marker-alt"></i>
-                                    <label>Alamat:</label> <?=$rowitem->deskripsi_lokasi?>
+                                    <label>Deskripsi Lokasi:</label> <?=$rowitem->deskripsi_lokasi?>
                                 </p></div>
                                 <div class="row p-2 border-bottom"><p class="">
                                     <i class="text-primary fas fa-umbrella-beach"></i>
