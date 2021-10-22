@@ -43,6 +43,8 @@ $rowpemeliharaan = $stmt->fetchAll();
 
 
 if (isset($_POST['submit'])) {
+    include 'includes/email_handler.php'; //PHPMailer
+
     if (isset($_POST['id_batch'])) {
         $id_status_pemeliharaan        = $_POST['id_status_pemeliharaan'];
         $tanggal_pemeliharaan   = $_POST['date_pemeliharaan'];
@@ -120,7 +122,7 @@ if (isset($_POST['submit'])) {
                     $stmt->execute(['id_donasi' => $detailbatch->id_donasi]);
 
                     //Kirim email pemeliharaan selesai untuk Donatur 
-                    include 'includes/email_handler.php'; //PHPMailer
+                    // include 'includes/email_handler.php'; //PHPMailer
 
                     $sqlselectdonasi = 'SELECT * FROM t_donasi 
                                         LEFT JOIN t_user ON t_user.id_user = t_donasi.id_user
@@ -146,7 +148,7 @@ if (isset($_POST['submit'])) {
                 }
                 else{ //Belum selesai pemeliharaan
                     //Kirim email pemeliharaan baru untuk Donatur 
-                    include 'includes/email_handler.php'; //PHPMailer
+                    // include 'includes/email_handler.php'; //PHPMailer
 
                     $sqlselectdonasi = 'SELECT * FROM t_donasi 
                                         LEFT JOIN t_user ON t_user.id_user = t_donasi.id_user
