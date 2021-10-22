@@ -171,7 +171,7 @@ include 'hak_akses.php';
                         <button onclick="event.preventDefault(); tambahWilayah();" class="btn btn-blue btn-primary mb-4"><i class="fas fa-plus"></i> Tambah Wilayah</button>
                         </p>
                   
-                    <form action="" id="container-table" enctype="multipart/form-data" method="POST" name="updateWilayah">
+                    <form action="" onsubmit="return cekDuplikat()" id="container-table" enctype="multipart/form-data" method="POST" name="updateWilayah">
                         <?php 
                             foreach($rowwilayah as $wilayah){
                                 $sqllokasi = 'SELECT * FROM t_kode_lokasi WHERE kode_wilayah = :kode_wilayah';
@@ -311,6 +311,20 @@ include 'hak_akses.php';
             
             `;
             $(wilayahbaru).prependTo('#container-table');
+        }
+
+
+        function cekDuplikat(){
+            var inputs=[], flag=false;
+            $('input').each(function(){
+                if ($.inArray(this.value, inputs) != -1) flag=true ;
+                inputs.push(this.value);
+            });
+
+            if (flag==true) {
+                alert('Kode tidak boleh ada duplikat!')
+                return false;
+            }
         }
     </script>
 
