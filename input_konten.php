@@ -159,7 +159,7 @@ if (isset($_POST['submit'])) {
                                 <option value="Coralmaps">Coralmaps</option>
                             </select>
                         </div>
-                        <p class="small"><b>*Harap Teliti Pada Saat Memilih Status Jika Ada Status Sama Maka Foto Tidak Muncul</b></p>
+                        <!-- <p class="small"><b>*Harap Teliti Pada Saat Memilih Status Jika Ada Status Sama Maka Foto Tidak Muncul</b></p> -->
                         <div class='form-group'>
                             <div>
                                 <label for='image_uploads'>Upload Foto Konten</label>

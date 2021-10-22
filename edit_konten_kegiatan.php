@@ -198,56 +198,49 @@ if (isset($_POST['submit'])) {
 
                         <div class="form-group">
                             <img id="preview" src="#" width="100px" alt="Preview Gambar" />
-                            <a href="<?= $kegiatan->foto_kegiatan ?>" data-toggle="lightbox">
-                                <img class="img-fluid" id="oldpic" src="<?= $kegiatan->foto_kegiatan ?>" width="20%" <?php if ($kegiatan->foto_kegiatan == NULL) echo "style='display: none;'"; ?>></a>
-                            <br>
+                            <div class="detail-toggle" id="main-toggle">
+                                <a href="<?= $kegiatan->foto_kegiatan ?>" data-toggle="lightbox">
+                                    <img class="img-fluid" id="oldpic" src="<?= $kegiatan->foto_kegiatan ?>" width="20%" <?php if ($kegiatan->foto_kegiatan == NULL) echo "style='display: none;'"; ?>>
+                                    <br>
 
-                            <small class="text-muted">
-                                <?php if ($kegiatan->foto_kegiatan == NULL) {
-                                    echo "Bukti transfer belum diupload<br>Format .jpg .jpeg .png";
-                                } else {
-                                    echo "Klik gambar untuk memperbesar";
-                                }
+                                    <script>
+                                        const actualBtn = document.getElementById('image_uploads');
+                                        const fileChosen = document.getElementById('file-input-label');
 
-                                ?>
-                            </small>
-
-                            <script>
-                                const actualBtn = document.getElementById('image_uploads');
-                                const fileChosen = document.getElementById('file-input-label');
-
-                                actualBtn.addEventListener('change', function() {
-                                    fileChosen.innerHTML = '<b>File dipilih :</b> ' + this.files[0].name
-                                })
-                                window.onload = function() {
-                                    document.getElementById('preview').style.display = 'none';
-                                };
-
-                                function readURL(input) {
-                                    //Validasi Size Upload Image
-                                    var uploadField = document.getElementById("image_uploads");
-
-                                    uploadField.onchange = function() {
-                                        if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
-                                            alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
-                                            this.value = "";
-                                        };
-                                    };
-
-                                    if (input.files && input.files[0]) {
-                                        var reader = new FileReader();
-                                        document.getElementById('oldpic').style.display = 'none';
-                                        reader.onload = function(e) {
-                                            $('#preview')
-                                                .attr('src', e.target.result)
-                                                .width(200);
-                                            document.getElementById('preview').style.display = 'block';
+                                        actualBtn.addEventListener('change', function() {
+                                            fileChosen.innerHTML = '<b>File dipilih :</b> ' + this.files[0].name
+                                        })
+                                        window.onload = function() {
+                                            document.getElementById('preview').style.display = 'none';
                                         };
 
-                                        reader.readAsDataURL(input.files[0]);
-                                    }
-                                }
-                            </script>
+                                        function readURL(input) {
+                                            //Validasi Size Upload Image
+                                            var uploadField = document.getElementById("image_uploads");
+
+                                            uploadField.onchange = function() {
+                                                if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                                    alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                                    this.value = "";
+                                                };
+                                            };
+
+                                            if (input.files && input.files[0]) {
+                                                var reader = new FileReader();
+                                                document.getElementById('oldpic').style.display = 'none';
+                                                reader.onload = function(e) {
+                                                    $('#preview')
+                                                        .attr('src', e.target.result)
+                                                        .width(200);
+                                                    document.getElementById('preview').style.display = 'block';
+                                                };
+
+                                                reader.readAsDataURL(input.files[0]);
+                                            }
+                                        }
+                                    </script>
+                                </a>
+                            </div>
                         </div>
 
                         <p align="center">
