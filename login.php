@@ -35,7 +35,13 @@ if (isset($_POST['login'])) {
                         $_SESSION['level_user']     = $row->level_user;
                         $_SESSION['email']     = $row->email;
                         $_SESSION['nama_user']     = $row->nama_user;
-                        header('Location: dashboard_user.php?pesan=login_berhasil');
+
+                        if (isset($_SESSION['id_paket_wisata_pilihan_redireksi'])){
+                          header('Location: detail_lokasi_wisata.php?id_paket_wisata='.$_SESSION['id_paket_wisata_pilihan_redireksi']);                             
+                        }else{
+                          header('Location: dashboard_user.php?pesan=login_berhasil');
+                        }
+                        
 
                     } elseif ($row->level_user == "2") {
                       $sql  = "SELECT t_pengelola_wilayah.id_wilayah, nama_wilayah FROM t_pengelola_wilayah 
@@ -186,13 +192,19 @@ if (isset($_POST['login'])) {
                       echo '<div class="alert alert-warning" role="alert">
                           Harap verifikasi reCAPTCHA dahulu.
                       </div>';
-                    }
-                  else{                    
+                    }                    
+                    else{                    
                       echo '<div class="alert alert-warning" role="alert">
                           Username atau password salah.
                       </div>';
                   }
                 }
+
+                if (isset($_SESSION['id_paket_wisata_pilihan_redireksi']))  {
+                      echo '<div class="alert alert-info" role="alert">
+                          Untuk melanjutkan reservasi wisata anda, harap melakukan <u><a href="register.php" class="txt2 hov1">Pendaftaran Akun</a></u> atau Log In
+                      </div>';
+                    }
                 ?>
 
     					<div class="wrap-input100 validate-input">

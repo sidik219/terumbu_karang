@@ -65,7 +65,7 @@ $rowtahun = $stmt->fetchAll();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Laporan Baru - GoKarang</title>
+    <title>Laporan Sebaran - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->

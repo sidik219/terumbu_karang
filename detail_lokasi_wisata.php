@@ -1,5 +1,11 @@
 <?php include 'build/config/connection.php';
 session_start();
+
+//id wisata untuk redireksi ke wisata bersangkutan setelah log in / konfirmasi email
+if(isset($_GET['id_paket_wisata'])){
+  $_SESSION['id_paket_wisata_pilihan_redireksi'] = $_GET['id_paket_wisata'];
+}
+
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
