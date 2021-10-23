@@ -5,94 +5,113 @@ if (isset($_POST['login'])) {
     $username   = $_POST['tbusername'];
     $password   = $_POST['tbpassword'];
 
-    $sql  = "SELECT username, password, id_user, level_user, email, nama_user, aktivasi_user, organisasi_user FROM t_user WHERE username=:username";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['username' => $username]);
-    $row = $stmt->fetch();
+    // Development Key
+    // $private_key = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'; 
 
-    if (!empty($row)) {        
-        if (password_verify($password, $row->password)) {          
-          if($row->aktivasi_user != 1){
-              header('Location: login.php?pesan=belum_konfirmasi_email');
-              return 0;
-        }
-            if ($row->level_user == "1") {
-                $_SESSION['id_user']        = $row->id_user;
-                $_SESSION['username']        = $row->username;
-                $_SESSION['level_user']     = $row->level_user;
-                $_SESSION['email']     = $row->email;
-                $_SESSION['nama_user']     = $row->nama_user;
-                header('Location: dashboard_user.php?pesan=login_berhasil');
+    // Production Key
+    $private_key = '6LdkN-scAAAAAJe6U4jxES3zPr1oEm9-cldHM2XD'; 
 
-            } elseif ($row->level_user == "2") {
-              $sql  = "SELECT t_pengelola_wilayah.id_wilayah, nama_wilayah FROM t_pengelola_wilayah 
-                        LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_pengelola_wilayah.id_wilayah
-                        WHERE id_user=:id_user";
-              $stmt = $pdo->prepare($sql);
-              $stmt->execute(['id_user' => $row->id_user]);
-              $rowkelolawilayah = $stmt->fetch();
-              if($stmt->rowCount() != 0){
+    $g_recaptcha_response = $_POST['g-recaptcha-response'];
+    $user_ip =  $_SERVER['REMOTE_ADDR'];
+    $url = "https://www.google.com/recaptcha/api/siteverify?secret=$private_key&response=$g_recaptcha_response&remoteip=$user_ip";
 
-                $_SESSION['id_wilayah_dikelola']     = $rowkelolawilayah->id_wilayah;
-                $_SESSION['id_user']        = $row->id_user;
-                $_SESSION['username']        = $row->username;
+    $response = json_decode(file_get_contents($url));
 
-                $_SESSION['nama_wilayah_dikelola']        = $rowkelolawilayah->nama_wilayah;    
-                $_SESSION['nama_user']        = $row->nama_user;
-                $_SESSION['organisasi_user']        = $row->organisasi_user;
+    if($response->success == "true"){
+            $sql  = "SELECT username, password, id_user, level_user, email, nama_user, aktivasi_user, organisasi_user FROM t_user WHERE username=:username";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['username' => $username]);
+            $row = $stmt->fetch();
 
+            if (!empty($row)) {        
+                if (password_verify($password, $row->password)) {          
+                  if($row->aktivasi_user != 1){
+                      header('Location: login.php?pesan=belum_konfirmasi_email');
+                      return 0;
+                }
+                    if ($row->level_user == "1") {
+                        $_SESSION['id_user']        = $row->id_user;
+                        $_SESSION['username']        = $row->username;
+                        $_SESSION['level_user']     = $row->level_user;
+                        $_SESSION['email']     = $row->email;
+                        $_SESSION['nama_user']     = $row->nama_user;
+                        header('Location: dashboard_user.php?pesan=login_berhasil');
 
-                $_SESSION['level_user']     = $row->level_user;
-                header('Location: dashboard_admin.php?pesan=login_berhasil_w&id_wilayah='.$rowkelolawilayah->id_wilayah);
-              }
-              else{
-                header('Location: login.php?pesan=akun_belum_diberi_akses');
-              }
-            }
-            elseif ($row->level_user == "3") {
-              $sql  = "SELECT t_pengelola_lokasi.id_lokasi, nama_lokasi FROM t_pengelola_lokasi 
-                      LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_pengelola_lokasi.id_lokasi
-                      WHERE id_user=:id_user";
-              $stmt = $pdo->prepare($sql);
-              $stmt->execute(['id_user' => $row->id_user]);
-              $rowkelolalokasi = $stmt->fetch();
-              if($stmt->rowCount() != 0){
-                $_SESSION['id_user']        = $row->id_user;
-                $_SESSION['username']        = $row->username;
+                    } elseif ($row->level_user == "2") {
+                      $sql  = "SELECT t_pengelola_wilayah.id_wilayah, nama_wilayah FROM t_pengelola_wilayah 
+                                LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_pengelola_wilayah.id_wilayah
+                                WHERE id_user=:id_user";
+                      $stmt = $pdo->prepare($sql);
+                      $stmt->execute(['id_user' => $row->id_user]);
+                      $rowkelolawilayah = $stmt->fetch();
+                      if($stmt->rowCount() != 0){
 
-                $_SESSION['nama_lokasi_dikelola']        = $rowkelolalokasi->nama_lokasi;                
-                $_SESSION['nama_user']        = $row->nama_user;
-                $_SESSION['organisasi_user']        = $row->organisasi_user;
+                        $_SESSION['id_wilayah_dikelola']     = $rowkelolawilayah->id_wilayah;
+                        $_SESSION['id_user']        = $row->id_user;
+                        $_SESSION['username']        = $row->username;
+
+                        $_SESSION['nama_wilayah_dikelola']        = $rowkelolawilayah->nama_wilayah;    
+                        $_SESSION['nama_user']        = $row->nama_user;
+                        $_SESSION['organisasi_user']        = $row->organisasi_user;
 
 
-                $_SESSION['level_user']     = $row->level_user;
-                $_SESSION['id_lokasi_dikelola']     = $rowkelolalokasi->id_lokasi;
-                header('Location: dashboard_admin.php?pesan=login_berhasil_l&id_lokasi='.$rowkelolalokasi->id_lokasi);
-              }
-              else{
-                header('Location: login.php?pesan=akun_belum_diberi_akses');
-              }
+                        $_SESSION['level_user']     = $row->level_user;
+                        header('Location: dashboard_admin.php?pesan=login_berhasil_w&id_wilayah='.$rowkelolawilayah->id_wilayah);
+                      }
+                      else{
+                        header('Location: login.php?pesan=akun_belum_diberi_akses');
+                      }
+                    }
+                    elseif ($row->level_user == "3") {
+                      $sql  = "SELECT t_pengelola_lokasi.id_lokasi, nama_lokasi FROM t_pengelola_lokasi 
+                              LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_pengelola_lokasi.id_lokasi
+                              WHERE id_user=:id_user";
+                      $stmt = $pdo->prepare($sql);
+                      $stmt->execute(['id_user' => $row->id_user]);
+                      $rowkelolalokasi = $stmt->fetch();
+                      if($stmt->rowCount() != 0){
+                        $_SESSION['id_user']        = $row->id_user;
+                        $_SESSION['username']        = $row->username;
 
-            }
-            elseif ($row->level_user == "4") {
-                $_SESSION['id_user']        = $row->id_user;
-                $_SESSION['username']        = $row->username;
-                $_SESSION['nama_user']        = $row->nama_user;
-                $_SESSION['organisasi_user']        = $row->organisasi_user;
-                $_SESSION['level_user']     = $row->level_user;
-                header('Location: dashboard_admin_pusat.php?pesan=login_berhasil_p');
+                        $_SESSION['nama_lokasi_dikelola']        = $rowkelolalokasi->nama_lokasi;                
+                        $_SESSION['nama_user']        = $row->nama_user;
+                        $_SESSION['organisasi_user']        = $row->organisasi_user;
 
-            }
-            else {
-                header('location: login.php?pesan=gagal_login_session');
+
+                        $_SESSION['level_user']     = $row->level_user;
+                        $_SESSION['id_lokasi_dikelola']     = $rowkelolalokasi->id_lokasi;
+                        header('Location: dashboard_admin.php?pesan=login_berhasil_l&id_lokasi='.$rowkelolalokasi->id_lokasi);
+                      }
+                      else{
+                        header('Location: login.php?pesan=akun_belum_diberi_akses');
+                      }
+
+                    }
+                    elseif ($row->level_user == "4") {
+                        $_SESSION['id_user']        = $row->id_user;
+                        $_SESSION['username']        = $row->username;
+                        $_SESSION['nama_user']        = $row->nama_user;
+                        $_SESSION['organisasi_user']        = $row->organisasi_user;
+                        $_SESSION['level_user']     = $row->level_user;
+                        header('Location: dashboard_admin_pusat.php?pesan=login_berhasil_p');
+
+                    }
+                    else {
+                        header('location: login.php?pesan=gagal_login_session');
+                    }
+                } else {
+                    header('location: login.php?pesan=gagal_login');
+                }
+            } else {
+                header('location: login.php?pesan=username_atau_password_salah');
             }
         } else {
-            header('location: login.php?pesan=gagal_login');
-        }
-    } else {
-        header('location: login.php?pesan=username_atau_password_salah');
+                header('location: login.php?pesan=recaptcha_invalid');
+            }
+
     }
-}
+
+    
 ?>
 
 <!doctype html>
@@ -113,6 +132,7 @@ if (isset($_POST['login'])) {
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="css/login.css">
     <link rel="stylesheet" type="text/css" href="css/util.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <title>Login - GoKarang</title>
     <!-- Favicon -->
     <link rel="icon" href="dist/img/gokarang_coral_favicon.png" type="image/x-icon" />
@@ -162,6 +182,10 @@ if (isset($_POST['login'])) {
                       echo '<div class="alert alert-success" role="alert">
                           Password Anda berhasil diperbarui. Silahkan Log In.
                       </div>';
+                    }else if ($_GET['pesan'] == 'recaptcha_invalid'){
+                      echo '<div class="alert alert-warning" role="alert">
+                          Harap verifikasi reCAPTCHA dahulu.
+                      </div>';
                     }
                   else{                    
                       echo '<div class="alert alert-warning" role="alert">
@@ -183,7 +207,15 @@ if (isset($_POST['login'])) {
     						<span class="focus-input100-2"></span>
     					</div>
 
-    					<div class="container-login100-form-btn m-t-20">
+                <!-- Development -->
+                 <!-- <div class="g-recaptcha m-t-10" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div> -->
+
+
+                 <!-- Production/Deployment -->
+                 <div class="g-recaptcha m-t-10" data-sitekey="6LdkN-scAAAAACZN1oYKVUoHZQ3JERvzB_sAFs_Q"></div>
+            
+ 
+    					<div class="container-login100-form-btn m-t-10">
     						<button type="submit" name="login" class="login100-form-btn">
     							Log In
     						</button>
