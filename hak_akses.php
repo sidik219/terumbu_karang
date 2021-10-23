@@ -5,6 +5,7 @@ if (!$_SESSION['level_user']) { //Belum log in
     header('location: login.php?status=restrictedaccess');
 } else {
     $level_user = $_SESSION['level_user'];
+    // $lokasi_user = $_SESSION['nama_lokasi_dikelola'];
 
     //Logo/branding
     $file_gambar_logo = 'dist/img/gokarang_coral_purple.png';
@@ -34,13 +35,22 @@ if (!$_SESSION['level_user']) { //Belum log in
     //Favicon website
     $favicon = '<link rel="icon" href="dist/img/gokarang_coral_favicon.png" type="image/x-icon" />';
 
-
-
-
     function print_sidebar($url_sekarang, $level)
     {
         include 'build/config/connection.php';
         $level_user = $_SESSION['level_user'];
+
+        // Hitung Row Tabel Untuk Tanda Seru
+        $t_kode_wilayah = $pdo->query('SELECT COUNT(*) FROM t_kode_wilayah')->fetchColumn();
+        $t_asuransi = $pdo->query('SELECT COUNT(*) FROM t_asuransi')->fetchColumn();
+        $t_rekening_bank = $pdo->query('SELECT COUNT(*) FROM t_rekening_bank')->fetchColumn();
+        $t_wilayah = $pdo->query('SELECT COUNT(*) FROM t_wilayah')->fetchColumn();
+        $t_lokasi = $pdo->query('SELECT COUNT(*) FROM t_lokasi')->fetchColumn();
+        $t_jenis_terumbu_karang = $pdo->query('SELECT COUNT(*) FROM t_jenis_terumbu_karang')->fetchColumn();
+        $t_terumbu_karang = $pdo->query('SELECT COUNT(*) FROM t_terumbu_karang')->fetchColumn();
+        // $t_perizinan = $pdo->query('SELECT COUNT(*) FROM t_perizinan')->fetchColumn(); // buat perizinan kalau kosong
+        // $t_titik = $pdo->query('SELECT COUNT(*) FROM t_titik')->fetchColumn(); //ini blum tau gmn caranya buat titik lokasi setiap lokasi beda beda
+
 
         if ($level_user == 2 || $level_user == 3) {
             //Data notifikasi sidebar pengelola wilayah & lokasi
@@ -180,6 +190,7 @@ if (!$_SESSION['level_user']) { //Belum log in
             $notifikasi_reservasi = '<span class="badge text-sm badge-pill badge-info">' . $rowreservasi->reservasi_baru . '</span>';
             $notifikasi_batch_penyemaian = '<span class="badge text-sm badge-pill badge-info">' . $rowbatch->batch_penyemaian . '</span>';
             $notifikasi_pemeliharaan = '<span class="badge text-sm badge-pill badge-info">' . $rowperlupml->perlu_pemeliharaan . '</span>';
+            $hasil = '<span class="badge text-sm badge-pill badge-info fas fa-exclamation">';
         }
 
 
@@ -199,7 +210,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <li class="nav-item"> <!-- Lokasi -->
                     <a href="kelola_kode_wilayah.php" class="nav-link ' . (('kelola_kode_wilayah.php' == $url_sekarang)  ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-list-ol"></i>
-                        <p> Kelola Kode Wilayah </p>
+                        <p> Kelola Kode Wilayah</p>' . (($t_kode_wilayah  == 0) ? '<span class="badge text-sm badge-pill badge-info fas fa-exclamation">' : '') . '
                     </a>
                 </li>
 
@@ -220,7 +231,7 @@ if (!$_SESSION['level_user']) { //Belum log in
 		        <li class="nav-item"> <!-- Lokasi -->
                     <a href="kelola_asuransi.php" class="nav-link ' . (('kelola_asuransi.php' == $url_sekarang) || ('edit_asuransi.php'  == $url_sekarang) || ('input_asuransi.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-heartbeat"></i>
-                        <p> Kelola Asuransi </p>
+                        <p> Kelola Asuransi </p>' . (($t_asuransi == 0) ? '<span class="badge text-sm badge-pill badge-info fas fa-exclamation">' : '') . '
                     </a>
                 </li>
 
@@ -235,35 +246,35 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <li class="nav-item"> <!-- Pusat -->
                     <a href="kelola_rekening_bersama.php" class="nav-link ' . ('kelola_rekening_bersama.php' == $url_sekarang ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-money-check-alt"></i>
-                        <p> Rekening Bersama</p>
+                        <p> Rekening Bersama </p>' . (($t_rekening_bank == 0) ? '<span class="badge text-sm badge-pill badge-info fas fa-exclamation">' : '') . '
                     </a>
                 </li>
 
                 <li class="nav-item"> <!-- Wilayah -->
                     <a href="kelola_wilayah.php" class="nav-link ' . ('kelola_wilayah.php' == $url_sekarang || ('edit_wilayah.php'  == $url_sekarang) || ('input_wilayah.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-globe-asia"></i>
-                        <p> Kelola Wilayah </p>
+                        <p> Kelola Wilayah </p>' . (($t_wilayah == 0) ? '<span class="badge text-sm badge-pill badge-info fas fa-exclamation">' : '') . '
                     </a>
                 </li>
 
-                <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                <!-- <li class="nav-item"> Wilayah & Lokasi 
                     <a href="kelola_lokasi.php" class="nav-link ' . ('kelola_lokasi.php' == $url_sekarang  || ('edit_lokasi.php'  == $url_sekarang) || ('input_lokasi.php'  == $url_sekarang) || ('kelola_harga_terumbu.php'  == $url_sekarang) || ('kelola_biaya_operasional.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
-                        <p> Kelola Lokasi </p>
+                        <p> Kelola Lokasi </p>' . (($t_lokasi == 0) ? '<span class="badge text-sm badge-pill badge-info fas fa-exclamation">' : '') . '
                     </a>
-                </li>
+                </li>-->
 
                 <li class="nav-item"> <!-- Wilayah -->
                     <a href="kelola_jenis_tk.php" class="nav-link ' . ('kelola_jenis_tk.php' == $url_sekarang || ('edit_jenis_tk.php'  == $url_sekarang) || ('input_jenis_tk.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                             <i class="nav-icon fas fa-certificate"></i>
-                            <p> Kelola Jenis Terumbu </p>
+                            <p> Kelola Jenis Terumbu </p>' . (($t_jenis_terumbu_karang == 0) ? '<span class="badge text-sm badge-pill badge-info fas fa-exclamation">' : '') . '
                     </a>
                 </li>
 
                 <li class="nav-item"> <!-- Wilayah -->
                     <a href="kelola_tk.php" class="nav-link ' . ('kelola_tk.php' == $url_sekarang || ('edit_tk.php'  == $url_sekarang) || ('input_tk.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="fas fa-disease nav-icon"></i>
-                        <p>Sub-Jenis Terumbu </p>
+                        <p>Sub-Jenis Terumbu </p>' . (($t_terumbu_karang == 0) ? '<span class="badge text-sm badge-pill badge-info fas fa-exclamation">' : '') . ' 
                     </a>
                 </li>
 
@@ -602,7 +613,8 @@ if (!$_SESSION['level_user']) { //Belum log in
 
             echo $sidebar;
         } elseif ($level == 3) { //sidebar Pengelola lokasi
-            $sidebar = '
+            if ($_SESSION['nama_lokasi_dikelola'] != "Pantai Tangkolak") {
+                $sidebar = '
                 <!-- SESSION lvl Untuk Lokasi -->
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                     <a href="dashboard_admin.php" class="nav-link  ' . ('dashboard_admin.php' == $url_sekarang ? ' active ' : '') . ' ">
@@ -621,7 +633,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                     <a href="kelola_wisata_donasi.php?status=baru" class="nav-link  ' . ('kelola_wisata_donasi.php?status=baru' == $url_sekarang ? ' active ' : '') . ' ">
                         <i class="nav-icon fab fa-bandcamp"></i>
-                        <p> Kelola Donasi Wisata </p>
+                        <p> Kelola Donasi Wisata </p> 
                     </a>
                 </li>
 
@@ -646,13 +658,14 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </a>
                 </li>
 
-                <li class="nav-item"> <!-- Konten Lokasi -->
+                <!--<li class="nav-item"> Konten Lokasi tangkolak
                     <a href="kelola_konten_master.php" class="nav-link ' . (('kelola_konten_master.php' == $url_sekarang) || ('kelola_konten_tangkolak.php' == $url_sekarang) || ('edit_konten_tangkolak.php'  == $url_sekarang) || ('input_konten_tangkolak.php'  == $url_sekarang) || ('kelola_konten_ketentuan.php' == $url_sekarang)  || ('edit_konten_ketentuan.php' == $url_sekarang)  || ('input_konten_Ketentuan.php'  == $url_sekarang) ||
-                ('kelola_konten_kegiatan.php' == $url_sekarang) || ('edit_konten_kegiatan.php'  == $url_sekarang) || ('input_konten_kegiatan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                    ('kelola_konten_kegiatan.php' == $url_sekarang) || ('edit_konten_kegiatan.php'  == $url_sekarang) || ('input_konten_kegiatan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-book"></i>
                         <p> Kelola Konten </p>
                     </a>
-                </li>
+                </li>-->
+
 
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                     <a href="kelola_lokasi.php" class="nav-link ' . ('kelola_lokasi.php' == $url_sekarang  || ('edit_lokasi.php'  == $url_sekarang) || ('input_lokasi.php'  == $url_sekarang) || ('kelola_harga_terumbu.php'  == $url_sekarang) || ('kelola_biaya_operasional.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
@@ -690,7 +703,100 @@ if (!$_SESSION['level_user']) { //Belum log in
                 </li>
                 ';
 
-            echo $sidebar;
+                echo $sidebar;
+            } else if ($_SESSION['nama_lokasi_dikelola'] == "Pantai Tangkolak" || $_SESSION['nama_lokasi_dikelola'] == "pantai tangkolak" || $_SESSION['nama_lokasi_dikelola'] == "tangkolak") {
+
+                $sidebar = '
+                    <!-- SESSION lvl Untuk Lokasi -->
+                    <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                        <a href="dashboard_admin.php" class="nav-link  ' . ('dashboard_admin.php' == $url_sekarang ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-home"></i>
+                            <p> Home</p>
+                        </a>
+                    </li>
+    
+                    <li class="nav-item"> <!-- Lokasi -->
+                        <a href="kelola_donasi.php" class="nav-link ' . (('kelola_donasi.php' == $url_sekarang) || ('edit_donasi.php'  == $url_sekarang || 'kelola_pengadaan_bibit.php' == $url_sekarang) ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-hand-holding-usd"></i>
+                            <p> Kelola Donasi ' . $notifikasi_donasi . '</p>
+                        </a>
+                    </li>
+    
+                    <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                        <a href="kelola_wisata_donasi.php?status=baru" class="nav-link  ' . ('kelola_wisata_donasi.php?status=baru' == $url_sekarang ? ' active ' : '') . ' ">
+                            <i class="nav-icon fab fa-bandcamp"></i>
+                            <p> Kelola Donasi Wisata </p> 
+                        </a>
+                    </li>
+    
+                    <li class="nav-item">
+                        <a href="kelola_reservasi_wisata.php" class="nav-link ' . (('kelola_reservasi_wisata.php' == $url_sekarang) || ('edit_reservasi_wisata.php'  == $url_sekarang) || ('kelola_laporan_wisata.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-th-list"></i>
+                            <p> Kelola Reservasi ' . $notifikasi_reservasi . '</p>
+                        </a>
+                    </li>
+    
+                    <li class="nav-item"> <!-- Lokasi -->
+                        <a href="kelola_batch.php?id_status_batch=1" class="nav-link ' . (('kelola_batch.php' == $url_sekarang) || ('edit_batch.php' == $url_sekarang)  || ('input_batch.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-boxes"></i>
+                            <p> Kelola Batch ' . $notifikasi_batch_penyemaian . '</p>
+                        </a>
+                    </li>
+    
+                    <li class="nav-item"> <!-- Lokasi -->
+                        <a href="kelola_pemeliharaan.php?id_status_pemeliharaan=1" class="nav-link ' . ('kelola_pemeliharaan.php' == $url_sekarang  || ('edit_pemeliharaan.php' == $url_sekarang)  || ('input_pemeliharaan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-heart"></i>
+                            <p> Kelola Pemeliharaan ' . $notifikasi_pemeliharaan . '</p>
+                        </a>
+                    </li>
+    
+                    <li class="nav-item"> <!-- Konten Lokasi tangkolak -->
+                        <a href="kelola_konten_master.php" class="nav-link ' . (('kelola_konten_master.php' == $url_sekarang) || ('kelola_konten_tangkolak.php' == $url_sekarang) || ('edit_konten_tangkolak.php'  == $url_sekarang) || ('input_konten_tangkolak.php'  == $url_sekarang) || ('kelola_konten_ketentuan.php' == $url_sekarang)  || ('edit_konten_ketentuan.php' == $url_sekarang)  || ('input_konten_Ketentuan.php'  == $url_sekarang) ||
+                    ('kelola_konten_kegiatan.php' == $url_sekarang) || ('edit_konten_kegiatan.php'  == $url_sekarang) || ('input_konten_kegiatan.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p> Kelola Konten </p>
+                        </a>
+                    </li>
+    
+    
+                    <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                        <a href="kelola_lokasi.php" class="nav-link ' . ('kelola_lokasi.php' == $url_sekarang  || ('edit_lokasi.php'  == $url_sekarang) || ('input_lokasi.php'  == $url_sekarang) || ('kelola_harga_terumbu.php'  == $url_sekarang) || ('kelola_biaya_operasional.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
+                            <p> Kelola Lokasi </p>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                        <a href="kelola_titik.php" class="nav-link ' . (('kelola_titik.php' == $url_sekarang) || ('edit_titik.php' == $url_sekarang)  || ('input_titik.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-crosshairs"></i>
+                            <p> Kelola Titik </p>
+                        </a>
+                    </li>
+    
+                    <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                        <a href="laporan_donasi.php" class="nav-link  ' . ('laporan_donasi.php' == $url_sekarang ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-file-invoice"></i>
+                            <p> Laporan Donasi</p>
+                        </a>
+                    </li>
+    
+                    <li class="nav-item"> <!-- Wilayah & Lokasi -->
+                        <a href="laporan_periode_wisata.php" class="nav-link  ' . ('laporan_periode_wisata.php' == $url_sekarang ? ' active ' : '') . ' ">
+                            <i class="nav-icon fas fa-file-invoice"></i>
+                            <p> Laporan Wisata</p>
+                        </a>
+                    </li>
+    
+                    <li class="nav-item"> <!-- Lokasi -->
+                        <a href="laporan_jenis_terumbu.php" class="nav-link ' . ('laporan_jenis_terumbu.php' == $url_sekarang ? ' active ' : '') . ' ">
+                                <i class="nav-icon fas fa-bacteria"></i>
+                                <p> Laporan Jenis Terumbu </p>
+                        </a>
+                    </li>
+                    ';
+
+                echo $sidebar;
+            }
         }
     }
 }
