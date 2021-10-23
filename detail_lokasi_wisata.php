@@ -1,21 +1,12 @@
 <?php include 'build/config/connection.php';
 session_start();
-
-//id wisata untuk redireksi ke wisata bersangkutan setelah log in / konfirmasi email
-if(isset($_GET['id_paket_wisata'])){
-  $_SESSION['id_paket_wisata_pilihan_redireksi'] = $_GET['id_paket_wisata'];
-}
-
-$url_sekarang = basename(__FILE__);
-include 'hak_akses.php';
-
   // else{
   //     $_SESSION['id_lokasi'] = $_GET['id_lokasi'];
   // }
 
     $id_paket_wisata = $_GET['id_paket_wisata'];
 
-    $sqldetailpaket = 'SELECT * FROM tb_paket_wisata
+    $sqldetailpaket = 'SELECT *, tb_paket_wisata.id_lokasi FROM tb_paket_wisata
                 LEFT JOIN t_lokasi ON tb_paket_wisata.id_lokasi = t_lokasi.id_lokasi
                 LEFT JOIN t_asuransi ON tb_paket_wisata.id_asuransi = t_asuransi.id_asuransi
                 WHERE tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
@@ -23,6 +14,19 @@ include 'hak_akses.php';
     $stmt = $pdo->prepare($sqldetailpaket);
     $stmt->execute(['id_paket_wisata' => $_GET['id_paket_wisata']]);
     $rowwisata = $stmt->fetchAll();
+
+    //id paket wisata & id_lokasi untuk redireksi ke wisata bersangkutan setelah log in selama session belum expire
+    $_SESSION['id_lokasi_wisata_redireksi'] = $rowwisata[0]->id_lokasi;
+    $_SESSION['id_paket_wisata_pilihan_redireksi'] = $_GET['id_paket_wisata'];
+    
+    if(isset($_SESSION['id_lokasi_wisata_redireksi'])){
+        $_SESSION['id_lokasi'] = $_SESSION['id_lokasi_wisata_redireksi'];
+        $id_lokasi_redireksi = $_SESSION['id_lokasi'];
+    }
+        
+
+    $url_sekarang = basename(__FILE__);
+    include 'hak_akses.php';
 ?>
 
 <!DOCTYPE html>
@@ -95,7 +99,12 @@ include 'hak_akses.php';
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row">
-                        <a class="btn btn-warning btn-back" href="#" onclick="history.back()"><i class="fas fa-angle-left"></i>Wisata Lainnya</a>
+                        <?php if(!isset($_SESSION['id_paket_wisata_pilihan_redireksi'])) {?>
+                            <a class="btn btn-warning btn-back" href="#" onclick="history.back()"><i class="fas fa-angle-left"></i>Wisata Lainnya</a>
+                        <?php } 
+                        else {?>
+                            <a class="btn btn-warning btn-back" href="pilih_lokasi_wisata.php?id_lokasi=<?=$id_lokasi_redireksi?>"><i class="fas fa-angle-left"></i>Wisata Lainnya</a>
+                        <?php } ?>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
