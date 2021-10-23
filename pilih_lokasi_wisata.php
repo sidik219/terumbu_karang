@@ -149,10 +149,18 @@ include 'hak_akses.php';
                                             
                                             <!-- Batas Pemesanan -->
                                             <div>
-                                                <label>Batas Pemesanan:</label>
-                                                <small style="font-weight:normal;">
-                                                    <?= strftime('%A, %d %B %Y', $reservasidate); ?>
-                                                </small>
+                                                <div class="d-flex flex-sm-row flex-column mb-2">
+                                                    <div class="mr-auto p-2">
+                                                        <small style="font-weight:bold;">
+                                                            Batas Pemesanan:
+                                                        </small>
+                                                    </div>
+                                                    <div class="p-2">
+                                                        <small style="font-weight:normal;">
+                                                            <?= strftime('%A, %d %B %Y', $reservasidate); ?>
+                                                        </small>
+                                                    </div>
+                                                </div>
                                                 <h5>
                                                     <?php
                                                     // tanggal sekarang

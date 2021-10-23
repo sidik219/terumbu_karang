@@ -43,21 +43,21 @@ if (empty($type)) {
     header('Location: kelola_tk.php?status=deletesuccess');
 } elseif ($type == 'paket_wisata') {
     $id_paket_wisata = $_GET['id_paket_wisata'];
-    // $sql = 'DELETE tb_paket_wisata , t_wisata, tb_fasilitas_wisata  FROM tb_paket_wisata  
-    //         INNER JOIN t_wisata
-    //         INNER JOIN tb_fasilitas_wisata
-    //         WHERE tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata
-    //         AND t_wisata.id_wisata = tb_fasilitas_wisata.id_wisata
-    //         AND tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
+    $sql = 'DELETE tb_paket_wisata , t_wisata, tb_fasilitas_wisata  FROM tb_paket_wisata  
+            INNER JOIN t_wisata
+            INNER JOIN tb_fasilitas_wisata
+            WHERE tb_paket_wisata.id_paket_wisata = t_wisata.id_paket_wisata
+            AND t_wisata.id_wisata = tb_fasilitas_wisata.id_wisata
+            AND tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
 
-    //         $stmt = $pdo->prepare($sql);
-    //         $stmt->execute(['id_paket_wisata' => $_GET['id_paket_wisata']]);
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id_paket_wisata' => $_GET['id_paket_wisata']]);
 
-    $sql = 'DELETE FROM tb_paket_wisata
-            WHERE id_paket_wisata = :id_paket_wisata';
+    // $sql = 'DELETE FROM tb_paket_wisata
+    //         WHERE id_paket_wisata = :id_paket_wisata';
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['id_paket_wisata' => $_GET['id_paket_wisata']]);
+    // $stmt = $pdo->prepare($sql);
+    // $stmt->execute(['id_paket_wisata' => $_GET['id_paket_wisata']]);
     header('Location: kelola_wisata.php?status=deletesuccess');
 } elseif ($type == 'detail_lokasi') {
     $id_lokasi = $_GET['id_lokasi'];

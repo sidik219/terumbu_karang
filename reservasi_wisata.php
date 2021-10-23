@@ -574,7 +574,7 @@ if (isset($_POST['submit'])) {
                                     </div>
                                     <div class="mb-3">
                                         <!-- Donasi Wisata -->
-                                        <label style="color: red;">
+                                        <label style="color: blue;">
                                             * Dengan berwisata Anda turut berkontribusi dalam,<br>
                                             konservasi terumbu karang sebesar Rp. <?= number_format($rowlokasi->harga_donasi, 0) ?>
                                         </label>
