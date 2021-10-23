@@ -110,6 +110,7 @@ include 'hak_akses.php';
                     <div class="row">
                     <?php
                     foreach ($rowpaket as $rowitem) {
+                        $reservasidate = strtotime($rowitem->tgl_akhir_pemesanan);
                         if ($rowitem->status_aktif == "Aktif") { ?>
 
                         <div class="col-md-4" style="text-align: left;">
@@ -149,6 +150,9 @@ include 'hak_akses.php';
                                             <!-- Batas Pemesanan -->
                                             <div>
                                                 <label>Batas Pemesanan:</label>
+                                                <small style="font-weight:normal;">
+                                                    <?= strftime('%A, %d %B %Y', $reservasidate); ?>
+                                                </small>
                                                 <h5>
                                                     <?php
                                                     // tanggal sekarang

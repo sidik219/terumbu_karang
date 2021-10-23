@@ -402,45 +402,39 @@ if (isset($_POST['submit'])) {
 
                                         <div class="form-group">
                                             <img id="preview" src="#" width="100px" alt="Preview Gambar" />
-                                            <a href="<?= $rowitem->bukti_reservasi ?>" data-toggle="lightbox"><img class="img-fluid" id="oldpic" src="<?= $rowitem->bukti_reservasi ?>" width="50%" <?php if ($rowitem->bukti_reservasi == NULL) echo " style='display:none;'"; ?>></a>
-                                            <br>
+                                            <div class="detail-toggle" id="main-toggle">
+                                                <a href="<?= $rowitem->bukti_reservasi ?>" data-toggle="lightbox">
+                                                    <img class="img-fluid" id="oldpic" src="<?= $rowitem->bukti_reservasi ?>" width="50%" <?php if ($rowitem->bukti_reservasi == NULL) echo " style='display:none;'"; ?>>
+                                                    <br>
 
-                                            <small class="text-muted">
-                                                <?php if ($rowitem->bukti_reservasi == NULL) {
-                                                    echo "Bukti transfer belum diupload<br>Format .jpg .jpeg .png";
-                                                } else {
-                                                    echo "Klik gambar untuk memperbesar";
-                                                }
-
-                                                ?>
-                                            </small>
-
-                                            <script>
-                                                window.onload = function() {
-                                                    document.getElementById('preview').style.display = 'none';
-                                                };
-
-                                                function readURL(input) {
-                                                    //Validasi Size Upload Image
-                                                    if (input.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
-                                                        alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
-                                                        input.value = "";
-                                                    };
-
-                                                    if (input.files && input.files[0]) {
-                                                        var reader = new FileReader();
-
-                                                        reader.onload = function(e) {
-                                                            $('#preview')
-                                                                .attr('src', e.target.result)
-                                                                .width(200);
-                                                            document.getElementById('preview').style.display = 'block';
+                                                    <script>
+                                                        window.onload = function() {
+                                                            document.getElementById('preview').style.display = 'none';
                                                         };
 
-                                                        reader.readAsDataURL(input.files[0]);
-                                                    }
-                                                }
-                                            </script>
+                                                        function readURL(input) {
+                                                            //Validasi Size Upload Image
+                                                            if (input.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                                                alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                                                input.value = "";
+                                                            };
+
+                                                            if (input.files && input.files[0]) {
+                                                                var reader = new FileReader();
+                                                                document.getElementById('oldpic').style.display = 'none';
+                                                                reader.onload = function(e) {
+                                                                    $('#preview')
+                                                                        .attr('src', e.target.result)
+                                                                        .width(200);
+                                                                    document.getElementById('preview').style.display = 'block';
+                                                                };
+
+                                                                reader.readAsDataURL(input.files[0]);
+                                                            }
+                                                        }
+                                                    </script>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                     <p align="center">
@@ -482,6 +476,14 @@ if (isset($_POST['submit'])) {
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
+    <!-- Menampilkan Bukti Pembayaran -->
+    <script src="js/ekko-lightbox.min.js"></script>
+    <script>
+        $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+            event.preventDefault();
+            $(this).ekkoLightbox();
+        });
+    </script>
 
 </body>
 
