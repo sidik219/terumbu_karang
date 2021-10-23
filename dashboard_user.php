@@ -17,12 +17,12 @@ include 'hak_akses.php';
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+        <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" /> -->
     <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
+        <!-- <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" /> -->
     <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
+        <!-- <link rel="stylesheet" href="dist/css/MarkerCluster.css" /> -->
+        <!-- <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" /> -->
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Favicon -->
@@ -183,15 +183,15 @@ include 'hak_akses.php';
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
     <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <!-- <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script> -->
     <!-- Leaflet Marker Cluster -->
-    <script src="dist/js/leaflet.markercluster-src.js"></script>
+    <!-- <script src="dist/js/leaflet.markercluster-src.js"></script> -->
     <!-- Leaflet panel layer JS-->
-    <script src="dist/js/leaflet-panel-layers.js"></script>
+    <!-- <script src="dist/js/leaflet-panel-layers.js"></script> -->
     <!-- Leaflet Ajax, Plugin Untuk Mengloot GEOJson -->
-    <script src="dist/js/leaflet.ajax.js"></script>
+    <!-- <script src="dist/js/leaflet.ajax.js"></script> -->
     <!-- Leaflet Map -->
-    <script src="dist/js/leaflet-map.js"></script>
+    <!-- <script src="dist/js/leaflet-map.js"></script> -->
 
 </body>
 </html>

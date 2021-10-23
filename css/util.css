@@ -1,10 +1,6 @@
 /* Google recaptcha 2 */
 
-.g-recaptcha {
-  transform: scale(1);
-  transform-origin: 0 0;
-  /* max-width: 100%; */
-}
+
 
 @media only screen and (max-width: 400px) {
     .g-recaptcha {
@@ -18,6 +14,15 @@
     transform: scale(0.8);
     transform-origin: 0 0;
   }
+}
+
+@media only screen and (min-width: 600px) {
+    .g-recaptcha {
+  transform: scale(1);
+  transform-origin: 0 0;
+  margin-left: 45px;
+  /* max-width: 100%; */
+}
 }
 
 

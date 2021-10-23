@@ -248,29 +248,6 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                             </div>
                         </div>
                     </div>
-
-<!-- <ul class="progress-indicator">
-            <li class="completed">
-                <span class="bubble"></span>
-                Step 1. <br><small>(complete)</small>
-            </li>
-            <li class="completed">
-                <span class="bubble"></span>
-                Step 2. <br><small>(complete)</small>
-            </li>
-            <li class="active">
-                <span class="bubble"></span>
-                Step 3. <br><small>(active)</small>
-            </li>
-            <li>
-                <span class="bubble"></span>
-                Step 4.
-            </li>
-            <li>
-                <span class="bubble"></span>
-                Step 5.
-            </li>
-        </ul> -->
     
 
                     <table class="table table-striped table-responsive-sm">
@@ -319,11 +296,11 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
 
                                         </small></td>
                                     <td>
-                                        <?= $rowitem->nama_status_pengadaan_bibit ?> <br><small class="text-muted"><br>
+                                        <?= $rowitem->id_status_pengadaan_bibit == 4 ? '<i class="fas text-info fa-check"></i>' : '' ?> <?= $rowitem->nama_status_pengadaan_bibit ?> <br><small class="text-muted"><br>
 
                                             <div class="mb-3">
-                                                <?php if ($rowitem->id_status_donasi > 2 && $rowitem->id_status_donasi != 4) { ?>
-                                                    <!-- Invoice Reservasi Wisata -->
+                                                <?php if ($rowitem->id_status_donasi > 2 && $rowitem->id_status_donasi < 4 && $rowitem->id_status_pengadaan_bibit != 4) { ?>
+                                                    <!-- Tombol kelola pengadaan bibit -->
                                                     <a href="kelola_pengadaan_bibit.php?id_donasi=<?= $rowitem->id_donasi ?>" class="btn btn-sm btn-primary userinfo">
                                                         <i class="fas fa-file-invoice"></i> Kelola Pengadaan Bibit</a>
                                                 <?php } ?>
@@ -331,7 +308,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                                 <?php echo (($rowitem->id_status_pengadaan_bibit == 1) && ($rowitem->id_status_donasi == 3)) ? '<br><small class="text-muted text-sm"><i class="fas text-warning fa-exclamation-circle"></i> Bukti pengadaan bibit belum diunggah </small>' : '' ?>
                                                 <?php echo ($rowitem->id_status_pengadaan_bibit == 2) ? '<br><small class="text-muted text-sm"><i class="fas text-warning fa-exclamation-circle"></i> Bukti pengadaan bibit belum diunggah </small>' : '' ?>
                                                 <?php echo ($rowitem->id_status_pengadaan_bibit == 3) ? '<br><small class="text-muted text-sm"><i class="fas text-warning fa-exclamation-circle"></i> Bukti pengadaan bibit perlu verifikasi </small>' : '' ?>
-                                                <?php echo ($rowitem->id_status_pengadaan_bibit == 4) ? '<br><small class="text-muted text-sm"> <i class="fas text-info fa-check"></i> Pengadaan Bibit Selesai </small>' : '' ?>
+                                                <!-- <?php echo ($rowitem->id_status_pengadaan_bibit == 4) ? '<br><small class="text-muted text-sm"> <i class="fas text-info fa-check"></i> Pengadaan Bibit Selesai </small>' : '' ?> -->
                                                 <?php echo ($rowitem->id_status_pengadaan_bibit == 5) ? '<br><small class="text-muted text-sm"><i class="fas text-danger fa-times"></i> Bukti pengadaan bibit bermasalah, menuggu unggah ulang </small>' : '' ?>
                                             </div>
                                     </td>

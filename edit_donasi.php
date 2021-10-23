@@ -99,7 +99,7 @@ if (isset($_POST['submit'])) {
 if (isset($_POST['submit_terima'])) {
     include 'includes/email_handler.php'; //PHPMailer
     $sqldonasi = "UPDATE t_donasi
-                        SET id_status_donasi = :id_status_donasi, update_terakhir = :update_terakhir
+                        SET id_status_donasi = :id_status_donasi, update_terakhir = :update_terakhir, id_status_pengadaan_bibit = 2
                         WHERE id_donasi = :id_donasi";
 
     $stmt = $pdo->prepare($sqldonasi);

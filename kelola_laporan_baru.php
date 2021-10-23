@@ -20,36 +20,33 @@ if(isset($_GET['awal'])){
         $limit_hasil = ' LIMIT 3 ';
     }
 
+    $filter_wilayah = ' ';
+    $filter_lokasi = ' ';
+    if($level_user == 2){
+        $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+
+        $filter_wilayah = ' AND t_wilayah.id_wilayah = '.$id_wilayah; //
+    }elseif($level_user == 3){
+        $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+
+        $sql_wilayah_lokasi  = 'SELECT id_wilayah FROM t_lokasi WHERE id_lokasi = '. $id_lokasi;
+        $stmt = $pdo->prepare($sql_wilayah_lokasi);
+        $stmt->execute();
+        $wilayah_lokasi = $stmt->fetch();
+
+        $filter_lokasi = ' AND t_lokasi.id_wilayah = '.$wilayah_lokasi->id_wilayah.' AND t_lokasi.id_lokasi = '.$id_lokasi; //
+    }
+
+    $sql_daftar_wilayah  = 'SELECT t_wilayah.id_wilayah, nama_wilayah FROM t_wilayah 
+                            LEFT JOIN t_lokasi ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                            WHERE 1 '.$filter_wilayah. ' '.$filter_lokasi;
+    $stmt = $pdo->prepare($sql_daftar_wilayah);
+    $stmt->execute();
+    $daftar_wilayah = $stmt->fetchAll();
+
     $query_periode = ' WHERE tahun_arsip_wilayah BETWEEN :awal AND :akhir ';
     $query_periode_and = ' AND tahun_arsip_wilayah BETWEEN :awal AND :akhir ';
 
-// $sqlviewwilayah = 'SELECT *, SUM(luas_titik) AS total_titik,
-//                     COUNT(t_titik.id_titik) AS jumlah_titik,
-//                     SUM(t_lokasi.luas_lokasi) / (SELECT COUNT(t_titik.id_titik) GROUP BY t_titik.id_titik) AS total_lokasi,
-//                     (SUM(t_titik.luas_titik) / (SUM(t_lokasi.luas_lokasi) / (SELECT COUNT(t_titik.id_titik) GROUP BY t_titik.id_titik))) * 100 AS persentase_sebaran
-
-//                     FROM t_titik, t_lokasi, t_wilayah
-// 					          WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
-//                     AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
-//                     GROUP BY t_wilayah.id_wilayah
-// ORDER BY t_lokasi.id_wilayah ASC';
-
-// 'SELECT *,
-//             SUM(luas_titik) AS luas_total, COUNT(id_titik) AS jumlah_titik,
-
-//             -- COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang,
-//             -- COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup,
-//             -- COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
-//             -- COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
-
-//             FROM t_wilayah
-//             LEFT JOIN t_titik ON t_wilayah.id_wilayah = t_titik.id_wilayah
-//             LEFT JOIN t_lokasi ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
-//             GROUP BY nama_wilayah';
-
-// $stmt = $pdo->prepare($sqlviewwilayah);
-// $stmt->execute();
-// $rowwilayah = $stmt->fetchAll();
 $sqltahun = 'SELECT * FROM t_arsip_wilayah GROUP BY tahun_arsip_wilayah ORDER BY tahun_arsip_wilayah ASC';
 $stmt = $pdo->prepare($sqltahun);
 $stmt->execute();
@@ -255,11 +252,14 @@ $rowtahun = $stmt->fetchAll();
                               $stmt = $pdo->prepare($sqlviewsisi);
                               $stmt->execute();
                               $rowsisi = $stmt->fetchAll();
-
+                    
+                    
+                    
                       foreach($rowsisi as $sisi){
 
                     $sqlviewluasnama = 'SELECT * FROM t_wilayah
-                                    LEFT JOIN t_arsip_wilayah ON t_wilayah.id_wilayah = t_arsip_wilayah.id_wilayah WHERE t_wilayah.sisi_pantai = :sisi_pantai  '.$query_periode_and.'
+                                    LEFT JOIN t_arsip_wilayah ON t_wilayah.id_wilayah = t_arsip_wilayah.id_wilayah 
+                                    WHERE t_wilayah.sisi_pantai = :sisi_pantai  '.$query_periode_and.' '.$filter_wilayah. ' '.$filter_lokasi.'
                                     GROUP BY t_arsip_wilayah.id_wilayah  ORDER BY tahun_arsip_wilayah ASC'.$limit_hasil;
                               $stmt = $pdo->prepare($sqlviewluasnama);
                               $stmt->execute(['sisi_pantai' => $sisi->sisi_pantai, 'awal' => $awal, 'akhir' => $akhir]);
@@ -270,8 +270,9 @@ $rowtahun = $stmt->fetchAll();
                     foreach ($rowluasnama as $luasnama) {
 
                         $sqlviewluastahunan = 'SELECT * FROM t_wilayah
+                                    LEFT JOIN t_lokasi ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
                                     LEFT JOIN t_arsip_wilayah ON t_wilayah.id_wilayah = t_arsip_wilayah.id_wilayah
-                                   WHERE t_wilayah.id_wilayah = :id_wilayah  '.$query_periode_and.'
+                                   WHERE t_wilayah.id_wilayah = :id_wilayah  '.$query_periode_and.' '.$filter_wilayah. ' '.$filter_lokasi.' 
                                    ORDER BY tahun_arsip_wilayah ASC'.$limit_hasil;
                               $stmt = $pdo->prepare($sqlviewluastahunan);
                               $stmt->execute(['id_wilayah' => $luasnama->id_wilayah, 'awal' => $awal, 'akhir' => $akhir]);
@@ -294,6 +295,7 @@ $rowtahun = $stmt->fetchAll();
 
 
                 <?php }
+                
                 echo '<tr  class="table-active border-top">
                           <th>Total '. $sisi->sisi_pantai .'</th>
 
@@ -315,12 +317,14 @@ $rowtahun = $stmt->fetchAll();
                       }
                 echo '</tr>';
 
-                }?>
+                }
+                    if($_SESSION['level_user'] == 4){
+                ?>
                 <tr class="table-active border-top">
                     <th scope="row">Total Keseluruhan</th>
 
                     <?php
-
+                        
                         $sqlhitungluas = 'SELECT id_wilayah, sum(kurang) as total_kurang, sum(cukup) as total_cukup, SUM(baik) as total_baik, SUM(sangat_baik) as total_sangat_baik FROM t_arsip_wilayah  '.$query_periode.' GROUP BY tahun_arsip_wilayah'.$limit_hasil;
                                 $stmt = $pdo->prepare($sqlhitungluas);
                                 $stmt->execute(['awal' => $awal, 'akhir' => $akhir]);
@@ -330,7 +334,9 @@ $rowtahun = $stmt->fetchAll();
                                 <th class="text-center border"><?= $hitungan->total_kurang?> </th><th class="text-center border"><?= $hitungan->total_cukup?>
                                 </th><th class="text-center border"><?= $hitungan->total_baik?> </th class="text-center border"><th class="text-center border"><?= $hitungan->total_sangat_baik?> </th>
 
-                              <?php }
+                              <?php 
+                              }  
+                            }
 
 
                     ?>
