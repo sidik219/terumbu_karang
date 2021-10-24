@@ -56,6 +56,6 @@ function smtpmailer($to, $from, $from_name, $subject, $body)
     // $subjek = $_POST['subjek'];
     // $pesan = $_POST['pesan'];
     
-    $error = smtpmailer($penerima, $pengirim, $nama_pengirim, $subjek, $pesan);
+    // $error = smtpmailer($penerima, $pengirim, $nama_pengirim, $subjek, $pesan);
     
 ?>
