@@ -77,17 +77,20 @@ if (isset($_POST['submit'])) {
             $stmt->execute(['id_batch' => $id_batch]);
             $rowbatch = $stmt->fetch();
 
-
             if ($id_status_pemeliharaan == 1) {
                 $tanggal_pemeliharaan_terakhir = $rowbatch->tanggal_penanaman;
             } else {
                 $tanggal_pemeliharaan_terakhir = date('Y-m-d H:i:s', time());
             }
 
+            $id_status_batch_selesai = ' ';
+            if($rowbatch->jumlah_pemeliharaan_batch + 1 == 4){
+                $id_status_batch_selesai = ' ,id_status_batch = 4 ';
+            }
 
             $sqlinsertdetailpemeliharaan = "UPDATE t_batch
                                                     SET tanggal_pemeliharaan_terakhir = :tanggal_pemeliharaan_terakhir, 
-                                                        jumlah_pemeliharaan_batch = jumlah_pemeliharaan_batch + 1
+                                                        jumlah_pemeliharaan_batch = jumlah_pemeliharaan_batch + 1 $id_status_batch_selesai
                                                     WHERE id_batch = :id_batch";
 
             $stmt = $pdo->prepare($sqlinsertdetailpemeliharaan);

@@ -90,7 +90,7 @@ if(!empty($rowpemeliharaan)){
                         <br>Harap mengisi data informasi kondisi, ukuran, dan jika memungkinkan foto terumbu karang dengan menginput data pemeliharaan di:
                         <br><a href="https://tkjb.or.id/edit_pemeliharaan.php?id_pemeliharaan='.$pemeliharaan->id_pemeliharaan.'">Input Data Pemeliharaan</a>
                 ';
-                smtpmailer($pengelola->email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+                // smtpmailer($pengelola->email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
                 echo 'pemeliharaan siap dilakukan '.$pemeliharaan->id_pemeliharaan.' mail sent to '.$pengelola->email.'<br>';
             }            
         }
@@ -100,6 +100,51 @@ echo 'pemeliharaan email script ran successfully<br>
     ========================================================
     <br>';
 
+
+
+
+
+
+//
+//Cek tanggal pemeliharaan terakhir, jika lebih dari 90 hari / 3 bulan sejak pemeliharaan terakhir, kirim email pemberitahuan
+$stmt = $pdo->prepare('SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
+                      t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, t_titik.latitude, t_titik.longitude, t_status_batch.id_status_batch, tanggal_pemeliharaan_terakhir, status_cabut_label,
+                      TIMESTAMPDIFF(DAY, tanggal_pemeliharaan_terakhir, NOW()) AS lama_sejak_pemeliharaan
+                      FROM t_batch
+                      LEFT JOIN t_lokasi ON t_batch.id_lokasi = t_lokasi.id_lokasi
+                      LEFT JOIN t_titik ON t_batch.id_titik = t_titik.id_titik
+                      LEFT JOIN t_status_batch ON t_batch.id_status_batch = t_status_batch.id_status_batch  
+                      HAVING lama_sejak_pemeliharaan = 90 AND id_status_batch = 3 '); 
+$stmt->execute();
+$rowbatch = $stmt->fetchAll();
+
+if(!empty($rowbatch)){    
+    foreach($rowbatch as $batch){ 
+        $stmt = $pdo->prepare('SELECT email, nama_user FROM t_pengelola_lokasi
+                                LEFT JOIN t_user ON t_user.id_user  = t_pengelola_lokasi.id_user
+                                WHERE id_lokasi = '.$batch->id_lokasi); 
+        $stmt->execute();
+        $rowpengelola = $stmt->fetchAll();
+            foreach($rowpengelola as $pengelola){
+                //kirim email ke pengelola lokasi
+                            
+                $subjek = 'Batch Perlu Pemeliharaan Kembali (ID Batch : ' . $batch->id_batch . ' ) - GoKarang';
+                $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+                        <br>Yth. ' . $pengelola->nama_user . '
+                        <br>Batch penanaman ID ' . $batch->id_batch . ' 
+                        yang ditanam di titik ID '.$batch->id_titik.' ( '.$batch->keterangan_titik.' ), '.$batch->nama_lokasi.', sudah 3 bulan sejak pemeliharaan terakhir dan memerlukan pemeliharaan kembali.
+                        <br>
+                        <br>Harap tentukan tanggal pemeliharaan selanjutnya dengan menginput data pemeliharaan di:
+                        <br><a href="https://tkjb.or.id/kelola_pemeliharaan.php">Kelola Pemeliharaan</a>
+                ';
+                // smtpmailer($pengelola->email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+                echo 'batch pemeliharaan kembali '.$batch->id_batch.' mail sent to '.$pengelola->email.'<br>';         
+        }
+    }
+}
+echo 'batch pemeliharaan kembali script ran successfully<br>
+    ========================================================
+    <br>';
 
 
 
