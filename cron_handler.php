@@ -34,7 +34,7 @@ if(!empty($rowbatch)){
             foreach($rowpengelola as $pengelola){
                 //kirim email ke pengelola lokasi
                             
-                $subjek = 'Batch Siap untuk Ditanam (ID Batch : ' . $batch->id_batch . ' ) - GoKarang';
+                $subjek = 'Batch Siap untuk Ditanam (ID Batch : ' . $batch->id_batch . ') - GoKarang';
                 $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
                         <br>Yth. ' . $pengelola->nama_user . '
                         <br>Bibit terumbu karang pada donasi dalam Batch penanaman ID ' . $batch->id_batch . ' 
@@ -43,7 +43,7 @@ if(!empty($rowbatch)){
                         <br>Jika bibit dalam batch ini sudah ditanam, selanjutnya harap tentukan tanggal pemeliharaan dengan menginput data pemeliharaan di:
                         <br><a href="https://tkjb.or.id/kelola_pemeliharaan.php">Kelola Pemeliharaan</a>
                 ';
-                // smtpmailer($pengelola->email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+                smtpmailer($pengelola->email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
                 echo 'batch siap ditanam '.$batch->id_batch.' mail sent to '.$pengelola->email.'<br>';
             }            
         }
@@ -82,7 +82,7 @@ if(!empty($rowpemeliharaan)){
             foreach($rowpengelola as $pengelola){
                 //kirim email ke pengelola lokasi
                             
-                $subjek = 'Pemeliharaan Hari ini (ID Pemeliharaan : ' . $pemeliharaan->id_pemeliharaan . ' ) - GoKarang';
+                $subjek = 'Pemeliharaan Hari ini (ID Pemeliharaan : ' . $pemeliharaan->id_pemeliharaan . ') - GoKarang';
                 $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
                         <br>Yth. ' . $pengelola->nama_user . '
                         <br>Hari ini perlu dilakukan Pemeliharaan terumbu karang sesuai dengan tanggal yang ditentukan pada Pemeliharaan ID ' . $pemeliharaan->id_pemeliharaan . ', di  '.$pemeliharaan->nama_lokasi.', dengan rencana pemeliharaan pada '.$tanggal_hari_formatted.'.
@@ -90,7 +90,7 @@ if(!empty($rowpemeliharaan)){
                         <br>Harap mengisi data informasi kondisi, ukuran, dan jika memungkinkan foto terumbu karang dengan menginput data pemeliharaan di:
                         <br><a href="https://tkjb.or.id/edit_pemeliharaan.php?id_pemeliharaan='.$pemeliharaan->id_pemeliharaan.'">Input Data Pemeliharaan</a>
                 ';
-                // smtpmailer($pengelola->email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+                smtpmailer($pengelola->email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
                 echo 'pemeliharaan siap dilakukan '.$pemeliharaan->id_pemeliharaan.' mail sent to '.$pengelola->email.'<br>';
             }            
         }
@@ -137,7 +137,7 @@ if(!empty($rowbatch)){
                         <br>Harap tentukan tanggal pemeliharaan selanjutnya dengan menginput data pemeliharaan di:
                         <br><a href="https://tkjb.or.id/kelola_pemeliharaan.php">Kelola Pemeliharaan</a>
                 ';
-                // smtpmailer($pengelola->email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+                smtpmailer($pengelola->email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
                 echo 'batch pemeliharaan kembali '.$batch->id_batch.' mail sent to '.$pengelola->email.'<br>';         
         }
     }
@@ -168,10 +168,10 @@ if(!empty($rowwisata)){
     foreach($rowwisata as $wisata){
                 //kirim email ke wisatawan
                             
-                $subjek = '[Reminder] Reservasi Wisata (ID Batch : ' . $wisata->id_reservasi . ' ) - GoKarang';
+                $subjek = '[Reminder] Reservasi Wisata (ID Reservasi : ' . $wisata->id_reservasi . ') - GoKarang';
                 $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
                         <br>Yth. ' . $wisata->nama_user . '
-                        <br>Reservasi wisata Anda dengan ID ' . $wisata->id_reservasi . ' akan dilakukan pada '.strftime("%A, %d %B %Y", strtotime($wisata->tgl_reservasi)).'.                      
+                        <br>Reservasi wisata Anda (ID Reservasi ' . $wisata->id_reservasi . ') akan dilakukan pada '.strftime("%A, %d %B %Y", strtotime($wisata->tgl_reservasi)).'.                      
                         <br>
                         <br>Paket Wisata: ' . $wisata->nama_paket_wisata . '
                         <br>Jumlah Peserta: ' . $wisata->jumlah_peserta . '
@@ -181,13 +181,26 @@ if(!empty($rowwisata)){
                         <br>Untuk melihat rincian reservasi wisata Anda, klik link berikut:
                         <br><a href="https://tkjb.or.id/reservasi_saya.php">Reservasi Wisata Saya</a>
                 ';
-                // smtpmailer($wisata->email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+                smtpmailer($wisata->email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
                 echo 'batch reminder wisata '.$wisata->id_reservasi.' mail sent to '.$wisata->email.'<br>';         
     }
 }
 echo 'Reminder wisata h-3 script ran successfully '.strftime("%A, %d %B %Y", strtotime($wisata->tgl_reservasi)).'<br>
     ========================================================
     <br>';
+
+
+
+
+
+
+    //kirim email test cron
+                            
+                // $subjek = 'cron jobs test - GoKarang';
+                // $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+                //         hello cron jobs
+                // ';
+                // smtpmailer('feisalar@ymail.com', $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
 
 
 
