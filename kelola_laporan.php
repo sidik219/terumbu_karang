@@ -95,21 +95,8 @@ $rowwilayah = $stmt->fetchAll();
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                <div class="row">
-                        <div class="col">
-                            <h4><span class="align-middle font-weight-bold">Persentase Sebaran Wilayah</span></h4>
-                            <div id="datalaporan">
-                        <div class="row">
-                            <div class="col-auto">
-                                <span class="text-bold">Per-Tanggal :</span>
-                            </div>
-                            <div class="col">
-                                <?= strftime("%A, %d %B %Y");?>
-                            </div>
-                        </div>
-                </div>
-                        </div>
-                        <div id="btn-unduh" class="col">
+                    <div class="row">
+                        <div id="btn-unduh" class="col-12">
 
                         <!-- <a class="btn btn-primary float-right" onclick="saveCSVs()" href="#" role="button"><i class="fas fa-file-excel"></i> Unduh Laporan (CSV)</a> -->
 
@@ -118,6 +105,20 @@ $rowwilayah = $stmt->fetchAll();
                         <a class="btn btn-primary float-right  mr-2" onclick="savePDF()" href="#" role="button"><i class="fas fa-file-pdf"></i> Unduh Laporan (PDF)</a>
 
                         </div>
+                    </div>
+                    
+                <div class="row text-center">
+                        <div class="col">
+                            <h4><span class="align-middle font-weight-bold">Persentase Sebaran Wilayah</span></h4>
+                            <div id="datalaporan">
+                        <div class="row">
+                            <div class="col">
+                                <span class="text-bold">Per-Tanggal :  </span><?= strftime("%A, %d %B %Y");?>
+                            </div>
+                        </div>
+                </div>
+                        </div>
+                        
                     </div>
 
                 </div>
@@ -307,7 +308,7 @@ $rowwilayah = $stmt->fetchAll();
                         <br>
                         <b><u><?= $_SESSION['nama_user'] ?></u></b>
                         <br>
-                        <?= $_SESSION['organisasi_user'] ?>
+                        <?= isset($_SESSION['organisasi_user']) ? $_SESSION['organisasi_user'] : '' ?>
                     </div>
                 </div>
 

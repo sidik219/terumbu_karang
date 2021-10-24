@@ -40,6 +40,16 @@ include 'hak_akses.php';
                 $stmt = $pdo->prepare($sqlupdatearsip);
                 $stmt->execute(['update_terakhir' => $update_terakhir, 'id_laporan' => $id_laporan, 'tipe_laporan' => $tipe_laporan, 'periode_laporan' => $periode_laporan]);
 
+                $sqlupdatearsiplokasi = 'UPDATE t_arsip_lokasi SET tahun_arsip_lokasi = :tahun_arsip_lokasi WHERE id_laporan = :id_laporan';
+                $stmt = $pdo->prepare($sqlupdatearsiplokasi);
+                $stmt->execute(['id_laporan' => $id_laporan, 'tahun_arsip_lokasi' => $periode_laporan]);
+
+                $sqlupdatearsiptitik = 'UPDATE t_arsip_titik SET tahun_arsip_titik = :tahun_arsip_titik WHERE id_laporan = :id_laporan';
+                $stmt = $pdo->prepare($sqlupdatearsiptitik);
+                $stmt->execute(['id_laporan' => $id_laporan, 'tahun_arsip_titik' => $periode_laporan]);
+
+
+
                 foreach($_POST['id_arsip_wilayah'] as $id_arsip){
                   $kurang = $_POST['kurang'][$i];
                   $cukup = $_POST['cukup'][$i];
