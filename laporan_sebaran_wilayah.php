@@ -21,38 +21,26 @@ if(isset($_GET['awal'])){
     }
 
     $filter_wilayah = ' ';
-    $filter_lokasi = ' ';
     if($level_user == 2){
         $id_wilayah = $_SESSION['id_wilayah_dikelola'];
 
         $filter_wilayah = ' AND t_wilayah.id_wilayah = '.$id_wilayah; //
-    }elseif($level_user == 3){
-        $id_lokasi = $_SESSION['id_lokasi_dikelola'];
-
-        $sql_wilayah_lokasi  = 'SELECT id_wilayah FROM t_lokasi WHERE id_lokasi = '. $id_lokasi;
-        $stmt = $pdo->prepare($sql_wilayah_lokasi);
-        $stmt->execute();
-        $wilayah_lokasi = $stmt->fetch();
-
-        $filter_lokasi = ' AND t_lokasi.id_wilayah = '.$wilayah_lokasi->id_wilayah.' AND t_lokasi.id_lokasi = '.$id_lokasi; //
     }
 
-    $sql_daftar_wilayah  = 'SELECT t_wilayah.id_wilayah, nama_wilayah FROM t_wilayah 
-                            LEFT JOIN t_lokasi ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
-                            WHERE 1 '.$filter_wilayah. ' '.$filter_lokasi;
-    $stmt = $pdo->prepare($sql_daftar_wilayah);
-    $stmt->execute();
-    $daftar_wilayah = $stmt->fetchAll();
-
-    $query_periode = ' WHERE tahun_arsip_wilayah BETWEEN :awal AND :akhir ';
+    $query_periode = ' tahun_arsip_wilayah BETWEEN :awal AND :akhir ';
     $query_periode_and = ' AND tahun_arsip_wilayah BETWEEN :awal AND :akhir ';
+
+$sqlwilayah = 'SELECT * FROM t_wilayah WHERE id_wilayah = '.$_SESSION['id_wilayah_dikelola'];
+$stmt = $pdo->prepare($sqlwilayah);
+$stmt->execute();
+$wilayah = $stmt->fetch();
 
 $sqltahun = 'SELECT * FROM t_arsip_wilayah GROUP BY tahun_arsip_wilayah ORDER BY tahun_arsip_wilayah ASC';
 $stmt = $pdo->prepare($sqltahun);
 $stmt->execute();
 $rowtahunsemua = $stmt->fetchAll();
 
-$sqlviewarsip = 'SELECT * FROM t_arsip_wilayah '.$query_periode.' GROUP BY tahun_arsip_wilayah ORDER BY tahun_arsip_wilayah ASC '.$limit_hasil;
+$sqlviewarsip = 'SELECT * FROM t_arsip_wilayah WHERE '.$query_periode.' GROUP BY tahun_arsip_wilayah ORDER BY tahun_arsip_wilayah ASC '.$limit_hasil;
 $stmt = $pdo->prepare($sqlviewarsip);
 $stmt->execute(['awal' => $awal, 'akhir' => $akhir]);
 $rowtahun = $stmt->fetchAll();
@@ -187,30 +175,10 @@ $rowtahun = $stmt->fetchAll();
             <section class="content">
                 <div class="container-fluid">
 
-                <!-- <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">ID Laporan</th>
-                            <th scope="col">Aksi</th>
-                        </tr>
-                        </thead>
-                <tbody>
-                        <tr>
-                            <th scope="row">1212</th>
-                            <td>
-                            <button type="button" class="btn btn-act">
-                            <a href="edit_laporan.php" class="fas fa-edit"></a>
-                            </button>
-                            <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
-                            </td>
-                        </tr>
-                </tbody>
-                </table>   -->
-
                     <table class="table table-striped table-bordered DataWilayah">
                     <div class="row text-center">
                       <div class="col">
-                          <h4 class="mb-0"><span class="align-middle font-weight-bold mb-0">Laporan Luas Sebaran Terumbu Karang</span></h4>
+                          <h4 class="mb-0"><span class="align-middle font-weight-bold mb-0">Laporan Luas Sebaran Terumbu Karang<br><?= $wilayah->nama_wilayah ?></span></h4>
                           <h5 class="mt-0 font-weight-bold"><?= $awal != 1 ? ' Tahun '.$awal : ''; ?><?= $awal != $akhir && $akhir != 9999 ? ' - '.$akhir : ''; ?></h5>
                           <span class="align-middle mt-2">*Data dalam satuan hektar (ha)</span>
                       </div>
@@ -218,7 +186,7 @@ $rowtahun = $stmt->fetchAll();
 
                     <thead>
                             <tr>
-                                <th class="text-center align-middle" rowspan="2" scope="col">Kabupaten</th>
+                                <th class="text-center align-middle" rowspan="2" scope="col">Lokasi</th>
 
 
                                 <?php //Print header tabel
@@ -247,22 +215,13 @@ $rowtahun = $stmt->fetchAll();
                 <tbody class="table-hover">
                 <?php
 
-                    $sqlviewsisi = 'SELECT * FROM t_arsip_wilayah GROUP BY sisi_pantai
-                                                ORDER BY sisi_pantai DESC'.$limit_hasil;
-                              $stmt = $pdo->prepare($sqlviewsisi);
-                              $stmt->execute();
-                              $rowsisi = $stmt->fetchAll();
-                    
-                    
-                    
-                      foreach($rowsisi as $sisi){
-
                     $sqlviewluasnama = 'SELECT * FROM t_wilayah
                                     LEFT JOIN t_arsip_wilayah ON t_wilayah.id_wilayah = t_arsip_wilayah.id_wilayah 
-                                    WHERE t_wilayah.sisi_pantai = :sisi_pantai  '.$query_periode_and.' '.$filter_wilayah. ' 
-                                    GROUP BY t_arsip_wilayah.id_wilayah  ORDER BY tahun_arsip_wilayah ASC'.$limit_hasil;
+                                    LEFT JOIN t_lokasi ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                                    WHERE  '.$query_periode.' '.$filter_wilayah. ' 
+                                     ORDER BY tahun_arsip_wilayah ASC'.$limit_hasil;
                               $stmt = $pdo->prepare($sqlviewluasnama);
-                              $stmt->execute(['sisi_pantai' => $sisi->sisi_pantai, 'awal' => $awal, 'akhir' => $akhir]);
+                              $stmt->execute(['awal' => $awal, 'akhir' => $akhir]);
                               $rowluasnama = $stmt->fetchAll();
 
 
@@ -272,14 +231,14 @@ $rowtahun = $stmt->fetchAll();
                         $sqlviewluastahunan = 'SELECT * FROM t_wilayah
                                     LEFT JOIN t_lokasi ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
                                     LEFT JOIN t_arsip_wilayah ON t_wilayah.id_wilayah = t_arsip_wilayah.id_wilayah
-                                   WHERE t_wilayah.id_wilayah = :id_wilayah  '.$query_periode_and.' '.$filter_wilayah. '
+                                   WHERE t_wilayah.id_wilayah = :id_wilayah  '.$query_periode_and.' '.$filter_wilayah. ' AND t_lokasi.id_lokasi = '. $luasnama->id_lokasi.'  
                                    ORDER BY tahun_arsip_wilayah ASC'.$limit_hasil;
                               $stmt = $pdo->prepare($sqlviewluastahunan);
                               $stmt->execute(['id_wilayah' => $luasnama->id_wilayah, 'awal' => $awal, 'akhir' => $akhir]);
                               $rowluastahunan = $stmt->fetchAll();
                 ?>
                         <tr>
-                            <td><?=$luasnama->nama_wilayah?></td>
+                            <td><?=$luasnama->nama_lokasi?></td>
 
                             <?php foreach ($rowluastahunan as $luastahunan) {
 
@@ -297,15 +256,15 @@ $rowtahun = $stmt->fetchAll();
                 <?php }
                 
                 echo '<tr  class="table-active border-top">
-                          <th>Total '. $sisi->sisi_pantai .'</th>
+                          <th>Total</th>
 
                       ';
 
                       foreach($rowtahun as $tahun){
                         $sqlhitungluas = 'SELECT id_wilayah, sum(kurang) as total_kurang, sum(cukup) as total_cukup, SUM(baik) as total_baik, SUM(sangat_baik) as total_sangat_baik
-                                        FROM t_arsip_wilayah WHERE tahun_arsip_wilayah = :tahun AND sisi_pantai = :sisi_pantai '.$query_periode_and.$limit_hasil;
+                                        FROM t_arsip_wilayah WHERE tahun_arsip_wilayah = :tahun  '.$query_periode_and.$limit_hasil;
                                 $stmt = $pdo->prepare($sqlhitungluas);
-                                $stmt->execute(['tahun' => $tahun->tahun_arsip_wilayah, 'sisi_pantai' => $sisi->sisi_pantai, 'awal' => $awal, 'akhir' => $akhir]);
+                                $stmt->execute(['tahun' => $tahun->tahun_arsip_wilayah, 'awal' => $awal, 'akhir' => $akhir]);
                                 $rowhitung = $stmt->fetchAll();
                               foreach($rowhitung as $hitungan){ ?>
 
@@ -317,7 +276,7 @@ $rowtahun = $stmt->fetchAll();
                       }
                 echo '</tr>';
 
-                }
+                
                     if($_SESSION['level_user'] == 4){
                 ?>
                 <tr class="table-active border-top">

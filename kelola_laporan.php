@@ -3,6 +3,13 @@ session_start();
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
+$filter_wilayah = ' ';
+    if($level_user == 2){
+        $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+
+        $filter_wilayah = ' AND t_wilayah.id_wilayah = '.$id_wilayah; //
+    }
+
 $sqlviewwilayah = 'SELECT *, SUM(luas_titik) AS total_titik,
                     COUNT(t_titik.id_titik) AS jumlah_titik,
                     SUM(t_lokasi.luas_lokasi) / (SELECT COUNT(t_titik.id_titik) GROUP BY t_titik.id_titik) AS total_lokasi,
@@ -10,22 +17,10 @@ $sqlviewwilayah = 'SELECT *, SUM(luas_titik) AS total_titik,
 
                     FROM t_titik, t_lokasi, t_wilayah
 					          WHERE t_titik.id_lokasi = t_lokasi.id_lokasi
-                    AND t_lokasi.id_wilayah = t_wilayah.id_wilayah
+                    AND t_lokasi.id_wilayah = t_wilayah.id_wilayah '.$filter_wilayah.'
                     GROUP BY t_wilayah.id_wilayah
 ORDER BY t_lokasi.id_wilayah ASC';
 
-// 'SELECT *,
-//             SUM(luas_titik) AS luas_total, COUNT(id_titik) AS jumlah_titik,
-
-//             -- COUNT(case when kondisi_titik = "Kurang" then 1 else null end) as jumlah_kurang,
-//             -- COUNT(case when kondisi_titik = "Cukup" then 1 else null end) as jumlah_cukup,
-//             -- COUNT(case when kondisi_titik = "Baik" then 1 else null end) as jumlah_baik,
-//             -- COUNT(case when kondisi_titik = "Sangat Baik" then 1 else null end) as jumlah_sangat_baik
-
-//             FROM t_wilayah
-//             LEFT JOIN t_titik ON t_wilayah.id_wilayah = t_titik.id_wilayah
-//             LEFT JOIN t_lokasi ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
-//             GROUP BY nama_wilayah';
 
 $stmt = $pdo->prepare($sqlviewwilayah);
 $stmt->execute();
@@ -36,7 +31,7 @@ $rowwilayah = $stmt->fetchAll();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kelola Laporan - GoKarang</title>
+    <title>Persentase Sebaran Wilayah - GoKarang</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -102,11 +97,11 @@ $rowwilayah = $stmt->fetchAll();
                 <div class="container-fluid">
                 <div class="row">
                         <div class="col">
-                            <h4><span class="align-middle font-weight-bold">Laporan Wilayah</span></h4>
+                            <h4><span class="align-middle font-weight-bold">Persentase Sebaran Wilayah</span></h4>
                             <div id="datalaporan">
                         <div class="row">
                             <div class="col-auto">
-                                <span class="text-bold">Tanggal Laporan :</span>
+                                <span class="text-bold">Per-Tanggal :</span>
                             </div>
                             <div class="col">
                                 <?= strftime("%A, %d %B %Y");?>
@@ -168,7 +163,7 @@ $rowwilayah = $stmt->fetchAll();
                         <tr>
                                 <td colspan="3">
                                     <!--collapse start -->
-                            <div class="row  m-0 d-flex flex-row-reverse">
+                            <!-- <div class="row  m-0 d-flex flex-row-reverse">
                             <div class="col-12 cell detailcollapser<?=$rowitem->id_wilayah?>"
                                 data-toggle="collapse"
                                 data-target=".cell<?=$rowitem->id_wilayah?>, .contentall<?=$rowitem->id_wilayah?>">
@@ -177,8 +172,10 @@ $rowwilayah = $stmt->fetchAll();
                                     <i
                                         class="icon fas fa-chevron-down"></i>
                                     Rincian Wilayah</p>
-                            </div>
-                            <div class="col-12 cell<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?>">
+                            </div> -->
+                            <!-- <div class="col-12 cell<?=$rowitem->id_wilayah?> collapse contentall<?=$rowitem->id_wilayah?>"> -->
+                            <div class="col-12">
+
                                 <!-- <h5>Kondisi Lokasi</h5> -->
                                 <table class="table">
                                     <!-- <th>Nama Lokasi</th>
@@ -266,7 +263,7 @@ $rowwilayah = $stmt->fetchAll();
 
                           <tr class="table-active border-top">
                             <th scope="row">Total</th>      <!-- TOTAL WILAYAH -->
-                            <th><?=$rowitem->jumlah_titik?></th>
+                            <th><?=$rowitem->jumlah_titik?> titik</th>
                             <th><?=number_format($rowitem->total_titik).' / '.number_format($total_luas_lokasi).' ha'?></th>
                             <th><?=$ps.'% ( '.$kondisi_wilayah.' )'?></th>
                         </tr>
