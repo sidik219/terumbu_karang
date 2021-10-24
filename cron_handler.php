@@ -7,7 +7,7 @@ $update_terakhir = date('Y-m-d H:i:s', time());
 $tanggal_hari_formatted = strftime("%A, %d %B %Y");
 
 //
-//Cek tanggal penanaman batch, set status_batch ke siap ditanam, kirim email pemberitahuan
+//Cek tanggal penanaman batch, jika hari ini, set status_batch ke siap ditanam, kirim email pemberitahuan
 $stmt = $pdo->prepare('SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
                        nama_lokasi, keterangan_titik
                       FROM t_batch
@@ -106,7 +106,7 @@ echo 'pemeliharaan email script ran successfully<br>
 
 
 //
-//Cek tanggal pemeliharaan terakhir, jika lebih dari 90 hari / 3 bulan sejak pemeliharaan terakhir, kirim email pemberitahuan
+//Cek tanggal pemeliharaan terakhir, jika lebih dari 90 hari / 3 bulan sejak pemeliharaan terakhir, kirim email reminder
 $stmt = $pdo->prepare('SELECT t_batch.id_batch, t_batch.id_lokasi, t_batch.id_titik, t_batch.tanggal_penanaman,
                       t_batch.update_status_batch_terakhir, nama_lokasi, keterangan_titik, nama_status_batch, t_titik.latitude, t_titik.longitude, t_status_batch.id_status_batch, tanggal_pemeliharaan_terakhir, status_cabut_label,
                       TIMESTAMPDIFF(DAY, tanggal_pemeliharaan_terakhir, NOW()) AS lama_sejak_pemeliharaan
@@ -143,6 +143,49 @@ if(!empty($rowbatch)){
     }
 }
 echo 'batch pemeliharaan kembali script ran successfully<br>
+    ========================================================
+    <br>';
+
+
+
+
+
+
+
+//
+//Cek tanggal reservasi wisata, jika sudah H -3 hari sebelum tanggal wisata, kirim email reminder
+$stmt = $pdo->prepare('SELECT *, TIMESTAMPDIFF(DAY, tgl_reservasi, NOW()) AS selisih_hari  
+                        FROM `t_reservasi_wisata` 
+                        LEFT JOIN t_user ON t_user.id_user = t_reservasi_wisata.id_user
+                      	LEFT JOIN tb_paket_wisata ON tb_paket_wisata.id_paket_wisata = t_reservasi_wisata.id_paket_wisata 
+                        LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_reservasi_wisata.id_lokasi
+                        WHERE id_status_reservasi_wisata = 2
+                        HAVING selisih_hari = -3'); 
+$stmt->execute();
+$rowwisata = $stmt->fetchAll();
+
+if(!empty($rowwisata)){    
+    foreach($rowwisata as $wisata){
+                //kirim email ke wisatawan
+                            
+                $subjek = '[Reminder] Reservasi Wisata (ID Batch : ' . $wisata->id_reservasi . ' ) - GoKarang';
+                $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+                        <br>Yth. ' . $wisata->nama_user . '
+                        <br>Reservasi wisata Anda dengan ID ' . $wisata->id_reservasi . ' akan dilakukan pada '.strftime("%A, %d %B %Y", strtotime($wisata->tgl_reservasi)).'.                      
+                        <br>
+                        <br>Paket Wisata: ' . $wisata->nama_paket_wisata . '
+                        <br>Jumlah Peserta: ' . $wisata->jumlah_peserta . '
+                        <br>Lokasi: ' . $wisata->nama_lokasi . '
+                        <br>
+                        <br>Email ini bertujuan untuk sekedar mengingatkan kembali tanggal reservasi Anda tersebut.
+                        <br>Untuk melihat rincian reservasi wisata Anda, klik link berikut:
+                        <br><a href="https://tkjb.or.id/reservasi_saya.php">Reservasi Wisata Saya</a>
+                ';
+                // smtpmailer($wisata->email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+                echo 'batch reminder wisata '.$wisata->id_reservasi.' mail sent to '.$wisata->email.'<br>';         
+    }
+}
+echo 'Reminder wisata h-3 script ran successfully '.strftime("%A, %d %B %Y", strtotime($wisata->tgl_reservasi)).'<br>
     ========================================================
     <br>';
 

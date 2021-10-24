@@ -116,7 +116,7 @@ if (isset($_POST['submit'])) {
                 $stmt = $pdo->prepare($sqldonasi);
                 $stmt->execute(['id_donasi' => $detailbatch->id_donasi]);                
 
-                if($jumlah_pemeliharaan >= 4){ //Jika sudah selesai pemeliharaan 4 kali
+                if($jumlah_pemeliharaan == 4){ //Jika sudah selesai pemeliharaan 4 kali
                     $sqldonasi = "UPDATE t_donasi
                         SET id_status_donasi = 6
                         WHERE id_donasi = :id_donasi";

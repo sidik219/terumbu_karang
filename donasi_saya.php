@@ -348,7 +348,8 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
 
                                     <div class="col-md mb-3">
                                         <span class="font-weight-bold"><i class="nav-icon text-danger fas fas fa-map-marker-alt"></i> Lokasi Penanaman</span><br>
-                                        <img height='75px' class="rounded" src=<?= $rowitem->foto_lokasi; ?>><br><br>
+                                        <img height='75px' class="rounded  mb-2" src=<?= $rowitem->foto_lokasi; ?>>
+                                        <br>
                                         <span class="small"><?= $rowitem->nama_lokasi ?></span>
                                         <br><a target="_blank" href="http://maps.google.com/maps/search/?api=1&query=<?= $rowitem->latitude ?>,<?= $rowitem->longitude ?>&z=8" class="px-1 py-0 btn-sm small btn btn-act"><i class="nav-icon fas fa-map-marked-alt"></i> Lihat di Peta</a>
                                         <br><br><div class="mt-2">
@@ -365,7 +366,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                     <div class="col-12 p-0 <?php if ($rowitem->id_status_donasi == 7) {
                                                                 echo ' d-none ';
                                                             } ?>">
-                                        <ul class="progress-indicator <?= (isMobile()) ? ' stacked ' : '' ?> shadow-sm p-5 ">
+                                        <ul class="progress-indicator <?= (isMobile()) ? ' stacked  p-5 ' : '' ?> shadow-sm p-4">
                                             <?php foreach ($rowstatus as $status) {
                                                 $id_status_donasi = $rowitem->id_status_donasi;
                                                 if ($status->id_status_donasi != 7) { ?>
