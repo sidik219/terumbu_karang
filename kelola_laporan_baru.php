@@ -259,7 +259,7 @@ $rowtahun = $stmt->fetchAll();
 
                     $sqlviewluasnama = 'SELECT * FROM t_wilayah
                                     LEFT JOIN t_arsip_wilayah ON t_wilayah.id_wilayah = t_arsip_wilayah.id_wilayah 
-                                    WHERE t_wilayah.sisi_pantai = :sisi_pantai  '.$query_periode_and.' '.$filter_wilayah. ' 
+                                    WHERE t_wilayah.sisi_pantai = :sisi_pantai  '.$query_periode_and.' 
                                     GROUP BY t_arsip_wilayah.id_wilayah  ORDER BY tahun_arsip_wilayah ASC'.$limit_hasil;
                               $stmt = $pdo->prepare($sqlviewluasnama);
                               $stmt->execute(['sisi_pantai' => $sisi->sisi_pantai, 'awal' => $awal, 'akhir' => $akhir]);
@@ -272,7 +272,7 @@ $rowtahun = $stmt->fetchAll();
                         $sqlviewluastahunan = 'SELECT * FROM t_wilayah
                                     LEFT JOIN t_lokasi ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
                                     LEFT JOIN t_arsip_wilayah ON t_wilayah.id_wilayah = t_arsip_wilayah.id_wilayah
-                                   WHERE t_wilayah.id_wilayah = :id_wilayah  '.$query_periode_and.' '.$filter_wilayah. '
+                                   WHERE t_wilayah.id_wilayah = :id_wilayah  '.$query_periode_and.' GROUP BY tahun_arsip_wilayah
                                    ORDER BY tahun_arsip_wilayah ASC'.$limit_hasil;
                               $stmt = $pdo->prepare($sqlviewluastahunan);
                               $stmt->execute(['id_wilayah' => $luasnama->id_wilayah, 'awal' => $awal, 'akhir' => $akhir]);

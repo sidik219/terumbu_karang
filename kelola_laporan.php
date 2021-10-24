@@ -296,6 +296,21 @@ $rowwilayah = $stmt->fetchAll();
                 </tbody>
                 </table>
 
+                <div class="row info-cetak text-center">
+                    <div class="col float-right">
+                        <?= isset($_SESSION['nama_wilayah_dikelola']) ? $_SESSION['nama_wilayah_dikelola'] : '' ?>
+                        <?= isset($_SESSION['nama_lokasi_dikelola']) ? $_SESSION['nama_lokasi_dikelola'] : '' ?>
+                        <br>
+                        <?= strftime('%A, %e %B %Y', date(time())); ?>
+                        <br>
+                        <br>
+                        <br>
+                        <b><u><?= $_SESSION['nama_user'] ?></u></b>
+                        <br>
+                        <?= $_SESSION['organisasi_user'] ?>
+                    </div>
+                </div>
+
             </section>
             <!-- /.Left col -->
             </div>

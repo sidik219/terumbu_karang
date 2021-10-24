@@ -546,7 +546,7 @@ if (!$_SESSION['level_user']) { //Belum log in
         <!-- LAPORAN COLLAPSE START -->        
         <li class="nav-item ' . (in_array($url_sekarang, [
                 'kelola_laporan_baru.php', 'kelola_laporan.php', 'laporan_kondisi.php', 'laporan_donasi.php',
-                'laporan_periode_wisata.php', 'kelola_arsip_laporan_sebaran.php', 'edit_arsip_luas_wilayah.php', 'laporan_jenis_terumbu.php', 'laporan_sebaran_wilayah'
+                'laporan_periode_wisata.php', 'kelola_arsip_laporan_sebaran.php', 'edit_arsip_luas_wilayah.php', 'laporan_jenis_terumbu.php', 'laporan_sebaran_wilayah.php'
             ])  ? 'active menu-open ' : '') . '"> 
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-file-invoice"></i>
@@ -571,7 +571,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 </li>                      
                   
                  <li class="nav-item"> 
-                    <a href="laporan_sebaran_wilayah.php" class="nav-link ' . ('laporan_sebaran_wilayah.php.php' == $url_sekarang ? ' active ' : '') . ' ">
+                    <a href="laporan_sebaran_wilayah.php" class="nav-link ' . ('laporan_sebaran_wilayah.php' == $url_sekarang ? ' active ' : '') . ' ">
                             <i class="nav-icon fas fa-globe-americas"></i>
                             <p> Laporan Sebaran</p>
                     </a>

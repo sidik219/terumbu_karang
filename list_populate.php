@@ -166,7 +166,7 @@ if ($_POST['type'] == 'load_detail_lokasi' && !empty($_POST["id_jenis"])) {
 if ($_POST['type'] == 'load_donasi' && !empty($_POST["id_lokasi"])) {
     $id_lokasi = $_POST["id_lokasi"];
     $daftardonasi = 'SELECT * FROM t_donasi
-                      WHERE id_lokasi = :id_lokasi AND t_donasi.id_status_donasi = 3 AND t_donasi.id_batch = NULL
+                      WHERE id_lokasi = :id_lokasi AND t_donasi.id_status_donasi = 3 AND id_status_pengadaan_bibit = 4 AND t_donasi.id_batch = NULL
                         ORDER BY id_donasi';
         $stmt = $pdo->prepare($daftardonasi);
         $stmt->execute(['id_lokasi' => $id_lokasi]);
@@ -979,7 +979,7 @@ if ($_POST['type'] == 'load_laporan_jenis' && !empty($_POST["start"])) {
 
     $sql_daftar_wilayah  = 'SELECT t_wilayah.id_wilayah, nama_wilayah FROM t_wilayah 
                             LEFT JOIN t_lokasi ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
-                            WHERE 1 '.$filter_wilayah. ' '.$filter_lokasi;
+                            WHERE 1 '.$filter_wilayah. ' '.$filter_lokasi.' GROUP BY t_lokasi.id_wilayah';
     $stmt = $pdo->prepare($sql_daftar_wilayah);
     $stmt->execute();
     $daftar_wilayah = $stmt->fetchAll();
@@ -1023,7 +1023,11 @@ if ($_POST['type'] == 'load_laporan_jenis' && !empty($_POST["start"])) {
                                     ) AS DECIMAL(10, 1)
                                     ) AS ukuran_sangat_baik,
                                     CAST(SUM(ukuran_terumbu) AS DECIMAL(10,1)) AS ukuran_total_lokasi,
-                                    COUNT(t_history_pemeliharaan.id_detail_donasi) AS jumlah_terumbu_total
+                                    COUNT(CASE WHEN kondisi_terumbu = "Sangat Baik" OR kondisi_terumbu = "Baik" OR kondisi_terumbu = "Rusak" THEN 1 
+                                    ELSE NULL
+                                    END                                    
+                                    ) AS jumlah_terumbu_total
+
                                     FROM
                                         t_lokasi
                                         INNER JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah

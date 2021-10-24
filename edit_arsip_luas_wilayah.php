@@ -16,7 +16,7 @@ include 'hak_akses.php';
 
     $sqllaporan = 'SELECT * FROM t_arsip_wilayah
                    LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_arsip_wilayah.id_wilayah
-                   WHERE id_laporan = :id_laporan';
+                   WHERE id_laporan = :id_laporan GROUP BY t_wilayah.id_wilayah';
     $stmt = $pdo->prepare($sqllaporan);
     $stmt->execute(['id_laporan' => $id_laporan]);
     $rowlaporan = $stmt->fetchAll();
@@ -172,7 +172,7 @@ include 'hak_akses.php';
                     foreach ($rowluasnama as $luasnama) {
                         $sqlviewluastahunan = 'SELECT * FROM t_wilayah
                                     LEFT JOIN t_arsip_wilayah ON t_wilayah.id_wilayah = t_arsip_wilayah.id_wilayah
-                                    WHERE t_wilayah.id_wilayah = :id_wilayah  AND tahun_arsip_wilayah = :tahun_arsip_wilayah
+                                    WHERE t_wilayah.id_wilayah = :id_wilayah  AND tahun_arsip_wilayah = :tahun_arsip_wilayah  GROUP BY t_wilayah.id_wilayah
                                     ORDER BY tahun_arsip_wilayah ASC';
                               $stmt = $pdo->prepare($sqlviewluastahunan);
                               $stmt->execute(['id_wilayah' => $luasnama->id_wilayah, 'tahun_arsip_wilayah' => $rowlaporan[0]->tahun_arsip_wilayah]);
