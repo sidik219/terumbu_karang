@@ -115,6 +115,10 @@ $row = $stmt->fetchAll();
                             echo '<div class="alert alert-success" role="alert">
                           Data berhasil dihapus
                       </div>';
+                        } else if ($_GET['status'] == 'nochange') {
+                            echo '<div class="alert alert-success" role="alert">
+                          Data Tidak ada yang berubah
+                      </div>';
                         }
                     }
                     ?>

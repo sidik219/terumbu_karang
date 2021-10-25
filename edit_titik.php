@@ -1,107 +1,108 @@
 <?php
 session_start();
-if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)){
-  header('location: login.php?status=restrictedaccess');
+if (!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)) {
+    header('location: login.php?status=restrictedaccess');
 }
 include 'build/config/connection.php';
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
 
-    $id_titik = $_GET['id_titik'];
+$id_titik = $_GET['id_titik'];
 
-    $level_user = $_SESSION['level_user'];
+$level_user = $_SESSION['level_user'];
 
-if($level_user == 2){
-  $id_wilayah = $_SESSION['id_wilayah_dikelola'];
-  $extra_query = " AND t_wilayah.id_wilayah = $id_wilayah ";
-  $extra_query_noand = " t_wilayah.id_wilayah = $id_wilayah ";
-  $wilayah_join = " LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
+if ($level_user == 2) {
+    $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+    $extra_query = " AND t_wilayah.id_wilayah = $id_wilayah ";
+    $extra_query_noand = " t_wilayah.id_wilayah = $id_wilayah ";
+    $wilayah_join = " LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
                     LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
-  $extra_query_k_lok = " AND t_lokasi.id_wilayah = $id_wilayah ";
-  $extra_query_where = "WHERE t_wilayah.id_wilayah = $id_wilayah ";
-  $extra_query_where_lok = "WHERE t_lokasi.id_wilayah = $id_wilayah ";
-}
-else if($level_user == 4){
-  $extra_query = "  ";
-  $extra_query_noand = "  ";
-  $wilayah_join = " ";
-  $extra_query_k_lok = " ";
-  $extra_query_where = " ";
-  $extra_query_where_lok = " ";
-}
-else if($level_user == 3){
-  $id_lokasi = $_SESSION['id_lokasi_dikelola'];
-  $extra_query_where_lok = "WHERE t_lokasi.id_lokasi = $id_lokasi ";
-  $extra_query_where = " LEFT JOIN t_lokasi ON t_lokasi.id_wilayah = t_wilayah.id_wilayah WHERE t_lokasi.id_lokasi = $id_lokasi ";
+    $extra_query_k_lok = " AND t_lokasi.id_wilayah = $id_wilayah ";
+    $extra_query_where = "WHERE t_wilayah.id_wilayah = $id_wilayah ";
+    $extra_query_where_lok = "WHERE t_lokasi.id_wilayah = $id_wilayah ";
+} else if ($level_user == 4) {
+    $extra_query = "  ";
+    $extra_query_noand = "  ";
+    $wilayah_join = " ";
+    $extra_query_k_lok = " ";
+    $extra_query_where = " ";
+    $extra_query_where_lok = " ";
+} else if ($level_user == 3) {
+    $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+    $extra_query_where_lok = "WHERE t_lokasi.id_lokasi = $id_lokasi ";
+    $extra_query_where = " LEFT JOIN t_lokasi ON t_lokasi.id_wilayah = t_wilayah.id_wilayah WHERE t_lokasi.id_lokasi = $id_lokasi ";
 }
 
-    $sqlviewlokasi = 'SELECT * FROM t_lokasi '.$extra_query_where_lok.'
+$sqlviewlokasi = 'SELECT * FROM t_lokasi ' . $extra_query_where_lok . '
                         ORDER BY nama_lokasi';
-        $stmt = $pdo->prepare($sqlviewlokasi);
-        $stmt->execute();
-        $rowlokasi = $stmt->fetchAll();
+$stmt = $pdo->prepare($sqlviewlokasi);
+$stmt->execute();
+$rowlokasi = $stmt->fetchAll();
 
-        $sqlviewwilayah = 'SELECT * FROM t_wilayah  '.$extra_query_where.'
+$sqlviewwilayah = 'SELECT * FROM t_wilayah  ' . $extra_query_where . '
                         ORDER BY nama_wilayah';
-        $stmt = $pdo->prepare($sqlviewwilayah);
-        $stmt->execute();
-        $rowwilayah = $stmt->fetchAll();
+$stmt = $pdo->prepare($sqlviewwilayah);
+$stmt->execute();
+$rowwilayah = $stmt->fetchAll();
 
-        $sqlviewtitik = 'SELECT *, t_titik.latitude AS latitude_titik,
+$sqlviewtitik = 'SELECT *, t_titik.latitude AS latitude_titik,
                           t_titik.longitude AS longitude_titik
                         FROM t_titik
                         LEFT JOIN t_lokasi ON t_titik.id_lokasi = t_lokasi.id_lokasi
                         LEFT JOIN t_wilayah ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
                         WHERE id_titik = :id_titik';
-        $stmt = $pdo->prepare($sqlviewtitik);
-        $stmt->execute(['id_titik' => $id_titik]);
-        $row = $stmt->fetch();
+$stmt = $pdo->prepare($sqlviewtitik);
+$stmt->execute(['id_titik' => $id_titik]);
+$row = $stmt->fetch();
 
-    if (isset($_POST['submit'])) {
-            $id_lokasi        = $_POST['dd_id_lokasi'];
-            $id_wilayah        = $_POST['dd_id_wilayah'];
-            $luas_titik        = $_POST['tbluas_titik'];
-            $longitude        = $_POST['tblongitude'];
-            $latitude        = $_POST['tblatitude'];
-            $kondisi_titik        = $_POST['rb_kondisi_titik'];
-            $keterangan_titik = $_POST['tb_keterangan_titik'];
-            $id_zona_titik = $_POST['id_zona_titik'];
+if (isset($_POST['submit'])) {
+    $id_lokasi        = $_POST['dd_id_lokasi'];
+    $id_wilayah        = $_POST['dd_id_wilayah'];
+    $luas_titik        = $_POST['tbluas_titik'];
+    $longitude        = $_POST['tblongitude'];
+    $latitude        = $_POST['tblatitude'];
+    $kondisi_titik        = $_POST['rb_kondisi_titik'];
+    $keterangan_titik = $_POST['tb_keterangan_titik'];
+    $id_zona_titik = $_POST['id_zona_titik'];
 
-            $sqltitik = "UPDATE t_titik
+    $sqltitik = "UPDATE t_titik
                             SET id_lokasi = :id_lokasi,
                             luas_titik = :luas_titik, longitude = :longitude,
                             latitude = :latitude, kondisi_titik = :kondisi_titik, keterangan_titik = :keterangan_titik, id_zona_titik = :id_zona_titik
                             WHERE id_titik = :id_titik";
 
-            $stmt = $pdo->prepare($sqltitik);
-            $stmt->execute(['id_titik' => $id_titik, 'id_lokasi' => $id_lokasi,
-            'luas_titik' => $luas_titik, 'longitude' => $longitude,
-            'latitude' => $latitude, 'kondisi_titik' => $kondisi_titik, 'keterangan_titik' => $keterangan_titik,'id_zona_titik' => $id_zona_titik]);
+    $stmt = $pdo->prepare($sqltitik);
+    $stmt->execute([
+        'id_titik' => $id_titik, 'id_lokasi' => $id_lokasi,
+        'luas_titik' => $luas_titik, 'longitude' => $longitude,
+        'latitude' => $latitude, 'kondisi_titik' => $kondisi_titik, 'keterangan_titik' => $keterangan_titik, 'id_zona_titik' => $id_zona_titik
+    ]);
 
-            $affectedrows = $stmt->rowCount();
-            if ($affectedrows == '0') {
-            header("Location: kelola_titik.php?status=nochange");
-            } else {
-                //echo "HAHAHAAHA GREAT SUCCESSS !";
-                header("Location: kelola_titik.php?status=updatesuccess");
-            }
-        }
+    $affectedrows = $stmt->rowCount();
+    if ($affectedrows == '0') {
+        header("Location: kelola_titik.php?status=nochange");
+    } else {
+        //echo "HAHAHAAHA GREAT SUCCESSS !";
+        header("Location: kelola_titik.php?status=updatesuccess");
+    }
+}
 
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Kelola Titik - GoKarang</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
-        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-        <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
-        <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Favicon -->
@@ -123,9 +124,9 @@ else if($level_user == 3){
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Akun Saya</a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">Edit Profil</a>
+                        <a class="dropdown-item" href="logout.php">Logout</a>
                 </li>
             </ul>
         </nav>
@@ -143,8 +144,9 @@ else if($level_user == 3){
             <div class="sidebar">
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
-                   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php print_sidebar(basename(__FILE__), $_SESSION['level_user'])?> <!-- Print sidebar -->
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <?php print_sidebar(basename(__FILE__), $_SESSION['level_user']) ?>
+                        <!-- Print sidebar -->
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -156,10 +158,11 @@ else if($level_user == 3){
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <div class="content-header">
-                    <div class="container-fluid">
-                        <a class="btn btn-outline-primary" href="kelola_titik.php">< Kembali</a><br><br>
-                        <h4><span class="align-middle font-weight-bold">Edit Data Titik</span></h4>
-                    </div>
+                <div class="container-fluid">
+                    <a class="btn btn-outline-primary" href="kelola_titik.php">
+                        < Kembali</a><br><br>
+                            <h4><span class="align-middle font-weight-bold">Edit Data Titik</span></h4>
+                </div>
                 <!-- /.container-fluid -->
             </div>
             <!-- /.content-header -->
@@ -168,111 +171,124 @@ else if($level_user == 3){
             <section class="content">
                 <div class="container-fluid">
                     <form action="" enctype="multipart/form-data" method="POST">
-                    <div class="form-group">
-                      <div class="form-group">
-                        <label for="tb_keterangan_titik">Keterangan/Nama Titik</label>
-                        <input type="text" value="<?=$row->keterangan_titik?>" name="tb_keterangan_titik" class="form-control" id="tb_keterangan_titik">
-                    </div>
-                    <div class="form-group">
-                        <label for="rb_status_wisata">Zona Titik</label><br>
-                        <?php
-                          $sqlviewzonatitik = 'SELECT * FROM t_zona_titik';
-                          $stmt = $pdo->prepare($sqlviewzonatitik);
-                          $stmt->execute();
-                          $rowzona = $stmt->fetchAll();
-                          foreach($rowzona as $zona){
-
-                        ?>
-                            <div class="form-check form-check-inline">
-                                <input type="radio" id="idzona<?=$zona->id_zona_titik?>" name="id_zona_titik" value="<?=$zona->id_zona_titik?>" class="form-check-input" <?php if($zona->id_zona_titik == $row->id_zona_titik) echo 'checked required'?>>
-                                <label class="form-check-label" for="idzona<?=$zona->id_zona_titik?>">
-                                    <?=$zona->nama_zona_titik?>
-                                </label>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label for="tb_keterangan_titik">Keterangan/Nama Titik</label>
+                                <input type="text" value="<?= $row->keterangan_titik ?>" name="tb_keterangan_titik" class="form-control" id="tb_keterangan_titik" required>
                             </div>
-                          <?php } ?>
-                    </div>
-                        <label for="dd_id_wilayah">Wilayah</label>
-                        <select id="dd_id_wilayah" name="dd_id_wilayah" class="form-control" onChange="loadLokasi(this.value);" required>
-                            <?php foreach ($rowwilayah as $rowitem) {
-                            ?>
-                            <option value="<?=$rowitem->id_wilayah?>" <?php if ($rowitem->id_wilayah == $row->id_wilayah) {echo " selected";} ?>>
-                            ID <?=$rowitem->id_wilayah?> - <?=$rowitem->nama_wilayah?></option>
+                            <div class="form-group">
+                                <label for="rb_status_wisata">Zona Titik</label><br>
+                                <?php
+                                $sqlviewzonatitik = 'SELECT * FROM t_zona_titik';
+                                $stmt = $pdo->prepare($sqlviewzonatitik);
+                                $stmt->execute();
+                                $rowzona = $stmt->fetchAll();
+                                foreach ($rowzona as $zona) {
 
-                            <?php } ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="dd_id_lokasi">Lokasi</label>
-                        <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" required>
-                            <?php foreach ($rowlokasi as $rowitem) {
-                            ?>
-                            <option value="<?=$rowitem->id_lokasi?>" <?php if ($rowitem->id_lokasi == $row->id_lokasi) {echo " selected";} ?>>
-                            ID <?=$rowitem->id_lokasi?> - <?=$rowitem->nama_lokasi?></option>
+                                ?>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" id="idzona<?= $zona->id_zona_titik ?>" name="id_zona_titik" value="<?= $zona->id_zona_titik ?>" class="form-check-input" <?php if ($zona->id_zona_titik == $row->id_zona_titik) echo 'checked required' ?>>
+                                        <label class="form-check-label" for="idzona<?= $zona->id_zona_titik ?>">
+                                            <?= $zona->nama_zona_titik ?>
+                                        </label>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                            <label for="dd_id_wilayah">Wilayah</label>
+                            <select id="dd_id_wilayah" name="dd_id_wilayah" class="form-control" onChange="loadLokasi(this.value);" required>
+                                <?php foreach ($rowwilayah as $rowitem) {
+                                ?>
+                                    <option value="<?= $rowitem->id_wilayah ?>" <?php if ($rowitem->id_wilayah == $row->id_wilayah) {
+                                                                                    echo " selected";
+                                                                                } ?>>
+                                        ID <?= $rowitem->id_wilayah ?> - <?= $rowitem->nama_wilayah ?></option>
 
-                            <?php } ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Luas Titik (ha)</label>
-                        <input type="number" value="<?=$row->luas_titik?>" name="tbluas_titik" class="form-control" id="#">
-                    </div>
-                    <label for="tblongitude">Koordinat Titik</label>
-                    <div class="col-12 border rounded p-3 bg-light mb-2">
-                              <div class="form-group">
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dd_id_lokasi">Lokasi</label>
+                            <select id="dd_id_lokasi" name="dd_id_lokasi" class="form-control" required>
+                                <?php foreach ($rowlokasi as $rowitem) {
+                                ?>
+                                    <option value="<?= $rowitem->id_lokasi ?>" <?php if ($rowitem->id_lokasi == $row->id_lokasi) {
+                                                                                    echo " selected";
+                                                                                } ?>>
+                                        ID <?= $rowitem->id_lokasi ?> - <?= $rowitem->nama_lokasi ?></option>
+
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Luas Titik (ha)</label>
+                            <input required type="number" value="<?= $row->luas_titik ?>" name="tbluas_titik" class="form-control" id="#">
+                        </div>
+                        <label for="tblongitude">Koordinat Titik</label>
+                        <div class="col-12 border rounded p-3 bg-light mb-2">
+                            <div class="form-group">
                                 <label for="tblatitude">Latitude</label>
-                        <input type="text" name="tblatitude" value="<?=$row->latitude_titik?>" class="form-control number-input" id="tblatitude" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="tblongitude">Longitude</label>
-                        <input type="text" name="tblongitude" value="<?=$row->longitude_titik?>" class="form-control number-input" id="tblongitude" required>
-                    </div>
-                    <button class="btn btn-act mb-1" onclick="getCoordinates()"><i class="nav-icon fas fa-map-marked-alt"></i> Deteksi Lokasi Anda</button><br>
-                    <span class="" id="akurasi"></span><br>
-                    <span class="text-muted small"> (Perlu izin browser)</span>
-                    </div>
+                                <input type="text" name="tblatitude" value="<?= $row->latitude_titik ?>" class="form-control number-input" id="tblatitude" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="tblongitude">Longitude</label>
+                                <input type="text" name="tblongitude" value="<?= $row->longitude_titik ?>" class="form-control number-input" id="tblongitude" required>
+                            </div>
+                            <button class="btn btn-act mb-1" onclick="getCoordinates()"><i class="nav-icon fas fa-map-marked-alt"></i> Deteksi Lokasi Anda</button><br>
+                            <span class="" id="akurasi"></span><br>
+                            <span class="text-muted small"> (Perlu izin browser)</span>
+                        </div>
 
 
-                    <div class="form-group d-none">
-                        <label for="rb_status_wisata">Kondisi</label><br>
+                        <div class="form-group d-none">
+                            <label for="rb_status_wisata">Kondisi</label><br>
                             <div class="form-check form-check-inline">
-                                <input type="radio" id="rb_kondisi_kurang" name="rb_kondisi_titik" value="Kurang" class="form-check-input"<?php if ($row->kondisi_titik == "Kurang"){echo " checked";} ?>>
+                                <input type="radio" id="rb_kondisi_kurang" name="rb_kondisi_titik" value="Kurang" class="form-check-input" <?php if ($row->kondisi_titik == "Kurang") {
+                                                                                                                                                echo " checked";
+                                                                                                                                            } ?>>
                                 <label class="form-check-label" for="rb_kondisi_kurang" style="color: #DE4C4F">
                                     Kurang (0-24%)
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input type="radio" id="rb_kondisi_cukup" name="rb_kondisi_titik" value="Cukup" class="form-check-input"<?php if ($row->kondisi_titik == "Cukup"){echo " checked";} ?>>
+                                <input type="radio" id="rb_kondisi_cukup" name="rb_kondisi_titik" value="Cukup" class="form-check-input" <?php if ($row->kondisi_titik == "Cukup") {
+                                                                                                                                                echo " checked";
+                                                                                                                                            } ?>>
                                 <label class="form-check-label" for="rb_kondisi_cukup" style="color: #D8854F">
                                     Cukup (25-49%)
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input type="radio" id="rb_kondisi_baik" name="rb_kondisi_titik" value="Baik" class="form-check-input"<?php if ($row->kondisi_titik == "Baik"){echo " checked";} ?>>
+                                <input type="radio" id="rb_kondisi_baik" name="rb_kondisi_titik" value="Baik" class="form-check-input" <?php if ($row->kondisi_titik == "Baik") {
+                                                                                                                                            echo " checked";
+                                                                                                                                        } ?>>
                                 <label class="form-check-label" for="rb_kondisi_baik" style="color: #EEA637">
                                     Baik (50-74%)
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input type="radio" id="rb_kondisi_sangat_baik" name="rb_kondisi_titik" value="Sangat Baik" class="form-check-input"<?php if ($row->kondisi_titik == "Sangat Baik"){echo " checked";} ?>>
+                                <input type="radio" id="rb_kondisi_sangat_baik" name="rb_kondisi_titik" value="Sangat Baik" class="form-check-input" <?php if ($row->kondisi_titik == "Sangat Baik") {
+                                                                                                                                                            echo " checked";
+                                                                                                                                                        } ?>>
                                 <label class="form-check-label" for="rb_kondisi_sangat_baik" style="color: #A7A737">
                                     Sangat Baik (75-100%)
                                 </label>
                             </div>
-                    </div>
+                        </div>
                         <br>
                         <p align="center">
-                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
+                            <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button>
+                        </p>
                     </form>
-            <br><br>
+                    <br><br>
 
             </section>
             <!-- /.Left col -->
-            </div>
-            <!-- /.row (main row) -->
         </div>
-        <!-- /.container-fluid -->
-        </section>
-        <!-- /.content -->
+        <!-- /.row (main row) -->
+    </div>
+    <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
     <br><br>
@@ -282,7 +298,7 @@ else if($level_user == 3){
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
+        <!-- Control sidebar content goes here -->
     </aside>
     <!-- /.control-sidebar -->
     </div>
@@ -304,49 +320,50 @@ else if($level_user == 3){
     <script src="dist/js/adminlte.js"></script>
 
     <script async>
-    function loadLokasi(id_wilayah){
-      $.ajax({
-        type: "POST",
-        url: "list_populate.php",
-        data:{
-            id_wilayah: id_wilayah,
-            type: 'load_lokasi'
-        },
-        beforeSend: function() {
-          $("#dd_id_lokasi").addClass("loader");
-        },
-        success: function(data){
-          $("#dd_id_lokasi").html(data);
-          $("#dd_id_lokasi").removeClass("loader");
+        function loadLokasi(id_wilayah) {
+            $.ajax({
+                type: "POST",
+                url: "list_populate.php",
+                data: {
+                    id_wilayah: id_wilayah,
+                    type: 'load_lokasi'
+                },
+                beforeSend: function() {
+                    $("#dd_id_lokasi").addClass("loader");
+                },
+                success: function(data) {
+                    $("#dd_id_lokasi").html(data);
+                    $("#dd_id_lokasi").removeClass("loader");
+                }
+            });
         }
-      });
-    }
 
-    function getCoordinates(){
-      event.preventDefault()
-      var options = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0
-};
+        function getCoordinates() {
+            event.preventDefault()
+            var options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            };
 
-function success(pos) {
+            function success(pos) {
 
-  var crd = pos.coords;
+                var crd = pos.coords;
 
-  console.log('Your current position is:');
-  document.getElementById('tblatitude').value = crd.latitude
-  document.getElementById('tblongitude').value = crd.longitude
-  document.getElementById('akurasi').innerHTML = `Akurasi: ${crd.accuracy} meter`
-}
+                console.log('Your current position is:');
+                document.getElementById('tblatitude').value = crd.latitude
+                document.getElementById('tblongitude').value = crd.longitude
+                document.getElementById('akurasi').innerHTML = `Akurasi: ${crd.accuracy} meter`
+            }
 
-function error(err) {
-  console.warn(`ERROR(${err.code}): ${err.message}`);
-}
+            function error(err) {
+                console.warn(`ERROR(${err.code}): ${err.message}`);
+            }
 
-navigator.geolocation.getCurrentPosition(success, error, options);
-    }
+            navigator.geolocation.getCurrentPosition(success, error, options);
+        }
     </script>
 
 </body>
+
 </html>

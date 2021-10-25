@@ -5,7 +5,8 @@ if (!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 3 || $_SESSION[
 }
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
-
+// var_dump($_SESSION);
+// die;
 $level_user = $_SESSION['level_user'];
 
 if ($level_user == 2) {
@@ -248,7 +249,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                             </div>
                         </div>
                     </div>
-    
+
 
                     <table class="table table-striped table-responsive-sm">
                         <thead>
@@ -318,16 +319,16 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                                                                     } ?>">
                                             <a href="edit_donasi.php?id_donasi=<?= $rowitem->id_donasi ?>"><i class="fas fa-edit"></i><?= $level_user == 2 ? ' Verifikasi Bukti Donasi' : '' ?></a>
                                         </button>
-                                            <?php echo ($rowitem->id_status_donasi == 2) ? '<br><small class="text-muted text-sm"><i class="fas text-warning fa-exclamation-circle"></i> Bukti donasi dalam proses verifikasi </small>' : '' ?>
-                                            <?php echo (($rowitem->id_status_donasi >= 3) && ($rowitem->id_status_donasi < 7)) ? '<br><small> <i class="fas text-info fa-check"></i> Bukti donasi sudah verifikasi </small>' : '' ?>
-                                            <?php echo ($rowitem->id_status_donasi == 7) ? '<br><small class="text-muted text-sm"><i class="fas text-danger fa-times"></i> Bukti donasi bermasalah </small>' : '' ?>
-                                                                                
+                                        <?php echo ($rowitem->id_status_donasi == 2) ? '<br><small class="text-muted text-sm"><i class="fas text-warning fa-exclamation-circle"></i> Bukti donasi dalam proses verifikasi </small>' : '' ?>
+                                        <?php echo (($rowitem->id_status_donasi >= 3) && ($rowitem->id_status_donasi < 7)) ? '<br><small> <i class="fas text-info fa-check"></i> Bukti donasi sudah verifikasi </small>' : '' ?>
+                                        <?php echo ($rowitem->id_status_donasi == 7) ? '<br><small class="text-muted text-sm"><i class="fas text-danger fa-times"></i> Bukti donasi bermasalah </small>' : '' ?>
+
                                         <br>
                                         <button type="button" class="mt-3 btn btn-act <?php if (!($_SESSION['level_user'] == 4)) {
-                                                                                        echo " d-none ";
-                                                                                    } ?>"><i class="far fa-trash-alt"></i></button>
+                                                                                            echo " d-none ";
+                                                                                        } ?>"><i class="far fa-trash-alt"></i></button>
                                     </td>
-                                    
+
 
                                 </tr>
 
@@ -342,43 +343,42 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                                 </p>
                                             </div>
                                             <div class="col-9">
-                                                <ul class="progress-indicator"> 
-                                                <?php foreach($rowstatus as $status){ 
-                                                    $id_status_donasi = $rowitem->id_status_donasi;  
-                                                    if($status->id_status_donasi != 7){ ?>
-                                                <li class="<?php 
-                                                if($id_status_donasi == $status->id_status_donasi) 
-                                                    echo ' active ';
-                                                else if ($id_status_donasi > $status->id_status_donasi) 
-                                                    echo ' completed ';
-                                                else
-                                                    echo '  ';
-                                                ?>">
-                                                <span class="bubble"></span>
-                                                    <span>                                                        
-                                                        <?=$status->nama_status_donasi?> 
-                                                        <br><small class="font-weight-bold">
-                                                            <?php 
-                                                            if ($id_status_donasi == $status->id_status_donasi){
-                                                                if($id_status_donasi == 5){ //dalam tahap pemeliharaan
-                                                                    if($id_status_donasi == $status->id_status_donasi && $rowitem->jumlah_pemeliharaan == 0) //belum pernah pemeliharaan
-                                                                        echo '(Persiapan tahap pemeliharaan)';
-                                                                    else if($id_status_donasi == $status->id_status_donasi && $rowitem->jumlah_pemeliharaan != 0)
-                                                                        echo '(Pemeliharaan ke: '. $rowitem->jumlah_pemeliharaan.')';
-                                                                    }
-                                                                    else
-                                                                        echo ('(Aktif)'); //id status lain
-                                                            
-                                                            }
-                                                            
-                                                            ?>
-                                                        </small>
-                                                    </span>
-                                                </li>
-                                                
-                                                <?php } 
+                                                <ul class="progress-indicator">
+                                                    <?php foreach ($rowstatus as $status) {
+                                                        $id_status_donasi = $rowitem->id_status_donasi;
+                                                        if ($status->id_status_donasi != 7) { ?>
+                                                            <li class="<?php
+                                                                        if ($id_status_donasi == $status->id_status_donasi)
+                                                                            echo ' active ';
+                                                                        else if ($id_status_donasi > $status->id_status_donasi)
+                                                                            echo ' completed ';
+                                                                        else
+                                                                            echo '  ';
+                                                                        ?>">
+                                                                <span class="bubble"></span>
+                                                                <span>
+                                                                    <?= $status->nama_status_donasi ?>
+                                                                    <br><small class="font-weight-bold">
+                                                                        <?php
+                                                                        if ($id_status_donasi == $status->id_status_donasi) {
+                                                                            if ($id_status_donasi == 5) { //dalam tahap pemeliharaan
+                                                                                if ($id_status_donasi == $status->id_status_donasi && $rowitem->jumlah_pemeliharaan == 0) //belum pernah pemeliharaan
+                                                                                    echo '(Persiapan tahap pemeliharaan)';
+                                                                                else if ($id_status_donasi == $status->id_status_donasi && $rowitem->jumlah_pemeliharaan != 0)
+                                                                                    echo '(Pemeliharaan ke: ' . $rowitem->jumlah_pemeliharaan . ')';
+                                                                            } else
+                                                                                echo ('(Aktif)'); //id status lain
+
+                                                                        }
+
+                                                                        ?>
+                                                                    </small>
+                                                                </span>
+                                                            </li>
+
+                                                    <?php }
                                                     } ?>
-                                        </ul>
+                                                </ul>
                                             </div>
                                             <div class="col-12 cell<?= $rowitem->id_donasi ?> collapse contentall<?= $rowitem->id_donasi ?>    border rounded shadow-sm p-3">
                                                 <div class="row mb-3  border-bottom">
@@ -424,12 +424,18 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                                         Pesan/Ekspresi
                                                     </div>
                                                     <div class="col isi">
-                                                        <?php
-                                                        echo $rowitem->pesan;
-                                                        ?>
-                                                        <button type="button" class="btn btn-success mb-2">
-                                                            <a href="cetak_pesan_donasi.php?id_donasi=<?= $rowitem->id_donasi ?>" style="color: #fff;">Cetak Ekspresi/Pesan</a>
-                                                        </button>
+                                                        <?php if (!$rowitem->pesan == null) : ?>
+                                                            <?php
+                                                            echo $rowitem->pesan;
+                                                            ?>
+                                                            <?php if ($_SESSION['level_user'] == 3) : ?>
+                                                                <button type="button" class="btn btn-success mb-2">
+                                                                    <a href="cetak_pesan_donasi.php?id_donasi=<?= $rowitem->id_donasi ?>" style="color: #fff;">Cetak Ekspresi/Pesan</a>
+                                                                </button>
+                                                            <?php endif ?>
+                                                        <?php else : ?>
+                                                            <p>Tidak Ada Pesan</p>
+                                                        <?php endif ?>
                                                     </div>
                                                 </div>
 

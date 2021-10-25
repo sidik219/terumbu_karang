@@ -95,10 +95,18 @@ $row = $stmt->fetchAll();
                             echo '<div class="alert alert-success" role="alert">
                           Update data berhasil
                       </div>';
+                        } else if ($_GET['replace'] == 'a') {
+                            echo '<div class="alert alert-success" role="alert">
+                      Foto Berhasil Berubah
+                  </div>';
+                        } else if ($_GET['status'] == 'nochange') {
+                            echo '<div class="alert alert-success" role="alert">
+                          Data Tidak Ada Yang Diubah
+                      </div>';
                         } else if ($_GET['status'] == 'addsuccess') {
                             echo '<div class="alert alert-success" role="alert">
-                          Data baru berhasil ditambahkan
-                      </div>';
+                      Data baru berhasil ditambahkan
+                  </div>';
                         } else if ($_GET['status'] == 'deletesuccess') {
                             echo '<div class="alert alert-success" role="alert">
                           Data berhasil dihapus

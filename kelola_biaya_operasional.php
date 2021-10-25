@@ -215,7 +215,7 @@ if (isset($_POST['submit_biaya'])) {
               <label class="text-muted text-sm d-block"><i class="fas text-primary fa-info-circle"></i> Biaya pemeliharaan akan ditambahkan ke harga patokan terumbu karang
                 untuk menutup biaya operasional. Dihitung dari total biaya operasional dibagi kapasitas kapal</label>
               <?= ($rowbiaya->kapasitas_kapal >= 1) ? "<label class='text-sm d-block'>Biaya minimum agar Balik Modal : Rp. " . number_format($biaya_rekomendasi) . " </label>" : "" ?>
-              <input type="hidden" id="biaya_pergantian_number2" name="biaya_pemeliharaan" value="<?= $rowbiaya->biaya_pemeliharaan ?>">
+              <input type="hidden" id="biaya_pergantian_number21" name="biaya_pemeliharaan" value="<?= $rowbiaya->biaya_pemeliharaan ?>">
               <div class="row">
                 <div class="col-auto text-center p-2">
                   Rp.
@@ -315,7 +315,7 @@ if (isset($_POST['submit_biaya'])) {
                     Rp.
                   </div>
                   <div class="col">
-                    <input onkeyup="formatNumber(this)" type="text" id="num_biaya_pergantian" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
+                    <input type="text" id="num_biaya_pergantian" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
                   </div>
                 </div>
 
@@ -413,121 +413,131 @@ if (isset($_POST['submit_biaya'])) {
     }
 
     function updatePatokanTerumbu() {
-      var isiform = $('#edit_form').serialize()
-      $.ajax({
-        type: 'POST',
-        url: 'proses_form.php',
-        data: isiform,
-        success: function() {
-          alert('Data berhasil diupdate')
-          location.reload();
+      var value1 = document.getElementById('nama_biaya_operasional1').value;
+      var value2 = document.getElementById('num_biaya_pergantian3').value;
+      console.log(value1);
+      console.log(value2);
+      // var value3 = document.getElementById('num_biaya_pergantian').value;
+      if (value1 === '' || value2 === '') {
+        alert('Semua Data harus Terisi');
+        return false;
+      } else {
+        var isiform = $('#edit_form').serialize()
+        $.ajax({
+          type: 'POST',
+          url: 'proses_form.php',
+          data: isiform,
+          success: function() {
+            alert('Data berhasil diupdate')
+            location.reload();
+          }
+
+        })
+      }
+
+      var formatter = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      });
+
+
+
+
+
+      var formatter = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+
+        // These options are needed to round to whole numbers if that's what you want.
+        //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+        //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+      });
+
+
+      // function formatNumber(e) {
+      //   var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
+      //   if (!isNaN(formattedNumber)) {
+      //     $('#biaya_pergantian_number').val(formattedNumber)
+      //     $('#num_biaya_pergantian').val(formatter.format(formattedNumber))
+      //   } else {
+      //     $('#biaya_pergantian_number').val('0')
+      //     $('#num_biaya_pergantian').val('0')
+      //   }
+      // }
+
+      // function formatNumber1(e) {
+      //   var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
+      //   if (!isNaN(formattedNumber)) {
+      //     $('#biaya_pergantian_number1').val(formattedNumber)
+      //     $('#num_biaya_pergantian1').val(formatter.format(formattedNumber))
+      //   } else {
+      //     $('#biaya_pergantian_number1').val('0')
+      //     $('#num_biaya_pergantian1').val('0')
+      //   }
+      // }
+
+      function hitungMargin(biaya) {
+        var biaya_rekomendasi;
+        var margin;
+        biaya_rekomendasi = <?= $biaya_rekomendasi; ?>;
+
+        margin = ((biaya / biaya_rekomendasi) * 100) - 100;
+        persenMargin = margin.toFixed(2);
+        var persanMargin;
+
+        if (persenMargin >= 0) {
+          pesanMargin = `<span class="text-success text-small">Untung <b>${persenMargin}%</b> </span>`;
+        } else {
+          pesanMargin = `<span class="text-danger text-small">Rugi <b>${persenMargin}%</b> </span>`;
         }
 
-      })
-    }
-
-    var formatter = new Intl.NumberFormat('en-US', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    });
-
-
-
-
-
-    var formatter = new Intl.NumberFormat('en-US', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-
-      // These options are needed to round to whole numbers if that's what you want.
-      //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-      //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
-    });
-
-
-    function formatNumber(e) {
-      var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
-      if (!isNaN(formattedNumber)) {
-        $('#biaya_pergantian_number').val(formattedNumber)
-        $('#num_biaya_pergantian').val(formatter.format(formattedNumber))
-      } else {
-        $('#biaya_pergantian_number').val('0')
-        $('#num_biaya_pergantian').val('0')
-      }
-    }
-
-    function formatNumber1(e) {
-      var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
-      if (!isNaN(formattedNumber)) {
-        $('#biaya_pergantian_number1').val(formattedNumber)
-        $('#num_biaya_pergantian1').val(formatter.format(formattedNumber))
-      } else {
-        $('#biaya_pergantian_number1').val('0')
-        $('#num_biaya_pergantian1').val('0')
-      }
-    }
-
-    function hitungMargin(biaya) {
-      var biaya_rekomendasi;
-      var margin;
-      biaya_rekomendasi = <?= $biaya_rekomendasi; ?>;
-
-      margin = ((biaya / biaya_rekomendasi) * 100) - 100;
-      persenMargin = margin.toFixed(2);
-      var persanMargin;
-
-      if (persenMargin >= 0) {
-        pesanMargin = `<span class="text-success text-small">Untung <b>${persenMargin}%</b> </span>`;
-      } else {
-        pesanMargin = `<span class="text-danger text-small">Rugi <b>${persenMargin}%</b> </span>`;
-      }
-
-      if (biaya_rekomendasi == 0 || biaya == null) {
-        pesanMargin = '';
-      }
-
-      $('#pesanMargin').html(pesanMargin);
-
-    }
-
-
-    //Biaya pemeliharaan formatting
-    function formatNumber2(e) {
-      var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
-      if (!isNaN(formattedNumber)) {
-        $('#biaya_pergantian_number2').val(formattedNumber)
-        $('#num_biaya_pergantian2').val(formatter.format(formattedNumber))
-        hitungMargin(formattedNumber)
-      } else {
-        $('#biaya_pergantian_number2').val('0')
-        $('#num_biaya_pergantian2').val('0')
-      }
-    }
-
-    function formatNumber3(e) {
-      var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
-      if (!isNaN(formattedNumber)) {
-        $('#biaya_pergantian_number3').val(formattedNumber)
-        $('#num_biaya_pergantian3').val(formatter.format(formattedNumber))
-      } else {
-        $('#biaya_pergantian_number3').val('0')
-        $('#num_biaya_pergantian3').val('0')
-      }
-    }
-
-
-    function simpanRekomendasiBaiaya() {
-      var isiform = $('#hitung_form').serialize()
-      $.ajax({
-        type: 'POST',
-        url: 'proses_form.php',
-        data: isiform,
-        success: function() {
-          alert('Memproses data...')
-          location.reload();
+        if (biaya_rekomendasi == 0 || biaya == null) {
+          pesanMargin = '';
         }
 
-      })
+        $('#pesanMargin').html(pesanMargin);
+
+      }
+
+
+      //Biaya pemeliharaan formatting
+      function formatNumber2(e) {
+        var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
+        if (!isNaN(formattedNumber)) {
+          $('#biaya_pergantian_number21').val(formattedNumber)
+          $('#num_biaya_pergantian2').val(formatter.format(formattedNumber))
+          hitungMargin(formattedNumber)
+        } else {
+          $('#biaya_pergantian_number21').val('0')
+          $('#num_biaya_pergantian2').val('0')
+        }
+      }
+
+      function formatNumber3(e) {
+        var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
+        if (!isNaN(formattedNumber)) {
+          $('#biaya_pergantian_number3').val(formattedNumber)
+          $('#num_biaya_pergantian3').val(formatter.format(formattedNumber))
+        } else {
+          $('#biaya_pergantian_number3').val('0')
+          $('#num_biaya_pergantian3').val('0')
+        }
+      }
+
+
+      function simpanRekomendasiBaiaya() {
+        var isiform = $('#hitung_form').serialize()
+        $.ajax({
+          type: 'POST',
+          url: 'proses_form.php',
+          data: isiform,
+          success: function() {
+            alert('Memproses data...')
+            location.reload();
+          }
+
+        })
+      }
     }
   </script>
 

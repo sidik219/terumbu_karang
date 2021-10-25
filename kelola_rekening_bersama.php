@@ -372,9 +372,9 @@ if ($_SESSION['level_user'] == 4) {
     }
 
     function updateRekening() {
-      var value1 = document.getElementById('nama_pemilik_rekening').value;
-      var value2 = document.getElementById('nomor_rekening').value;
-      var value3 = document.getElementById('nama_bank').value;
+      var value1 = document.getElementById('nama_pemilik_rekening1').value;
+      var value2 = document.getElementById('nomor_rekening1').value;
+      var value3 = document.getElementById('nama_bank1').value;
       console.log(value1)
       console.log(value2)
       console.log(value3)

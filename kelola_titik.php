@@ -220,7 +220,7 @@ $row = $stmt->fetchAll();
     <script>
         function konfirmasiHapusPengadaan(event) {
             jawab = true
-            jawab = confirm('Yakin ingin menghapus? Data Operasional akan hilang permanen!')
+            jawab = confirm('Yakin ingin menghapus? Data Titik akan hilang permanen!')
 
             if (jawab) {
                 // alert('Lanjut.')

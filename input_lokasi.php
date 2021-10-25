@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
         }
 
         //---image upload end
-        
+
         //Image upload TTD Digital
         if ($_FILES["image_uploads1"]["size"] == 0) {
             $ttd_digital = "images/image_default.jpg";
@@ -81,7 +81,7 @@ if (isset($_POST['submit'])) {
             'deskripsi_lokasi' => $deskripsi_lokasi, 'foto_lokasi' => $foto_lokasi,
             'luas_lokasi' => $luas_lokasi, 'id_user_pengelola' => $id_user_pengelola,
             'kontak_lokasi' => $kontak_lokasi, 'nama_bank' => $nama_bank, 'kapasitas_kapal' => $kapasitas_kapal,
-            'nama_rekening' => $nama_rekening, 'nomor_rekening' => $nomor_rekening, 'longitude' => $longitude, 'latitude' => $latitude, 
+            'nama_rekening' => $nama_rekening, 'nomor_rekening' => $nomor_rekening, 'longitude' => $longitude, 'latitude' => $latitude,
             'batas_hari_pembayaran' => $batas_hari_pembayaran, 'kode_lokasi' => $kode_lokasi, 'ttd_digital' => $ttd_digital
         ]);
 
@@ -100,7 +100,7 @@ if (isset($_POST['submit'])) {
             //echo "HAHAHAAHA INSERT FAILED !";
         } else {
             //echo "HAHAHAAHA GREAT SUCCESSS !";
-            if ($_POST['submit'] == 'SimpanLanjut'){
+            if ($_POST['submit'] == 'SimpanLanjut') {
                 header("Location: atur_pengelola_lokasi.php?id_lokasi=$last_lokasi_id");
                 return 1;
             }
@@ -281,13 +281,16 @@ if (isset($_POST['submit'])) {
                                     //Validasi Size Upload Image
                                     var uploadField = document.getElementById("image_uploads1");
 
-                                    uploadField.onchange = function() {
-                                        if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
-                                            alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
-                                            this.value = "";
-                                        };
+                                    // uploadField.onchange = function() {
+                                    //     if (this.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                    //         alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                    //         this.value = "";
+                                    //     };
+                                    // };
+                                    if (input.files[0].size > 2000000) { // ini untuk ukuran 800KB, 2000000 untuk 2MB.
+                                        alert("Maaf, Ukuran File Terlalu Besar. !Maksimal Upload 2MB");
+                                        input.value = "";
                                     };
-
                                     if (input.files && input.files[0]) {
                                         var reader = new FileReader();
 
@@ -347,7 +350,7 @@ if (isset($_POST['submit'])) {
                             <button type="submit" name="submit" value="Simpan" class="btn btn-submit mb-3">Simpan</button>
                             <br>
                             <button type="submit" name="submit" value="SimpanLanjut" class="btn btn-blue">
-                            <i class="icon fas fa-chevron-right"></i><i class="icon fas fa-chevron-right"></i> Simpan & Lanjut Pilih Calon Pengelola Lokasi</button>
+                                <i class="icon fas fa-chevron-right"></i><i class="icon fas fa-chevron-right"></i> Simpan & Lanjut Pilih Calon Pengelola Lokasi</button>
                         </p>
                     </form>
                     <br><br>
@@ -385,24 +388,23 @@ if (isset($_POST['submit'])) {
     <script src="dist/js/adminlte.js"></script>
 
     <script>
-
-        function loadKodeLokasi(id_wilayah){
-      $.ajax({
-        type: "POST",
-        url: "list_populate.php",
-        data:{
-            id_wilayah: id_wilayah,
-            type: 'load_kode_lokasi'
-        },
-        beforeSend: function() {
-          $("#dd_kode_lokasi").addClass("loader");
-        },
-        success: function(data){
-          $("#dd_kode_lokasi").html(data);
-          $("#dd_kode_lokasi").removeClass("loader");
+        function loadKodeLokasi(id_wilayah) {
+            $.ajax({
+                type: "POST",
+                url: "list_populate.php",
+                data: {
+                    id_wilayah: id_wilayah,
+                    type: 'load_kode_lokasi'
+                },
+                beforeSend: function() {
+                    $("#dd_kode_lokasi").addClass("loader");
+                },
+                success: function(data) {
+                    $("#dd_kode_lokasi").html(data);
+                    $("#dd_kode_lokasi").removeClass("loader");
+                }
+            });
         }
-      });
-    }
 
 
 

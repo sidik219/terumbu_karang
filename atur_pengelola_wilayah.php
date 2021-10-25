@@ -48,27 +48,27 @@ if (isset($_POST['submit'])) {
     // header("Refresh: 0");
 
     //Kirim email untuk Pengelola Wilayah
-            include 'includes/email_handler.php'; //PHPMailer         
-            
-            $sqlviewpengelolawilayah = 'SELECT * FROM t_user, t_wilayah, t_pengelola_wilayah 
+    include 'includes/email_handler.php'; //PHPMailer         
+
+    $sqlviewpengelolawilayah = 'SELECT * FROM t_user, t_wilayah, t_pengelola_wilayah 
                                         WHERE t_pengelola_wilayah.id_wilayah = :id_wilayah';
-            $stmt = $pdo->prepare($sqlviewpengelolawilayah);
-            $stmt->execute(['id_wilayah' => $id_wilayah]);
-            $pengelola = $stmt->fetch();
+    $stmt = $pdo->prepare($sqlviewpengelolawilayah);
+    $stmt->execute(['id_wilayah' => $id_wilayah]);
+    $pengelola = $stmt->fetch();
 
-            $sqlviewdatauser = 'SELECT * FROM t_user 
+    $sqlviewdatauser = 'SELECT * FROM t_user 
                                 WHERE id_user = :id_user';
-            $stmt = $pdo->prepare($sqlviewdatauser);
-            $stmt->execute(['id_user' => $id_user]);
-            $datauser = $stmt->fetch();
+    $stmt = $pdo->prepare($sqlviewdatauser);
+    $stmt->execute(['id_user' => $id_user]);
+    $datauser = $stmt->fetch();
 
-            $email = $datauser->email;
-            $nama_user = $datauser->nama_user;
+    $email = $datauser->email;
+    $nama_user = $datauser->nama_user;
 
-            $subjek = 'Pemberian Hak Akses Pengelola Wilayah pada '.$pengelola->nama_wilayah.' - GoKarang';
-            $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
-            <br>Yth. '.$nama_user.'
-            <br>Anda telah ditunjuk sebagai Pengelola Wilayah pada wilayah '.$pengelola->nama_wilayah.' (ID Wilayah: '.$pengelola->id_wilayah.')
+    $subjek = 'Pemberian Hak Akses Pengelola Wilayah pada ' . $rowitem->nama_wilayah . ' - GoKarang';
+    $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+            <br>Yth. ' . $nama_user . '
+            <br>Anda telah ditunjuk sebagai Pengelola Wilayah pada wilayah ' . $rowitem->nama_wilayah . ' (ID Wilayah: ' . $rowitem->id_wilayah . ')
             <br>Anda bertugas untuk mengawasi donasi yang masuk, mengelola rekening bersama wilayah, serta mengawasi pengadaan bibit terumbu karang hingga pemeliharaan oleh Pengelola Lokasi,
             <br>input dan edit data lokasi (pantai), serta mengatur user Pengelola Lokasi.
             <br>
@@ -77,8 +77,8 @@ if (isset($_POST['submit'])) {
             <br>
             <br>Selamat bergabung di GoKarang dan terima kasih atas kerjasamanya.
         ';
-        
-        smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+
+    smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
     header("location: atur_pengelola_wilayah.php?id_wilayah=$id_wilayah&status=addsuccess");
 }
 ?>

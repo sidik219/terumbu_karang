@@ -90,19 +90,19 @@ if (isset($_POST['submit'])) {
         $sqlselectdonasi = 'SELECT * FROM t_donasi 
                                 LEFT JOIN t_user ON t_user.id_user = t_donasi.id_user
                                 LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
-                                WHERE id_donasi = '.$id_donasi;
-                $stmt = $pdo->prepare($sqlselectdonasi);
-                $stmt->execute();
-                $donasi = $stmt->fetch();
+                                WHERE id_donasi = ' . $id_donasi;
+        $stmt = $pdo->prepare($sqlselectdonasi);
+        $stmt->execute();
+        $donasi = $stmt->fetch();
 
-                $email_donatur = $donasi->email;
+        $email_donatur = $donasi->email;
 
         //Kirim email untuk Donatur
         include 'includes/email_handler.php'; //PHPMailer
         $subjek = 'Bibit Terumbu Karang Anda dalam Tahap Penanaman (ID Donasi : ' . $id_donasi . ' ) - GoKarang';
         $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
                 <br>Yth. ' . $donasi->nama_donatur . '
-                <br>Bibit terumbu karang Anda akan ditanam oleh pihak pengelola ' . $donasi->nama_lokasi . ' pada tanggal '.$tanggal_penanaman.' dalam Batch Penanaman ID '.$id_batch.'.
+                <br>Bibit terumbu karang Anda akan ditanam oleh pihak pengelola ' . $donasi->nama_lokasi . ' pada tanggal ' . $tanggal_penanaman . ' dalam Batch Penanaman ID ' . $id_batch . '.
                 <br>Terumbu karang Anda akan dilakukan pemeliharaan berkala, umumnya empat kali selama satu tahun, dimana
                 akan dilaporkan foto, kondisi terumbu karang, serta ukuran terumbu karang yang akan kami akan infokan kepada Anda melalui email.
                 <br>

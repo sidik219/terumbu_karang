@@ -51,7 +51,7 @@ if (isset($_POST['submit'])) {
 
     $affectedrows = $stmt->rowCount();
     if ($affectedrows == 0) {
-        header("Location: kelola_jenis_tk.php?status=nochange.$pic");
+        header("Location: kelola_jenis_tk.php?status=nochange&gambar=$pic");
     } else {
         //echo "HAHAHAAHA GREAT SUCCESSS !";
         header("Location: kelola_jenis_tk.php?status=updatesuccess");

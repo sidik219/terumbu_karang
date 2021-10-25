@@ -76,7 +76,7 @@ if ($_POST['type'] == 'load_modal_patokan_harga_terumbu' && !empty($_POST["id_de
             Rp.
           </div>
           <div class="col">
-            <input type="text" id="num_biaya_pergantian3" value="<?= number_format($rowitem->harga_patokan_lokasi) ?>" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
+            <input type="text" id="num_biaya_pergantian3" value="<?= $rowitem->harga_patokan_lokasi ?>" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
           </div>
         </div>
         <div class="row mt-2 d-none">
@@ -109,7 +109,7 @@ if ($_POST['type'] == 'load_modal_patokan_harga_terumbu' && !empty($_POST["id_de
     if ($_POST['type'] == 'save_modal_biaya_operasional' && !empty($_POST["id_lokasi"])) {
       $id_lokasi = $_POST["id_lokasi"];
       $nama_biaya_operasional = $_POST['nama_biaya_operasional'];
-      $jumlah_biaya_operasional = $_POST['jumlah_biaya_operasional'];
+      $jumlah_biaya_operasional = $_POST['harga_patokan_lokasi_formatted'];
 
       $insertbiayaop = 'INSERT INTO t_biaya_operasional
                       (id_lokasi, nama_biaya_operasional, jumlah_biaya_operasional)
@@ -135,7 +135,7 @@ if ($_POST['type'] == 'load_modal_patokan_harga_terumbu' && !empty($_POST["id_de
           <div class="row mb-2">
             <div class="col-sm">
               <label for="num_biaya_pergantian">Nama Biaya Operasional</label>
-              <input type="text" class="form-control" name="nama_biaya_operasional" value="<?= $rowitem->nama_biaya_operasional ?>" required />
+              <input type="text" class="form-control" name="nama_biaya_operasional" id="nama_biaya_operasional1" value="<?= $rowitem->nama_biaya_operasional ?>" required />
             </div>
           </div>
           <div class="row">
@@ -149,7 +149,7 @@ if ($_POST['type'] == 'load_modal_patokan_harga_terumbu' && !empty($_POST["id_de
                   Rp.
                 </div>
                 <div class="col">
-                  <input onkeyup="formatNumber3(this)" type="text" id="num_biaya_pergantian3" value="<?= number_format($rowitem->jumlah_biaya_operasional) ?>" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
+                  <input type="text" id="num_biaya_pergantian3" value="<?= $rowitem->jumlah_biaya_operasional ?>" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
                 </div>
               </div>
 
@@ -162,7 +162,7 @@ if ($_POST['type'] == 'load_modal_patokan_harga_terumbu' && !empty($_POST["id_de
           //Edit
           if ($_POST['type'] == 'update_modal_biaya_operasional' && !empty($_POST["id_biaya_operasional"])) {
             $id_biaya_operasional = $_POST["id_biaya_operasional"];
-            $jumlah_biaya_operasional = $_POST['jumlah_biaya_operasional'];
+            $jumlah_biaya_operasional = $_POST['harga_patokan_lokasi_formatted'];
             $nama_biaya_operasional = $_POST['nama_biaya_operasional'];
 
             $updatepatokan = 'UPDATE t_biaya_operasional
@@ -215,19 +215,19 @@ if ($_POST['type'] == 'load_modal_patokan_harga_terumbu' && !empty($_POST["id_de
                     <div class="row mt-2">
                       <div class="col">
                         <label for="nama_pemilik_rekening">Nama Pemilik Rekening</label>
-                        <input type="text" id="nama_pemilik_rekening" name="nama_pemilik_rekening" class="form-control" value="<?= $rowitem->nama_pemilik_rekening ?>" required>
+                        <input type="text" id="nama_pemilik_rekening1" name="nama_pemilik_rekening" class="form-control" value="<?= $rowitem->nama_pemilik_rekening ?>" required>
                       </div>
                     </div>
                     <div class="row mt-2">
                       <div class="col">
                         <label for="nomor_rekening">Nomor Rekening</label>
-                        <input type="text" id="nomor_rekening" name="nomor_rekening" class="form-control" value="<?= $rowitem->nomor_rekening ?>" required>
+                        <input type="text" id="nomor_rekening1" name="nomor_rekening" class="form-control" value="<?= $rowitem->nomor_rekening ?>" required>
                       </div>
                     </div>
                     <div class="row mt-2">
                       <div class="col">
                         <label for="nama_bank">Nama Bank</label>
-                        <input type="text" id="nama_bank" name="nama_bank" class="form-control" value="<?= $rowitem->nama_bank ?>" required>
+                        <input type="text" id="nama_bank1" name="nama_bank" class="form-control" value="<?= $rowitem->nama_bank ?>" required>
                         <input type="hidden" id="hid_type" name="type" value="update_modal_rekber">
                         <input type="hidden" id="hid_type" name="id_rekening_bank" value="<?= $rowitem->id_rekening_bank ?>">
                       </div>

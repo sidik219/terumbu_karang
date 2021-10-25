@@ -136,7 +136,7 @@ if (isset($_POST['submit'])) {
                                 <p class="small">Maksimal Ukuran Foto 2MB</p>
                             </div>
                         </div>
-                        <script>
+                        <!-- <script>
                             var uploadField = document.getElementById("image_uploads");
 
                             uploadField.onchange = function() {
@@ -145,7 +145,7 @@ if (isset($_POST['submit'])) {
                                     this.value = "";
                                 };
                             };
-                        </script>
+                        </script> -->
                         <div class="form-group">
                             <img id="preview" width="100px" src="#" alt="Preview Gambar" />
 
@@ -155,6 +155,10 @@ if (isset($_POST['submit'])) {
                                 };
 
                                 function readURL(input) {
+                                    if (input.files[0].size > 2097152) {
+                                        alert("Ukuran File Terlalu besar");
+                                        input.value = "";
+                                    };
                                     if (input.files && input.files[0]) {
                                         var reader = new FileReader();
 

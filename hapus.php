@@ -50,8 +50,8 @@ if (empty($type)) {
             AND t_wisata.id_wisata = tb_fasilitas_wisata.id_wisata
             AND tb_paket_wisata.id_paket_wisata = :id_paket_wisata';
 
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute(['id_paket_wisata' => $_GET['id_paket_wisata']]);
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_paket_wisata' => $_GET['id_paket_wisata']]);
 
     // $sql = 'DELETE FROM tb_paket_wisata
     //         WHERE id_paket_wisata = :id_paket_wisata';
@@ -224,4 +224,13 @@ if (empty($type)) {
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['id_konten' => $id_konten]);
     header('Location: kelola_konten_penjelasan.php?status=deletesuccess');
+} elseif ($type == 'perizinan') {
+    $id_perizinan = $_GET['id_perizinan'];
+    // SELECT * from
+    $sql = 'DELETE FROM  t_perizinan
+            WHERE id_perizinan = :id_perizinan';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_perizinan' => $id_perizinan]);
+    header('Location: kelola_perizinan.php?status=deletesuccess');
 }
