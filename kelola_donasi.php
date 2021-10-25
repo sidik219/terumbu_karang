@@ -321,8 +321,9 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                             <?php echo ($rowitem->id_status_donasi == 2) ? '<br><small class="text-muted text-sm"><i class="fas text-warning fa-exclamation-circle"></i> Bukti donasi dalam proses verifikasi </small>' : '' ?>
                                             <?php echo (($rowitem->id_status_donasi >= 3) && ($rowitem->id_status_donasi < 7)) ? '<br><small> <i class="fas text-info fa-check"></i> Bukti donasi sudah verifikasi </small>' : '' ?>
                                             <?php echo ($rowitem->id_status_donasi == 7) ? '<br><small class="text-muted text-sm"><i class="fas text-danger fa-times"></i> Bukti donasi bermasalah </small>' : '' ?>
-
-                                        <button type="button" class="btn btn-act float-right <?php if (!($_SESSION['level_user'] == 4)) {
+                                                                                
+                                        <br>
+                                        <button type="button" class="mt-3 btn btn-act <?php if (!($_SESSION['level_user'] == 4)) {
                                                                                         echo " d-none ";
                                                                                     } ?>"><i class="far fa-trash-alt"></i></button>
                                     </td>

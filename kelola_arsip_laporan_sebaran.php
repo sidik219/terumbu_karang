@@ -84,6 +84,7 @@ $row = $stmt->fetchAll();
                 <div class="row">
                         <div class="col">
                             <h4><span class="align-middle font-weight-bold">Kelola Arsip Laporan Sebaran</span></h4>
+                            <small class="font-sm"><i class="fa text-primary fa-exclamation-circle"></i> Harap pastikan semua data sudah sesuai sebelum diarsipkan untuk menjaga integritas data arsip. Pengarsipan dilakukan <b>sekali setahun</b>.</small>
                         </div>
                         <div class="col">
 
