@@ -203,9 +203,6 @@ if (isset($_POST['submit'])) {
                 <br>Nama Rekening Tujuan: ' . $rekening->nama_pemilik_rekening . '
                 <br>Nominal pembayaran: Rp. ' . number_format($total, 0) . '
                 <br>
-                <br>Harap verifikasi bukti pembayaran wisata di link berikut jika wisatawan sudah mengupload bukti pembayaran:
-                <br><a href="https://tkjb.or.id/edit_reservasi_wisata.php?id_reservasi=' . $id_reservasi_terakhir . '">Verifikasi Bukti Pembayaran</a>
-                <br>
                 <br>Jika donatur belum mengupload bukti pembayaran wisata dalam ' . $pengelola->batas_hari_pembayaran . ' hari, maka reservasi dapat dibatalkan.
             ';
 
