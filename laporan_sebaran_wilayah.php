@@ -24,7 +24,7 @@ if(isset($_GET['awal'])){
     if($level_user == 2){
         $id_wilayah = $_SESSION['id_wilayah_dikelola'];
 
-        $filter_wilayah = ' AND t_wilayah.id_wilayah = '.$id_wilayah; //
+        $filter_wilayah = ' AND t_arsip_lokasi.id_wilayah = '.$id_wilayah; //
     }
 
     $query_periode = ' tahun_arsip_lokasi BETWEEN :awal AND :akhir ';
@@ -35,12 +35,12 @@ $stmt = $pdo->prepare($sqlwilayah);
 $stmt->execute();
 $wilayah = $stmt->fetch();
 
-$sqltahun = 'SELECT * FROM t_arsip_lokasi GROUP BY tahun_arsip_lokasi ORDER BY tahun_arsip_lokasi ASC';
+$sqltahun = 'SELECT tahun_arsip_lokasi FROM t_arsip_lokasi GROUP BY tahun_arsip_lokasi ORDER BY tahun_arsip_lokasi ASC';
 $stmt = $pdo->prepare($sqltahun);
 $stmt->execute();
 $rowtahunsemua = $stmt->fetchAll();
 
-$sqlviewarsip = 'SELECT * FROM t_arsip_lokasi WHERE '.$query_periode.' GROUP BY tahun_arsip_lokasi ORDER BY tahun_arsip_lokasi ASC '.$limit_hasil;
+$sqlviewarsip = 'SELECT * FROM t_arsip_lokasi WHERE '.$query_periode.' '.$filter_wilayah.' GROUP BY tahun_arsip_lokasi ORDER BY tahun_arsip_lokasi ASC '.$limit_hasil;
 $stmt = $pdo->prepare($sqlviewarsip);
 $stmt->execute(['awal' => $awal, 'akhir' => $akhir]);
 $rowtahun = $stmt->fetchAll();
@@ -215,11 +215,9 @@ $rowtahun = $stmt->fetchAll();
                 <tbody class="table-hover">
                 <?php
 
-                    $sqlviewluasnama = 'SELECT * FROM t_wilayah
-                                    LEFT JOIN t_arsip_lokasi ON t_wilayah.id_wilayah = t_arsip_lokasi.id_wilayah 
-                                    LEFT JOIN t_lokasi ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
-                                    WHERE  '.$query_periode.' '.$filter_wilayah. ' 
-                                     ORDER BY tahun_arsip_lokasi ASC'.$limit_hasil;
+                    $sqlviewluasnama = 'SELECT * FROM t_arsip_lokasi 
+                                        LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_arsip_lokasi.id_lokasi
+                                        WHERE 1 '.$filter_wilayah.' GROUP BY t_arsip_lokasi.id_lokasi';
                               $stmt = $pdo->prepare($sqlviewluasnama);
                               $stmt->execute(['awal' => $awal, 'akhir' => $akhir]);
                               $rowluasnama = $stmt->fetchAll();
@@ -228,13 +226,11 @@ $rowtahun = $stmt->fetchAll();
 
                     foreach ($rowluasnama as $luasnama) {
 
-                        $sqlviewluastahunan = 'SELECT * FROM t_wilayah
-                                    LEFT JOIN t_lokasi ON t_lokasi.id_wilayah = t_wilayah.id_wilayah
-                                    LEFT JOIN t_arsip_lokasi ON t_wilayah.id_wilayah = t_arsip_lokasi.id_wilayah
-                                   WHERE t_wilayah.id_wilayah = :id_wilayah  '.$query_periode_and.' '.$filter_wilayah. ' AND t_lokasi.id_lokasi = '. $luasnama->id_lokasi.'  
-                                   ORDER BY tahun_arsip_lokasi ASC'.$limit_hasil;
+                        $sqlviewluastahunan = 'SELECT * FROM t_arsip_lokasi
+                                                LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_arsip_lokasi.id_lokasi
+                                                WHERE t_arsip_lokasi.id_lokasi = '.$luasnama->id_lokasi.' '.$query_periode_and;
                               $stmt = $pdo->prepare($sqlviewluastahunan);
-                              $stmt->execute(['id_wilayah' => $luasnama->id_wilayah, 'awal' => $awal, 'akhir' => $akhir]);
+                              $stmt->execute(['awal' => $awal, 'akhir' => $akhir]);
                               $rowluastahunan = $stmt->fetchAll();
                 ?>
                         <tr>
@@ -244,7 +240,7 @@ $rowtahun = $stmt->fetchAll();
 
 
                             ?>
-                            <td class="text-center border"><?=$luastahunan->total_titik_l?></td> <td class="text-center border"><?=$luastahunan->total_luas_l?></td><td class="text-center border"><?=$luastahunan->luas_sebaran_l?></td><td class="text-center border"><?=$luastahunan->persentase_sebaran_l?></td>
+                            <td class="text-center border"><?=$luastahunan->total_titik_l?></td> <td class="text-center border"><?=$luastahunan->total_luas_l?></td><td class="text-center border"><?=$luastahunan->luas_sebaran_l?></td><td class="text-center border"><?=$luastahunan->persentase_sebaran_l?>% (<?= $luastahunan->kondisi_l ?>)</td>
 
                             <?php }?>
 
@@ -255,21 +251,33 @@ $rowtahun = $stmt->fetchAll();
 
                 <?php }
                 
-                echo '<tr  class="table-active border-top">
+                echo '<tr  class="table-active border-top font-weight-bold">
                           <th>Total</th>
 
                       ';
 
                       foreach($rowtahun as $tahun){
-                        $sqlhitungluas = 'SELECT id_wilayah, sum(total_titik_l) as total_kurang, sum(total_luas_l) as total_cukup, SUM(luas_sebaran_l) as total_baik, SUM(persentase_sebaran_l) as total_sangat_baik
-                                        FROM t_arsip_lokasi WHERE tahun_arsip_lokasi = :tahun  '.$query_periode_and.' GROUP BY id_lokasi '.$limit_hasil;
+                        $sqlhitungluas = 'SELECT id_wilayah, sum(total_titik_l) as total_kurang, sum(total_luas_l) as total_cukup, SUM(luas_sebaran_l) as total_baik, AVG(persentase_sebaran_l) as total_sangat_baik
+                                        FROM t_arsip_lokasi WHERE tahun_arsip_lokasi = :tahun '.$filter_wilayah.'  '.$query_periode_and.' '.$limit_hasil;
                                 $stmt = $pdo->prepare($sqlhitungluas);
                                 $stmt->execute(['tahun' => $tahun->tahun_arsip_lokasi, 'awal' => $awal, 'akhir' => $akhir]);
                                 $rowhitung = $stmt->fetchAll();
                               foreach($rowhitung as $hitungan){ ?>
 
-                                <td class="text-center border"><?= $hitungan->total_kurang?> </td><td class="text-center border"><?= $hitungan->total_cukup?>
-                                </td><td class="text-center border"><?= $hitungan->total_baik?> </td class="text-center border"><td class="text-center border"><?= $hitungan->total_sangat_baik?>%</td>
+                                <td class="text-center border"><?= $hitungan->total_kurang?> titik</td><td class="text-center border"><?= $hitungan->total_cukup?> ha
+                                </td><td class="text-center border"><?= $hitungan->total_baik?> ha </td class="text-center border"><td class="text-center border"><?= $hitungan->total_sangat_baik?>% 
+                                (<?php if($hitungan->total_sangat_baik >= 75){
+                                            echo 'Sangat Baik';
+                                        }elseif($hitungan->total_sangat_baik < 75 && $hitungan->total_sangat_baik >= 50){
+                                            echo 'Baik';
+                                        }
+                                        elseif($hitungan->total_sangat_baik < 50 && $hitungan->total_sangat_baik >= 25){
+                                            echo 'Cukup';
+                                        }else{
+                                            echo 'Kurang';
+                                        }
+                                
+                                ?>)</td>
 
                               <?php }
 
@@ -284,7 +292,7 @@ $rowtahun = $stmt->fetchAll();
 
                     <?php
                         
-                        $sqlhitungluas = 'SELECT id_wilayah, sum(total_titik_l) as total_kurang, sum(total_luas_l) as total_cukup, SUM(luas_sebaran_l) as total_baik, SUM(persentase_sebaran_l) as total_sangat_baik FROM t_arsip_lokasi  '.$query_periode.' tahun_arsip_lokasi '.$limit_hasil;
+                        $sqlhitungluas = 'SELECT id_wilayah, sum(total_titik_l) as total_kurang, sum(total_luas_l) as total_cukup, SUM(luas_sebaran_l) as total_baik, AVG(persentase_sebaran_l) as total_sangat_baik FROM t_arsip_lokasi  '.$query_periode.' tahun_arsip_lokasi '.$limit_hasil;
                                 $stmt = $pdo->prepare($sqlhitungluas);
                                 $stmt->execute(['awal' => $awal, 'akhir' => $akhir]);
                                 $rowhitung = $stmt->fetchAll();

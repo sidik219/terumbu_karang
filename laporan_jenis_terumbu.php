@@ -113,7 +113,7 @@ $tahunterawal = $stmt->fetch();
                     $(function() {  
                         moment.locale('id')
 
-                        var start = moment().subtract(29, 'days');
+                        var start = moment().subtract(30, 'days');
                         var end = moment();
                         var tahunterawal = moment(`<?=$tahunterawal->tahun_terawal?>`).format('DD-MM-YYYY');     
                         
