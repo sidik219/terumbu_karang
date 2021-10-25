@@ -145,7 +145,6 @@ if (isset($_POST['submit_terima'])) {
                 <br>Lokasi wisata: ' . $rowitem->nama_lokasi . '
                 <br>Tanggal reservasi: ' . $rowitem->tgl_reservasi . '
                 <br>Jumlah peserta: ' . $rowitem->jumlah_peserta . '
-                <br>Nama paket wisata: ' . $rowitem->$nama_paket_wisata . '
                 <br>Bank Wisatawan: ' . $rowitem->bank_donatur . '
                 <br>Nomor Rekening Wisatawan: ' . $rowitem->nomor_rekening_donatur . '
                 <br>Nama Rekening Wisatawan: ' . $rowitem->nama_donatur . '
