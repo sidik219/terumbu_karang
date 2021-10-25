@@ -48,8 +48,8 @@ if (isset($_POST['submit'])) {
     //Kirim email untuk Pengelola lokasi
             include 'includes/email_handler.php'; //PHPMailer         
             
-            $sqlviewpengelolalokasi = 'SELECT * FROM t_user, t_pengelola_lokasi, t_lokasi 
-                                        WHERE t_pengelola_lokasi.id_lokasi = :id_lokasi';
+            $sqlviewpengelolalokasi = 'SELECT * FROM t_lokasi 
+                                        WHERE id_lokasi = :id_lokasi';
             $stmt = $pdo->prepare($sqlviewpengelolalokasi);
             $stmt->execute(['id_lokasi' => $id_lokasi]);
             $pengelola = $stmt->fetch();
