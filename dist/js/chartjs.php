@@ -55,7 +55,7 @@
             plugins: {
                 title: {
                     display: true,
-                    text: 'Data Donatur',
+                    text: 'Jumlah Donasi',
                     padding: {
                         top: 10,
                         bottom: 30
@@ -111,7 +111,7 @@
             plugins: {
                 title: {
                     display: true,
-                    text: 'Data Wisatawan',
+                    text: 'Jumlah Reservasi Wisata',
                     padding: {
                         top: 10,
                         bottom: 30
@@ -171,7 +171,7 @@
             plugins: {
                 title: {
                     display: true,
-                    text: 'Data Donasi',
+                    text: 'Nominal Donasi',
                     padding: {
                         top: 10,
                         bottom: 30
@@ -228,7 +228,7 @@
             plugins: {
                 title: {
                     display: true,
-                    text: 'Data Reservasi Wisata',
+                    text: 'Nominal Reservasi Wisata',
                     padding: {
                         top: 10,
                         bottom: 30

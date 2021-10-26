@@ -8,6 +8,8 @@ if(!($_SESSION['level_user'] == 4)){
 include 'build/config/connection.php';
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
+  $extra_query = "  ";
+
 
 $sqlviewdonasi = 'SELECT (SELECT COUNT(t_donasi.id_status_donasi)
                 FROM t_donasi
@@ -56,6 +58,66 @@ $sqlviewpemeliharaan = 'SELECT (SELECT COUNT(*) FROM (SELECT TIMESTAMPDIFF(MONTH
 $stmt = $pdo->prepare($sqlviewpemeliharaan);
 $stmt->execute();
 $rowperlupml = $stmt->fetch();
+
+
+// ChartJS Wisata
+$label = ["Januari",
+            "Februari",
+            "Maret",
+            "April",
+            "Mei",
+            "Juni",
+            "Juli",
+            "Agustus",
+            "September",
+            "Oktober",
+            "November",
+            "Desember"];
+
+for($bulan = 1; $bulan < 13; $bulan++) {
+    // Donasi
+    $sqldonasiSelect = 'SELECT COUNT(id_donasi) AS total_donasi FROM t_donasi LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
+                            WHERE id_status_pengadaan_bibit = 4 AND MONTH(tanggal_donasi) = :bulan '.$extra_query;
+
+    $stmt = $pdo->prepare($sqldonasiSelect);
+    $stmt->execute(['bulan' => $bulan]);
+    $totalDonasi = $stmt->fetch();
+
+    $total_donasi[] = $totalDonasi->total_donasi;
+
+    // Wisata
+    $sqlreservasiSelect = 'SELECT COUNT(id_reservasi) AS total_reservasi FROM t_reservasi_wisata  LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_reservasi_wisata.id_lokasi LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
+                            WHERE  id_status_reservasi_wisata = 2 AND MONTH(tgl_reservasi) = :bulan '.$extra_query;
+
+    $stmt = $pdo->prepare($sqlreservasiSelect);
+    $stmt->execute(['bulan' => $bulan]);
+    $totalReservasi = $stmt->fetch();
+
+    $total_reservasi[] = $totalReservasi->total_reservasi;
+    
+    // var_dump($total_reservasi);
+    // Test View Data Money Yang Masuk Per Bulan
+
+    // Donasi
+    $sqldonasiSelect = 'SELECT SUM(nominal) AS pendapatan_donasi FROM t_donasi  LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
+                            WHERE id_status_pengadaan_bibit = 4 AND  MONTH(tanggal_donasi) = :bulan '.$extra_query;
+
+    $stmt = $pdo->prepare($sqldonasiSelect);
+    $stmt->execute(['bulan' => $bulan]);
+    $totalDonasi = $stmt->fetch();
+
+    $pendapatan_donasi[] = $totalDonasi->pendapatan_donasi;
+
+    // Wisata 
+    $sqlreservasiSelect = 'SELECT SUM(total) AS pendapatan_wisata FROM t_reservasi_wisata  LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_reservasi_wisata.id_lokasi LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
+                            WHERE id_status_reservasi_wisata = 2 AND  MONTH(tgl_reservasi) = :bulan '.$extra_query;
+
+    $stmt = $pdo->prepare($sqlreservasiSelect);
+    $stmt->execute(['bulan' => $bulan]);
+    $totalReservasi = $stmt->fetch();
+
+    $pendapatan_wisata[] = $totalReservasi->pendapatan_wisata;
+}
 
 ?>
 
@@ -304,7 +366,96 @@ $rowperlupml = $stmt->fetch();
 
 
 
+                    <!-- Grafik Donasi & Wisata -->
+                    <h5 class="mt-4"><span class="align-middle font-weight-bold"><i class="nav-icon text-primary far fa-chart-bar"></i> Data Grafik</span></h5>
 
+                    <div class="row rounded shadow-sm p-2">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between">
+                                                <button type="button" class="btn btn-outline-info btn-sm" id="btn-donasi">
+                                                <i class="far fa-file-image"></i> Export ke Image</button>
+                                                <span id="Donatur"></span>
+                                                <!-- <select id="Donatur" class="form-select btn btn-info btn-sm" aria-label="Default select example">
+                                                    <option selected>Pilih Tahun:</option>
+                                                    <option value="2021">2021</option>
+                                                    <option value="2022">2022</option>
+                                                    <option value="2023">2023</option>
+                                                </select> -->
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="donasi" width="100%" height="100%"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between">
+                                                <button type="button" class="btn btn-outline-info btn-sm" id="btn-wisata">
+                                                <i class="far fa-file-image"></i> Export ke Image</button>
+                                                <span id="Wisatawan"></span>
+                                                <!-- <select id="Wisatawan" class="form-select btn btn-info btn-sm" aria-label="Default select example">
+                                                    <option selected>Pilih Tahun:</option>
+                                                    <option value="2021">2021</option>
+                                                    <option value="2022">2022</option>
+                                                    <option value="2023">2023</option>
+                                                </select> -->
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="wisata" width="100%" height="100%"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="w-100"></div> <!-- Jarak -->
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between">
+                                                <button type="button" class="btn btn-outline-info btn-sm" id="btn-donasi">
+                                                <i class="far fa-file-image"></i> Export ke Image</button>
+                                                <span id="Donasi"></span>
+                                                <!-- <select id="Donasi" class="form-select btn btn-info btn-sm" aria-label="Default select example">
+                                                    <option selected>Pilih Tahun:</option>
+                                                    <option value="2021">2021</option>
+                                                    <option value="2022">2022</option>
+                                                    <option value="2023">2023</option>
+                                                </select> -->
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="duid-donasi" width="100%" height="100%"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="d-flex justify-content-between">
+                                                <button type="button" class="btn btn-outline-info btn-sm" id="btn-duid">
+                                                <i class="far fa-file-image"></i> Export ke Image</button>
+                                                <span id="Reservasi"></span>
+                                                <!-- <select id="Reservasi" class="form-select btn btn-info btn-sm" aria-label="Default select example">
+                                                    <option selected>Pilih Tahun:</option>
+                                                    <option value="2020">2021</option>
+                                                    <option value="2021">2022</option>
+                                                    <option value="2022">2023</option>
+                                                </select> -->
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="duid-wisata" width="100%" height="100%"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
 
@@ -375,6 +526,15 @@ $rowperlupml = $stmt->fetch();
     <!-- <script src="dist/js/leaflet.ajax.js"></script> -->
     <!-- Leaflet Map -->
     <?php //include 'dist/js/leaflet_map.php'; ?>
+      <!-- CharJs CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js" integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.js" integrity="sha512-XcsV/45eM/syxTudkE8AoKK1OfxTrlFpOltc9NmHXh3HF+0ZA917G9iG6Fm7B6AzP+UeEzV8pLwnbRNPxdUpfA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Export to Image -->
+    <script src="plugins/canvas-toBlob.js-master/canvas-toBlob.js"></script>
+    <!-- FileSaver -->
+    <script src="plugins/FileSaver.js-master/dist/FileSaver.min.js"></script>
+    <!-- Chartjs -->
+    <?php include 'dist/js/chartjs.php'; ?>
 </div>
 </body>
 </html>

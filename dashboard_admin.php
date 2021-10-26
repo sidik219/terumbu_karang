@@ -105,8 +105,8 @@ $label = ["Januari",
 
 for($bulan = 1; $bulan < 13; $bulan++) {
     // Donasi
-    $sqldonasiSelect = 'SELECT COUNT(id_donasi) AS total_donasi FROM t_donasi
-                            WHERE MONTH(tanggal_donasi) = :bulan';
+    $sqldonasiSelect = 'SELECT COUNT(id_donasi) AS total_donasi FROM t_donasi LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
+                            WHERE id_status_pengadaan_bibit = 4 AND MONTH(tanggal_donasi) = :bulan '.$extra_query;
 
     $stmt = $pdo->prepare($sqldonasiSelect);
     $stmt->execute(['bulan' => $bulan]);
@@ -115,8 +115,8 @@ for($bulan = 1; $bulan < 13; $bulan++) {
     $total_donasi[] = $totalDonasi->total_donasi;
 
     // Wisata
-    $sqlreservasiSelect = 'SELECT COUNT(id_reservasi) AS total_reservasi FROM t_reservasi_wisata
-                            WHERE MONTH(tgl_reservasi) = :bulan';
+    $sqlreservasiSelect = 'SELECT COUNT(id_reservasi) AS total_reservasi FROM t_reservasi_wisata  LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_reservasi_wisata.id_lokasi LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
+                            WHERE  id_status_reservasi_wisata = 2 AND MONTH(tgl_reservasi) = :bulan '.$extra_query;
 
     $stmt = $pdo->prepare($sqlreservasiSelect);
     $stmt->execute(['bulan' => $bulan]);
@@ -128,8 +128,8 @@ for($bulan = 1; $bulan < 13; $bulan++) {
     // Test View Data Money Yang Masuk Per Bulan
 
     // Donasi
-    $sqldonasiSelect = 'SELECT SUM(nominal) AS pendapatan_donasi FROM t_donasi
-                            WHERE MONTH(tanggal_donasi) = :bulan';
+    $sqldonasiSelect = 'SELECT SUM(nominal) AS pendapatan_donasi FROM t_donasi  LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
+                            WHERE id_status_pengadaan_bibit = 4 AND  MONTH(tanggal_donasi) = :bulan '.$extra_query;
 
     $stmt = $pdo->prepare($sqldonasiSelect);
     $stmt->execute(['bulan' => $bulan]);
@@ -137,9 +137,9 @@ for($bulan = 1; $bulan < 13; $bulan++) {
 
     $pendapatan_donasi[] = $totalDonasi->pendapatan_donasi;
 
-    // Wisata
-    $sqlreservasiSelect = 'SELECT SUM(total) AS pendapatan_wisata FROM t_reservasi_wisata
-                            WHERE MONTH(tgl_reservasi) = :bulan';
+    // Wisata 
+    $sqlreservasiSelect = 'SELECT SUM(total) AS pendapatan_wisata FROM t_reservasi_wisata  LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_reservasi_wisata.id_lokasi LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
+                            WHERE id_status_reservasi_wisata = 2 AND  MONTH(tgl_reservasi) = :bulan '.$extra_query;
 
     $stmt = $pdo->prepare($sqlreservasiSelect);
     $stmt->execute(['bulan' => $bulan]);
@@ -162,12 +162,12 @@ for($bulan = 1; $bulan < 13; $bulan++) {
     <!-- overlayScrollbars -->
         <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+        <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" /> -->
     <!--Leaflet panel layer CSS-->
-        <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" />
+        <!-- <link rel="stylesheet" href="dist/css/leaflet-panel-layers.css" /> -->
     <!-- Leaflet Marker Cluster CSS -->
-        <link rel="stylesheet" href="dist/css/MarkerCluster.css" />
-        <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" />
+        <!-- <link rel="stylesheet" href="dist/css/MarkerCluster.css" /> -->
+        <!-- <link rel="stylesheet" href="dist/css/MarkerCluster.Default.css" /> -->
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Favicon -->
