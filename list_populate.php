@@ -652,10 +652,10 @@ else if($level_user == 4){
                      <thead>
                             <tr>
                                 <th scope="col">ID Donasi</th>
-                                <th scope="col">Lokasi</th>
-                                <th scope="col">Nominal</th>
-                                <th scope="col">Nama Donatur</th>
                                 <th scope="col">Tanggal Donasi</th>
+                                <th scope="col">Lokasi</th>
+                                <th scope="col">Nama Donatur</th>
+                                <th scope="col">Nominal</th>
                                 <th class="print-hide" scope="col">Aksi</th>
                             </tr>
                           </thead>
@@ -669,16 +669,13 @@ else if($level_user == 4){
                               <th scope="row"><?=$rowitem->id_donasi?>
                                   <?php echo empty($rowitem->id_batch) ? '' : '<br><span class="badge badge-pill badge-info mr-2"> ID Batch '.$rowitem->id_batch.'</span>';?>
                               </th>
-                              <td><?= $rowitem->nama_lokasi ?></td>
-                              <td class="nominal">Rp. <?=number_format($rowitem->nominal, 0)?></td>
-                              <td><?= $rowitem->nama_donatur ?></td>
                               <td><?=strftime('%A, %e %B %Y', $donasidate);?> <br>  <?php if($rowitem->id_status_donasi == 1){
                                               echo alertPembayaran($rowitem->tanggal_donasi);
-                                          }  ?> 
-                                          
-                                          
-                                         
-                             </td>
+                                          }  ?> </td>
+                              
+                              <td><?= $rowitem->nama_lokasi ?></td>
+                              <td> <?= $rowitem->nama_donatur ?></td>
+                             <td class="nominal">Rp. <?=number_format($rowitem->nominal, 0)?></td>
                             
                               <td  class="print-hide">
                                 <a data-id='<?=$rowitem->id_donasi?>' class="btn btn-sm btn-outline-primary userinfo p-1">Rincian></a>
@@ -698,11 +695,11 @@ else if($level_user == 4){
                    <table class="table table-striped table-responsive-sm">
                      <thead>
                             <tr>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
                                 <th scope="col">Total: <?= $rowtotal->total_donasi ?> Donasi</th>
-                                <th scope="col"></th>
-                                <th scope="col">Rp. <?=  number_format($rowtotal->total_nominal, 0)?></th>
-                                <th scope="col"></th>
-                                <th scope="col"></th>                                
+                                <th scope="col">Rp. <?=  number_format($rowtotal->total_nominal, 0)?></th>                                
                             </tr>
                           </thead>
                    </table>
@@ -1023,10 +1020,7 @@ if ($_POST['type'] == 'load_laporan_jenis' && !empty($_POST["start"])) {
                                     ) AS DECIMAL(10, 1)
                                     ) AS ukuran_sangat_baik,
                                     CAST(SUM(ukuran_terumbu) AS DECIMAL(10,1)) AS ukuran_total_lokasi,
-                                    COUNT(CASE WHEN kondisi_terumbu = "Sangat Baik" OR kondisi_terumbu = "Baik" OR kondisi_terumbu = "Rusak" THEN 1 
-                                    ELSE NULL
-                                    END                                    
-                                    ) AS jumlah_terumbu_total
+                                    SUM(t_detail_donasi.jumlah_terumbu) AS jumlah_terumbu_total
 
                                     FROM
                                         t_lokasi
@@ -1075,7 +1069,7 @@ if ($_POST['type'] == 'load_laporan_jenis' && !empty($_POST["start"])) {
                                     </thead>
                                 <?php
                                   $sql_lokasi = 'SELECT nama_terumbu_karang, nama_lokasi, kondisi_terumbu,
-COUNT(t_terumbu_karang.id_terumbu_karang) AS jumlah_terumbu_karang, 
+SUM(t_detail_donasi.jumlah_terumbu) AS jumlah_terumbu_karang, 
 SUM(ukuran_terumbu) AS ukuran_terumbu, COUNT(
         CASE WHEN kondisi_terumbu = "Rusak" THEN 1 ELSE NULL
     END

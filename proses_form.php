@@ -109,7 +109,7 @@ if ($_POST['type'] == 'load_modal_patokan_harga_terumbu' && !empty($_POST["id_de
     if ($_POST['type'] == 'save_modal_biaya_operasional' && !empty($_POST["id_lokasi"])) {
       $id_lokasi = $_POST["id_lokasi"];
       $nama_biaya_operasional = $_POST['nama_biaya_operasional'];
-      $jumlah_biaya_operasional = $_POST['harga_patokan_lokasi_formatted'];
+      $jumlah_biaya_operasional = $_POST['jumlah_biaya_operasional'];
 
       $insertbiayaop = 'INSERT INTO t_biaya_operasional
                       (id_lokasi, nama_biaya_operasional, jumlah_biaya_operasional)

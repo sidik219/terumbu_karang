@@ -455,7 +455,7 @@ if (isset($_POST['submit_tolak_bibit'])) {
                                     <i class="fas fa-camera"></i> Upload File</label>
                                 <div>
                                     <input type='file' class='form-control d-none' id='image_uploads' name='image_uploads' accept='.jpg, .jpeg, .png, .pdf' onchange="readURL(this);">
-                                    <img id="preview_pembelian" width="100px" alt="Preview Gambar" />
+                                    <img id="preview_pembelian" class="<?= $rowitem->bukti_pengadaan_bibit == null ? ' style="display:none;" ' : '' ?>" width="100px" alt="Preview Gambar" />
                                 </div>
                             </div>
                             <script>
@@ -492,7 +492,7 @@ if (isset($_POST['submit_tolak_bibit'])) {
                             </script>
                         <?php } ?>
                         <div class="form-group">
-                            <img id="preview_pembelian" class="<?= $rowitem->bukti_pengadaan_bibit != null ? ' d-none ' : '' ?>" width="100px" alt="Preview Gambar" />
+                            <img id="preview_pembelian" class="" <?= $rowitem->bukti_pengadaan_bibit != null ? ' style="display:none;" ' : '' ?> width="100px" alt="Preview Gambar2" />
                             <a href="<?= $rowitem->bukti_pengadaan_bibit ?>" data-toggle="lightbox"><img class="img-fluid" id="oldpicpembelian" src="<?= $rowitem->bukti_pengadaan_bibit ?>" width="50%" <?php if ($rowitem->bukti_pengadaan_bibit == NULL) echo " style='display:none;'"; ?>></a>
                             <br>
                             <small class="text-muted">
@@ -506,7 +506,7 @@ if (isset($_POST['submit_tolak_bibit'])) {
                             </small>
                             <p class="mb-1 font-weight-bold"> Tanggal Pembelian</p>
                             <?php if ($rowitem->tgl_pembelian_bibit == null) : ?>
-                                <input type="date" name="tgl_pembelian_bibit" id="tgl_pembelian_bibit" required></input>
+                                <input type="date" name="tgl_pembelian_bibit" id="tgl_pembelian_bibit" <?= $_SESSION['level_user'] == 2 ? ' disabled ' : '';?> required></input>
                             <?php else : ?>
                                 <p><?= $rowitem->tgl_pembelian_bibit; ?></p>
                             <?php endif ?>

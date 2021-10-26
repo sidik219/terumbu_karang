@@ -297,7 +297,7 @@ $rowwilayah = $stmt->fetchAll();
                 </tbody>
                 </table>
 
-                <div class="row info-cetak text-center">
+                <div class="row info-cetak text-right">
                     <div class="col float-right">
                         <?= isset($_SESSION['nama_wilayah_dikelola']) ? $_SESSION['nama_wilayah_dikelola'] : '' ?>
                         <?= isset($_SESSION['nama_lokasi_dikelola']) ? $_SESSION['nama_lokasi_dikelola'] : '' ?>
