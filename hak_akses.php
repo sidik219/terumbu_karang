@@ -40,14 +40,47 @@ if (!$_SESSION['level_user']) { //Belum log in
         include 'build/config/connection.php';
         $level_user = $_SESSION['level_user'];
 
+        if ($level_user == 2) {
+            $id_wilayah = $_SESSION['id_wilayah_dikelola'];
+            $extra_query = " AND t_wilayah.id_wilayah = $id_wilayah ";
+        } else if ($level_user == 3) {
+            $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+            $extra_query = " AND t_lokasi.id_lokasi = $id_lokasi ";
+        } else if ($level_user == 4) {
+            $extra_query = "  ";
+        }else{
+            $extra_query = "  ";
+        }
+
         // Hitung Row Tabel Untuk Tanda Seru
         $t_kode_wilayah = $pdo->query('SELECT COUNT(*) FROM t_kode_wilayah')->fetchColumn();
         $t_asuransi = $pdo->query('SELECT COUNT(*) FROM t_asuransi')->fetchColumn();
         $t_rekening_bank = $pdo->query('SELECT COUNT(*) FROM t_rekening_bank')->fetchColumn();
         $t_wilayah = $pdo->query('SELECT COUNT(*) FROM t_wilayah')->fetchColumn();
-        $t_lokasi = $pdo->query('SELECT COUNT(*) FROM t_lokasi')->fetchColumn();
+        $t_lokasi = $pdo->query('SELECT COUNT(*) FROM t_lokasi 
+                                LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
+                                WHERE 1=1 '.$extra_query)->fetchColumn();
         $t_jenis_terumbu_karang = $pdo->query('SELECT COUNT(*) FROM t_jenis_terumbu_karang')->fetchColumn();
         $t_terumbu_karang = $pdo->query('SELECT COUNT(*) FROM t_terumbu_karang')->fetchColumn();
+
+        $t_pengelola_wilayah = $pdo->query('SELECT COUNT(*) 
+                                        FROM t_pengelola_wilayah 
+                                        LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_pengelola_wilayah.id_wilayah WHERE 1=1')->fetchColumn();
+
+        $t_pengelola_lokasi = $pdo->query('SELECT COUNT(*) 
+                                        FROM t_pengelola_lokasi 
+                                        LEFT JOIN t_lokasi ON t_pengelola_lokasi.id_lokasi = t_lokasi.id_lokasi
+                                        LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah WHERE 1=1 '.$extra_query)->fetchColumn();
+
+        // Harga patokan terumbu
+        $t_detail_lokasi = $pdo->query('SELECT COUNT(*) FROM t_detail_lokasi 
+                                        LEFT JOIN t_lokasi ON t_detail_lokasi.id_lokasi = t_lokasi.id_lokasi
+                                        LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah WHERE 1=1 '.$extra_query)->fetchColumn();
+
+        $t_biaya_operasional = $pdo->query('SELECT COUNT(*) 
+                                        FROM t_biaya_operasional 
+                                        LEFT JOIN t_lokasi ON t_biaya_operasional.id_lokasi = t_lokasi.id_lokasi
+                                        LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah WHERE 1=1 '.$extra_query)->fetchColumn();
         // $t_perizinan = $pdo->query('SELECT COUNT(*) FROM t_perizinan')->fetchColumn(); // buat perizinan kalau kosong
         // $t_titik = $pdo->query('SELECT COUNT(*) FROM t_titik')->fetchColumn(); //ini blum tau gmn caranya buat titik lokasi setiap lokasi beda beda
 
@@ -210,7 +243,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <li class="nav-item"> <!-- Lokasi -->
                     <a href="kelola_kode_wilayah.php" class="nav-link ' . (('kelola_kode_wilayah.php' == $url_sekarang)  ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-list-ol"></i>
-                        <p> Kelola Kode Wilayah</p>' . (($t_kode_wilayah  == 0) ? '<span class="badge text-sm badge-pill badge-info fas fa-exclamation">' : '') . '
+                        <p> Kelola Kode Wilayah</p>' . (($t_kode_wilayah  == 0) ? '<span class="badge text-sm badge-pill badge-warning fas fa-exclamation">' : '') . '
                     </a>
                 </li>
 
@@ -231,7 +264,7 @@ if (!$_SESSION['level_user']) { //Belum log in
 		        <li class="nav-item"> <!-- Lokasi -->
                     <a href="kelola_asuransi.php" class="nav-link ' . (('kelola_asuransi.php' == $url_sekarang) || ('edit_asuransi.php'  == $url_sekarang) || ('input_asuransi.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-heartbeat"></i>
-                        <p> Kelola Asuransi </p>' . (($t_asuransi == 0) ? '<span class="badge text-sm badge-pill badge-info fas fa-exclamation">' : '') . '
+                        <p> Kelola Asuransi </p>' . (($t_asuransi == 0) ? ' <span class="badge text-sm badge-pill badge-warning fas fa-exclamation">' : '') . '
                     </a>
                 </li>
 
@@ -246,35 +279,35 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <li class="nav-item"> <!-- Pusat -->
                     <a href="kelola_rekening_bersama.php" class="nav-link ' . ('kelola_rekening_bersama.php' == $url_sekarang ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-money-check-alt"></i>
-                        <p> Rekening Bersama </p>' . (($t_rekening_bank == 0) ? '<span class="badge text-sm badge-pill badge-info fas fa-exclamation">' : '') . '
+                        <p> Rekening Bersama </p>' . (($t_rekening_bank == 0) ? ' <span class="badge text-sm badge-pill badge-warning fas fa-exclamation">' : '') . '
                     </a>
                 </li>
 
                 <li class="nav-item"> <!-- Wilayah -->
                     <a href="kelola_wilayah.php" class="nav-link ' . ('kelola_wilayah.php' == $url_sekarang || ('edit_wilayah.php'  == $url_sekarang) || ('input_wilayah.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-globe-asia"></i>
-                        <p> Kelola Wilayah </p>' . (($t_wilayah == 0) ? '<span class="badge text-sm badge-pill badge-info fas fa-exclamation">' : '') . '
+                        <p> Kelola Wilayah </p>' . (($t_wilayah == 0 || $t_pengelola_wilayah == 0) ? ' <span class="badge text-sm badge-pill badge-warning fas fa-exclamation">' : '') . '
                     </a>
                 </li>
 
                 <!-- <li class="nav-item"> Wilayah & Lokasi 
                     <a href="kelola_lokasi.php" class="nav-link ' . ('kelola_lokasi.php' == $url_sekarang  || ('edit_lokasi.php'  == $url_sekarang) || ('input_lokasi.php'  == $url_sekarang) || ('kelola_harga_terumbu.php'  == $url_sekarang) || ('kelola_biaya_operasional.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
-                        <p> Kelola Lokasi </p>' . (($t_lokasi == 0) ? '<span class="badge text-sm badge-pill badge-info fas fa-exclamation">' : '') . '
+                        <p> Kelola Lokasi </p>' . (($t_lokasi == 0) ? ' <span class="badge text-sm badge-pill badge-warning fas fa-exclamation">' : '') . '
                     </a>
                 </li>-->
 
                 <li class="nav-item"> <!-- Wilayah -->
                     <a href="kelola_jenis_tk.php" class="nav-link ' . ('kelola_jenis_tk.php' == $url_sekarang || ('edit_jenis_tk.php'  == $url_sekarang) || ('input_jenis_tk.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                             <i class="nav-icon fas fa-certificate"></i>
-                            <p> Kelola Jenis Terumbu </p>' . (($t_jenis_terumbu_karang == 0) ? '<span class="badge text-sm badge-pill badge-info fas fa-exclamation">' : '') . '
+                            <p> Kelola Jenis Terumbu </p>' . (($t_jenis_terumbu_karang == 0) ? '<span class="badge text-sm badge-pill badge-warning fas fa-exclamation">' : '') . '
                     </a>
                 </li>
 
                 <li class="nav-item"> <!-- Wilayah -->
                     <a href="kelola_tk.php" class="nav-link ' . ('kelola_tk.php' == $url_sekarang || ('edit_tk.php'  == $url_sekarang) || ('input_tk.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="fas fa-disease nav-icon"></i>
-                        <p>Sub-Jenis Terumbu </p>' . (($t_terumbu_karang == 0) ? '<span class="badge text-sm badge-pill badge-info fas fa-exclamation">' : '') . ' 
+                        <p>Sub-Jenis Terumbu </p>' . (($t_terumbu_karang == 0) ? ' <span class="badge text-sm badge-pill badge-warning fas fa-exclamation">' : '') . ' 
                     </a>
                 </li>
 
@@ -456,7 +489,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                     <a href="kelola_lokasi.php" class="nav-link ' . ('kelola_lokasi.php' == $url_sekarang  || ('edit_lokasi.php'  == $url_sekarang) || ('input_lokasi.php'  == $url_sekarang) || ('kelola_harga_terumbu.php'  == $url_sekarang) || ('kelola_biaya_operasional.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
-                        <p> Kelola Lokasi </p>
+                        <p> Kelola Lokasi </p>' . (($t_pengelola_lokasi == 0 || $t_detail_lokasi == 0 || $t_lokasi == 0 || $t_biaya_operasional == 0) ? ' <span class="badge text-sm badge-pill badge-warning fas fa-exclamation">' : '') . ' 
                     </a>
                 </li>
 
@@ -532,7 +565,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <li class="nav-item"> <!-- Pusat & Wilayah -->
                     <a href="kelola_rekening_bersama.php" class="nav-link ' . ('kelola_rekening_bersama.php' == $url_sekarang ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-money-check-alt"></i>
-                        <p> Rekening Bersama</p>
+                        <p> Rekening Bersama</p> ' . (($t_rekening_bank == 0) ? ' <span class="badge text-sm badge-pill shadow-none badge-warning fas fa-exclamation">' : '') . '
                     </a>
                 </li>
 
@@ -670,7 +703,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                     <a href="kelola_lokasi.php" class="nav-link ' . ('kelola_lokasi.php' == $url_sekarang  || ('edit_lokasi.php'  == $url_sekarang) || ('input_lokasi.php'  == $url_sekarang) || ('kelola_harga_terumbu.php'  == $url_sekarang) || ('kelola_biaya_operasional.php'  == $url_sekarang)  ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-map-marker" aria-hidden="true"></i>
-                        <p> Kelola Lokasi </p>
+                        <p> Kelola Lokasi </p>' . (($t_detail_lokasi == 0 ||  $t_biaya_operasional == 0) ? ' <span class="badge text-sm badge-pill shadow-none badge-warning fas fa-exclamation">' : '') . '
                     </a>
                 </li>
                 
