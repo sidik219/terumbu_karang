@@ -15,7 +15,22 @@ if (isset($_POST['login'])) {
     $user_ip =  $_SERVER['REMOTE_ADDR'];
     $url = "https://www.google.com/recaptcha/api/siteverify?secret=$private_key&response=$g_recaptcha_response&remoteip=$user_ip";
 
-    $response = json_decode(file_get_contents($url));
+    // create curl resource
+        $ch = curl_init();
+
+        // set url
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        //return the transfer as a string
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        // $output contains the output string
+        $output = curl_exec($ch);
+
+        // close curl resource to free up system resources
+        curl_close($ch); 
+
+    $response = json_decode($output);
 
     if($response->success == "true"){
             $sql  = "SELECT username, password, id_user, level_user, email, nama_user, aktivasi_user, organisasi_user FROM t_user WHERE username=:username";
