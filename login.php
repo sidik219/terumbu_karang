@@ -4,6 +4,7 @@ session_start();
 if (isset($_POST['login'])) {
     $username   = $_POST['tbusername'];
     $password   = $_POST['tbpassword'];
+    $_SESSION['tbpassword']   = $_POST['tbpassword'];
 
     // Development Key
     // $private_key = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'; 
@@ -124,10 +125,10 @@ if (isset($_POST['login'])) {
                     header('location: login.php?pesan=gagal_login');
                 }
             } else {
-                header('location: login.php?pesan=username_atau_password_salah');
+                header('location: login.php?pesan=username_atau_password_salah&username='.$_POST['tbusername']);
             }
         } else {
-                header('location: login.php?pesan=recaptcha_invalid');
+                header('location: login.php?pesan=recaptcha_invalid&username='.$_POST['tbusername']);
             }
 
     }
@@ -223,13 +224,13 @@ if (isset($_POST['login'])) {
                 ?>
 
     					<div class="wrap-input100 validate-input">
-    						<input class="input100" type="text" name="tbusername" placeholder="Akun Saya">
+    						<input class="input100" type="text" name="tbusername" value="<?= isset($_GET['tbusername']) ? $_GET['tbusername'] : '' ?>" placeholder="Akun Saya">
     						<span class="focus-input100-1"></span>
     						<span class="focus-input100-2"></span>
     					</div>
 
     					<div class="wrap-input100 rs1 validate-input" data-validate="Password is required">
-    						<input class="input100" type="password" name="tbpassword" placeholder="Password">
+    						<input class="input100" type="password" value="<?= isset($_SESSION['tbpassword']) ? $_SESSION['tbpassword'] : '' ?>" name="tbpassword" placeholder="Password">
     						<span class="focus-input100-1"></span>
     						<span class="focus-input100-2"></span>
     					</div>
