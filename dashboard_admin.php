@@ -27,11 +27,14 @@ if($level_user == 2){
 }
 else if($level_user == 3){
   $id_lokasi = $_SESSION['id_lokasi_dikelola'];
-  $extra_query = " AND id_lokasi = $id_lokasi ";
-  $extra_query_noand = " id_lokasi = $id_lokasi ";
-  $wilayah_join_donasi = " ";
-  $wilayah_join_reservasi = " ";
-  $wilayah_join_batch = " ";
+  $extra_query = " AND t_lokasi.id_lokasi = $id_lokasi ";
+  $extra_query_noand = " t_lokasi.id_lokasi = $id_lokasi ";
+  $wilayah_join_donasi = "  LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
+                            LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah  ";
+  $wilayah_join_reservasi = "  LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_reservasi_wisata.id_lokasi
+                            LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah  ";
+  $wilayah_join_batch = "  LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_batch.id_lokasi
+                            LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah  ";
 }
 else if($level_user == 4){
   $extra_query = "  ";
