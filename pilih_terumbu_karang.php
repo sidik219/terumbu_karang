@@ -63,16 +63,16 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
     $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
     $row = $stmt->fetchAll();
 
-    $sqldonasiwisata = 'SELECT*FROM t_donasi_wisata WHERE t_donasi_wisata.status_donasi="Terambil"';
-    'SELECT * FROM t_donasi_wisata
-                LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi
-                LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
-                LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
-                LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-                LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                WHERE status_donasi = "Belum Terambil"
-                
-                ORDER BY id_donasi_wisata DESC';
+    $sqldonasiwisata = 'SELECT*FROM t_donasi_wisata LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi WHERE t_donasi_wisata.status_donasi="Terambil" AND t_reservasi_wisata.id_lokasi=' . $id_lokasi . '';
+    // 'SELECT * FROM t_donasi_wisata
+    //             LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi
+    //             LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+    //             LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+    //             LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+    //             LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+    //             WHERE status_donasi = "Belum Terambil"
+
+    //             ORDER BY id_donasi_wisata DESC';
     $stmt = $pdo->prepare($sqldonasiwisata);
     $stmt->execute();
     $rowharga = $stmt->fetchAll();
@@ -224,36 +224,36 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                                         ?>
                                             <div class="col-sm-4 card-container">
                                                 <div class="card p-0 col-4 card-pilihan rounded mb-4 shadow-sm shop-item text-sm">
-                                                <a href="#">
-                                                    <img class="card-img-top rounded shop-item-image" height="150px" width="150px" src="<?= $rowitem->foto_terumbu_karang ?>"></a>
-                                                <div class="card-body pt-2">
-                                                    <h5 class="shop-item-title mb-0 card-title"><?= $rowitem->nama_terumbu_karang ?></h5>
-                                                    <p class="card-text text-muted deskripsi_pilih_tk text-sm"><?php echo $rowitem->deskripsi_terumbu_karang; ?></p>
-                                                    <?php //echo strlen($rowitem->deskripsi_terumbu_karang) > 50 ? substr($rowitem->deskripsi_terumbu_karang,0,40)."..." :$rowitem->deskripsi_terumbu_karang;
-                                                    ?>
-                                                    <span class="font-weight-bold" id="harga<?= $rowitem->id_terumbu_karang ?>">
-                                                        <script>
-                                                            var hargaformat = formatter.format(<?= $harga_tk ?>);
-                                                            var hargap = document.createElement('p')
-                                                            hargap.classList.add("mb-0", "mt-0")
-                                                            hargap.textContent = hargaformat
-                                                            document.getElementById("harga<?= $rowitem->id_terumbu_karang ?>").appendChild(hargap)
-                                                        </script>
-                                                    </span>
-                                                    <span class="shop-item-price d-none">Rp. <?= $harga_tk ?></span>
-                                                    <input type="hidden" class="shop-item-id" value="<?= $rowitem->id_terumbu_karang ?>">
-                                                    <div class="row">
-                                                        <!-- <div class="col-2">
+                                                    <a href="#">
+                                                        <img class="card-img-top rounded shop-item-image" height="150px" width="150px" src="<?= $rowitem->foto_terumbu_karang ?>"></a>
+                                                    <div class="card-body pt-2">
+                                                        <h5 class="shop-item-title mb-0 card-title"><?= $rowitem->nama_terumbu_karang ?></h5>
+                                                        <p class="card-text text-muted deskripsi_pilih_tk text-sm"><?php echo $rowitem->deskripsi_terumbu_karang; ?></p>
+                                                        <?php //echo strlen($rowitem->deskripsi_terumbu_karang) > 50 ? substr($rowitem->deskripsi_terumbu_karang,0,40)."..." :$rowitem->deskripsi_terumbu_karang;
+                                                        ?>
+                                                        <span class="font-weight-bold" id="harga<?= $rowitem->id_terumbu_karang ?>">
+                                                            <script>
+                                                                var hargaformat = formatter.format(<?= $harga_tk ?>);
+                                                                var hargap = document.createElement('p')
+                                                                hargap.classList.add("mb-0", "mt-0")
+                                                                hargap.textContent = hargaformat
+                                                                document.getElementById("harga<?= $rowitem->id_terumbu_karang ?>").appendChild(hargap)
+                                                            </script>
+                                                        </span>
+                                                        <span class="shop-item-price d-none">Rp. <?= $harga_tk ?></span>
+                                                        <input type="hidden" class="shop-item-id" value="<?= $rowitem->id_terumbu_karang ?>">
+                                                        <div class="row">
+                                                            <!-- <div class="col-2">
                         <input type="number" min="1" id="tbqty" style="width: 100%; height:100%;">
                     </div> -->
-                                                        <div class="col">
-                                                            <a data-nama_tk="<?= $rowitem->id_terumbu_karang ?>" data-harga_tk="<?= $harga_tk ?>" data-id_tk="<?= $rowitem->id_terumbu_karang ?>" data-stok_tk="9999" class="add-to-cart btn btn-warning shop-item-button"><i class="nav-icon fas fa-cart-plus"></i> Tambahkan Keranjang</a>
+                                                            <div class="col">
+                                                                <a data-nama_tk="<?= $rowitem->id_terumbu_karang ?>" data-harga_tk="<?= $harga_tk ?>" data-id_tk="<?= $rowitem->id_terumbu_karang ?>" data-stok_tk="9999" class="add-to-cart btn btn-warning shop-item-button"><i class="nav-icon fas fa-cart-plus"></i> Tambahkan Keranjang</a>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         <?php } ?>
                                         <input type="text" class="d-none" id="id-lokasi" value="<?= $_SESSION['id_lokasi'] ?>">
                                     </div>

@@ -6,7 +6,7 @@ include 'hak_akses.php';
 
 // var_dump($_SESSION);
 // die;
-
+$id_lokasi = $_SESSION['id_lokasi_dikelola'];
 $sqlviewlokasi = 'SELECT * FROM t_lokasi
                 WHERE id_lokasi = :id_lokasi';
 $stmt = $pdo->prepare($sqlviewlokasi);
@@ -20,10 +20,12 @@ $stmt = $pdo->prepare($sqlviewrekeningbersama);
 $stmt->execute(['id_wilayah' => $id_wilayah]);
 $rowrekening = $stmt->fetchAll();
 
-$sqldonasiwisata = 'SELECT * FROM t_donasi_wisata WHERE t_donasi_wisata.status_donasi="Terambil"';
+$sqldonasiwisata = 'SELECT * FROM t_donasi_wisata LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi WHERE t_donasi_wisata.status_donasi="Terambil" AND t_reservasi_wisata.id_lokasi=' . $id_lokasi . '';
 $stmt = $pdo->prepare($sqldonasiwisata);
 $stmt->execute();
 $donasiwisata = $stmt->fetchAll();
+// var_dump($donasiwisata);
+// die;
 $sum_donasi = 0;
 foreach ($donasiwisata as $donasi) {
     $sum_donasi += $donasi->donasi;
@@ -54,6 +56,7 @@ if (isset($_POST['submitin'])) {
     // var_dump($_SESSION);
     // die;
 
+    // pengurangan donasi wisata dan simpen saldo di t_lokasi
     $sqlviewlokasi = 'UPDATE t_lokasi
     SET saldo_donasi_wisata =:saldo_donasi_wisata
     WHERE id_lokasi = :id_lokasi';
