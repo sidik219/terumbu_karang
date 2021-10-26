@@ -97,7 +97,7 @@ function alertPembayaran($dob)
 <html lang="en">
 
 <head>
-    <title>Kelola Donasi - Terumbu Karang</title>
+    <title>Laporan Donasi - Terumbu Karang</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
@@ -209,7 +209,7 @@ function alertPembayaran($dob)
                                     moment.locale('id')
 
                                     var start = moment().subtract(30, 'days');
-                                    var end = moment();
+                                    var end = moment().add(23, 'hours');
                                     var tahunterawal = moment(`<?= $tahunterawal->tahun_terawal ?>`).format('DD-MM-YYYY');
 
                                     function cb(start, end) {
@@ -231,13 +231,13 @@ function alertPembayaran($dob)
                                         startDate: start,
                                         endDate: end,
                                         ranges: {
-                                            'Hari ini': [moment(), moment()],
-                                            '7 hari terakhir': [moment().subtract(6, 'days'), moment()],
+                                            'Hari ini': [moment().startOf('day'), moment().add(23, 'hours')],
+                                            '7 hari terakhir': [moment().subtract(6, 'days'), moment().add(23, 'hours')],
                                             'Bulan ini': [moment().startOf('month'), moment().endOf('month')],
                                             'Bulan lalu': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
                                             'Tahun ini': [moment().startOf('year'), moment().endOf('year')],
                                             'Tahun lalu': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
-                                            'Tampilkan semua': [tahunterawal, moment()]
+                                            'Tampilkan semua': [tahunterawal, moment().add(23, 'hours')]
                                         }
                                     }, cb);
 

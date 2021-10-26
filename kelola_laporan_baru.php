@@ -187,32 +187,13 @@ $rowtahun = $stmt->fetchAll();
             <section class="content">
                 <div class="container-fluid">
 
-                <!-- <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">ID Laporan</th>
-                            <th scope="col">Aksi</th>
-                        </tr>
-                        </thead>
-                <tbody>
-                        <tr>
-                            <th scope="row">1212</th>
-                            <td>
-                            <button type="button" class="btn btn-act">
-                            <a href="edit_laporan.php" class="fas fa-edit"></a>
-                            </button>
-                            <button type="button" class="btn btn-act"><i class="far fa-trash-alt"></i></button>
-                            </td>
-                        </tr>
-                </tbody>
-                </table>   -->
 
                     <table class="table table-striped table-bordered DataWilayah">
                     <div class="row text-center">
                       <div class="col">
                           <h4 class="mb-0"><span class="align-middle font-weight-bold mb-0">Laporan Luas Sebaran Terumbu Karang</span></h4>
                           <h5 class="mt-0 font-weight-bold"><?= $awal != 1 ? ' Tahun '.$awal : ''; ?><?= $awal != $akhir && $akhir != 9999 ? ' - '.$akhir : ''; ?></h5>
-                          <span class="align-middle mt-2">*Data dalam satuan hektar (ha)</span>
+                          <span class="align-middle mt-2">*Data dalam satuan <b>hektar (ha)</b></span>
                       </div>
                     </div>
 
@@ -331,7 +312,7 @@ $rowtahun = $stmt->fetchAll();
                                 $rowhitung = $stmt->fetchAll();
                               foreach($rowhitung as $hitungan){ ?>
 
-                                <th class="text-center border"><?= $hitungan->total_kurang?> </th><th class="text-center border"><?= $hitungan->total_cukup?>
+                                <th class="text-center border"><?= $hitungan->total_kurang?></th><th class="text-center border"><?= $hitungan->total_cukup?>
                                 </th><th class="text-center border"><?= $hitungan->total_baik?> </th class="text-center border"><th class="text-center border"><?= $hitungan->total_sangat_baik?> </th>
 
                               <?php 

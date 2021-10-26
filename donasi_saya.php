@@ -316,7 +316,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                             <?php echo ($rowitem->id_status_donasi <= 2 || $rowitem->id_status_donasi == 7) ? '<small class="font-weight-bold"><b>Upload Bukti Donasi</b>
                                                 <br><a href="edit_donasi_saya.php?id_donasi=' . $rowitem->id_donasi . '"class="px-2 py-1 btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Donasi</a></small>' : ''; ?>
                                             
-                                            <?php echo ($rowitem->id_status_donasi == 2) ? '<br><small class="text-muted text-sm"><i class="fas text-info fa-check"></i> Bukti donasi sudah diupload </small>' : '' ?>
+                                            <?php echo ($rowitem->id_status_donasi == 2) ? '<br><small class="text-muted text-sm"><i class="fas text-info fa-check"></i> Bukti donasi sudah diupload dan sedang diproses Pengelola Wilayah. </small>' : '' ?>
                                             <?php echo ($rowitem->id_status_donasi == 7) ? '<br><small class="text-muted text-sm"><i class="fas text-danger fa-times"></i> Bukti donasi bermasalah, harap upload kembali </small>' : '' ?>
 
                                             <br>
@@ -598,7 +598,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
                                             <?php echo ($rowitem->id_status_donasi <= 2 || $rowitem->id_status_donasi == 7) ? '<small class="font-weight-bold"><b>Upload Bukti Donasi</b>
                                                 <br><a href="edit_donasi_saya.php?id_donasi=' . $rowitem->id_donasi . '"class="px-2 py-1 btn btn-sm btn-primary userinfo"><i class="fas fa-file-invoice-dollar"></i> Upload Bukti Donasi</a></small>' : ''; ?>
                                             
-                                            <?php echo ($rowitem->id_status_donasi == 2) ? '<br><small class="text-muted text-sm"><i class="fas text-info fa-check"></i> Bukti donasi sudah diupload </small>' : '' ?>
+                                            <?php echo ($rowitem->id_status_donasi == 2) ? '<br><small class="text-muted text-sm"><i class="fas text-info fa-check"></i> Bukti donasi sudah diupload dan sedang diproses Pengelola Wilayah. </small>' : '' ?>
                                             <?php echo ($rowitem->id_status_donasi == 7) ? '<br><small class="text-muted text-sm"><i class="fas text-danger fa-times"></i> Bukti donasi bermasalah, harap upload kembali </small>' : '' ?>
                                         </div>
 
