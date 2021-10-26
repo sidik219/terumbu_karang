@@ -1,6 +1,35 @@
 <?php include 'build/config/connection.php';
 
 if (isset($_POST['register'])) {
+
+    // Development Key
+    // $private_key = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'; 
+
+    // Production Key
+    $private_key = '6LdkN-scAAAAAJe6U4jxES3zPr1oEm9-cldHM2XD'; 
+
+    $g_recaptcha_response = $_POST['g-recaptcha-response'];
+    $user_ip =  $_SERVER['REMOTE_ADDR'];
+    $url = "https://www.google.com/recaptcha/api/siteverify?secret=$private_key&response=$g_recaptcha_response&remoteip=$user_ip";
+
+    // create curl resource
+        $ch = curl_init();
+
+        // set url
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        //return the transfer as a string
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        // $output contains the output string
+        $output = curl_exec($ch);
+
+        // close curl resource to free up system resources
+        curl_close($ch); 
+
+    $response = json_decode($output);
+
+    if($response->success == "true"){
     $nama_user    = $_POST['tb_nama_user'];
     $jk           = $_POST['rb_jenis_kelamin'];
     $email        = $_POST['tb_email'];
@@ -146,6 +175,7 @@ if (isset($_POST['register'])) {
             header('Location: login.php?pesan=registrasi_berhasil');
         }
     }
+}
 } else {
     echo '';
 }
@@ -169,6 +199,8 @@ if (isset($_POST['register'])) {
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <!-- Custom CSS -->
     <link href="css/konten.css" rel="stylesheet">
@@ -378,6 +410,9 @@ if (isset($_POST['register'])) {
                         }
                     }
                 </script>
+                <div class="g-recaptcha m-t-10" data-sitekey="6LdkN-scAAAAACZN1oYKVUoHZQ3JERvzB_sAFs_Q"></div>
+                <br>
+                <br>
                 <br>
                 <p align="center">
                     <button type="submit" name="register" class="btn btn-submit">Daftar</button>

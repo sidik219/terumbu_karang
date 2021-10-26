@@ -4,6 +4,7 @@ session_start();
 if (isset($_POST['login'])) {
     $username   = $_POST['tbusername'];
     $password   = $_POST['tbpassword'];
+
     $_SESSION['tbpassword']   = $_POST['tbpassword'];
 
     // Development Key
