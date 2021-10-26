@@ -97,6 +97,10 @@ $row = $stmt->fetchAll();
                             echo '<div class="alert alert-success" role="alert">
                                         Kelola Konten berhasil ditambahkan!
                                         </div>';
+                        } else if ($_GET['status'] == 'deletesuccess') {
+                            echo '<div class="alert alert-success" role="alert">
+                                        Kelola Konten berhasil dihapus!
+                                        </div>';
                         }
                     }
                     ?>
@@ -154,6 +158,7 @@ $row = $stmt->fetchAll();
                                     <td class="max-length2" colspan="2"><?= $rowitem->sk ?></td>
                                     <td>
                                         <a href="edit_konten_ketentuan.php?id_titik=<?= $rowitem->id_konten ?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                                        <a onclick="return konfirmasiHapusPengadaan(event)" href="hapus.php?type=ketentuan&id_ketentuan=<?= $rowitem->id_konten ?>" class="far fa-trash-alt btn btn-act"></a>
                                     </td>
                                 </tr>
                             <?php } ?>
@@ -193,7 +198,21 @@ $row = $stmt->fetchAll();
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.js"></script>
+    <script>
+        function konfirmasiHapusPengadaan(event) {
+            jawab = true
+            jawab = confirm('Yakin ingin menghapus? Data Ketentuan Akan Hilang Permanen!')
 
+            if (jawab) {
+                // alert('Lanjut.')
+                return true
+            } else {
+                event.preventDefault()
+                return false
+
+            }
+        }
+    </script>
 
 </body>
 

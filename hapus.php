@@ -233,4 +233,13 @@ if (empty($type)) {
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['id_perizinan' => $id_perizinan]);
     header('Location: kelola_perizinan.php?status=deletesuccess');
+} elseif ($type == 'ketentuan') {
+    $id_ketentuan = $_GET['id_ketentuan'];
+    // SELECT * from
+    $sql = 'DELETE FROM  t_konten
+            WHERE id_konten = :id_konten';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id_konten' => $id_ketentuan]);
+    header('Location: kelola_konten_ketentuan.php?status=deletesuccess');
 }

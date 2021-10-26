@@ -167,7 +167,7 @@ if ($_SESSION['level_user'] == 4) {
             <script>
               function konfirmasiHapusPengadaan(event) {
                 jawab = true
-                jawab = confirm('Yakin ingin menghapus? Data pengadaan akan hilang permanen!')
+                jawab = confirm('Yakin ingin menghapus? Data Rekening Bank akan hilang permanen!')
 
                 if (jawab) {
                   // alert('Lanjut.')

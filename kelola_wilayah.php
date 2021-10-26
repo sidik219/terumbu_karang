@@ -205,7 +205,7 @@ $row = $stmt->fetchAll();
                         <script>
                             function konfirmasiHapusPengadaan(event) {
                                 jawab = true
-                                jawab = confirm('Yakin ingin menghapus? Data pengadaan akan hilang permanen!')
+                                jawab = confirm('Yakin ingin menghapus? Data Wilayah akan hilang permanen!')
 
                                 if (jawab) {
                                     // alert('Lanjut.')

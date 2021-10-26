@@ -46,28 +46,28 @@ if (isset($_POST['submit'])) {
     $stmt->execute(['id_lokasi' => $id_lokasi, 'id_user' => $id_user]);
 
     //Kirim email untuk Pengelola lokasi
-            include 'includes/email_handler.php'; //PHPMailer         
-            
-            $sqlviewpengelolalokasi = 'SELECT * FROM t_lokasi 
+    include 'includes/email_handler.php'; //PHPMailer         
+
+    $sqlviewpengelolalokasi = 'SELECT * FROM t_lokasi 
                                         WHERE id_lokasi = :id_lokasi';
-            $stmt = $pdo->prepare($sqlviewpengelolalokasi);
-            $stmt->execute(['id_lokasi' => $id_lokasi]);
-            $pengelola = $stmt->fetch();
+    $stmt = $pdo->prepare($sqlviewpengelolalokasi);
+    $stmt->execute(['id_lokasi' => $id_lokasi]);
+    $pengelola = $stmt->fetch();
 
-            $sqlviewdatauser = 'SELECT * FROM t_user 
+    $sqlviewdatauser = 'SELECT * FROM t_user 
                                 WHERE id_user = :id_user';
-            $stmt = $pdo->prepare($sqlviewdatauser);
-            $stmt->execute(['id_user' => $id_user]);
-            $datauser = $stmt->fetch();
+    $stmt = $pdo->prepare($sqlviewdatauser);
+    $stmt->execute(['id_user' => $id_user]);
+    $datauser = $stmt->fetch();
 
-            $email = $datauser->email;
-            $username = $datauser->username;
-            $nama_user = $datauser->nama_user;
+    $email = $datauser->email;
+    $username = $datauser->username;
+    $nama_user = $datauser->nama_user;
 
-            $subjek = 'Pemberian Hak Akses Pengelola Lokasi pada '.$pengelola->nama_lokasi.' - GoKarang';
-            $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
-            <br>Yth. '.$nama_user.'
-            <br>Anda telah ditunjuk sebagai Pengelola Lokasi pada lokasi '.$pengelola->nama_lokasi.' (ID Lokasi: '.$pengelola->id_lokasi.')
+    $subjek = 'Pemberian Hak Akses Pengelola Lokasi pada ' . $pengelola->nama_lokasi . ' - GoKarang';
+    $pesan = '<img width="150px" src="https://tkjb.or.id/images/gokarang.png"/>
+            <br>Yth. ' . $nama_user . '
+            <br>Anda telah ditunjuk sebagai Pengelola Lokasi pada lokasi ' . $pengelola->nama_lokasi . ' (ID Lokasi: ' . $pengelola->id_lokasi . ')
             <br>Anda bertugas untuk menangani bibit terumbu karang yang dipilih donatur mulai dari pengadaan bibit, penyemaian, penanaman, hingga pemeliharaan berkala di laut,
             <br>Mengelola Reservasi Wisata yang masuk, Paket Wisata beserta fasilitas yang disediakan, pengadaan fasilitas wisata, kerja sama pihak ke tiga, dan asuransi wisata.
             <br>
@@ -76,8 +76,8 @@ if (isset($_POST['submit'])) {
             <br>
             <br>Selamat bergabung di GoKarang dan terima kasih atas kerjasamanya.
         ';
-        
-        smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
+
+    smtpmailer($email, $pengirim, $nama_pengirim, $subjek, $pesan); // smtpmailer($to, $pengirim, $nama_pengirim, $subjek, $pesan);
     // header("Refresh: 0");
     header("location: atur_pengelola_lokasi.php?id_lokasi=$id_lokasi&status=addsuccess");
 }
@@ -152,16 +152,17 @@ if (isset($_POST['submit'])) {
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                <div class="row">
-                    <div class="col"><a class="btn btn-outline-primary" href="kelola_lokasi.php">
-                        < Kembali</a></div>
-                    <div class="col"><a class="btn btn-outline-success float-right font-weight-bold" href="kelola_biaya_operasional.php?id_lokasi=<?=$id_lokasi?>">
-                        <i class="icon fas fa-chevron-right"></i><i class="icon fas fa-chevron-right"></i> Kelola Biaya Operasional</a>
+                    <div class="row">
+                        <div class="col"><a class="btn btn-outline-primary" href="kelola_lokasi.php">
+                                < Kembali</a>
+                        </div>
+                        <div class="col"><a class="btn btn-outline-success float-right font-weight-bold" href="kelola_biaya_operasional.php?id_lokasi=<?= $id_lokasi ?>">
+                                <i class="icon fas fa-chevron-right"></i><i class="icon fas fa-chevron-right"></i> Kelola Biaya Operasional</a>
+                        </div>
                     </div>
-                </div>
-                    
+
                     <br><br>
-                            <h3>Atur Pengelola Lokasi</h3>
+                    <h3>Atur Pengelola Lokasi</h3>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -238,7 +239,7 @@ if (isset($_POST['submit'])) {
                         <script>
                             function konfirmasiHapusPengadaan(event) {
                                 jawab = true
-                                jawab = confirm('Yakin ingin menghapus? Data pengadaan akan hilang permanen!')
+                                jawab = confirm('Yakin ingin menghapus?')
 
                                 if (jawab) {
                                     // alert('Lanjut.')
