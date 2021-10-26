@@ -263,7 +263,7 @@ if (isset($_POST['submit'])) {
                             </div>
                         </div>
                         <div class="form-group">
-                            <img id="preview" src="#" width="100px" alt="Preview Gambar" />
+                            <img id="preview" src="#" <?php if ($row->foto_lokasi != NULL) echo "style='display: none;'"; ?> width="100px" alt="Preview Gambar" />
                             <img id="oldpic" src="<?= $row->foto_lokasi ?>" width="100px">
                             <script>
                                 window.onload = function() {
@@ -300,7 +300,7 @@ if (isset($_POST['submit'])) {
                         <div class="form-group">
                             <img id="preview1" src="#" width="100px" alt="Preview Gambar" />
                             <a href="<?= $row->ttd_digital ?>" data-toggle="lightbox">
-                                <img class="img-fluid" id="oldpic1" src="<?= $row->ttd_digital ?>" width="20%" <?php if ($row->ttd_digital == NULL) echo "style='display: none;'"; ?>></a>
+                                <img class="img-fluid" id="oldpic1" src="<?= $row->ttd_digital ?>" width="20%" <?php if ($row->ttd_digital != NULL) echo "style='display: none;'"; ?>></a>
                             <br>
 
                             <small class="text-muted">

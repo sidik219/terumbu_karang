@@ -248,7 +248,7 @@ if (isset($_POST['submit'])) {
                             </div>
                         </div>
                         <div class="form-group">
-                            <img id="preview" width="100px" src="#" alt="Preview Gambar" />
+                            <img id="preview" width="100px" style="display:none;" src="#" alt="Preview Gambar" />
 
                             <script>
                                 window.onload = function() {

@@ -492,7 +492,7 @@ if (isset($_POST['submit_tolak_bibit'])) {
                             </script>
                         <?php } ?>
                         <div class="form-group">
-                            <img id="preview_pembelian" src="#" class="<?= $rowitem->bukti_pengadaan_bibit == NULL ? 'd-none' : '' ?>" width="100px" alt="Preview Gambar" />
+                            <img id="preview_pembelian" class="<?= $rowitem->bukti_pengadaan_bibit != null ? ' d-none ' : '' ?>" width="100px" alt="Preview Gambar" />
                             <a href="<?= $rowitem->bukti_pengadaan_bibit ?>" data-toggle="lightbox"><img class="img-fluid" id="oldpicpembelian" src="<?= $rowitem->bukti_pengadaan_bibit ?>" width="50%" <?php if ($rowitem->bukti_pengadaan_bibit == NULL) echo " style='display:none;'"; ?>></a>
                             <br>
                             <small class="text-muted">
