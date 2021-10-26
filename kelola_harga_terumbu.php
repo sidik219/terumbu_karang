@@ -600,51 +600,51 @@ if (isset($_POST['submit_biaya'])) {
     });
 
 
-    // function formatNumber(e) {
-    //   var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
-    //   if (!isNaN(formattedNumber)) {
-    //     $('#biaya_pergantian_number').val(formattedNumber)
-    //     $('#num_biaya_pergantian').val(formatter.format(formattedNumber))
-    //   } else {
-    //     $('#biaya_pergantian_number').val('0')
-    //     $('#num_biaya_pergantian').val('0')
-    //   }
-    // }
+    function formatNumber(e) {
+      var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
+      if (!isNaN(formattedNumber)) {
+        $('#biaya_pergantian_number').val(formattedNumber)
+        $('#num_biaya_pergantian').val(formatter.format(formattedNumber))
+      } else {
+        $('#biaya_pergantian_number').val('0')
+        $('#num_biaya_pergantian').val('0')
+      }
+    }
 
-    // function formatNumber1(e) {
-    //   var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
-    //   if (!isNaN(formattedNumber)) {
-    //     $('#biaya_pergantian_number1').val(formattedNumber)
-    //     $('#num_biaya_pergantian1').val(formatter.format(formattedNumber))
-    //   } else {
-    //     $('#biaya_pergantian_number1').val('0')
-    //     $('#num_biaya_pergantian1').val('0')
-    //   }
-    // }
+    function formatNumber1(e) {
+      var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
+      if (!isNaN(formattedNumber)) {
+        $('#biaya_pergantian_number1').val(formattedNumber)
+        $('#num_biaya_pergantian1').val(formatter.format(formattedNumber))
+      } else {
+        $('#biaya_pergantian_number1').val('0')
+        $('#num_biaya_pergantian1').val('0')
+      }
+    }
 
 
 
-    // function formatNumber2(e) {
-    //   var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
-    //   if (!isNaN(formattedNumber)) {
-    //     $('#biaya_pergantian_number2').val(formattedNumber)
-    //     $('#num_biaya_pergantian2').val(formatter.format(formattedNumber))
-    //   } else {
-    //     $('#biaya_pergantian_number2').val('0')
-    //     $('#num_biaya_pergantian2').val('0')
-    //   }
-    // }
+    function formatNumber2(e) {
+      var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
+      if (!isNaN(formattedNumber)) {
+        $('#biaya_pergantian_number2').val(formattedNumber)
+        $('#num_biaya_pergantian2').val(formatter.format(formattedNumber))
+      } else {
+        $('#biaya_pergantian_number2').val('0')
+        $('#num_biaya_pergantian2').val('0')
+      }
+    }
 
-    // function formatNumber3(e) {
-    //   var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
-    //   if (!isNaN(formattedNumber)) {
-    //     $('#biaya_pergantian_number3').val(formattedNumber)
-    //     $('#num_biaya_pergantian3').val(formatter.format(formattedNumber))
-    //   } else {
-    //     $('#biaya_pergantian_number3').val('0')
-    //     $('#num_biaya_pergantian3').val('0')
-    //   }
-    // }
+    function formatNumber3(e) {
+      var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
+      if (!isNaN(formattedNumber)) {
+        $('#biaya_pergantian_number3').val(formattedNumber)
+        $('#num_biaya_pergantian3').val(formatter.format(formattedNumber))
+      } else {
+        $('#biaya_pergantian_number3').val('0')
+        $('#num_biaya_pergantian3').val('0')
+      }
+    }
 
     function formatNumberSewa(e) {
       var formattedNumber = parseInt(e.value.replace(/\,/g, ''))

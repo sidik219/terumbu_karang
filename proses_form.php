@@ -76,7 +76,7 @@ if ($_POST['type'] == 'load_modal_patokan_harga_terumbu' && !empty($_POST["id_de
             Rp.
           </div>
           <div class="col">
-            <input type="text" id="num_biaya_pergantian3" value="<?= $rowitem->harga_patokan_lokasi ?>" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
+            <input onkeyup="formatNumber3(this)" type="text" id="num_biaya_pergantian3" value="<?= number_format($rowitem->harga_patokan_lokasi) ?>" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
           </div>
         </div>
         <div class="row mt-2 d-none">
@@ -93,7 +93,7 @@ if ($_POST['type'] == 'load_modal_patokan_harga_terumbu' && !empty($_POST["id_de
     //Edit
     if ($_POST['type'] == 'update_modal_patokan_harga_terumbu' && !empty($_POST["id_detail_lokasi"])) {
       $id_detail_lokasi = $_POST["id_detail_lokasi"];
-      $harga_patokan_lokasi = $_POST['harga_patokan_lokasi_formatted'];
+      $harga_patokan_lokasi = $_POST['num_harga_patokan_lokasi_angka'];
       $stok_terumbu = $_POST['stok_terumbu'];
 
       $updatepatokan = 'UPDATE t_detail_lokasi
