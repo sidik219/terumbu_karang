@@ -27,9 +27,14 @@ if ($level_user == 2) {
     $row = $stmt->fetchAll();
 }
 
-
 if (isset($_POST['submit'])) {
-    if ($_POST['submit'] == 'Simpan' || $_POST['submit'] == 'SimpanLanjut') {
+    // var_dump($_POST);
+    // die;
+    $kode_lokasi = $_POST['kode_lokasi'];
+    $result = mysqli_query($conn, "SELECT kode_lokasi FROM t_lokasi WHERE kode_lokasi = '$kode_lokasi'");
+    if (mysqli_fetch_assoc($result)) {
+        header('location: input_lokasi.php?pesan=Lokasi_Sudah_Ada');
+    } else if ($_POST['submit'] == 'Simpan' || $_POST['submit'] == 'SimpanLanjut') {
         $id_wilayah = $_POST['dd_id_wilayah'];
         $nama_lokasi        = $_POST['tb_nama_lokasi'];
         $luas_lokasi        = $_POST['num_luas_lokasi'];
@@ -183,9 +188,17 @@ if (isset($_POST['submit'])) {
                             <h4><span class="align-middle font-weight-bold">Input Data Lokasi</span></h4>
                 </div>
                 <!-- /.container-fluid -->
+                <?php
+                if (!empty($_GET['pesan'])) {
+                    if ($_GET['pesan'] == 'Lokasi_Sudah_Ada') {
+                        echo '<div class="alert alert-warning" role="alert">
+                          Kode Lokasi Sudah Terdaftar.
+                      </div>';
+                    }
+                }
+                ?>
             </div>
             <!-- /.content-header -->
-
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">

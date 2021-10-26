@@ -53,31 +53,43 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
     // var_dump($row);
     // die;
 } else {
-    $sqlviewtk = 'SELECT * FROM t_detail_lokasi
-                LEFT JOIN t_terumbu_karang ON t_terumbu_karang.id_terumbu_karang = t_detail_lokasi.id_terumbu_karang
-                LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
-                LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_detail_lokasi.id_lokasi
-                WHERE  t_detail_lokasi.id_lokasi = :id_lokasi';
+    if ($_SESSION['level_user'] == 1) {
+        $sqlviewtk = 'SELECT * FROM t_detail_lokasi
+                    LEFT JOIN t_terumbu_karang ON t_terumbu_karang.id_terumbu_karang = t_detail_lokasi.id_terumbu_karang
+                    LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
+                    LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_detail_lokasi.id_lokasi
+                    WHERE  t_detail_lokasi.id_lokasi = :id_lokasi';
 
-    $stmt = $pdo->prepare($sqlviewtk);
-    $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
-    $row = $stmt->fetchAll();
+        $stmt = $pdo->prepare($sqlviewtk);
+        $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
+        $row = $stmt->fetchAll();
+    } else if ($_SESSION['level_user'] == 3) {
+        $sqlviewtk = 'SELECT * FROM t_detail_lokasi
+        LEFT JOIN t_terumbu_karang ON t_terumbu_karang.id_terumbu_karang = t_detail_lokasi.id_terumbu_karang
+        LEFT JOIN t_jenis_terumbu_karang ON t_terumbu_karang.id_jenis = t_jenis_terumbu_karang.id_jenis
+        LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_detail_lokasi.id_lokasi
+        WHERE  t_detail_lokasi.id_lokasi = :id_lokasi';
 
-    $sqldonasiwisata = 'SELECT*FROM t_donasi_wisata LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi WHERE t_donasi_wisata.status_donasi="Terambil" AND t_reservasi_wisata.id_lokasi=' . $id_lokasi . '';
-    // 'SELECT * FROM t_donasi_wisata
-    //             LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi
-    //             LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
-    //             LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
-    //             LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
-    //             LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-    //             WHERE status_donasi = "Belum Terambil"
+        $stmt = $pdo->prepare($sqlviewtk);
+        $stmt->execute(['id_lokasi' => $_SESSION['id_lokasi']]);
+        $row = $stmt->fetchAll();
 
-    //             ORDER BY id_donasi_wisata DESC';
-    $stmt = $pdo->prepare($sqldonasiwisata);
-    $stmt->execute();
-    $rowharga = $stmt->fetchAll();
-    // var_dump($rowharga);
-    // die;
+        $sqldonasiwisata = 'SELECT*FROM t_donasi_wisata LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi WHERE t_donasi_wisata.status_donasi="Terambil" AND t_reservasi_wisata.id_lokasi=' . $id_lokasi . '';
+        // 'SELECT * FROM t_donasi_wisata
+        //             LEFT JOIN t_reservasi_wisata ON t_donasi_wisata.id_reservasi = t_reservasi_wisata.id_reservasi
+        //             LEFT JOIN t_lokasi ON t_reservasi_wisata.id_lokasi = t_lokasi.id_lokasi
+        //             LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
+        //             LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
+        //             LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
+        //             WHERE status_donasi = "Belum Terambil"
+
+        //             ORDER BY id_donasi_wisata DESC';
+        $stmt = $pdo->prepare($sqldonasiwisata);
+        $stmt->execute();
+        $rowharga = $stmt->fetchAll();
+        // var_dump($rowharga);
+        // die;
+    }
 }
 
 
@@ -169,7 +181,7 @@ if (isset($_GET['id_jenis']) && ((!$_GET['id_jenis']) == "")) {
                                     <?php if ($_SESSION['level_user'] == '1') : ?>
                                         <a href="map.php" class="btn btn-primary btn-sm btn-blue"><i class="fas fa-angle-left"></i> Ganti Lokasi Penanaman</button></a>
                                     <?php elseif ($_SESSION['level_user'] == '3') : ?>
-                                        <a href="kelola_wisata_donasi.php?status=kurang" class="btn btn-primary btn-sm btn-blue"><i class="fas fa-angle-left"></i> Tambah Total Donasi Wisata</button></a>
+                                        <a href="kelola_wisata_donasi.php?statu=kurang" onclick="sessionStorage.removeItem('keranjang_serialised');" class="btn btn-primary btn-sm btn-blue"><i class="fas fa-angle-left"></i> Tambah Total Donasi Wisata</button></a>
                                         <?php
                                         $sum_donasi = 0 + $rowsisa->saldo_donasi_wisata;
                                         foreach ($rowharga as $donasi) {

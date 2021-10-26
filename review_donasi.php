@@ -6,7 +6,11 @@ include 'hak_akses.php';
 
 // var_dump($_SESSION);
 // die;
-$id_lokasi = $_SESSION['id_lokasi_dikelola'];
+if (isset($_SESSION['id_lokasi_dikelola'])) {
+    $id_lokasi = $_SESSION['id_lokasi_dikelola'];
+} else {
+    $id_lokasi = $_SESSION['id_lokasi'];
+}
 $sqlviewlokasi = 'SELECT * FROM t_lokasi
                 WHERE id_lokasi = :id_lokasi';
 $stmt = $pdo->prepare($sqlviewlokasi);
@@ -191,7 +195,7 @@ if (isset($_POST['submitin'])) {
             <section class="content">
                 <div class="container">
                     <br>
-                    <a class="btn btn-primary btn-sm btn-blue" href="#" onclick="history.back();"><i class="fas fa-angle-left"></i> Kembali Pilih</a><br>
+                    <a class="btn btn-primary btn-sm btn-blue" href="#" onclick="history.back(); sessionStorage.removeItem('keranjang_serialised');"><i class="fas fa-angle-left"></i> Kembali Pilih</a><br>
                     <?php if ($_SESSION['level_user'] == '1') : ?>
                         <h4 class="pt-3 mb-3"><span class="font-weight-bold">Review Informasi Donasi</span></h4>
                     <?php elseif ($_SESSION['level_user'] == '3') : ?>

@@ -89,20 +89,24 @@ if (isset($_POST['submit'])) {
     }
 }
 if (isset($_POST['submitin'])) {
-    // var_dump($_POST);
-    // die;
-    $idpilih = $_POST['prodid'];
-    $hitung = count($_POST['prodid']);
-    for ($x = 0; $x < $hitung; $x++) {
-        $record = $idpilih[$x];
-        $sqlreservasi = "UPDATE t_donasi_wisata
+    if ($_POST['prodid'] != NULL) {
+        $idpilih = $_POST['prodid'];
+        $hitung = count($_POST['prodid']);
+        // var_dump($idpilih);
+        // die;
+        for ($x = 0; $x < $hitung; $x++) {
+            $record = $idpilih[$x];
+            $sqlreservasi = "UPDATE t_donasi_wisata
         SET status_donasi = 'Terambil'
         WHERE id_donasi_wisata = $record";
-        $stmt = $pdo->prepare($sqlreservasi);
-        $stmt->execute();
+            $stmt = $pdo->prepare($sqlreservasi);
+            $stmt->execute();
+        }
+        header("location: pilih_terumbu_karang.php?status=terambil&id_lokasi=$id_lokasi");
+    } else {
+        header("location: kelola_wisata_donasi.php?status=tidak_ada_donasi&statu=kurang");
     }
     // header("Refresh:0;");
-    header("location: pilih_terumbu_karang.php?status=terambil&id_lokasi=$id_lokasi");
 
     /*ini bisa loncat ke donasi, nanti total donasi tinggal sorting dari status terambil, 
     nanti kalau udah di checkout ganti lagi status jadi terbeli atau bagusnya seperti apa tergantung bobi*/
@@ -219,6 +223,10 @@ if (isset($_POST['submitin'])) {
                             echo '<div class="alert alert-success" role="alert">
                           Wisata Donasi Berhasil!
                       </div>';
+                        } else if ($_GET['status'] == 'tidak_ada_donasi') {
+                            echo '<div class="alert alert-success" role="alert">
+                          Donasi Wisata Tidak ada yang terpilih
+                      </div>';
                         }
                     }
                     ?>
@@ -235,7 +243,7 @@ if (isset($_POST['submitin'])) {
                     </div>
                     <!-- tabel data belum terambil -->
                     <div id="photo">
-                        <form action="" method="POST" id="ok">
+                        <form action="" method="POST" id="ok" onload="sessionStorage.removeItem('keranjang_serialised')">
                             <table class="table table-striped table-responsive-sm">
                                 <thead>
                                     <tr>
@@ -276,9 +284,9 @@ if (isset($_POST['submitin'])) {
                                 </tbody>
                             </table>
                             <div class="d-flex justify-content-between align-items-center pb-4">
-                                <?php if ($_GET['status'] == 'kurang') : ?>
+                                <?php if ($_GET['statu'] == 'kurang') : ?>
                                     <input type="submit" name="submitin" value="Ambil Donasi" class="btn btn-primary">
-                                <?php elseif ($_GET['status'] == 'baru') : ?>
+                                <?php elseif ($_GET['statu'] == 'baru') : ?>
                                     <input onclick="return ver()" type="submit" name="submitin" value="Ambil Donasi" class="btn btn-primary">
                                 <?php endif ?>
                                 <div class="hack42-45-added-value-row">

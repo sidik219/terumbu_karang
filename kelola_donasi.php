@@ -145,7 +145,7 @@ function alertPembayaran($dob, $batas_hari_pembayaran)
     <?= $favicon ?>
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed" onload="sessionStorage.removeItem('keranjang_serialised')">
     <div class="wrapper">
 
         <!-- NAVBAR -->
