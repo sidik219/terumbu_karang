@@ -89,7 +89,7 @@ include 'hak_akses.php';
                         <div class="container">
                             <!-- <div class="card-group"> -->
                             <div class="text-center">
-                                <h2>Kelola Website GoKaran</h2>
+                                <h2>Kelola Website GoKarang</h2>
                             </div>
                             <div class="row d-flex justify-content-center text-center p-5 ">
 
