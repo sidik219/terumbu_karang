@@ -246,7 +246,7 @@ if (isset($_POST['submit'])) {
                   </select>
                 </div>
                 <div class="col-1">
-                  <span onclick="deleteTitikInput(this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
+                  <span onclick="konfirmasiHapusTitik(event, this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
                 </div>
               </div>
 
@@ -262,7 +262,7 @@ if (isset($_POST['submit'])) {
                   <input type='file' class='form-control mb-2' id='doc_uploads' name='doc_uploads[]' accept='.doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .csv, .zip, .rar' required>
                 </div>
                 <div class="col-auto">
-                  <span onclick="deleteDocInput(this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
+                  <span onclick="konfirmasiHapusDoc(event, this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
                 </div>
                 <div class="form-group col-12">
                   <label for="tb_id_user">Nama Dokumen</label>
@@ -433,6 +433,36 @@ if (isset($_POST['submit'])) {
         $('#biaya_pergantian_number').val('0')
         $('#num_biaya_pergantian').val('0')
       }
+    }
+
+    function konfirmasiHapusTitik(event, elementTarget) {
+        jawab = true
+        jawab = confirm('Anda yakin ingin menghapus?')
+
+        if (jawab) {
+            // alert('Lanjut.')
+            deleteTitikInput(elementTarget)
+            return true
+        } else {
+            event.preventDefault()
+            return false
+
+        }
+    }
+
+    function konfirmasiHapusDoc(event, elementTarget) {
+        jawab = true
+        jawab = confirm('Anda yakin ingin menghapus?')
+
+        if (jawab) {
+            // alert('Lanjut.')
+            deleteDocInput(elementTarget)
+            return true
+        } else {
+            event.preventDefault()
+            return false
+
+        }
     }
   </script>
 

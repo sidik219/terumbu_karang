@@ -26,7 +26,7 @@ include 'hak_akses.php';
             $judul_perizinan        = $_POST['tb_judul_perizinan'];
             $deskripsi_perizinan        = $_POST['tb_deskripsi_perizinan'];
             $biaya_pergantian     = $_POST['biaya_pergantian_number'];
-            $id_titik = array_values(array_unique($_POST['dd_id_titik']));
+            $id_titik = array_filter(array_values(array_unique($_POST['dd_id_titik'])));
             $id_status_perizinan     = $_POST['id_status_perizinan'];
             $nama_pemohon        = $_POST['tb_nama_pemohon'];
             $perusahaan_pemohon        = $_POST['tb_perusahaan_pemohon'];
@@ -102,9 +102,9 @@ include 'hak_akses.php';
 
 
 
-
             $i = 0;
             if(!empty($id_titik[0])){
+              // var_dump($id_titik); die;
                 foreach ($id_titik as $titik){
                 $id_titik_value = $titik;
                 $id_zona_titik = 2;
@@ -303,11 +303,11 @@ include 'hak_akses.php';
                           <div class="col">
                               <select name="dd_id_titik_old[]" class="form-control" required>
                               <option class="old_titik" selected value="<?=$detailperizinan->id_titik?>">ID <?=$detailperizinan->id_titik?> <?=$detailperizinan->keterangan_titik?></option>
-                              <input type="hidden" class="id_detail_perizinan_dihapus" value="<?=$detailperizinan->id_detail_perizinan?>">
+                              <input type="hidden" name="id_detail_old[]" class="id_detail_perizinan" value="<?=$detailperizinan->id_detail_perizinan?>">
                               </select>
                           </div>
                                 <div class="col-1">
-                                    <span onclick="deleteOldTitikInput(this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
+                                    <span onclick="konfirmasiHapusTitikOld(event, this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
                                 </div>
                         </div>
 
@@ -331,7 +331,7 @@ include 'hak_akses.php';
                                 WHERE id_lokasi = :id_lokasi
                                   ORDER BY id_titik';
                                 $stmt = $pdo->prepare($daftartitik);
-                                $stmt->execute(['id_lokasi' => $rowitem->id_lokasi]);
+                                $stmt->execute(['id_lokasi' => $rowperizinan->id_lokasi]);
                                 $rowtitik = $stmt->fetchAll();
 
                             ?>
@@ -345,7 +345,7 @@ include 'hak_akses.php';
                               </select>
                           </div>
                           <div class="col-1">
-                              <span onclick="deleteTitikInput(this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
+                              <span onclick="konfirmasiHapusTitikTambahan(event, this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
                           </div>
                         </div>
 
@@ -374,7 +374,7 @@ include 'hak_akses.php';
                                                     <input type="hidden" value="<?=$docperizinan->id_dokumen_perizinan?>" class="id_dokumen_perizinan_old">
                                                 </div>
                                                 <div class="col-1 p-3 border-bottom">
-                                                    <span onclick="deleteOldDoc(this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
+                                                    <span onclick="konfirmasiHapusDocSebelumnya(event, this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
                                                 </div>
                                                 <div class="col border-bottom p-3"><a class="btn btn-blue btn-primary btn-small p-1" href='<?=$docperizinan->file_dokumen_perizinan?>'><i class="fas fa-download"></i> Unduh File</a>
 
@@ -397,7 +397,7 @@ include 'hak_akses.php';
                                 name='doc_uploads[]' accept='.doc, .docx, .pdf, .xls, .xlsx, .ppt, .pptx, .csv'>
                           </div>
                           <div class="col-auto">
-                            <span onclick="deleteDocInput(this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
+                            <span onclick="konfirmasiHapusDocOld(event, this)" class="btn btn-act"><i class="text-danger fas fa-times-circle"></i> </span>
                           </div>
                           <div class="form-group col-12">
                         <label for="tb_id_user">Nama Dokumen</label>
@@ -493,7 +493,7 @@ include 'hak_akses.php';
         var parent_row = $(e).parent().parent()
         var id_dokumen_old = parent_row.find('.id_dokumen_perizinan_old').val()
 
-        $(`<input type="text" value="${id_dokumen_old}" class="id_doc_old_hidden" name="id_dokumen_old_dihapus[]">`).appendTo('#hapus-div')
+        $(`<input type="hidden" value="${id_dokumen_old}" class="id_doc_old_hidden" name="id_dokumen_old_dihapus[]">`).appendTo('#hapus-div')
         parent_row.fadeOut(function(){
           parent_row.remove()
         })
@@ -522,11 +522,12 @@ include 'hak_akses.php';
 
       function deleteOldTitikInput(e){
         var parent_row = $(e).parent().parent()
-        var id_detail_p_hapus = parent_row.find('.id_detail_perizinan_dihapus').val()
+        var id_detail_p_hapus = parent_row.find('.id_detail_perizinan').val()
         var input_id_detail = document.createElement('input')
-        input_id_detail.type = 'text'
+        input_id_detail.type = 'hidden'
         input_id_detail.value = id_detail_p_hapus
-        input_id_detail.name = 'id_detail_hapus[]'
+        input_id_detail.name = 'id_detail_old_dihapus[]'
+        
         document.getElementById('hapus-div').appendChild(input_id_detail)
 
         parent_row.fadeOut(function(){
@@ -535,6 +536,67 @@ include 'hak_akses.php';
       }
 
 
+
+      function konfirmasiHapusTitikOld(event, elementTarget) {
+        jawab = true
+        jawab = confirm('Anda yakin ingin menghapus?')
+
+        if (jawab) {
+            // alert('Lanjut.')
+             deleteOldTitikInput(elementTarget)
+            return true
+        } else {
+            event.preventDefault()
+            return false
+
+        }
+    }
+
+    function konfirmasiHapusTitikTambahan(event, elementTarget) {
+        jawab = true
+        jawab = confirm('Anda yakin ingin menghapus?')
+
+        if (jawab) {
+            // alert('Lanjut.')
+              deleteTitikInput(elementTarget)
+            return true
+        } else {
+            event.preventDefault()
+            return false
+
+        }
+    }
+
+    function konfirmasiHapusDocOld(event, elementTarget) {
+        jawab = true
+        jawab = confirm('Anda yakin ingin menghapus?')
+
+        if (jawab) {
+            // alert('Lanjut.')
+            deleteDocInput(elementTarget)
+            return true
+        } else {
+            event.preventDefault()
+            return false
+
+        }
+    }
+
+
+    function konfirmasiHapusDocSebelumnya(event, elementTarget) {
+        jawab = true
+        jawab = confirm('Anda yakin ingin menghapus?')
+
+        if (jawab) {
+            // alert('Lanjut.')
+             deleteOldDoc(elementTarget)
+            return true
+        } else {
+            event.preventDefault()
+            return false
+
+        }
+    }
 
 
 
