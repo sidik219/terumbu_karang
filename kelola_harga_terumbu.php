@@ -129,7 +129,18 @@ if (isset($_POST['submit_biaya'])) {
       <!-- Content Header (Page header) -->
       <div class="content-header">
         <div class="container-fluid">
-          <a href="kelola_lokasi.php"><button class="btn btn-warning btn-back mb-2" type="button"><i class="fas fa-angle-left"></i> Kembali</button></a>
+          <div class="row">
+            <div class="col">
+              <a href="kelola_lokasi.php"><button class="btn btn-warning btn-back mb-2" type="button"><i class="fas fa-angle-left"></i> Kembali</button></a>
+            </div>
+
+            <div class="col">
+               <div class="col"><a class="btn btn-outline-success float-right font-weight-bold" href="kelola_biaya_operasional.php?id_lokasi=<?= $id_lokasi ?>">
+                <i class="icon fas fa-chevron-right"></i><i class="icon fas fa-chevron-right"></i> Kelola Biaya Operasional</a>
+            </div>
+            </div>
+          </div>
+          
           <h4><span class="align-middle font-weight-bold">Kelola Harga Patokan Terumbu</span></h4>
         </div>
         <!-- /.container-fluid -->

@@ -149,7 +149,7 @@ if ($_POST['type'] == 'load_modal_patokan_harga_terumbu' && !empty($_POST["id_de
                   Rp.
                 </div>
                 <div class="col">
-                  <input type="text" id="num_biaya_pergantian3" value="<?= $rowitem->jumlah_biaya_operasional ?>" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
+                  <input onkeyup="formatNumber3(this)" type="text" id="num_biaya_pergantian3" value="<?= number_format($rowitem->jumlah_biaya_operasional) ?>" min="1" name="harga_patokan_lokasi_formatted" class="form-control number-input" required>
                 </div>
               </div>
 
@@ -162,7 +162,7 @@ if ($_POST['type'] == 'load_modal_patokan_harga_terumbu' && !empty($_POST["id_de
           //Edit
           if ($_POST['type'] == 'update_modal_biaya_operasional' && !empty($_POST["id_biaya_operasional"])) {
             $id_biaya_operasional = $_POST["id_biaya_operasional"];
-            $jumlah_biaya_operasional = $_POST['harga_patokan_lokasi_formatted'];
+            $jumlah_biaya_operasional = $_POST['jumlah_biaya_operasional'];
             $nama_biaya_operasional = $_POST['nama_biaya_operasional'];
 
             $updatepatokan = 'UPDATE t_biaya_operasional
