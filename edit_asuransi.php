@@ -18,23 +18,40 @@ $stmt->execute(['id_asuransi' => $id_asuransi]);
 $asuransi = $stmt->fetch();
 
 if (isset($_POST['submit'])) {
-    $nama_asuransi  = $_POST['nama_asuransi'];
-    $biaya_asuransi = $_POST['biaya_asuransi'];
     $id_perusahaan  = $_POST['nama_pihak'];
+    $notlp_asuransi = $_POST['notlp_asuransi'];
 
-    //Insert t_asuransi
-    $sqlasuransi = "UPDATE t_asuransi
-                    SET nama_asuransi = :nama_asuransi, 
-                        biaya_asuransi = :biaya_asuransi,
-                        id_perusahaan = :id_perusahaan
-                    WHERE id_asuransi = :id_asuransi";
+    // Asuransi
+    $id_asuransi = $_POST["id_asuransi"];
+    $nama_asuransi = $_POST['nama_asuransi'];
+    $biaya_asuransi = $_POST['biaya_asuransi'];
 
-    $stmt = $pdo->prepare($sqlasuransi);
+    $hitung = count($id_asuransi);
+    for ($x = 0; $x < $hitung; $x++) {
+        $sqlasuransi = "UPDATE t_asuransi
+        SET id_perusahaan = :id_perusahaan,
+            nama_asuransi = :nama_asuransi,
+            biaya_asuransi = :biaya_asuransi
+        WHERE id_asuransi = :id_asuransi";
+
+        $stmt = $pdo->prepare($sqlasuransi);
+        $stmt->execute([
+            'id_asuransi' => $id_asuransi[$x],
+            'nama_asuransi' => $nama_asuransi[$x],
+            'biaya_asuransi' => $biaya_asuransi[$x],
+            'id_perusahaan' => $id_perusahaan
+        ]);
+    }
+
+    //Insert t_perusahaan_asuransi
+    $sqlperusahaan = "UPDATE t_perusahaan_asuransi
+                    SET notlp_asuransi = :notlp_asuransi
+                    WHERE id_perusahaan = :id_perusahaan";
+
+    $stmt = $pdo->prepare($sqlperusahaan);
     $stmt->execute([
-        'nama_asuransi'      => $nama_asuransi,
-        'biaya_asuransi'  => $biaya_asuransi,
-        'id_perusahaan'  => $id_perusahaan,
-        'id_asuransi'  => $id_asuransi
+        'notlp_asuransi' => $notlp_asuransi,
+        'id_perusahaan' => $id_perusahaan
     ]);
 
     $affectedrows = $stmt->rowCount();
@@ -143,15 +160,18 @@ if (isset($_POST['submit'])) {
                     }
                     ?>
                     <form action="" enctype="multipart/form-data" method="POST">
+                        <!-- Hidden Id Asuransi -->
+                        <input type="hidden" name="id_asuransi[]" value="<?= $asuransi->id_asuransi ?> - <?= $asuransi->nama_asuransi ?>">
+
                         <div class="form-group">
                             <label for="nama_asuransi">Nama Asuransi</label><br>
                             <small style="color: red;">*Jika nama asuransi tidak tahu bisa dikosongkan dengan (-)</small>
-                            <input type="text" name="nama_asuransi" value="<?= $asuransi->nama_asuransi ?>" class="form-control" required>
+                            <input type="text" name="nama_asuransi[]" value="<?= $asuransi->nama_asuransi ?>" class="form-control" required>
                         </div>
 
                         <div class="form-group">
                             <label for="biaya_asuransi">Biaya Asuransi</label>
-                            <input type="number" name="biaya_asuransi" value="<?= $asuransi->biaya_asuransi ?>" class="form-control" required>
+                            <input type="number" name="biaya_asuransi[]" value="<?= $asuransi->biaya_asuransi ?>" class="form-control" required>
                         </div>
 
                         <div class="form-group">
@@ -172,8 +192,8 @@ if (isset($_POST['submit'])) {
                         </div>
 
                         <div class="form-group">
-                            <label for="biaya_asuransi">No Telp Asuransi</label>
-                            <input type="tel" name="biaya_asuransi" value="<?= $asuransi->notlp_asuransi ?>" class="form-control" pattern="^[0-9-+\s()]*$" required>
+                            <label for="notlp_asuransi">No Telp Asuransi</label>
+                            <input type="tel" name="notlp_asuransi" value="<?= $asuransi->notlp_asuransi ?>" class="form-control" pattern="^[0-9-+\s()]*$" required>
                         </div <p align="center">
                         <button type="submit" name="submit" value="Simpan" class="btn btn-submit">Simpan</button></p>
                     </form><br><br>
