@@ -7,7 +7,7 @@ if ($_GET['type'] == 'wisata') {
     header("Content-type: application/vnd-ms-excel");
     header("Content-Disposition: attachment; filename=laporan_data_wisata.xls");
 
-    if (!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)) {
+    if (!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)) {
         header('location: login.php?status=restrictedaccess');
     }
 
@@ -327,10 +327,10 @@ if ($_GET['type'] == 'wisata') {
                     LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                     LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                     LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                    WHERE  '.$extra_query_noand.'
+                    WHERE  ' . $extra_query_noand . '
                     AND t_reservasi_wisata.id_status_reservasi_wisata = 2
-                    AND tanggal_pesan BETWEEN "'.$start.'" 
-                    AND "'.$end.'"';
+                    AND tanggal_pesan BETWEEN "' . $start . '" 
+                    AND "' . $end . '"';
 
     $stmt = $pdo->prepare($sqlviewdonasi);
     $stmt->execute();
@@ -345,10 +345,10 @@ if ($_GET['type'] == 'wisata') {
                     LEFT JOIN t_user ON t_reservasi_wisata.id_user = t_user.id_user
                     LEFT JOIN tb_status_reservasi_wisata ON t_reservasi_wisata.id_status_reservasi_wisata = tb_status_reservasi_wisata.id_status_reservasi_wisata
                     LEFT JOIN tb_paket_wisata ON t_reservasi_wisata.id_paket_wisata = tb_paket_wisata.id_paket_wisata
-                    WHERE  '.$extra_query_noand.'
+                    WHERE  ' . $extra_query_noand . '
                     AND t_reservasi_wisata.id_status_reservasi_wisata = 2
-                    AND tanggal_pesan BETWEEN "'.$start.'" 
-                    AND "'.$end.'"';
+                    AND tanggal_pesan BETWEEN "' . $start . '" 
+                    AND "' . $end . '"';
 
     $stmt = $pdo->prepare($sqlhitungtotal);
     $stmt->execute();
@@ -396,33 +396,34 @@ if ($_GET['type'] == 'wisata') {
             $pengeluaran = 0;
 
             foreach ($row as $rowitem) {
-            $truedate = strtotime($rowitem->update_terakhir);
-            $reservasidate = strtotime($rowitem->tgl_reservasi);
-            $pemasukan = $rowitem->total;
+                $truedate = strtotime($rowitem->update_terakhir);
+                $reservasidate = strtotime($rowitem->tgl_reservasi);
+                $pemasukan = $rowitem->total;
             ?>
                 <tr>
                     <th><?= $no ?></th>
-                    <th scope="row"><?=$rowitem->id_pengeluaran?></th>
-                    <th><?=$rowitem->id_reservasi?></th>
-                    <td><?=$rowitem->nama_pengeluaran?></td>
+                    <th scope="row"><?= $rowitem->id_pengeluaran ?></th>
+                    <th><?= $rowitem->id_reservasi ?></th>
+                    <td><?= $rowitem->nama_pengeluaran ?></td>
                     <td><?= $rowitem->nama_lokasi ?></td>
                     <td><?= $rowitem->nama_user ?></td>
                     <td>
-                        <?=strftime('%A, %e %B %Y', $reservasidate);?><br>
+                        <?= strftime('%A, %e %B %Y', $reservasidate); ?><br>
                         <?php if ($rowitem->id_status_reservasi_wisata == 1) {
-                            echo alertPembayaran($rowitem->tgl_reservasi); } ?> 
+                            echo alertPembayaran($rowitem->tgl_reservasi);
+                        } ?>
                     </td>
                     <td>
                         <small class="text-muted"><b>Update Terakhir</b>
-                        <br><?= strftime('%A, %d %B %Y', $truedate) . '<br> (' . ageCalculator($rowitem->update_terakhir) . ' yang lalu)'; ?></small>
+                            <br><?= strftime('%A, %d %B %Y', $truedate) . '<br> (' . ageCalculator($rowitem->update_terakhir) . ' yang lalu)'; ?></small>
                     </td>
-                    <td class="nominal">Rp. <?=number_format($rowitem->biaya_pengeluaran, 0)?></td>
+                    <td class="nominal">Rp. <?= number_format($rowitem->biaya_pengeluaran, 0) ?></td>
                 </tr>
             <?php $no++;
             } ?>
 
             <!-- Hasil -->
-            <?php 
+            <?php
             $pengeluaran = $rowtotal->biaya_pengeluaran;
             $total = $pemasukan - $pengeluaran;
             ?>

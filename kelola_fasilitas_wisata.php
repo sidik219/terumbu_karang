@@ -1,7 +1,7 @@
 <?php include 'build/config/connection.php';
 session_start();
-if(!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)){
-  header('location: login.php?status=restrictedaccess');
+if (!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)) {
+    header('location: login.php?status=restrictedaccess');
 }
 $url_sekarang = basename(__FILE__);
 include 'hak_akses.php';
@@ -14,22 +14,18 @@ $stmt = $pdo->prepare($sqlviewfasilitas);
 $stmt->execute();
 $rowfasilitas = $stmt->fetchAll();
 
-function ageCalculator($dob){
+function ageCalculator($dob)
+{
     $birthdate = new DateTime($dob);
     $today   = new DateTime('today');
     $ag = $birthdate->diff($today)->y;
     $mn = $birthdate->diff($today)->m;
     $dy = $birthdate->diff($today)->d;
-    if ($mn == 0)
-    {
+    if ($mn == 0) {
         return "$dy Hari";
-    }
-    elseif ($ag == 0)
-    {
+    } elseif ($ag == 0) {
         return "$mn Bulan  $dy Hari";
-    }
-    else
-    {
+    } else {
         return "$ag Tahun $mn Bulan $dy Hari";
     }
 }
@@ -37,16 +33,17 @@ function ageCalculator($dob){
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Kelola Wisata - GoKarang</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
-        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-        <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
-        <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Local CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/style-card.css">
@@ -74,9 +71,9 @@ function ageCalculator($dob){
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Akun Saya</a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Edit Profil</a>
-                            <a class="dropdown-item" href="logout.php">Logout</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">Edit Profil</a>
+                        <a class="dropdown-item" href="logout.php">Logout</a>
                 </li>
             </ul>
         </nav>
@@ -94,8 +91,9 @@ function ageCalculator($dob){
             <div class="sidebar">
                 <!-- SIDEBAR MENU -->
                 <nav class="mt-2">
-                   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php print_sidebar(basename(__FILE__), $_SESSION['level_user'])?> <!-- Print sidebar -->
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <?php print_sidebar(basename(__FILE__), $_SESSION['level_user']) ?>
+                        <!-- Print sidebar -->
                     </ul>
                 </nav>
                 <!-- END OF SIDEBAR MENU -->
@@ -108,14 +106,17 @@ function ageCalculator($dob){
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <a class="btn btn-outline-primary" href="kelola_wisata.php">< Kembali</a><br><br>
-                    <h4><span class="align-middle font-weight-bold">Data Fasilitas Wisata</span></h4>
-                    <ul class="app-breadcrumb breadcrumb" style="margin-bottom: 20px;">
-                        <li class="breadcrumb-item">
-                            <a href="kelola_wisata.php" class="non">Kelola Wisata</a></li>
-                        <li class="breadcrumb-item">
-                            <a href="kelola_fasilitas_wisata.php" class="tanda">Data Fasilitas Wisata</a></li>
-                    </ul>
+                    <a class="btn btn-outline-primary" href="kelola_wisata.php">
+                        < Kembali</a><br><br>
+                            <h4><span class="align-middle font-weight-bold">Data Fasilitas Wisata</span></h4>
+                            <ul class="app-breadcrumb breadcrumb" style="margin-bottom: 20px;">
+                                <li class="breadcrumb-item">
+                                    <a href="kelola_wisata.php" class="non">Kelola Wisata</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="kelola_fasilitas_wisata.php" class="tanda">Data Fasilitas Wisata</a>
+                                </li>
+                            </ul>
                 </div>
                 <!-- /.container-fluid -->
             </div>
@@ -125,20 +126,21 @@ function ageCalculator($dob){
             <section class="content">
                 <div class="container-fluid">
                     <?php
-                        if(!empty($_GET['status'])) {
-                            if($_GET['status'] == 'addsuccess') {
-                                echo '<div class="alert alert-success" role="alert">
+                    if (!empty($_GET['status'])) {
+                        if ($_GET['status'] == 'addsuccess') {
+                            echo '<div class="alert alert-success" role="alert">
                                         Input data fasilitas wisata berhasil ditambahkan!
-                                        </div>'; }
+                                        </div>';
                         }
+                    }
                     ?>
                     <div align="right">
-                    <!-- Cetak Laporan Fasilitas -->
-                    <a class="btn btn-success" href="laporan_wisata.php?type=fasilitas">
-                    <i class="fas fa-file-excel"></i> Laporan Data Fasilitas</a>
+                        <!-- Cetak Laporan Fasilitas -->
+                        <a class="btn btn-success" href="laporan_wisata.php?type=fasilitas">
+                            <i class="fas fa-file-excel"></i> Laporan Data Fasilitas</a>
 
-                    <a class="btn btn-outline-primary" href="input_fasilitas_wisata.php" style="margin-top: 5px; margin-bottom: 5px;">
-                    Selanjutnya Input Fasilitas <i class="fas fa-angle-right"></i></a>
+                        <a class="btn btn-outline-primary" href="input_fasilitas_wisata.php" style="margin-top: 5px; margin-bottom: 5px;">
+                            Selanjutnya Input Fasilitas <i class="fas fa-angle-right"></i></a>
                     </div>
 
                     <table class="table table-striped table-responsive-sm">
@@ -154,36 +156,36 @@ function ageCalculator($dob){
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($rowfasilitas as $fasilitas) { 
+                            <?php foreach ($rowfasilitas as $fasilitas) {
                                 $truedate = strtotime($fasilitas->update_terakhir); ?>
-                            <tr>
-                                <th scope="row"><?=$fasilitas->id_fasilitas_wisata?></th>
-                                <td><?=$fasilitas->pengadaan_fasilitas?></td>
-                                <td>Rp. <?=number_format($fasilitas->biaya_kerjasama, 0)?></td>
-                                <td>
-                                    <?php if ($fasilitas->status_kerjasama == "Melakukan Kerjasama") { ?>
-                                        <span class="badge badge-pill badge-success"><?=$fasilitas->status_kerjasama?></span>
-                                    <?php } elseif ($fasilitas->status_kerjasama == "Tidak Melakukan Kerjasama") { ?>
-                                        <span class="badge badge-pill badge-warning"><?=$fasilitas->status_kerjasama?></span>
-                                    <?php } ?>
-                                </td>
-                                <td>
-                                    <?php if ($fasilitas->status_pengadaan == "Baik") { ?>
-                                        <span class="badge badge-pill badge-success"><?=$fasilitas->status_pengadaan?></span>
-                                    <?php } elseif ($fasilitas->status_pengadaan == "Rusak") { ?>
-                                        <span class="badge badge-pill badge-warning"><?=$fasilitas->status_pengadaan?></span>
-                                    <?php } elseif ($fasilitas->status_pengadaan == "Hilang") { ?>
-                                        <span class="badge badge-pill badge-danger"><?=$fasilitas->status_pengadaan?></span>
-                                    <?php } ?>
-                                </td>
-                                <td>
-                                    <small class="text-muted"><b>Update Terakhir</b>
-                                    <br><?=strftime('%A, %d %B %Y', $truedate).'<br> ('.ageCalculator($fasilitas->update_terakhir).' yang lalu)';?></small>
-                                </td>
-                                <!-- <td>
-                                    <a href="edit_fasilitas_wisata.php?id_fasilitas_wisata=<?=$fasilitas->id_fasilitas_wisata?>" class="fas fa-edit mr-3 btn btn-act"></a>
+                                <tr>
+                                    <th scope="row"><?= $fasilitas->id_fasilitas_wisata ?></th>
+                                    <td><?= $fasilitas->pengadaan_fasilitas ?></td>
+                                    <td>Rp. <?= number_format($fasilitas->biaya_kerjasama, 0) ?></td>
+                                    <td>
+                                        <?php if ($fasilitas->status_kerjasama == "Melakukan Kerjasama") { ?>
+                                            <span class="badge badge-pill badge-success"><?= $fasilitas->status_kerjasama ?></span>
+                                        <?php } elseif ($fasilitas->status_kerjasama == "Tidak Melakukan Kerjasama") { ?>
+                                            <span class="badge badge-pill badge-warning"><?= $fasilitas->status_kerjasama ?></span>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if ($fasilitas->status_pengadaan == "Baik") { ?>
+                                            <span class="badge badge-pill badge-success"><?= $fasilitas->status_pengadaan ?></span>
+                                        <?php } elseif ($fasilitas->status_pengadaan == "Rusak") { ?>
+                                            <span class="badge badge-pill badge-warning"><?= $fasilitas->status_pengadaan ?></span>
+                                        <?php } elseif ($fasilitas->status_pengadaan == "Hilang") { ?>
+                                            <span class="badge badge-pill badge-danger"><?= $fasilitas->status_pengadaan ?></span>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <small class="text-muted"><b>Update Terakhir</b>
+                                            <br><?= strftime('%A, %d %B %Y', $truedate) . '<br> (' . ageCalculator($fasilitas->update_terakhir) . ' yang lalu)'; ?></small>
+                                    </td>
+                                    <!-- <td>
+                                    <a href="edit_fasilitas_wisata.php?id_fasilitas_wisata=<?= $fasilitas->id_fasilitas_wisata ?>" class="fas fa-edit mr-3 btn btn-act"></a>
                                 </td> -->
-                            </tr>
+                                </tr>
                             <?php } ?>
                         </tbody>
                     </table>
@@ -191,12 +193,12 @@ function ageCalculator($dob){
 
             </section>
             <!-- /.Left col -->
-            </div>
-            <!-- /.row (main row) -->
         </div>
-        <!-- /.container-fluid -->
-        </section>
-        <!-- /.content -->
+        <!-- /.row (main row) -->
+    </div>
+    <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
 
@@ -206,21 +208,22 @@ function ageCalculator($dob){
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
+        <!-- Control sidebar content goes here -->
     </aside>
     <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
-<div>
-    <!-- jQuery -->
-    <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- overlayScrollbars -->
-    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.js"></script>
-</div>
-<!-- Import Trumbowyg font size JS at the end of <body>... -->
-<script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
+    <div>
+        <!-- jQuery -->
+        <!-- Bootstrap 4 -->
+        <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- overlayScrollbars -->
+        <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="dist/js/adminlte.js"></script>
+    </div>
+    <!-- Import Trumbowyg font size JS at the end of <body>... -->
+    <script src="js/trumbowyg/dist/plugins/fontsize/trumbowyg.fontsize.min.js"></script>
 </body>
+
 </html>

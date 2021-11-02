@@ -48,7 +48,7 @@ if (!$_SESSION['level_user']) { //Belum log in
             $extra_query = " AND t_lokasi.id_lokasi = $id_lokasi ";
         } else if ($level_user == 4) {
             $extra_query = "  ";
-        }else{
+        } else {
             $extra_query = "  ";
         }
 
@@ -59,7 +59,7 @@ if (!$_SESSION['level_user']) { //Belum log in
         $t_wilayah = $pdo->query('SELECT COUNT(*) FROM t_wilayah')->fetchColumn();
         $t_lokasi = $pdo->query('SELECT COUNT(*) FROM t_lokasi 
                                 LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah
-                                WHERE 1=1 '.$extra_query)->fetchColumn();
+                                WHERE 1=1 ' . $extra_query)->fetchColumn();
         $t_jenis_terumbu_karang = $pdo->query('SELECT COUNT(*) FROM t_jenis_terumbu_karang')->fetchColumn();
         $t_terumbu_karang = $pdo->query('SELECT COUNT(*) FROM t_terumbu_karang')->fetchColumn();
 
@@ -70,17 +70,17 @@ if (!$_SESSION['level_user']) { //Belum log in
         $t_pengelola_lokasi = $pdo->query('SELECT COUNT(*) 
                                         FROM t_pengelola_lokasi 
                                         LEFT JOIN t_lokasi ON t_pengelola_lokasi.id_lokasi = t_lokasi.id_lokasi
-                                        LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah WHERE 1=1 '.$extra_query)->fetchColumn();
+                                        LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah WHERE 1=1 ' . $extra_query)->fetchColumn();
 
         // Harga patokan terumbu
         $t_detail_lokasi = $pdo->query('SELECT COUNT(*) FROM t_detail_lokasi 
                                         LEFT JOIN t_lokasi ON t_detail_lokasi.id_lokasi = t_lokasi.id_lokasi
-                                        LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah WHERE 1=1 '.$extra_query)->fetchColumn();
+                                        LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah WHERE 1=1 ' . $extra_query)->fetchColumn();
 
         $t_biaya_operasional = $pdo->query('SELECT COUNT(*) 
                                         FROM t_biaya_operasional 
                                         LEFT JOIN t_lokasi ON t_biaya_operasional.id_lokasi = t_lokasi.id_lokasi
-                                        LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah WHERE 1=1 '.$extra_query)->fetchColumn();
+                                        LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah WHERE 1=1 ' . $extra_query)->fetchColumn();
         // $t_perizinan = $pdo->query('SELECT COUNT(*) FROM t_perizinan')->fetchColumn(); // buat perizinan kalau kosong
         // $t_titik = $pdo->query('SELECT COUNT(*) FROM t_titik')->fetchColumn(); //ini blum tau gmn caranya buat titik lokasi setiap lokasi beda beda
 
@@ -502,7 +502,7 @@ if (!$_SESSION['level_user']) { //Belum log in
 
 
 
-                <!-- WISATA COLLAPSE START -->        
+                <!-- WISATA COLLAPSE START       
         <li class="nav-item ' . (in_array($url_sekarang, [
                 'kelola_wisata.php', 'edit_wisata.php', 'kelola_fasilitas_wisata.php', 'input_wisata.php',
                 'input_fasilitas_wisata.php', 'input_paket_wisata.php', 'edit_arsip_luas_wilayah.php',
@@ -527,21 +527,21 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </a>
                 </li>
 
-                    <li class="nav-item"> <!-- Lokasi -->
+                    <li class="nav-item"> 
                     <a href="kelola_pengadaan_fasilitas.php" class="nav-link ' . (('kelola_pengadaan_fasilitas.php' == $url_sekarang) || ('edit_pengadaan_fasilitas.php'  == $url_sekarang) || ('input_pengadaan_fasilitas.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-truck-loading"></i>
                         <p> Kelola Pengadaan </p>
                     </a>
                 </li>
 
-                <li class="nav-item"> <!-- Lokasi -->
+                <li class="nav-item"> 
                     <a href="kelola_kerjasama.php" class="nav-link ' . (('kelola_kerjasama.php' == $url_sekarang) || ('edit_kerjasama.php'  == $url_sekarang) || ('input_kerjasama.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-handshake"></i>
                         <p> Kelola Kerjasama </p>
                     </a>
                 </li>
 
-		        <li class="nav-item"> <!-- Lokasi -->
+		        <li class="nav-item"> 
                     <a href="kelola_asuransi.php" class="nav-link ' . (('kelola_asuransi.php' == $url_sekarang) || ('edit_asuransi.php'  == $url_sekarang) || ('input_asuransi.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-heartbeat"></i>
                         <p> Kelola Asuransi </p>
@@ -549,7 +549,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 </li>
 
                 
-            </ul> <!-- WISATA COLLAPSE END -->
+            </ul>  WISATA COLLAPSE END -->
 
                 
                 
@@ -664,7 +664,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                 </li>
 
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
-                    <a href="kelola_wisata_donasi.php?statu=baru" class="nav-link  ' . ('kelola_wisata_donasi.php?status=baru' == $url_sekarang ? ' active ' : '') . ' ">
+                    <a href="kelola_wisata_donasi.php?statu=baru" class="nav-link  ' . ('kelola_wisata_donasi.php?statu=baru' == $url_sekarang ? ' active ' : '') . ' ">
                         <i class="nav-icon fab fa-bandcamp"></i>
                         <p> Kelola Donasi Wisata </p> 
                     </a>
@@ -706,7 +706,58 @@ if (!$_SESSION['level_user']) { //Belum log in
                         <p> Kelola Lokasi </p>' . (($t_detail_lokasi == 0 ||  $t_biaya_operasional == 0) ? ' <span class="badge text-sm badge-pill shadow-none badge-warning fas fa-exclamation">' : '') . '
                     </a>
                 </li>
+
                 
+                <!-- WISATA COLLAPSE START-->  
+        <li class="nav-item ' . (in_array($url_sekarang, [
+                    'kelola_wisata.php', 'edit_wisata.php', 'kelola_fasilitas_wisata.php', 'input_wisata.php',
+                    'input_fasilitas_wisata.php', 'input_paket_wisata.php', 'edit_arsip_luas_wilayah.php',
+                    'kelola_pengadaan_fasilitas.php', 'edit_pengadaan_fasilitas.php',
+                    'input_pengadaan_fasilitas.php', 'kelola_kerjasama.php', 'edit_kerjasama.php', 'input_kerjasama.php', 'kelola_asuransi.php',
+                    'edit_asuransi.php', 'input_asuransi.php'
+                ])  ? ' active menu-open ' : '') . '"> 
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-briefcase"></i>
+              <p>
+                Kelola Pariwisata
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav sidebar-menu nav-treeview ml-2">
+                    <li class="nav-item"> 
+                    <a href="kelola_wisata.php" class="nav-link ' . (('kelola_wisata.php' == $url_sekarang) || ('edit_wisata.php'  == $url_sekarang) ||
+                    ('kelola_fasilitas_wisata.php'  == $url_sekarang) || ('input_wisata.php'  == $url_sekarang) ||
+                    ('input_fasilitas_wisata.php'  == $url_sekarang) || ('input_paket_wisata.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                        <i class="nav-icon fas fa-suitcase"></i>
+                        <p> Kelola Wisata </p>
+                    </a>
+                </li>
+
+                    <li class="nav-item"> 
+                    <a href="kelola_pengadaan_fasilitas.php" class="nav-link ' . (('kelola_pengadaan_fasilitas.php' == $url_sekarang) || ('edit_pengadaan_fasilitas.php'  == $url_sekarang) || ('input_pengadaan_fasilitas.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                        <i class="nav-icon fas fa-truck-loading"></i>
+                        <p> Kelola Pengadaan </p>
+                    </a>
+                </li>
+
+                <li class="nav-item"> 
+                    <a href="kelola_kerjasama.php" class="nav-link ' . (('kelola_kerjasama.php' == $url_sekarang) || ('edit_kerjasama.php'  == $url_sekarang) || ('input_kerjasama.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                        <i class="nav-icon fas fa-handshake"></i>
+                        <p> Kelola Kerjasama </p>
+                    </a>
+                </li>
+
+		        <li class="nav-item"> 
+                    <a href="kelola_asuransi.php" class="nav-link ' . (('kelola_asuransi.php' == $url_sekarang) || ('edit_asuransi.php'  == $url_sekarang) || ('input_asuransi.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                        <i class="nav-icon fas fa-heartbeat"></i>
+                        <p> Kelola Asuransi </p>
+                    </a>
+                </li>       
+            </ul> 
+        </li>
+            <!-- WISATA COLLAPSE END -->
+
+
                 <li class="nav-item"> <!-- Wilayah & Lokasi -->
                     <a href="kelola_titik.php" class="nav-link ' . (('kelola_titik.php' == $url_sekarang) || ('edit_titik.php' == $url_sekarang)  || ('input_titik.php'  == $url_sekarang) ? ' active ' : '') . ' ">
                         <i class="nav-icon fas fa-crosshairs"></i>
@@ -756,7 +807,7 @@ if (!$_SESSION['level_user']) { //Belum log in
                     </li>
     
                     <li class="nav-item"> <!-- Wilayah & Lokasi -->
-                        <a href="kelola_wisata_donasi.php?status=baru" class="nav-link  ' . ('kelola_wisata_donasi.php?status=baru' == $url_sekarang ? ' active ' : '') . ' ">
+                        <a href="kelola_wisata_donasi.php?statu=baru" class="nav-link  ' . ('kelola_wisata_donasi.php?statu=baru' == $url_sekarang ? ' active ' : '') . ' ">
                             <i class="nav-icon fab fa-bandcamp"></i>
                             <p> Kelola Donasi Wisata </p> 
                         </a>
@@ -806,6 +857,57 @@ if (!$_SESSION['level_user']) { //Belum log in
                         </a>
                     </li>
     
+
+                    <!-- WISATA COLLAPSE START-->  
+                    <li class="nav-item ' . (in_array($url_sekarang, [
+                    'kelola_wisata.php', 'edit_wisata.php', 'kelola_fasilitas_wisata.php', 'input_wisata.php',
+                    'input_fasilitas_wisata.php', 'input_paket_wisata.php', 'edit_arsip_luas_wilayah.php',
+                    'kelola_pengadaan_fasilitas.php', 'edit_pengadaan_fasilitas.php',
+                    'input_pengadaan_fasilitas.php', 'kelola_kerjasama.php', 'edit_kerjasama.php', 'input_kerjasama.php', 'kelola_asuransi.php',
+                    'edit_asuransi.php', 'input_asuransi.php'
+                ])  ? ' active menu-open ' : '') . '"> 
+                        <a href="#" class="nav-link">
+                          <i class="nav-icon fas fa-briefcase"></i>
+                          <p>
+                            Kelola Pariwisata
+                            <i class="right fas fa-angle-left"></i>
+                          </p>
+                        </a>
+                        <ul class="nav sidebar-menu nav-treeview ml-2">
+                                <li class="nav-item"> 
+                                <a href="kelola_wisata.php" class="nav-link ' . (('kelola_wisata.php' == $url_sekarang) || ('edit_wisata.php'  == $url_sekarang) ||
+                    ('kelola_fasilitas_wisata.php'  == $url_sekarang) || ('input_wisata.php'  == $url_sekarang) ||
+                    ('input_fasilitas_wisata.php'  == $url_sekarang) || ('input_paket_wisata.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                                    <i class="nav-icon fas fa-suitcase"></i>
+                                    <p> Kelola Wisata </p>
+                                </a>
+                            </li>
+            
+                                <li class="nav-item"> 
+                                <a href="kelola_pengadaan_fasilitas.php" class="nav-link ' . (('kelola_pengadaan_fasilitas.php' == $url_sekarang) || ('edit_pengadaan_fasilitas.php'  == $url_sekarang) || ('input_pengadaan_fasilitas.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                                    <i class="nav-icon fas fa-truck-loading"></i>
+                                    <p> Kelola Pengadaan </p>
+                                </a>
+                            </li>
+            
+                            <li class="nav-item"> 
+                                <a href="kelola_kerjasama.php" class="nav-link ' . (('kelola_kerjasama.php' == $url_sekarang) || ('edit_kerjasama.php'  == $url_sekarang) || ('input_kerjasama.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                                    <i class="nav-icon fas fa-handshake"></i>
+                                    <p> Kelola Kerjasama </p>
+                                </a>
+                            </li>
+            
+                            <li class="nav-item"> 
+                                <a href="kelola_asuransi.php" class="nav-link ' . (('kelola_asuransi.php' == $url_sekarang) || ('edit_asuransi.php'  == $url_sekarang) || ('input_asuransi.php'  == $url_sekarang) ? ' active ' : '') . ' ">
+                                    <i class="nav-icon fas fa-heartbeat"></i>
+                                    <p> Kelola Asuransi </p>
+                                </a>
+                            </li>       
+                        </ul> 
+                    </li>
+                        <!-- WISATA COLLAPSE END -->
+
+
                     <li class="nav-item"> <!-- Wilayah & Lokasi -->
                         <a href="laporan_donasi.php" class="nav-link  ' . ('laporan_donasi.php' == $url_sekarang ? ' active ' : '') . ' ">
                             <i class="nav-icon fas fa-file-invoice"></i>
