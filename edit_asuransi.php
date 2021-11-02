@@ -161,7 +161,7 @@ if (isset($_POST['submit'])) {
                     ?>
                     <form action="" enctype="multipart/form-data" method="POST">
                         <!-- Hidden Id Asuransi -->
-                        <input type="hidden" name="id_asuransi[]" value="<?= $asuransi->id_asuransi ?> - <?= $asuransi->nama_asuransi ?>">
+                        <input type="hidden" name="id_asuransi" value="<?= $asuransi->id_asuransi ?> - <?= $asuransi->nama_asuransi ?>">
 
                         <div class="form-group">
                             <label for="nama_asuransi">Nama Asuransi</label><br>
