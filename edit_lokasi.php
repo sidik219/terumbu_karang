@@ -1,5 +1,5 @@
 <?php session_start();
-if (!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 4)) {
+if (!($_SESSION['level_user'] == 2 || $_SESSION['level_user'] == 3 || $_SESSION['level_user'] == 4)) {
     header('location: login.php?status=restrictedaccess');
 }
 
@@ -21,7 +21,7 @@ if ($level_user == 2) {
     $wilayah_join = " LEFT JOIN t_lokasi ON t_lokasi.id_lokasi = t_donasi.id_lokasi
                     LEFT JOIN t_wilayah ON t_wilayah.id_wilayah = t_lokasi.id_wilayah ";
     $extra_query_k_lok = " AND t_lokasi.id_wilayah = $id_wilayah ";
-} else if ($level_user == 4) {
+} else if ($level_user == 4 || $level_user == 3) {
     $extra_query = "  ";
     $extra_query_noand = "  ";
     $wilayah_join = " ";
@@ -434,23 +434,23 @@ if (isset($_POST['submit'])) {
     <script src="dist/js/adminlte.js"></script>
 
     <script>
-        function loadKodeLokasi(id_wilayah){
-      $.ajax({
-        type: "POST",
-        url: "list_populate.php",
-        data:{
-            id_wilayah: id_wilayah,
-            type: 'load_kode_lokasi'
-        },
-        beforeSend: function() {
-          $("#dd_kode_lokasi").addClass("loader");
-        },
-        success: function(data){
-          $("#dd_kode_lokasi").html(data);
-          $("#dd_kode_lokasi").removeClass("loader");
+        function loadKodeLokasi(id_wilayah) {
+            $.ajax({
+                type: "POST",
+                url: "list_populate.php",
+                data: {
+                    id_wilayah: id_wilayah,
+                    type: 'load_kode_lokasi'
+                },
+                beforeSend: function() {
+                    $("#dd_kode_lokasi").addClass("loader");
+                },
+                success: function(data) {
+                    $("#dd_kode_lokasi").html(data);
+                    $("#dd_kode_lokasi").removeClass("loader");
+                }
+            });
         }
-      });
-    }
 
 
         function getCoordinates() {

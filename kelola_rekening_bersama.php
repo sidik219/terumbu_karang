@@ -107,6 +107,15 @@ if ($_SESSION['level_user'] == 4) {
         <div class="container-fluid">
           <div class="terumbu-karang form-group mt-0">
             <label class="text-muted text-sm d-block mt-0"><i class="fas text-primary fa-info-circle"></i> Tentukan rekening yang digunakan sebagai metode pembayaran donasi dan reservasi wisata</label>
+            <?php
+            if (!empty($_GET['pesan'])) {
+              if ($_GET['pesan'] == 'Rekening_Telah_Terdaftar') {
+                echo '<div class="alert alert-warning" role="alert">
+                          No Rekening Sudah Terdaftar.
+                      </div>';
+              }
+            }
+            ?>
             <div class="col text-center">
               <span onclick="//addDocInput()" data-toggle="modal" data-target=".tambah-modal" class="btn btn-blue btn btn-primary mt-2 mb-2 text-center"><i class="fas fa-plus"></i> Tambah Rekening</span>
             </div>
@@ -339,10 +348,15 @@ if ($_SESSION['level_user'] == 4) {
           type: 'POST',
           url: 'proses_form.php',
           data: isiform,
-          success: function() {
-            alert('Data berhasil ditambahkan')
-            location.reload();
-          }
+          success: function(response) {
+            if (response == 0) {
+              alert('No Rekening Sudah Terdaftar')
+              // location.reload();
+            } else {
+              alert('Data berhasil ditambahkan')
+              location.reload();
+            }
+          },
 
         })
       }

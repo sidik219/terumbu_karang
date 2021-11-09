@@ -195,7 +195,7 @@ if (isset($_POST['submit_biaya'])) {
                 <th scope="col">Rp. <?= number_format($rowbiaya->biaya_total, 0) ?></th>
                 <th scope="col"></th>
                 <th scope="col">Kapasitas Kapal: <?= $rowbiaya->kapasitas_kapal ?></th>
-                <?php if ($_SESSION['level_user'] == 4) : ?>
+                <?php if ($_SESSION['level_user'] == 3) : ?>
                   <th scope="col">
                     <a href="edit_lokasi.php?id_lokasi=<?= $id_lokasi ?>" class="mr-3 btn btn-act"><i class="fas fa-edit"></i> Ubah Kapasitas Kapal</a>
                   </th>
@@ -436,110 +436,109 @@ if (isset($_POST['submit_biaya'])) {
       }
     }
 
-      var formatter = new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
+    var formatter = new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    })
+
+
+
+
+
+    var formatter = new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+
+      // These options are needed to round to whole numbers if that's what you want.
+      //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+      //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+    });
+
+
+    function formatNumber(e) {
+      var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
+      if (!isNaN(formattedNumber)) {
+        $('#biaya_pergantian_number').val(formattedNumber)
+        $('#num_biaya_pergantian').val(formatter.format(formattedNumber))
+      } else {
+        $('#biaya_pergantian_number').val('0')
+        $('#num_biaya_pergantian').val('0')
+      }
+    }
+
+    function formatNumber1(e) {
+      var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
+      if (!isNaN(formattedNumber)) {
+        $('#biaya_pergantian_number1').val(formattedNumber)
+        $('#num_biaya_pergantian1').val(formatter.format(formattedNumber))
+      } else {
+        $('#biaya_pergantian_number1').val('0')
+        $('#num_biaya_pergantian1').val('0')
+      }
+    }
+
+    function hitungMargin(biaya) {
+      var biaya_rekomendasi;
+      var margin;
+      biaya_rekomendasi = <?= $biaya_rekomendasi; ?>;
+
+      margin = ((biaya / biaya_rekomendasi) * 100) - 100;
+      persenMargin = margin.toFixed(2);
+      var persanMargin;
+
+      if (persenMargin >= 0) {
+        pesanMargin = `<span class="text-success text-small">Untung <b>${persenMargin}%</b> </span>`;
+      } else {
+        pesanMargin = `<span class="text-danger text-small">Rugi <b>${persenMargin}%</b> </span>`;
+      }
+
+      if (biaya_rekomendasi == 0 || biaya == null) {
+        pesanMargin = '';
+      }
+
+      $('#pesanMargin').html(pesanMargin);
+
+    }
+
+
+    //Biaya pemeliharaan formatting
+    function formatNumber2(e) {
+      var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
+      if (!isNaN(formattedNumber)) {
+        $('#biaya_pergantian_number2').val(formattedNumber)
+        $('#num_biaya_pergantian2').val(formatter.format(formattedNumber))
+        hitungMargin(formattedNumber)
+      } else {
+        $('#biaya_pergantian_number2').val('0')
+        $('#num_biaya_pergantian2').val('0')
+      }
+    }
+
+    function formatNumber3(e) {
+      var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
+      if (!isNaN(formattedNumber)) {
+        $('#biaya_pergantian_number3').val(formattedNumber)
+        $('#num_biaya_pergantian3').val(formatter.format(formattedNumber))
+      } else {
+        $('#biaya_pergantian_number3').val('0')
+        $('#num_biaya_pergantian3').val('0')
+      }
+    }
+
+
+    function simpanRekomendasiBiaya() {
+      var isiform = $('#hitung_form').serialize()
+      $.ajax({
+        type: 'POST',
+        url: 'proses_form.php',
+        data: isiform,
+        success: function() {
+          alert('Memproses data...')
+          location.reload();
+        }
+
       })
-
-
-
-
-
-      var formatter = new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-
-        // These options are needed to round to whole numbers if that's what you want.
-        //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-        //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
-      });
-
-
-      function formatNumber(e) {
-        var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
-        if (!isNaN(formattedNumber)) {
-          $('#biaya_pergantian_number').val(formattedNumber)
-          $('#num_biaya_pergantian').val(formatter.format(formattedNumber))
-        } else {
-          $('#biaya_pergantian_number').val('0')
-          $('#num_biaya_pergantian').val('0')
-        }
-      }
-
-      function formatNumber1(e) {
-        var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
-        if (!isNaN(formattedNumber)) {
-          $('#biaya_pergantian_number1').val(formattedNumber)
-          $('#num_biaya_pergantian1').val(formatter.format(formattedNumber))
-        } else {
-          $('#biaya_pergantian_number1').val('0')
-          $('#num_biaya_pergantian1').val('0')
-        }
-      }
-
-      function hitungMargin(biaya) {
-        var biaya_rekomendasi;
-        var margin;
-        biaya_rekomendasi = <?= $biaya_rekomendasi; ?>;
-
-        margin = ((biaya / biaya_rekomendasi) * 100) - 100;
-        persenMargin = margin.toFixed(2);
-        var persanMargin;
-
-        if (persenMargin >= 0) {
-          pesanMargin = `<span class="text-success text-small">Untung <b>${persenMargin}%</b> </span>`;
-        } else {
-          pesanMargin = `<span class="text-danger text-small">Rugi <b>${persenMargin}%</b> </span>`;
-        }
-
-        if (biaya_rekomendasi == 0 || biaya == null) {
-          pesanMargin = '';
-        }
-
-        $('#pesanMargin').html(pesanMargin);
-
-      }
-
-
-      //Biaya pemeliharaan formatting
-      function formatNumber2(e) {
-        var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
-        if (!isNaN(formattedNumber)) {
-          $('#biaya_pergantian_number2').val(formattedNumber)
-          $('#num_biaya_pergantian2').val(formatter.format(formattedNumber))
-          hitungMargin(formattedNumber)
-        } else {
-          $('#biaya_pergantian_number2').val('0')
-          $('#num_biaya_pergantian2').val('0')
-        }
-      }
-
-      function formatNumber3(e) {
-        var formattedNumber = parseInt(e.value.replace(/\,/g, ''))
-        if (!isNaN(formattedNumber)) {
-          $('#biaya_pergantian_number3').val(formattedNumber)
-          $('#num_biaya_pergantian3').val(formatter.format(formattedNumber))
-        } else {
-          $('#biaya_pergantian_number3').val('0')
-          $('#num_biaya_pergantian3').val('0')
-        }
-      }
-
-
-      function simpanRekomendasiBiaya() {
-        var isiform = $('#hitung_form').serialize()
-        $.ajax({
-          type: 'POST',
-          url: 'proses_form.php',
-          data: isiform,
-          success: function() {
-            alert('Memproses data...')
-            location.reload();
-          }
-
-        })
-      }
-    
+    }
   </script>
 
   <script>
