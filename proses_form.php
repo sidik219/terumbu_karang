@@ -10,11 +10,18 @@ if ($_POST['type'] == 'save_modal_patokan_harga_terumbu' && !empty($_POST["id_lo
   $harga_patokan_lokasi = $_POST['num_harga_patokan_lokasi_angka'];
   $stok_terumbu = $_POST['stok_terumbu'];
 
-  $insertpatokan = 'INSERT INTO t_detail_lokasi
+  $result_jenis_tk = mysqli_query($conn, "SELECT id_terumbu_karang FROM t_detail_lokasi WHERE id_terumbu_karang = '$id_terumbu_karang' AND id_lokasi = '$id_lokasi'");
+
+  if (mysqli_fetch_assoc($result_jenis_tk)) {
+    die(header("HTTP/1.0 404 Not Found")); //Throw an error on failure
+  }
+  else{
+      $insertpatokan = 'INSERT INTO t_detail_lokasi
                       (id_lokasi, id_terumbu_karang, harga_patokan_lokasi, stok_terumbu)
                       VALUES (:id_lokasi, :id_terumbu_karang, :harga_patokan_lokasi, :stok_terumbu)';
-  $stmt = $pdo->prepare($insertpatokan);
-  $stmt->execute(['id_lokasi' => $id_lokasi, 'id_terumbu_karang' => $id_terumbu_karang, 'harga_patokan_lokasi' => $harga_patokan_lokasi, 'stok_terumbu' => $stok_terumbu]);
+      $stmt = $pdo->prepare($insertpatokan);
+      $stmt->execute(['id_lokasi' => $id_lokasi, 'id_terumbu_karang' => $id_terumbu_karang, 'harga_patokan_lokasi' => $harga_patokan_lokasi, 'stok_terumbu' => $stok_terumbu]);
+  }
 }
 
 //Save modal Biaya Pemeliharaan

@@ -519,6 +519,9 @@ if (isset($_POST['submit_biaya'])) {
           success: function() {
             alert('Data berhasil ditambahkan')
             location.reload();
+          },
+          error: () => {
+            alert('Sub-jenis terumbu karang sudah terdaftar. Harap input sub-jenis lain.')
           }
 
         })
