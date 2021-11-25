@@ -29,12 +29,13 @@ $kegiatan = $stmt->fetch();
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Roboto:wght@500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" />
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/b41ecad032.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-
     <!-- Navbar Container-->
     <div class="navbar-tkjb fixed-top">
         <!-- Navbar -->
@@ -98,30 +99,31 @@ $kegiatan = $stmt->fetch();
     <!-- END Navbar Container -->
 
     <main class="container">
+
         <div class="header-tkjb">
 
             <div class="p-4 text-white rounded d-flex justify-content-center">
                 <div class="col-md-8 px-0">
                     <!-- <img src="../<?= $kegiatan->foto_kegiatan; ?>" class="img-fluid max-width: 100%;" alt=""> -->
-                    <img src="../<?= $kegiatan->foto_kegiatan; ?>" class="img-fluid rounded mx-auto d-block" alt="">
+                    <img src="../<?= $kegiatan->foto_kegiatan; ?>" class="img-fluid rounded mx-auto d-block foto" alt="">
                     <p class="small text-secondary"><i class="far fa-calendar-alt "></i> Tanggal Kegiatan : <?= date('d F Y', strtotime($kegiatan->tgl_kegiatan)); ?></p>
                 </div>
             </div>
 
 
             <div class="row g-5">
-                <div class="col-md-8">
+                <div class="col-md-8 ">
 
                     <article class="blog-post pb-5">
                         <h2 class="blog-post-title"><?= $kegiatan->judul_kegiatan; ?></h2>
-
-                        <!-- <p class="blog-post-meta"><i class="far fa-calendar-alt "></i> Tanggal Kegiatan : <?= date('d F Y', strtotime($kegiatan->tgl_kegiatan)); ?> </p> -->
-                        <p class="blog-post-meta"><i class="far fa-calendar-alt "></i> Tanggal Upload : <?= date('d F Y', strtotime($kegiatan->tgl_upload)); ?></p>
-                        <!-- <p class="blog-post-meta"><?= $kegiatan->tgl_kegiatan; ?></a></p> -->
-
-                        <!-- <p>This blog post shows a few different types of content that’s supported and styled with Bootstrap. Basic typography, lists, tables, images, code, and more are all supported as expected.</p> -->
+                        <div class="d-flex align-items-center share-btn">
+                            <p class="blog-post-meta" style="margin-bottom: 0px; padding-bottom:1px;">Bagikan :</p>
+                            <a href="#" class="facebook-btn px-1"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="twitter-btn px-1"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="whatsapp-btn px-1"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                        <p style="margin: 0;" class="blog-post-meta"><i class="far fa-calendar-alt "></i> Tanggal Upload : <?= date('d F Y', strtotime($kegiatan->tgl_upload)); ?></p>
                         <hr>
-
                         <?= $kegiatan->deskripsi_kegiatan; ?>
                     </article>
 
@@ -157,6 +159,7 @@ $kegiatan = $stmt->fetch();
     <!-- End Footer -->
 
     <!-- Bootstrap JS & JQuery -->
+    <script src="../tangkolak/js/share.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
