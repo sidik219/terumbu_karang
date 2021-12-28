@@ -8,16 +8,16 @@ function smtpmailer($to, $from, $from_name, $subject, $body)
         $mail->SMTPAuth = true; 
  
         $mail->SMTPSecure = 'tls'; 
-        $mail->Host = 'mail.tkjb.or.id';
+        $mail->Host = 'mail.gokarang-temp.site';
         $mail->Port = 587;  
-        $mail->Username = 'noreply-gokarang@tkjb.or.id';
+        $mail->Username = 'noreply-gokarang@gokarang-temp.site';
         $mail->Password = '6-nvNrzIaF6Y';   
    
    //   $path = 'reseller.pdf';
    //   $mail->AddAttachment($path);
    
         $mail->IsHTML(true);
-        $mail->From="noreply-gokarang@tkjb.or.id";
+        $mail->From="noreply-gokarang@gokarang-temp.site";
         $mail->FromName=$from_name;
         $mail->Sender=$from;
         $mail->AddReplyTo($from, $from_name);
@@ -37,11 +37,11 @@ function smtpmailer($to, $from, $from_name, $subject, $body)
     }
     // $token_aktivasi_user = substr(md5(rand()), 0, 32);
     // $penerima   = 'feisalar1@gmail.com';
-    $pengirim = 'noreply-gokarang@tkjb.or.id';
+    $pengirim = 'noreply-gokarang@gokarang-temp.site';
     $nama_pengirim = 'GoKarang Administrator';
     // $subjek = 'PHPMailer Test Email';
     // $pesan = 'Terima kasih telah berdonasi dengan GoKarang.
-    // <br><a href="https://tkjb.or.id/aktivasi_user.php?token_aktivasi='.$token_aktivasi_user.'">Konfirmasi Akun Anda</a>';
+    // <br><a href="https://gokarang-temp.site/aktivasi_user.php?token_aktivasi='.$token_aktivasi_user.'">Konfirmasi Akun Anda</a>';
 
     // $penerima   = $_SESSION['email'];
     // $pengirim = 'noreply-gokarang@tkjb.or.id';

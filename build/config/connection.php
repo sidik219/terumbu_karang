@@ -1,8 +1,8 @@
 <?php
-$host        = "103.82.241.96"; //localhost server
-$db_user     = "tkjborid_db_admin1"; //database username
+$host        = "103.147.154.131"; //localhost server
+$db_user     = "gokarang_db_admin1"; //database username
 $db_password = "DNwipW^aPBFi"; //database password
-$db_name     = "tkjborid_db_terumbu_karang"; //database name
+$db_name     = "gokarang_db_terumbu_karang"; //database name
 $dsn = 'mysql:host=' . $host . ';dbname=' . $db_name;
 global $pdo;
 $pdo = new PDO($dsn, $db_user, $db_password);
