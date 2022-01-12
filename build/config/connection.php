@@ -1,8 +1,12 @@
 <?php
-$host        = "103.147.154.131"; //localhost server
-$db_user     = "gokarang_db_admin1"; //database username
-$db_password = "DNwipW^aPBFi"; //database password
-$db_name     = "gokarang_db_terumbu_karang"; //database name
+require __DIR__ . '/../../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../../');
+$dotenv->load();
+
+$host        = $_ENV["DB_HOST"]; //localhost server
+$db_user     = $_ENV["DB_UNAME"]; //database username
+$db_password = $_ENV["DB_PWORD"]; //database password
+$db_name     = $_ENV["DB_NAME"]; //database name
 $dsn = 'mysql:host=' . $host . ';dbname=' . $db_name;
 global $pdo;
 $pdo = new PDO($dsn, $db_user, $db_password);
