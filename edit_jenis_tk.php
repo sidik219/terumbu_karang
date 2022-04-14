@@ -22,45 +22,40 @@ if (isset($_POST['submit'])) {
   $deskripsi_jenis        = $_POST['tb_deskripsi_jenis'];
   $randomstring = substr(md5(rand()), 0, 7);
 
-  // Cek data existing
-  $result = mysqli_query($conn, "SELECT nama_jenis FROM t_jenis_terumbu_karang WHERE nama_jenis = '$nama_jenis'");
-  if (mysqli_fetch_assoc($result)) {
-    header("location: edit_jenis_tk.php?id_jenis={$id_jenis}&pesan=jenis_terumbu_karang_sudah_terdaftar");
-  } else {
-    //Image upload
-    if ($_FILES["image_uploads"]["size"] == 0) {
+
+  //Image upload
+  if ($_FILES["image_uploads"]["size"] == 0) {
+    $foto_jenis = $rowitem->foto_jenis;
+    $pic = "&none=";
+  } else if (isset($_FILES['image_uploads'])) {
+    if (($rowitem->foto_jenis == $defaultpic) || (!$rowitem->foto_jenis)) {
+      $target_dir  = "images/foto_jenis_tk/";
+      $foto_jenis = $target_dir . 'JNS_' . $randomstring . '.jpg';
+      move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_jenis);
+      $pic = "&new=";
+    } else if (isset($rowitem->foto_jenis)) {
       $foto_jenis = $rowitem->foto_jenis;
-      $pic = "&none=";
-    } else if (isset($_FILES['image_uploads'])) {
-      if (($rowitem->foto_jenis == $defaultpic) || (!$rowitem->foto_jenis)) {
-        $target_dir  = "images/foto_jenis_tk/";
-        $foto_jenis = $target_dir . 'JNS_' . $randomstring . '.jpg';
-        move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $foto_jenis);
-        $pic = "&new=";
-      } else if (isset($rowitem->foto_jenis)) {
-        $foto_jenis = $rowitem->foto_jenis;
-        unlink($rowitem->foto_jenis);
-        move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowitem->foto_jenis);
-        $pic = "&replace=";
-      }
+      unlink($rowitem->foto_jenis);
+      move_uploaded_file($_FILES["image_uploads"]["tmp_name"], $rowitem->foto_jenis);
+      $pic = "&replace=";
     }
+  }
 
-    //---image upload end
+  //---image upload end
 
-    $sqljenis = "UPDATE t_jenis_terumbu_karang
+  $sqljenis = "UPDATE t_jenis_terumbu_karang
                         SET nama_jenis = :nama_jenis, deskripsi_jenis = :deskripsi_jenis, foto_jenis = :foto_jenis
                         WHERE id_jenis = :id_jenis";
 
-    $stmt = $pdo->prepare($sqljenis);
-    $stmt->execute(['id_jenis' => $id_jenis, 'nama_jenis' => $nama_jenis, 'deskripsi_jenis' => $deskripsi_jenis, 'foto_jenis' => $foto_jenis]);
+  $stmt = $pdo->prepare($sqljenis);
+  $stmt->execute(['id_jenis' => $id_jenis, 'nama_jenis' => $nama_jenis, 'deskripsi_jenis' => $deskripsi_jenis, 'foto_jenis' => $foto_jenis]);
 
-    $affectedrows = $stmt->rowCount();
-    if ($affectedrows == 0) {
-      header("Location: kelola_jenis_tk.php?status=nochange&gambar=$pic");
-    } else {
-      //echo "HAHAHAAHA GREAT SUCCESSS !";
-      header("Location: kelola_jenis_tk.php?status=updatesuccess");
-    }
+  $affectedrows = $stmt->rowCount();
+  if ($affectedrows == 0) {
+    header("Location: kelola_jenis_tk.php?status=nochange&gambar=$pic");
+  } else {
+    //echo "HAHAHAAHA GREAT SUCCESSS !";
+    header("Location: kelola_jenis_tk.php?status=updatesuccess");
   }
 }
 ?>
@@ -135,15 +130,6 @@ if (isset($_POST['submit'])) {
       <!-- Content Header (Page header) -->
       <div class="content-header">
         <div class="container-fluid">
-          <?php
-          if (!empty($_GET['pesan'])) {
-            if ($_GET['pesan'] == 'jenis_terumbu_karang_sudah_terdaftar') {
-              echo '<div class="alert alert-danger" role="alert">
-                          Jenis terumbu karang sudah terdaftar sebelumnya, harap input data yang baru.
-                      </div>';
-            }
-          }
-          ?>
           <a class="btn btn-outline-primary" href="kelola_jenis_tk.php">
             < Kembali</a><br><br>
               <h4><span class="align-middle font-weight-bold">Edit Data Jenis Terumbu Karang</span></h4>
