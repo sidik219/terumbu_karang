@@ -290,7 +290,7 @@ if ($_SESSION['level_user'] == 4) {
     </div>
 
   </div>
-  <?php //} 
+  <?php //}
   ?>
   </div>
   </div>
@@ -325,7 +325,7 @@ if ($_SESSION['level_user'] == 4) {
     </div>
 
   </div>
-  <?php //} 
+  <?php //}
   ?>
   </div>
   </div>
@@ -337,20 +337,23 @@ if ($_SESSION['level_user'] == 4) {
     function simpanRekening() {
       // $(document).ready(function() {
       //   $('#submit').click(function() {
-      var value1 = document.getElementById('nama_pemilik_rekening').value;
-      var value2 = document.getElementById('nomor_rekening').value;
-      var value3 = document.getElementById('nama_bank').value;
-      if (value1 === '' || value2 === '' || value3 === '') {
+      var nama_pemilik_rekening = document.getElementById('nama_pemilik_rekening').value;
+      var nomor_rekening = document.getElementById('nomor_rekening').value;
+      var nama_bank = document.getElementById('nama_bank').value;
+      if (nama_pemilik_rekening === '' || nomor_rekening === '' || nama_bank === '') {
         alert('Semua Data harus Terisi');
       } else {
         var isiform = $('#tambah_form').serialize();
+        console.log(isiform)
         $.ajax({
-          type: 'POST',
+          method: 'POST',
+          type: 'save_modal_rekber',
           url: 'proses_form.php',
           data: isiform,
           success: function(response) {
             if (response == 0) {
               alert('No Rekening Sudah Terdaftar')
+              console.log(response)
               // location.reload();
             } else {
               alert('Data berhasil ditambahkan')
@@ -389,22 +392,25 @@ if ($_SESSION['level_user'] == 4) {
       var value1 = document.getElementById('nama_pemilik_rekening1').value;
       var value2 = document.getElementById('nomor_rekening1').value;
       var value3 = document.getElementById('nama_bank1').value;
-      console.log(value1)
-      console.log(value2)
-      console.log(value3)
       if (value1 === '' || value2 === '' || value3 === '') {
         alert('Semua Data harus Terisi');
       } else {
         var isiform = $('#edit_form').serialize()
         $.ajax({
-          type: 'POST',
+          method: 'POST',
+          type: 'update_modal_rekber',
           url: 'proses_form.php',
           data: isiform,
-          success: function() {
-            alert('Data berhasil diupdate')
-            location.reload();
-          }
-
+          success: function(response) {
+            if (response == 0) {
+              alert('No Rekening Sudah Terdaftar')
+              console.log(response)
+              // location.reload();
+            } else {
+              alert('Data berhasil diupdate')
+              location.reload();
+            }
+          },
         })
       }
     }

@@ -14,13 +14,12 @@ if ($_POST['type'] == 'save_modal_patokan_harga_terumbu' && !empty($_POST["id_lo
 
   if (mysqli_fetch_assoc($result_jenis_tk)) {
     die(header("HTTP/1.0 404 Not Found")); //Throw an error on failure
-  }
-  else{
-      $insertpatokan = 'INSERT INTO t_detail_lokasi
+  } else {
+    $insertpatokan = 'INSERT INTO t_detail_lokasi
                       (id_lokasi, id_terumbu_karang, harga_patokan_lokasi, stok_terumbu)
                       VALUES (:id_lokasi, :id_terumbu_karang, :harga_patokan_lokasi, :stok_terumbu)';
-      $stmt = $pdo->prepare($insertpatokan);
-      $stmt->execute(['id_lokasi' => $id_lokasi, 'id_terumbu_karang' => $id_terumbu_karang, 'harga_patokan_lokasi' => $harga_patokan_lokasi, 'stok_terumbu' => $stok_terumbu]);
+    $stmt = $pdo->prepare($insertpatokan);
+    $stmt->execute(['id_lokasi' => $id_lokasi, 'id_terumbu_karang' => $id_terumbu_karang, 'harga_patokan_lokasi' => $harga_patokan_lokasi, 'stok_terumbu' => $stok_terumbu]);
   }
 }
 
@@ -196,16 +195,18 @@ if ($_POST['type'] == 'load_modal_patokan_harga_terumbu' && !empty($_POST["id_de
             $nomor_rekening = $_POST['nomor_rekening'];
             $nama_bank = $_POST['nama_bank'];
             $id_wilayah = $_POST['id_wilayah'];
+
             $result = mysqli_query($conn, "SELECT nomor_rekening FROM t_rekening_bank WHERE nomor_rekening = '$nomor_rekening'");
             if (mysqli_fetch_assoc($result)) {
               // header('location: kelola_rekening_bersama.php?pesan=Rekening_Telah_Terdaftar');
-              die('0');
+              echo 0;
             } else {
               $insertrekening = 'INSERT INTO t_rekening_bank
                         (nama_pemilik_rekening, nomor_rekening, nama_bank, id_wilayah)
                         VALUES (:nama_pemilik_rekening, :nomor_rekening, :nama_bank, :id_wilayah)';
               $stmt = $pdo->prepare($insertrekening);
               $stmt->execute(['nama_pemilik_rekening' => $nama_pemilik_rekening, 'nomor_rekening' => $nomor_rekening, 'nama_bank' => $nama_bank, 'id_wilayah' => $id_wilayah]);
+              echo 1;
             }
           }
 
@@ -257,11 +258,18 @@ if ($_POST['type'] == 'load_modal_patokan_harga_terumbu' && !empty($_POST["id_de
                 $nomor_rekening = $_POST['nomor_rekening'];
                 $nama_bank = $_POST['nama_bank'];
 
-                $updatepatokan = 'UPDATE t_rekening_bank
-                      SET nama_pemilik_rekening = :nama_pemilik_rekening, nomor_rekening = :nomor_rekening, nama_bank = :nama_bank
-                      WHERE id_rekening_bank = :id_rekening_bank';
-                $stmt = $pdo->prepare($updatepatokan);
-                $stmt->execute(['id_rekening_bank' => $id_rekening_bank, 'nama_pemilik_rekening' => $nama_pemilik_rekening, 'nomor_rekening' => $nomor_rekening, 'nama_bank' => $nama_bank]);
+                $result = mysqli_query($conn, "SELECT nomor_rekening FROM t_rekening_bank WHERE nomor_rekening = '$nomor_rekening'");
+                if (mysqli_fetch_assoc($result)) {
+                  // header('location: kelola_rekening_bersama.php?pesan=Rekening_Telah_Terdaftar');
+                  echo 0;
+                } else {
+                  $updatepatokan = 'UPDATE t_rekening_bank
+                                    SET nama_pemilik_rekening = :nama_pemilik_rekening, nomor_rekening = :nomor_rekening, nama_bank = :nama_bank
+                                    WHERE id_rekening_bank = :id_rekening_bank';
+                  $stmt = $pdo->prepare($updatepatokan);
+                  $stmt->execute(['id_rekening_bank' => $id_rekening_bank, 'nama_pemilik_rekening' => $nama_pemilik_rekening, 'nomor_rekening' => $nomor_rekening, 'nama_bank' => $nama_bank]);
+                  echo 1;
+                }
               }
 
 

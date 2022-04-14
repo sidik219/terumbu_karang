@@ -1,12 +1,8 @@
 <?php
-require __DIR__ . '/../../vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../../');
-$dotenv->load();
-
-$host        = $_ENV["DB_HOST"]; //localhost server
-$db_user     = $_ENV["DB_UNAME"]; //database username
-$db_password = $_ENV["DB_PWORD"]; //database password
-$db_name     = $_ENV["DB_NAME"]; //database name
+$host        = "localhost";//localhost server
+$db_user     = "root";//database username
+$db_password = "";//database password
+$db_name     = "db_terumbu_karang";//database name
 $dsn = 'mysql:host=' . $host . ';dbname=' . $db_name;
 global $pdo;
 $pdo = new PDO($dsn, $db_user, $db_password);
